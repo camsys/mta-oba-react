@@ -1,0 +1,235 @@
+// IMPORTS
+
+@import normalize
+@import helpers
+
+// basic html
+
+body
+  font-family: Helvetica, Arial, sans-serif
+  font-size: 16px
+  min-width: 100vw
+  min-height: 100vh
+  position: relative
+
+a
+  color: $black
+  text-decoration: underline
+  &:hover, &:focus
+    color: $mta-blue
+    text-decoration: none
+
+h1, h2, h3, h4, h5, h6
+  font-weight: bold
+  font-size: 1em
+  margin: 0
+  padding: 0
+
+h1
+  &.invisible
+    position: absolute
+    top: -9999px
+    left: -9999px
+    
+ul
+  &:not(.menu)
+    list-style: none
+    padding: 0
+    margin: 1em 0
+    li
+      margin: 0 0 .5em 0
+      padding: 0 0 0 .75em
+      position: relative
+      &::before
+        content: "■"
+        display: inline-block
+        font-size: .375em
+        position: absolute
+        left: 0
+        top: .875em
+      ul.links
+        display: inline-flex
+        gap: .75em
+        margin: 0 0 0 .25em
+        li
+          padding: 0
+          margin: 0
+          &::before
+            content: none
+  &.icon-menu
+    list-style: none
+    padding: 0
+    margin: 0
+    color: $mta-blue
+    border-top: 1px solid $mta-blue
+    li
+      display: flex
+      gap: .5em
+      margin: 0
+      padding: 0
+      border-bottom: 1px solid $mta-blue
+      a
+        color: currentColor
+        text-decoration: none
+        display: inline-flex
+        padding: 1em 0
+        gap: .5em
+        flex-grow: 1
+        transition: color .25s ease-in-out, background-color .25s ease-in-out, padding-left .25s ease-in-out
+        &::before
+          content: ''
+          width: 1.125em
+          height: 1.125em
+          background-size: auto 100%
+          background-repeat: no-repeat
+          background-position: center
+        &::after
+          content: ''
+          width: 1.125em
+          height: 1.125em
+          background-image: url(/img/icon/right-caret_blue.svg)
+          background-size: auto 100%
+          background-repeat: no-repeat
+          background-position: center right
+          flex-grow: 1
+        &:hover, &:focus
+          text-decoration: none
+          font-weight: bold
+          color: $black
+          background-color: $white
+          padding-left: .5em
+          &::after
+            background-image: url(/img/icon/right-caret_black.svg)
+      &.list-icon
+        a
+          &::before
+            background-image: url(/img/icon/list_blue.svg)
+      &.mta-icon
+        a
+          &::before
+            background-image: url(/img/icon/mta-logo_blue.svg)
+      &.google-icon
+        a
+          &::before
+            background-image: url(/img/icon/google-logo_blue.svg)
+        
+      
+
+// basic layout
+
+.main-body
+  width: 100%
+  height: 100%
+  position: absolute
+  top: 0
+  right: 0
+  bottom: 0
+  left: 0
+  overflow: hidden
+  display: flex
+  flex-wrap: nowrap
+  align-items: stretch
+
+#sidebar
+  width: 22em
+  background-color: $ui-gray
+  overflow: hidden
+  box-shadow: .25em .25em .5em 0 rgba($black, 0.25)
+  position: relative 
+  z-index: 1
+  display: inline-flex
+  flex-direction: column
+  align-items: stretch
+  align-content: stretch
+  .header
+    background-color: $black2
+    color: $white
+    padding: $content-padding
+    padding-top: .5em
+    border-bottom: .25em solid $border-gray
+    .logo
+      display: block
+      width: 100%
+      height: auto
+      max-width: 100%
+      margin: 0 0 1.25em 0
+      padding: 0
+    .menu
+      display: flex
+      flex-wrap: nowrap
+      justify-content: space-between
+      font-size: .75em
+      line-height: 1
+      list-style: none
+      padding: 0
+      margin: 0
+      a
+        color: $white
+        text-decoration: none
+        &:hover, &:focus
+          color: $white
+          text-decoration: underline
+  #search
+    padding: $content-padding
+    background: $mta-blue
+    color: $white
+    input, button
+      font-size: 1em
+      background-color: rgba($white, .1)
+      border: 1px solid rgba($white, 0)
+      outline: none
+      padding: .625em .5em
+      transition: border .25s ease-in-out, background-color .25s ease-in-out, color .25s ease-in-out
+      &:hover
+        border-color: $white
+      &:focus
+        background-color: $white
+        color: $black
+        border-color: $white
+    input
+      font-weight: bold
+      color: $white
+      +rounded-left
+      &::placeholder
+        color: $white
+    button
+      +rounded-right
+      line-height: 0
+      img
+        width: 1.125em
+        height: 1.125em
+        margin: 0
+        padding: 0
+        opacity: 1
+        transition: opacity .25s ease-in-out
+      &:focus
+        background-image: url(/img/icon/search_blue.svg)
+        background-size: 1.125em 1.125em
+        background-repeat: no-repeat
+        background-position: center
+        img
+          opacity: 0
+    .search-field-wrap
+      display: flex
+      input
+        flex: 1
+    .instructions
+      font-size: .75em
+      margin: 1.333em 0 0 0
+  .sidebar-content
+    flex: 1 0 0
+    overflow-x: hidden
+    overflow-y: auto
+    display: inline-flex
+    flex-direction: column
+    align-items: stretch
+    justify-content: space-between
+    .content
+      padding: $content-padding
+      flex: 1 0 0
+    .footer
+      padding: $content-padding
+#map
+  flex: 1
+  position: relative
+  z-index: 0

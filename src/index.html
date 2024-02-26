@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bustime UI</title>
+
+</head>
+<body>
+  <h1 class="invisible">MTA Bus Time Home</h1>
+  <div class="main-body">
+    <div id="sidebar">
+      <div class="header">
+        <div id="logo"></div>
+        <ul class="menu">
+          <li><a href="/">Home</a></li>
+          <li><a href="#">Text</a></li>
+          <li><a href="#">About</a></li>
+          <li><a href="#">Contact</a></li>
+          <li><a href="#">Developers</a></li>
+          <li><a href="#">Help</a></li>
+        </ul>
+      </div>
+      <form action="" id="search">
+        <div class="search-field-wrap">
+          <input type="text" placeholder="Search">
+          <button type="submit" id="submitButton"></button>
+        </div>
+        <p class="instructions">Enter an intersection, bus route or bus stop code.</p>
+        <div id="app"></div>
+      </form>
+      <div class="sidebar-content">
+        <div class="content">
+          <h2>Try these example searches:</h2>
+          <ul>
+            <li>Route: 
+              <ul class="links">
+                <li><a href="#">B63</a></li>
+                <li><a href="#">M5</a></li>
+                <li><a href="#">Bx1</a></li>
+              </ul>
+            </li>
+            <li>Intersection: 
+              <ul class="links">
+                <li><a href="#">Main st and Kissena Bl</a></li>
+              </ul>
+            </li>
+            <li>Stop Code: 
+              <ul class="links">
+                <li><a href="#">200884</a></li>
+              </ul>
+            </li>
+          </ul>
+          <ul class="menu icon-menu">
+            <li class="list-icon"><a href="#">Available Routes</a></li>
+          </ul>
+        </div>
+        <div class="footer">
+          <ul class="menu icon-menu">
+            <li class="mta-icon"><a href="#">Menu</a></li>
+            <li class="google-icon"><a href="#">Google Translate</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div id="map">
+      <iframe
+        width="100%"
+        height="100%"
+        frameborder="0" style="border:0"
+        src="https://www.google.com/maps/embed/v1/view?key=AIzaSyC65u47U8CJxTrmNcXDP2KwCYGxmQO3ZfU&center=40.7128,-74.0060&zoom=12"
+    ></iframe>
+    </div>
+  </div>
+
+</body>
+</html>
