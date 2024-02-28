@@ -17,12 +17,9 @@ mode: 'development',
    test: /\.css$/,
    use: ["style-loader", "css-loader"]
   },
+
   {
-          test: /\.svg$/,
-          loader: "svg-inline-loader"
-        },
-  {
-          test: /\.(png|jpe?g|gif|ico)$/i,
+          test: /\.(png|jpe?g|gif|svg|ico)$/i,
           loader: "file-loader"
         },      
 ]},
