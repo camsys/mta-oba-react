@@ -44,6 +44,6 @@ function App  () {
 
   
  }
-ReactDOM.render( <img id="logo" src={img} alt="MTA Bus Time" class="logo" />,  document.getElementById('logo')); 
+ReactDOM.render( <img id="logo" src={img} alt="MTA Bus Time" class="logo" />,  document.getElementById('logo-link')); 
 ReactDOM.render(<App />, document.getElementById('app'));
-ReactDOM.render( <img src={searchWhite} alt="Search" />,  document.getElementById('submitButton'));
+ReactDOM.render( <img src={searchWhite} alt="Search" />,  document.getElementById('submit-search'));

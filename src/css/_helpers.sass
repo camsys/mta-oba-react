@@ -10,12 +10,39 @@ $ui-gray: #f3f3f3
 $border-gray: #ddd
 
 $mta-blue: #0E61A9
+$mta-yellow: #f2a900 // only meets ada contrast guidelines on black, black2, or black3 for text, with the addition of mta-blue for graphics or large text only
+$mta-yellow-ada: #B88100 // meets ada contrast guidelines against ui-gray or white
 
 
 // measurements
 
 $content-padding: 1em
+$sidebar-width: 22em  
+$thick-border: 4px
+$medium-border: 2px
+$button-height: 3.125em
+$bottom-buttons-height: $button-height + $content-padding + $content-padding
 
+// breakpoints
+
+$four: 400px
+$five: 500px
+$six: 600px
+$seven: 700px
+$eight: 800px
+$nine: 900px
+$ten: 1000px
+$eleven: 1100px
+$twelve: 1200px
+$thirteen: 1300px
+$fourteen: 1400px
+$fifteen: 1500px
+$sixteen: 1600px
+
+$sidebar-switch: $six
+
+
+// mixins
 
 =rounded($radius: .25em)
   border-radius: $radius
@@ -31,3 +58,68 @@ $content-padding: 1em
   border-bottom-right-radius: $radius
   border-top-left-radius: 0
   border-bottom-left-radius: 0
+
+=icon-before
+  &::before
+    content: ''
+    display: inline-block
+    width: 1.125em
+    height: 1.125em
+    background-size: auto 100%
+    background-repeat: no-repeat
+    background-position: center
+
+=text-outline($color: $white, $width: 1px)
+  text-shadow: -#{$width} -#{$width} 0 $color, $width -#{$width} 0 $color, -#{$width} $width 0 $color, $width $width 0 $color
+
+=focus-pseudo-underline($color:$mta-blue)
+  &::after
+    content: ''
+    position: absolute
+    left: 0
+    right: 0
+    top: 1.1em
+    height: $medium-border
+    background-color: $color
+    opacity: 0
+    transition: opacity .25s ease-in-out
+  &:focus
+    outline: none
+    border: none
+    text-decoration: none
+    &::after
+      opacity: 1
+  
+=yellow-bottom-focus
+  +focus-pseudo-underline($mta-yellow)
+  
+
+=yellow-bottom-focus-dark
+  +focus-pseudo-underline($mta-yellow-ada)
+
+// MEDIA QUERIES
+
+=mq($var)
+  @media screen and (min-width: #{$var})
+    @content
+
+=mq-reverse($var)
+  @media screen and (max-width: $var - 1px)
+    @content
+
+=mq-minmax($min,$max)
+  @media screen and (max-width: #{$max} - 1px) and (min-width: #{$min})
+    @content
+
+=mq-height($var)
+  @media screen and (min-height: #{$var})
+    @content
+
+=mq-height-reverse($var)
+  @media screen and (max-height: #{$var} - 1px)
+    @content
+
+=mq-ie
+  @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none)
+    @content
+    

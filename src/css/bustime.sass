@@ -11,11 +11,18 @@ body
   min-width: 100vw
   min-height: 100vh
   position: relative
+  *
+    box-sizing: border-box
+  +mq($sidebar-switch)
+    font-size: 14px
+  +mq($nine)
+    font-size: 16px
 
 a
   color: $black
   text-decoration: underline
-  &:hover, &:focus
+  display: inline-block
+  &:hover
     color: $mta-blue
     text-decoration: none
 
@@ -26,10 +33,6 @@ h1, h2, h3, h4, h5, h6
   padding: 0
 
 h1
-  &.invisible
-    position: absolute
-    top: -9999px
-    left: -9999px
     
 ul
   &:not(.menu)
@@ -55,65 +58,239 @@ ul
           padding: 0
           margin: 0
           &::before
-            content: none
-  &.icon-menu
-    list-style: none
-    padding: 0
+            content: none     
+          a
+            +yellow-bottom-focus-dark
+
+button, .button
+  font-size: 1em
+  vertical-align: middle
+  &:hover
+    cursor: pointer
+
+.button
+  font-weight: bold
+  padding: $content-padding
+  +rounded
+  color: $mta-blue
+  background-color: $white
+  border: $medium-border solid currentColor
+  line-height: 1
+  &.icon-button-left
+    padding-left: #{$content-padding*.625}
+    .icon
+      margin-right: .5em
+
+.clear-button
+  border: none
+  outline: none
+  background: transparent
+  color: currentColor
+  &::after, &::before
+    content: none!important
+    display: none!important
+
+.small-link
+  font-size: .75em
+  text-decoration: underline!important
+  color: $black3!important
+  padding: 0px!important
+  &:hover
+    text-decoration: none!important
+  &:focus
+    font-weight: bold!important
+
+.svg-icon-wrap
+  width: 1.125em
+  height: 1.125em
+  display: inline-block
+  vertical-align: middle
+  margin: 0
+  padding: 0
+  svg
+    width: 100%
+    height: 100%
+    fill: currentColor
+    stroke: none
+    stroke-width: 0
     margin: 0
-    color: $mta-blue
-    border-top: 1px solid $mta-blue
-    li
+    padding: 0
+    .blue
+      fill: $mta-blue
+    .yellow
+      fill: $mta-yellow
+    .white
+      fill: $white
+
+// shared menu styles
+
+.visually-hidden
+  position: absolute
+  width: 1px
+  height: 1px
+  margin: -1px
+  padding: 0
+  overflow: hidden
+  clip: rect(0, 0, 0, 0)
+  border: 0
+
+.icon-menu
+  list-style: none
+  padding: 0
+  margin: 0
+  color: $mta-blue
+  border-top: 1px solid $mta-blue
+  li
+    // display: flex
+    // gap: .5em
+    margin: 0
+    padding: 0
+    border-bottom: 1px solid $mta-blue
+    // position: relative
+    a, button
+      color: currentColor
+      text-decoration: none
       display: flex
+      width: 100%
+      padding: 1em 0
       gap: .5em
-      margin: 0
-      padding: 0
-      border-bottom: 1px solid $mta-blue
-      a
-        color: currentColor
-        text-decoration: none
-        display: inline-flex
-        padding: 1em 0
-        gap: .5em
+      flex-grow: 1
+      align-items: center
+      transition: color .25s ease-in-out, background-color .25s ease-in-out, padding-left .25s ease-in-out
+      border: none
+      outline: none
+      background: transparent
+      .label
         flex-grow: 1
-        transition: color .25s ease-in-out, background-color .25s ease-in-out, padding-left .25s ease-in-out
-        &::before
-          content: ''
-          width: 1.125em
-          height: 1.125em
-          background-size: auto 100%
-          background-repeat: no-repeat
-          background-position: center
+        text-align: left
+        line-height: 1.25
+      &::after
+        content: ''
+        width: 1.125em
+        height: 1.125em
+        background-image: url(/src/img/icon/right-caret_blue.svg)
+        background-size: auto 100%
+        background-repeat: no-repeat
+        background-position: center right
+        display: inline-block
+        margin-right: .25em
+  >li
+    position: relative
+    &::after
+      content: ''
+      position: absolute
+      z-index: -1
+      top: -1px
+      right: -#{$content-padding/2}
+      bottom: -1px
+      left: -#{$content-padding/2}
+      background-color: $mta-blue
+      opacity: 0
+      transition: opacity .125s ease-in-out
+    .svg-icon-wrap
+      svg
+        transition: fill .125s ease-in-out .5s
+        *
+          transition: fill .125s ease .5s
+    >a, >button
+      border: 0px solid
+      transition: color .25s ease-in-out, background-color .25s ease-in-out, padding-left .25s ease-in-out, border-bottom .25s ease-in-out
+      &:focus
+        text-decoration: none
+        font-weight: bold
+        // color: $black
+        background-color: $white
+        padding-left: .5em
+        &::after
+          background-image: url(/src/img/icon/right-caret_black.svg)
+      &:hover
+        .label
+          text-decoration: underline
+    .sub-menu
+      height: auto
+      max-height: 0
+      overflow: hidden
+      background-color: $white
+      transition: max-height .5s ease-in-out, border-bottom-width .25s ease-in-out, border-top-width .25s ease-in-out
+      list-style: none
+      margin: 0
+      padding: 0 $content-padding
+      border-bottom-width: 0
+      li
+        a, button
+          &::after
+            position: relative
+            left: 0
+            transition: left .25s ease-in-out
+          &:hover, &:focus
+            .label
+              text-decoration: underline
+              color: $black2
+            &::after
+              left: .25em
+        &:last-child
+          border-bottom: none
+      &#favorites-menu
+        .label
+          font-size: .875em
+        .remove-favorite
+          margin-bottom: $content-padding
+        .favorite-route
+          .label
+            border-left: $thick-border solid
+            padding-left: .5em
+        .favorite-stop
+          +icon-before
+          gap:  .25em
+          &::before
+            width: 1.3em
+            height: 1.3em
+            background-image: url(/src/img/icon/bus-stop.svg)
+    &.parent
+      >a, >button
         &::after
           content: ''
-          width: 1.125em
-          height: 1.125em
-          background-image: url(/img/icon/right-caret_blue.svg)
-          background-size: auto 100%
-          background-repeat: no-repeat
-          background-position: center right
-          flex-grow: 1
-        &:hover, &:focus
-          text-decoration: none
-          font-weight: bold
-          color: $black
-          background-color: $white
-          padding-left: .5em
-          &::after
-            background-image: url(/img/icon/right-caret_black.svg)
-      &.list-icon
-        a
-          &::before
-            background-image: url(/img/icon/list_blue.svg)
-      &.mta-icon
-        a
-          &::before
-            background-image: url(/img/icon/mta-logo_blue.svg)
-      &.google-icon
-        a
-          &::before
-            background-image: url(/img/icon/google-logo_blue.svg)
-        
-      
+          transform: rotate(90deg)
+          transform-origin: center
+    &.open
+      &::after
+        opacity: 1
+        transition: opacity .25s ease-in-out
+      >a, >button
+        color: $white
+        position: relative
+        z-index: 1
+        border-bottom: $thick-border solid $mta-yellow
+        &::after
+          background-image: url(/src/img/icon/right-caret_white.svg)
+          transform: rotate(-90deg)
+        .svg-icon-wrap
+          svg
+            transition: fill .125s ease-in-out
+            *
+              transition: fill .125s ease-in-out
+            .blue
+              fill: $white
+        &:focus
+          background-color: transparent
+          // border: 1px solid $mta-yellow
+        .sub-menu
+          padding: $content-padding/2 $content-padding
+          max-height: 200vh
+          opacity: 1
+          border-bottom: solid $mta-blue
+          border-top: solid $mta-blue
+          border-bottom-width: $content-padding/2
+          border-top-width: $content-padding/2
+      & + li.open
+        &::before
+          content: ''
+          position: absolute
+          top: -1px
+          right: -#{$content-padding/2}
+          left: -#{$content-padding/2}
+          background-color: $ui-gray
+          height: 1px
 
 // basic layout
 
@@ -131,29 +308,57 @@ ul
   align-items: stretch
 
 #sidebar
-  width: 22em
+  width: 100%
   background-color: $ui-gray
-  overflow: hidden
-  box-shadow: .25em .25em .5em 0 rgba($black, 0.25)
+  // overflow: hidden
+  
   position: relative 
   z-index: 1
   display: inline-flex
   flex-direction: column
   align-items: stretch
   align-content: stretch
+  height: calc(100vh - #{$button-height + 2em})
   .header
     background-color: $black2
     color: $white
     padding: $content-padding
     padding-top: .5em
     border-bottom: .25em solid $border-gray
-    .logo
+    #logo-link
       display: block
       width: 100%
       height: auto
       max-width: 100%
       margin: 0 0 1.25em 0
       padding: 0
+      position: relative
+      &::after
+        opacity: 0
+        transition: opacity .25s ease-in-out
+        content: ''
+        position: absolute
+        right: 0
+        bottom: -#{$thick-border}
+        left: 0
+        background-color: $mta-yellow
+        height: $thick-border
+      .logo
+        display: inline-block
+        width: 100%
+        height: auto
+        margin: 0
+        padding: 0
+        opacity: 1
+        transition: opacity .25s ease-in-out
+      &:hover
+        .logo
+          opacity: .75
+      &:focus
+        outline: none
+        border: none
+        &::after
+          opacity: 1
     .menu
       display: flex
       flex-wrap: nowrap
@@ -166,7 +371,10 @@ ul
       a
         color: $white
         text-decoration: none
-        &:hover, &:focus
+        display: inline-block
+        position: relative
+        +yellow-bottom-focus
+        &:hover
           color: $white
           text-decoration: underline
   #search
@@ -203,7 +411,7 @@ ul
         opacity: 1
         transition: opacity .25s ease-in-out
       &:focus
-        background-image: url(/img/icon/search_blue.svg)
+        background-image: url(/src/img/icon/search_blue.svg)
         background-size: 1.125em 1.125em
         background-repeat: no-repeat
         background-position: center
@@ -213,9 +421,14 @@ ul
       display: flex
       input
         flex: 1
-    .instructions
+  .search-instructions 
+    padding: $content-padding
+    padding-top: 0
+    background: $mta-blue
+    color: $white
+    p
       font-size: .75em
-      margin: 1.333em 0 0 0
+      margin: 0 0 0
   .sidebar-content
     flex: 1 0 0
     overflow-x: hidden
@@ -226,10 +439,85 @@ ul
     justify-content: space-between
     .content
       padding: $content-padding
+      padding-bottom: 0
       flex: 1 0 0
     .footer
       padding: $content-padding
-#map
+      padding-top: 0
+      position: relative 
+      top: -1px
+  +mq($sidebar-switch)
+    box-shadow: .25em .25em .5em 0 rgba($black, 0.25)
+    width: $sidebar-width
+    height: auto
+
+.bottom-buttons
+  width: 100vw
+  background: $black2
+  height: $bottom-buttons-height
+  padding: 0 $content-padding
+  display: flex
+  align-items: center
+  justify-content: center
+  gap: $content-padding
+  transition: bottom .5s ease-out
+  button
+    border-color: transparent
+    &#map-toggle
+      flex-grow: 1
+      background-image: url(/src/img/blank-map-bg.png)
+      background-size: $sidebar-switch auto
+      background-position: center
+      +text-outline($white, .125em)
+      .hide-label
+        display: none
+    &#refresh
+      flex-grow: 0
+      white-space: nowrap
+      overflow: hidden
+      text-overflow: ellipsis
+      .updated-at
+        font-weight: normal
+      .updated
+        display: none
+    &:focus
+      border-color: inherit
+      outline: $medium-border solid $mta-yellow
+    +mq($four)
+    button
+      &#refresh
+        .updated
+          display: inline
+        
+  +mq($sidebar-switch)
+    display: none
+
+#map-wrap
   flex: 1
-  position: relative
-  z-index: 0
+  position: absolute
+  z-index: 100
+  width: 100vw
+  height: 100vh
+  left: 0
+  top: calc(100vh - $bottom-buttons-height)
+  transition: top .5s ease-in-out
+  flex-grow: 1
+  &.open
+    top: 0
+    #map-toggle
+      .hide-label
+        display: inline
+  +mq($sidebar-switch)
+    position: relative  
+    top: 0
+    width: auto
+    flex-grow: 1
+    z-index: 0
+
+#map
+  width: 100vw
+  height: calc(100vh - $bottom-buttons-height)
+  +mq($sidebar-switch)
+    width: auto
+    height: 100%
+  
