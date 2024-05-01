@@ -8,19 +8,21 @@ $black3: #3A3A49
 
 $ui-gray: #f3f3f3
 $border-gray: #ddd
+$dark-gray: #666
 
 $mta-blue: #0E61A9
 $mta-yellow: #f2a900 // only meets ada contrast guidelines on black, black2, or black3 for text, with the addition of mta-blue for graphics or large text only
 $mta-yellow-ada: #B88100 // meets ada contrast guidelines against ui-gray or white
+$mta-dark-blue: #002d72
 
 
 // measurements
 
-$content-padding: 1em
-$sidebar-width: 22em  
+$content-padding: 1rem
+$sidebar-width: 23em  
 $thick-border: 4px
 $medium-border: 2px
-$button-height: 3.125em
+$button-height: 3.125rem
 $bottom-buttons-height: $button-height + $content-padding + $content-padding
 
 // breakpoints
@@ -40,6 +42,33 @@ $fifteen: 1500px
 $sixteen: 1600px
 
 $sidebar-switch: $six
+
+// MEDIA QUERIES
+
+=mq($var)
+  @media screen and (min-width: #{$var})
+    @content
+
+=mq-reverse($var)
+  @media screen and (max-width: $var - 1px)
+    @content
+
+=mq-minmax($min,$max)
+  @media screen and (max-width: #{$max} - 1px) and (min-width: #{$min})
+    @content
+
+=mq-height($var)
+  @media screen and (min-height: #{$var})
+    @content
+
+=mq-height-reverse($var)
+  @media screen and (max-height: #{$var} - 1px)
+    @content
+
+=mq-ie
+  @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none)
+    @content
+    
 
 
 // mixins
@@ -97,29 +126,34 @@ $sidebar-switch: $six
 =yellow-bottom-focus-dark
   +focus-pseudo-underline($mta-yellow-ada)
 
-// MEDIA QUERIES
+=card-shadow
+  box-shadow: 0px 0px 12px 0px rgba($black, 0.10)
+  
+=card-pad
+  padding: $content-padding $content-padding/2 $content-padding*.875 $content-padding/2
 
-=mq($var)
-  @media screen and (min-width: #{$var})
-    @content
+=card-pad-sides
+  padding: 0 $content-padding/2
 
-=mq-reverse($var)
-  @media screen and (max-width: $var - 1px)
-    @content
-
-=mq-minmax($min,$max)
-  @media screen and (max-width: #{$max} - 1px) and (min-width: #{$min})
-    @content
-
-=mq-height($var)
-  @media screen and (min-height: #{$var})
-    @content
-
-=mq-height-reverse($var)
-  @media screen and (max-height: #{$var} - 1px)
-    @content
-
-=mq-ie
-  @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none)
-    @content
-    
+=caret-toggle
+  display: flex
+  justify-content: space-between
+  gap: .5em
+  .label
+    flex-grow: 1
+  &::after
+    content: ''
+    transform: rotate(90deg)
+    transform-origin: center
+    transition: transform .25s ease-in-out
+    width: 1.125em
+    height: 1.125em
+    background-image: url(/img/icon/right-caret_black.svg)
+    background-size: auto 100%
+    background-repeat: no-repeat
+    background-position: center right
+    display: inline-block
+    margin-right: .25em
+  &.open
+    &::after
+      transform: rotate(-90deg)
