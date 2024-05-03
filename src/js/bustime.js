@@ -2,24 +2,6 @@
 // below two functions are used to get the URL parameters and load the content based on the URL parameter, so we can load different bustime views for styling in just one HTML file, this should not move over
 //-----------
 
-// Function to get URL parameters
-function getUrlParams() {
-  const params = {};
-  window.location.search.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(match, key, value) {
-    params[key] = decodeURIComponent(value);
-  });
-  return params;
-}
-
-// Function to load content based on URL parameter
-function getUrlParams() {
-  const params = {};
-  window.location.search.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(match, key, value) {
-    params[key] = decodeURIComponent(value);
-  });
-  return params;
-}
-
 function loadContent() {
   const urlParams = getUrlParams();
   let content = urlParams['content'];

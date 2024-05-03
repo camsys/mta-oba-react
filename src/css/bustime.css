@@ -543,7 +543,7 @@ button:hover, .button:hover {
   line-height: 1.25;
 }
 .icon-menu li a::after, .icon-menu li button::after {
-  background-image: url(/img/icon/right-caret_blue.svg);
+  background-image: url(../img/icon/right-caret_blue.svg);
 }
 .icon-menu > li {
   position: relative;
@@ -571,7 +571,7 @@ button:hover, .button:hover {
   padding-left: 0.5em;
 }
 .icon-menu > li > a:focus::after, .icon-menu > li > button:focus::after {
-  background-image: url(/img/icon/right-caret_black.svg);
+  background-image: url(../img/icon/right-caret_black.svg);
 }
 .icon-menu > li > a:hover .label, .icon-menu > li > button:hover .label {
   text-decoration: underline;
@@ -633,7 +633,7 @@ button:hover, .button:hover {
 .icon-menu > li .sub-menu#favorites-menu .favorite-stop::before {
   width: 1.3em;
   height: 1.3em;
-  background-image: url(/img/icon/bus-stop.svg);
+  background-image: url(../img/icon/bus-stop.svg);
 }
 .icon-menu > li.open {
   background-color: #0E61A9;
@@ -645,7 +645,7 @@ button:hover, .button:hover {
   border-bottom: 4px solid #f2a900;
 }
 .icon-menu > li.open > a::after, .icon-menu > li.open > button::after {
-  background-image: url(/img/icon/right-caret_white.svg);
+  background-image: url(../img/icon/right-caret_white.svg);
 }
 .icon-menu > li.open > a .svg-icon-wrap svg, .icon-menu > li.open > button .svg-icon-wrap svg {
   -webkit-transition: fill 0.125s ease-in-out;
@@ -887,7 +887,7 @@ button:hover, .button:hover {
   transition: opacity 0.25s ease-in-out;
 }
 #sidebar #search button:focus {
-  background-image: url(/img/icon/search_blue.svg);
+  background-image: url(../img/icon/search_blue.svg);
   background-size: 1.125em 1.125em;
   background-repeat: no-repeat;
   background-position: center;
@@ -982,7 +982,7 @@ button:hover, .button:hover {
   -webkit-box-flex: 1;
       -ms-flex-positive: 1;
           flex-grow: 1;
-  background-image: url(/img/blank-map-bg.png);
+  background-image: url(../img/blank-map-bg.png);
   background-size: 600px auto;
   background-position: center;
   text-shadow: -0.125em -0.125em 0 #fff, 0.125em -0.125em 0 #fff, -0.125em 0.125em 0 #fff, 0.125em 0.125em 0 #fff;
@@ -1081,7 +1081,7 @@ button:hover, .button:hover {
   transition: transform 0.25s ease-in-out, -webkit-transform 0.25s ease-in-out;
   width: 1.125em;
   height: 1.125em;
-  background-image: url(/img/icon/right-caret_black.svg);
+  background-image: url(../img/icon/right-caret_black.svg);
   background-size: auto 100%;
   background-repeat: no-repeat;
   background-position: center right;
@@ -1159,7 +1159,7 @@ button:hover, .button:hover {
   background-size: auto 100%;
   background-repeat: no-repeat;
   background-position: center;
-  background-image: url(/img/icon/right-caret_blue.svg);
+  background-image: url(../img/icon/right-caret_blue.svg);
   -webkit-transform: rotate(180deg);
           transform: rotate(180deg);
   position: absolute;
@@ -1406,7 +1406,7 @@ button:hover, .button:hover {
   background-repeat: no-repeat;
   background-position: center;
   margin-right: 0.25em;
-  background-image: url(/img/icon/bus.svg);
+  background-image: url(../img/icon/bus.svg);
   vertical-align: top;
   -webkit-transform: translateY(2px);
           transform: translateY(2px);
@@ -1419,7 +1419,7 @@ button:hover, .button:hover {
   -webkit-box-ordinal-group: 0;
       -ms-flex-order: -1;
           order: -1;
-  background-image: url(/img/icon/stroller.svg);
+  background-image: url(../img/icon/stroller.svg);
 }
 .approaching-buses li .bus.stroller-friendly::after {
   content: "";
