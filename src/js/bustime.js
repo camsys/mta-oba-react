@@ -2,58 +2,6 @@
 // below two functions are used to get the URL parameters and load the content based on the URL parameter, so we can load different bustime views for styling in just one HTML file, this should not move over
 //-----------
 
-function loadContent() {
-  const urlParams = getUrlParams();
-  let content = urlParams['content'];
-
-  // If content parameter is not specified, default to "home"
-  if (!content) {
-    content = "home";
-  }
-
-  // Use AJAX to fetch content from HTML file
-  const xhr = new XMLHttpRequest();
-  xhr.onreadystatechange = function() {
-    if (xhr.readyState === XMLHttpRequest.DONE) {
-      if (xhr.status === 200) {
-        // Inject fetched content into the #app div
-        document.getElementById('app').innerHTML = xhr.responseText;
-
-        // Call the function to update collapsibles after content injection
-        updateCollapsibles();
-      } else {
-        console.error('Failed to fetch content');
-      }
-    }
-  };
-
-  // Fetch HTML file from the content directory based on URL parameter
-  xhr.open('GET', 'content/' + content + '.html', true);
-  xhr.send();
-
-  // Set value of #search-input to the search parameter
-  const searchParam = urlParams['search'];
-  if (searchParam) {
-    document.getElementById('search-input').value = searchParam;
-  }
-
-  // Display refresh button if the param exists
-  const refresh = urlParams['refresh'];
-  if (refresh) {
-    // Get all .refresh-buttons and add class show
-    const refreshButtons = document.querySelectorAll('.refresh-button');
-    refreshButtons.forEach(button => {
-      button.classList.add('show');
-    });
-  }
-
-  // Display vehicle popup if param exists
-  const vehiclePopup = urlParams['vehicle-popup'];
-  if (vehiclePopup) {
-    document.getElementById('vehicle-popup').style.display = 'block';
-  }
-}
-
 // Define the function to update collapsibles
 function updateCollapsibles() {
   var collapsibles = document.querySelectorAll('.collapsible.open');
@@ -78,8 +26,6 @@ function updateCollapsibles() {
 
 document.addEventListener('DOMContentLoaded', function() {
 
-  // Load content based on URL parameter, so we can load different bustime views for styling in just one HTML file, this should not move over
-  loadContent();
 
 
   // have to do clicks this way so they work on objects added after the page loads

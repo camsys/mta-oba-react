@@ -12,7 +12,15 @@
     <link rel="stylesheet" href="src/css/bustime.css">
 
     <!-- Link to JavaScript file -->
-    <<script type="text/javascript" src="js/index.js"></script>
+    <script type="text/javascript" src="js/index.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
+  integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+  crossorigin=""/>
+
+<!-- Make sure you put this AFTER Leaflet's CSS -->
+<script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
+  integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
+  crossorigin=""></script>
 </head>
 <body>
   <h1 class="visually-hidden">MTA Bus Time Home</h1>
@@ -130,14 +138,7 @@
         </button>
         <button id="map-toggle" class="button" aria-controls="map" aria-expanded="false" aria-pressed="false" aria-label="Toggle Map Visibility (currently hidden)"><span class="hide-label">Hide </span>Map</button>
       </div>
-      <div id="map">
-        <iframe
-          width="100%"
-          height="100%"
-          frameborder="0" style="border:0"
-          src="https://www.google.com/maps/embed/v1/view?key=AIzaSyC65u47U8CJxTrmNcXDP2KwCYGxmQO3ZfU&center=40.7128,-74.0060&zoom=12"
-      ></iframe>
-      </div>
+      <div id="map-div" />
     </div>
   </div>
 </body>

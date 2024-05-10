@@ -10,34 +10,9 @@ import img from './img/bustime-logo.png';
 import queryString from 'query-string';
 import Select from "react-select";
 import Async, { useAsync } from 'react-select/async';
-
- /* const filterStops = (inputValue: string) => {
-    const [stops, setStops] = useState({});
-
-    useEffect(() => {
-    (async () => {
-      const response = await fetch(
-        "https://bustime.mta.info/api/autocomplete?_=1712935848851&term=+search"+inputValue.toLowerCase()
-      );
-      const parsed = await response.json();
-      setStops(parsed);
-    })();
-  }, []);
-  return stops
-  );
-};
-
-const stopOptions = (inputValue: string) =>
-  interface StopList {
-  readonly label: string;
-  readonly value: string;
-}
-  new Promise<StopList[]>((resolve) => {
-    setTimeout(() => {
-      resolve(filterStops(inputValue));
-    }, 1000);
-  });
-*/
+import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet'
+import ReactLeafletGoogleLayer from 'react-leaflet-google-layer';
+const position = [40.7128,-74.0060]
 
 
 function GetBusInfo  () {
@@ -108,6 +83,15 @@ function GetBusInfo  () {
 ReactDOM.render( <img id="logo" src={img} alt="MTA Bus Time" className="logo" />,  document.getElementById('logo-link')); 
 ReactDOM.render(<GetBusInfo />, document.getElementById('app'));
 ReactDOM.render( <img src={searchWhite} alt="Search" />,  document.getElementById('submit-search'));
-ReactDOM.render( <input type="text" name="LineRef" id="search-input" placeholder="Search" autocomplete="off" />,  document.getElementById('search-field')); 
-/*ReactDOM.render( <AsyncSelect type="text" id="search-field" placeholder="Search" isMulti={false} isSearchable={true}
+ReactDOM.render( <input type="text" name="LineRef" id="search-input" placeholder="Search" autoComplete="off" />,  document.getElementById('search-field')); 
+ReactDOM.render(<MapContainer style={{ height: '100vh', width: '100wh' }} center={position} zoom={13} scrollWheelZoom={true}>
+    <ReactLeafletGoogleLayer apiKey='AIzaSyC65u47U8CJxTrmNcXDP2KwCYGxmQO3ZfU' type={'roadmap'} />
+    <Marker position={position}>
+      <Popup>
+        A pretty CSS3 popup. <br /> Easily customizable.
+      </Popup>
+    </Marker>
+  </MapContainer>,  document.getElementById('map-div')); 
+/*ReactDOM.render(<iframe width="100%" height="100%" frameBorder="0" style={{border:0}} src="https://www.google.com/maps/embed/v1/view?key=AIzaSyC65u47U8CJxTrmNcXDP2KwCYGxmQO3ZfU&center=40.7128,-74.0060&zoom=12" />,  document.getElementById('map-div')); 
+ReactDOM.render( <AsyncSelect type="text" id="search-field" placeholder="Search" isMulti={false} isSearchable={true}
 loadOptions={stopOptions} />,  document.getElementById('search-field')); */
