@@ -174,7 +174,7 @@ button, .button
         text-align: left
         line-height: 1.25
       &::after
-        background-image: url(/img/icon/right-caret_blue.svg)
+        background-image: url(/src/img/icon/right-caret_blue.svg)
   >li
     position: relative
     background-color: transparent
@@ -194,7 +194,7 @@ button, .button
         background-color: $white
         padding-left: .5em
         &::after
-          background-image: url(/img/icon/right-caret_black.svg)
+          background-image: url(/src/img/icon/right-caret_black.svg)
       &:hover
         .label
           text-decoration: underline
@@ -239,7 +239,7 @@ button, .button
           &::before
             width: 1.3em
             height: 1.3em
-            background-image: url(/img/icon/bus-stop.svg)
+            background-image: url(/src/img/icon/bus-stop.svg)
     &.open
       background-color: $mta-blue
       >a, >button
@@ -248,7 +248,7 @@ button, .button
         z-index: 1
         border-bottom: $thick-border solid $mta-yellow
         &::after
-          background-image: url(/img/icon/right-caret_white.svg)
+          background-image: url(/src/img/icon/right-caret_white.svg)
         .svg-icon-wrap
           svg
             transition: fill .125s ease-in-out
@@ -322,7 +322,7 @@ button, .button
     padding: $content-padding
     padding-top: .5em
     border-bottom: .25em solid $border-gray
-    .logo-link
+    #logo-link
       display: block
       width: 100%
       height: auto
@@ -408,7 +408,7 @@ button, .button
         opacity: 1
         transition: opacity .25s ease-in-out
       &:focus
-        background-image: url(/img/icon/search_blue.svg)
+        background-image: url(/src/img/icon/search_blue.svg)
         background-size: 1.125em 1.125em
         background-repeat: no-repeat
         background-position: center
@@ -462,7 +462,7 @@ button, .button
     border-color: transparent
     &#map-toggle
       flex-grow: 1
-      background-image: url(/img/blank-map-bg.png)
+      background-image: url(/src/img/blank-map-bg.png)
       background-size: $sidebar-switch auto
       background-position: center
       +text-outline($white, .125em)
@@ -566,7 +566,7 @@ button, .button
       background-size: auto 100%
       background-repeat: no-repeat
       background-position: center
-      background-image: url(/img/icon/right-caret_blue.svg)
+      background-image: url(/src/img/icon/right-caret_blue.svg)
       transform: rotate(180deg)
       position: absolute
       left: 0
@@ -747,14 +747,14 @@ button, .button
         background-repeat: no-repeat
         background-position: center
         margin-right: .25em
-        background-image: url(/img/icon/bus.svg)
+        background-image: url(/src/img/icon/bus.svg)
         vertical-align: top
         transform: translateY(2px)
         order: -2
       &::after
         content: none
         order: -1
-        background-image: url(/img/icon/stroller.svg)
+        background-image: url(/src/img/icon/stroller.svg)
       &.stroller-friendly
         &::after
           content: ''
