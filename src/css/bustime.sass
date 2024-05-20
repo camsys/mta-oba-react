@@ -62,7 +62,7 @@ ul
       ul.links
         display: inline-flex
         gap: .75em
-        margin: 0 0 0 .25em
+        margin: 0 0 0 .5em
         li
           padding: 0
           margin: 0
@@ -416,8 +416,10 @@ button, .button
           opacity: 0
     .search-field-wrap
       display: flex
-      input
+      #search-field
         flex: 1
+        input
+          width: 100%
   .search-instructions 
     padding: $content-padding
     padding-top: 0

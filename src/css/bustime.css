@@ -386,7 +386,7 @@ ul:not(.menu):not(.card-details):not(.route-stops):not(.approaching-buses) li ul
   display: -ms-inline-flexbox;
   display: inline-flex;
   gap: 0.75em;
-  margin: 0 0 0 0.25em;
+  margin: 0 0 0 0.5em;
 }
 ul:not(.menu):not(.card-details):not(.route-stops):not(.approaching-buses) li ul.links li {
   padding: 0;
@@ -900,10 +900,13 @@ button:hover, .button:hover {
   display: -ms-flexbox;
   display: flex;
 }
-#sidebar #search .search-field-wrap input {
+#sidebar #search .search-field-wrap #search-field {
   -webkit-box-flex: 1;
       -ms-flex: 1;
           flex: 1;
+}
+#sidebar #search .search-field-wrap #search-field input {
+  width: 100%;
 }
 #sidebar .search-instructions {
   padding: 1rem;
