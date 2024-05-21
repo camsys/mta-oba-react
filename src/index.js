@@ -12,7 +12,8 @@ import Select from "react-select";
 import Async, { useAsync } from 'react-select/async';
 import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet'
 import ReactLeafletGoogleLayer from 'react-leaflet-google-layer';
-const position = [40.7128,-74.0060]
+const position = [40.7128,-74.0060];
+import { createRoot } from 'react-dom/client';
 
 
 function GetBusInfo  () {
@@ -85,17 +86,33 @@ function GetBusInfo  () {
 
   
  }
-ReactDOM.render( <img id="logo" style={{width: 100 + '%'}} src={img} alt="MTA Bus Time" className="logo" />,  document.getElementById('logo-link')); 
-ReactDOM.render(<GetBusInfo />, document.getElementById('app'));
-ReactDOM.render( <img src={searchWhite} alt="Search" />,  document.getElementById('submit-search'));
-ReactDOM.render( <input type="text" name="LineRef" id="search-input" placeholder="Search" autoComplete="off" />,  document.getElementById('search-field')); 
-ReactDOM.render(<MapContainer style={{ height: '100vh', width: '100wh' }} center={position} zoom={15} scrollWheelZoom={true}>
+
+var domNode = document.getElementById('logo-link');
+var root = createRoot(domNode);
+root.render(<img id="logo" style={{width: 100 + '%'}} src={img} alt="MTA Bus Time" className="logo" />);
+
+domNode = document.getElementById('app');
+root = createRoot(domNode);
+root.render(<GetBusInfo />);
+
+domNode = document.getElementById('submit-search');
+root = createRoot(domNode);
+root.render(<img src={searchWhite} alt="Search" />);
+
+domNode = document.getElementById('search-field');
+root = createRoot(domNode);
+root.render(<input type="text" name="LineRef" id="search-input" placeholder="Search" autoComplete="off" />);
+
+domNode = document.getElementById('map-div');
+root = createRoot(domNode);
+root.render(<MapContainer style={{ height: '100vh', width: '100wh' }} center={position} zoom={15} scrollWheelZoom={true}>
     <ReactLeafletGoogleLayer apiKey='AIzaSyC65u47U8CJxTrmNcXDP2KwCYGxmQO3ZfU' type={'roadmap'} />
     <Marker position={position}>
       <Popup>
         A pretty CSS3 popup. <br /> Easily customizable.
       </Popup>
     </Marker>
-  </MapContainer>,  document.getElementById('map-div')); 
+  </MapContainer>);
+
 /*ReactDOM.render( <AsyncSelect type="text" id="search-field" placeholder="Search" isMulti={false} isSearchable={true}
 loadOptions={stopOptions} />,  document.getElementById('search-field')); */
