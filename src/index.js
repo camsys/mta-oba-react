@@ -51,19 +51,19 @@ function GetBusInfo  () {
   }else{
     return <div><h2>Try these example searches:</h2>
           <ul>
-            <li>Route: 
+            <li>Route:
               <ul className="links">
                 <li><a href="?LineRef=B63">B63</a></li>
                 <li><a href="?LineRef=M5">M5</a></li>
                 <li><a href="?LineRef=Bx1">Bx1</a></li>
               </ul>
             </li>
-            <li>Intersection: 
+            <li>Intersection:
               <ul className="links">
                 <li><a href="#">Main st and Kissena Bl</a></li>
               </ul>
             </li>
-            <li>Stop Code: 
+            <li>Stop Code:
               <ul className="links">
                 <li><a href="#">200884</a></li>
               </ul>
