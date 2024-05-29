@@ -6,14 +6,22 @@ import './img/favicon.ico';
 import './css/bustime.css';
 import './js/bustime.js';
 import searchWhite from './img/icon/search_white.svg';
-import img from './img/bustime-logo.png';
+import searchBlue from './img/icon/search_blue.svg';
+import caretBlue from './img/icon/right-caret_blue.svg';
+import caretBlack from './img/icon/right-caret_black.svg';
+import caretWhite from './img/icon/right-caret_white.svg';
+import busStop from './img/icon/bus-stop.svg';
+import bus from './img/icon/bus.svg';
+import stroller from './img/icon/stroller.svg';
+import bustimeLogo from './img/bustime-logo.png';
 import queryString from 'query-string';
 import Select from "react-select";
 import Async, { useAsync } from 'react-select/async';
-import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet'
-import ReactLeafletGoogleLayer from 'react-leaflet-google-layer';
 const position = [40.7128,-74.0060];
 import { createRoot } from 'react-dom/client';
+import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet'
+import ReactLeafletGoogleLayer from 'react-leaflet-google-layer';
+
 
 
 function GetBusInfo  () {
@@ -23,12 +31,14 @@ function GetBusInfo  () {
   const lineRef = queryString.parse(location.search).LineRef;
   var search = "";
 
+
+
   if(lineRef){
     search = "&LineRef="+lineRef;
     useEffect(() => {
     (async () => {
       const response = await fetch(
-        "https://app.qa.obanyc.com/api/siri/vehicle-monitoring.json?key=OBANYC&_=1707407738784&OperatorRef=MTA+NYCT"+search
+        "https://app.dev.obanyc.com/api/siri/vehicle-monitoring.json?key=OBANYC&_=1707407738784&OperatorRef=MTA+NYCT"+search
       );
       const parsed = await response.json();
       setVehicles(parsed.Siri.ServiceDelivery.VehicleMonitoringDelivery[0].VehicleActivity);
@@ -39,14 +49,33 @@ function GetBusInfo  () {
     const points = [];
     for (let i = 0; i < vehicles.length; i++) {
       const longLat = [];
-      longLat.push(vehicles[i].MonitoredVehicleJourney.VehicleLocation.Longitude)
       longLat.push(vehicles[i].MonitoredVehicleJourney.VehicleLocation.Latitude)
-      points.push(<li key={i}>{longLat}</li>);
+      longLat.push(vehicles[i].MonitoredVehicleJourney.VehicleLocation.Longitude)
+      
+      points.push(<Marker position={longLat} key={longLat}>
+      <Popup key={longLat}>
+        A popup at {longLat}.
+      </Popup>
+    </Marker>);
+      var lng = vehicles[i].MonitoredVehicleJourney.VehicleLocation.Longitude;
+      var lat = vehicles[i].MonitoredVehicleJourney.VehicleLocation.Latitude;
       listItems.push(<li key={i}>{vehicles[i].MonitoredVehicleJourney.VehicleRef}</li>);      
   };
 
+    var mapNode = document.getElementById('map-div');
+var root = createRoot(mapNode);
+root.render(<MapContainer style={{ height: '100vh', width: '100wh' }} center={position} zoom={15} scrollWheelZoom={true}>
+    <ReactLeafletGoogleLayer apiKey='AIzaSyC65u47U8CJxTrmNcXDP2KwCYGxmQO3ZfU' type={'roadmap'} />
+    <Marker position={position}>
+      <Popup>
+        A pretty CSS3 popup. <br /> Easily customizable.
+      </Popup>
+    </Marker>
+    {points}
+  </MapContainer>);
+
    return <h1>
-   <ul>{points}</ul></h1>;
+   <ul></ul></h1>;
 
   }else{
     return <div><h2>Try these example searches:</h2>
@@ -84,12 +113,14 @@ function GetBusInfo  () {
   }
 
 
+
+
   
  }
 
 var domNode = document.getElementById('logo-link');
 var root = createRoot(domNode);
-root.render(<img id="logo" style={{width: 100 + '%'}} src={img} alt="MTA Bus Time" className="logo" />);
+root.render(<img id="logo" style={{width: 100 + '%'}} src={bustimeLogo} alt="MTA Bus Time" className="logo" />);
 
 domNode = document.getElementById('app');
 root = createRoot(domNode);
@@ -102,17 +133,3 @@ root.render(<img src={searchWhite} alt="Search" />);
 domNode = document.getElementById('search-field');
 root = createRoot(domNode);
 root.render(<input type="text" name="LineRef" id="search-input" placeholder="Search" autoComplete="off" />);
-
-domNode = document.getElementById('map-div');
-root = createRoot(domNode);
-root.render(<MapContainer style={{ height: '100vh', width: '100wh' }} center={position} zoom={15} scrollWheelZoom={true}>
-    <ReactLeafletGoogleLayer apiKey='AIzaSyC65u47U8CJxTrmNcXDP2KwCYGxmQO3ZfU' type={'roadmap'} />
-    <Marker position={position}>
-      <Popup>
-        A pretty CSS3 popup. <br /> Easily customizable.
-      </Popup>
-    </Marker>
-  </MapContainer>);
-
-/*ReactDOM.render( <AsyncSelect type="text" id="search-field" placeholder="Search" isMulti={false} isSearchable={true}
-loadOptions={stopOptions} />,  document.getElementById('search-field')); */
