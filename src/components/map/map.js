@@ -2,12 +2,12 @@ import ReactLeafletGoogleLayer from "react-leaflet-google-layer";
 import {MapContainer, Marker, Polyline, Popup} from "react-leaflet";
 import React, {useEffect, useState} from "react";
 import queryString from "query-string";
-import {OBA} from "../js/oba";
+import {OBA} from "../../js/oba";
 import L from "leaflet";
-import bus from "../img/icon/bus.svg";
+import bus from "../../img/icon/bus.svg";
 
 
-const icon = L.icon({ iconUrl: bus ,
+const baseVehicleIcon = L.icon({ iconUrl: bus ,
     className: "svg-icon",
     iconSize: [24, 40],
     iconAnchor: [12, 40]});
@@ -37,6 +37,10 @@ function useFetchRouteData(lineRef) {
     }, []);
 
     return { loading, routes };
+}
+
+function populateRoutePolylines(){
+
 }
 
 
@@ -94,7 +98,7 @@ function getMap  () {
             longLat.push(vehicles[i].MonitoredVehicleJourney.VehicleLocation.Longitude)
 
             // vehiclePositions.push(new google.maps.LatLng(longLat[0],longLat[1]))
-            vehicleMarkers.push(<Marker position={longLat} key={longLat} icon={icon}>
+            vehicleMarkers.push(<Marker position={longLat} key={longLat} icon={baseVehicleIcon}>
                 <Popup key={longLat}>
                     A popup at {longLat}. Bus # {i}.
                 </Popup>

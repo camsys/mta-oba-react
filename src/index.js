@@ -4,9 +4,6 @@ import { useHistory, useLocation } from 'react-router';
 import { ReactSVG } from "react-svg";
 import './img/favicon.ico';
 import './css/bustime.css';
-// import './js/bustime.js';
-import routeCard from './components/routeCard.js';
-import map from './components/map.js';
 import searchWhite from './img/icon/search_white.svg';
 import searchBlue from './img/icon/search_blue.svg';
 import caretBlue from './img/icon/right-caret_blue.svg';
@@ -25,8 +22,10 @@ import ReactLeafletGoogleLayer from 'react-leaflet-google-layer';
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { OBA } from './js/oba';
-import homeCard from "./components/homeCard";
 
+import routeCard from './components/views/routeCard.js';
+import homeCard from './components/views/homeCard.js';
+import mapComponent from './components/map/map.js';
 
 
 
@@ -45,7 +44,7 @@ function GetBusInfo  () {
  }
 
  function GetMap () {
-  return map()
+  return mapComponent()
  }
 
 var domNode = document.getElementById('logo-link');

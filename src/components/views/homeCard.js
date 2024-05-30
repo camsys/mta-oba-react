@@ -1,5 +1,5 @@
 import React from 'react';
-import {OBA} from "../js/oba";
+import {OBA} from "../../js/oba";
 
 
 function getHomeCard  () {
