@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+import './config';
+import './leaflet'
+
 var OBA = window.OBA || {};
 
 OBA.RouteMap = function(mapNode, initCallbackFn, serviceAlertCallbackFn) {

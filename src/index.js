@@ -4,7 +4,7 @@ import { useHistory, useLocation } from 'react-router';
 import { ReactSVG } from "react-svg";
 import './img/favicon.ico';
 import './css/bustime.css';
-import './js/bustime.js';
+// import './js/bustime.js';
 import './js/routeMap.js'
 import './js/util.js'
 import searchWhite from './img/icon/search_white.svg';
@@ -31,10 +31,9 @@ className: "svg-icon",
   iconSize: [24, 40],
   iconAnchor: [12, 40]});
 
-import OBAUtil from './js/util';
-import OBAConfig from './js/config';
+import { OBA } from './js/oba';
 
-OBAUtil.log('OBA Util is live.');
+OBA.Util.log('OBA Util is live.');
 const envAddress = "app.dev.obanyc.com/"
 
 function generatePolyline(id,polyline,color){
@@ -48,7 +47,7 @@ function useFetchRouteData(lineRef) {
 
   React.useEffect(() => {
     setLoading(true);
-    fetch("https://"+ envAddress + OBAConfig.searchUrl +"?q="+lineRef)
+    fetch("https://"+ envAddress + OBA.Config.searchUrl +"?q="+lineRef)
         .then((response) => response.json())
         .then((parsed) => {
           setRoutes(parsed.searchResults["matches"][0]);
@@ -91,7 +90,7 @@ function GetBusInfo  () {
         let dir = routes.directions[i];
         for (let j = 0; j < dir.polylines.length; j++) {
           let encodedPolyline = dir.polylines[j]
-          let decodedPolyline = OBAUtil.decodePolyline(encodedPolyline)
+          let decodedPolyline = OBA.Util.decodePolyline(encodedPolyline)
           let first = true
           let polylineId = routeId+"_dir_"+i+"_lineNum_"+j
           let leafletPolyline = generatePolyline(polylineId,decodedPolyline,color)
@@ -128,7 +127,7 @@ function GetBusInfo  () {
     </Marker>);
       var lng = vehicles[i].MonitoredVehicleJourney.VehicleLocation.Longitude;
       var lat = vehicles[i].MonitoredVehicleJourney.VehicleLocation.Latitude;
-      listItems.push(<li key={i}>{vehicles[i].MonitoredVehicleJourney.VehicleRef}</li>);      
+      listItems.push(<li key={i}>{vehicles[i].MonitoredVehicleJourney.VehicleRef}</li>);
   };
 
     var mapNode = document.getElementById('map-div');
@@ -190,7 +189,7 @@ root.render(<MapContainer style={{ height: '100vh', width: '100wh' }} center={po
 
 
 
-  
+
  }
 
 var domNode = document.getElementById('logo-link');
