@@ -88,7 +88,7 @@ function GetBusInfo  () {
           let dir = routes.directions[i];
           for (let j = 0; j < dir.polylines.length; j++) {
             let encodedPolyline = dir.polylines[j]
-            let decodedPolyline = OBAUtil.decodePolyline(encodedPolyline)
+            let decodedPolyline = OBA.Util.decodePolyline(encodedPolyline)
             let first = true
             let polylineId = routeId + "_dir_" + i + "_lineNum_" + j
             let leafletPolyline = generatePolyline(polylineId, decodedPolyline, color)
@@ -137,9 +137,9 @@ root.render(<MapContainer style={{ height: '100vh', width: '100wh' }} center={po
     {vehicleMarkers}
   </MapContainer>);
   routeCard();
-alert('get here 1??');
+  OBA.Util.log("adding route card")
 
-  var mapNode = document.getElementById('app');
+var mapNode = document.getElementById('app');
 var root = createRoot(mapNode);
 root.render(routeCard());
 
@@ -148,48 +148,43 @@ root.render(routeCard());
 
   }else{
       var mapNode = document.getElementById('map-div');
-var root = createRoot(mapNode);
-root.render(<MapContainer style={{ height: '100vh', width: '100wh' }} center={position} zoom={15} scrollWheelZoom={true}>
-    <ReactLeafletGoogleLayer apiKey='AIzaSyC65u47U8CJxTrmNcXDP2KwCYGxmQO3ZfU' type={'roadmap'} />
-  </MapContainer>);
-    return <div><h2>Try these example searches:</h2>
-          <ul>
-            <li>Route:
-              <ul className="links">
-                <li><a href="?LineRef=B63">B63</a></li>
-                <li><a href="?LineRef=M5">M5</a></li>
-                <li><a href="?LineRef=Bx1">Bx1</a></li>
+      var root = createRoot(mapNode);
+      root.render(<MapContainer style={{ height: '100vh', width: '100wh' }} center={position} zoom={15} scrollWheelZoom={true}>
+      <ReactLeafletGoogleLayer apiKey='AIzaSyC65u47U8CJxTrmNcXDP2KwCYGxmQO3ZfU' type={'roadmap'} />
+      </MapContainer>);
+      return <div><h2>Try these example searches:</h2>
+              <ul>
+                <li>Route:
+                  <ul className="links">
+                    <li><a href="?LineRef=B63">B63</a></li>
+                    <li><a href="?LineRef=M5">M5</a></li>
+                    <li><a href="?LineRef=Bx1">Bx1</a></li>
+                  </ul>
+                </li>
+                <li>Intersection:
+                  <ul className="links">
+                    <li><a href="#">Main st and Kissena Bl</a></li>
+                  </ul>
+                </li>
+                <li>Stop Code:
+                  <ul className="links">
+                    <li><a href="#">200884</a></li>
+                  </ul>
+                </li>
               </ul>
-            </li>
-            <li>Intersection:
-              <ul className="links">
-                <li><a href="#">Main st and Kissena Bl</a></li>
-              </ul>
-            </li>
-            <li>Stop Code:
-              <ul className="links">
-                <li><a href="#">200884</a></li>
-              </ul>
-            </li>
-          </ul>
-          <ul className="menu icon-menu" role="menu">
-            <li>
-              <a href="#">
-                <span className="svg-icon-wrap" role="presentation" aria-hidden="true">
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="none">
-                    <path className="blue" d="M0 3.333a2.083 2.083 0 1 0 4.167 0 2.083 2.083 0 0 0-4.167 0ZM7.083 4.167h12.084a.833.833 0 0 0 0-1.667H7.083a.833.833 0 0 0 0 1.667ZM0 10a2.083 2.083 0 1 0 4.167 0A2.083 2.083 0 0 0 0 10ZM19.167 9.167H7.083a.833.833 0 0 0 0 1.666h12.084a.834.834 0 0 0 0-1.666ZM0 16.667a2.083 2.083 0 1 0 4.167 0 2.083 2.083 0 0 0-4.167 0ZM19.167 15.833H7.083a.833.833 0 1 0 0 1.667h12.084a.833.833 0 0 0 0-1.667Z"/>
-                  </svg>
-                </span>
-                <span className="label">Available Routes</span>
-              </a>
-            </li>
-          </ul></div>;
-  }
-
-
-
-
-
+              <ul className="menu icon-menu" role="menu">
+                <li>
+                  <a href="#">
+                    <span className="svg-icon-wrap" role="presentation" aria-hidden="true">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="none">
+                        <path className="blue" d="M0 3.333a2.083 2.083 0 1 0 4.167 0 2.083 2.083 0 0 0-4.167 0ZM7.083 4.167h12.084a.833.833 0 0 0 0-1.667H7.083a.833.833 0 0 0 0 1.667ZM0 10a2.083 2.083 0 1 0 4.167 0A2.083 2.083 0 0 0 0 10ZM19.167 9.167H7.083a.833.833 0 0 0 0 1.666h12.084a.834.834 0 0 0 0-1.666ZM0 16.667a2.083 2.083 0 1 0 4.167 0 2.083 2.083 0 0 0-4.167 0ZM19.167 15.833H7.083a.833.833 0 1 0 0 1.667h12.084a.833.833 0 0 0 0-1.667Z"/>
+                      </svg>
+                    </span>
+                    <span className="label">Available Routes</span>
+                  </a>
+                </li>
+              </ul></div>;
+      }
  }
 
 var domNode = document.getElementById('logo-link');

@@ -1,16 +1,15 @@
 import React from 'react';
+import {OBA} from "./oba";
 
 
 function getRouteCard  () {
-    console.log("using routeCard")
+    OBA.Util.log("adding route card")
 
-  var routeCard = document.getElementById('app');
-  var root = createRoot(routeCard);
-  root.render(<div class="card-header" >
+   return (<div class="card-header" >
       <h3 class="card-title">B38 Ridgewood - Downtown Brooklyn</h3>
     </div>);
 
-   return <h3 class="card-title">Rey Test</h3>;
+
 
   
  }
