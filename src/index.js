@@ -44,7 +44,7 @@ function GetBusInfo  () {
  }
 
  function GetMap () {
-  return mapComponent()
+  return mapComponent.getMap()
  }
 
 var domNode = document.getElementById('logo-link');
