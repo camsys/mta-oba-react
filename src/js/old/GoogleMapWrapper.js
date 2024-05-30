@@ -1,13 +1,14 @@
-import './config';
+import Config from './config';
 import './leaflet'
+
 
 var OBA = window.OBA || {};
 
-OBA.GoogleMapWrapper = function(mapNode) {	
+OBA.GoogleMapWrapper = function(mapNode) {
 	
-	var lat = OBA.Config.mapCenterLat;
-	var lon = OBA.Config.mapCenterLon;
-	var zoom = OBA.Config.mapZoom;
+	var lat = Config.mapCenterLat;
+	var lon = Config.mapCenterLon;
+	var zoom = Config.mapZoom;
     
 	if (!lat || !lon || !zoom) {
 		// These will get overridden by the bundle bounds after the map initially loads.
@@ -249,4 +250,4 @@ OBA.GoogleMapWrapper = function(mapNode) {
 	return map;
 };
 
-export default OBA.GoogleMapWrapper;
+export default GoogleMapWrapper;

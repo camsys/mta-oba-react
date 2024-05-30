@@ -14,13 +14,14 @@
  * limitations under the License.
  */
 
-import './config';
+import Config from './config';
+import Util from './util';
 import './leaflet'
 
 var OBA = window.OBA || {};
 
 // do not add constructor params here!
-OBA.Popups = (function() {	
+OBA.Popups = (function() {
 
 	var infoWindow = null;
 
@@ -64,8 +65,8 @@ OBA.Popups = (function() {
 		var popupContainerId = "container" + Math.floor(Math.random() * 1000000);
 		var refreshFn = function(openBubble) {
 			// pass a new "now" time for debugging if we're given one
-			if(OBA.Config.time !== null) {
-				params.time = OBA.Config.time;
+			if(Config.time !== null) {
+				params.time = Config.time;
 			}
 			
 			if(refreshPopupRequest !== null) {
@@ -119,7 +120,7 @@ OBA.Popups = (function() {
 			var age = parseInt(timestampContainer.attr("age"), 10);
 			var referenceEpoch = parseInt(timestampContainer.attr("referenceEpoch"), 10);
 			var newAge = age + ((new Date().getTime() - referenceEpoch) / 1000);
-			timestampContainer.text("Data updated " + OBA.Util.displayTime(newAge));
+			timestampContainer.text("Data updated " + Util.displayTime(newAge));
 		};
 		updateTimestamp();		
 		infoWindow.updateTimestamp = updateTimestamp;
@@ -261,17 +262,17 @@ OBA.Popups = (function() {
 		html += '<p class="title">' + activity.MonitoredVehicleJourney.PublishedLineName + " " + activity.MonitoredVehicleJourney.DestinationName + '</p><p>';
 		html += '<span class="type">Vehicle #' + vehicleIdWithoutAgency + '</span>';
 
-		var updateTimestamp = OBA.Util.ISO8601StringToDate(activity.RecordedAtTime).getTime();
-		var updateTimestampReference = OBA.Util.ISO8601StringToDate(r.Siri.ServiceDelivery.ResponseTimestamp).getTime();
+		var updateTimestamp = Util.ISO8601StringToDate(activity.RecordedAtTime).getTime();
+		var updateTimestampReference = Util.ISO8601StringToDate(r.Siri.ServiceDelivery.ResponseTimestamp).getTime();
 
 		var age = (parseInt(updateTimestampReference, 10) - parseInt(updateTimestamp, 10)) / 1000;
-		var staleClass = ((age > OBA.Config.staleTimeout) ? " stale" : "");			
+		var staleClass = ((age > Config.staleTimeout) ? " stale" : "");
 
 		html += '<span class="updated' + staleClass + '"' + 
 				' age="' + age + '"' + 
 				' referenceEpoch="' + new Date().getTime() + '"' + 
 				'>Data updated ' 
-				+ OBA.Util.displayTime(age) 
+				+ Util.displayTime(age)
 				+ '</span>'; 
 		
 		// (end header)
@@ -312,7 +313,7 @@ OBA.Popups = (function() {
 						html += '<span>';
 
 						if(typeof onwardCall.ExpectedArrivalTime !== 'undefined' && onwardCall.ExpectedArrivalTime !== null) {
-							html += OBA.Util.getArrivalEstimateForISOString(onwardCall.ExpectedArrivalTime, updateTimestampReference);
+							html += Util.getArrivalEstimateForISOString(onwardCall.ExpectedArrivalTime, updateTimestampReference);
 							html += ", " + onwardCall.Extensions.Distances.PresentableDistance;
 						} else {
 							html += onwardCall.Extensions.Distances.PresentableDistance;
@@ -330,7 +331,7 @@ OBA.Popups = (function() {
 			html += ' <a id="alert-link||' + routeName + '" class="alert-link" href="#">Service Alert for ' + activity.MonitoredVehicleJourney.PublishedLineName + '</a>';
 		}
 		
-		html += OBA.Config.infoBubbleFooterFunction('route', activity.MonitoredVehicleJourney.PublishedLineName);
+		html += Config.infoBubbleFooterFunction('route', activity.MonitoredVehicleJourney.PublishedLineName);
 		
 		html += "<ul class='links'>";
 		html += "<a href='#' id='zoomHere'>Center & Zoom Here</a>";
@@ -356,7 +357,7 @@ OBA.Popups = (function() {
 	}
 
 	function getOccupancy(MonitoredVehicleJourney, addDashedLine){
-		switch (OBA.Config.apcMode.toUpperCase()) {
+		switch (Config.apcMode.toUpperCase()) {
 			case "NONE":
                 return '';
 			case "OCCUPANCY":
@@ -525,7 +526,7 @@ OBA.Popups = (function() {
 		html += '<span class="type">Stopcode ' + stopIdWithoutAgency + '</span>';
 		
 		// update time across all arrivals
-		var updateTimestampReference = OBA.Util.ISO8601StringToDate(siri.Siri.ServiceDelivery.ResponseTimestamp).getTime();
+		var updateTimestampReference = Util.ISO8601StringToDate(siri.Siri.ServiceDelivery.ResponseTimestamp).getTime();
 		var maxUpdateTimestamp = null;
 
 		var monitoredStopVisit = [];
@@ -534,7 +535,7 @@ OBA.Popups = (function() {
 		}
 
 		jQuery.each(monitoredStopVisit, function(_, monitoredJourney) {
-			var updateTimestamp = OBA.Util.ISO8601StringToDate(monitoredJourney.RecordedAtTime).getTime();
+			var updateTimestamp = Util.ISO8601StringToDate(monitoredJourney.RecordedAtTime).getTime();
 			if(updateTimestamp > maxUpdateTimestamp) {
 				maxUpdateTimestamp = updateTimestamp;
 			}
@@ -546,13 +547,13 @@ OBA.Popups = (function() {
 		
 		if(maxUpdateTimestamp !== null) {
 			var age = (parseInt(updateTimestampReference, 10) - parseInt(maxUpdateTimestamp, 10)) / 1000;
-			var staleClass = ((age > OBA.Config.staleTimeout) ? " stale" : "");
+			var staleClass = ((age > Config.staleTimeout) ? " stale" : "");
 
 			html += '<span class="updated' + staleClass + '"' + 
 					' age="' + age + '"' + 
 					' referenceEpoch="' + new Date().getTime() + '"' + 
 					'>Data updated ' 
-					+ OBA.Util.displayTime(age) 
+					+ Util.displayTime(age)
 					+ '</span>'; 
 		}
 		
@@ -721,7 +722,7 @@ OBA.Popups = (function() {
 						var timePrediction = null;
 						if(typeof monitoredVehicleJourney.MonitoredCall.ExpectedArrivalTime !== 'undefined' 
 							&& monitoredVehicleJourney.MonitoredCall.ExpectedArrivalTime !== null) {
-							timePrediction = OBA.Util.getArrivalEstimateForISOString(
+							timePrediction = Util.getArrivalEstimateForISOString(
 									monitoredVehicleJourney.MonitoredCall.ExpectedArrivalTime, 
 									updateTimestampReference);
 						}
@@ -752,7 +753,7 @@ OBA.Popups = (function() {
 						
 						if(typeof mvjDepartureTimeAsText !== 'undefined'){
 							isDepartureTimeAvailable = true;
-							departureTimeAsDateTime = OBA.Util.ISO8601StringToDate(mvjDepartureTimeAsText);
+							departureTimeAsDateTime = Util.ISO8601StringToDate(mvjDepartureTimeAsText);
 							isDepartureOnSchedule = departureTimeAsDateTime && departureTimeAsDateTime.getTime() >= updateTimestampReference;
 							
 							layoverSchedDepartureText = " <span class='not_bold'>(at terminal, scheduled to depart at " + departureTimeAsDateTime.format("h:MM TT") + ")</span>";
@@ -760,7 +761,7 @@ OBA.Popups = (function() {
 						}
 						
 						// If realtime data is available and config is set, add vehicleID
-						if (OBA.Config.showVehicleIdInStopPopup === true){
+						if (Config.showVehicleIdInStopPopup === true){
 							var vehicleId = monitoredVehicleJourney.VehicleRef.split("_")[1];
 							distance += '<span class="vehicleId"> (#' + vehicleId + ')</span>';
 						}
@@ -901,7 +902,7 @@ OBA.Popups = (function() {
 			html += filteredMatches.html();
 		}
 
-		html += OBA.Config.infoBubbleFooterFunction("stop", stopIdWithoutAgency);	        
+		html += Config.infoBubbleFooterFunction("stop", stopIdWithoutAgency);
 
 		html += "<ul class='links'>";
 		html += "<a href='#' id='zoomHere'>Center & Zoom Here</a>";
@@ -959,7 +960,7 @@ OBA.Popups = (function() {
 		if(infoWindow !== null && typeof infoWindow.refreshFn === 'function') {
 			infoWindow.refreshFn();
 		}
-	}, OBA.Config.refreshInterval);
+	}, Config.refreshInterval);
 
 	// updates timestamp in popup bubble every second
 	setInterval(function() {
@@ -997,4 +998,4 @@ OBA.Popups = (function() {
 	};
 })();
 
-export default OBA.Popups
+export default Popups

@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-import './config';
+import Config from './config';
+import Util from './util';
+import RouteMap from './routeMap';
+import Wizard from './Wizard';
 import './leaflet'
 
 var OBA = window.OBA || {};
@@ -58,7 +61,7 @@ OBA.Sidebar = function() {
 			source : function(request, response) {
 				var query = $.trim(request.term);
 				if (query.length >= 3 && !query.match("^[^a-zA-Z0-9]*$")) {
-					jQuery.get(OBA.Config.autocompleteUrl, {
+					jQuery.get(Config.autocompleteUrl, {
 						term : query
 					}, function(data) {
 						response(data);
@@ -203,7 +206,7 @@ OBA.Sidebar = function() {
 		loading.show();
 
 		// multiple of these can be out at once without being inconsistent UI-wise.
-		jQuery.getJSON(OBA.Config.stopsOnRouteForDirection + "?callback=?", { routeId: routeResult.id, directionId: direction.directionId }, 
+		jQuery.getJSON(Config.stopsOnRouteForDirection + "?callback=?", { routeId: routeResult.id, directionId: direction.directionId },
 		function(json) { 
 			loading.hide();
 
@@ -541,7 +544,7 @@ OBA.Sidebar = function() {
 		if(searchRequest !== null) {
 			searchRequest.abort();
 		}		
-		searchRequest = jQuery.getJSON(OBA.Config.searchUrl + "?callback=?", { q: q }, function(json) { 
+		searchRequest = jQuery.getJSON(Config.searchUrl + "?callback=?", { q: q }, function(json) {
 			
 			// Be sure the autocomplete list is closed
 			jQuery("#searchbar form input[type=text]").autocomplete("close");
@@ -560,7 +563,7 @@ OBA.Sidebar = function() {
 				routeFilterShortName = routeFilter[0].shortName;
 			}
 
-			OBA.Config.analyticsFunction("Search", q + " [M:" + matches.length + " S:" + suggestions.length + "]");
+			Config.analyticsFunction("Search", q + " [M:" + matches.length + " S:" + suggestions.length + "]");
 			
 			if(empty === true) {
 				showNoResults("No matches.");
@@ -684,7 +687,7 @@ OBA.Sidebar = function() {
 			
 			// initialize map, and continue initialization of things that use the map
 			// on load only when google maps says it's ready.
-			routeMap = OBA.RouteMap(document.getElementById("map"), function() {
+			routeMap = RouteMap(document.getElementById("map"), function() {
 				// deep link handler
 				jQuery.history.init(function(hash) {
 					if(hash !== null && hash !== "") {
@@ -701,7 +704,7 @@ OBA.Sidebar = function() {
 						doSearch(value);
 					} else {
 						// Launch wizard,
-						(wizard !== null) ? null : wizard = OBA.Wizard(routeMap);
+						(wizard !== null) ? null : wizard = Wizard(routeMap);
 					}
 				});
 			}, function(routeId, serviceAlerts) { // service alert notification handler
@@ -749,9 +752,9 @@ OBA.Sidebar = function() {
 
 // for IE: only start using google maps when the VML/SVG namespace is ready
 if(jQuery.browser.msie) {
-	window.onload = function() { OBA.Sidebar().initialize(); };
+	window.onload = function() { Sidebar().initialize(); };
 } else {
-	jQuery(document).ready(function() { OBA.Sidebar().initialize(); });
+	jQuery(document).ready(function() { Sidebar().initialize(); });
 }
 
 export default OBA.Sidebar;
