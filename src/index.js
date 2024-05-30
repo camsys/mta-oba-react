@@ -5,7 +5,8 @@ import { ReactSVG } from "react-svg";
 import './img/favicon.ico';
 import './css/bustime.css';
 import './js/bustime.js';
-import './js/util.js';
+import './js/routeMap.js'
+import './js/util.js'
 import searchWhite from './img/icon/search_white.svg';
 import searchBlue from './img/icon/search_blue.svg';
 import caretBlue from './img/icon/right-caret_blue.svg';
@@ -18,9 +19,9 @@ import bustimeLogo from './img/bustime-logo.png';
 import queryString from 'query-string';
 import Select from "react-select";
 import Async, { useAsync } from 'react-select/async';
-const position = [40.66954,-73.985983];
+const position = [40.7128,-74.0060];
 import { createRoot } from 'react-dom/client';
-import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet'
+import { MapContainer, Marker, Popup, TileLayer, Polyline } from 'react-leaflet'
 import ReactLeafletGoogleLayer from 'react-leaflet-google-layer';
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
@@ -30,11 +31,43 @@ className: "svg-icon",
   iconSize: [24, 40],
   iconAnchor: [12, 40]});
 
+import OBAUtil from './js/util';
+import OBAConfig from './js/config';
+
+OBAUtil.log('OBA Util is live.');
+const envAddress = "app.dev.obanyc.com/"
+
+function generatePolyline(id,polyline,color){
+  return <Polyline key={id} positions={polyline} color={"#"+color} />
+}
+
+
+function useFetchRouteData(lineRef) {
+  const [loading, setLoading] = React.useState([]);
+  const [routes, setRoutes] = useState({});
+
+  React.useEffect(() => {
+    setLoading(true);
+    fetch("https://"+ envAddress + OBAConfig.searchUrl +"?q="+lineRef)
+        .then((response) => response.json())
+        .then((parsed) => {
+          setRoutes(parsed.searchResults["matches"][0]);
+          setLoading(false);
+        })
+        .catch((error) => {
+          console.error(error);
+          setLoading(false);
+        });
+  }, []);
+
+  return { loading, routes };
+}
 
 
 function GetBusInfo  () {
   const [vehicles, setVehicles] = useState({});
   const [situations, setSituations] = useState({});
+  const [routePolylines, setRoutePolylines] = useState({});
   const queryParameters = new URLSearchParams(window.location.search)
   const lineRef = queryString.parse(location.search).LineRef;
   var search = "";
@@ -43,6 +76,32 @@ function GetBusInfo  () {
 
   if(lineRef){
     search = "&LineRef="+lineRef;
+
+    // const {loading, routes, polylines} = UseFetchAndProcessRoutes(lineRef)
+    // console.log(polylines)
+    const { loading, routes } = useFetchRouteData(lineRef);
+    const leafletRoutePolylines = [];
+    const leafletRoutePolylineKeys = [];
+
+    if(!loading) {
+      let color = routes.color
+      let routeId = routes.id
+      const allDecodedPolylines = []
+      for (let i = 0; i < routes.directions.length; i++) {
+        let dir = routes.directions[i];
+        for (let j = 0; j < dir.polylines.length; j++) {
+          let encodedPolyline = dir.polylines[j]
+          let decodedPolyline = OBAUtil.decodePolyline(encodedPolyline)
+          let first = true
+          let polylineId = routeId+"_dir_"+i+"_lineNum_"+j
+          let leafletPolyline = generatePolyline(polylineId,decodedPolyline,color)
+          leafletRoutePolylines.push(leafletPolyline)
+          leafletRoutePolylineKeys.push(polylineId)
+          allDecodedPolylines.push(decodedPolyline)
+        }
+      }
+    }
+
     useEffect(() => {
     (async () => {
       const response = await fetch(
@@ -54,13 +113,15 @@ function GetBusInfo  () {
     })();
   }, []);
     const listItems = [];
-    const points = [];
+    const vehicleMarkers = [];
+    // const vehiclePositions = [];
     for (let i = 0; i < vehicles.length; i++) {
       const longLat = [];
       longLat.push(vehicles[i].MonitoredVehicleJourney.VehicleLocation.Latitude)
       longLat.push(vehicles[i].MonitoredVehicleJourney.VehicleLocation.Longitude)
-      
-      points.push(<Marker position={longLat} key={longLat} icon={icon}>
+
+      // vehiclePositions.push(new google.maps.LatLng(longLat[0],longLat[1]))
+      vehicleMarkers.push(<Marker position={longLat} key={longLat}icon={icon}>
       <Popup key={longLat}>
         A popup at {longLat}. Bus # {i}.
       </Popup>
@@ -74,7 +135,13 @@ function GetBusInfo  () {
 var root = createRoot(mapNode);
 root.render(<MapContainer style={{ height: '100vh', width: '100wh' }} center={position} zoom={15} scrollWheelZoom={true}>
     <ReactLeafletGoogleLayer apiKey='AIzaSyC65u47U8CJxTrmNcXDP2KwCYGxmQO3ZfU' type={'roadmap'} />
-    {points}
+    <Marker position={position}>
+      <Popup>
+        A pretty CSS3 popup. <br /> Easily customizable.
+      </Popup>
+    </Marker>
+    {leafletRoutePolylines}
+    {vehicleMarkers}
   </MapContainer>);
 
    return <h1>
