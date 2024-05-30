@@ -5,6 +5,7 @@ import { ReactSVG } from "react-svg";
 import './img/favicon.ico';
 import './css/bustime.css';
 import './js/bustime.js';
+import './js/util.js';
 import searchWhite from './img/icon/search_white.svg';
 import searchBlue from './img/icon/search_blue.svg';
 import caretBlue from './img/icon/right-caret_blue.svg';
@@ -17,10 +18,17 @@ import bustimeLogo from './img/bustime-logo.png';
 import queryString from 'query-string';
 import Select from "react-select";
 import Async, { useAsync } from 'react-select/async';
-const position = [40.7128,-74.0060];
+const position = [40.66954,-73.985983];
 import { createRoot } from 'react-dom/client';
 import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet'
 import ReactLeafletGoogleLayer from 'react-leaflet-google-layer';
+import L from "leaflet";
+import "leaflet/dist/leaflet.css";
+
+const icon = L.icon({ iconUrl: bus ,
+className: "svg-icon",
+  iconSize: [24, 40],
+  iconAnchor: [12, 40]});
 
 
 
@@ -52,9 +60,9 @@ function GetBusInfo  () {
       longLat.push(vehicles[i].MonitoredVehicleJourney.VehicleLocation.Latitude)
       longLat.push(vehicles[i].MonitoredVehicleJourney.VehicleLocation.Longitude)
       
-      points.push(<Marker position={longLat} key={longLat}>
+      points.push(<Marker position={longLat} key={longLat} icon={icon}>
       <Popup key={longLat}>
-        A popup at {longLat}.
+        A popup at {longLat}. Bus # {i}.
       </Popup>
     </Marker>);
       var lng = vehicles[i].MonitoredVehicleJourney.VehicleLocation.Longitude;
@@ -66,11 +74,6 @@ function GetBusInfo  () {
 var root = createRoot(mapNode);
 root.render(<MapContainer style={{ height: '100vh', width: '100wh' }} center={position} zoom={15} scrollWheelZoom={true}>
     <ReactLeafletGoogleLayer apiKey='AIzaSyC65u47U8CJxTrmNcXDP2KwCYGxmQO3ZfU' type={'roadmap'} />
-    <Marker position={position}>
-      <Popup>
-        A pretty CSS3 popup. <br /> Easily customizable.
-      </Popup>
-    </Marker>
     {points}
   </MapContainer>);
 
@@ -78,6 +81,11 @@ root.render(<MapContainer style={{ height: '100vh', width: '100wh' }} center={po
    <ul></ul></h1>;
 
   }else{
+      var mapNode = document.getElementById('map-div');
+var root = createRoot(mapNode);
+root.render(<MapContainer style={{ height: '100vh', width: '100wh' }} center={position} zoom={15} scrollWheelZoom={true}>
+    <ReactLeafletGoogleLayer apiKey='AIzaSyC65u47U8CJxTrmNcXDP2KwCYGxmQO3ZfU' type={'roadmap'} />
+  </MapContainer>);
     return <div><h2>Try these example searches:</h2>
           <ul>
             <li>Route:
