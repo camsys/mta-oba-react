@@ -1,7 +1,8 @@
+import React from 'react';
 
-export default function getRouteCard  () {
 
-alert('get here 2??');
+function getRouteCard  () {
+    console.log("using routeCard")
 
   var routeCard = document.getElementById('app');
   var root = createRoot(routeCard);
@@ -13,3 +14,5 @@ alert('get here 2??');
 
   
  }
+
+export default getRouteCard;

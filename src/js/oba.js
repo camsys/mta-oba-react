@@ -1,5 +1,5 @@
-import config from './config';
-import util from './util';
+import config from './old/config';
+import util from './old/util';
 // import './Wizard';
 // import './GoogleMapWrapper';
 // import './Popups';

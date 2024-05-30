@@ -5,8 +5,6 @@ import { ReactSVG } from "react-svg";
 import './img/favicon.ico';
 import './css/bustime.css';
 // import './js/bustime.js';
-import './js/routeMap.js'
-import './js/util.js'
 import routeCard from './js/routeCard.js';
 import searchWhite from './img/icon/search_white.svg';
 import searchBlue from './img/icon/search_blue.svg';
@@ -138,15 +136,15 @@ root.render(<MapContainer style={{ height: '100vh', width: '100wh' }} center={po
     {leafletRoutePolylines}
     {vehicleMarkers}
   </MapContainer>);
-  routeCard.getRouteCard;
+  routeCard();
 alert('get here 1??');
 
   var mapNode = document.getElementById('app');
 var root = createRoot(mapNode);
-root.render(routeCard.getRouteCard);
+root.render(routeCard());
 
   
-   return root.render(routeCard.getRouteCard);
+   // return root.render(routeCard);
 
   }else{
       var mapNode = document.getElementById('map-div');
