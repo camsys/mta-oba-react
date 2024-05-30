@@ -5,8 +5,8 @@ import { ReactSVG } from "react-svg";
 import './img/favicon.ico';
 import './css/bustime.css';
 // import './js/bustime.js';
-import './js/routeMap.js'
-import './js/util.js'
+// import './js/routeMap.js'
+// import './js/util.js'
 import searchWhite from './img/icon/search_white.svg';
 import searchBlue from './img/icon/search_blue.svg';
 import caretBlue from './img/icon/right-caret_blue.svg';
@@ -31,9 +31,18 @@ className: "svg-icon",
   iconSize: [24, 40],
   iconAnchor: [12, 40]});
 
-import { OBA } from './js/oba';
+import OBAUtil from './js/util';
+import OBAConfig from './js/config';
 
-OBA.Util.log('OBA Util is live.');
+OBAUtil.log('OBA Util is live.');
+
+
+// import './js/Wizard';
+// import './js/GoogleMapWrapper';
+// import './js/Popups';
+// import './js/Sidebar';
+// import './js/routeMap';
+
 const envAddress = "app.dev.obanyc.com/"
 
 function generatePolyline(id,polyline,color){
@@ -47,7 +56,7 @@ function useFetchRouteData(lineRef) {
 
   React.useEffect(() => {
     setLoading(true);
-    fetch("https://"+ envAddress + OBA.Config.searchUrl +"?q="+lineRef)
+    fetch("https://"+ envAddress + OBAConfig.searchUrl +"?q="+lineRef)
         .then((response) => response.json())
         .then((parsed) => {
           setRoutes(parsed.searchResults["matches"][0]);
@@ -76,8 +85,6 @@ function GetBusInfo  () {
   if(lineRef){
     search = "&LineRef="+lineRef;
 
-    // const {loading, routes, polylines} = UseFetchAndProcessRoutes(lineRef)
-    // console.log(polylines)
     const { loading, routes } = useFetchRouteData(lineRef);
     const leafletRoutePolylines = [];
     const leafletRoutePolylineKeys = [];
@@ -86,17 +93,19 @@ function GetBusInfo  () {
       let color = routes.color
       let routeId = routes.id
       const allDecodedPolylines = []
-      for (let i = 0; i < routes.directions.length; i++) {
-        let dir = routes.directions[i];
-        for (let j = 0; j < dir.polylines.length; j++) {
-          let encodedPolyline = dir.polylines[j]
-          let decodedPolyline = OBA.Util.decodePolyline(encodedPolyline)
-          let first = true
-          let polylineId = routeId+"_dir_"+i+"_lineNum_"+j
-          let leafletPolyline = generatePolyline(polylineId,decodedPolyline,color)
-          leafletRoutePolylines.push(leafletPolyline)
-          leafletRoutePolylineKeys.push(polylineId)
-          allDecodedPolylines.push(decodedPolyline)
+      if(routes!=null & routes.hasOwnProperty("directions")) {
+        for (let i = 0; i < routes.directions.length; i++) {
+          let dir = routes.directions[i];
+          for (let j = 0; j < dir.polylines.length; j++) {
+            let encodedPolyline = dir.polylines[j]
+            let decodedPolyline = OBAUtil.decodePolyline(encodedPolyline)
+            let first = true
+            let polylineId = routeId + "_dir_" + i + "_lineNum_" + j
+            let leafletPolyline = generatePolyline(polylineId, decodedPolyline, color)
+            leafletRoutePolylines.push(leafletPolyline)
+            leafletRoutePolylineKeys.push(polylineId)
+            allDecodedPolylines.push(decodedPolyline)
+          }
         }
       }
     }

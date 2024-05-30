@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import './config';
+import Config from './config';
 import './leaflet'
 
 var OBA = window.OBA || {};

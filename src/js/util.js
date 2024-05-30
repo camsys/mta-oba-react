@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import config from  './config';
+import OBAConfig from './config';
 
 
 var OBA = window.OBA || {};
@@ -70,7 +70,7 @@ OBA.Util = (function() {
 
     return {
         log: function(s) {
-            if( config.debug === true && typeof console !== 'undefined' && typeof console.log !== 'undefined') {
+            if( OBAConfig.debug === true && typeof console !== 'undefined' && typeof console.log !== 'undefined') {
                 console.log(s);
             }
         },

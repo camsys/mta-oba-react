@@ -82,4 +82,4 @@ OBA.Config = {
     }
 };
 
-export default OBA;
+export default OBA.Config;
