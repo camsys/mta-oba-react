@@ -5,7 +5,7 @@ import { ReactSVG } from "react-svg";
 import './img/favicon.ico';
 import './css/bustime.css';
 // import './js/bustime.js';
-import routeCard from './js/routeCard.js';
+import routeCard from './components/routeCard.js';
 import searchWhite from './img/icon/search_white.svg';
 import searchBlue from './img/icon/search_blue.svg';
 import caretBlue from './img/icon/right-caret_blue.svg';
