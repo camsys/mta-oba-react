@@ -7,6 +7,7 @@ import './css/bustime.css';
 // import './js/bustime.js';
 import './js/routeMap.js'
 import './js/util.js'
+import routeCard from './js/routeCard.js';
 import searchWhite from './img/icon/search_white.svg';
 import searchBlue from './img/icon/search_blue.svg';
 import caretBlue from './img/icon/right-caret_blue.svg';
@@ -19,7 +20,7 @@ import bustimeLogo from './img/bustime-logo.png';
 import queryString from 'query-string';
 import Select from "react-select";
 import Async, { useAsync } from 'react-select/async';
-const position = [40.7128,-74.0060];
+const position = [40.675417,-73.981129];
 import { createRoot } from 'react-dom/client';
 import { MapContainer, Marker, Popup, TileLayer, Polyline } from 'react-leaflet'
 import ReactLeafletGoogleLayer from 'react-leaflet-google-layer';
@@ -134,17 +135,18 @@ function GetBusInfo  () {
 var root = createRoot(mapNode);
 root.render(<MapContainer style={{ height: '100vh', width: '100wh' }} center={position} zoom={15} scrollWheelZoom={true}>
     <ReactLeafletGoogleLayer apiKey='AIzaSyC65u47U8CJxTrmNcXDP2KwCYGxmQO3ZfU' type={'roadmap'} />
-    <Marker position={position}>
-      <Popup>
-        A pretty CSS3 popup. <br /> Easily customizable.
-      </Popup>
-    </Marker>
     {leafletRoutePolylines}
     {vehicleMarkers}
   </MapContainer>);
+  routeCard.getRouteCard;
+alert('get here 1??');
 
-   return <h1>
-   <ul></ul></h1>;
+  var mapNode = document.getElementById('app');
+var root = createRoot(mapNode);
+root.render(routeCard.getRouteCard);
+
+  
+   return root.render(routeCard.getRouteCard);
 
   }else{
       var mapNode = document.getElementById('map-div');
