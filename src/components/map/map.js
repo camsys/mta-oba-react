@@ -40,6 +40,7 @@ const map = (function() {
                 });
         }, []);
 
+        OBA.Util.log('completed call to route')
         return {loading, routes};
     }
 
@@ -85,35 +86,43 @@ const map = (function() {
                         }
                     }
                 }
+                OBA.Util.log('processed route')
                 useEffect(() => {
                     (async () => {
                         const response = await fetch(
-                            "https://app.dev.obanyc.com/api/siri/vehicle-monitoring.json?key=OBANYC&_=1707407738784&OperatorRef=MTA+NYCT" + search
+                            "https://app.dev.obanyc.com/api/siri/vehicle-monitoring.json?key=OBANYC&OperatorRef=MTA+NYCT" + search
                         );
                         const parsed = await response.json();
                         setVehicles(parsed.Siri.ServiceDelivery.VehicleMonitoringDelivery[0].VehicleActivity);
                         setSituations(parsed.Siri.ServiceDelivery.SituationExchangeDelivery);
                     })();
                 }, []);
+                OBA.Util.log('completed call to vehicles')
 
-                // const vehiclePositions = [];
-                for (let i = 0; i < vehicles.length; i++) {
-                    const longLat = [];
-                    longLat.push(vehicles[i].MonitoredVehicleJourney.VehicleLocation.Latitude)
-                    longLat.push(vehicles[i].MonitoredVehicleJourney.VehicleLocation.Longitude)
+                if (vehicles != null) {
+                    // const vehiclePositions = [];
+                    for (let i = 0; i < vehicles.length; i++) {
+                        const longLat = [];
+                        longLat.push(vehicles[i].MonitoredVehicleJourney.VehicleLocation.Latitude)
+                        longLat.push(vehicles[i].MonitoredVehicleJourney.VehicleLocation.Longitude)
 
-                    // vehiclePositions.push(new google.maps.LatLng(longLat[0],longLat[1]))
-                    vehicleMarkers.push(<Marker position={longLat} key={longLat} icon={baseVehicleIcon}>
-                        <Popup key={longLat}>
-                            A popup at {longLat}. Bus # {i}.
-                        </Popup>
-                    </Marker>);
-                    var lng = vehicles[i].MonitoredVehicleJourney.VehicleLocation.Longitude;
-                    var lat = vehicles[i].MonitoredVehicleJourney.VehicleLocation.Latitude;
-                    listItems.push(<li key={i}>{vehicles[i].MonitoredVehicleJourney.VehicleRef}</li>);
+                        // vehiclePositions.push(new google.maps.LatLng(longLat[0],longLat[1]))
+                        vehicleMarkers.push(<Marker position={longLat} key={longLat} icon={baseVehicleIcon}>
+                            <Popup key={longLat}>
+                                A popup at {longLat}. Bus # {i}.
+                            </Popup>
+                        </Marker>);
+                        var lng = vehicles[i].MonitoredVehicleJourney.VehicleLocation.Longitude;
+                        var lat = vehicles[i].MonitoredVehicleJourney.VehicleLocation.Latitude;
+                        listItems.push(<li key={i}>{vehicles[i].MonitoredVehicleJourney.VehicleRef}</li>);
+                    };
+                    OBA.Util.log('processed vehicles')
                 }
-                ;
+                else{
+                    OBA.Util.log('not processing vehicles')
+                }
             }
+
 
             return (<MapContainer style={{height: '100vh', width: '100wh'}} center={OBA.Config.defaultMapCenter} zoom={15}
                                   scrollWheelZoom={true}>
