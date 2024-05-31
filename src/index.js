@@ -43,8 +43,9 @@ function GetBusInfo  () {
       }
  }
 
- function GetMap () {
-  return mapComponent.getMap()
+ import mapWrap from "./components/map/mapWrap";
+ function GetMapWrapper () {
+  return mapWrap()
  }
 
 var domNode = document.getElementById('logo-link');
@@ -63,6 +64,6 @@ domNode = document.getElementById('search-field');
 root = createRoot(domNode);
 root.render(<input type="text" name="LineRef" id="search-input" placeholder="Search" autoComplete="off" />);
 
-var mapNode = document.getElementById('map-div');
+var mapNode = document.getElementById('map-wrap');
 var root = createRoot(mapNode);
-root.render(<GetMap />);
+root.render(<GetMapWrapper />);
