@@ -1,8 +1,10 @@
 const HtmlWebPackPlugin = require("html-webpack-plugin");
+const webpack = require("webpack");
 const htmlPlugin = new HtmlWebPackPlugin({
  template: "./src/index.html",
  filename: "./index.html"
 });
+const envPlugin = new webpack.EnvironmentPlugin(['DEV_ENV_ADDRESS', 'VEHICLE_MONITORING_ENDPOINT']);
 module.exports = {
 mode: 'development',
   module: {
@@ -23,5 +25,5 @@ mode: 'development',
           loader: "file-loader"
         },      
 ]},
- plugins: [htmlPlugin]
+ plugins: [htmlPlugin, envPlugin]
 };
