@@ -29,7 +29,7 @@ OBA.Config = {
     stopForId: "api/stop-for-id",
     debug: true,
     defaultMapCenter: [40.675417,-73.981129],
-    envAddress: process.env.DEV_ENV_ADDRESS || "app.dev.obanyc.com/",
+    envAddress: process.env.DEV_ENV_ADDRESS,
 
 
     // siriSMUrl and siriVMUrl now moved to config.jspx
