@@ -2,7 +2,7 @@ import React from 'react';
 import {OBA} from "../js/oba";
 import ErrorBoundary from "./util/errorBoundary";
 import mapWrap from "./map/mapWrap";
-import sideBarComponent from "./sideBar";
+import sideBarComponent from "./pageStructure/sideBar";
 
 
 

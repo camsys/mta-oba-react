@@ -1,7 +1,7 @@
 import React from 'react';
-import {OBA} from "../js/oba";
-import ErrorBoundary from "./util/errorBoundary";
-import searchWhite from "../img/icon/search_white.svg";
+import {OBA} from "../../js/oba";
+import ErrorBoundary from "../util/errorBoundary";
+import searchWhite from "../../img/icon/search_white.svg";
 
 function getSearch  () {
 

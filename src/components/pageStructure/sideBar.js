@@ -1,11 +1,11 @@
 import React from 'react';
-import {OBA} from "../js/oba";
-import ErrorBoundary from "./util/errorBoundary";
+import {OBA} from "../../js/oba";
+import ErrorBoundary from "./../util/errorBoundary";
 import queryString from "query-string";
-import routeCard from "./views/routeCard";
-import homeCard from "./views/homeCard";
-import headerComponent from "./pageStructure/header";
-import footerComponent from "./pageStructure/footer";
+import routeCard from "./../views/routeCard";
+import homeCard from "./../views/homeCard";
+import headerComponent from "./header";
+import footerComponent from "./footer";
 import searchComponent from "./search"
 
 function getSideBar  () {

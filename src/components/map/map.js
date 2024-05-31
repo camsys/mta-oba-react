@@ -90,7 +90,7 @@ const map = (function() {
                 useEffect(() => {
                     (async () => {
                         const response = await fetch(
-                            "https://app.dev.obanyc.com/api/siri/vehicle-monitoring.json?key=OBANYC&OperatorRef=MTA+NYCT" + search
+                            "https://app.qa.obanyc.com/api/siri/vehicle-monitoring.json?key=OBANYC&OperatorRef=MTA+NYCT" + search
                         );
                         const parsed = await response.json();
                         setVehicles(parsed.Siri.ServiceDelivery.VehicleMonitoringDelivery[0].VehicleActivity);
@@ -124,12 +124,12 @@ const map = (function() {
             }
 
 
-            return (<MapContainer style={{height: '100vh', width: '100wh'}} center={OBA.Config.defaultMapCenter} zoom={15}
+            return (<React.Fragment> <MapContainer style={{height: '100vh', width: '100wh'}} center={OBA.Config.defaultMapCenter} zoom={15}
                                   scrollWheelZoom={true}>
                 <ReactLeafletGoogleLayer apiKey='AIzaSyC65u47U8CJxTrmNcXDP2KwCYGxmQO3ZfU' type={'roadmap'}/>
                 {leafletRoutePolylines}
                 {vehicleMarkers}
-            </MapContainer>)
+            </MapContainer></React.Fragment>)
         }
     }
 })();
