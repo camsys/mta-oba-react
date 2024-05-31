@@ -53,13 +53,20 @@ function GetBusInfo  () {
   return footerComponent()
  }
 
+ import headerComponent from "./components/pageStructure/header";
+ function GetHeader () {
+  return headerComponent()
+ }
 
 
-var domNode = document.getElementById('logo-link');
-var root = createRoot(domNode);
-root.render(<img id="logo" style={{width: 100 + '%'}} src={bustimeLogo} alt="MTA Bus Time" className="logo" />);
+var mapNode = document.getElementById('header');
+var root = createRoot(mapNode);
+root.render(<GetHeader />);
 
-domNode = document.getElementById('app');
+
+
+
+var domNode = document.getElementById('app');
 root = createRoot(domNode);
 root.render(<GetBusInfo />);
 
@@ -78,4 +85,7 @@ root.render(<GetMapWrapper />);
 var mapNode = document.getElementById('footer');
 var root = createRoot(mapNode);
 root.render(<GetFooter />);
+
+
+
 
