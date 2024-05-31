@@ -90,7 +90,7 @@ const map = (function() {
                 useEffect(() => {
                     (async () => {
                         const response = await fetch(
-                            "https://app.qa.obanyc.com/api/siri/vehicle-monitoring.json?key=OBANYC&OperatorRef=MTA+NYCT" + search
+                            "https://" + process.env.DEV_ENV_ADDRESS + process.env.VEHICLE_MONITORING_ENDPOINT + search
                         );
                         const parsed = await response.json();
                         setVehicles(parsed.Siri.ServiceDelivery.VehicleMonitoringDelivery[0].VehicleActivity);
