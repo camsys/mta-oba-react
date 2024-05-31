@@ -33,58 +33,26 @@ OBA.Util.log('OBA Util is live.');
 
 
 
-function GetBusInfo  () {
-  const lineRef = queryString.parse(location.search).LineRef;
-  if(lineRef){
-  OBA.Util.log("adding route card")
-   return routeCard();
-  }else{
-      return homeCard()
-      }
- }
-
  import mapWrap from "./components/map/mapWrap";
  function GetMapWrapper () {
   return mapWrap()
  }
 
- import footerComponent from "./components/pageStructure/footer";
- function GetFooter () {
-  return footerComponent()
- }
 
- import headerComponent from "./components/pageStructure/header";
- function GetHeader () {
-  return headerComponent()
- }
-
-
-var mapNode = document.getElementById('header');
-var root = createRoot(mapNode);
-root.render(<GetHeader />);
+import sideBarComponent from "./components/sideBar";
+function GetSideBar () {
+    return sideBarComponent()
+}
 
 
 
-
-var domNode = document.getElementById('app');
+var domNode = document.getElementById('sidebar');
 root = createRoot(domNode);
-root.render(<GetBusInfo />);
-
-domNode = document.getElementById('submit-search');
-root = createRoot(domNode);
-root.render(<img src={searchWhite} alt="Search" />);
-
-domNode = document.getElementById('search-field');
-root = createRoot(domNode);
-root.render(<input type="text" name="LineRef" id="search-input" placeholder="Search" autoComplete="off" />);
+root.render(<GetSideBar />);
 
 var mapNode = document.getElementById('map-wrap');
 var root = createRoot(mapNode);
 root.render(<GetMapWrapper />);
-
-var mapNode = document.getElementById('footer');
-var root = createRoot(mapNode);
-root.render(<GetFooter />);
 
 
 
