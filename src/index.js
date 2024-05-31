@@ -48,6 +48,13 @@ function GetBusInfo  () {
   return mapWrap()
  }
 
+ import footerComponent from "./components/pageStructure/footer";
+ function GetFooter () {
+  return footerComponent()
+ }
+
+
+
 var domNode = document.getElementById('logo-link');
 var root = createRoot(domNode);
 root.render(<img id="logo" style={{width: 100 + '%'}} src={bustimeLogo} alt="MTA Bus Time" className="logo" />);
@@ -67,3 +74,8 @@ root.render(<input type="text" name="LineRef" id="search-input" placeholder="Sea
 var mapNode = document.getElementById('map-wrap');
 var root = createRoot(mapNode);
 root.render(<GetMapWrapper />);
+
+var mapNode = document.getElementById('footer');
+var root = createRoot(mapNode);
+root.render(<GetFooter />);
+
