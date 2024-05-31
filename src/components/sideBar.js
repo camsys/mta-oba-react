@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {OBA} from "../js/oba";
 import ErrorBoundary from "./util/errorBoundary";
 import queryString from "query-string";
@@ -7,6 +7,8 @@ import homeCard from "./views/homeCard";
 import headerComponent from "./pageStructure/header";
 import footerComponent from "./pageStructure/footer";
 import searchComponent from "./search"
+import determineCard from "../js/updateState/determineCard";
+import {GlobalStateContext} from "./util/globalState";
 
 function getSideBar  () {
 
@@ -14,12 +16,14 @@ function getSideBar  () {
         return headerComponent()
     }
 
+    const { state } = useContext(GlobalStateContext);
+
     function GetCardInfo  () {
-        const lineRef = queryString.parse(location.search).LineRef;
-        if(lineRef){
+        if(state.currentCard==OBA.Config.cards.routeCard){
             OBA.Util.log("adding route card")
             return routeCard();
-        }else{
+        }
+        if(state.currentCard==OBA.Config.cards.homeCard){
             OBA.Util.log("adding home card")
             return homeCard()
         }

@@ -1,12 +1,16 @@
 import React from 'react';
 import {OBA} from "../js/oba";
 import ErrorBoundary from "./util/errorBoundary";
+import {GlobalStateProvider} from "./util/globalState";
 import mapWrap from "./map/mapWrap";
 import sideBarComponent from "./sideBar";
+import useInitializeData from "../js/updateState/initializeData";
 
 
 
-function getApp  () {
+function App  () {
+    useInitializeData();
+
     function GetSideBar () {
         return sideBarComponent()
     }
@@ -15,6 +19,7 @@ function getApp  () {
     }
 
     OBA.Util.log("adding app")
+
     return (
         <ErrorBoundary>
             <div id="sidebar">
@@ -27,5 +32,14 @@ function getApp  () {
     )
 }
 
+const Root = () => {
+    return (
+        <ErrorBoundary>
+            <GlobalStateProvider>
+                <App />
+            </GlobalStateProvider>
+        </ErrorBoundary>
+    )
+}
 
-export default getApp;
+export default Root;

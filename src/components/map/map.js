@@ -1,10 +1,11 @@
 import ReactLeafletGoogleLayer from "react-leaflet-google-layer";
 import {MapContainer, Marker, Polyline, Popup} from "react-leaflet";
-import React, {useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import queryString from "query-string";
 import {OBA} from "../../js/oba";
 import L from "leaflet";
 import bus from "../../img/icon/bus.svg";
+import {GlobalStateContext} from "../util/globalState";
 
 const map = (function() {
 
@@ -63,8 +64,9 @@ const map = (function() {
             const listItems = [];
             const vehicleMarkers = [];
 
-            if (lineRef) {
-                search = "&LineRef=" + lineRef;
+            const { state} = useContext(GlobalStateContext);
+            if (state.currentCard==OBA.Config.cards.routeCard) {
+                search = "&"+OBA.Config.cards.routeCard.identifier+"=" + lineRef;
                 const {loading, routes} = useFetchRouteData(lineRef);
                 if (!loading) {
                     let color = routes.color
