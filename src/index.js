@@ -33,27 +33,13 @@ OBA.Util.log('OBA Util is live.');
 
 
 
- import mapWrap from "./components/map/mapWrap";
- function GetMapWrapper () {
-  return mapWrap()
- }
-
-
-import sideBarComponent from "./components/sideBar";
-function GetSideBar () {
-    return sideBarComponent()
+import appComponent from "./components/app";
+function GetApp () {
+ return appComponent()
 }
 
-
-
-var domNode = document.getElementById('sidebar');
-root = createRoot(domNode);
-root.render(<GetSideBar />);
-
-var mapNode = document.getElementById('map-wrap');
+var mapNode = document.getElementById('root');
 var root = createRoot(mapNode);
-root.render(<GetMapWrapper />);
-
-
+root.render(<GetApp />);
 
 

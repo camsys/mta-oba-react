@@ -28,6 +28,11 @@ function getSideBar  () {
         return footerComponent()
     }
 
+    const handleSearch = () => {
+        const lineRef = document.getElementById('search-input').value;
+        location.href = `?LineRef=${lineRef}`;
+    };
+
     OBA.Util.log("adding sideBar")
     return (
         <ErrorBoundary>
@@ -42,7 +47,7 @@ function getSideBar  () {
                         <input type="text" name="LineRef" id="search-input" placeholder="Search" autoComplete="off" />
                     </div>
                     <button type="button" aria-label="Submit Search" id="submit-search"
-                            onClick="location.href='?LineRef=' + document.getElementById('search-input').value">
+                            onClick={handleSearch}>
                         <img src={searchWhite} alt="Search" />
                     </button>
                 </div>
