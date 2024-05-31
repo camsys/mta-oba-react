@@ -4,9 +4,9 @@ import ErrorBoundary from "./util/errorBoundary";
 import queryString from "query-string";
 import routeCard from "./views/routeCard";
 import homeCard from "./views/homeCard";
-import searchWhite from "../img/icon/search_white.svg";
 import headerComponent from "./pageStructure/header";
 import footerComponent from "./pageStructure/footer";
+import searchComponent from "./search"
 
 function getSideBar  () {
 
@@ -14,24 +14,24 @@ function getSideBar  () {
         return headerComponent()
     }
 
-    function GetBusInfo  () {
+    function GetCardInfo  () {
         const lineRef = queryString.parse(location.search).LineRef;
         if(lineRef){
             OBA.Util.log("adding route card")
             return routeCard();
         }else{
+            OBA.Util.log("adding home card")
             return homeCard()
         }
+    }
+
+    function GetSearch () {
+        return searchComponent()
     }
 
     function GetFooter () {
         return footerComponent()
     }
-
-    const handleSearch = () => {
-        const lineRef = document.getElementById('search-input').value;
-        location.href = `?LineRef=${lineRef}`;
-    };
 
     OBA.Util.log("adding sideBar")
     return (
@@ -39,25 +39,13 @@ function getSideBar  () {
             <header className="header" id="header">
                 <GetHeader />
             </header>
-            <form id="search" method="get" role="search"
-                  aria-label="Search an intersection, bus route or bus stop code">
-                <div className="search-field-wrap">
-                    <label htmlFor="search-field" className="visually-hidden">Search</label>
-                    <div id="search-field">
-                        <input type="text" name="LineRef" id="search-input" placeholder="Search" autoComplete="off" />
-                    </div>
-                    <button type="button" aria-label="Submit Search" id="submit-search"
-                            onClick={handleSearch}>
-                        <img src={searchWhite} alt="Search" />
-                    </button>
-                </div>
-            </form>
+            <GetSearch />
             <div className="sidebar-content">
                 <div className="search-instructions">
                     <p>Enter an intersection, bus route or bus stop code.</p>
                 </div>
                 <div className="content" id="app">
-                    <GetBusInfo />
+                    <GetCardInfo />
                 </div>
                 <div className="footer" id="footer">
                     <GetFooter />
