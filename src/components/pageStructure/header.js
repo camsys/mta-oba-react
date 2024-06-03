@@ -2,12 +2,14 @@ import React from 'react';
 import {OBA} from "../../js/oba";
 import ErrorBoundary from "../util/errorBoundary";
 import bustimeLogo from '../../img/bustime-logo.png';
+import favicon from '../../img/favicon.ico';
 
 
 function getHeader  () {
     OBA.Util.log("adding header")
     return (
         <ErrorBoundary>
+            <link rel="shortcut icon" href={favicon} />
             <a href="/" aria-label="MTA Bus Time Home" id="logo-link">
                 <img id="logo" style={{width: 100 + '%'}} src={bustimeLogo} alt="MTA Bus Time" className="logo" />
             </a>
