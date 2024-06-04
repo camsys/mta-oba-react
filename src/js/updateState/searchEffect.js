@@ -16,10 +16,12 @@ const searchEffect = () => {
     function processRouteData(route) {
         const leafletRoutePolylines = [];
         const leafletRoutePolylineKeys = [];
-        let color = route?.color
-        let routeId = route?.id
+        let color;
+        let routeId;
         const allDecodedPolylines = []
-        if (route != null & route.hasOwnProperty("directions")) {
+        if (route != null && route.hasOwnProperty("directions")) {
+            color = route?.color
+            routeId = route?.id
             for (let i = 0; i < route?.directions.length; i++) {
                 let dir = route?.directions[i];
                 for (let j = 0; j < dir.polylines.length; j++) {
