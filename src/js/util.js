@@ -74,6 +74,11 @@ OBA.Util = (function() {
                 console.log(s);
             }
         },
+        trace: function(s) {
+            if( OBAConfig.debug === true && typeof console !== 'undefined' && typeof console.log !== 'undefined') {
+                console.log(s);
+            }
+        },
         decodePolyline: function(encoded) {
             var len = encoded.length;
             var index = 0;

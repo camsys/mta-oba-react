@@ -8,6 +8,10 @@ function getRouteCard  () {
     var time = new Date();
     time = time.toLocaleString('en-US', { hour: 'numeric',  minute: 'numeric', hour12: true })
 
+  const handleRefresh = () => {
+    window.location.reload();
+  }
+
    return (<React.Fragment>
       <h2 className="cards-header">Routes:</h2>
       <div className="cards">
@@ -319,7 +323,7 @@ function getRouteCard  () {
       </div>
       <ul className="menu icon-menu middle-menu refresh-menu" role="menu">
         <li>
-          <button className="refresh-button" aria-label="Refresh the data" onClick="window.location.reload();">
+          <button className="refresh-button" aria-label="Refresh the data" onClick={handleRefresh}>
             <span className="svg-icon-wrap" role="presentation" aria-hidden="true">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none"
                 viewBox="0 0 20 20"><path className="blue"

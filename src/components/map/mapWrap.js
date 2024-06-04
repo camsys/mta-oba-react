@@ -1,6 +1,6 @@
 import React from 'react';
 import {OBA} from "../../js/oba";
-import mapComponent from './map.js';
+import mapComponent from './mapComponent.js';
 import ErrorBoundary from "../util/errorBoundary";
 
 
