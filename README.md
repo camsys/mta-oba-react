@@ -10,4 +10,10 @@ Execute "npm run start"
 
 Navigate to http://localhost:8080/?LineRef=B63 in your browser
 
+Configurable env variables:
+ALLOWED_HOST_ADDRESS
+ENV_ADDRESS
+VEHICLE_MONITORING_ENDPOINT
+
+
 Theoretically this should work!
