@@ -4,7 +4,7 @@ import vehicleComponent from "../../components/map/vehicleComponent";
 import {GlobalStateContext} from "../../components/util/globalState";
 import queryString from "query-string";
 
-const siriStateUpdate = () => {
+const siriEffect = () => {
 
     function parseSiri (siri){
         let newVehicleMarkers = [];
@@ -37,13 +37,13 @@ const siriStateUpdate = () => {
     }
 
     function updateVehicleMarkers(newVehicleMarkers){
-        OBA.Util.log('completed call to siri')
-        OBA.Util.log("pre-update vehicle state")
-        OBA.Util.log(state.vehicleMarkers)
+        OBA.Util.trace('completed call to siri')
+        OBA.Util.trace("pre-update vehicle state")
+        OBA.Util.trace(state.vehicleMarkers)
         OBA.Util.log("updating vehicle state to")
         OBA.Util.log(newVehicleMarkers)
-        console.log("updating vehicles state?: " + updateVehicles)
-        console.log(updateVehicles)
+        OBA.Util.trace("updating vehicles state?: " + updateVehicles)
+        OBA.Util.trace(updateVehicles)
         if(updateVehicles) {
             setState((prevState) => ({
                 ...prevState,
@@ -57,14 +57,13 @@ const siriStateUpdate = () => {
 
 
     const { state, setState } = useContext(GlobalStateContext);
-    const newVehicleMarkers = [];
     const lineRef = queryString.parse(location.search).LineRef;
     let search = "&"+OBA.Config.cards.routeCard.identifier+"=" + lineRef;
     var targetAddress = "https://" + process.env.ENV_ADDRESS + process.env.VEHICLE_MONITORING_ENDPOINT + search;
     var updateVehicles = false;
 
     useEffect(() => {
-        OBA.Util.log("reading siri from" + targetAddress)
+        OBA.Util.log("reading siri from " + targetAddress)
         fetch(targetAddress)
             .then((response) => response.json())
             .then((parsed) => {
@@ -78,4 +77,4 @@ const siriStateUpdate = () => {
     }, [setState]);
 };
 
-export default siriStateUpdate;
+export default siriEffect;

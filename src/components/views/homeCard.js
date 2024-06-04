@@ -36,10 +36,6 @@ function getHomeCard  () {
             </a>
         </li>
     </ul></div>);
-
-
-
-
 }
 
 export default getHomeCard;
