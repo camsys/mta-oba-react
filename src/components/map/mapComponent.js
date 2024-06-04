@@ -7,7 +7,7 @@ import L from "leaflet";
 import bus from "../../img/icon/bus.svg";
 import {GlobalStateContext} from "../util/globalState";
 
-const map = (function() {
+const mapComponent = (function() {
 
     // const [routePolylines, setRoutePolylines] = useState({});
 
@@ -136,4 +136,4 @@ const map = (function() {
     }
 })();
 
-export default map;
+export default mapComponent;
