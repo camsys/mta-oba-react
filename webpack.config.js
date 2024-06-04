@@ -6,6 +6,7 @@ const htmlPlugin = new HtmlWebPackPlugin({
 });
 const envPlugin = new webpack.DefinePlugin({
     'process.env.DEV_ENV_ADDRESS': JSON.stringify(process.env.DEV_ENV_ADDRESS || 'app.dev.obanyc.com/'),
+    'process.env.QA_ENV_ADDRESS': JSON.stringify(process.env.QA_ENV_ADDRESS || 'app.qa.obanyc.com/'),
     'process.env.VEHICLE_MONITORING_ENDPOINT': JSON.stringify(process.env.VEHICLE_MONITORING_ENDPOINT || 'api/siri/vehicle-monitoring.json?key=OBANYC&_=1707407738784&OperatorRef=MTA+NYCT')
 });
 module.exports = {

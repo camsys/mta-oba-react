@@ -3,8 +3,9 @@ import {OBA} from "../js/oba";
 import ErrorBoundary from "./util/errorBoundary";
 import {GlobalStateProvider} from "./util/globalState";
 import mapWrap from "./map/mapWrap";
-import sideBarComponent from "./sideBar";
+
 import useInitializeData from "../js/updateState/initializeData";
+import sideBarComponent from "./pageStructure/sideBar";
 
 
 
