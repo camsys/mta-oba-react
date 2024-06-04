@@ -6,17 +6,18 @@ import {OBA} from "../../js/oba";
 import L from "leaflet";
 import bus from "../../img/icon/bus.svg";
 import {GlobalStateContext} from "../util/globalState";
+import vehicleComponent from "./vehicleComponent";
 
 const mapComponent = (function() {
 
     // const [routePolylines, setRoutePolylines] = useState({});
 
-    const baseVehicleIcon = L.icon({
-        iconUrl: bus,
-        className: "svg-icon",
-        iconSize: [24, 40],
-        iconAnchor: [12, 40]
-    });
+    // const baseVehicleIcon = L.icon({
+    //     iconUrl: bus,
+    //     className: "svg-icon",
+    //     iconSize: [24, 40],
+    //     iconAnchor: [12, 40]
+    // });
 
     function generatePolyline(id, polyline, color) {
         return <Polyline key={id} positions={polyline} color={"#" + color}/>
@@ -107,16 +108,7 @@ const mapComponent = (function() {
                         const longLat = [];
                         longLat.push(vehicles[i].MonitoredVehicleJourney.VehicleLocation.Latitude)
                         longLat.push(vehicles[i].MonitoredVehicleJourney.VehicleLocation.Longitude)
-
-                        // vehiclePositions.push(new google.maps.LatLng(longLat[0],longLat[1]))
-                        vehicleMarkers.push(<Marker position={longLat} key={longLat} icon={baseVehicleIcon}>
-                            <Popup key={longLat}>
-                                A popup at {longLat}. Bus # {i}.
-                            </Popup>
-                        </Marker>);
-                        var lng = vehicles[i].MonitoredVehicleJourney.VehicleLocation.Longitude;
-                        var lat = vehicles[i].MonitoredVehicleJourney.VehicleLocation.Latitude;
-                        listItems.push(<li key={i}>{vehicles[i].MonitoredVehicleJourney.VehicleRef}</li>);
+                        vehicleMarkers.push(vehicleComponent(longLat,i));
                     };
                     OBA.Util.log('processed vehicles')
                 }
