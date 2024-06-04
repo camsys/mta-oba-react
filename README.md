@@ -11,10 +11,10 @@ Execute "npm run start"
 Navigate to http://localhost:8080/?LineRef=B63 in your browser
 
 Configurable env variables:
-Var Name | Default Value
----|---
-ALLOWED_HOST_ADDRESS | 'app.qa.obanyc.com/'
-ENV_ADDRESS | 'app.qa.obanyc.com/'
+Var Name | Var Use | Default Value
+---|---|---
+ALLOWED_HOST_ADDRESS | where this is being hosted |'https://app-react.qa.obanyc.com/'
+ENV_ADDRESS | what OBA env the app gets data from |'app.qa.obanyc.com/'
 
 
 Theoretically this should work!
