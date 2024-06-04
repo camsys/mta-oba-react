@@ -59,7 +59,7 @@ const siriEffect = () => {
     const { state, setState } = useContext(GlobalStateContext);
     const lineRef = queryString.parse(location.search).LineRef;
     let search = "&"+OBA.Config.cards.routeCard.identifier+"=" + lineRef;
-    var targetAddress = "https://" + process.env.ENV_ADDRESS + process.env.VEHICLE_MONITORING_ENDPOINT + search;
+    var targetAddress = "https://" + process.env.ENV_ADDRESS + "/" + process.env.VEHICLE_MONITORING_ENDPOINT + search;
     var updateVehicles = false;
 
     useEffect(() => {
