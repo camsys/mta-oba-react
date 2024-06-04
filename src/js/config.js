@@ -28,6 +28,7 @@ OBA.Config = {
     stopsOnRouteForDirection: "api/stops-on-route-for-direction",
     stopForId: "api/stop-for-id",
     debug: true,
+    trace: false,
     defaultMapCenter: [40.675417,-73.981129],
     envAddress: process.env.ENV_ADDRESS,
 

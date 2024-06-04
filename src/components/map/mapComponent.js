@@ -54,18 +54,21 @@ const mapComponent = (function() {
     return {
         getMap: function() {
             OBA.Util.log("generating map")
-            const [vehicles, setVehicles] = useState({});
-            const [situations, setSituations] = useState({});
+            // const [vehicles, setVehicles] = useState({});
+            // const [situations, setSituations] = useState({});
 
             const queryParameters = new URLSearchParams(window.location.search)
             const lineRef = queryString.parse(location.search).LineRef;
             var search = "";
             const leafletRoutePolylines = [];
             const leafletRoutePolylineKeys = [];
-            const listItems = [];
-            const vehicleMarkers = [];
-
             const { state} = useContext(GlobalStateContext);
+
+            const vehicleMarkers = state.vehicleMarkers;
+            // OBA.Util.log("vehicle state for mapComponent")
+            // OBA.Util.log(vehicleMarkers)
+
+
             if (state.currentCard==OBA.Config.cards.routeCard) {
                 search = "&"+OBA.Config.cards.routeCard.identifier+"=" + lineRef;
                 const {loading, routes} = useFetchRouteData(lineRef);
@@ -90,31 +93,7 @@ const mapComponent = (function() {
                     }
                 }
                 OBA.Util.log('processed route')
-                useEffect(() => {
-                    (async () => {
-                        const response = await fetch(
-                            "https://" + process.env.ENV_ADDRESS + process.env.VEHICLE_MONITORING_ENDPOINT + search
-                        );
-                        const parsed = await response.json();
-                        setVehicles(parsed.Siri.ServiceDelivery.VehicleMonitoringDelivery[0].VehicleActivity);
-                        setSituations(parsed.Siri.ServiceDelivery.SituationExchangeDelivery);
-                    })();
-                }, []);
-                OBA.Util.log('completed call to vehicles')
 
-                if (vehicles != null) {
-                    // const vehiclePositions = [];
-                    for (let i = 0; i < vehicles.length; i++) {
-                        const longLat = [];
-                        longLat.push(vehicles[i].MonitoredVehicleJourney.VehicleLocation.Latitude)
-                        longLat.push(vehicles[i].MonitoredVehicleJourney.VehicleLocation.Longitude)
-                        vehicleMarkers.push(vehicleComponent(longLat,i));
-                    };
-                    OBA.Util.log('processed vehicles')
-                }
-                else{
-                    OBA.Util.log('not processing vehicles')
-                }
             }
 
 
