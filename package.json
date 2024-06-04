@@ -32,7 +32,7 @@
     "react-dom": "^18.2.0",
     "react-leaflet": "^4.2.1",
     "react-leaflet-google-layer": "^2.2.0",
-    "react-router-dom": "^6.22.1",
+    "react-router": "^6.23.1",
     "react-select": "^5.8.0",
     "react-svg": "^16.1.33"
   }

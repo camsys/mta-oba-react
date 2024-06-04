@@ -72,21 +72,6 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
 
-  // map trigger open and close
-  var mapToggle = document.getElementById('map-toggle');
-  // var map = document.getElementById('map');
-  var mapWrap = document.getElementById('map-wrap');
-
-  mapToggle.addEventListener('click', function() {
-
-    // window.console.log('mapToggle clicked');
-    
-    mapWrap.classList.toggle('open');
-
-    mapToggle.setAttribute('aria-expanded', mapWrap.classList.contains('open'));
-    mapToggle.setAttribute('aria-label', mapWrap.classList.contains('open') ? 'Toggle Map Visibility (currently visible)' : 'Toggle Map Visibility (currently hidden)');
-    mapToggle.setAttribute('aria-pressed', mapWrap.classList.contains('open'));
-  });
 
   // all .close-popup-button buttons close their parent popup
   var popupCloseButtons = document.querySelectorAll('.close-popup-button');
