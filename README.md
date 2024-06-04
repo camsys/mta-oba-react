@@ -11,9 +11,10 @@ Execute "npm run start"
 Navigate to http://localhost:8080/?LineRef=B63 in your browser
 
 Configurable env variables:
-ALLOWED_HOST_ADDRESS
-ENV_ADDRESS
-VEHICLE_MONITORING_ENDPOINT
+Var Name | Default Value
+---|---
+ALLOWED_HOST_ADDRESS | 'app.qa.obanyc.com/'
+ENV_ADDRESS | 'app.qa.obanyc.com/'
 
 
 Theoretically this should work!
