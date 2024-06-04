@@ -92,7 +92,7 @@ const map = (function() {
                 useEffect(() => {
                     (async () => {
                         const response = await fetch(
-                            "https://" + process.env.QA_ENV_ADDRESS + process.env.VEHICLE_MONITORING_ENDPOINT + search
+                            "https://" + process.env.ENV_ADDRESS + process.env.VEHICLE_MONITORING_ENDPOINT + search
                         );
                         const parsed = await response.json();
                         setVehicles(parsed.Siri.ServiceDelivery.VehicleMonitoringDelivery[0].VehicleActivity);
