@@ -1,14 +1,14 @@
 import React, {useContext} from 'react';
-import {OBA} from "../js/oba";
-import ErrorBoundary from "./util/errorBoundary";
+import {OBA} from "../../js/oba";
+import ErrorBoundary from "../util/errorBoundary";
 import queryString from "query-string";
 import routeCard from "./../views/routeCard";
 import homeCard from "./../views/homeCard";
 import headerComponent from "./header";
 import footerComponent from "./footer";
 import searchComponent from "./search"
-import determineCard from "../js/updateState/determineCard";
-import {GlobalStateContext} from "./util/globalState";
+import determineCard from "../../js/updateState/determineCard";
+import {GlobalStateContext} from "../util/globalState";
 
 function getSideBar  () {
 
