@@ -1,11 +1,11 @@
 import {useContext } from 'react';
-import determineCard from "./determineCard";
+import handleCardChange from "./handleCardChange";
 import siriEffect from "./siriEffect";
 import searchEffect from "./searchEffect"
 import { GlobalStateContext } from '../../components/util/globalState';
 
 const useInitializeData = () => {
-    determineCard()
+    handleCardChange()
     siriEffect()
     searchEffect()
 };

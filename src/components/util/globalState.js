@@ -1,5 +1,5 @@
 import React, { createContext, useState } from 'react';
-
+import {OBA} from "../../js/oba";
 const GlobalStateContext = createContext();
 
 const GlobalStateProvider = ({ children }) => {
@@ -7,7 +7,7 @@ const GlobalStateProvider = ({ children }) => {
         apiData1: null,
         apiData2: null,
         someGlobalState: {},
-        currentCard: "home",
+        currentCard: OBA.Config.cards.homeCard,
         cardStack: []
     });
 

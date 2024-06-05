@@ -7,7 +7,6 @@ import homeCard from "./../views/homeCard";
 import headerComponent from "./header";
 import footerComponent from "./footer";
 import searchComponent from "./search"
-import determineCard from "../../js/updateState/determineCard";
 import {GlobalStateContext} from "../util/globalState";
 
 function getSideBar  () {
@@ -19,11 +18,11 @@ function getSideBar  () {
     const { state } = useContext(GlobalStateContext);
 
     function GetCardInfo  () {
-        if(state.currentCard==OBA.Config.cards.routeCard){
+        if(state.currentCard.name==OBA.Config.cards.routeCard.name){
             OBA.Util.log("adding route card")
             return routeCard();
         }
-        if(state.currentCard==OBA.Config.cards.homeCard){
+        if(state.currentCard.name==OBA.Config.cards.homeCard.name){
             OBA.Util.log("adding home card")
             return homeCard()
         }
