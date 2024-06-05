@@ -13,8 +13,8 @@ Navigate to http://localhost:8080/?LineRef=B63 in your browser
 Configurable env variables:
 Var Name | Var Use | Default Value
 ---|---|---
-ALLOWED_HOST_ADDRESS | where this is being hosted |'app-react.qa.obanyc.com'
-ENV_ADDRESS | what OBA env the app gets data from |'app.qa.obanyc.com'
+ALLOWED_HOST_ADDRESS | where this is being hosted |app-react.qa.obanyc.com
+ENV_ADDRESS | what OBA env the app gets data from |app.qa.obanyc.com
 
 
 Theoretically this should work!
