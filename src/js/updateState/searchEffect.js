@@ -41,15 +41,16 @@ const searchEffect = () => {
             }
         }
         OBA.Util.log('processed route')
-        return [leafletRoutePolylines,color,routeTitle,description]
+        return [leafletRoutePolylines,color,routeId,routeTitle,description]
     }
 
-    function postRouteData(routePolylines,color,routeTitle,description) {
+    function postRouteData(routePolylines,color,routeId,routeTitle,description) {
         OBA.Util.log("adding polylines:")
         OBA.Util.log(routePolylines)
         setState((prevState) => ({
             ...prevState,
             color:color,
+            routeId:routeId,
             routeTitle:routeTitle,
             description:description,
             routePolylines:routePolylines
@@ -68,8 +69,8 @@ const searchEffect = () => {
         fetch("https://" + OBA.Config.envAddress + "/" + OBA.Config.searchUrl + "?q=" + lineRef)
             .then((response) => response.json())
             .then((parsed) => {
-                const [routePolylines,color,routeTitle,description] = processRouteData(parsed.searchResults["matches"][0])
-                postRouteData(routePolylines,color,routeTitle,description);
+                const [routePolylines,color,routeId,routeTitle,description] = processRouteData(parsed.searchResults["matches"][0])
+                postRouteData(routePolylines,color,routeId,routeTitle,description);
                 OBA.Util.log('completed search results')
             })
             .catch((error) => {
