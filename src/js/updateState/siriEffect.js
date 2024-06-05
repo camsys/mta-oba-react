@@ -36,7 +36,7 @@ const siriEffect = () => {
         return [vehicles,situations,newVehicleMarkers]
     }
 
-    function updateVehicleMarkers(newVehicleMarkers){
+    function updateState(newVehicleMarkers){
         OBA.Util.trace('completed call to siri')
         OBA.Util.trace("pre-update vehicle state")
         OBA.Util.trace(state.vehicleMarkers)
@@ -68,7 +68,7 @@ const siriEffect = () => {
             .then((response) => response.json())
             .then((parsed) => {
                 let [vehicles,situations, vehicleMarkers] = parseSiri(parsed)
-                updateVehicleMarkers(vehicleMarkers)
+                updateState(vehicleMarkers)
             })
             .catch((error) => {
                 console.error(error);
