@@ -6,9 +6,9 @@ import queryString from "query-string";
 
 const siriEffect = () => {
 
-    function parseSiri (siri){
+    function parseSiri (siri, lineRef){
         let newVehicleMarkers = [];
-        OBA.Util.trace(siri)
+        OBA.Util.log(siri)
         let vehicles = siri?.Siri?.ServiceDelivery?.VehicleMonitoringDelivery[0]?.VehicleActivity
         let situations = siri?.Siri?.ServiceDelivery?.SituationExchangeDelivery
         OBA.Util.trace("vehicles found:")
@@ -17,9 +17,13 @@ const siriEffect = () => {
             let first = true;
             for (let i = 0; i < vehicles.length; i++) {
                 const longLat = [];
-                longLat.push(vehicles[i].MonitoredVehicleJourney.VehicleLocation.Latitude)
-                longLat.push(vehicles[i].MonitoredVehicleJourney.VehicleLocation.Longitude)
-                let vehicleComponent1 = vehicleComponent(longLat, i)
+                let monitoredVehicleJourney = vehicles[i].MonitoredVehicleJourney
+                longLat.push(monitoredVehicleJourney.VehicleLocation.Latitude)
+                longLat.push(monitoredVehicleJourney.VehicleLocation.Longitude)
+                let destination = monitoredVehicleJourney.DestinationName
+                let strollerVehicle = monitoredVehicleJourney.MonitoredCall.Extensions.VehicleFeatures.StrollerVehicle
+                let hasRealtime = monitoredVehicleJourney.Monitored;
+                let vehicleComponent1 = vehicleComponent(longLat, i, lineRef,destination,strollerVehicle)
                 if (first) {
                     first = false;
                     OBA.Util.log('first vehicleComponent:')
