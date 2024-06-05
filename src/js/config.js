@@ -43,11 +43,13 @@ OBA.Config = {
     cards : {
         homeCard: {
             name : 'homeCard',
-            identifier: {}
+            identifier: null,
+            queryIdentifier: null
         },
         routeCard: {
             name : 'routeCard',
-            identifier : 'LineRef'
+            identifier : null,
+            queryIdentifier: 'LineRef'
         },
     },
 
