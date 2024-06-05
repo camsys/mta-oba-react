@@ -6,6 +6,29 @@ import queryString from "query-string";
 
 const siriEffect = () => {
 
+
+    function generateVehicleMarker(vehicleInfo,lineRef,log){
+        const longLat = [];
+        let mvj = vehicleInfo.MonitoredVehicleJourney
+        longLat.push(mvj.VehicleLocation.Latitude)
+        longLat.push(mvj.VehicleLocation.Longitude)
+        let destination = mvj.DestinationName
+        let strollerVehicle = mvj.MonitoredCall.Extensions.VehicleFeatures.StrollerVehicle
+        let hasRealtime = mvj.Monitored;
+        let vehicleId = mvj.VehicleRef
+        let vehicleComponent = vehicleComponent(longLat,
+            vehicleId, lineRef,destination,strollerVehicle,
+            hasRealtime)
+        if (log) {
+            OBA.Util.log('first vehicleComponent:')
+            OBA.Util.log(vehicleComponent)
+
+        }
+        updateVehicles = true;
+        return vehicleComponent
+    }
+
+
     function parseSiri (siri, lineRef){
         let newVehicleMarkers = [];
         OBA.Util.log(siri)
@@ -16,21 +39,8 @@ const siriEffect = () => {
         if (vehicles != null && vehicles.length != 0) {
             let first = true;
             for (let i = 0; i < vehicles.length; i++) {
-                const longLat = [];
-                let monitoredVehicleJourney = vehicles[i].MonitoredVehicleJourney
-                longLat.push(monitoredVehicleJourney.VehicleLocation.Latitude)
-                longLat.push(monitoredVehicleJourney.VehicleLocation.Longitude)
-                let destination = monitoredVehicleJourney.DestinationName
-                let strollerVehicle = monitoredVehicleJourney.MonitoredCall.Extensions.VehicleFeatures.StrollerVehicle
-                let hasRealtime = monitoredVehicleJourney.Monitored;
-                let vehicleComponent1 = vehicleComponent(longLat, i, lineRef,destination,strollerVehicle)
-                if (first) {
-                    first = false;
-                    OBA.Util.log('first vehicleComponent:')
-                    OBA.Util.log(vehicleComponent1)
-                    updateVehicles = true;
-                }
-                newVehicleMarkers.push(vehicleComponent1);
+
+                newVehicleMarkers.push(generateVehicleMarker(vehicles[i]));
             };
 
             OBA.Util.log('processed vehicles')
@@ -71,7 +81,7 @@ const siriEffect = () => {
         fetch(targetAddress)
             .then((response) => response.json())
             .then((parsed) => {
-                let [vehicles,situations, vehicleMarkers] = parseSiri(parsed)
+                let [vehicles,situations, vehicleMarkers] = parseSiri(parsed,lineRef)
                 updateState(vehicleMarkers)
             })
             .catch((error) => {
