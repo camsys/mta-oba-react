@@ -31,7 +31,7 @@ const siriEffect = () => {
 
             OBA.Util.log('processed vehicles')
         } else {
-            OBA.Util.log('not processing vehicles')
+            OBA.Util.log('no vehicles recieved. not processing vehicles')
         }
         return [vehicles,situations,newVehicleMarkers]
     }
