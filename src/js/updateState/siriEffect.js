@@ -16,16 +16,16 @@ const siriEffect = () => {
         let strollerVehicle = mvj.MonitoredCall.Extensions.VehicleFeatures.StrollerVehicle
         let hasRealtime = mvj.Monitored;
         let vehicleId = mvj.VehicleRef
-        let vehicleComponent = vehicleComponent(longLat,
+        let vc = vehicleComponent(longLat,
             vehicleId, lineRef,destination,strollerVehicle,
             hasRealtime)
         if (log) {
             OBA.Util.log('first vehicleComponent:')
-            OBA.Util.log(vehicleComponent)
+            OBA.Util.log(vc)
 
         }
         updateVehicles = true;
-        return vehicleComponent
+        return vc
     }
 
 
