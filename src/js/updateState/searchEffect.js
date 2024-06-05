@@ -60,7 +60,7 @@ const searchEffect = () => {
     React.useEffect(() => {
         OBA.Util.log('getting search results')
         let search = "&" + OBA.Config.cards.routeCard.identifier + "=" + lineRef;
-        fetch("https://" + OBA.Config.envAddress + OBA.Config.searchUrl + "?q=" + lineRef)
+        fetch("https://" + OBA.Config.envAddress + "/" + OBA.Config.searchUrl + "?q=" + lineRef)
             .then((response) => response.json())
             .then((parsed) => {
                 postRouteData(processRouteData((parsed.searchResults["matches"][0])))
