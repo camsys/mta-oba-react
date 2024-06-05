@@ -20,7 +20,6 @@ const handleCardChange = () => {
         return OBA.Config.cards.homeCard
     };
 
-    useEffect(() => {
         OBA.Util.log("determining card method called")
         // OBA.Util.log("current card:")
         // OBA.Util.log(state.currentCard)
@@ -49,8 +48,6 @@ const handleCardChange = () => {
             OBA.Util.log("current stack:")
             OBA.Util.log(state.cardStack)
         }
-
-    }, [setState]);
 
 };
 
