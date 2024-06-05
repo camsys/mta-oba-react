@@ -16,12 +16,16 @@ const searchEffect = () => {
     function processRouteData(route) {
         const leafletRoutePolylines = [];
         const leafletRoutePolylineKeys = [];
-        let color;
+        var color;
+        var routeTitle;
         let routeId;
+        var description;
         const allDecodedPolylines = []
         if (route != null && route.hasOwnProperty("directions")) {
             color = route?.color
             routeId = route?.id
+            routeTitle = route?.shortName + " " + route?.longName
+            description = route?.description
             for (let i = 0; i < route?.directions.length; i++) {
                 let dir = route?.directions[i];
                 for (let j = 0; j < dir.polylines.length; j++) {
@@ -37,16 +41,17 @@ const searchEffect = () => {
             }
         }
         OBA.Util.log('processed route')
-        return [leafletRoutePolylines,color,routeId]
+        return [leafletRoutePolylines,color,routeTitle,description]
     }
 
-    function postRouteData(routePolylines,color,routeId) {
+    function postRouteData(routePolylines,color,routeTitle,description) {
         OBA.Util.log("adding polylines:")
         OBA.Util.log(routePolylines)
         setState((prevState) => ({
             ...prevState,
             color:color,
-            routeId : routeId,
+            routeTitle:routeTitle,
+            description:description,
             routePolylines:routePolylines
         }))
         OBA.Util.log("confirming polylines added:")
@@ -63,7 +68,8 @@ const searchEffect = () => {
         fetch("https://" + OBA.Config.envAddress + "/" + OBA.Config.searchUrl + "?q=" + lineRef)
             .then((response) => response.json())
             .then((parsed) => {
-                postRouteData(processRouteData((parsed.searchResults["matches"][0])))
+                const [routePolylines,color,routeTitle,description] = processRouteData(parsed.searchResults["matches"][0])
+                postRouteData(routePolylines,color,routeTitle,description);
                 OBA.Util.log('completed search results')
             })
             .catch((error) => {
