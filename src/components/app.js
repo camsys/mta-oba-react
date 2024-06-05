@@ -26,9 +26,7 @@ function App  () {
             <div id="sidebar">
                 <GetSideBar />
             </div>
-            <div id="map-wrap">
-                <GetMapWrapper />
-            </div>
+            <GetMapWrapper />
         </ErrorBoundary>
     )
 }

@@ -15,11 +15,9 @@ const mapComponent = (function() {
         getMap: function() {
             OBA.Util.log("generating map")
 
-            const { state, setState } = useContext(GlobalStateContext);
+            const { state} = useContext(GlobalStateContext);
             const vehicleMarkers = state.vehicleMarkers;
             const routePolylines = state.routePolylines
-
-
 
             return (<React.Fragment> <MapContainer style={{height: '100vh', width: '100wh'}} center={OBA.Config.defaultMapCenter} zoom={15}
                                   scrollWheelZoom={true}>

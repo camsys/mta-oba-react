@@ -1024,9 +1024,7 @@ button:hover, .button:hover {
   -ms-flex-positive: 1;
       flex-grow: 1;
 }
-#map-wrap.open {
-  top: 0;
-}
+
 #map-wrap.open #map-toggle .hide-label {
   display: inline;
 }

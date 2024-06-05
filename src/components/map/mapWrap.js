@@ -1,29 +1,33 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {OBA} from "../../js/oba";
 import mapComponent from './mapComponent.js';
 import ErrorBoundary from "../util/errorBoundary";
 
 
-//
-// // map trigger open and close
-// var mapToggle = document.getElementById('map-toggle');
-// // var map = document.getElementById('map');
-// var mapWrap = document.getElementById('map-wrap');
-//
-// mapToggle.addEventListener('click', function() {
-//
-//     // window.console.log('mapToggle clicked');
-//
-//     mapWrap.classList.toggle('open');
-//
-//     mapToggle.setAttribute('aria-expanded', mapWrap.classList.contains('open'));
-//     mapToggle.setAttribute('aria-label', mapWrap.classList.contains('open') ? 'Toggle Map Visibility (currently visible)' : 'Toggle Map Visibility (currently hidden)');
-//     mapToggle.setAttribute('aria-pressed', mapWrap.classList.contains('open'));
-// });
-//
+
+
+
 
 
 function getMapWrap  () {
+
+
+    const [mapVisible,setMapVisible] = useState(false)
+
+    function mapToggle(){
+        setMapVisible(!mapVisible)
+    }
+
+    const ariaLabel = ()=>{
+            return mapVisible ? 'Toggle Map Visibility (currently visible)' : 'Toggle Map Visibility (currently hidden)'
+    }
+
+    function mapWrapClass(){
+        if(mapVisible){
+            return "open"
+        }
+    }
+
     function GetMap () {
         OBA.Util.log("adding map")
         return mapComponent.getMap()
@@ -32,6 +36,7 @@ function getMapWrap  () {
     OBA.Util.log("adding map-wrapper")
     return(
         <ErrorBoundary>
+            <div id="map-wrap" style={{top: mapVisible?null:0}}>
                 <div className="bottom-buttons" id="map-trigger-wrao">
                     <button id="refresh" className="button icon-button-left" style={{display: 'none'}}>
                   <span className="svg-icon-wrap" role="presentation" aria-hidden="true">
@@ -40,11 +45,12 @@ function getMapWrap  () {
                   </span>
                         Refresh <span className="updated-at">(<span className="updated">updated </span>4:13 PM)</span>
                     </button>
-                    <button id="map-toggle" className="button" aria-controls="map" aria-expanded="false" aria-pressed="false"
-                            aria-label="Toggle Map Visibility (currently hidden)"><span className="hide-label">Hide </span>Map
+                    <button id="map-toggle" className="button" aria-controls="map" aria-expanded={mapVisible} aria-pressed={mapVisible}
+                            aria-label={ariaLabel} onClick={mapToggle}><span className="hide-label">Hide </span>Map
                     </button>
                 </div>
                 <GetMap />
+            </div>
         </ErrorBoundary>
 )
 }
