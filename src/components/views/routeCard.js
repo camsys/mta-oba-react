@@ -1,9 +1,12 @@
-import React from 'react';
+import React, {useContext, useState} from "react";
 import {OBA} from "../../js/oba";
+import {GlobalStateContext} from "../../components/util/globalState";
 
 
 function getRouteCard  () {
-    OBA.Util.log("adding route card")
+    OBA.Util.log("adding route card");
+
+     const { state, setState } = useContext(GlobalStateContext);
 
     var time = new Date();
     time = time.toLocaleString('en-US', { hour: 'numeric',  minute: 'numeric', hour12: true })
@@ -17,11 +20,11 @@ function getRouteCard  () {
       <div className="cards">
         <div className="card route-card b38">
           <div className="card-header" styles="border-color: #00AEEF">
-            <h3 className="card-title">B38 Ridgewood - Downtown Brooklyn</h3>
+            <h3 className="card-title">{state.routeTitle}</h3>
           </div>
           <div className="card-content">
             <ul className="card-details">
-              <li className="via">via DeKalb & Lafayette Ave</li>
+              <li className="via">{state.description}</li>
             </ul>
             <div className="service-alert inner-card collapsible">
               <button className="card-header collapse-trigger" aria-haspopup="true"
