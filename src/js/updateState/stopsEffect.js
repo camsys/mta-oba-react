@@ -31,7 +31,7 @@ const stopsEffect = (currentCard) => {
         return [stopObjs,mapStopComponents,routeStopComponents]
     }
 
-    function updateState(stopObjs,mapStopComponents,sidebarStopComponents){
+    function updateState(stopObjs,mapStopComponents,routeStopComponents){
         if(updateRoutes) {
             setState((prevState) => ({
                 ...prevState,
