@@ -5,64 +5,61 @@ import queryString from "query-string";
 import routeStopComponent from "../../components/views/routeStopComponent";
 import mapStopComponent from "../../components/map/mapStopComponent";
 import {stopData} from "./dataModels"
+import {classList, pathRouting,dataSpecifiers} from "./dataEffectsSupport";
 
-const getDataEffect = (currentCard, keyword, stateProperties,stateUpdateItems,targetAddress,
-                       dataClass, mapComponentClass,routeComponentClass,
-                       listParser,indivParser) => {
+const getDataEffect = (currentCard, targetAddress,
+                       dataSpecifiersList) => {
+
     const { state, setState } = useContext(GlobalStateContext);
-    var keyword = keyword
-    var stateProperties = stateProperties
     var update = false
-    var listParser = listParser
-    var indivParser = indivParser
 
-    function extractData (parsed,[objs,mapComponents,routeComponents]){
+    function extractData (parsed,dataSpecifiers){
+        let listParser = dataSpecifiers.pathRouting.pathToList
+        let indivParser = dataSpecifiers.pathRouting.pathToIndividual
+        let classList = dataSpecifiers.classList
         let jsonList = listParser(parsed)
-        OBA.Util.log(keyword+" found:")
+        OBA.Util.log(dataSpecifiers.keyword+" found:")
         OBA.Util.log(jsonList)
         if (jsonList != null && jsonList.length != 0) {
             update = true;
             for (let i = 0; i < jsonList.length; i++) {
-                OBA.Util.log("processing "+keyword+"#" + i+ ": " +jsonList[i].name);
-                let obj= new dataClass(indivParser(jsonList,i))
-                objs.push(obj)
-                mapComponents.push(new mapComponentClass(obj))
-                routeComponents.push(new routeComponentClass(obj, i))
+                OBA.Util.log("processing "+dataSpecifiers.keyword+"#" + i);
+                let obj= new classList.dataClass(indivParser(jsonList,i))
+                classList.dataContainer.push(obj)
+                classList.otherClasses.forEach((c)=>{
+                    c.container.push(new c.targetClass(obj))
+                })
+                // mapComponents.push(new dataSpecifiers.classList.mapComponentClass(obj))
+                // routeComponents.push(new dataSpecifiers.classList.routeComponentClass(obj, i))
             };
 
-            OBA.Util.log('processed '+keyword)
+            OBA.Util.log('processed '+dataSpecifiers.keyword)
         } else {
-            OBA.Util.log('no '+keyword+' recieved. not processing '+keyword)
+            OBA.Util.log('no '+dataSpecifiers.keyword+' recieved. not processing '+dataSpecifiers.keyword)
         }
-        OBA.Util.log(keyword+" post process")
-        OBA.Util.log(objs)
-        OBA.Util.log(mapComponents)
-        OBA.Util.log(routeComponents)
-        return [objs,mapComponents,routeComponents]
+        OBA.Util.log(dataSpecifiers.keyword+" post process")
+        return dataSpecifiers
     }
 
-    function updateState([newObjs,newMapComps,newRouteComps]){
-
-        OBA.Util.log("should update "+keyword+" state?")
+    function updateState(dataSpecifiers){
+        let classList = dataSpecifiers.classList
+        OBA.Util.log("should update "+dataSpecifiers.keyword+" state?")
         OBA.Util.log(update)
         if(update) {
-            OBA.Util.log("adding to "+keyword+" state:")
-            OBA.Util.log(newObjs)
-            OBA.Util.log(newMapComps)
-            OBA.Util.log(newRouteComps)
+            OBA.Util.log("adding to "+dataSpecifiers.keyword+" state:")
+            let capitalkeyword = dataSpecifiers.keyword.substring(0, 1).toUpperCase() + dataSpecifiers.keyword.substring(1);
             let stateFunc = (prevState) => {
                 let newState = {...prevState}
-                newState[stateProperties[0]]=newObjs
-                newState[stateProperties[1]]=newMapComps
-                newState[stateProperties[2]]=newRouteComps
+                newState[dataSpecifiers.keyword+"Data"] = classList.dataContainer
+                classList.otherClasses.forEach((c)=>{
+                    newState[c.identifier + capitalkeyword + "Components"] = c.container
+                })
                 return newState
             }
             setState(stateFunc);
         }
-        OBA.Util.log("new "+keyword+" state")
-        OBA.Util.log(state[stateProperties[0]])
-        OBA.Util.log(state[stateProperties[1]])
-        OBA.Util.log(state[stateProperties[2]])
+        OBA.Util.log("new "+dataSpecifiers.keyword+" state")
+
     }
 
 
@@ -70,11 +67,16 @@ const getDataEffect = (currentCard, keyword, stateProperties,stateUpdateItems,ta
 
 
     useEffect(() => {
-        OBA.Util.log("reading "+keyword+" from " + targetAddress)
         fetch(targetAddress)
             .then((response) => response.json())
             .then((parsed) => {
-                updateState(extractData(parsed,stateUpdateItems))
+                console.log(dataSpecifiersList)
+                dataSpecifiersList.forEach((dataSpecifiers)=>{
+                    console.log(dataSpecifiers)
+                    console.log(dataSpecifiers.keyword)
+                    OBA.Util.log("reading "+dataSpecifiers.keyword+" from " + targetAddress)
+                    updateState(extractData(parsed,dataSpecifiers))
+                })
             })
             .catch((error) => {
                 console.error(error);

@@ -4,24 +4,38 @@ import vehicleComponent from "../../components/map/vehicleComponent";
 import {GlobalStateContext} from "../../components/util/globalState";
 import queryString from "query-string";
 import getDataEffect from "./getDataEffect";
-import {vehicleData} from "./dataModels";
+import {serviceAlertData, stopData, vehicleData} from "./dataModels";
 import mapVehicleComponent from "../../components/map/vehicleComponent";
 import routeVehicleComponent from "../../components/views/routeVehicleComponent";
+import {classList, classWrap, dataSpecifiers, pathRouting} from "./dataEffectsSupport";
+import mapStopComponent from "../../components/map/mapStopComponent";
+import routeStopComponent from "../../components/views/routeStopComponent";
+import serviceAlertComponent from "../../components/views/serviceAlertComponent";
 
 const siriEffect = (currentCard) => {
 
 
     var keyword = "vehicle"
-    var stateProperties = ["vehicleObjs","mapVehicleComponents","routeVehicleComponents"]
-    let stateUpdateItems = [[],[],[]]
     const lineRef = queryString.parse(location.search).LineRef;
     let search = "&"+currentCard.queryIdentifier+"=" + lineRef;
     var targetAddress = "https://" + process.env.ENV_ADDRESS + "/" + process.env.VEHICLE_MONITORING_ENDPOINT + search;
 
-    getDataEffect(currentCard,keyword,stateProperties,stateUpdateItems,targetAddress,
-        vehicleData, mapVehicleComponent,routeVehicleComponent,
-        (siri)=>{return siri?.Siri?.ServiceDelivery?.VehicleMonitoringDelivery[0]?.VehicleActivity},
-        (objList,i)=>{return objList[i].MonitoredVehicleJourney})
+
+    let vehicleSpecifiers = new dataSpecifiers("vehicle",
+        new classList(vehicleData,
+            [new classWrap(mapVehicleComponent,"map"),
+            new classWrap(routeVehicleComponent,"route")]),
+        new pathRouting((siri)=>{return siri?.Siri?.ServiceDelivery?.VehicleMonitoringDelivery[0]?.VehicleActivity},
+            (objList,i)=>{return objList[i].MonitoredVehicleJourney}))
+    let serviceAlertSpecifiers = new dataSpecifiers("serviceAlert",
+        new classList(serviceAlertData,
+            [new classWrap(serviceAlertComponent,"sidebar")]),
+        new pathRouting((siri)=>{return siri?.Siri?.ServiceDelivery?.VehicleMonitoringDelivery[0]?.VehicleActivity},
+            (objList,i)=>{return objList[i].MonitoredVehicleJourney}))
+
+
+
+    getDataEffect(currentCard,targetAddress,[vehicleSpecifiers,serviceAlertSpecifiers])
 };
 
 export default siriEffect;

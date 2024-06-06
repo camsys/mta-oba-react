@@ -9,9 +9,7 @@ export class stopData {
 
 export class serviceAlertData {
     constructor(serviceAlertJson) {
-        this.name = stopJson.name
-        this.longLat = [stopJson.latitude,stopJson.longitude]
-        this.id = stopJson.id
+        this.json = serviceAlertJson
     }
 }
 
