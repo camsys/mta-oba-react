@@ -15,7 +15,7 @@ function mapStopComponent  (stopData) {
         iconSize: [24, 40],
         iconAnchor: [12, 40]
     })
-    let out = (<Marker position={stopData.longLat} key={stopData.id} icon={icon} id={COMPONENT_IDENTIFIER+"_"+stopData.id}>
+    let out = (<Marker position={stopData.longLat} key={COMPONENT_IDENTIFIER+"_"+stopData.id} icon={icon} id={COMPONENT_IDENTIFIER+"_"+stopData.id}>
         <Popup key={stopData.id} className="map-popup">
             <img src={stopPopupIcon} alt="busstop icon" className="stopIcon"/>
             <div className="stop-info">

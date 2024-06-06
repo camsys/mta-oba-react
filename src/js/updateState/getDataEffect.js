@@ -26,8 +26,8 @@ const getDataEffect = (currentCard, keyword, stateProperties,stateUpdateItems,ta
                 OBA.Util.log("processing "+keyword+"#" + i+ ": " +jsonList[i].name);
                 let obj= new dataClass(indivParser(jsonList,i))
                 objs.push(obj)
-                mapComponents.push(new mapStopComponent(obj))
-                routeComponents.push(new routeStopComponent(obj, i))
+                mapComponents.push(new mapComponentClass(obj))
+                routeComponents.push(new routeComponentClass(obj, i))
             };
 
             OBA.Util.log('processed '+keyword)
@@ -51,10 +51,11 @@ const getDataEffect = (currentCard, keyword, stateProperties,stateUpdateItems,ta
             OBA.Util.log(newMapComps)
             OBA.Util.log(newRouteComps)
             let stateFunc = (prevState) => {
-                prevState[stateProperties[0]]=newObjs
-                prevState[stateProperties[1]]=newMapComps
-                prevState[stateProperties[2]]=newRouteComps
-                return prevState
+                let newState = {...prevState}
+                newState[stateProperties[0]]=newObjs
+                newState[stateProperties[1]]=newMapComps
+                newState[stateProperties[2]]=newRouteComps
+                return newState
             }
             setState(stateFunc);
         }
