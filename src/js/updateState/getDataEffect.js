@@ -6,7 +6,8 @@ import routeStopComponent from "../../components/views/routeStopComponent";
 import mapStopComponent from "../../components/map/mapStopComponent";
 import {stopData} from "./dataModels"
 
-const getDataEffect = (currentCard, keyword, stateProperties,stateUpdateItems,targetAddress) => {
+const getDataEffect = (currentCard, keyword, stateProperties,stateUpdateItems,targetAddress,
+                       mapComponentClass,routeComponentClass) => {
     const { state, setState } = useContext(GlobalStateContext);
     var keyword = keyword
     var stateProperties = stateProperties
