@@ -15,7 +15,7 @@ const stopsEffect = (currentCard) => {
         OBA.Util.log("stops found:")
         OBA.Util.log(stopsList)
         if (stopsList != null && stopsList.length != 0) {
-            let first = true;
+            updateStops = true;
             for (let i = 0; i < stopsList.length; i++) {
                 OBA.Util.log("processing stop #" + i+ ": " +stopsList[i].name);
                 let stopDatum= new stopData(stopsList[i])
@@ -28,11 +28,22 @@ const stopsEffect = (currentCard) => {
         } else {
             OBA.Util.log('no stops recieved. not processing stops')
         }
+        OBA.Util.log("stops post process")
+        OBA.Util.log(stopObjs)
+        OBA.Util.log(mapStopComponents)
+        OBA.Util.log(routeStopComponents)
         return [stopObjs,mapStopComponents,routeStopComponents]
     }
 
     function updateState(stopObjs,mapStopComponents,routeStopComponents){
-        if(updateRoutes) {
+
+        OBA.Util.log("should update stops state?")
+        OBA.Util.log(updateStops)
+        if(updateStops) {
+            OBA.Util.log("adding to stops state:")
+            OBA.Util.log(stopObjs)
+            OBA.Util.log(mapStopComponents)
+            OBA.Util.log(routeStopComponents)
             setState((prevState) => ({
                 ...prevState,
                 stopObjs: stopObjs,
@@ -52,14 +63,15 @@ const stopsEffect = (currentCard) => {
     const lineRef = queryString.parse(location.search).LineRef;
     let search = "routeId=MTA NYCT_"+lineRef +"&directionId=0";
     var targetAddress = "https://" + process.env.ENV_ADDRESS + "/" + process.env.STOPS_ON_ROUTE_ENDPOINT + search;
-    var updateRoutes = false;
+    var updateStops = false;
 
     useEffect(() => {
         OBA.Util.log("reading stops from " + targetAddress)
         fetch(targetAddress)
             .then((response) => response.json())
             .then((parsed) => {
-                updateState(extractStopData(parsed))
+                const [stopObjs,mapStopComponents,routeStopComponents] = extractStopData(parsed)
+                updateState(stopObjs,mapStopComponents,routeStopComponents)
             })
             .catch((error) => {
                 console.error(error);

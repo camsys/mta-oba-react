@@ -7,14 +7,14 @@ import routeComponent from "../../components/map/routeComponent";
 const searchEffect = (currentCard) => {
 
 
-    function generatePolyline(id, points, color) {
+    function generateRouteComponent(id, points, color) {
         let polyline = new routeComponent(id,points,color)
         console.log(polyline)
         return polyline
     }
 
     function processRouteData(route) {
-        const leafletRoutePolylines = [];
+        const routeComponents = [];
         const leafletRoutePolylineKeys = [];
         var color;
         var routeTitle;
@@ -33,30 +33,30 @@ const searchEffect = (currentCard) => {
                     let decodedPolyline = OBA.Util.decodePolyline(encodedPolyline)
                     let first = true
                     let polylineId = routeId + "_dir_" + i + "_lineNum_" + j
-                    let leafletPolyline = generatePolyline(polylineId, decodedPolyline, color)
-                    leafletRoutePolylines.push(leafletPolyline)
+                    let routeComponent = generateRouteComponent(polylineId, decodedPolyline, color)
+                    routeComponents.push(routeComponent)
                     leafletRoutePolylineKeys.push(polylineId)
                     allDecodedPolylines.push(decodedPolyline)
                 }
             }
         }
         OBA.Util.log('processed route')
-        return [leafletRoutePolylines,color,routeId,routeTitle,description]
+        return [routeComponents,color,routeId,routeTitle,description]
     }
 
-    function postRouteData(routePolylines,color,routeId,routeTitle,description) {
+    function postRouteData(routeComponents,color,routeId,routeTitle,description) {
         OBA.Util.log("adding polylines:")
-        OBA.Util.log(routePolylines)
+        OBA.Util.log(routeComponents)
         setState((prevState) => ({
             ...prevState,
             color:color,
             routeId:routeId,
             routeTitle:routeTitle,
             description:description,
-            routePolylines:routePolylines
+            routeComponents:routeComponents
         }))
         OBA.Util.log("confirming polylines added:")
-        OBA.Util.log(routePolylines)
+        OBA.Util.log(routeComponents)
     }
 
     const { state, setState } = useContext(GlobalStateContext);
@@ -68,8 +68,8 @@ const searchEffect = (currentCard) => {
         fetch("https://" + OBA.Config.envAddress + "/" + OBA.Config.searchUrl + "?q=" + lineRef)
             .then((response) => response.json())
             .then((parsed) => {
-                const [routePolylines,color,routeId,routeTitle,description] = processRouteData(parsed.searchResults["matches"][0])
-                postRouteData(routePolylines,color,routeId,routeTitle,description);
+                const [routeComponents,color,routeId,routeTitle,description] = processRouteData(parsed.searchResults["matches"][0])
+                postRouteData(routeComponents,color,routeId,routeTitle,description);
                 OBA.Util.log('completed search results')
             })
             .catch((error) => {
