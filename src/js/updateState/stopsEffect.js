@@ -7,7 +7,7 @@ import queryString from "query-string";
 const stopsEffect = () => {
 
     function parseStops (parsedStops){
-        let newVehicleMarkers = [];
+        let newRoutes = [];
         OBA.Util.trace(parsedStops)
         let stops = parsedStops?.stops
         OBA.Util.trace("stops found:")
@@ -22,25 +22,25 @@ const stopsEffect = () => {
         } else {
             OBA.Util.log('no stops recieved. not processing stops')
         }
-        return [stops,stops,newVehicleMarkers]
+        return [stops,stops,newRoutes]
     }
 
-    function updateState(newVehicleMarkers){
-        OBA.Util.trace('completed call to siri')
-        OBA.Util.trace("pre-update vehicle state")
-        OBA.Util.trace(state.vehicleMarkers)
-        OBA.Util.log("updating vehicle state to")
-        OBA.Util.log(newVehicleMarkers)
-        OBA.Util.trace("updating vehicles state?: " + updateVehicles)
-        OBA.Util.trace(updateVehicles)
-        if(updateVehicles) {
+    function updateState(newRoutes){
+        OBA.Util.trace('completed call to routes')
+        OBA.Util.trace("pre-update route state")
+        OBA.Util.trace(state.routes)
+        OBA.Util.log("updating route state to")
+        OBA.Util.log(newRoutes)
+        OBA.Util.trace("updating routes state?: " + updateRoutes)
+        OBA.Util.trace(updateRoutes)
+        if(updateRoutes) {
             setState((prevState) => ({
                 ...prevState,
-                vehicleMarkers: newVehicleMarkers
+                routes: newRoutes
             }));
         }
         OBA.Util.log("new vehicle state")
-        OBA.Util.log(state.vehicleMarkers)
+        OBA.Util.log(state.routes)
     }
 
 
@@ -49,15 +49,15 @@ const stopsEffect = () => {
     const lineRef = queryString.parse(location.search).LineRef;
     let search = "routeId=MTA NYCT_B38&directionId=0"; //OBA.Config.cards.routeCard.identifier+"=" + lineRef;
     var targetAddress = "https://" + process.env.ENV_ADDRESS + "/" + process.env.STOPS_ON_ROUTE_ENDPOINT + search;
-    var updateVehicles = false;
+    var updateRoutes = false;
 
     useEffect(() => {
         OBA.Util.log("reading stops from " + targetAddress)
         fetch(targetAddress)
             .then((response) => response.json())
             .then((parsed) => {
-                let [vehicles,situations, vehicleMarkers] = parseStops(parsed)
-                updateState(vehicleMarkers)
+                let [vehicles,situations, routes] = parseStops(parsed)
+                updateState(routes)
             })
             .catch((error) => {
                 console.error(error);
