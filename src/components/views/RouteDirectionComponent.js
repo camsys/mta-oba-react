@@ -1,19 +1,23 @@
-import React from "react";
+import React, {useContext} from "react";
+import {GlobalStateContext} from "../util/globalState";
 
-return(
-    <div className="route-direction inner-card collapsible">
-        <button className="card-header collapse-trigger" aria-haspopup="true"
-                aria-expanded="false"
-                aria-label="Toggle B38 to Downtown Brooklyn Tillary Street Open / Closed">
-            <span className="label">to <strong>Downtown Bklyn Tillary St</strong></span>
-        </button>
-        <div className="card-content collapse-content" styles="max-height: 0px;">
-            <ul className="route-stops" styles="color: #00AEEF;">
-                {state.routeStopComponents}
-            </ul>
+export default function RouteDirectionComponent(){
+    // const { state} = useContext(GlobalStateContext);
+    return(
+        <div className="route-direction inner-card collapsible">
+            <button className="card-header collapse-trigger" aria-haspopup="true"
+                    aria-expanded="false"
+                    aria-label="Toggle B38 to Downtown Brooklyn Tillary Street Open / Closed">
+                <span className="label">to <strong>Downtown Bklyn Tillary St</strong></span>
+            </button>
+            <div className="card-content collapse-content" styles="max-height: 0px;">
+                <ul className="route-stops" styles="color: #00AEEF;">
+                    {/*{state.routeStopComponents}*/}
+                </ul>
+            </div>
         </div>
-    </div>
-)
+    )}
+
 
 //     <div className="route-direction inner-card collapsible">
 //     <button className="card-header collapse-trigger" aria-haspopup="true"
