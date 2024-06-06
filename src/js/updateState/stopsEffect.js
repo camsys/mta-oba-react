@@ -4,38 +4,31 @@ import {GlobalStateContext} from "../../components/util/globalState";
 import queryString from "query-string";
 import routeStopComponent from "../../components/views/routeStopComponent";
 import mapStopComponent from "../../components/map/mapStopComponent";
+import {stopData} from "./dataModels"
 
 const stopsEffect = (currentCard) => {
-
-    class stopData {
-        constructor(stopJson) {
-            this.name = stopJson.name
-        }
-    }
-
-    function extractStopData (parsedStops){
+    function extractStopData (parsed){
         let stopObjs = [];
         let mapStopComponents = []
         let routeStopComponents = []
-        OBA.Util.trace(parsedStops)
-        let stopsList = parsedStops?.stops
-        OBA.Util.trace("stops found:")
-        OBA.Util.trace(stopsList)
-        if (stopsList != null && stops.length != 0) {
+        let stopsList = parsed?.stops
+        OBA.Util.log("stops found:")
+        OBA.Util.log(stopsList)
+        if (stopsList != null && stopsList.length != 0) {
             let first = true;
             for (let i = 0; i < stopsList.length; i++) {
-                OBA.Util.log("processing stop #" + i+ ": " +stops[i].name);
-                let stopData=new stopData(stops[i])
-                stopObjs.push(stopData)
-                mapStopComponents.push(new mapStopComponent(stopData))
-                routeStopComponents.push(new routeStopComponent(stopData))
+                OBA.Util.log("processing stop #" + i+ ": " +stopsList[i].name);
+                let stopDatum= new stopData(stopsList[i])
+                stopObjs.push(stopDatum)
+                mapStopComponents.push(new mapStopComponent(stopDatum))
+                routeStopComponents.push(new routeStopComponent(stopDatum))
             };
 
             OBA.Util.log('processed stops')
         } else {
             OBA.Util.log('no stops recieved. not processing stops')
         }
-        return [stopObjs,mapStopComponents,sidebarStopComponents]
+        return [stopObjs,mapStopComponents,routeStopComponents]
     }
 
     function updateState(stopObjs,mapStopComponents,sidebarStopComponents){
@@ -44,13 +37,13 @@ const stopsEffect = (currentCard) => {
                 ...prevState,
                 stopObjs: stopObjs,
                 mapStopComponents:mapStopComponents,
-                sidebarStopComponents:sidebarStopComponents
+                routeStopComponents:routeStopComponents
             }));
         }
         OBA.Util.log("new stops state")
         OBA.Util.log(state.stopObjs)
         OBA.Util.log(state.mapStopComponents)
-        OBA.Util.log(state.sidebarStopComponents)
+        OBA.Util.log(state.routeStopComponents)
     }
 
 
