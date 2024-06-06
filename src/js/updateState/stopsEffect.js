@@ -35,20 +35,20 @@ const stopsEffect = (currentCard) => {
         return [stopObjs,mapStopComponents,routeStopComponents]
     }
 
-    function updateState(stopObjs,mapStopComponents,routeStopComponents){
+    function updateState(newStopObjs,newMapStopComponents,newRouteStopComponents){
 
         OBA.Util.log("should update stops state?")
         OBA.Util.log(updateStops)
         if(updateStops) {
             OBA.Util.log("adding to stops state:")
-            OBA.Util.log(stopObjs)
-            OBA.Util.log(mapStopComponents)
-            OBA.Util.log(routeStopComponents)
+            OBA.Util.log(newStopObjs)
+            OBA.Util.log(newMapStopComponents)
+            OBA.Util.log(newRouteStopComponents)
             setState((prevState) => ({
                 ...prevState,
-                stopObjs: stopObjs,
-                mapStopComponents:mapStopComponents,
-                routeStopComponents:routeStopComponents
+                stopObjs: newStopObjs,
+                mapStopComponents:newMapStopComponents,
+                routeStopComponents:newRouteStopComponents
             }));
         }
         OBA.Util.log("new stops state")
