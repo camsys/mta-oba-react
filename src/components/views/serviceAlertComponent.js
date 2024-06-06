@@ -1,7 +1,7 @@
 import React from "react";
 import serviceAlertContainerComponent from "./serviceAlertContainerComponent";
 
-function serviceAlertComponent  (serviceAlertData) {
+function getServiceAlertComponent  (serviceAlertData) {
     return(
         <div className="card-content collapse-content" styles="max-height: 0px;">
             <p>Eastbound B38 stop on Kossuth Pl at Bushwick Ave is closed.</p>
@@ -22,4 +22,4 @@ function serviceAlertComponent  (serviceAlertData) {
 }
 
 
-export default serviceAlertComponent;
+export default getServiceAlertComponent;

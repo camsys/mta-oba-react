@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function refreshComponent(){
+export default function getRefreshComponent(){
 
     var time = new Date();
     time = time.toLocaleString('en-US', { hour: 'numeric',  minute: 'numeric', hour12: true });

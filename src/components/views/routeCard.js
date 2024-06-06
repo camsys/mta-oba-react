@@ -2,7 +2,7 @@ import React, {useContext, useState} from "react";
 import {OBA} from "../../js/oba";
 import {GlobalStateContext} from "../../components/util/globalState";
 import ServiceAlertContainerComponent from "./serviceAlertContainerComponent";
-import RouteDirectionComponent from "./RouteDirectionComponent"
+import RouteDirectionComponent from "./routeDirectionComponent"
 import RefreshComponent from "./RefreshComponent"
 
 

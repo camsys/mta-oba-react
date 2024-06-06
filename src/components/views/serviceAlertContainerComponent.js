@@ -1,7 +1,7 @@
 import React from "react";
 import ServiceAlertComponent from "./serviceAlertComponent"
 
-function ServiceAlertContainerComponent  () {
+function getServiceAlertContainerComponent  () {
     return (<div className="service-alert inner-card collapsible">
         <button className="card-header collapse-trigger" aria-haspopup="true"
                 aria-expanded="false" aria-label="Toggle Service Alert Open/Closed">
@@ -20,4 +20,4 @@ function ServiceAlertContainerComponent  () {
     </div>)
 }
 
-export default ServiceAlertContainerComponent;
+export default getServiceAlertContainerComponent;

@@ -1,7 +1,7 @@
 import React, {useContext} from "react";
 import {GlobalStateContext} from "../util/globalState";
 
-export default function RouteDirectionComponent(){
+export default function getRouteDirectionComponent(){
     const { state} = useContext(GlobalStateContext);
     return(
         <div className="route-direction inner-card collapsible">
@@ -11,7 +11,7 @@ export default function RouteDirectionComponent(){
                 <span className="label">to <strong>Downtown Bklyn Tillary St</strong></span>
             </button>
             <div className="card-content collapse-content" styles="max-height: 0px;">
-                <ul className="route-stops" styles="color: #00AEEF;">
+                <ul className="route-stops" styles="color: #00AEEF;" key="test">
                     {state.routeStopComponents}
                 </ul>
             </div>
