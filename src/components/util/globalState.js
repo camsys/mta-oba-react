@@ -6,7 +6,10 @@ const GlobalStateProvider = ({ children }) => {
     const [state, setState] = useState({
         someGlobalState: {},
         currentCard: OBA.Config.cards.homeCard,
-        cardStack: []
+        cardStack: [],
+        routeComponents:[],
+        mapVehicleComponents:[],
+        mapStopComponents:[]
     });
 
     return (

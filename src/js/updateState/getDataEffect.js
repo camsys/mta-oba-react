@@ -79,7 +79,7 @@ const getDataEffect = (currentCard, keyword, stateProperties,stateUpdateItems,ta
                 console.error(error);
             });
 
-    }, [setState]);
+    }, []);
 };
 
 export default getDataEffect;

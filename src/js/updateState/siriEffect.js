@@ -86,9 +86,16 @@ const siriEffect = (currentCard) => {
                 prevState[stateProperties[0]]=newObjs
                 prevState[stateProperties[1]]=newMapComps
                 prevState[stateProperties[2]]=newRouteComps
+                console.log("routeComponents:",prevState.routeComponents)
                 return prevState
             }
-            setState(stateFunc);
+            setState((prevState)=>({
+                ...prevState,
+                vehicleObjs:newObjs,
+                mapVehicleComponents:newMapComps,
+                newRouteComps:newRouteComps
+            }));
+            console.log("routeComponents:",state.routeComponents)
         }
         OBA.Util.log("new "+keyword+" state")
         OBA.Util.log(state[stateProperties[0]])
@@ -96,6 +103,14 @@ const siriEffect = (currentCard) => {
         OBA.Util.log(state[stateProperties[2]])
     }
 
+
+    var logState = function () {
+        OBA.Util.log("logging state")
+        OBA.Util.log("new "+keyword+" state")
+        OBA.Util.log(state[stateProperties[0]])
+        OBA.Util.log(state[stateProperties[1]])
+        OBA.Util.log(state[stateProperties[2]])
+    }
 
 
     const { state, setState } = useContext(GlobalStateContext);
@@ -118,7 +133,7 @@ const siriEffect = (currentCard) => {
                 console.error(error);
             });
 
-    }, [setState]);
+    }, []);
 };
 
 export default siriEffect;
