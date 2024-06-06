@@ -4,8 +4,6 @@ const GlobalStateContext = createContext();
 
 const GlobalStateProvider = ({ children }) => {
     const [state, setState] = useState({
-        apiData1: null,
-        apiData2: null,
         someGlobalState: {},
         currentCard: OBA.Config.cards.homeCard,
         cardStack: []

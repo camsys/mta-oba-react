@@ -1,46 +1,56 @@
 import React, {useContext, useEffect, useState} from "react";
 import {OBA} from "../oba";
-import vehicleComponent from "../../components/map/vehicleComponent";
 import {GlobalStateContext} from "../../components/util/globalState";
 import queryString from "query-string";
+import routeStopComponent from "../../components/views/routeStopComponent";
+import mapStopComponent from "../../components/map/mapStopComponent";
 
 const stopsEffect = (currentCard) => {
 
-    function parseStops (parsedStops){
-        let newRoutes = [];
+    class stopData {
+        constructor(stopJson) {
+            this.name = stopJson.name
+        }
+    }
+
+    function extractStopData (parsedStops){
+        let stopObjs = [];
+        let mapStopComponents = []
+        let routeStopComponents = []
         OBA.Util.trace(parsedStops)
-        let stops = parsedStops?.stops
+        let stopsList = parsedStops?.stops
         OBA.Util.trace("stops found:")
-        OBA.Util.trace(stops)
-        if (stops != null && stops.length != 0) {
+        OBA.Util.trace(stopsList)
+        if (stopsList != null && stops.length != 0) {
             let first = true;
-            for (let i = 0; i < stops.length; i++) {
+            for (let i = 0; i < stopsList.length; i++) {
                 OBA.Util.log("processing stop #" + i+ ": " +stops[i].name);
+                let stopData=new stopData(stops[i])
+                stopObjs.push(stopData)
+                mapStopComponents.push(new mapStopComponent(stopData))
+                routeStopComponents.push(new routeStopComponent(stopData))
             };
 
             OBA.Util.log('processed stops')
         } else {
             OBA.Util.log('no stops recieved. not processing stops')
         }
-        return [stops,stops,newRoutes]
+        return [stopObjs,mapStopComponents,sidebarStopComponents]
     }
 
-    function updateState(newRoutes){
-        OBA.Util.trace('completed call to routes')
-        OBA.Util.trace("pre-update route state")
-        OBA.Util.trace(state.routes)
-        OBA.Util.log("updating route state to")
-        OBA.Util.log(newRoutes)
-        OBA.Util.trace("updating routes state?: " + updateRoutes)
-        OBA.Util.trace(updateRoutes)
+    function updateState(stopObjs,mapStopComponents,sidebarStopComponents){
         if(updateRoutes) {
             setState((prevState) => ({
                 ...prevState,
-                routes: newRoutes
+                stopObjs: stopObjs,
+                mapStopComponents:mapStopComponents,
+                sidebarStopComponents:sidebarStopComponents
             }));
         }
-        OBA.Util.log("new vehicle state")
-        OBA.Util.log(state.routes)
+        OBA.Util.log("new stops state")
+        OBA.Util.log(state.stopObjs)
+        OBA.Util.log(state.mapStopComponents)
+        OBA.Util.log(state.sidebarStopComponents)
     }
 
 
@@ -56,8 +66,7 @@ const stopsEffect = (currentCard) => {
         fetch(targetAddress)
             .then((response) => response.json())
             .then((parsed) => {
-                let [vehicles,situations, routes] = parseStops(parsed)
-                updateState(routes)
+                updateState(extractStopData(parsed))
             })
             .catch((error) => {
                 console.error(error);

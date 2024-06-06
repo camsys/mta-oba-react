@@ -18,12 +18,14 @@ const mapComponent = (function() {
             const { state} = useContext(GlobalStateContext);
             const vehicleMarkers = state.vehicleMarkers;
             const routePolylines = state.routePolylines
+            const mapStopComponents = state.mapStopComponents
 
             return (<React.Fragment> <MapContainer style={{height: '100vh', width: '100wh'}} center={OBA.Config.defaultMapCenter} zoom={15}
                                   scrollWheelZoom={true}>
                 <ReactLeafletGoogleLayer apiKey='AIzaSyC65u47U8CJxTrmNcXDP2KwCYGxmQO3ZfU' type={'roadmap'}/>
                 {routePolylines}
                 {vehicleMarkers}
+                {mapStopComponents}
             </MapContainer></React.Fragment>)
         }
     }
