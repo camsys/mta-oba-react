@@ -1530,7 +1530,7 @@ button:hover, .button:hover {
   height: 2.25em;
   width: auto;
 }
-.map-popup .leaflet-popup-content .bus-info, .leaflet-popup .leaflet-popup-content .bus-info {
+.map-popup .leaflet-popup-content .popup-info, .leaflet-popup .leaflet-popup-content .popup-info {
   display: -webkit-inline-box;
   display: -ms-inline-flexbox;
   display: inline-flex;
@@ -1540,7 +1540,7 @@ button:hover, .button:hover {
           flex-direction: column;
   gap: 0.25em;
 }
-.map-popup .leaflet-popup-content .bus-info .route, .leaflet-popup .leaflet-popup-content .bus-info .route {
+.map-popup .leaflet-popup-content .popup-info > *:first-child, .leaflet-popup .leaflet-popup-content .popup-info > *:first-child {
   font-weight: bold;
 }
 .map-popup .leaflet-popup-content::after, .leaflet-popup .leaflet-popup-content::after {
