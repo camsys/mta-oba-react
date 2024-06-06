@@ -6,43 +6,21 @@ import bus from "../../img/icon/bus.svg";
 import busStroller from "../../img/icon/bus-stroller.svg";
 
 
-const baseVehicleIcon = L.icon({
-    iconUrl: bus,
-    className: "svg-icon",
-    iconSize: [24, 40],
-    iconAnchor: [12, 40]
-});
-
-const scheduledVehicleIcon = L.icon({
-    iconUrl: bus,
-    className: "svg-icon",
-    iconSize: [24, 40],
-    iconAnchor: [12, 40]
-});
-
 function vehicleComponent  (longLat,vid, route, destination, strollerVehicle,hasRealtime,direction) {
+    OBA.Util.trace('generating vehicle: ' + vid)
     let imgDegrees = direction - direction%5
-    console.log(imgDegrees)
+    OBA.Util.trace("img degrees" + imgDegrees)
     let scheduled = hasRealtime?"":"scheduled/"
-    console.log(scheduled)
+    OBA.Util.trace(scheduled)
     let vehicleImageUrl = "img/vehicle/"+scheduled+"vehicle-"+imgDegrees+".png"
-    // let vehicleImageUrl = "img/vehicle/vehicle-50.png"
-    console.log("vehicleImageUrl:")
-    console.log(vehicleImageUrl)
+    OBA.Util.trace("vehicleImageUrl:")
+    OBA.Util.trace(vehicleImageUrl)
     let icon = L.icon({
         iconUrl: vehicleImageUrl,
         className: "svg-icon",
         iconSize: [24, 40],
         iconAnchor: [12, 40]
     })
-
-    OBA.Util.trace('generating vehicle: ' + vid)
-    let img = < img
-    src = "vehicleImageUrl"
-    alt = "vehicle image" />
-    let icon2 = L.icon({iconUrl:vehicleImageUrl,html:img})
-
-
     let out = (<Marker position={longLat} key={longLat} icon={icon}>
         <Popup key={longLat} className="map-popup">
             <div className="popup-content">
