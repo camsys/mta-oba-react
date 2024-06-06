@@ -26,8 +26,8 @@ const getDataEffect = (currentCard, keyword, stateProperties,stateUpdateItems,ta
                 OBA.Util.log("processing "+keyword+"#" + i+ ": " +jsonList[i].name);
                 let obj= new dataClass(indivParser(jsonList,i))
                 objs.push(obj)
-                mapComponents.push(new mapComponentClass(obj))
-                routeComponents.push(new routeComponentClass(obj))
+                mapComponents.push(new mapStopComponent(obj))
+                routeComponents.push(new routeStopComponent(obj, i))
             };
 
             OBA.Util.log('processed '+keyword)
