@@ -13,4 +13,4 @@ function getRouteVehicleComponent(){
     //     </li>
     // </ul>
 }
-export default getRouteVehicleComponent()
+export default getRouteVehicleComponent
