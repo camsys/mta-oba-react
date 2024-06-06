@@ -1,11 +1,11 @@
 import React from "react";
+import RouteVehicleComponent from "./routeVehicleComponent"
 
-function routeStopComponent  (stopData) {
+function getRouteStopComponent  (stopData, i) {
     return (
-        <li className="has-info">
-            <a href="#" tabIndex="-1">Seneca Av/DeKalb Av</a>
-            <routeVehicleComponent/>
+        <li className="has-info" key={stopData.name + " " + i}>
+            <a href="#" tabIndex="-1">{stopData.name}</a>
         </li>
     )
 }
-export default routeStopComponent;
+export default getRouteStopComponent;

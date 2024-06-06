@@ -16,13 +16,13 @@ const mapComponent = (function() {
             OBA.Util.log("generating map")
 
             const { state} = useContext(GlobalStateContext);
-            const vehicleMarkers = state.vehicleMarkers;
+            const mapVehicleComponents = state.mapVehicleComponents;
             const routeComponents = state.routeComponents
             const mapStopComponents = state.mapStopComponents
             console.log("map route components")
             console.log(routeComponents)
             console.log("map vehicle components")
-            console.log(vehicleMarkers)
+            console.log(mapVehicleComponents)
             console.log("map stop components")
             console.log(mapStopComponents)
 
@@ -30,7 +30,7 @@ const mapComponent = (function() {
                                   scrollWheelZoom={true}>
                 <ReactLeafletGoogleLayer apiKey='AIzaSyC65u47U8CJxTrmNcXDP2KwCYGxmQO3ZfU' type={'roadmap'}/>
                 {routeComponents}
-                {vehicleMarkers}
+                {mapVehicleComponents}
                 {mapStopComponents}
             </MapContainer></React.Fragment>)
         }

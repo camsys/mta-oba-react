@@ -1,7 +1,7 @@
 import React from "react";
 
-function routeVehicleComponent(){
-    return(<span/>)
+function getRouteVehicleComponent(){
+    return(<ul className="approaching-buses"> <li><a href="/?content=route-b-38_vehicle&search=B38&refresh=true&vehicle-popup=true" className="bus">7619</a></li></ul>)
     // <ul className="approaching-buses">
     //     <li>
     //         <a href="/?content=route-b-38_vehicle&search=B38&refresh=true&vehicle-popup=true"
@@ -13,4 +13,4 @@ function routeVehicleComponent(){
     //     </li>
     // </ul>
 }
-export default routeVehicleComponent()
+export default getRouteVehicleComponent
