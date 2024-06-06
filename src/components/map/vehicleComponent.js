@@ -23,18 +23,11 @@ function vehicleComponent  (longLat,vid, route, destination, strollerVehicle,has
     })
     let out = (<Marker position={longLat} key={longLat} icon={icon}>
         <Popup key={longLat} className="map-popup">
-            <div className="popup-content">
-                <img src={strollerVehicle?busStroller:bus} alt="bus" className="icon"/>
-                    <div className="bus-info">
-                        <span className="route">{route} {destination}</span>
-                        <span className="vehicle">Vehicle #{vid}</span>
-                    </div>
+            <img src={strollerVehicle?busStroller:bus} alt="bus" className="icon"/>
+            <div className="bus-info">
+                <span className="route">{route} {destination}</span>
+                <span className="vehicle">Vehicle #{vid}</span>
             </div>
-            <button className="close-popup-button">
-                <span className="icon-wrap">
-                    <img src="/img/icon/close-circle.svg" alt="Close Popup" className="icon"/>
-                </span>
-            </button>
         </Popup>
     </Marker>);
 
