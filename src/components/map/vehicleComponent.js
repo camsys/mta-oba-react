@@ -6,11 +6,11 @@ import bus from "../../img/icon/bus.svg";
 import busStroller from "../../img/icon/bus-stroller.svg";
 
 
-function vehicleComponent  (longLat,vid, route, destination, strollerVehicle,hasRealtime,direction) {
-    OBA.Util.trace('generating vehicle: ' + vid)
-    let imgDegrees = direction - direction%5
+function vehicleComponent  (vehicleData) {
+    OBA.Util.trace('generating vehicle: ' + vehicleData.vehicleId)
+    let imgDegrees = vehicleData.direction - vehicleData.direction%5
     OBA.Util.trace("img degrees" + imgDegrees)
-    let scheduled = hasRealtime?"":"scheduled/"
+    let scheduled = vehicleData.hasRealtime?"":"scheduled/"
     OBA.Util.trace(scheduled)
     let vehicleImageUrl = "img/vehicle/"+scheduled+"vehicle-"+imgDegrees+".png"
     OBA.Util.trace("vehicleImageUrl:")
@@ -21,13 +21,13 @@ function vehicleComponent  (longLat,vid, route, destination, strollerVehicle,has
         iconSize: [24, 40],
         iconAnchor: [12, 40]
     })
-    let out = (<Marker position={longLat} key={longLat} icon={icon}>
-        <Popup key={longLat} className="map-popup">
+    let out = (<Marker position={vehicleData.longLat} key={vehicleData.longLat} icon={icon}>
+        <Popup key={vehicleData.longLat} className="map-popup">
             <div className="popup-content">
-                <img src={strollerVehicle?busStroller:bus} alt="bus" className="icon"/>
+                <img src={vehicleData.strollerVehicle?busStroller:bus} alt="bus" className="icon"/>
                     <div className="bus-info">
-                        <span className="route">{route} {destination}</span>
-                        <span className="vehicle">Vehicle #{vid}</span>
+                        <span className="route">{vehicleData.route} {vehicleData.destination}</span>
+                        <span className="vehicle">Vehicle #{vehicleData.vehicleId}</span>
                     </div>
             </div>
             <button className="close-popup-button">

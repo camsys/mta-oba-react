@@ -3,9 +3,20 @@ import {OBA} from "../oba";
 import vehicleComponent from "../../components/map/vehicleComponent";
 import {GlobalStateContext} from "../../components/util/globalState";
 import queryString from "query-string";
+import getDataEffect from "./getDataEffect";
+import {vehicleData} from "./dataModels";
 
 const siriEffect = (currentCard) => {
 
+
+    // var keyword = "stops"
+    // var stateProperties = ["vehicleObjs","mapVehicleComponents","routeVehicleComponents"]
+    // let stateUpdateItems = [[],[],[]]
+    // const lineRef = queryString.parse(location.search).LineRef;
+    // let search = "&"+currentCard.queryIdentifier+"=" + lineRef;
+    // var targetAddress = "https://" + process.env.ENV_ADDRESS + "/" + process.env.VEHICLE_MONITORING_ENDPOINT + search;
+    //
+    // getDataEffect(currentCard,keyword,stateProperties,stateUpdateItems,targetAddress)
 
     function generateVehicleMarker(vehicleInfo,lineRef,log){
         const longLat = [];
@@ -17,9 +28,7 @@ const siriEffect = (currentCard) => {
         let hasRealtime = mvj.Monitored;
         let vehicleId = mvj.VehicleRef
         let direction = mvj?.Bearing
-        let vc = vehicleComponent(longLat,
-            vehicleId, lineRef,destination,strollerVehicle,
-            hasRealtime,direction)
+        let vc = vehicleComponent(new vehicleData(mvj))
         if (log) {
             OBA.Util.log('first vehicleComponent:')
             OBA.Util.log(vc)
