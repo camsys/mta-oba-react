@@ -4,7 +4,7 @@ import {GlobalStateContext} from "../../components/util/globalState";
 import {OBA} from "../oba";
 import routeComponent from "../../components/map/routeComponent";
 
-const searchEffect = () => {
+const searchEffect = (currentCard) => {
 
 
     function generatePolyline(id, points, color) {
@@ -59,13 +59,12 @@ const searchEffect = () => {
         OBA.Util.log(routePolylines)
     }
 
-    const queryParameters = new URLSearchParams(window.location.search)
+    const { state, setState } = useContext(GlobalStateContext);
     const lineRef = queryString.parse(location.search).LineRef;
-    const {state, setState} = useContext(GlobalStateContext);
+    let search = "&"+currentCard.queryIdentifier+"=" + lineRef;
 
     React.useEffect(() => {
         OBA.Util.log('getting search results')
-        let search = "&" + OBA.Config.cards.routeCard.queryIdentifier + "=" + lineRef;
         fetch("https://" + OBA.Config.envAddress + "/" + OBA.Config.searchUrl + "?q=" + lineRef)
             .then((response) => response.json())
             .then((parsed) => {

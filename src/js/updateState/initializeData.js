@@ -6,10 +6,10 @@ import stopsEffect from "./stopsEffect"
 import { GlobalStateContext } from '../../components/util/globalState';
 
 const useInitializeData = () => {
-    handleCardChange()
-    siriEffect()
-    searchEffect()
-    stopsEffect()
+    let currentCard = handleCardChange()
+    siriEffect(currentCard)
+    searchEffect(currentCard)
+    stopsEffect(currentCard)
 };
 
 export default useInitializeData;

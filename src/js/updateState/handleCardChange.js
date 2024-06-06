@@ -48,6 +48,7 @@ const handleCardChange = () => {
             OBA.Util.log("current stack:")
             OBA.Util.log(state.cardStack)
         }
+        return currentCard
 
 };
 

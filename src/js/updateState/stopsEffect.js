@@ -4,7 +4,7 @@ import vehicleComponent from "../../components/map/vehicleComponent";
 import {GlobalStateContext} from "../../components/util/globalState";
 import queryString from "query-string";
 
-const stopsEffect = () => {
+const stopsEffect = (currentCard) => {
 
     function parseStops (parsedStops){
         let newRoutes = [];
@@ -47,7 +47,7 @@ const stopsEffect = () => {
 
     const { state, setState } = useContext(GlobalStateContext);
     const lineRef = queryString.parse(location.search).LineRef;
-    let search = "routeId=MTA NYCT_B38&directionId=0"; //OBA.Config.cards.routeCard.identifier+"=" + lineRef;
+    let search = "routeId=MTA NYCT_"+lineRef +"&directionId=0";
     var targetAddress = "https://" + process.env.ENV_ADDRESS + "/" + process.env.STOPS_ON_ROUTE_ENDPOINT + search;
     var updateRoutes = false;
 

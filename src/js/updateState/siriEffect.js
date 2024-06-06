@@ -4,7 +4,7 @@ import vehicleComponent from "../../components/map/vehicleComponent";
 import {GlobalStateContext} from "../../components/util/globalState";
 import queryString from "query-string";
 
-const siriEffect = () => {
+const siriEffect = (currentCard) => {
 
 
     function generateVehicleMarker(vehicleInfo,lineRef,log){
@@ -73,7 +73,7 @@ const siriEffect = () => {
 
     const { state, setState } = useContext(GlobalStateContext);
     const lineRef = queryString.parse(location.search).LineRef;
-    let search = "&"+OBA.Config.cards.routeCard.queryIdentifier+"=" + lineRef;
+    let search = "&"+currentCard.queryIdentifier+"=" + lineRef;
     var targetAddress = "https://" + process.env.ENV_ADDRESS + "/" + process.env.VEHICLE_MONITORING_ENDPOINT + search;
     var updateVehicles = false;
 
