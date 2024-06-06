@@ -7,54 +7,59 @@ import mapStopComponent from "../../components/map/mapStopComponent";
 import {stopData} from "./dataModels"
 
 const stopsEffect = (currentCard) => {
-    function extractStopData (parsed){
-        let stopObjs = [];
-        let mapStopComponents = []
-        let routeStopComponents = []
-        let stopsList = parsed?.stops
-        OBA.Util.log("stops found:")
-        OBA.Util.log(stopsList)
-        if (stopsList != null && stopsList.length != 0) {
+    var keyword = "stops"
+    var stateProperties = ["stopObjs","mapStopComponents","routeStopComponents"]
+    let objs = [];
+    let mapComponents = []
+    let routeComponents = []
+    let stateUpdateItems = [objs,mapComponents,routeComponents]
+
+    function extractStopData (parsed,[objs,mapComponents,routeComponents]){
+        let jsonList = parsed?.stops
+        OBA.Util.log(keyword+" found:")
+        OBA.Util.log(jsonList)
+        if (jsonList != null && jsonList.length != 0) {
             updateStops = true;
-            for (let i = 0; i < stopsList.length; i++) {
-                OBA.Util.log("processing stop #" + i+ ": " +stopsList[i].name);
-                let stopDatum= new stopData(stopsList[i])
-                stopObjs.push(stopDatum)
-                mapStopComponents.push(new mapStopComponent(stopDatum))
-                routeStopComponents.push(new routeStopComponent(stopDatum))
+            for (let i = 0; i < jsonList.length; i++) {
+                OBA.Util.log("processing "+keyword+"#" + i+ ": " +jsonList[i].name);
+                let obj= new stopData(jsonList[i])
+                objs.push(obj)
+                mapComponents.push(new mapStopComponent(obj))
+                routeComponents.push(new routeStopComponent(obj))
             };
 
-            OBA.Util.log('processed stops')
+            OBA.Util.log('processed '+keyword)
         } else {
-            OBA.Util.log('no stops recieved. not processing stops')
+            OBA.Util.log('no '+keyword+' recieved. not processing '+keyword)
         }
-        OBA.Util.log("stops post process")
-        OBA.Util.log(stopObjs)
-        OBA.Util.log(mapStopComponents)
-        OBA.Util.log(routeStopComponents)
-        return [stopObjs,mapStopComponents,routeStopComponents]
+        OBA.Util.log(keyword+" post process")
+        OBA.Util.log(objs)
+        OBA.Util.log(mapComponents)
+        OBA.Util.log(routeComponents)
+        return [objs,mapComponents,routeComponents]
     }
 
-    function updateState(newStopObjs,newMapStopComponents,newRouteStopComponents){
+    function updateState([newObjs,newMapComps,newRouteComps]){
 
-        OBA.Util.log("should update stops state?")
+        OBA.Util.log("should update "+keyword+" state?")
         OBA.Util.log(updateStops)
         if(updateStops) {
-            OBA.Util.log("adding to stops state:")
-            OBA.Util.log(newStopObjs)
-            OBA.Util.log(newMapStopComponents)
-            OBA.Util.log(newRouteStopComponents)
-            setState((prevState) => ({
-                ...prevState,
-                stopObjs: newStopObjs,
-                mapStopComponents:newMapStopComponents,
-                routeStopComponents:newRouteStopComponents
-            }));
+            OBA.Util.log("adding to "+keyword+" state:")
+            OBA.Util.log(newObjs)
+            OBA.Util.log(newMapComps)
+            OBA.Util.log(newRouteComps)
+            let stateFunc = (prevState) => {
+                prevState[stateProperties[0]]=newObjs
+                prevState[stateProperties[1]]=newMapComps
+                prevState[stateProperties[2]]=newRouteComps
+                return prevState
+            }
+            setState(stateFunc);
         }
-        OBA.Util.log("new stops state")
-        OBA.Util.log(state.stopObjs)
-        OBA.Util.log(state.mapStopComponents)
-        OBA.Util.log(state.routeStopComponents)
+        OBA.Util.log("new "+keyword+" state")
+        OBA.Util.log(state[stateProperties[0]])
+        OBA.Util.log(state[stateProperties[1]])
+        OBA.Util.log(state[stateProperties[2]])
     }
 
 
@@ -70,8 +75,7 @@ const stopsEffect = (currentCard) => {
         fetch(targetAddress)
             .then((response) => response.json())
             .then((parsed) => {
-                const [stopObjs,mapStopComponents,routeStopComponents] = extractStopData(parsed)
-                updateState(stopObjs,mapStopComponents,routeStopComponents)
+                updateState(extractStopData(parsed,stateUpdateItems))
             })
             .catch((error) => {
                 console.error(error);
