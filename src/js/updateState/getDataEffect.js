@@ -23,7 +23,7 @@ const getDataEffect = (currentCard, keyword, stateProperties,stateUpdateItems,ta
                 let obj= new stopData(jsonList[i])
                 objs.push(obj)
                 mapComponents.push(new mapStopComponent(obj))
-                routeComponents.push(new routeStopComponent(obj))
+                routeComponents.push(new routeStopComponent(obj, i))
             };
 
             OBA.Util.log('processed '+keyword)
