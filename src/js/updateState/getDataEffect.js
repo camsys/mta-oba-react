@@ -6,7 +6,8 @@ import routeStopComponent from "../../components/views/routeStopComponent";
 import mapStopComponent from "../../components/map/mapStopComponent";
 import {stopData} from "./dataModels"
 
-const getDataEffect = (currentCard, keyword, stateProperties,stateUpdateItems,targetAddress) => {
+const getDataEffect = (currentCard, keyword, stateProperties,stateUpdateItems,targetAddress,
+                       mapComponentClass,routeComponentClass) => {
     const { state, setState } = useContext(GlobalStateContext);
     var keyword = keyword
     var stateProperties = stateProperties
@@ -22,8 +23,8 @@ const getDataEffect = (currentCard, keyword, stateProperties,stateUpdateItems,ta
                 OBA.Util.log("processing "+keyword+"#" + i+ ": " +jsonList[i].name);
                 let obj= new stopData(jsonList[i])
                 objs.push(obj)
-                mapComponents.push(new mapStopComponent(obj))
-                routeComponents.push(new routeStopComponent(obj))
+                mapComponents.push(new mapComponentClass(obj))
+                routeComponents.push(new routeComponentClass(obj))
             };
 
             OBA.Util.log('processed '+keyword)
