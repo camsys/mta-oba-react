@@ -23,18 +23,11 @@ function vehicleComponent  (vehicleData) {
     })
     let out = (<Marker position={vehicleData.longLat} key={vehicleData.longLat} icon={icon}>
         <Popup key={vehicleData.longLat} className="map-popup">
-            <div className="popup-content">
-                <img src={vehicleData.strollerVehicle?busStroller:bus} alt="bus" className="icon"/>
-                    <div className="bus-info">
-                        <span className="route">{vehicleData.route} {vehicleData.destination}</span>
-                        <span className="vehicle">Vehicle #{vehicleData.vehicleId}</span>
-                    </div>
+            <img src={vehicleData.strollerVehicle?busStroller:bus} alt="bus" className="icon"/>
+            <div className="bus-info">
+                <span className="route">{vehicleData.route} {vehicleData.destination}</span>
+                <span className="vehicle">Vehicle #{vehicleData.vehicleId}</span>
             </div>
-            <button className="close-popup-button">
-                <span className="icon-wrap">
-                    <img src="/img/icon/close-circle.svg" alt="Close Popup" className="icon"/>
-                </span>
-            </button>
         </Popup>
     </Marker>);
 
