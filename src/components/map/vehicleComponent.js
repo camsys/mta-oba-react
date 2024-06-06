@@ -5,9 +5,10 @@ import L from "leaflet";
 import bus from "../../img/icon/bus.svg";
 import busStroller from "../../img/icon/bus-stroller.svg";
 
+const COMPONENT_IDENTIFIER = "mapVehicleComponent"
 
 function vehicleComponent  (vehicleData) {
-    OBA.Util.trace('generating vehicle: ' + vehicleData.vehicleId)
+    OBA.Util.log('generating vehicle: ' + vehicleData.vehicleId)
     let imgDegrees = vehicleData.direction - vehicleData.direction%5
     OBA.Util.trace("img degrees" + imgDegrees)
     let scheduled = vehicleData.hasRealtime?"":"scheduled/"
@@ -21,7 +22,7 @@ function vehicleComponent  (vehicleData) {
         iconSize: [24, 40],
         iconAnchor: [12, 40]
     })
-    let out = (<Marker position={vehicleData.longLat} key={vehicleData.longLat} icon={icon}>
+    let out = (<Marker position={vehicleData.longLat} key={COMPONENT_IDENTIFIER+"_"+vehicleData.longLat} id={COMPONENT_IDENTIFIER+"_"+vehicleData.longLat} icon={icon}>
         <Popup key={vehicleData.longLat} className="map-popup">
             <img src={vehicleData.strollerVehicle?busStroller:bus} alt="bus" className="icon"/>
             <div className="bus-info">
