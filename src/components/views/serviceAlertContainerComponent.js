@@ -1,4 +1,5 @@
 import React from "react";
+import ServiceAlertComponent from "./serviceAlertComponent"
 
 function ServiceAlertContainerComponent  () {
     return (<div className="service-alert inner-card collapsible">
@@ -15,7 +16,7 @@ function ServiceAlertContainerComponent  () {
                     </span>
             <span className="label">Service Alert for B38</span>
         </button>
-        <serviceAlertComponent/>
+        <ServiceAlertComponent/>
     </div>)
 }
 

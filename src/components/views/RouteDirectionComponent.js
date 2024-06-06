@@ -2,7 +2,7 @@ import React, {useContext} from "react";
 import {GlobalStateContext} from "../util/globalState";
 
 export default function RouteDirectionComponent(){
-    // const { state} = useContext(GlobalStateContext);
+    const { state} = useContext(GlobalStateContext);
     return(
         <div className="route-direction inner-card collapsible">
             <button className="card-header collapse-trigger" aria-haspopup="true"
@@ -12,7 +12,7 @@ export default function RouteDirectionComponent(){
             </button>
             <div className="card-content collapse-content" styles="max-height: 0px;">
                 <ul className="route-stops" styles="color: #00AEEF;">
-                    {/*{state.routeStopComponents}*/}
+                    {state.routeStopComponents}
                 </ul>
             </div>
         </div>

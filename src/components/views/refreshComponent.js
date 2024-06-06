@@ -1,6 +1,14 @@
 import React from "react";
 
 export default function refreshComponent(){
+
+    var time = new Date();
+    time = time.toLocaleString('en-US', { hour: 'numeric',  minute: 'numeric', hour12: true });
+
+    const handleRefresh = () => {
+        window.location.reload();
+    }
+
     return(<ul className="menu icon-menu middle-menu refresh-menu" role="menu">
         <li>
             <button className="refresh-button" aria-label="Refresh the data" onClick={handleRefresh}>

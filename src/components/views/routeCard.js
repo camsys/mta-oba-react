@@ -2,7 +2,8 @@ import React, {useContext, useState} from "react";
 import {OBA} from "../../js/oba";
 import {GlobalStateContext} from "../../components/util/globalState";
 import ServiceAlertContainerComponent from "./serviceAlertContainerComponent";
-import RouteDirectionComponent from "./routeDirectionComponent"
+import RouteDirectionComponent from "./RouteDirectionComponent"
+import RefreshComponent from "./RefreshComponent"
 
 
 
@@ -10,13 +11,6 @@ function getRouteCard  () {
     OBA.Util.log("adding route card");
 
      const { state} = useContext(GlobalStateContext);
-
-    var time = new Date();
-    time = time.toLocaleString('en-US', { hour: 'numeric',  minute: 'numeric', hour12: true })
-
-  const handleRefresh = () => {
-    window.location.reload();
-  }
 
    return (<React.Fragment>
       <h2 className="cards-header">Routes:</h2>
@@ -35,7 +29,7 @@ function getRouteCard  () {
           </div>
         </div>
       </div>
-      <refreshComponent/>
+      <RefreshComponent/>
       </React.Fragment>);
 
  }

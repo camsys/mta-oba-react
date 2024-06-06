@@ -3,7 +3,7 @@ import React from "react";
 function routeStopComponent  (stopData) {
     return (
         <li className="has-info">
-            <a href="#" tabIndex="-1">Seneca Av/DeKalb Av</a>
+            <a href="#" tabIndex="-1">{stopData.name}</a>
             <routeVehicleComponent/>
         </li>
     )
