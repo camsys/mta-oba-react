@@ -22,8 +22,21 @@ function mapStopComponent  (stopData) {
 
 
 
+    console.log(stopData.longLat)
+    var markerOptions = {
+        position: stopData.longLat,
+        icon: icon,
+        zIndex: 1,
+        // title: name,
+        // stopId: stopId,
+        // map: map,
+        // visible: defaultVisibility,
+        key: COMPONENT_IDENTIFIER+"_"+stopData.id,
+        id: COMPONENT_IDENTIFIER+"_"+stopData.id
+    };
+
     let out = (
-        <Marker position={stopData.longLat} key={COMPONENT_IDENTIFIER+"_"+stopData.id} icon={icon} id={COMPONENT_IDENTIFIER+"_"+stopData.id}>
+        <Marker {...markerOptions}>
             <Popup key={stopData.id} className="map-popup">
                 <img src={stopPopupIcon} alt="busstop icon" className="icon"/>
                 <div className="popup-info">
@@ -31,7 +44,7 @@ function mapStopComponent  (stopData) {
                     <span className="stop-code">{"Stopcode "+stopData.id}</span>
                 </div>
             </Popup>
-    </Marker>);
+        </Marker>);
 
     return out
 }
