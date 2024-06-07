@@ -30,8 +30,8 @@ function mapStopComponent  (stopData) {
     let icon = L.icon({
         iconUrl: stopImageUrl,
         className: "svg-icon",
-        iconSize: [21, 21],
-        iconAnchor: [10, 10],
+        iconSize: [27, 27],
+        iconAnchor: [13, 13],
         popupAnchor: [0,0]
     })
 
