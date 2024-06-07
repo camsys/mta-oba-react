@@ -9,8 +9,22 @@ const COMPONENT_IDENTIFIER = "mapStopComponent"
 
 function mapStopComponent  (stopData) {
     OBA.Util.trace('generating mapStopComponent: ' + stopData.id)
-    // let stopImageUrl = "img/stop/stop-" + stopData?.directionKey==null? "unknown":stopData.directionKey + ".png"
-    let stopImageUrl = "img/stop/stop-" + "unknown" + ".png"
+
+
+
+    // let zoom = map.getZoom()
+    let zoom = 10
+    var defaultVisibility = ( zoom < 16) ? false : true;
+
+
+    var direction = stop?.stopDirection;
+    var directionKey = direction;
+
+    if(directionKey === null) {
+        directionKey = "unknown";
+    }
+    let stopImageUrl = "img/stop/stop-" + (directionKey==null? "unknown":directionKey) + ".png"
+    // let stopImageUrl = "img/stop/stop-" + "unknown" + ".png"
     console.log(stopImageUrl)
 
     let icon = L.icon({
@@ -20,15 +34,13 @@ function mapStopComponent  (stopData) {
         iconAnchor: [0, 0]
     })
 
-
-
     console.log(stopData.longLat)
     var markerOptions = {
         position: stopData.longLat,
         icon: icon,
         zIndex: 1,
-        // title: name,
-        // stopId: stopId,
+        title: stopData.name,
+        stopId: stopData.stopId,
         // map: map,
         // visible: defaultVisibility,
         key: COMPONENT_IDENTIFIER+"_"+stopData.id,
