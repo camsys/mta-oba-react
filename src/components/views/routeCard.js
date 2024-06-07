@@ -24,8 +24,8 @@ function getRouteCard  () {
               <li className="via">{state.description}</li>
             </ul>
             <ServiceAlertContainerComponent/>
-            <RouteDirectionComponent/>
-            <RouteDirectionComponent/>
+            <RouteDirectionComponent directionId="0" />
+            <RouteDirectionComponent directionId="1" />
           </div>
         </div>
       </div>
