@@ -1,5 +1,5 @@
 import ReactLeafletGoogleLayer from "react-leaflet-google-layer";
-import {MapContainer, Marker, Polyline, Popup} from "react-leaflet";
+import {MapContainer, Marker, Polyline, Popup, StyledMapType} from "react-leaflet";
 import React, {useContext, useEffect, useState} from "react";
 import queryString from "query-string";
 import {OBA} from "../../js/oba";
@@ -26,13 +26,24 @@ const mapComponent = (function() {
             console.log("map stop components")
             console.log(mapStopComponents)
 
-            return (<React.Fragment> <MapContainer style={{height: '100vh', width: '100wh'}} center={OBA.Config.defaultMapCenter} zoom={15}
-                                  scrollWheelZoom={true}>
-                <ReactLeafletGoogleLayer apiKey='AIzaSyC65u47U8CJxTrmNcXDP2KwCYGxmQO3ZfU' type={'roadmap'}/>
-                {routeComponents}
-                {mapVehicleComponents}
-                {mapStopComponents}
-            </MapContainer></React.Fragment>)
+            return (
+                <React.Fragment>
+                    <MapContainer
+                        style={{height: '100vh', width: '100wh'}}
+                        center={OBA.Config.defaultMapCenter}
+                        zoom={15} scrollWheelZoom={true}
+
+                    >
+                        <ReactLeafletGoogleLayer
+                            apiKey='AIzaSyA-PBbsL_sXOTfo2KbkVx8XkEfcIe48xzw'
+                            type={'roadmap'}
+                            styles={OBA.Config.mutedTransitStylesArray}
+                        />
+                        {routeComponents}
+                        {mapVehicleComponents}
+                        {mapStopComponents}
+                    </MapContainer>
+                </React.Fragment>)
         }
     }
 })();

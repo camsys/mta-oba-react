@@ -101,7 +101,95 @@ OBA.Config = {
         var shadowImage = new L.Icon({iconUrl: 'img/location/shadow.png', iconSize: size, iconAnchor: o_point, popupAnchor: mid_point});
 
         return [locationIcons, activeLocationIcons, shadowImage];
-    }
+    },
+
+
+    mutedTransitStylesArray :
+        [{
+                featureType: "road.arterial",
+                elementType: "geometry",
+                stylers: [
+                    { saturation: -80 },
+                    { lightness: 60 },
+                    { visibility: "on" },
+                    { hue: "#0011FF" }
+                ]
+            },{
+                featureType: "road.arterial",
+                elementType: "labels",
+                stylers: [
+                    { saturation: -80 },
+                    { lightness: 40 },
+                    { visibility: "on" },
+                    { hue: "#0011FF" }
+                ]
+            },{
+                featureType: "road.highway",
+                elementType: "geometry",
+                stylers: [
+                    { saturation: -80 },
+                    { lightness: 60 },
+                    { visibility: "on" },
+                    { hue: "#0011FF" }
+                ]
+            },{
+                featureType: "road.highway",
+                elementType: "labels",
+                stylers: [
+                    { lightness: 60 },
+                    { saturation: -70 },
+                    { hue: "#0011FF" },
+                    { visibility: "on" }
+                ]
+            },{
+                featureType: "road.local",
+                elementType: "all",
+                stylers: [
+                    { saturation: -100 },
+                    { lightness: 32 }
+                ]
+            },{
+                featureType: "administrative.locality",
+                elementyType: "labels",
+                stylers: [ { visibility: "on" },
+                    { lightness: 50 },
+                    { saturation: -80 },
+                    { hue: "#ffff00" } ]
+            },{
+                featureType: "administrative.neighborhood",
+                elementyType: "labels",
+                stylers: [ { visibility: "on" },
+                    { lightness: 50 },
+                    { saturation: -80 },
+                    { hue: "#ffffff" } ]
+            },{
+                featureType: 'landscape',
+                elementType: 'labels',
+                stylers: [ {'visibility': 'on'},
+                    { lightness: 50 },
+                    { saturation: -80 },
+                    { hue: "#0099ff" }
+                ]
+            },{
+                featureType: 'poi',
+                elementType: 'labels',
+                stylers: [ {'visibility': 'on'},
+                    { lightness: 50 },
+                    { saturation: -80 },
+                    { hue: "#0099ff" }
+                ]
+            },{
+                featureType: 'water',
+                elementType: 'labels',
+                stylers: [ {'visibility': 'off'}
+                ]
+            },{
+                featureType: 'transit.station.bus',
+                elementType: 'labels',
+                stylers: [ {'visibility': 'off'}
+            ]
+        }
+    ]
 };
 
 export default OBA.Config;
