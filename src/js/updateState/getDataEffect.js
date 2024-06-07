@@ -23,7 +23,7 @@ const getDataEffect = (currentCard, targetAddress,
         if (jsonList != null && jsonList.length != 0) {
             update = true;
             for (let i = 0; i < jsonList.length; i++) {
-                OBA.Util.log("processing "+dataSpecifiers.keyword+"#" + i);
+                OBA.Util.trace("processing "+dataSpecifiers.keyword+"#" + i);
                 let obj= new classList.dataClass(indivParser(jsonList,i))
                 classList.dataContainer.push(obj)
                 classList.otherClasses.forEach((c)=>{

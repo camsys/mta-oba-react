@@ -8,7 +8,7 @@ import busStroller from "../../img/icon/bus-stroller.svg";
 const COMPONENT_IDENTIFIER = "mapVehicleComponent"
 
 function vehicleComponent  (vehicleData) {
-    OBA.Util.log('generating vehicle: ' + vehicleData.vehicleId)
+    OBA.Util.trace('generating vehicle: ' + vehicleData.vehicleId)
     let imgDegrees = vehicleData.direction - vehicleData.direction%5
     OBA.Util.trace("img degrees" + imgDegrees)
     let scheduled = vehicleData.hasRealtime?"":"scheduled/"
