@@ -40,7 +40,7 @@ function vehicleComponent  (vehicleData) {
     };
 
     let out = (<Marker {...markerOptions}>
-        <Popup key={vehicleData.longLat} className="map-popup">
+        <Popup key={vehicleData.longLat} className="map-popup vehicle-popup">
             <img src={vehicleData.strollerVehicle?busStroller:bus} alt="bus" className="icon"/>
             <div className="popup-info">
                 <span className="route">{vehicleData.route} {vehicleData.destination}</span>

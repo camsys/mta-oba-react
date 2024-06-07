@@ -50,7 +50,7 @@ function mapStopComponent  (stopData) {
 
     let out = (
         <Marker {...markerOptions}>
-            <Popup key={stopData.id} className="map-popup">
+            <Popup key={stopData.id} className="map-popup stop-popup">
                 <img src={stopPopupIcon} alt="busstop icon" className="icon"/>
                 <div className="popup-info">
                     <span className="name">{stopData.name}</span>
