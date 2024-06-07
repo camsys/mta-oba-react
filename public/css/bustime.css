@@ -1476,8 +1476,7 @@ button:hover, .button:hover {
   opacity: 1;
   -webkit-transition: opacity 0.25s ease-in-out;
   transition: opacity 0.25s ease-in-out;
-  margin-bottom: 3.5em !important;
-  margin-left: -1.1em !important;
+  margin-bottom: 1.25em !important;
 }
 .map-popup::after, .leaflet-popup::after {
   content: "";
