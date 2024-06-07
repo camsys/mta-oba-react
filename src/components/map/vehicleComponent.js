@@ -16,18 +16,35 @@ function vehicleComponent  (vehicleData) {
     let vehicleImageUrl = "img/vehicle/"+scheduled+"vehicle-"+imgDegrees+".png"
     OBA.Util.trace("vehicleImageUrl:")
     OBA.Util.trace(vehicleImageUrl)
+    let vehicleIdParts = vehicleData.vehicleId.split("_");
+    let vehicleIdWithoutAgency = vehicleIdParts[1];
+
+
     let icon = L.icon({
         iconUrl: vehicleImageUrl,
         className: "svg-icon",
-        iconSize: [24, 40],
-        iconAnchor: [12, 40]
+        iconSize: [51,51],
+        iconAnchor: [0,0],
+        popupAnchor: [25,25]
     })
-    let out = (<Marker position={vehicleData.longLat} key={COMPONENT_IDENTIFIER+"_"+vehicleData.longLat} id={COMPONENT_IDENTIFIER+"_"+vehicleData.longLat} icon={icon}>
+
+    let markerOptions = {
+        zIndex: 3,
+        title: "Vehicle " + vehicleIdWithoutAgency + ", " + vehicleData.route + " to " + vehicleData.destination,
+        vehicleId: vehicleData.vehicleId,
+        routeId: vehicleData.route,
+        key:COMPONENT_IDENTIFIER+"_"+vehicleData.longLat,
+        position:vehicleData.longLat,
+        icon: icon,
+        id: COMPONENT_IDENTIFIER+"_"+vehicleData.longLat
+    };
+
+    let out = (<Marker {...markerOptions}>
         <Popup key={vehicleData.longLat} className="map-popup">
             <img src={vehicleData.strollerVehicle?busStroller:bus} alt="bus" className="icon"/>
             <div className="popup-info">
                 <span className="route">{vehicleData.route} {vehicleData.destination}</span>
-                <span className="vehicle">Vehicle #{vehicleData.vehicleId}</span>
+                <span className="vehicle">Vehicle #{vehicleIdWithoutAgency}</span>
             </div>
         </Popup>
     </Marker>);
