@@ -27,7 +27,7 @@ const getDataEffect = (currentCard, targetAddress,
                 let obj= new classList.dataClass(indivParser(jsonList,i))
                 classList.dataContainer.push(obj)
                 classList.otherClasses.forEach((c)=>{
-                    c.container.push(new c.targetClass(obj))
+                    c.container.push(new c.targetClass(obj, i))
                 })
                 // mapComponents.push(new dataSpecifiers.classList.mapComponentClass(obj))
                 // routeComponents.push(new dataSpecifiers.classList.routeComponentClass(obj, i))

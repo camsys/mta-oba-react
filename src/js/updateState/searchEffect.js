@@ -20,6 +20,7 @@ const searchEffect = (currentCard) => {
         var routeTitle;
         let routeId;
         var description;
+        const routeDestinations = [];
         const allDecodedPolylines = []
         if (route != null && route.hasOwnProperty("directions")) {
             color = route?.color
@@ -28,6 +29,7 @@ const searchEffect = (currentCard) => {
             description = route?.description
             for (let i = 0; i < route?.directions.length; i++) {
                 let dir = route?.directions[i];
+                routeDestinations.push(dir.destination)
                 for (let j = 0; j < dir.polylines.length; j++) {
                     let encodedPolyline = dir.polylines[j]
                     let decodedPolyline = OBA.Util.decodePolyline(encodedPolyline)
@@ -41,10 +43,10 @@ const searchEffect = (currentCard) => {
             }
         }
         OBA.Util.log('processed route')
-        return [routeComponents,color,routeId,routeTitle,description]
+        return [routeComponents,color,routeId,routeTitle,description,routeDestinations]
     }
 
-    function postRouteData(routeComponents,color,routeId,routeTitle,description) {
+    function postRouteData(routeComponents,color,routeId,routeTitle,description,routeDestinations) {
         OBA.Util.log("adding polylines:")
         OBA.Util.log(routeComponents)
         setState((prevState) => ({
@@ -53,6 +55,7 @@ const searchEffect = (currentCard) => {
             routeId:routeId,
             routeTitle:routeTitle,
             description:description,
+            routeDestinations:routeDestinations,
             routeComponents:routeComponents
         }))
         OBA.Util.log("confirming polylines added:")
@@ -68,8 +71,8 @@ const searchEffect = (currentCard) => {
         fetch("https://" + OBA.Config.envAddress + "/" + OBA.Config.searchUrl + "?q=" + lineRef)
             .then((response) => response.json())
             .then((parsed) => {
-                const [routeComponents,color,routeId,routeTitle,description] = processRouteData(parsed.searchResults["matches"][0])
-                postRouteData(routeComponents,color,routeId,routeTitle,description);
+                const [routeComponents,color,routeId,routeTitle,description,routeDestinations] = processRouteData(parsed.searchResults["matches"][0])
+                postRouteData(routeComponents,color,routeId,routeTitle,description,routeDestinations);
                 OBA.Util.log('completed search results')
             })
             .catch((error) => {
