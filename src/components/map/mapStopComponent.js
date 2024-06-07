@@ -19,8 +19,8 @@ function mapStopComponent  (stopData) {
         <Popup key={stopData.id} className="map-popup">
             <img src={stopPopupIcon} alt="busstop icon" className="icon"/>
             <div className="popup-info">
-                <span className="StopPopupStopName">{stopData.name}</span>
-                <span className="StopPopupStopCode">{"Stopcode "+stopData.id}</span>
+                <span className="name">{stopData.name}</span>
+                <span className="stop-code">{"Stopcode "+stopData.id}</span>
             </div>
         </Popup>
     </Marker>);
