@@ -24,8 +24,8 @@ function vehicleComponent  (vehicleData) {
         iconUrl: vehicleImageUrl,
         className: "svg-icon",
         iconSize: [51,51],
-        iconAnchor: [0,0],
-        popupAnchor: [25,25]
+        iconAnchor: [25,25],
+        popupAnchor: [0,0]
     })
 
     let markerOptions = {

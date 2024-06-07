@@ -31,7 +31,7 @@ const mapComponent = (function() {
                     <MapContainer
                         style={{height: '100vh', width: '100wh'}}
                         center={OBA.Config.defaultMapCenter}
-                        zoom={15} scrollWheelZoom={true}
+                        zoom={11} scrollWheelZoom={true}
 
                     >
                         <ReactLeafletGoogleLayer
