@@ -31,8 +31,8 @@ function mapStopComponent  (stopData) {
         iconUrl: stopImageUrl,
         className: "svg-icon",
         iconSize: [21, 21],
-        iconAnchor: [0, 0],
-        popupAnchor: [10,10]
+        iconAnchor: [10, 10],
+        popupAnchor: [0,0]
     })
 
     console.log(stopData.longLat)
