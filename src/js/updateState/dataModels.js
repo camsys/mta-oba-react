@@ -71,8 +71,9 @@ export class MapRouteComponentDatum{
     }
 }
 
-export class routeDirectionComponentDatum{
+export class RouteDirectionComponentDatum{
     constructor(directionId, routeDestination) {
+        console.log("generating routeDirectionComponentDatum for: ",directionId,routeDestination)
         this.directionId = directionId
         this.routeDestination = routeDestination
         this.routeStopComponents = []
@@ -86,8 +87,9 @@ export class routeMatchDirectionDatum {
         this.directionId = directionJson.directionId
         this.destination = directionJson.destination
         this.mapRouteComponentData = []
-        this.routeDirectionComponentData = new routeDirectionComponentDatum(directionJson.directionId,
+        this.routeDirectionComponentData = new RouteDirectionComponentDatum(directionJson.directionId,
             directionJson.destination)
+        console.log("routeDirectionComponentDatum generated : ",this.routeDirectionComponentData)
         for (let j = 0; j < directionJson.polylines.length; j++) {
             console.log("decoding route polylines ", directionJson, this)
             let encodedPolyline = directionJson.polylines[j]
@@ -111,6 +113,15 @@ export class routeMatch extends searchMatch{
 }
 
 export class Card {
+    static ROUTECARDIDENTIFIER = "RouteResult";
+    static GEOCARDIDENTIFIER = "GeocodeResult";
+    static STOPCARDIDENTIFIER = "StopResult";
+    static cardTypes = {
+        routeCard:"routeCard",
+        geocodeCard:"geocodeCard",
+        stopCard:"stopCard",
+        errorCard:"errorCard"
+    }
     constructor(searchTerm) {
         this.searchTerm = searchTerm
         this.searchResultType = null
@@ -120,19 +131,20 @@ export class Card {
 
     setSearchResultType(searchResultType){
         this.searchResultType = searchResultType
-        if(searchResultType=="StopResult"){
-            this.name = "stopCard"
+        if(searchResultType==Card.STOPCARDIDENTIFIER){
+            this.type = Card.cardTypes.stopCard
         }
-        if(searchResultType=="GeocodeResult"){
-            this.name = "geocodeCard"
+        if(searchResultType==Card.GEOCARDIDENTIFIER){
+            this.type = Card.cardTypes.geocodeCard
 
         }
-        if(searchResultType=="RouteResult"){
-            this.name = "routeCard"
+        if(searchResultType==Card.ROUTECARDIDENTIFIER){
+            this.type = Card.cardTypes.routeCard
         }
         if(searchResultType==null){
-            this.name = "errorCard"
+            this.type = Card.cardTypes.errorCard
         }
+        this.name = this.type
     }
 
     equals(that){

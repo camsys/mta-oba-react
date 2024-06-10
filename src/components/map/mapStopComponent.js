@@ -25,7 +25,7 @@ function mapStopComponent  (stopData) {
     }
     let stopImageUrl = "img/stop/stop-" + (directionKey==null? "unknown":directionKey) + ".png"
     // let stopImageUrl = "img/stop/stop-" + "unknown" + ".png"
-    console.log(stopImageUrl)
+    // console.log(stopImageUrl)
 
     let icon = L.icon({
         iconUrl: stopImageUrl,
@@ -35,7 +35,7 @@ function mapStopComponent  (stopData) {
         popupAnchor: [0,0]
     })
 
-    console.log(stopData.longLat)
+    // console.log(stopData.longLat)
     var markerOptions = {
         position: stopData.longLat,
         icon: icon,

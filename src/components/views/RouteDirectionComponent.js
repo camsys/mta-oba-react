@@ -3,10 +3,16 @@ import {GlobalStateContext} from "../util/globalState";
 import {OBA} from "../../js/oba";
 import {routeDirectionComponentDatum} from "../../js/updateState/dataModels";
 
+function getRouteStopComponents(routeStopComponents){
+    console.log("getting RouteStopComponents for: ", routeStopComponents)
+    let out = routeStopComponents.length>0? null:routeStopComponents
+    return out
+}
+
 export default function getRouteDirectionComponent(routeDirectionComponentDatum){
     const { state} = useContext(GlobalStateContext);
-    OBA.Util.log(" getRouteDirectionComponent:" + routeDirectionComponentDatum.directionId)
-    return(
+    console.log("generating RouteDirectionComponent:", routeDirectionComponentDatum)
+    let out = (
         <div className="route-direction inner-card collapsible">
             <button className="card-header collapse-trigger" aria-haspopup="true"
                     aria-expanded="false"
@@ -14,12 +20,16 @@ export default function getRouteDirectionComponent(routeDirectionComponentDatum)
                 <span className="label">to <strong> {routeDirectionComponentDatum.routeDestination}</strong></span>
             </button>
             <div className="card-content collapse-content" styles="max-height: 0px;">
+                {/*this should be broken out into a component which re-renders when the stops call completes*/}
                 <ul className="route-stops" styles="color: #00AEEF;" key="test">
-                    {!routeDirectionComponentDatum?null:routeDirectionComponentDatum.routeStopComponents}
+                    {getRouteStopComponents(routeDirectionComponentDatum.routeStopComponents)}
                 </ul>
             </div>
         </div>
-    )}
+    )
+    console.log("RouteDirectionComponent: ", out)
+    return out
+}
 
 
 //     <div className="route-direction inner-card collapsible">

@@ -31,8 +31,6 @@ import {Card, routeMatch, routeMatchDirectionDatum} from "./dataModels"
                 directionDatum.directionId = dir.directionId
                 directionDatum.destination = dir.destination
                 directionDatum.routeMapComponents = []
-                directionDatum.routeDirectionComponentData = [directionDatum.directionId,
-                    directionDatum.destination]
                 for (let j = 0; j < dir.polylines.length; j++) {
                     console.log("decoding route polylines ",route,match)
                     let encodedPolyline = dir.polylines[j]
@@ -44,7 +42,7 @@ import {Card, routeMatch, routeMatchDirectionDatum} from "./dataModels"
             }
         }
         card.searchMatches.push(match)
-        OBA.Util.log('processed route search',route,card)
+        console.log('processed route search',route,card)
         return card
     }
 
@@ -84,6 +82,8 @@ import {Card, routeMatch, routeMatchDirectionDatum} from "./dataModels"
                 let searchResults = parsed?.searchResults
                 console.log("search results found ",searchResults)
                 console.log("resultType = ", searchResults.resultType)
+                card.setSearchResultType(searchResults.resultType)
+                console.log(card)
 
                 // if(searchResults.resultType=="StopResult"){
                 //     searchData = processStopSearch(searchResults)
@@ -93,10 +93,10 @@ import {Card, routeMatch, routeMatchDirectionDatum} from "./dataModels"
                 //     searchData = processGeocodeSearch(searchResults)
                 //
                 // }
-                if(searchResults.resultType=="RouteResult"){
+                if(card.type == Card.cardTypes.routeCard){
                     searchResults.matches.forEach(x=>{processRouteSearch(x,card)})
                 }
-                OBA.Util.log('completed search results')
+                console.log('completed search results: ',card)
             })
             .catch((error) => {
                 console.error(error);
