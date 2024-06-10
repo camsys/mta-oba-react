@@ -2,10 +2,11 @@ import React, {useContext} from "react";
 import {GlobalStateContext} from "../util/globalState";
 import {OBA} from "../../js/oba";
 import {routeDirectionComponentDatum} from "../../js/updateState/dataModels";
+import RouteStopComponent from "./RouteStopComponent";
 
-function getRouteStopComponents(routeStopComponents){
-    console.log("getting RouteStopComponents for: ", routeStopComponents)
-    let out = routeStopComponents.length>0? null:routeStopComponents
+function getRouteStopComponents(routeStopComponentsData){
+    console.log("getting RouteStopComponents for: ", routeStopComponentsData)
+    let out = routeStopComponentsData.map((datum)=>{return new RouteStopComponent(datum)})
     return out
 }
 
@@ -22,7 +23,11 @@ export default function getRouteDirectionComponent(routeDirectionComponentDatum)
             <div className="card-content collapse-content" styles="max-height: 0px;">
                 {/*this should be broken out into a component which re-renders when the stops call completes*/}
                 <ul className="route-stops" styles="color: #00AEEF;" key="test">
-                    {getRouteStopComponents(routeDirectionComponentDatum.routeStopComponents)}
+                    {console.log("preparing to get RouteStopComponents from: ", routeDirectionComponentDatum)}
+                    {
+                        getRouteStopComponents(routeDirectionComponentDatum.routeStopComponentsData)
+                        // routeDirectionComponentDatum.routeStopComponentsData.map(datum=>{return new RouteStopComponent(datum)})
+                    }
                 </ul>
             </div>
         </div>

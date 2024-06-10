@@ -2,7 +2,7 @@ import queryString from "query-string";
 import React, {useContext, useEffect, useState} from "react";
 import {GlobalStateContext} from "../../components/util/globalState";
 import {OBA} from "../oba";
-import MapRouteComponent from "../../components/map/mapRouteComponent";
+// import MapRouteComponent from "../../components/map/MapRouteComponent";
 import {Card, routeMatch, routeMatchDirectionDatum} from "./dataModels"
 
 

@@ -1,6 +1,5 @@
 import {stopData} from "./dataModels";
-import mapStopComponent from "../../components/map/mapStopComponent";
-import routeStopComponent from "../../components/views/routeStopComponent";
+import RouteStopComponent from "../../components/views/RouteStopComponent";
 
 
 export class classWrap{

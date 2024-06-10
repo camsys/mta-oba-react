@@ -7,7 +7,8 @@ import L from "leaflet";
 import bus from "../../img/icon/bus.svg";
 import {GlobalStateContext} from "../util/globalState";
 import vehicleComponent from "./vehicleComponent";
-import MapRouteComponent from "./mapRouteComponent";
+import MapRouteComponent from "./MapRouteComponent";
+import MapStopComponent from "./MapStopComponent";
 
 const mapComponent = (function() {
 
@@ -18,6 +19,7 @@ const mapComponent = (function() {
             const { state} = useContext(GlobalStateContext);
             const mapVehicleComponents = state.mapVehicleComponents;
             let mapRouteComponents = []
+            let mapStopComponents = []
             {state.currentCard.searchMatches.forEach(route=>{
                 if(route.type=="routeMatch"){
                     route.directions.forEach(dir=>{
@@ -25,11 +27,24 @@ const mapComponent = (function() {
                             console.log("requesting new MapRouteComponent from: ",datum)
                             mapRouteComponents.push(new MapRouteComponent(datum))
                         })
-
+                        dir.mapStopComponentData.forEach((datum)=>{
+                            mapStopComponents.push(new MapStopComponent(datum))
+                        })
                     })
                 }
             })}
-            const mapStopComponents = state.mapStopComponents
+
+            // {state.currentCard.searchMatches.forEach(route=>{
+            //     if(route.type=="routeMatch"){
+            //         route.directions.forEach(dir=>{
+            //             dir.mapRouteComponentData.forEach((datum)=>{
+            //                 console.log("requesting new MapRouteComponent from: ",datum)
+            //                 mapRouteComponents.push(new MapRouteComponent(datum))
+            //             })
+            //
+            //         })
+            //     }
+            // })}
             console.log("map route components")
             console.log(mapRouteComponents)
             console.log("map vehicle components")

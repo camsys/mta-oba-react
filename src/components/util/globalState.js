@@ -1,6 +1,7 @@
 import React, { createContext, useState } from 'react';
 
 import {generateInitialCard} from "../../js/updateState/searchEffect";
+import {fetchAllStopsData} from "../../js/updateState/useStopsForDir";
 const GlobalStateContext = createContext();
 
 const GlobalStateProvider = ({children}) => {
@@ -12,7 +13,8 @@ const GlobalStateProvider = ({children}) => {
         cardStack: [currentCard],
         routeComponents: [],
         mapVehicleComponents: [],
-        mapStopComponents: []
+        mapStopComponents: [],
+        renderCounter:1
     });
     console.log("initial state set: ",state)
 

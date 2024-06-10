@@ -1,7 +1,6 @@
 import {OBA} from "../oba";
-import {LatLngBoundsExpression, MapOptions} from "leaflet";
 
-export class stopData {
+export class StopData {
     constructor(stopJson) {
         this.name = stopJson.name
         this.longLat = [stopJson.latitude,stopJson.longitude]
@@ -15,33 +14,6 @@ export class serviceAlertData {
         this.json = serviceAlertJson
     }
 }
-
-// export class routeDirectionData{
-//     constructor(routeDirectionJson) {
-//         let polylines = []
-//         for (let i = 0; i < route?.directions.length; i++) {
-//             let dir = route?.directions[i];
-//             routeDestinations.push(dir.destination)
-//             for (let j = 0; j < dir.polylines.length; j++) {
-//                 let encodedPolyline = dir.polylines[j]
-//                 let decodedPolyline = OBA.Util.decodePolyline(encodedPolyline)
-//                 let polylineId = routeId + "_dir_" + i + "_lineNum_" + j
-//                 let routeComponent = generateRouteComponent(polylineId, decodedPolyline, color)
-//                 routeComponents.push(routeComponent)
-//             }
-//         }
-//     }
-// }
-//
-// export class routeData {
-//     constructor(routeJson) {
-//         let color = route?.color
-//         let routeId = route?.id
-//         let routeTitle = route?.shortName + " " + route?.longName
-//         let description = route?.description
-//
-//     }
-// }
 
 
 export class vehicleData {
@@ -76,7 +48,7 @@ export class RouteDirectionComponentDatum{
         console.log("generating routeDirectionComponentDatum for: ",directionId,routeDestination)
         this.directionId = directionId
         this.routeDestination = routeDestination
-        this.routeStopComponents = []
+        this.routeStopComponentsData = []
     }
 }
 
@@ -87,6 +59,7 @@ export class routeMatchDirectionDatum {
         this.directionId = directionJson.directionId
         this.destination = directionJson.destination
         this.mapRouteComponentData = []
+        this.mapStopComponentData = []
         this.routeDirectionComponentData = new RouteDirectionComponentDatum(directionJson.directionId,
             directionJson.destination)
         console.log("routeDirectionComponentDatum generated : ",this.routeDirectionComponentData)
@@ -94,7 +67,7 @@ export class routeMatchDirectionDatum {
             console.log("decoding route polylines ", directionJson, this)
             let encodedPolyline = directionJson.polylines[j]
             let decodedPolyline = OBA.Util.decodePolyline(encodedPolyline)
-            let polylineId = routeId + "_dir_" + directionJson.directionId + "_lineNum_" + j
+            let polylineId = routeId + "_dir_" + directionJson.directionId + "_polyLineNum_" + j
             let mapRouteComponentDatum = new MapRouteComponentDatum(polylineId, decodedPolyline, color)
             this.mapRouteComponentData.push(mapRouteComponentDatum)
         }

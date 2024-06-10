@@ -2,8 +2,7 @@ import React, {useContext, useEffect, useState} from "react";
 import {OBA} from "../oba";
 import {GlobalStateContext} from "../../components/util/globalState";
 import queryString from "query-string";
-import routeStopComponent from "../../components/views/routeStopComponent";
-import mapStopComponent from "../../components/map/mapStopComponent";
+import RouteStopComponent from "../../components/views/RouteStopComponent";
 import {stopData} from "./dataModels"
 import {classList, pathRouting,dataSpecifiers} from "./dataEffectsSupport";
 

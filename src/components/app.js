@@ -12,6 +12,7 @@ import sideBarComponent from "./pageStructure/sideBar";
 function App  () {
 
     const { state } = useContext(GlobalStateContext);
+
     useUpdateCurrentCardData(state.currentCard);
 
     function GetSideBar () {

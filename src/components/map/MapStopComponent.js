@@ -7,7 +7,7 @@ import stopPopupIcon from "../../img/icon/bus-stop.svg"
 
 const COMPONENT_IDENTIFIER = "mapStopComponent"
 
-function mapStopComponent  (stopData) {
+function MapStopComponent  (stopData) {
     OBA.Util.trace('generating mapStopComponent: ' + stopData.id)
 
 
@@ -61,5 +61,5 @@ function mapStopComponent  (stopData) {
 
     return out
 }
-export default mapStopComponent;
+export default MapStopComponent;
 

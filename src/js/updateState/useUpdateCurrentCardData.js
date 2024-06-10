@@ -1,10 +1,10 @@
 import siriEffect from "./siriEffect";
-import stopsEffect from "./stopsEffect"
+import {stopsEffect} from "./useStopsForDir"
 import {fillCard} from "./searchEffect";
 
 const useUpdateCurrentCardData = (currentCard) => {
     siriEffect(currentCard)
-    stopsEffect(currentCard)
+    // stopsEffect()
     return currentCard
 };
 
