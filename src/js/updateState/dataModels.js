@@ -57,27 +57,81 @@ export class vehicleData {
     }
 }
 
+export class searchMatch{
+    constructor(type) {
+        this.type = type
+    }
+}
+
+export class MapRouteComponentDatum{
+    constructor(componentId, points, color) {
+        this.id = componentId
+        this.points = points
+        this.color = color
+    }
+}
+
+export class routeDirectionComponentDatum{
+    constructor(directionId, routeDestination) {
+        this.directionId = directionId
+        this.routeDestination = routeDestination
+        this.routeStopComponents = []
+    }
+}
+
+export class routeMatchDirectionDatum {
+    constructor(directionJson,routeId,color) {
+        this.routeId = directionJson.routeId
+        this.color = color
+        this.directionId = directionJson.directionId
+        this.destination = directionJson.destination
+        this.mapRouteComponentData = []
+        this.routeDirectionComponentData = new routeDirectionComponentDatum(directionJson.directionId,
+            directionJson.destination)
+        for (let j = 0; j < directionJson.polylines.length; j++) {
+            console.log("decoding route polylines ", directionJson, this)
+            let encodedPolyline = directionJson.polylines[j]
+            let decodedPolyline = OBA.Util.decodePolyline(encodedPolyline)
+            let polylineId = routeId + "_dir_" + directionJson.directionId + "_lineNum_" + j
+            let mapRouteComponentDatum = new MapRouteComponentDatum(polylineId, decodedPolyline, color)
+            this.mapRouteComponentData.push(mapRouteComponentDatum)
+        }
+    }
+}
+
+export class routeMatch extends searchMatch{
+    constructor(data) {
+        super("routeMatch");
+        let color
+        let routeId
+        let routeTitle
+        let description
+        let directions = [] // should only be routeMatchDirectionDatum
+    }
+}
+
 export class Card {
     constructor(searchTerm) {
         this.searchTerm = searchTerm
         this.searchResultType = null
-        name = "homeCard"
+        this.name = "homeCard"
+        this.searchMatches = []
     }
 
     setSearchResultType(searchResultType){
         this.searchResultType = searchResultType
         if(searchResultType=="StopResult"){
-            name = "stopCard"
+            this.name = "stopCard"
         }
         if(searchResultType=="GeocodeResult"){
-            name = "geocodeCard"
+            this.name = "geocodeCard"
 
         }
         if(searchResultType=="RouteResult"){
-            name = "routeCard"
+            this.name = "routeCard"
         }
         if(searchResultType==null){
-            name = "errorCard"
+            this.name = "errorCard"
         }
     }
 

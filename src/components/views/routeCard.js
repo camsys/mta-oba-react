@@ -2,8 +2,8 @@ import React, {useContext, useState} from "react";
 import {OBA} from "../../js/oba";
 import {GlobalStateContext} from "../../components/util/globalState";
 import ServiceAlertContainerComponent from "./serviceAlertContainerComponent";
-import RouteDirectionComponent from "./routeDirectionComponent"
 import RefreshComponent from "./RefreshComponent"
+import getRouteDirectionComponent from "./RouteDirectionComponent";
 
 
 
@@ -24,8 +24,13 @@ function getRouteCard  () {
               <li className="via">{state.description}</li>
             </ul>
             <ServiceAlertContainerComponent/>
-            <RouteDirectionComponent directionId="0" />
-            <RouteDirectionComponent directionId="1" />
+              {state.searchMatches.forEach(route=>{
+                  if(route.type=="routeMatch"){
+                      route.forEach(dir=>{
+                          new getRouteDirectionComponent(dir.routeDirectionComponentData)
+                      })
+                  }
+              })}
           </div>
         </div>
       </div>

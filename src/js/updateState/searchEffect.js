@@ -1,74 +1,80 @@
 import queryString from "query-string";
-import React, {useContext, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import {GlobalStateContext} from "../../components/util/globalState";
 import {OBA} from "../oba";
-import routeComponent from "../../components/map/routeComponent";
-import {Card} from "./dataModels"
-
-const searchEffect = (currentCard) => {
+import MapRouteComponent from "../../components/map/mapRouteComponent";
+import {Card, routeMatch, routeMatchDirectionDatum} from "./dataModels"
 
 
-    function generateRouteComponent(id, points, color) {
-        let polyline = new routeComponent(id,points,color)
+
+
+    function generateRouteMapComponent(id, points, color) {
+        let polyline = new MapRouteComponent(id,points,color)
         console.log(polyline)
         return polyline
     }
 
     function processRouteSearch(route,card) {
+        let match = new routeMatch()
         console.log("processing route search results",route,card)
-        const routeComponents = [];
-        card.routeComponents = routeComponents;
         if (route != null && route.hasOwnProperty("directions")) {
-            card.color = route?.color
-            card.routeId = route?.id
-            card.routeTitle = route?.shortName + " " + route?.longName
-            card.description = route?.description
-            card.routeDestinations=[]
-            console.log("assigned basic search values to card",route,card)
+            match.color = route?.color
+            match.routeId = route?.id
+            match.routeTitle = route?.shortName + " " + route?.longName
+            match.description = route?.description
+            match.directions = []
+            console.log("assigned basic search values to card",route,match)
             for (let i = 0; i < route?.directions.length; i++) {
+                let directionDatum = new routeMatchDirectionDatum(route?.directions[i],match.routeId,match.color)
+                match.directions.push(directionDatum)
                 let dir = route?.directions[i];
-                card.routeDestinations.push(dir.destination)
+                directionDatum.directionId = dir.directionId
+                directionDatum.destination = dir.destination
+                directionDatum.routeMapComponents = []
+                directionDatum.routeDirectionComponentData = [directionDatum.directionId,
+                    directionDatum.destination]
                 for (let j = 0; j < dir.polylines.length; j++) {
+                    console.log("decoding route polylines ",route,match)
                     let encodedPolyline = dir.polylines[j]
                     let decodedPolyline = OBA.Util.decodePolyline(encodedPolyline)
-                    let polylineId = card.routeId + "_dir_" + i + "_lineNum_" + j
-                    let routeComponent = generateRouteComponent(polylineId, decodedPolyline, card.color)
-                    routeComponents.push(routeComponent)
+                    let polylineId = match.routeId + "_dir_" + i + "_lineNum_" + j
+                    let routeMapComponents = generateRouteMapComponent(polylineId, decodedPolyline, match.color)
+                    directionDatum.routeMapComponents.push(routeMapComponents)
                 }
             }
         }
+        card.searchMatches.push(match)
         OBA.Util.log('processed route search',route,card)
         return card
     }
 
-    function postRouteSearchData(routeComponents,color,routeId,routeTitle,description,routeDestinations) {
-        OBA.Util.log("adding polylines:")
-        OBA.Util.log(routeComponents)
-        setState((prevState) => ({
-            ...prevState,
-            color:color,
-            routeId:routeId,
-            routeTitle:routeTitle,
-            description:description,
-            routeDestinations:routeDestinations,
-            routeComponents:routeComponents
-        }))
-        OBA.Util.log("confirming polylines added:")
-        OBA.Util.log(routeComponents)
-    }
+    // function postRouteSearchData(routeComponents,color,routeId,routeTitle,description,routeDestinations) {
+    //     OBA.Util.log("adding polylines:")
+    //     OBA.Util.log(routeComponents)
+    //     setState((prevState) => ({
+    //         ...prevState,
+    //         color:color,
+    //         routeId:routeId,
+    //         routeTitle:routeTitle,
+    //         description:description,
+    //         routeDestinations:routeDestinations,
+    //         routeComponents:routeComponents
+    //     }))
+    //     OBA.Util.log("confirming polylines added:")
+    //     OBA.Util.log(routeComponents)
+    // }
 
 
 
 
 
-    function getData(searchRef){
-        let card = new Card(searchRef)
-        console.log("generating new card",card)
-        if(searchRef == null || searchRef == ''){
+    function getData(card){
+        console.log("filling card data with search",card)
+        if(card.searchTerm == null || card.searchTerm == ''){
             console.log("empty search means home",card)
             return card
         }
-        let address = "https://" + OBA.Config.envAddress + "/" + OBA.Config.searchUrl + "?q=" + searchRef
+        let address = "https://" + OBA.Config.envAddress + "/" + OBA.Config.searchUrl + "?q=" + card.searchTerm
         console.log('requesting search results from ',address)
         fetch(address)
             .then((response) => response.json())
@@ -100,8 +106,9 @@ const searchEffect = (currentCard) => {
 
 
     function postData(card){
+        const { state, setState } = useContext(GlobalStateContext);
         let cardStack = state.cardStack
-        cardStack.push(currentCard)
+        cardStack.push(card)
         setState((prevState) => ({
             ...prevState,
             currentCard: card,
@@ -110,21 +117,29 @@ const searchEffect = (currentCard) => {
     }
 
     const performNewSearch = (searchRef) =>{
+        const { state, setState } = useContext(GlobalStateContext);
         if(state?.currentCard?.searchTerm == searchRef){
             return false
         }
         return true
     }
 
-    const { state, setState } = useContext(GlobalStateContext);
+// export const fillCard = (card) =>{
+//     console.log("filling card ",card)
+//     postData(getData(card))
+// }
+
+export const updateCard = () =>{
     const searchRef = queryString.parse(location.search).LineRef;
-
-    React.useEffect(() => {
-        if(performNewSearch(searchRef))
-        {
-            postData(getData(searchRef))
+    useEffect(() => {
+        if (performNewSearch(searchRef)) {
+            fillCard(new Card(searchRef))
         }
-
-    }, []);
+    })
 }
-export default searchEffect;
+
+export const generateInitialCard = ()=>{
+    console.log("generating card")
+    const searchRef = queryString.parse(location.search).LineRef;
+    return getData(new Card(searchRef))
+}

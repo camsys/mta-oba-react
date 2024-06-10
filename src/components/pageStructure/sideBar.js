@@ -18,6 +18,7 @@ function getSideBar  () {
     const { state } = useContext(GlobalStateContext);
 
     function GetCardInfo  () {
+        console.log("setting card info based on currentCard name: ", state.currentCard)
         if(state.currentCard.name==OBA.Config.cards.routeCard.name){
             OBA.Util.log("adding route card")
             return routeCard();

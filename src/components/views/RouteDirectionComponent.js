@@ -1,21 +1,21 @@
 import React, {useContext} from "react";
 import {GlobalStateContext} from "../util/globalState";
 import {OBA} from "../../js/oba";
+import {routeDirectionComponentDatum} from "../../js/updateState/dataModels";
 
-export default function getRouteDirectionComponent(props){
+export default function getRouteDirectionComponent(routeDirectionComponentDatum){
     const { state} = useContext(GlobalStateContext);
-    OBA.Util.log(" getRouteDirectionComponent:" + props.directionId)
-    if (!state.currentCard.routeDestinations) return null;
+    OBA.Util.log(" getRouteDirectionComponent:" + routeDirectionComponentDatum.directionId)
     return(
         <div className="route-direction inner-card collapsible">
             <button className="card-header collapse-trigger" aria-haspopup="true"
                     aria-expanded="false"
                     aria-label="Toggle B38 to Downtown Brooklyn Tillary Street Open / Closed">
-                <span className="label">to <strong> {state.currentCard.routeDestinations[props.directionId]}</strong></span>
+                <span className="label">to <strong> {routeDirectionComponentDatum.routeDestination}</strong></span>
             </button>
             <div className="card-content collapse-content" styles="max-height: 0px;">
                 <ul className="route-stops" styles="color: #00AEEF;" key="test">
-                    {state.currentCard.routeStopComponents}
+                    {!routeDirectionComponentDatum?null:routeDirectionComponentDatum.routeStopComponents}
                 </ul>
             </div>
         </div>

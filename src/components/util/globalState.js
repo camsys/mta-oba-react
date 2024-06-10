@@ -1,19 +1,23 @@
 import React, { createContext, useState } from 'react';
-import {OBA} from "../../js/oba";
+
+import {generateInitialCard} from "../../js/updateState/searchEffect";
 const GlobalStateContext = createContext();
 
-const GlobalStateProvider = ({ children }) => {
+const GlobalStateProvider = ({children}) => {
+    let currentCard = generateInitialCard()
+    console.log("setting initial state data with base card",currentCard)
     const [state, setState] = useState({
         someGlobalState: {},
-        currentCard: OBA.Config.cards.homeCard,
-        cardStack: [],
-        routeComponents:[],
-        mapVehicleComponents:[],
-        mapStopComponents:[]
+        currentCard: currentCard,
+        cardStack: [currentCard],
+        routeComponents: [],
+        mapVehicleComponents: [],
+        mapStopComponents: []
     });
+    console.log("initial state set: ",state)
 
     return (
-        <GlobalStateContext.Provider value={{ state, setState }}>
+        <GlobalStateContext.Provider value={{state, setState}}>
             {children}
         </GlobalStateContext.Provider>
     );

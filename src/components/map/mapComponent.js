@@ -7,7 +7,7 @@ import L from "leaflet";
 import bus from "../../img/icon/bus.svg";
 import {GlobalStateContext} from "../util/globalState";
 import vehicleComponent from "./vehicleComponent";
-import routeComponent from "./routeComponent";
+import MapRouteComponent from "./mapRouteComponent";
 
 const mapComponent = (function() {
 
@@ -17,10 +17,21 @@ const mapComponent = (function() {
 
             const { state} = useContext(GlobalStateContext);
             const mapVehicleComponents = state.mapVehicleComponents;
-            const routeComponents = state.currentCard.routeComponents
+            let mapRouteComponents = []
+            {state.currentCard.searchMatches.forEach(route=>{
+                if(route.type=="routeMatch"){
+                    route.directions.forEach(dir=>{
+                        dir.mapRouteComponentData.forEach((datum)=>{
+                            console.log("requesting new MapRouteComponent from: ",datum)
+                            mapRouteComponents.push(new MapRouteComponent(datum))
+                        })
+
+                    })
+                }
+            })}
             const mapStopComponents = state.mapStopComponents
             console.log("map route components")
-            console.log(routeComponents)
+            console.log(mapRouteComponents)
             console.log("map vehicle components")
             console.log(mapVehicleComponents)
             console.log("map stop components")
@@ -39,7 +50,7 @@ const mapComponent = (function() {
                             type={'roadmap'}
                             styles={OBA.Config.mutedTransitStylesArray}
                         />
-                        {routeComponents}
+                        {mapRouteComponents}
                         {mapVehicleComponents}
                         {mapStopComponents}
                     </MapContainer>

@@ -1,16 +1,18 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {OBA} from "../js/oba";
 import ErrorBoundary from "./util/errorBoundary";
-import {GlobalStateProvider} from "./util/globalState";
+import {GlobalStateContext, GlobalStateProvider} from "./util/globalState";
 import mapWrap from "./map/mapWrap";
 
-import useInitializeData from "../js/updateState/initializeData";
+import useUpdateCurrentCardData from "../js/updateState/useUpdateCurrentCardData";
 import sideBarComponent from "./pageStructure/sideBar";
 
 
 
 function App  () {
-    useInitializeData();
+
+    const { state } = useContext(GlobalStateContext);
+    useUpdateCurrentCardData(state.currentCard);
 
     function GetSideBar () {
         return sideBarComponent()
