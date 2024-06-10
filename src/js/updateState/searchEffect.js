@@ -27,18 +27,6 @@ import {Card, routeMatch, routeMatchDirectionDatum} from "./dataModels"
             for (let i = 0; i < route?.directions.length; i++) {
                 let directionDatum = new routeMatchDirectionDatum(route?.directions[i],match.routeId,match.color)
                 match.directions.push(directionDatum)
-                let dir = route?.directions[i];
-                directionDatum.directionId = dir.directionId
-                directionDatum.destination = dir.destination
-                directionDatum.routeMapComponents = []
-                for (let j = 0; j < dir.polylines.length; j++) {
-                    console.log("decoding route polylines ",route,match)
-                    let encodedPolyline = dir.polylines[j]
-                    let decodedPolyline = OBA.Util.decodePolyline(encodedPolyline)
-                    let polylineId = match.routeId + "_dir_" + i + "_lineNum_" + j
-                    let routeMapComponents = generateRouteMapComponent(polylineId, decodedPolyline, match.color)
-                    directionDatum.routeMapComponents.push(routeMapComponents)
-                }
             }
         }
         card.searchMatches.push(match)
