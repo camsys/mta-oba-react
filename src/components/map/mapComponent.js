@@ -5,18 +5,25 @@ import queryString from "query-string";
 import {OBA} from "../../js/oba";
 import L from "leaflet";
 import bus from "../../img/icon/bus.svg";
-import {GlobalStateContext} from "../util/globalState";
+import {CardStateContext} from "../util/CardStateComponent";
 import vehicleComponent from "./vehicleComponent";
 import MapRouteComponent from "./MapRouteComponent";
 import MapStopComponent from "./MapStopComponent";
+import useUpdateCurrentCardData from "../../js/updateState/useUpdateCurrentCardData";
+import siriEffect from "../../js/updateState/siriEffect";
 
 const mapComponent = (function() {
 
+    function updateVehicles(){
+        const { state } = useContext(CardStateContext);
+        siriEffect(state.currentCard);
+    }
     return {
         getMap: function() {
+            updateVehicles()
             OBA.Util.log("generating map")
 
-            const { state} = useContext(GlobalStateContext);
+            const { state} = useContext(CardStateContext);
             const mapVehicleComponents = state.mapVehicleComponents;
             let mapRouteComponents = []
             let mapStopComponents = []

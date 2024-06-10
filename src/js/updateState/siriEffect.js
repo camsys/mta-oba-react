@@ -125,7 +125,7 @@ export default siriEffect;
 //     }
 //
 //
-//     const { state, setState } = useContext(GlobalStateContext);
+//     const { state, setState } = useContext(CardStateContext);
 //     const lineRef = queryString.parse(location.search).LineRef;
 //     let search = "&"+currentCard.queryIdentifier+"=" + lineRef;
 //     var targetAddress = "https://" + process.env.ENV_ADDRESS + "/" + process.env.VEHICLE_MONITORING_ENDPOINT + search;

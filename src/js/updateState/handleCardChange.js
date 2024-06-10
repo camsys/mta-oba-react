@@ -1,10 +1,10 @@
 import { useContext, useEffect } from 'react';
-import { GlobalStateContext } from '../../components/util/globalState';
+import { CardStateContext } from '../../components/util/CardStateComponent';
 import {OBA} from "../oba";
 import queryString from "query-string";
 
 const handleCardChange = () => {
-    const { state, setState } = useContext(GlobalStateContext);
+    const { state, setState } = useContext(CardStateContext);
 
     const getCurrentCard = () => {
         OBA.Util.log("determining current card")

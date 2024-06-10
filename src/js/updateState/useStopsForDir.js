@@ -2,7 +2,7 @@ import React, {useContext, useEffect, useState} from "react";
 
 import {StopData, Card} from "./dataModels";
 import {OBA} from "../oba";
-import {GlobalStateContext} from "../../components/util/globalState";
+import {CardStateContext} from "../../components/util/CardStateComponent";
 
 
 
@@ -65,7 +65,7 @@ export async function fetchAllStopsData(card){
 }
 
 export function stopsEffect(){
-    const { state, setState } = useContext(GlobalStateContext);
+    const { state, setState } = useContext(CardStateContext);
     useEffect(()=>{
         let updatedCurrentCard = fetchAllStopsData(state.currentCard)
          let updateStateFunc = (prevState) => {

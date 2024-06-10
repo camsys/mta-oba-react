@@ -1,5 +1,5 @@
 import React, {useContext} from "react";
-import {GlobalStateContext} from "../util/globalState";
+import {CardStateContext} from "../util/CardStateComponent";
 import {OBA} from "../../js/oba";
 import {routeDirectionComponentDatum} from "../../js/updateState/dataModels";
 import RouteStopComponent from "./RouteStopComponent";
@@ -11,7 +11,7 @@ function getRouteStopComponents(routeStopComponentsData){
 }
 
 export default function getRouteDirectionComponent(routeDirectionComponentDatum){
-    const { state} = useContext(GlobalStateContext);
+    const { state} = useContext(CardStateContext);
     console.log("generating RouteDirectionComponent:", routeDirectionComponentDatum)
     let out = (
         <div className="route-direction inner-card collapsible">

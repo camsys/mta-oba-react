@@ -2,9 +2,9 @@ import React, { createContext, useState } from 'react';
 
 import {generateInitialCard} from "../../js/updateState/searchEffect";
 import {fetchAllStopsData} from "../../js/updateState/useStopsForDir";
-const GlobalStateContext = createContext();
+const CardStateContext = createContext();
 
-const GlobalStateProvider = ({children}) => {
+const CardStateProvider = ({children}) => {
     let currentCard = generateInitialCard()
     console.log("setting initial state data with base card",currentCard)
     const [state, setState] = useState({
@@ -19,10 +19,10 @@ const GlobalStateProvider = ({children}) => {
     console.log("initial state set: ",state)
 
     return (
-        <GlobalStateContext.Provider value={{state, setState}}>
+        <CardStateContext.Provider value={{state, setState}}>
             {children}
-        </GlobalStateContext.Provider>
+        </CardStateContext.Provider>
     );
 };
 
-export { GlobalStateProvider, GlobalStateContext };
+export { CardStateProvider, CardStateContext };

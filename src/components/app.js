@@ -1,7 +1,7 @@
 import React, {useContext} from 'react';
 import {OBA} from "../js/oba";
 import ErrorBoundary from "./util/errorBoundary";
-import {GlobalStateContext, GlobalStateProvider} from "./util/globalState";
+import {CardStateContext, CardStateProvider} from "./util/CardStateComponent";
 import mapWrap from "./map/mapWrap";
 
 import useUpdateCurrentCardData from "../js/updateState/useUpdateCurrentCardData";
@@ -11,9 +11,7 @@ import sideBarComponent from "./pageStructure/sideBar";
 
 function App  () {
 
-    const { state } = useContext(GlobalStateContext);
-
-    useUpdateCurrentCardData(state.currentCard);
+    OBA.Util.log("adding app")
 
     function GetSideBar () {
         return sideBarComponent()
@@ -21,9 +19,7 @@ function App  () {
     function GetMapWrapper () {
         return mapWrap()
     }
-
-    OBA.Util.log("adding app")
-
+    
     return (
         <ErrorBoundary>
             <div id="sidebar">
@@ -37,9 +33,9 @@ function App  () {
 const Root = () => {
     return (
         <ErrorBoundary>
-            <GlobalStateProvider>
+            <CardStateProvider>
                 <App />
-            </GlobalStateProvider>
+            </CardStateProvider>
         </ErrorBoundary>
     )
 }

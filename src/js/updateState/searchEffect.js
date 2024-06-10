@@ -1,6 +1,6 @@
 import queryString from "query-string";
 import React, {useContext, useEffect, useState} from "react";
-import {GlobalStateContext} from "../../components/util/globalState";
+import {CardStateContext} from "../../components/util/CardStateComponent";
 import {OBA} from "../oba";
 // import MapRouteComponent from "../../components/map/MapRouteComponent";
 import {Card, routeMatch, routeMatchDirectionDatum} from "./dataModels"
@@ -68,7 +68,7 @@ import {Card, routeMatch, routeMatchDirectionDatum} from "./dataModels"
 
 
     function postData(card){
-        const { state, setState } = useContext(GlobalStateContext);
+        const { state, setState } = useContext(CardStateContext);
         let cardStack = state.cardStack
         cardStack.push(card)
         setState((prevState) => ({
@@ -79,7 +79,7 @@ import {Card, routeMatch, routeMatchDirectionDatum} from "./dataModels"
     }
 
     const performNewSearch = (searchRef) =>{
-        const { state, setState } = useContext(GlobalStateContext);
+        const { state, setState } = useContext(CardStateContext);
         if(state?.currentCard?.searchTerm == searchRef){
             return false
         }

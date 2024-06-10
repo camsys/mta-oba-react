@@ -7,7 +7,7 @@ import homeCard from "./../views/homeCard";
 import headerComponent from "./header";
 import footerComponent from "./footer";
 import searchComponent from "./search"
-import {GlobalStateContext} from "../util/globalState";
+import {CardStateContext} from "../util/CardStateComponent";
 import {Card} from "../../js/updateState/dataModels"
 
 function getSideBar  () {
@@ -16,7 +16,7 @@ function getSideBar  () {
         return headerComponent()
     }
 
-    const { state } = useContext(GlobalStateContext);
+    const { state } = useContext(CardStateContext);
 
     function GetCardInfo  () {
         console.log("setting card info based on currentCard type: ", state.currentCard)

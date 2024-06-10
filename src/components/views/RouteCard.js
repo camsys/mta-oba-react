@@ -1,6 +1,6 @@
 import React, {useContext, useState} from "react";
 import {OBA} from "../../js/oba";
-import {GlobalStateContext} from "../../components/util/globalState";
+import {CardStateContext} from "../../components/util/CardStateComponent";
 import ServiceAlertContainerComponent from "./serviceAlertContainerComponent";
 import RefreshComponent from "./RefreshComponent"
 import getRouteDirectionComponent from "./RouteDirectionComponent";
@@ -27,7 +27,7 @@ function getRouteCard (routeMatch){
 }
 
 function getRouteCardsWrapper  () {
-    const { state} = useContext(GlobalStateContext);
+    const { state} = useContext(CardStateContext);
     console.log("adding route cards for matches:", state.currentCard.searchMatches);
 
    return (<React.Fragment>
