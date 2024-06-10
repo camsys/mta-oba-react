@@ -1,15 +1,10 @@
 import React, {useContext, useEffect, useState} from "react";
-import {OBA} from "../oba";
-import vehicleComponent from "../../components/map/vehicleComponent";
-import {GlobalStateContext} from "../../components/util/globalState";
 import queryString from "query-string";
 import getDataEffect from "./getDataEffect";
 import {serviceAlertData, stopData, vehicleData} from "./dataModels";
 import mapVehicleComponent from "../../components/map/vehicleComponent";
 import routeVehicleComponent from "../../components/views/routeVehicleComponent";
 import {classList, classWrap, dataSpecifiers, pathRouting} from "./dataEffectsSupport";
-import mapStopComponent from "../../components/map/mapStopComponent";
-import routeStopComponent from "../../components/views/routeStopComponent";
 import serviceAlertComponent from "../../components/views/serviceAlertComponent";
 
 const siriEffect = (currentCard) => {
@@ -18,8 +13,8 @@ const siriEffect = (currentCard) => {
     var keyword = "vehicle"
     const lineRef = queryString.parse(location.search).LineRef;
     let search = "&"+currentCard.queryIdentifier+"=" + lineRef;
-    var targetAddress = "https://" + process.env.ENV_ADDRESS + "/" + process.env.VEHICLE_MONITORING_ENDPOINT + search;
-
+    let targetAddress = "https://" + process.env.ENV_ADDRESS + "/" + process.env.VEHICLE_MONITORING_ENDPOINT + search
+    targetAddress = lineRef==null?null:targetAddress
 
     let vehicleSpecifiers = new dataSpecifiers("vehicle",
         new classList(vehicleData,

@@ -67,6 +67,9 @@ const getDataEffect = (currentCard, targetAddress,
 
 
     useEffect(() => {
+        if(targetAddress==null){
+            return
+        }
         fetch(targetAddress)
             .then((response) => response.json())
             .then((parsed) => {

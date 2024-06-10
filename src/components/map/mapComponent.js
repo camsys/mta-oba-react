@@ -17,7 +17,7 @@ const mapComponent = (function() {
 
             const { state} = useContext(GlobalStateContext);
             const mapVehicleComponents = state.mapVehicleComponents;
-            const routeComponents = state.routeComponents
+            const routeComponents = state.currentCard.routeComponents
             const mapStopComponents = state.mapStopComponents
             console.log("map route components")
             console.log(routeComponents)
@@ -31,7 +31,7 @@ const mapComponent = (function() {
                     <MapContainer
                         style={{height: '100vh', width: '100wh'}}
                         center={OBA.Config.defaultMapCenter}
-                        zoom={11} scrollWheelZoom={true}
+                        zoom={16} scrollWheelZoom={true}
 
                     >
                         <ReactLeafletGoogleLayer

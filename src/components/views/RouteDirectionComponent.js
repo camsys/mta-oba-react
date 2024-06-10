@@ -5,17 +5,17 @@ import {OBA} from "../../js/oba";
 export default function getRouteDirectionComponent(props){
     const { state} = useContext(GlobalStateContext);
     OBA.Util.log(" getRouteDirectionComponent:" + props.directionId)
-    if (!state.routeDestinations) return null;
+    if (!state.currentCard.routeDestinations) return null;
     return(
         <div className="route-direction inner-card collapsible">
             <button className="card-header collapse-trigger" aria-haspopup="true"
                     aria-expanded="false"
                     aria-label="Toggle B38 to Downtown Brooklyn Tillary Street Open / Closed">
-                <span className="label">to <strong> {state.routeDestinations[props.directionId]}</strong></span>
+                <span className="label">to <strong> {state.currentCard.routeDestinations[props.directionId]}</strong></span>
             </button>
             <div className="card-content collapse-content" styles="max-height: 0px;">
                 <ul className="route-stops" styles="color: #00AEEF;" key="test">
-                    {state.routeStopComponents}
+                    {state.currentCard.routeStopComponents}
                 </ul>
             </div>
         </div>

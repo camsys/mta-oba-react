@@ -17,7 +17,7 @@ function getRouteCard  () {
       <div className="cards">
         <div className="card route-card b38">
           <div className="card-header" styles="border-color: #00AEEF">
-            <h3 className="card-title">{state.routeTitle}</h3>
+            <h3 className="card-title">{state.currentCard.routeTitle}</h3>
           </div>
           <div className="card-content">
             <ul className="card-details">

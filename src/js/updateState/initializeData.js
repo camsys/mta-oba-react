@@ -7,8 +7,8 @@ import { GlobalStateContext } from '../../components/util/globalState';
 
 const useInitializeData = () => {
     let currentCard = handleCardChange()
-    siriEffect(currentCard)
     searchEffect(currentCard)
+    siriEffect(currentCard)
     stopsEffect(currentCard)
 };
 
