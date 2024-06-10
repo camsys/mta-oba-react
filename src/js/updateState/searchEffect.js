@@ -6,14 +6,6 @@ import MapRouteComponent from "../../components/map/mapRouteComponent";
 import {Card, routeMatch, routeMatchDirectionDatum} from "./dataModels"
 
 
-
-
-    function generateRouteMapComponent(id, points, color) {
-        let polyline = new MapRouteComponent(id,points,color)
-        console.log(polyline)
-        return polyline
-    }
-
     function processRouteSearch(route,card) {
         let match = new routeMatch()
         console.log("processing route search results",route,card)
@@ -33,24 +25,6 @@ import {Card, routeMatch, routeMatchDirectionDatum} from "./dataModels"
         console.log('processed route search',route,card)
         return card
     }
-
-    // function postRouteSearchData(routeComponents,color,routeId,routeTitle,description,routeDestinations) {
-    //     OBA.Util.log("adding polylines:")
-    //     OBA.Util.log(routeComponents)
-    //     setState((prevState) => ({
-    //         ...prevState,
-    //         color:color,
-    //         routeId:routeId,
-    //         routeTitle:routeTitle,
-    //         description:description,
-    //         routeDestinations:routeDestinations,
-    //         routeComponents:routeComponents
-    //     }))
-    //     OBA.Util.log("confirming polylines added:")
-    //     OBA.Util.log(routeComponents)
-    // }
-
-
 
 
 
@@ -112,10 +86,6 @@ import {Card, routeMatch, routeMatchDirectionDatum} from "./dataModels"
         return true
     }
 
-// export const fillCard = (card) =>{
-//     console.log("filling card ",card)
-//     postData(getData(card))
-// }
 
 export const updateCard = () =>{
     const searchRef = queryString.parse(location.search).LineRef;
