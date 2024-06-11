@@ -7,6 +7,10 @@ WORKDIR /usr/src/app
 #Copy package.json and package-lock.json files into the container.
 COPY package*.json ./
 
+# Setting environment variables
+ENV DEV_ENV_ADDRESS=app.dev.obanyc.com/
+ENV VEHICLE_MONITORING_ENDPOINT=api/siri/vehicle-monitoring.json?key=OBANYC&_=1707407738784&OperatorRef=MTA+NYCT
+
 #Install dependencies using npm.
 RUN npm install
 
