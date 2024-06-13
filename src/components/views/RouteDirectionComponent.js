@@ -3,14 +3,15 @@ import {GlobalStateContext} from "../util/globalState";
 import {OBA} from "../../js/oba";
 
 export default function getRouteDirectionComponent(props){
-    const { state} = useContext(GlobalStateContext);
-    OBA.Util.log(" getRouteDirectionComponent:" + props.directionId)
+    const {state} = useContext(GlobalStateContext);
+    OBA.Util.log(" getRouteDirectionComponent:" + JSON.stringify(state))
+    OBA.Util.log(" getRouteDirectionComponent props:" + JSON.stringify(props))
     if (!state.routeDestinations) return null;
     return(
         <div className="route-direction inner-card collapsible">
             <button className="card-header collapse-trigger" aria-haspopup="true"
                     aria-expanded="false"
-                    aria-label="Toggle B38 to Downtown Brooklyn Tillary Street Open / Closed">
+                    aria-label={'Toggle B38 to ' + state.routeDestinations[props.directionId] + ' Open / Closed'}>
                 <span className="label">to <strong> {state.routeDestinations[props.directionId]}</strong></span>
             </button>
             <div className="card-content collapse-content" styles="max-height: 0px;">

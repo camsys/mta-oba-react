@@ -15,7 +15,7 @@ function getRouteCard  () {
    return (<React.Fragment>
       <h2 className="cards-header">Routes:</h2>
       <div className="cards">
-        <div className="card route-card b38">
+        <div className="card route-card">
           <div className="card-header" styles="border-color: #00AEEF">
             <h3 className="card-title">{state.routeTitle}</h3>
           </div>

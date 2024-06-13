@@ -27,11 +27,12 @@ const siriEffect = (currentCard) => {
             new classWrap(routeVehicleComponent,"route")]),
         new pathRouting((siri)=>{return siri?.Siri?.ServiceDelivery?.VehicleMonitoringDelivery[0]?.VehicleActivity},
             (objList,i)=>{return objList[i].MonitoredVehicleJourney}))
+
     let serviceAlertSpecifiers = new dataSpecifiers("serviceAlert",
         new classList(serviceAlertData,
             [new classWrap(serviceAlertComponent,"sidebar")]),
-        new pathRouting((siri)=>{return siri?.Siri?.ServiceDelivery?.VehicleMonitoringDelivery[0]?.VehicleActivity},
-            (objList,i)=>{return objList[i].MonitoredVehicleJourney}))
+        new pathRouting((siri)=> {return siri?.Siri?.ServiceDelivery?.SituationExchangeDelivery[0]?.Situations},
+            (objList,i)=>{return objList[i].PtSituationElement.Description}))
 
 
 
