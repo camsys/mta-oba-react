@@ -715,7 +715,7 @@ button:hover, .button:hover {
 
 #sidebar {
   width: 100%;
-  background-color: #f3f3f3;
+  background-color: #0E61A9;
   position: relative;
   z-index: 1;
   display: -webkit-inline-box;
@@ -937,6 +937,9 @@ button:hover, .button:hover {
   -webkit-box-pack: justify;
       -ms-flex-pack: justify;
           justify-content: space-between;
+  background-color: #f3f3f3;
+  -ms-scroll-chaining: none;
+      overscroll-behavior: none;
 }
 #sidebar .sidebar-content .content {
   padding: 1rem;
