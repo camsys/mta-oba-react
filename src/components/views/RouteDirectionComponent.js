@@ -7,6 +7,7 @@ export default function getRouteDirectionComponent(props){
     OBA.Util.log(" getRouteDirectionComponent:" + JSON.stringify(state))
     OBA.Util.log(" getRouteDirectionComponent props:" + JSON.stringify(props))
     if (!state.routeDestinations) return null;
+    if (!state.allStopList) return null;
     return(
         <div className="route-direction inner-card collapsible">
             <button className="card-header collapse-trigger" aria-haspopup="true"
@@ -15,8 +16,11 @@ export default function getRouteDirectionComponent(props){
                 <span className="label">to <strong> {state.routeDestinations[props.directionId]}</strong></span>
             </button>
             <div className="card-content collapse-content" styles="max-height: 0px;">
-                <ul className="route-stops" styles="color: #00AEEF;" key="test">
-                    {state.routeStopComponents}
+                <ul className="route-stops" styles="color: #00AEEF;" key="routeStop">
+                    {state.allStopList[props.directionId].map((key,index) => <li className="has-info" key={key + " " + index}>
+                        <a href="#" tabIndex={index}>{key}</a>
+                    </li>)}
+                    
                 </ul>
             </div>
         </div>

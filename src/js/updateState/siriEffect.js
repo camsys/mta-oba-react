@@ -9,7 +9,6 @@ import mapVehicleComponent from "../../components/map/vehicleComponent";
 import routeVehicleComponent from "../../components/views/routeVehicleComponent";
 import {classList, classWrap, dataSpecifiers, pathRouting} from "./dataEffectsSupport";
 import mapStopComponent from "../../components/map/mapStopComponent";
-import routeStopComponent from "../../components/views/routeStopComponent";
 import serviceAlertComponent from "../../components/views/serviceAlertComponent";
 
 const siriEffect = (currentCard) => {

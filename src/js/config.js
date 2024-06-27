@@ -22,7 +22,7 @@ var OBA = window.OBA || {};
 
 OBA.Config = {
     autocompleteUrl: "api/autocomplete",
-    searchUrl: "api/search",
+    searchUrl: "api/search-v2",
     configUrl: "api/config",
     stopsWithinBoundsUrl: "api/stops-within-bounds",
     stopsOnRouteForDirection: "api/stops-on-route-for-direction",
