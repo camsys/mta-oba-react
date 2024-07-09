@@ -20,7 +20,11 @@ export class vehicleData {
         this.longLat.push(mvj.VehicleLocation.Latitude)
         this.longLat.push(mvj.VehicleLocation.Longitude)
         this.destination = mvj.DestinationName
-        this.strollerVehicle = mvj.MonitoredCall.Extensions.VehicleFeatures.StrollerVehicle
+        if(typeof mvj.MonitoredCall !='undefined'){
+            this.strollerVehicle = mvj.MonitoredCall.Extensions.VehicleFeatures.StrollerVehicle
+        }else{
+            this.strollerVehicle = false
+        }
         this.hasRealtime = mvj.Monitored;
         this.vehicleId = mvj.VehicleRef
         this.direction = mvj?.Bearing
