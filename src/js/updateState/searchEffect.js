@@ -1,98 +1,103 @@
 import queryString from "query-string";
-import React, {useContext, useState} from "react";
-import {GlobalStateContext} from "../../components/util/globalState";
+import React, {useContext, useEffect, useState} from "react";
+import {CardStateContext} from "../../components/util/CardStateComponent";
 import {OBA} from "../oba";
-import routeComponent from "../../components/map/routeComponent";
-
-const searchEffect = (currentCard,searchTerm) => {
-
-
-    function generateRouteComponent(id, points, color) {
-        let polyline = new routeComponent(id,points,color)
-        console.log(polyline)
-        return polyline
-    }
-
-    function processRouteData(route) {
-        const routeComponents = [];
-        const leafletRoutePolylineKeys = [];
-        var color;
-        var routeTitle;
-        let routeId;
-        var description;
-        var stopList = [];
-        const routeDestinations = [];
-        const allDecodedPolylines = [];
-        const allStopList = [];
+// import MapRouteComponent from "../../components/map/MapRouteComponent";
+import {Card, routeMatch, routeMatchDirectionDatum} from "./dataModels"
 
 
+    function processRouteSearch(route,card) {
+        let match = new routeMatch()
+        console.log("processing route search results",route,card)
         if (route != null && route.hasOwnProperty("directions")) {
-            color = route?.color
-            routeId = route?.id
-            routeTitle = route?.shortName + " " + route?.longName
-            description = route?.description
+            match.color = route?.color
+            match.routeId = route?.id
+            match.routeTitle = route?.shortName + " " + route?.longName
+            match.description = route?.description
+            match.directions = []
+            console.log("assigned basic search values to card",route,match)
             for (let i = 0; i < route?.directions.length; i++) {
-                let stopList = [];
-                let dir = route?.directions[i];
-                routeDestinations.push(dir.destination)
-                for (let j = 0; j < dir.polylines.length; j++) {
-                    let encodedPolyline = dir.polylines[j]
-                    let decodedPolyline = OBA.Util.decodePolyline(encodedPolyline)
-                    let first = true
-                    let polylineId = routeId + "_dir_" + i + "_lineNum_" + j
-                    let routeComponent = generateRouteComponent(polylineId, decodedPolyline, color)
-                    routeComponents.push(routeComponent)
-                    leafletRoutePolylineKeys.push(polylineId)
-                    allDecodedPolylines.push(decodedPolyline)
-                }
-                for (let j = 0; j < dir.stops.length; j++) {
-                    OBA.Util.log('reytest j = ' + j + " stop = " + dir.stops[j].name)
-                    let stop = dir.stops[j].name;
-                    stopList.push(stop);
-                }
-                allStopList.push(stopList);
+                let directionDatum = new routeMatchDirectionDatum(route?.directions[i],match.routeId,match.color)
+                match.directions.push(directionDatum)
             }
         }
-        OBA.Util.log('processed route')
-        return [routeComponents,color,routeId,routeTitle,description,routeDestinations,allStopList]
+        card.searchMatches.push(match)
+        console.log('processed route search',route,card)
+        return card
     }
 
-    function postRouteData(routeComponents,color,routeId,routeTitle,description,routeDestinations,allStopList) {
-        OBA.Util.log("adding polylines:")
-        OBA.Util.log(routeComponents)
-        setState((prevState) => ({
-            ...prevState,
-            color:color,
-            routeId:routeId,
-            routeTitle:routeTitle,
-            description:description,
-            routeDestinations:routeDestinations,
-            routeComponents:routeComponents,
-            allStopList:allStopList
-        }))
-        OBA.Util.log("confirming polylines added:")
-        OBA.Util.log(routeComponents)
-    }
 
-    const { state, setState } = useContext(GlobalStateContext);
-    let lineRef = searchTerm;
-    if(lineRef==null){
-        lineRef = queryString.parse(location.search).LineRef;
-    }
-    let search = "&"+currentCard.queryIdentifier+"=" + lineRef;
 
-    React.useEffect(() => {
-        OBA.Util.log('getting search results')
-        fetch("https://" + OBA.Config.envAddress + "/" + OBA.Config.searchUrl + "?q=" + lineRef)
+    function getData(card){
+        console.log("filling card data with search",card)
+        if(card.searchTerm == null || card.searchTerm == ''){
+            console.log("empty search means home",card)
+            return card
+        }
+        let address = "https://" + OBA.Config.envAddress + "/" + OBA.Config.searchUrl + "?q=" + card.searchTerm
+        console.log('requesting search results from ',address)
+        fetch(address)
             .then((response) => response.json())
             .then((parsed) => {
-                const [routeComponents,color,routeId,routeTitle,description,routeDestinations,allStopList] = processRouteData(parsed.searchResults["matches"][0])
-                postRouteData(routeComponents,color,routeId,routeTitle,description,routeDestinations,allStopList);
-                OBA.Util.log('completed search results')
+                console.log("got back search results")
+                console.log("parsed: ",parsed)
+                let searchResults = parsed?.searchResults
+                console.log("search results found ",searchResults)
+                console.log("resultType = ", searchResults.resultType)
+                card.setSearchResultType(searchResults.resultType)
+                console.log(card)
+
+                // if(searchResults.resultType=="StopResult"){
+                //     searchData = processStopSearch(searchResults)
+                //
+                // }
+                // if(searchResults.resultType=="GeocodeResult"){
+                //     searchData = processGeocodeSearch(searchResults)
+                //
+                // }
+                if(card.type == Card.cardTypes.routeCard){
+                    searchResults.matches.forEach(x=>{processRouteSearch(x,card)})
+                }
+                console.log('completed search results: ',card)
             })
             .catch((error) => {
                 console.error(error);
             });
-    }, []);
+        return card
+    }
+
+
+    function postData(card){
+        const { state, setState } = useContext(CardStateContext);
+        let cardStack = state.cardStack
+        cardStack.push(card)
+        setState((prevState) => ({
+            ...prevState,
+            currentCard: card,
+            cardStack: cardStack
+        }))
+    }
+
+    const performNewSearch = (searchRef) =>{
+        const { state, setState } = useContext(CardStateContext);
+        if(state?.currentCard?.searchTerm == searchRef){
+            return false
+        }
+        return true
+    }
+
+
+export const updateCard = () =>{
+    const searchRef = queryString.parse(location.search).LineRef;
+    useEffect(() => {
+        if (performNewSearch(searchRef)) {
+            fillCard(new Card(searchRef))
+        }
+    })
 }
-export default searchEffect;
+
+export const generateInitialCard = ()=>{
+    console.log("generating card")
+    const searchRef = queryString.parse(location.search).LineRef;
+    return getData(new Card(searchRef))
+}

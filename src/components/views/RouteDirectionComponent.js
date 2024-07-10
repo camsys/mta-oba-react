@@ -1,30 +1,40 @@
 import React, {useContext} from "react";
-import {GlobalStateContext} from "../util/globalState";
+import {CardStateContext} from "../util/CardStateComponent";
 import {OBA} from "../../js/oba";
+import {routeDirectionComponentDatum} from "../../js/updateState/dataModels";
+import RouteStopComponent from "./RouteStopComponent";
 
-export default function getRouteDirectionComponent(props){
-    const {state} = useContext(GlobalStateContext);
-    OBA.Util.log(" getRouteDirectionComponent:" + JSON.stringify(state))
-    OBA.Util.log(" getRouteDirectionComponent props:" + JSON.stringify(props))
-    if (!state.routeDestinations) return null;
-    if (!state.allStopList) return null;
-    return(
+function getRouteStopComponents(routeStopComponentsData){
+    console.log("getting RouteStopComponents for: ", routeStopComponentsData)
+    let out = routeStopComponentsData.map((datum)=>{return new RouteStopComponent(datum)})
+    return out
+}
+
+export default function getRouteDirectionComponent(routeDirectionComponentDatum){
+    const { state} = useContext(CardStateContext);
+    console.log("generating RouteDirectionComponent:", routeDirectionComponentDatum)
+    let out = (
         <div className="route-direction inner-card collapsible">
             <button className="card-header collapse-trigger" aria-haspopup="true"
                     aria-expanded="false"
-                    aria-label={'Toggle B38 to ' + state.routeDestinations[props.directionId] + ' Open / Closed'}>
-                <span className="label">to <strong> {state.routeDestinations[props.directionId]}</strong></span>
+                    aria-label="Toggle B38 to Downtown Brooklyn Tillary Street Open / Closed">
+                <span className="label">to <strong> {routeDirectionComponentDatum.routeDestination}</strong></span>
             </button>
             <div className="card-content collapse-content" styles="max-height: 0px;">
-                <ul className="route-stops" styles="color: #00AEEF;" key="routeStop">
-                    {state.allStopList[props.directionId].map((key,index) => <li className="has-info" key={key + " " + index}>
-                        <a href="#" tabIndex={index}>{key}</a>
-                    </li>)}
-                    
+                {/*this should be broken out into a component which re-renders when the stops call completes*/}
+                <ul className="route-stops" styles="color: #00AEEF;" key="test">
+                    {console.log("preparing to get RouteStopComponents from: ", routeDirectionComponentDatum)}
+                    {
+                        getRouteStopComponents(routeDirectionComponentDatum.routeStopComponentsData)
+                        // routeDirectionComponentDatum.routeStopComponentsData.map(datum=>{return new RouteStopComponent(datum)})
+                    }
                 </ul>
             </div>
         </div>
-    )}
+    )
+    console.log("RouteDirectionComponent: ", out)
+    return out
+}
 
 
 //     <div className="route-direction inner-card collapsible">

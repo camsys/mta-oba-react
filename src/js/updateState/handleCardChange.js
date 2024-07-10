@@ -1,10 +1,10 @@
 import { useContext, useEffect } from 'react';
-import { GlobalStateContext } from '../../components/util/globalState';
+import { CardStateContext } from '../../components/util/CardStateComponent';
 import {OBA} from "../oba";
 import queryString from "query-string";
 
-const handleCardChange = (searchTerm) => {
-    const { state, setState } = useContext(GlobalStateContext);
+const handleCardChange = () => {
+    const { state, setState } = useContext(CardStateContext);
 
     const getCurrentCard = () => {
         OBA.Util.log("determining current card")
@@ -32,26 +32,26 @@ const handleCardChange = (searchTerm) => {
         let mostRecent = cardStack.pop()
         OBA.Util.log("most recent card before current card:")
         OBA.Util.log(mostRecent)
-        useEffect(()=>{
-            if(mostRecent==null || currentCard.name!==mostRecent.name || currentCard.identifier!==mostRecent.identifier) {
-                OBA.Util.log("current state is not most recent state. updating cards")
-                OBA.Util.log("current stack target:")
-                OBA.Util.log(cardStack)
-                cardStack.push(currentCard)
-                    setState((prevState) => ({
-                    ...prevState,
-                    currentCard: currentCard,
-                    cardStack: cardStack
-                    }))
-
-
-                OBA.Util.log("***updated state***")
-                OBA.Util.log("current card:")
-                OBA.Util.log(state.currentCard)
-                OBA.Util.log("current stack:")
-                OBA.Util.log(state.cardStack)
-            }
-        }, [setState]);
+        // useEffect(()=>{
+        //     if(mostRecent==null || currentCard.name!==mostRecent.name || currentCard.identifier!==mostRecent.identifier) {
+        //         OBA.Util.log("current state is not most recent state. updating cards")
+        //         OBA.Util.log("current stack target:")
+        //         OBA.Util.log(cardStack)
+        //         cardStack.push(currentCard)
+        //             setState((prevState) => ({
+        //             ...prevState,
+        //             currentCard: currentCard,
+        //             cardStack: cardStack
+        //             }))
+        //
+        //
+        //         OBA.Util.log("***updated state***")
+        //         OBA.Util.log("current card:")
+        //         OBA.Util.log(state.currentCard)
+        //         OBA.Util.log("current stack:")
+        //         OBA.Util.log(state.cardStack)
+        //     }
+        // }, [setState]);
         return currentCard
 
 };

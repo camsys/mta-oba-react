@@ -1,25 +1,22 @@
 import React, {useContext, useEffect, useState} from "react";
 import queryString from "query-string";
 import getDataEffect from "./getDataEffect";
-import mapStopComponent from "../../components/map/mapStopComponent";
+import MapStopComponent from "../../components/map/MapStopComponent";
+import RouteStopComponent from "../../components/views/RouteStopComponent";
 import {stopData, vehicleData} from "./dataModels";
-import mapVehicleComponent from "../../components/map/vehicleComponent";
-import routeVehicleComponent from "../../components/views/routeVehicleComponent";
 import {classList, classWrap, dataSpecifiers, pathRouting} from "./dataEffectsSupport";
 
-const stopsEffect = (currentCard, direction,searchTerm) => {
+const stopsEffect = (currentCard) => {
     var keyword = "stop"
-    let lineRef = searchTerm;
-    if(lineRef==null){
-        lineRef = queryString.parse(location.search).LineRef;
-    }
-    let search = "routeId=MTA NYCT_"+lineRef +"&directionId="+direction;
-    var targetAddress = "https://" + process.env.ENV_ADDRESS + "/" + process.env.STOPS_ON_ROUTE_ENDPOINT + search;
-
+    const lineRef = queryString.parse(location.search).LineRef;
+    let search = "routeId=MTA NYCT_"+lineRef +"&directionId=0";
+    let targetAddress = "https://" + process.env.ENV_ADDRESS + "/" + process.env.STOPS_ON_ROUTE_ENDPOINT + search;
+    targetAddress = lineRef==null?null:targetAddress
 
     let stopSpecifiers = new dataSpecifiers(keyword,
         new classList(stopData,
-            [new classWrap(mapStopComponent,"map")]),
+            [new classWrap(MapStopComponent,"map"),
+            new classWrap(RouteStopComponent,"route")]),
         new pathRouting((parsed)=>{return parsed?.stops},
             (objList,i)=>{return objList[i]}))
 

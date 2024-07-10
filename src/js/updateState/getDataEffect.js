@@ -1,15 +1,15 @@
 import React, {useContext, useEffect, useState} from "react";
 import {OBA} from "../oba";
-import {GlobalStateContext} from "../../components/util/globalState";
+import {CardStateContext} from "../../components/util/CardStateComponent";
 import queryString from "query-string";
-import mapStopComponent from "../../components/map/mapStopComponent";
+import RouteStopComponent from "../../components/views/RouteStopComponent";
 import {stopData} from "./dataModels"
 import {classList, pathRouting,dataSpecifiers} from "./dataEffectsSupport";
 
 const getDataEffect = (currentCard, targetAddress,
                        dataSpecifiersList) => {
 
-    const { state, setState } = useContext(GlobalStateContext);
+    const { state, setState } = useContext(CardStateContext);
     var update = false
 
     function extractData (parsed,dataSpecifiers){
@@ -66,6 +66,9 @@ const getDataEffect = (currentCard, targetAddress,
 
 
     useEffect(() => {
+        if(targetAddress==null){
+            return
+        }
         fetch(targetAddress)
             .then((response) => response.json())
             .then((parsed) => {

@@ -1,29 +1,20 @@
 import React, {useContext, useEffect, useState} from "react";
-import {OBA} from "../oba";
-import vehicleComponent from "../../components/map/vehicleComponent";
-import {GlobalStateContext} from "../../components/util/globalState";
 import queryString from "query-string";
 import getDataEffect from "./getDataEffect";
 import {serviceAlertData, stopData, vehicleData} from "./dataModels";
 import mapVehicleComponent from "../../components/map/vehicleComponent";
 import routeVehicleComponent from "../../components/views/routeVehicleComponent";
 import {classList, classWrap, dataSpecifiers, pathRouting} from "./dataEffectsSupport";
-import mapStopComponent from "../../components/map/mapStopComponent";
 import serviceAlertComponent from "../../components/views/serviceAlertComponent";
 
-const siriEffect = (currentCard,searchTerm) => {
+const siriEffect = (currentCard) => {
 
 
     var keyword = "vehicle"
-
-    var lineRef = searchTerm;
-    if(lineRef==null){
-        lineRef = queryString.parse(location.search).LineRef;
-    }
-    // let search = "&"+currentCard.queryIdentifier+"=" + lineRef;
-    let search = "&"+"LineRef"+"=" + lineRef;
-    var targetAddress = "https://" + process.env.ENV_ADDRESS + "/" + process.env.VEHICLE_MONITORING_ENDPOINT + search;
-
+    const lineRef = queryString.parse(location.search).LineRef;
+    let search = "&LineRef"+"=" + lineRef;
+    let targetAddress = "https://" + process.env.ENV_ADDRESS + "/" + process.env.VEHICLE_MONITORING_ENDPOINT + search
+    targetAddress = lineRef==null?null:targetAddress
 
     let vehicleSpecifiers = new dataSpecifiers("vehicle",
         new classList(vehicleData,
@@ -31,12 +22,11 @@ const siriEffect = (currentCard,searchTerm) => {
             new classWrap(routeVehicleComponent,"route")]),
         new pathRouting((siri)=>{return siri?.Siri?.ServiceDelivery?.VehicleMonitoringDelivery[0]?.VehicleActivity},
             (objList,i)=>{return objList[i].MonitoredVehicleJourney}))
-
     let serviceAlertSpecifiers = new dataSpecifiers("serviceAlert",
         new classList(serviceAlertData,
             [new classWrap(serviceAlertComponent,"sidebar")]),
-        new pathRouting((siri)=> {return siri?.Siri?.ServiceDelivery?.SituationExchangeDelivery[0]?.Situations},
-            (objList,i)=>{return objList[i].PtSituationElement.Description}))
+        new pathRouting((siri)=>{return siri?.Siri?.ServiceDelivery?.VehicleMonitoringDelivery[0]?.VehicleActivity},
+            (objList,i)=>{return objList[i].MonitoredVehicleJourney}))
 
 
 
@@ -135,7 +125,7 @@ export default siriEffect;
 //     }
 //
 //
-//     const { state, setState } = useContext(GlobalStateContext);
+//     const { state, setState } = useContext(CardStateContext);
 //     const lineRef = queryString.parse(location.search).LineRef;
 //     let search = "&"+currentCard.queryIdentifier+"=" + lineRef;
 //     var targetAddress = "https://" + process.env.ENV_ADDRESS + "/" + process.env.VEHICLE_MONITORING_ENDPOINT + search;
