@@ -7,9 +7,12 @@ import mapVehicleComponent from "../../components/map/vehicleComponent";
 import routeVehicleComponent from "../../components/views/routeVehicleComponent";
 import {classList, classWrap, dataSpecifiers, pathRouting} from "./dataEffectsSupport";
 
-const stopsEffect = (currentCard, direction) => {
+const stopsEffect = (currentCard, direction,searchTerm) => {
     var keyword = "stop"
-    const lineRef = queryString.parse(location.search).LineRef;
+    let lineRef = searchTerm;
+    if(lineRef==null){
+        lineRef = queryString.parse(location.search).LineRef;
+    }
     let search = "routeId=MTA NYCT_"+lineRef +"&directionId="+direction;
     var targetAddress = "https://" + process.env.ENV_ADDRESS + "/" + process.env.STOPS_ON_ROUTE_ENDPOINT + search;
 

@@ -3,7 +3,7 @@ import { GlobalStateContext } from '../../components/util/globalState';
 import {OBA} from "../oba";
 import queryString from "query-string";
 
-const handleCardChange = () => {
+const handleCardChange = (searchTerm) => {
     const { state, setState } = useContext(GlobalStateContext);
 
     const getCurrentCard = () => {

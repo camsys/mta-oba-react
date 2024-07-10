@@ -4,7 +4,7 @@ import {GlobalStateContext} from "../../components/util/globalState";
 import {OBA} from "../oba";
 import routeComponent from "../../components/map/routeComponent";
 
-const searchEffect = (currentCard) => {
+const searchEffect = (currentCard,searchTerm) => {
 
 
     function generateRouteComponent(id, points, color) {
@@ -75,7 +75,10 @@ const searchEffect = (currentCard) => {
     }
 
     const { state, setState } = useContext(GlobalStateContext);
-    const lineRef = queryString.parse(location.search).LineRef;
+    let lineRef = searchTerm;
+    if(lineRef==null){
+        lineRef = queryString.parse(location.search).LineRef;
+    }
     let search = "&"+currentCard.queryIdentifier+"=" + lineRef;
 
     React.useEffect(() => {

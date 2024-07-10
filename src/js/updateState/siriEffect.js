@@ -11,11 +11,15 @@ import {classList, classWrap, dataSpecifiers, pathRouting} from "./dataEffectsSu
 import mapStopComponent from "../../components/map/mapStopComponent";
 import serviceAlertComponent from "../../components/views/serviceAlertComponent";
 
-const siriEffect = (currentCard) => {
+const siriEffect = (currentCard,searchTerm) => {
 
 
     var keyword = "vehicle"
-    const lineRef = queryString.parse(location.search).LineRef;
+
+    var lineRef = searchTerm;
+    if(lineRef==null){
+        lineRef = queryString.parse(location.search).LineRef;
+    }
     // let search = "&"+currentCard.queryIdentifier+"=" + lineRef;
     let search = "&"+"LineRef"+"=" + lineRef;
     var targetAddress = "https://" + process.env.ENV_ADDRESS + "/" + process.env.VEHICLE_MONITORING_ENDPOINT + search;

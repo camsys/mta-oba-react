@@ -14,6 +14,10 @@ export const useInitializeData = () => {
     stopsEffect(currentCard, 1)
 };
 
-export const updateData = () => {
-
+export const updateData = (searchTerm) => {
+    let currentCard = handleCardChange(searchTerm);
+    siriEffect(currentCard,searchTerm)
+    searchEffect(currentCard,searchTerm)
+    stopsEffect(currentCard, 0,searchTerm)
+    stopsEffect(currentCard, 1,searchTerm)
 }
