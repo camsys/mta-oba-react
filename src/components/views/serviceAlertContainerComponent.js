@@ -1,10 +1,10 @@
 import React, {useContext, useEffect, useState} from "react";
 import ServiceAlertComponent from "./serviceAlertComponent"
-import {GlobalStateContext} from "../../components/util/globalState";
+import {CardStateContext} from "../../components/util/CardStateComponent";
 import queryString from "query-string";
 
 function getServiceAlertContainerComponent  () {
-    const {state} = useContext(GlobalStateContext);
+    const {state} = useContext(CardStateContext);
     const lineRef = queryString.parse(location.search).LineRef;
     return (<div className="service-alert inner-card collapsible">
         <button className="card-header collapse-trigger" aria-haspopup="true"
