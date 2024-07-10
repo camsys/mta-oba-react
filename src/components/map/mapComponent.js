@@ -6,6 +6,7 @@ import {OBA} from "../../js/oba";
 import L from "leaflet";
 import bus from "../../img/icon/bus.svg";
 import {CardStateContext} from "../util/CardStateComponent";
+import {VehicleStateContext} from "../util/VehicleStateComponent";
 import vehicleComponent from "./vehicleComponent";
 import MapRouteComponent from "./MapRouteComponent";
 import MapStopComponent from "./MapStopComponent";
@@ -23,8 +24,10 @@ const mapComponent = (function() {
             updateVehicles()
             OBA.Util.log("generating map")
 
+            const { vehicleState} = useContext(VehicleStateContext);
+            const mapVehicleComponents = vehicleState.mapVehicleComponents;
+
             const { state} = useContext(CardStateContext);
-            const mapVehicleComponents = state.mapVehicleComponents;
             let mapRouteComponents = []
             let mapStopComponents = []
             {state.currentCard.searchMatches.forEach(route=>{

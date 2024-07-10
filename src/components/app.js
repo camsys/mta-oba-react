@@ -6,6 +6,7 @@ import mapWrap from "./map/mapWrap";
 
 import useUpdateCurrentCardData from "../js/updateState/useUpdateCurrentCardData";
 import sideBarComponent from "./pageStructure/sideBar";
+import {VehicleStateProvider} from "./util/VehicleStateComponent";
 
 
 
@@ -34,7 +35,9 @@ const Root = () => {
     return (
         <ErrorBoundary>
             <CardStateProvider>
-                <App />
+                <VehicleStateProvider>
+                    <App/>
+                </VehicleStateProvider>
             </CardStateProvider>
         </ErrorBoundary>
     )
