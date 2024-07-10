@@ -6,7 +6,7 @@ import stopsEffect from "./stopsEffect"
 import { GlobalStateContext } from '../../components/util/globalState';
 import {OBA} from "../oba";
 
-const useInitializeData = () => {
+export const useInitializeData = () => {
     let currentCard = handleCardChange();
     siriEffect(currentCard)
     searchEffect(currentCard)
@@ -14,4 +14,6 @@ const useInitializeData = () => {
     stopsEffect(currentCard, 1)
 };
 
-export default useInitializeData;
+export const updateData = () => {
+
+}

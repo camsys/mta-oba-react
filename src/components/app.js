@@ -4,7 +4,7 @@ import ErrorBoundary from "./util/errorBoundary";
 import {GlobalStateProvider} from "./util/globalState";
 import mapWrap from "./map/mapWrap";
 
-import useInitializeData from "../js/updateState/initializeData";
+import {useInitializeData} from "../js/updateState/initializeData";
 import sideBarComponent from "./pageStructure/sideBar";
 
 
