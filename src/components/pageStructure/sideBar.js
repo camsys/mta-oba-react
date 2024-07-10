@@ -6,7 +6,8 @@ import routeCard from "./../views/routeCard";
 import homeCard from "./../views/homeCard";
 import headerComponent from "./header";
 import footerComponent from "./footer";
-import searchComponent from "./search"
+// import searchComponent from "./search"
+import searchComponent from "./SearchBar"
 import {GlobalStateContext} from "../util/globalState";
 
 function getSideBar  () {
