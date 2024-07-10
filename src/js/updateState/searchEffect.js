@@ -28,7 +28,7 @@ import {Card, routeMatch, routeMatchDirectionDatum} from "./dataModels"
 
 
 
-    function getData(card){
+    async function getData(card){
         console.log("filling card data with search",card)
         if(card.searchTerm == null || card.searchTerm == ''){
             console.log("empty search means home",card)
@@ -36,7 +36,7 @@ import {Card, routeMatch, routeMatchDirectionDatum} from "./dataModels"
         }
         let address = "https://" + OBA.Config.envAddress + "/" + OBA.Config.searchUrl + "?q=" + card.searchTerm
         console.log('requesting search results from ',address)
-        fetch(address)
+        await fetch(address)
             .then((response) => response.json())
             .then((parsed) => {
                 console.log("got back search results")
@@ -63,6 +63,7 @@ import {Card, routeMatch, routeMatchDirectionDatum} from "./dataModels"
             .catch((error) => {
                 console.error(error);
             });
+        console.log("card: ", card, typeof card, card==null)
         return card
     }
 
@@ -96,8 +97,12 @@ export const updateCard = () =>{
     })
 }
 
-export const generateInitialCard = ()=>{
+export const generateInitialCard = async ()=>{
     console.log("generating card")
     const searchRef = queryString.parse(location.search).LineRef;
-    return getData(new Card(searchRef))
+    return await getData(new Card(searchRef))
+}
+
+export const getHomeCard = () =>{
+    return new Card("")
 }
