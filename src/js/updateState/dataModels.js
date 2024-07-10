@@ -74,6 +74,7 @@ export class routeMatchDirectionDatum {
             let mapRouteComponentDatum = new MapRouteComponentDatum(polylineId, decodedPolyline, color)
             this.mapRouteComponentData.push(mapRouteComponentDatum)
         }
+        directionJson.stops.forEach(stop=>{this.mapStopComponentData.push(new StopData(stop))})
     }
 }
 
