@@ -6,7 +6,7 @@ import getRouteCard from "./../views/RouteCard";
 import homeCard from "./../views/homeCard";
 import headerComponent from "./header";
 import footerComponent from "./footer";
-import searchComponent from "./search"
+import searchComponent from "./SearchBar"
 import {CardStateContext} from "../util/CardStateComponent";
 import {Card} from "../../js/updateState/dataModels"
 

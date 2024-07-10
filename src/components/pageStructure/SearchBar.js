@@ -26,9 +26,8 @@ const SearchBar = () => {
 
     const onSuggestionSelected = (event, { suggestion }) => {
         console.log('Selected suggestion:', suggestion);
-        // console.log(`fetching search for ${value}: https://${process.env.ENV_ADDRESS}/api/autocomplete?term=${value}`)
-        // const response = await fetch(`https://${process.env.ENV_ADDRESS}/api/autocomplete?term=${value}`);
-        // const suggestions = await response.json();
+        const lineRef = suggestion.value
+        location.href = `?LineRef=${lineRef}`;
 
     };
 
