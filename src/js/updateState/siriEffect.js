@@ -16,7 +16,8 @@ const siriEffect = (currentCard) => {
 
     var keyword = "vehicle"
     const lineRef = queryString.parse(location.search).LineRef;
-    let search = "&"+currentCard.queryIdentifier+"=" + lineRef;
+    // let search = "&"+currentCard.queryIdentifier+"=" + lineRef;
+    let search = "&"+"LineRef"+"=" + lineRef;
     var targetAddress = "https://" + process.env.ENV_ADDRESS + "/" + process.env.VEHICLE_MONITORING_ENDPOINT + search;
 
 
