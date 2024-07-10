@@ -44,11 +44,14 @@ export class MapRouteComponentDatum{
 }
 
 export class RouteDirectionComponentDatum{
-    constructor(directionId, routeDestination) {
+    constructor(directionId, routeDestination,stops) {
         console.log("generating routeDirectionComponentDatum for: ",directionId,routeDestination)
         this.directionId = directionId
         this.routeDestination = routeDestination
+        console.log("RouteDirectionComponentDatum received stops: ",stops)
         this.routeStopComponentsData = []
+        stops.forEach(stop=>{this.routeStopComponentsData.push(new StopData(stop))})
+        console.log("RouteDirectionComponentDatum stopsComponents data: ",this.routeStopComponentsData)
     }
 }
 
@@ -61,7 +64,7 @@ export class routeMatchDirectionDatum {
         this.mapRouteComponentData = []
         this.mapStopComponentData = []
         this.routeDirectionComponentData = new RouteDirectionComponentDatum(directionJson.directionId,
-            directionJson.destination)
+            directionJson.destination, directionJson.stops)
         console.log("routeDirectionComponentDatum generated : ",this.routeDirectionComponentData)
         for (let j = 0; j < directionJson.polylines.length; j++) {
             console.log("decoding route polylines ", directionJson, this)
