@@ -1,5 +1,5 @@
 import ReactLeafletGoogleLayer from "react-leaflet-google-layer";
-import {MapContainer, Marker, Polyline, Popup, StyledMapType} from "react-leaflet";
+import {MapContainer, useMap, useMapEvents} from "react-leaflet";
 import React, {useContext, useEffect, useState} from "react";
 import queryString from "query-string";
 import {OBA} from "../../js/oba";
@@ -62,12 +62,28 @@ const mapComponent = (function() {
             console.log("map stop components")
             console.log(mapStopComponents)
 
+            const [Zoom, setZoom] = useState(15);
+
+
+            const MapEvents = () => {
+                let map = useMap()
+                useMapEvents({
+                    zoomend() { // zoom event (when zoom animation ended)
+                        console.log("tryna use map")
+                        console.log("map used")
+                        const zoom = map.getZoom(); // get current Zoom of map
+                        setZoom(zoom);
+                    },
+                });
+                return false;
+            };
+
             return (
                 <React.Fragment>
                     <MapContainer
                         style={{height: '100vh', width: '100wh'}}
                         center={OBA.Config.defaultMapCenter}
-                        zoom={16} scrollWheelZoom={true}
+                        zoom={Zoom} scrollWheelZoom={true}
 
                     >
                         <ReactLeafletGoogleLayer
@@ -75,9 +91,11 @@ const mapComponent = (function() {
                             type={'roadmap'}
                             styles={OBA.Config.mutedTransitStylesArray}
                         />
+                        <MapEvents />
+
                         {mapRouteComponents}
                         {mapVehicleComponents}
-                        {mapStopComponents}
+                        { Zoom >= 15.1 ? mapStopComponents:null }
                     </MapContainer>
                 </React.Fragment>)
         }

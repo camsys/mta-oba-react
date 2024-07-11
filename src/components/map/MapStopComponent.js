@@ -1,6 +1,6 @@
 import {OBA} from "../../js/oba";
 import React from "react";
-import {Marker, Popup} from "react-leaflet";
+import {Marker, Popup, useMap} from "react-leaflet";
 import L from "leaflet";
 import stopMapIcon from "../../img/icon/star_black.svg"
 import stopPopupIcon from "../../img/icon/bus-stop.svg"
@@ -12,6 +12,7 @@ function MapStopComponent  (stopData) {
 
 
 
+    // map = useMap()
     // let zoom = map.getZoom()
     let zoom = 10
     let defaultVisibility = ( zoom < 16) ? false : true;
@@ -41,7 +42,7 @@ function MapStopComponent  (stopData) {
         icon: icon,
         zIndexOffset: -10,
         title: stopData.name,
-        stopId: stopData.stopId,
+        stopId: stopData.id,
         // map: map,
         // visible: defaultVisibility,
         key: COMPONENT_IDENTIFIER+"_"+stopData.id,
