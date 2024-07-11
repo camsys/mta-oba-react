@@ -17,7 +17,7 @@ function MapStopComponent  (stopData) {
     var defaultVisibility = ( zoom < 16) ? false : true;
 
 
-    var direction = stop?.stopDirection;
+    var direction = stopData?.stopDirection;
     var directionKey = direction;
 
     if(directionKey === null) {
