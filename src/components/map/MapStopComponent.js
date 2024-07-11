@@ -14,7 +14,7 @@ function MapStopComponent  (stopData) {
 
     // let zoom = map.getZoom()
     let zoom = 10
-    var defaultVisibility = ( zoom < 16) ? false : true;
+    let defaultVisibility = ( zoom < 16) ? false : true;
 
 
     var direction = stopData?.stopDirection;
@@ -39,7 +39,7 @@ function MapStopComponent  (stopData) {
     var markerOptions = {
         position: stopData.longLat,
         icon: icon,
-        zIndex: 1,
+        zIndexOffset: -10,
         title: stopData.name,
         stopId: stopData.stopId,
         // map: map,
