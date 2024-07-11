@@ -17,7 +17,7 @@ export default function getRouteDirectionComponent(routeDirectionComponentDatum)
         <div className="route-direction inner-card collapsible">
             <button className="card-header collapse-trigger" aria-haspopup="true"
                     aria-expanded="false"
-                    aria-label="Toggle B38 to Downtown Brooklyn Tillary Street Open / Closed">
+                    aria-label={"Toggle "+routeDirectionComponentDatum.routeId+" to " + routeDirectionComponentDatum.routeDestination +" Open / Closed"}>
                 <span className="label">to <strong> {routeDirectionComponentDatum.routeDestination}</strong></span>
             </button>
             <div className="card-content collapse-content" styles="max-height: 0px;">
