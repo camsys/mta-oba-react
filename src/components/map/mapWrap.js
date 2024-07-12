@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import {OBA} from "../../js/oba";
-import mapComponent from './mapComponent.js';
+import {MapComponent} from './MapComponent.js';
 import ErrorBoundary from "../util/errorBoundary";
 
 
@@ -30,7 +30,7 @@ function getMapWrap  () {
 
     function GetMap () {
         OBA.Util.log("adding map")
-        return mapComponent.getMap()
+        return MapComponent()
     }
 
     OBA.Util.log("adding map-wrapper")

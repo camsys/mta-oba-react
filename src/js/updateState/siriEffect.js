@@ -90,7 +90,7 @@ const siriEffect = (routeId) => {
 
 
     const dataSpecifiersList = [vehicleSpecifiers,serviceAlertSpecifiers]
-    const { state, setState } = useContext(VehicleStateContext);
+    const { setState } = useContext(VehicleStateContext);
     var update = false
 
 
