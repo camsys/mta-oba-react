@@ -3,7 +3,7 @@ import {stopsEffect} from "./useStopsForDir"
 import {fillCard} from "./searchEffect";
 
 const useUpdateCurrentCardData = (currentCard) => {
-    siriEffect(currentCard)
+    siriEffect(currentCard.searchTerm)
     // stopsEffect()
     return currentCard
 };

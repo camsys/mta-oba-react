@@ -17,7 +17,7 @@ const mapComponent = (function() {
 
     function updateVehicles(){
         const { state } = useContext(CardStateContext);
-        siriEffect(state.currentCard);
+        siriEffect(state.currentCard.searchTerm);
     }
     return {
         getMap: function() {
