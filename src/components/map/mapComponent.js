@@ -62,7 +62,7 @@ const mapComponent = (function() {
             console.log("map stop components")
             console.log(mapStopComponents)
 
-            const [Zoom, setZoom] = useState(15);
+            const [Zoom, setZoom] = useState(11);
 
 
             const MapEvents = () => {
