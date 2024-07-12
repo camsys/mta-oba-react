@@ -25,11 +25,11 @@ const mapComponent = (function() {
             OBA.Util.log("generating map")
 
             const { vehicleState} = useContext(VehicleStateContext);
-            const mapVehicleComponents = vehicleState.mapVehicleComponents;
-
             const { state} = useContext(CardStateContext);
             let mapRouteComponents = []
             let mapStopComponents = []
+            let mapVehicleComponents = []
+            mapVehicleComponents = vehicleState["mapVehicleComponents"];
             const processRoute = (route)=>{
                 route.directions.forEach(dir=>{
                     dir.mapRouteComponentData.forEach((datum)=>{
