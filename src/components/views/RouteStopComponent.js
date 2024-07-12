@@ -1,11 +1,19 @@
-import React from "react";
+import React, {useContext} from "react";
 import RouteVehicleComponent from "./routeVehicleComponent"
+import {CardStateContext} from "../util/CardStateComponent";
+import {fetchSearchData} from "../../js/updateState/searchEffect";
 
 function getRouteStopComponent  (stopData) {
     console.log("generating RouteStopComponent for ",stopData)
+
+    const { state, setState } = useContext(CardStateContext);
+    const search = (searchterm) =>{
+        fetchSearchData(state, setState, searchterm)
+    }
+
     return (
         <li className="has-info" key={stopData.name + " " + stopData.id}>
-            <a href={stopData.longLat[0] + "," + stopData.longLat[1]} tabIndex={stopData.id}>{stopData.name}</a>
+            <a href="#" onClick={() => search(stopData.id.split("_")[1])} tabIndex={stopData.id}>{stopData.name}</a>
         </li>
     )
 }
