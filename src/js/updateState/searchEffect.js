@@ -106,3 +106,24 @@ export const generateInitialCard = async ()=>{
 export const getHomeCard = () =>{
     return new Card("")
 }
+
+export async function fetchSearchData(state, setState, searchTerm) {
+    try {
+        console.log("generating new card")
+        console.log("logging previous state:",state)
+        console.log("logging previous card:",state?.currentCard)
+        let currentCard = await updateCard(searchTerm,state?.currentCard)
+        let cardStack = state.cardStack
+        cardStack.push(currentCard)
+        console.log("updating state with new card:",currentCard)
+        setState((prevState) => ({
+            ...prevState,
+            currentCard: currentCard,
+            cardStack: cardStack
+        }))
+    } catch (error) {
+        console.error('There was a problem with the fetch operation:', error);
+    } finally {
+        // setLoading(false);
+    }
+}
