@@ -72,7 +72,7 @@ const siriEffect = (routeId) => {
 
     let operatorRef = routeId.split("_")[0].replace(" ","+");
     const lineRef = routeId.split("_")[1];
-    let search = "&OperatorRef=" +operatorRef + "&LineRef"+"=" + lineRef;
+    let search = "&OperatorRef=" +operatorRef + "&LineRef"+"=" + lineRef.replace("+","%2B");
     let targetAddress = "https://" + process.env.ENV_ADDRESS + "/" + process.env.VEHICLE_MONITORING_ENDPOINT + search
     console.log("searching for siri at: ",targetAddress)
     targetAddress = lineRef==null?null:targetAddress
