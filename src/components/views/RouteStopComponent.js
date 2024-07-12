@@ -5,7 +5,7 @@ function getRouteStopComponent  (stopData) {
     console.log("generating RouteStopComponent for ",stopData)
     return (
         <li className="has-info" key={stopData.name + " " + stopData.id}>
-            <a href="#" tabIndex={stopData.id}>{stopData.name}</a>
+            <a href={stopData.longLat[0] + "," + stopData.longLat[1]} tabIndex={stopData.id}>{stopData.name}</a>
         </li>
     )
 }
