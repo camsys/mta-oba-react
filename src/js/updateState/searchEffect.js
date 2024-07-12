@@ -3,12 +3,12 @@ import React, {useContext, useEffect, useState} from "react";
 import {CardStateContext} from "../../components/util/CardStateComponent";
 import {OBA} from "../oba";
 // import MapRouteComponent from "../../components/map/MapRouteComponent";
-import {Card, routeMatch, routeMatchDirectionDatum} from "./dataModels"
+import {Card, geocodeMatch, routeMatch, routeMatchDirectionDatum, stopMatch} from "./dataModels"
 
 
-    function processRouteSearch(route,card) {
+    function processRouteSearch(route) {
         let match = new routeMatch()
-        console.log("processing route search results",route,card)
+        console.log("processing route search results",route)
         if (route != null && route.hasOwnProperty("directions")) {
             match.color = route?.color
             match.routeId = route?.id
@@ -21,12 +21,38 @@ import {Card, routeMatch, routeMatchDirectionDatum} from "./dataModels"
                 match.directions.push(directionDatum)
             }
         }
-        card.searchMatches.push(match)
-        console.log('processed route search',route,card)
-        return card
+        return match
     }
 
+    function processGeocodeSearch(geocode,card){
+        let match = new geocodeMatch()
+        console.log("processing geocode search results",geocode,card,match)
+        if (geocode != null && geocode.hasOwnProperty("latitude")) {
+            match.latitude = geocode.latitude
+            match.longitude = geocode.longitude
+            match.nearbyRoutes = []
+            geocode?.nearbyRoutes.forEach(x=>{
+                match.nearbyRoutes.push(processRouteSearch(x,card))
+            })
+        }
+        console.log("geocode data processed: ",match)
+        return match
+    }
 
+    function processStopSearch(stop,card){
+        let match = new stopMatch()
+        console.log("processing stopMatch search results",stop,card,match)
+        if (stop != null && stop.hasOwnProperty("latitude")) {
+            match.latitude = stop.latitude
+            match.longitude = stop.longitude
+            match.routesAvailable = []
+            stop?.routesAvailable.forEach(x=>{
+                match.routesAvailable.push(processRouteSearch(x,card))
+            })
+        }
+        console.log("stopMatch data processed: ",match)
+        return match
+    }
 
     async function getData(card){
         console.log("filling card data with search",card)
@@ -47,16 +73,20 @@ import {Card, routeMatch, routeMatchDirectionDatum} from "./dataModels"
                 card.setSearchResultType(searchResults.resultType)
                 console.log(card)
 
-                // if(searchResults.resultType=="StopResult"){
-                //     searchData = processStopSearch(searchResults)
-                //
-                // }
-                // if(searchResults.resultType=="GeocodeResult"){
-                //     searchData = processGeocodeSearch(searchResults)
-                //
-                // }
+                if(searchResults.resultType=="StopResult"){
+                    searchResults.matches.forEach(x=>{
+                        card.searchMatches.push(processStopSearch(x,card))
+                    })
+                }
+                if(searchResults.resultType=="GeocodeResult"){
+                    searchResults.matches.forEach(x=>{
+                        card.searchMatches.push(processGeocodeSearch(x,card))
+                    })
+                }
                 if(card.type == Card.cardTypes.routeCard){
-                    searchResults.matches.forEach(x=>{processRouteSearch(x,card)})
+                    searchResults.matches.forEach(x=>{
+                        card.searchMatches.push(processRouteSearch(x,card))
+                    })
                 }
                 console.log('completed search results: ',card)
             })
@@ -91,6 +121,7 @@ export const updateCard = async (searchRef,currentCard) =>{
     console.log("received new search input:",searchRef)
     // useEffect(() => {
             console.log("performing search")
+            searchRef = searchRef.replaceAll(" ","%2520")
             return await getData(new Card(searchRef))
     // })
 }
