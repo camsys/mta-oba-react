@@ -1,7 +1,7 @@
 import React, {useContext, useState} from 'react';
 import Autosuggest from 'react-autosuggest';
 import ErrorBoundary from "../util/errorBoundary";
-import {fetchSearchData, generateInitialCard, updateCard} from "../../js/updateState/searchEffect";
+import {fetchSearchData} from "../../js/updateState/searchEffect";
 import {CardStateContext} from "../util/CardStateComponent";
 
 // Function to fetch suggestions from an external API
@@ -32,16 +32,8 @@ const SearchBar = () => {
     const onSuggestionSelected = (event, { suggestion }) => {
         console.log('Selected suggestion:', suggestion);
         const lineRef = suggestion.value
-        // location.href = `?LineRef=${lineRef}`;
-
-        let url = new URL(window.location.href);
-        url.searchParams.set('LineRef', lineRef);
-        window.history.pushState({}, '', url);
-        console.log('updated url with suggestion')
 
 
-
-        console.log("requesting search")
         fetchSearchData(state,setState,lineRef);
     };
 

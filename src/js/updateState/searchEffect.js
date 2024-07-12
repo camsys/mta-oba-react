@@ -90,10 +90,8 @@ import {Card, routeMatch, routeMatchDirectionDatum} from "./dataModels"
 export const updateCard = async (searchRef,currentCard) =>{
     console.log("received new search input:",searchRef)
     // useEffect(() => {
-        if (performNewSearch(searchRef)) {
             console.log("performing search")
             return await getData(new Card(searchRef))
-        }
     // })
 }
 
@@ -112,18 +110,23 @@ export async function fetchSearchData(state, setState, searchTerm) {
         console.log("generating new card")
         console.log("logging previous state:",state)
         console.log("logging previous card:",state?.currentCard)
-        let currentCard = await updateCard(searchTerm,state?.currentCard)
-        let cardStack = state.cardStack
-        cardStack.push(currentCard)
-        console.log("updating state with new card:",currentCard)
-        setState((prevState) => ({
-            ...prevState,
-            currentCard: currentCard,
-            cardStack: cardStack
-        }))
-    } catch (error) {
-        console.error('There was a problem with the fetch operation:', error);
-    } finally {
-        // setLoading(false);
+        if (performNewSearch(searchTerm,state?.currentCard)) {
+            let url = new URL(window.location.href);
+            url.searchParams.set('LineRef', searchTerm);
+            window.history.pushState({}, '', url);
+            let currentCard = await updateCard(searchTerm, state?.currentCard)
+            let cardStack = state.cardStack
+            cardStack.push(currentCard)
+            console.log("updating state with new card:", currentCard)
+            setState((prevState) => ({
+                ...prevState,
+                currentCard: currentCard,
+                cardStack: cardStack
+            }))
+        }
+        }
+        catch (error) {
+            console.error('There was a problem with the fetch operation:', error);
+        } finally {
     }
 }
