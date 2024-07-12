@@ -30,8 +30,9 @@ const mapComponent = (function() {
             const { state} = useContext(CardStateContext);
             let mapRouteComponents = []
             let mapStopComponents = []
-            {state.currentCard.searchMatches.forEach(route=>{
-                if(route.type=="routeMatch"){
+            {state.currentCard.searchMatches.forEach(searchMatch=>{
+                if(searchMatch.type=="routeMatch"){
+                    let route = searchMatch
                     route.directions.forEach(dir=>{
                         dir.mapRouteComponentData.forEach((datum)=>{
                             console.log("requesting new MapRouteComponent from: ",datum)
@@ -39,6 +40,19 @@ const mapComponent = (function() {
                         })
                         dir.mapStopComponentData.forEach((datum)=>{
                             mapStopComponents.push(new MapStopComponent(datum))
+                        })
+                    })
+                }
+                if(searchMatch.type=="geocodeMatch") {
+                    searchMatch.nearbyRoutes.forEach(route => {
+                        route.directions.forEach(dir => {
+                            dir.mapRouteComponentData.forEach((datum) => {
+                                console.log("requesting new MapRouteComponent from: ", datum)
+                                mapRouteComponents.push(new MapRouteComponent(datum))
+                            })
+                            dir.mapStopComponentData.forEach((datum) => {
+                                mapStopComponents.push(new MapStopComponent(datum))
+                            })
                         })
                     })
                 }

@@ -95,6 +95,15 @@ export class routeMatch extends searchMatch{
     }
 }
 
+export class geocodeMatch extends searchMatch{
+    constructor(data) {
+        super("geocodeMatch");
+        let latitude
+        let longitude
+        let nearbyRoutes = []
+    }
+}
+
 export class Card {
     static ROUTECARDIDENTIFIER = "RouteResult";
     static GEOCARDIDENTIFIER = "GeocodeResult";
