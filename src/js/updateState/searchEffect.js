@@ -79,22 +79,22 @@ import {Card, routeMatch, routeMatchDirectionDatum} from "./dataModels"
         }))
     }
 
-    const performNewSearch = (searchRef) =>{
-        const { state, setState } = useContext(CardStateContext);
-        if(state?.currentCard?.searchTerm == searchRef){
+    const performNewSearch = (searchRef,currentCard) =>{
+        if(currentCard?.searchTerm == searchRef){
             return false
         }
         return true
     }
 
 
-export const updateCard = () =>{
-    const searchRef = queryString.parse(location.search).LineRef;
-    useEffect(() => {
+export const updateCard = async (searchRef,currentCard) =>{
+    console.log("received new search input:",searchRef)
+    // useEffect(() => {
         if (performNewSearch(searchRef)) {
-            fillCard(new Card(searchRef))
+            console.log("performing search")
+            return await getData(new Card(searchRef))
         }
-    })
+    // })
 }
 
 export const generateInitialCard = async ()=>{

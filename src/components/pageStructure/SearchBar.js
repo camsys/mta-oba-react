@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
+import React, {useContext, useState} from 'react';
 import Autosuggest from 'react-autosuggest';
 import ErrorBoundary from "../util/errorBoundary";
+import {generateInitialCard, updateCard} from "../../js/updateState/searchEffect";
+import {CardStateContext} from "../util/CardStateComponent";
 
 // Function to fetch suggestions from an external API
 const getSuggestions = async (value) => {
@@ -24,11 +26,42 @@ const SearchBar = () => {
         setSuggestions([]);
     };
 
+
+    const { state, setState } = useContext(CardStateContext);
+
     const onSuggestionSelected = (event, { suggestion }) => {
         console.log('Selected suggestion:', suggestion);
         const lineRef = suggestion.value
-        location.href = `?LineRef=${lineRef}`;
+        // location.href = `?LineRef=${lineRef}`;
 
+        let url = new URL(window.location.href);
+        url.searchParams.set('LineRef', lineRef);
+        window.history.pushState({}, '', url);
+        console.log('updated url with suggestion')
+
+        async function fetchData(searchTerm) {
+            try {
+                console.log("generating new card")
+                console.log("logging previous state:",state)
+                console.log("logging previous card:",state?.currentCard)
+                let currentCard = await updateCard(searchTerm,state?.currentCard)
+                let cardStack = state.cardStack
+                cardStack.push(currentCard)
+                console.log("updating state with new card:",currentCard)
+                setState((prevState) => ({
+                    ...prevState,
+                    currentCard: currentCard,
+                    cardStack: cardStack
+                }))
+            } catch (error) {
+                console.error('There was a problem with the fetch operation:', error);
+            } finally {
+                // setLoading(false);
+            }
+        }
+
+        console.log("requesting search")
+        fetchData(lineRef);
     };
 
     const inputProps = {
