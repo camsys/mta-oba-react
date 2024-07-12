@@ -76,13 +76,13 @@ const siriEffect = (routeId) => {
 
     let vehicleSpecifiers = new dataSpecifiers("vehicle",
         new classList(vehicleData,
-            [new classWrap(mapVehicleComponent,routeId+"map"),
-                new classWrap(routeVehicleComponent,"route")]),
+            [new classWrap(mapVehicleComponent,routeId+"_map"),
+                new classWrap(routeVehicleComponent,routeId+"_route")]),
         new pathRouting((siri)=>{return siri?.Siri?.ServiceDelivery?.VehicleMonitoringDelivery[0]?.VehicleActivity},
             (objList,i)=>{return objList[i].MonitoredVehicleJourney}))
     let serviceAlertSpecifiers = new dataSpecifiers("serviceAlert",
         new classList(serviceAlertData,
-            [new classWrap(serviceAlertComponent,"sidebar")]),
+            [new classWrap(serviceAlertComponent,routeId+"_sidebar")]),
         new pathRouting((siri)=>{return siri?.Siri?.ServiceDelivery?.VehicleMonitoringDelivery[0]?.VehicleActivity},
             (objList,i)=>{return objList[i].MonitoredVehicleJourney}))
 

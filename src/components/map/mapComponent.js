@@ -29,8 +29,16 @@ const mapComponent = (function() {
             let mapRouteComponents = []
             let mapStopComponents = []
             let mapVehicleComponents = []
-            mapVehicleComponents = vehicleState["mapVehicleComponents"];
             const processRoute = (route)=>{
+                console.log("processing route for map: ",route)
+                console.log("vehicle state:", vehicleState)
+                let routeId = route.routeId.split("_")[1]
+                console.log("using abbreviated routeId ",routeId)
+                let vehicleComponentsForRoute = vehicleState[routeId+"_mapVehicleComponents"]
+                console.log("found these vehicle components", routeId,vehicleComponentsForRoute)
+                if(vehicleComponentsForRoute!=null){
+                    vehicleComponentsForRoute.forEach(x=>{mapVehicleComponents.push(x)});
+                }
                 route.directions.forEach(dir=>{
                     dir.mapRouteComponentData.forEach((datum)=>{
                         console.log("requesting new MapRouteComponent from: ",datum)
