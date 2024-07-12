@@ -3,7 +3,7 @@ import React, {useContext, useEffect, useState} from "react";
 import {CardStateContext} from "../../components/util/CardStateComponent";
 import {OBA} from "../oba";
 // import MapRouteComponent from "../../components/map/MapRouteComponent";
-import {Card, geocodeMatch, routeMatch, routeMatchDirectionDatum} from "./dataModels"
+import {Card, geocodeMatch, routeMatch, routeMatchDirectionDatum, stopMatch} from "./dataModels"
 
 
     function processRouteSearch(route) {
@@ -39,7 +39,20 @@ import {Card, geocodeMatch, routeMatch, routeMatchDirectionDatum} from "./dataMo
         return match
     }
 
-
+    function processStopSearch(stop,card){
+        let match = new stopMatch()
+        console.log("processing stopMatch search results",stop,card,match)
+        if (stop != null && stop.hasOwnProperty("latitude")) {
+            match.latitude = stop.latitude
+            match.longitude = stop.longitude
+            match.routesAvailable = []
+            stop?.routesAvailable.forEach(x=>{
+                match.routesAvailable.push(processRouteSearch(x,card))
+            })
+        }
+        console.log("stopMatch data processed: ",match)
+        return match
+    }
 
     async function getData(card){
         console.log("filling card data with search",card)
@@ -60,10 +73,11 @@ import {Card, geocodeMatch, routeMatch, routeMatchDirectionDatum} from "./dataMo
                 card.setSearchResultType(searchResults.resultType)
                 console.log(card)
 
-                // if(searchResults.resultType=="StopResult"){
-                //     searchData = processStopSearch(searchResults)
-                //
-                // }
+                if(searchResults.resultType=="StopResult"){
+                    searchResults.matches.forEach(x=>{
+                        card.searchMatches.push(processStopSearch(x,card))
+                    })
+                }
                 if(searchResults.resultType=="GeocodeResult"){
                     searchResults.matches.forEach(x=>{
                         card.searchMatches.push(processGeocodeSearch(x,card))

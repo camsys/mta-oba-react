@@ -30,45 +30,30 @@ const mapComponent = (function() {
             const { state} = useContext(CardStateContext);
             let mapRouteComponents = []
             let mapStopComponents = []
+            const processRoute = (route)=>{
+                route.directions.forEach(dir=>{
+                    dir.mapRouteComponentData.forEach((datum)=>{
+                        console.log("requesting new MapRouteComponent from: ",datum)
+                        mapRouteComponents.push(new MapRouteComponent(datum))
+                    })
+                    dir.mapStopComponentData.forEach((datum)=>{
+                        mapStopComponents.push(new MapStopComponent(datum))
+                    })
+                })
+            }
             {state.currentCard.searchMatches.forEach(searchMatch=>{
                 if(searchMatch.type=="routeMatch"){
                     let route = searchMatch
-                    route.directions.forEach(dir=>{
-                        dir.mapRouteComponentData.forEach((datum)=>{
-                            console.log("requesting new MapRouteComponent from: ",datum)
-                            mapRouteComponents.push(new MapRouteComponent(datum))
-                        })
-                        dir.mapStopComponentData.forEach((datum)=>{
-                            mapStopComponents.push(new MapStopComponent(datum))
-                        })
-                    })
+                    processRoute(route)
                 }
                 if(searchMatch.type=="geocodeMatch") {
-                    searchMatch.nearbyRoutes.forEach(route => {
-                        route.directions.forEach(dir => {
-                            dir.mapRouteComponentData.forEach((datum) => {
-                                console.log("requesting new MapRouteComponent from: ", datum)
-                                mapRouteComponents.push(new MapRouteComponent(datum))
-                            })
-                            dir.mapStopComponentData.forEach((datum) => {
-                                mapStopComponents.push(new MapStopComponent(datum))
-                            })
-                        })
-                    })
+                    searchMatch.nearbyRoutes.forEach(route => {processRoute(route)})
+                }
+                if(searchMatch.type=="stopMatch") {
+                    searchMatch.routesAvailable.forEach(route => {processRoute(route)})
                 }
             })}
 
-            // {state.currentCard.searchMatches.forEach(route=>{
-            //     if(route.type=="routeMatch"){
-            //         route.directions.forEach(dir=>{
-            //             dir.mapRouteComponentData.forEach((datum)=>{
-            //                 console.log("requesting new MapRouteComponent from: ",datum)
-            //                 mapRouteComponents.push(new MapRouteComponent(datum))
-            //             })
-            //
-            //         })
-            //     }
-            // })}
             console.log("map route components")
             console.log(mapRouteComponents)
             console.log("map vehicle components")

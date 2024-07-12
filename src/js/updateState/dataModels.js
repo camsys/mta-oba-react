@@ -56,7 +56,9 @@ export class RouteDirectionComponentDatum{
         this.routeDestination = routeDestination
         console.log("RouteDirectionComponentDatum received stops: ",stops)
         this.routeStopComponentsData = []
-        stops.forEach(stop=>{this.routeStopComponentsData.push(new StopData(stop))})
+        if(stops != null){
+            stops.forEach(stop=>{this.routeStopComponentsData.push(new StopData(stop))})
+        }
         console.log("RouteDirectionComponentDatum stopsComponents data: ",this.routeStopComponentsData)
     }
 }
@@ -69,8 +71,9 @@ export class routeMatchDirectionDatum {
         this.destination = directionJson.destination
         this.mapRouteComponentData = []
         this.mapStopComponentData = []
+        let stops = directionJson?.stops
         this.routeDirectionComponentData = new RouteDirectionComponentDatum(routeId,directionJson.directionId,
-            directionJson.destination, directionJson.stops)
+            directionJson.destination, stops)
         console.log("routeDirectionComponentDatum generated : ",this.routeDirectionComponentData)
         for (let j = 0; j < directionJson.polylines.length; j++) {
             console.log("decoding route polylines ", directionJson, this)
@@ -80,7 +83,11 @@ export class routeMatchDirectionDatum {
             let mapRouteComponentDatum = new MapRouteComponentDatum(polylineId, decodedPolyline, color)
             this.mapRouteComponentData.push(mapRouteComponentDatum)
         }
-        directionJson.stops.forEach(stop=>{this.mapStopComponentData.push(new StopData(stop))})
+        if(stops != null) {
+            stops.forEach(stop => {
+                this.mapStopComponentData.push(new StopData(stop))
+            })
+        }
     }
 }
 
@@ -101,6 +108,15 @@ export class geocodeMatch extends searchMatch{
         let latitude
         let longitude
         let nearbyRoutes = []
+    }
+}
+
+export class stopMatch extends searchMatch{
+    constructor(data) {
+        super("stopMatch");
+        let latitude
+        let longitude
+        let routesAvailable = []
     }
 }
 
