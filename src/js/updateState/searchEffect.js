@@ -114,7 +114,13 @@ export async function fetchSearchData(state, setState, searchTerm) {
             let url = new URL(window.location.href);
             url.searchParams.set('LineRef', searchTerm);
             window.history.pushState({}, '', url);
-            let currentCard = await updateCard(searchTerm, state?.currentCard)
+            let currentCard
+            if(searchTerm!=null|searchTerm!=""|searchTerm!="#"){
+                 currentCard = await updateCard(searchTerm, state?.currentCard)
+            } else {
+                currentCard = getHomeCard()
+            }
+
             let cardStack = state.cardStack
             cardStack.push(currentCard)
             console.log("updating state with new card:", currentCard)
