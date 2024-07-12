@@ -10,7 +10,6 @@ import {VehicleStateContext} from "../util/VehicleStateComponent";
 import vehicleComponent from "./vehicleComponent";
 import MapRouteComponent from "./MapRouteComponent";
 import MapStopComponent from "./MapStopComponent";
-import useUpdateCurrentCardData from "../../js/updateState/useUpdateCurrentCardData";
 import siriEffect from "../../js/updateState/siriEffect";
 
 const mapComponent = (function() {

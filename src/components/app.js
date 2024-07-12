@@ -4,7 +4,6 @@ import ErrorBoundary from "./util/errorBoundary";
 import {CardStateContext, CardStateProvider} from "./util/CardStateComponent";
 import mapWrap from "./map/mapWrap";
 
-import useUpdateCurrentCardData from "../js/updateState/useUpdateCurrentCardData";
 import sideBarComponent from "./pageStructure/sideBar";
 import {VehicleStateProvider} from "./util/VehicleStateComponent";
 import {generateInitialCard} from "../js/updateState/searchEffect";
