@@ -135,6 +135,7 @@ export class Card {
         this.searchResultType = null
         this.name = "homeCard"
         this.searchMatches = []
+        this.routeIdList = []
     }
 
     setSearchResultType(searchResultType){

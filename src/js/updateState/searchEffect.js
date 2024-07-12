@@ -6,12 +6,13 @@ import {OBA} from "../oba";
 import {Card, geocodeMatch, routeMatch, routeMatchDirectionDatum, stopMatch} from "./dataModels"
 
 
-    function processRouteSearch(route) {
+    function processRouteSearch(route,card) {
         let match = new routeMatch()
         console.log("processing route search results",route)
         if (route != null && route.hasOwnProperty("directions")) {
             match.color = route?.color
             match.routeId = route?.id
+            card.routeIdList.push(match.routeId)
             match.routeTitle = route?.shortName + " " + route?.longName
             match.description = route?.description
             match.directions = []

@@ -69,20 +69,23 @@ const siriEffect = (routeId) => {
 
 
     var keyword = "vehicle"
-    const lineRef = routeId;
-    let search = "&LineRef"+"=" + lineRef;
+
+    let operatorRef = routeId.split("_")[0].replace(" ","+");
+    const lineRef = routeId.split("_")[1];
+    let search = "&OperatorRef=" +operatorRef + "&LineRef"+"=" + lineRef;
     let targetAddress = "https://" + process.env.ENV_ADDRESS + "/" + process.env.VEHICLE_MONITORING_ENDPOINT + search
+    console.log("searching for siri at: ",targetAddress)
     targetAddress = lineRef==null?null:targetAddress
 
     let vehicleSpecifiers = new dataSpecifiers("vehicle",
         new classList(vehicleData,
-            [new classWrap(mapVehicleComponent,routeId+"_map"),
-                new classWrap(routeVehicleComponent,routeId+"_route")]),
+            [new classWrap(mapVehicleComponent,lineRef+"_map"),
+                new classWrap(routeVehicleComponent,lineRef+"_route")]),
         new pathRouting((siri)=>{return siri?.Siri?.ServiceDelivery?.VehicleMonitoringDelivery[0]?.VehicleActivity},
             (objList,i)=>{return objList[i].MonitoredVehicleJourney}))
     let serviceAlertSpecifiers = new dataSpecifiers("serviceAlert",
         new classList(serviceAlertData,
-            [new classWrap(serviceAlertComponent,routeId+"_sidebar")]),
+            [new classWrap(serviceAlertComponent,lineRef+"_sidebar")]),
         new pathRouting((siri)=>{return siri?.Siri?.ServiceDelivery?.VehicleMonitoringDelivery[0]?.VehicleActivity},
             (objList,i)=>{return objList[i].MonitoredVehicleJourney}))
 
