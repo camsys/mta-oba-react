@@ -10,8 +10,8 @@ function getRouteCard (routeMatch){
     console.log("generating route card: ",routeMatch)
     return(
         <React.Fragment>
-            <div className="card route-card b38">
-                <div className="card-header" styles="border-color: #00AEEF">
+            <div className={"card route-card " + routeMatch.routeId}>
+                <div className="card-header" style={{ borderColor: '#'+routeMatch.color}}>
                     <h3 className="card-title">{routeMatch.routeTitle}</h3>
                 </div>
                 <div className="card-content">
