@@ -41,7 +41,8 @@ export class searchMatch{
 }
 
 export class MapRouteComponentDatum{
-    constructor(componentId, points, color) {
+    constructor(routeId,componentId, points, color) {
+        this.routeId = routeId
         this.id = componentId
         this.points = points
         this.color = color
@@ -79,8 +80,8 @@ export class routeMatchDirectionDatum {
             console.log("decoding route polylines ", directionJson, this)
             let encodedPolyline = directionJson.polylines[j]
             let decodedPolyline = OBA.Util.decodePolyline(encodedPolyline)
-            let polylineId = routeId + "_dir_" + directionJson.directionId + "_polyLineNum_" + j
-            let mapRouteComponentDatum = new MapRouteComponentDatum(polylineId, decodedPolyline, color)
+            let polylineId = routeId + "_dir_" + directionJson.directionId + "_polyLineNum_" + String(j)
+            let mapRouteComponentDatum = new MapRouteComponentDatum(routeId,polylineId, decodedPolyline, color)
             this.mapRouteComponentData.push(mapRouteComponentDatum)
         }
         if(stops != null) {

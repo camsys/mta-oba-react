@@ -7,6 +7,7 @@ import mapWrap from "./map/mapWrap";
 import sideBarComponent from "./pageStructure/sideBar";
 import {VehicleStateProvider} from "./util/VehicleStateComponent";
 import {generateInitialCard} from "../js/updateState/searchEffect";
+import {MapHighlightingStateProvider} from "./util/MapHighlightingStateComponent";
 
 
 
@@ -68,7 +69,9 @@ const Root = () => {
         <ErrorBoundary>
             <CardStateProvider>
                 <VehicleStateProvider>
-                    <App/>
+                    <MapHighlightingStateProvider>
+                        <App/>
+                    </MapHighlightingStateProvider>
                 </VehicleStateProvider>
             </CardStateProvider>
         </ErrorBoundary>

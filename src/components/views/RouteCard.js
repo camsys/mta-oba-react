@@ -4,14 +4,28 @@ import {CardStateContext} from "../../components/util/CardStateComponent";
 import ServiceAlertContainerComponent from "./serviceAlertContainerComponent";
 import RefreshComponent from "./RefreshComponent"
 import getRouteDirectionComponent from "./RouteDirectionComponent";
+import {MapHighlightingStateContext} from "../util/MapHighlightingStateComponent";
 
 
 function getRouteCard (routeMatch){
     console.log("generating route card: ",routeMatch)
+    // const { state, setState} = useContext(CardStateContext);
+    const {mapHighlightingState, setState} = useContext(MapHighlightingStateContext);
+
+    const setHoveredItemId = (id) =>{
+        console.log("highlighting: ",id)
+        if(mapHighlightingState.highlightedComponentId!=id){
+            setState((prevState)=>{return {
+                ...prevState,
+                highlightedComponentId:id}})
+        }
+    }
     return(
         <React.Fragment>
             <div className={"card route-card " + routeMatch.routeId}>
-                <div className="card-header" style={{ borderColor: '#'+routeMatch.color}}>
+                <div className="card-header" style={{ borderColor: '#'+routeMatch.color}}
+                     onMouseEnter={() => setHoveredItemId(routeMatch.routeId)}
+                     onMouseLeave={() => setHoveredItemId(null)}>
                     <h3 className="card-title">{routeMatch.routeTitle}</h3>
                 </div>
                 <div className="card-content">

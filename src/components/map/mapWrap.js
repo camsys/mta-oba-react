@@ -28,10 +28,10 @@ function getMapWrap  () {
         }
     }
 
-    function GetMap () {
-        OBA.Util.log("adding map")
-        return MapComponent()
-    }
+    // function GetMap () {
+    //     OBA.Util.log("adding map")
+    //     return MapComponent
+    // }
 
     OBA.Util.log("adding map-wrapper")
     return(
@@ -49,7 +49,7 @@ function getMapWrap  () {
                             aria-label={ariaLabel} onClick={mapToggle}><span className="hide-label">Hide </span>Map
                     </button>
                 </div>
-                <GetMap />
+                <MapComponent />
             </div>
         </ErrorBoundary>
 )

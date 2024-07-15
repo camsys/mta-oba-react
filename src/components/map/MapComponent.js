@@ -11,6 +11,7 @@ import vehicleComponent from "./vehicleComponent";
 import MapRouteComponent from "./MapRouteComponent";
 import MapStopComponent from "./MapStopComponent";
 import siriEffect from "../../js/updateState/siriEffect";
+import {MapHighlightingStateContext} from "../util/MapHighlightingStateComponent";
 
 
 
@@ -53,18 +54,22 @@ export const MapComponent = () => {
     let mapCenter = OBA.Config.defaultMapCenter;
     // const [mapCenter, setMapCenter] = useState(OBA.Config.defaultMapCenter)
     const { state} = useContext(CardStateContext);
+    const { mapHighlightingState} = useContext(MapHighlightingStateContext);
     let mapRouteComponents = []
     let mapStopComponents = []
+
+
+
     const processRoute = (route)=>{
         console.log("processing route for map: ",route)
 
         route.directions.forEach(dir=>{
             dir.mapRouteComponentData.forEach((datum)=>{
                 console.log("requesting new MapRouteComponent from: ",datum)
-                mapRouteComponents.push(new MapRouteComponent(datum))
+                mapRouteComponents.push(new MapRouteComponent(datum,mapHighlightingState.highlightedComponentId))
             })
             dir.mapStopComponentData.forEach((datum)=>{
-                mapStopComponents.push(new MapStopComponent(datum))
+                mapStopComponents.push(new MapStopComponent(datum,mapHighlightingState.highlightedComponentId))
             })
         })
     }

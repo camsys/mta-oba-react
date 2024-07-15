@@ -4,7 +4,7 @@ import {CardStateContext} from "../util/CardStateComponent";
 import {fetchSearchData} from "../../js/updateState/searchEffect";
 
 function getRouteStopComponent  (stopData) {
-    console.log("generating RouteStopComponent for ",stopData)
+    // console.log("generating RouteStopComponent for ",stopData)
 
     const { state, setState } = useContext(CardStateContext);
     const search = (searchterm) =>{

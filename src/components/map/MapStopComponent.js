@@ -1,14 +1,15 @@
 import {OBA} from "../../js/oba";
-import React from "react";
+import React, {useContext} from "react";
 import {Marker, Popup, useMap} from "react-leaflet";
 import L from "leaflet";
 import stopMapIcon from "../../img/icon/star_black.svg"
 import stopPopupIcon from "../../img/icon/bus-stop.svg"
+import {MapHighlightingStateContext} from "../util/MapHighlightingStateComponent";
 
 const COMPONENT_IDENTIFIER = "mapStopComponent"
 
 function MapStopComponent  (stopData) {
-    OBA.Util.trace('generating mapStopComponent: ' + stopData.id)
+    // OBA.Util.trace('generating mapStopComponent: ' + stopData.id)
 
 
 
@@ -45,9 +46,14 @@ function MapStopComponent  (stopData) {
         stopId: stopData.id,
         // map: map,
         // visible: defaultVisibility,
-        key: COMPONENT_IDENTIFIER+"_"+stopData.id,
-        id: COMPONENT_IDENTIFIER+"_"+stopData.id
+        key: COMPONENT_IDENTIFIER+"_"+String(stopData.id),
+        id: COMPONENT_IDENTIFIER+"_"+String(stopData.id)
     };
+
+    // const { mapHighlightingState} = useContext(MapHighlightingStateContext);
+    // if(mapHighlightingState.highlightedComponentId!=mapRouteComponentDatum.id){
+    //     markerOptions.zIndexOffset=10
+    // }
 
     let out = (
         <Marker {...markerOptions}>
