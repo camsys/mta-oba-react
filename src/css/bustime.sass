@@ -44,7 +44,7 @@ p
   padding: 0
     
 ul
-  &:not(.menu):not(.card-details):not(.route-stops):not(.approaching-buses)
+  &:not(.menu):not(.card-details):not(.route-stops):not(.approaching-buses):not([role="listbox"])
     list-style: none
     padding: 0
     margin: 1em 0
@@ -379,48 +379,68 @@ button, .button
     padding: $content-padding
     background: $mta-blue
     color: $white
-    input, button
+    position: relative
+    input
       font-size: 1em
       background-color: rgba($white, .1)
       border: 1px solid rgba($white, 0)
       outline: none
-      padding: .625em .5em
+      padding: .625em 2em .625em .5em
       transition: border .25s ease-in-out, background-color .25s ease-in-out, color .25s ease-in-out
+      font-weight: bold
+      color: $white
+      background-image: url(/img/icon/search_white.svg)
+      background-size: 1em auto
+      background-position: right .5em center
+      background-repeat: no-repeat
+      +rounded
+      transition: border-radius .25s ease-in-out, background-color .25s ease-in-out
+      width: 100%
       &:hover
         border-color: $white
       &:focus
-        background-color: $white
-        color: $black
-        border-color: $white
-    input
-      font-weight: bold
-      color: $white
-      +rounded-left
+        +input-focused
       &::placeholder
         color: $white
-    button
-      +rounded-right
-      line-height: 0
-      img
-        width: 1.125em
-        height: 1.125em
+    .react-autosuggest__container
+      &--open
+        input
+          +rounded-top
+          +input-focused
+          background-color: $ui-gray
+          position: relative
+          z-index: 1001
+    .react-autosuggest__suggestions-container
+      position: absolute
+      background-color: $white
+      left: calc($content-padding - 1px)
+      right: calc($content-padding - 1px)
+      z-index: 1000
+      +rounded-bottom
+      opacity: 0
+      box-shadow: 0px 0px 0px 0px rgba($black, 0)
+      transition: opacity .25s ease-in-out .125s, box-shadow .25s ease-in-out
+      border: 1px solid $mta-blue
+      max-height: 50vh
+      overflow-y: auto
+      .react-autosuggest__suggestions-list
+        list-style: none
+        color: $black
         margin: 0
         padding: 0
+        .react-autosuggest__suggestion
+          padding: .375em .5em
+          background-color: transparent
+          color: currentColor
+          transition: background-color .25s ease-in-out, color .25s ease-in-out
+          &--highlighted
+            background-color: $black
+            color: $white
+            font-weight: bold
+            cursor: pointer
+      &--open
         opacity: 1
-        transition: opacity .25s ease-in-out
-      &:focus
-        background-image: url(/img/icon/search_blue.svg)
-        background-size: 1.125em 1.125em
-        background-repeat: no-repeat
-        background-position: center
-        img
-          opacity: 0
-    .search-field-wrap
-      display: flex
-      #search-field
-        flex: 1
-        input
-          width: 100%
+        box-shadow: 0px 0px 12px 0px rgba($black, 0.25)
 
   .search-instructions 
     padding: $content-padding
