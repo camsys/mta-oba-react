@@ -10,9 +10,9 @@ function getRouteStopComponent  (stopData) {
     const search = (searchterm) =>{
         fetchSearchData(state, setState, searchterm)
     }
-
+//className="has-info" should be added if it has a child vehicle
     return (
-        <li className="has-info" key={stopData.name + " " + stopData.id}>
+        <li  key={stopData.name + " " + stopData.id}>
             <a href="#" onClick={() => search(stopData.id.split("_")[1])} tabIndex={stopData.id}>{stopData.name}</a>
         </li>
     )
