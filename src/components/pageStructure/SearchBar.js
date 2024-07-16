@@ -38,13 +38,14 @@ const SearchBar = () => {
     };
 
     const inputProps = {
-        placeholder: 'Search...',
+        placeholder: 'Search',
         value,
         onChange: (event, { newValue }) => setValue(newValue),
     };
 
     return (
         <ErrorBoundary>
+            <div id="search">
             <Autosuggest
                 suggestions={suggestions}
                 onSuggestionsFetchRequested={onSuggestionsFetchRequested}
@@ -54,6 +55,7 @@ const SearchBar = () => {
                 renderSuggestion={(suggestion) => <div>{suggestion.label}</div>}
                 inputProps={inputProps}
             />
+            </div>
         </ErrorBoundary>
     );
 };

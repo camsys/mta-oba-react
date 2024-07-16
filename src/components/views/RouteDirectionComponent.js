@@ -22,6 +22,7 @@ export default function getRouteDirectionComponent(routeDirectionComponentDatum)
             </button>
             <div className="card-content collapse-content" styles="max-height: 0px;">
                 {/*this should be broken out into a component which re-renders when the stops call completes*/}
+                {/* this ul needs to get the route color applied in the style attribute, says becky */}
                 <ul className="route-stops" styles="color: #00AEEF;" key="test">
                     {console.log("preparing to get RouteStopComponents from: ", routeDirectionComponentDatum)}
                     {

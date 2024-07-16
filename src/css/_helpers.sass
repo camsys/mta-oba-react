@@ -88,6 +88,18 @@ $sidebar-switch: $six
   border-top-left-radius: 0
   border-bottom-left-radius: 0
 
+=rounded-top($radius: .25em)
+  border-top-right-radius: $radius
+  border-bottom-right-radius: 0
+  border-top-left-radius: $radius
+  border-bottom-left-radius: 0
+
+=rounded-bottom($radius: .25em)
+  border-top-right-radius: 0
+  border-bottom-right-radius: $radius
+  border-top-left-radius: 0
+  border-bottom-left-radius: $radius
+
 =icon-before
   &::before
     content: ''
@@ -157,3 +169,9 @@ $sidebar-switch: $six
   &.open
     &::after
       transform: rotate(-90deg)
+
+=input-focused
+  background-color: $white
+  color: $black
+  border-color: $white
+  background-image: url(/img/icon/search_blue.svg)
