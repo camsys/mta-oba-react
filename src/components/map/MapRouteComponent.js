@@ -4,20 +4,11 @@ import {Marker, Polyline, Popup} from "react-leaflet";
 import {MapHighlightingStateContext} from "../util/MapHighlightingStateComponent";
 import {CardStateContext} from "../util/CardStateComponent";
 
-function MapRouteComponent  (mapRouteComponentDatum, highlightedId) {
+function MapRouteComponent  (mapRouteComponentDatum) {
     // console.log('generating mapRouteComponent: ', mapRouteComponentDatum)
 
-    // const { mapHighlightingState} = useContext(MapHighlightingStateContext);
-    // const { state} = useContext(CardStateContext);
-
-    // const [weight, setWeight] = useState(10);
-    // useEffect(() => {
-    //     if (state.highlightedComponentId === mapRouteComponentDatum.routeId) {
-    //         setWeight(100);
-    //     } else {
-    //         setWeight(10);
-    //     }
-    // }, [state.highlightedComponentId, mapRouteComponentDatum.routeId]);
+    const { mapHighlightingState} = useContext(MapHighlightingStateContext);
+    let highlightedId = mapHighlightingState.highlightedComponentId
 
     let polylineOptions = {
         key:mapRouteComponentDatum.id,
@@ -26,12 +17,11 @@ function MapRouteComponent  (mapRouteComponentDatum, highlightedId) {
         weight:3
     }
     if(highlightedId!==mapRouteComponentDatum.routeId){
-        // console.log("route ",mapRouteComponentDatum.routeId," and ",highlightedId,"do not match")
+        console.log("route ",mapRouteComponentDatum.routeId," and ",highlightedId,"do not match")
     } else{
-        // polylineOptions.opacity = 0.6
-        // polylineOptions.weight = 100
         polylineOptions = {
-            key:mapRouteComponentDatum.id,
+            ... polylineOptions,
+            key:mapRouteComponentDatum.id + "_highlighted",
             positions:mapRouteComponentDatum.points,
             color:"#" + mapRouteComponentDatum.color,
             opacity: 0.6,

@@ -52,7 +52,6 @@ export const MapComponent = (googleMaps) => {
     let mapCenter = OBA.Config.defaultMapCenter;
     // const [mapCenter, setMapCenter] = useState(OBA.Config.defaultMapCenter)
     const { state} = useContext(CardStateContext);
-    const { mapHighlightingState} = useContext(MapHighlightingStateContext);
     let mapRouteComponents = []
     let mapStopComponents = []
 
@@ -64,10 +63,10 @@ export const MapComponent = (googleMaps) => {
         route.directions.forEach(dir=>{
             dir.mapRouteComponentData.forEach((datum)=>{
                 console.log("requesting new MapRouteComponent from: ",datum)
-                mapRouteComponents.push(new MapRouteComponent(datum,state.highlightedComponentId))
+                mapRouteComponents.push(new MapRouteComponent(datum))
             })
             dir.mapStopComponentData.forEach((datum)=>{
-                mapStopComponents.push(new MapStopComponent(datum,state.highlightedComponentId))
+                mapStopComponents.push(new MapStopComponent(datum))
             })
         })
     }
