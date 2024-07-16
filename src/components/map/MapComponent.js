@@ -18,9 +18,8 @@ import {MapHighlightingStateContext} from "../util/MapHighlightingStateComponent
 
 
 
-const MapVehicleElements = () =>{
-    const { state} = useContext(CardStateContext);
-    let routeIds = state.currentCard.routeIdList
+const MapVehicleElements = ({routeIds}) =>{
+
     console.log("looking for vehicles from route ids: ",routeIds)
     let mapVehicleComponents = []
     if(routeIds!=null){
@@ -28,7 +27,6 @@ const MapVehicleElements = () =>{
             console.log("looking for vehicles from route id: ",route)
             siriEffect(route)
             const { vehicleState} = useContext(VehicleStateContext);
-
             console.log("vehicle state:", vehicleState)
             let routeId = route.split("_")[1]
             console.log("using abbreviated routeId ",routeId)
@@ -47,7 +45,7 @@ const MapVehicleElements = () =>{
     )
 }
 
-export const MapComponent = () => {
+export const MapComponent = (googleMaps) => {
 
     OBA.Util.log("generating map")
     const [Zoom, setZoom] = useState(11);
@@ -66,10 +64,10 @@ export const MapComponent = () => {
         route.directions.forEach(dir=>{
             dir.mapRouteComponentData.forEach((datum)=>{
                 console.log("requesting new MapRouteComponent from: ",datum)
-                mapRouteComponents.push(new MapRouteComponent(datum,mapHighlightingState.highlightedComponentId))
+                mapRouteComponents.push(new MapRouteComponent(datum,state.highlightedComponentId))
             })
             dir.mapStopComponentData.forEach((datum)=>{
-                mapStopComponents.push(new MapStopComponent(datum,mapHighlightingState.highlightedComponentId))
+                mapStopComponents.push(new MapStopComponent(datum,state.highlightedComponentId))
             })
         })
     }
@@ -95,7 +93,7 @@ export const MapComponent = () => {
     console.log("map center set to: ",mapCenter)
 
 
-
+    let routeIds = state.currentCard.routeIdList
 
     const MapEvents = () => {
         let map = useMap()
@@ -109,6 +107,12 @@ export const MapComponent = () => {
         });
         return false;
     };
+
+    // <ReactLeafletGoogleLayer
+    //     apiKey='AIzaSyA-PBbsL_sXOTfo2KbkVx8XkEfcIe48xzw'
+    //     type={'roadmap'}
+    //     styles={OBA.Config.mutedTransitStylesArray}
+    // />
     return (
         <React.Fragment>
             <MapContainer
@@ -118,15 +122,11 @@ export const MapComponent = () => {
                 zoom={Zoom}
                 scrollWheelZoom={true}
             >
-                <ReactLeafletGoogleLayer
-                    apiKey='AIzaSyA-PBbsL_sXOTfo2KbkVx8XkEfcIe48xzw'
-                    type={'roadmap'}
-                    styles={OBA.Config.mutedTransitStylesArray}
-                />
+                {googleMaps}
                 <MapEvents />
                 {mapRouteComponents}
                 {Zoom >= 15.1 ? mapStopComponents : null}
-                <MapVehicleElements/>
+                <MapVehicleElements routeIds={routeIds}/>
             </MapContainer>
         </React.Fragment>
     );

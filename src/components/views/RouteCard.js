@@ -9,12 +9,12 @@ import {MapHighlightingStateContext} from "../util/MapHighlightingStateComponent
 
 function getRouteCard (routeMatch){
     console.log("generating route card: ",routeMatch)
-    // const { state, setState} = useContext(CardStateContext);
-    const {mapHighlightingState, setState} = useContext(MapHighlightingStateContext);
+    const { state, setState} = useContext(CardStateContext);
+    // const {mapHighlightingState, setState} = useContext(MapHighlightingStateContext);
 
     const setHoveredItemId = (id) =>{
         console.log("highlighting: ",id)
-        if(mapHighlightingState.highlightedComponentId!=id){
+        if(state.highlightedComponentId!=id){
             setState((prevState)=>{return {
                 ...prevState,
                 highlightedComponentId:id}})

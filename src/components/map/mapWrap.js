@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import {OBA} from "../../js/oba";
 import {MapComponent} from './MapComponent.js';
 import ErrorBoundary from "../util/errorBoundary";
+import ReactLeafletGoogleLayer from "react-leaflet-google-layer";
 
 
 
@@ -28,10 +29,18 @@ function getMapWrap  () {
         }
     }
 
-    // function GetMap () {
-    //     OBA.Util.log("adding map")
-    //     return MapComponent
-    // }
+    function GetGoogleMap(){
+        return(<ReactLeafletGoogleLayer
+            apiKey='AIzaSyA-PBbsL_sXOTfo2KbkVx8XkEfcIe48xzw'
+            type={'roadmap'}
+            styles={OBA.Config.mutedTransitStylesArray}
+        />)
+    }
+
+    function GetMap () {
+        OBA.Util.log("adding map")
+        return MapComponent(GetGoogleMap())
+    }
 
     OBA.Util.log("adding map-wrapper")
     return(
@@ -49,7 +58,7 @@ function getMapWrap  () {
                             aria-label={ariaLabel} onClick={mapToggle}><span className="hide-label">Hide </span>Map
                     </button>
                 </div>
-                <MapComponent />
+                {GetMap()}
             </div>
         </ErrorBoundary>
 )

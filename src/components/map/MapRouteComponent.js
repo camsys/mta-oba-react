@@ -7,23 +7,23 @@ import {CardStateContext} from "../util/CardStateComponent";
 function MapRouteComponent  (mapRouteComponentDatum, highlightedId) {
     // console.log('generating mapRouteComponent: ', mapRouteComponentDatum)
 
-    const { mapHighlightingState} = useContext(MapHighlightingStateContext);
-    const { state} = useContext(CardStateContext);
+    // const { mapHighlightingState} = useContext(MapHighlightingStateContext);
+    // const { state} = useContext(CardStateContext);
 
-    const [weight, setWeight] = useState(10);
-    useEffect(() => {
-        if (state.highlightedComponentId === mapRouteComponentDatum.routeId) {
-            setWeight(100);
-        } else {
-            setWeight(10);
-        }
-    }, [state.highlightedComponentId, mapRouteComponentDatum.routeId]);
+    // const [weight, setWeight] = useState(10);
+    // useEffect(() => {
+    //     if (state.highlightedComponentId === mapRouteComponentDatum.routeId) {
+    //         setWeight(100);
+    //     } else {
+    //         setWeight(10);
+    //     }
+    // }, [state.highlightedComponentId, mapRouteComponentDatum.routeId]);
 
     let polylineOptions = {
         key:mapRouteComponentDatum.id,
         positions:mapRouteComponentDatum.points,
         color:"#" + mapRouteComponentDatum.color,
-        weight:weight
+        weight:3
     }
     if(highlightedId!==mapRouteComponentDatum.routeId){
         // console.log("route ",mapRouteComponentDatum.routeId," and ",highlightedId,"do not match")
@@ -35,7 +35,7 @@ function MapRouteComponent  (mapRouteComponentDatum, highlightedId) {
             positions:mapRouteComponentDatum.points,
             color:"#" + mapRouteComponentDatum.color,
             opacity: 0.6,
-            weight:100
+            weight:10
         }
         console.log("hovering over route ",mapRouteComponentDatum.routeId,polylineOptions)
     }
