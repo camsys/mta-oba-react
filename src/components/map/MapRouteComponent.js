@@ -16,22 +16,22 @@ function MapRouteComponent  (mapRouteComponentDatum) {
         color:"#" + mapRouteComponentDatum.color,
         weight:3
     }
-    if(highlightedId!==mapRouteComponentDatum.routeId){
-        console.log("route ",mapRouteComponentDatum.routeId," and ",highlightedId,"do not match")
-    } else{
-        polylineOptions = {
-            ... polylineOptions,
-            key:mapRouteComponentDatum.id + "_highlighted",
-            positions:mapRouteComponentDatum.points,
-            color:"#" + mapRouteComponentDatum.color,
-            opacity: 0.6,
-            weight:10
-        }
-        console.log("hovering over route ",mapRouteComponentDatum.routeId,polylineOptions)
+
+    let highlightedPolylineOptions = {
+        key:mapRouteComponentDatum.id + "_highlighted",
+        positions:mapRouteComponentDatum.points,
+        color:"#" + mapRouteComponentDatum.color,
+        opacity: 0.6,
+        weight:10,
+        zIndex: 10,
+        zIndexOffset: 10
     }
 
-    let out = (<Polyline {...polylineOptions}
-    />)
+    let out = (<React.Fragment>
+        <Polyline {...polylineOptions}/>
+        {highlightedId==mapRouteComponentDatum.routeId ? <Polyline {...highlightedPolylineOptions}/>: null
+        }
+    </React.Fragment>)
     return out
 }
 export default MapRouteComponent;
