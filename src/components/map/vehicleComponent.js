@@ -7,6 +7,11 @@ import busStroller from "../../img/icon/bus-stroller.svg";
 
 const COMPONENT_IDENTIFIER = "mapVehicleComponent"
 
+const selectVehicle = (vehicleData) =>{
+    console.log("clicked on " + vehicleData.vehicleId)
+}
+
+
 function vehicleComponent  (vehicleData) {
     OBA.Util.trace('generating vehicle: ' + vehicleData.vehicleId)
     let imgDegrees = vehicleData.direction - vehicleData.direction%5
@@ -39,7 +44,10 @@ function vehicleComponent  (vehicleData) {
         id: COMPONENT_IDENTIFIER+"_"+vehicleData.longLat
     };
 
-    let out = (<Marker {...markerOptions}>
+
+
+
+    let out = (<Marker {...markerOptions} eventHandlers={{click : ()=>{selectVehicle(vehicleData)}}}>
         <Popup key={vehicleData.longLat} className="map-popup vehicle-popup">
             <img src={vehicleData.strollerVehicle?busStroller:bus} alt="bus" className="icon"/>
             <div className="popup-info">

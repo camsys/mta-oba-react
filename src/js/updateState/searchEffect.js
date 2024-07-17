@@ -168,3 +168,10 @@ export async function fetchSearchData(state, setState, searchTerm) {
         } finally {
     }
 }
+
+
+//this function doesn't belong in "SearchEffect" but it does belong with card handling functions
+// which is what this has become
+export async function selectVehicleCard(vehicleData) {
+    console.log("clicked on " + vehicleData.vehicleId)
+}
