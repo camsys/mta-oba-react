@@ -37,7 +37,8 @@ function App  () {
                 setState((prevState) => ({
                     ...prevState,
                     currentCard: currentCard,
-                    cardStack: cardStack
+                    cardStack: cardStack,
+                    renderCounter:prevState.renderCounter+1
                 }))
             } catch (error) {
                 console.error('There was a problem with the fetch operation:', error);

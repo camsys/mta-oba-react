@@ -50,13 +50,14 @@ const siriEffect = (routeId) => {
             console.log("adding to serviceAlert & vehicle state:",[vehicleDataList,serviceAlertDataList])
             let stateFunc = (prevState) => {
                 let newState = {...prevState}
+                newState.renderCounter = prevState.renderCounter + 1
                 newState[lineRef+serviceAlertDataIdentifier] = serviceAlertDataList
                 newState[lineRef+vehicleDataIdentifier] = vehicleDataList
                 return newState
             }
             setState(stateFunc);
         }
-        console.log("new serviceAlert & vehicle state",state)
+        console.log("new serviceAlert & vehicle state",vehicleState)
 
     }
 
@@ -68,7 +69,7 @@ const siriEffect = (routeId) => {
     let targetAddress = "https://" + process.env.ENV_ADDRESS + "/" + process.env.VEHICLE_MONITORING_ENDPOINT + search
     console.log("searching for siri at: ",targetAddress)
     targetAddress = lineRef==null?null:targetAddress
-    const { setState } = useContext(VehicleStateContext);
+    const {vehicleState, setState } = useContext(VehicleStateContext);
     var update = false
 
 

@@ -105,7 +105,8 @@ import {Card, geocodeMatch, routeMatch, routeMatchDirectionDatum, stopMatch} fro
         setState((prevState) => ({
             ...prevState,
             currentCard: card,
-            cardStack: cardStack
+            cardStack: cardStack,
+            renderCounter:prevState.renderCounter+1
         }))
     }
 
@@ -158,7 +159,8 @@ export async function fetchSearchData(state, setState, searchTerm) {
             setState((prevState) => ({
                 ...prevState,
                 currentCard: currentCard,
-                cardStack: cardStack
+                cardStack: cardStack,
+                renderCounter:prevState.renderCounter+1
             }))
         }
         }

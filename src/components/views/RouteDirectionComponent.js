@@ -11,7 +11,6 @@ function getRouteStopComponents(routeStopComponentsData){
 }
 
 export default function getRouteDirectionComponent(routeDirectionComponentDatum){
-    const { state} = useContext(CardStateContext);
     console.log("generating RouteDirectionComponent:", routeDirectionComponentDatum)
     let out = (
         <div className="route-direction inner-card collapsible">

@@ -48,7 +48,7 @@ function MapVehicleComponent  (vehicleData) {
 
 
     let out = (<Marker {...markerOptions} eventHandlers={{click : ()=>{selectVehicle(vehicleData)}}}>
-        <Popup key={vehicleData.longLat} className="map-popup vehicle-popup">
+        <Popup key={vehicleData.vehicleId+"_"+vehicleData.longLat} className="map-popup vehicle-popup">
             <img src={vehicleData.strollerVehicle?busStroller:bus} alt="bus" className="icon"/>
             <div className="popup-info">
                 <span className="route">{vehicleData.route} {vehicleData.destination}</span>
