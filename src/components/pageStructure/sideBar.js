@@ -9,6 +9,8 @@ import footerComponent from "./footer";
 import searchComponent from "./SearchBar"
 import {CardStateContext} from "../util/CardStateComponent";
 import {Card} from "../../js/updateState/dataModels"
+import RefreshComponent from "../views/refreshComponent";
+import VehicleCard from "../views/VehicleCard";
 
 function getSideBar  () {
 
@@ -27,6 +29,10 @@ function getSideBar  () {
         if(state.currentCard.type === Card.cardTypes.homeCard){
             OBA.Util.log("adding home card")
             return homeCard()
+        }
+        if(state.currentCard.type === Card.cardTypes.vehicleCard){
+            OBA.Util.log("adding home card")
+            return VehicleCard()
         }
     }
 
@@ -51,6 +57,7 @@ function getSideBar  () {
                 </div>
                 <div className="content" id="app">
                     <GetCardInfo />
+                    <RefreshComponent/>
                 </div>
                 <div className="footer" id="footer">
                     <GetFooter />

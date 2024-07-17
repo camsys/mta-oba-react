@@ -8,6 +8,7 @@ import {classList, classWrap, dataSpecifiers, pathRouting} from "./dataEffectsSu
 import serviceAlertComponent from "../../components/views/serviceAlertComponent";
 import {VehicleStateContext} from "../../components/util/VehicleStateComponent";
 import {OBA} from "../oba";
+import {VehicleCardContentComponent} from "../../components/views/VehicleCard";
 
 
 
@@ -80,7 +81,9 @@ const siriEffect = (routeId) => {
     let vehicleSpecifiers = new dataSpecifiers("vehicle",
         new classList(vehicleData,
             [new classWrap(mapVehicleComponent,lineRef+"_map"),
-                new classWrap(routeVehicleComponent,lineRef+"_route")]),
+                new classWrap(routeVehicleComponent,lineRef+"_route")
+                // new classWrap(VehicleCardContentComponent,lineRef+"_vehicle")
+            ]),
         new pathRouting((siri)=>{return siri?.Siri?.ServiceDelivery?.VehicleMonitoringDelivery[0]?.VehicleActivity},
             (objList,i)=>{return objList[i].MonitoredVehicleJourney}))
     let serviceAlertSpecifiers = new dataSpecifiers("serviceAlert",

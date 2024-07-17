@@ -19,6 +19,7 @@ export class serviceAlertData {
 
 export class vehicleData {
     constructor(mvj) {
+        console.log("vehicle data",mvj)
         this.longLat = []
         this.longLat.push(mvj.VehicleLocation.Latitude)
         this.longLat.push(mvj.VehicleLocation.Longitude)
@@ -129,6 +130,7 @@ export class Card {
         routeCard:"routeCard",
         geocodeCard:"geocodeCard",
         stopCard:"stopCard",
+        vehicleCard:"vehicleCard",
         errorCard:"errorCard"
     }
     constructor(searchTerm) {
@@ -137,6 +139,8 @@ export class Card {
         this.name = "homeCard"
         this.searchMatches = []
         this.routeIdList = []
+        //this will almost always be null
+        this.vehicleId = null
     }
 
     setSearchResultType(searchResultType){

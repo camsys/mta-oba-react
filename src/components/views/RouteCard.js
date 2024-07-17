@@ -2,7 +2,6 @@ import React, {useContext, useState} from "react";
 import {OBA} from "../../js/oba";
 import {CardStateContext} from "../../components/util/CardStateComponent";
 import ServiceAlertContainerComponent from "./serviceAlertContainerComponent";
-import RefreshComponent from "./RefreshComponent"
 import getRouteDirectionComponent from "./RouteDirectionComponent";
 import {MapHighlightingStateContext} from "../util/MapHighlightingStateComponent";
 
@@ -21,7 +20,7 @@ function getRouteCard (routeMatch){
     }
     return(
         <React.Fragment>
-            <div className={"card route-card " + routeMatch.routeId}>
+            <div className={`card route-card {routeMatch.routeId}`}>
                 <div className="card-header" style={{ borderColor: '#'+routeMatch.color}}
                      onMouseEnter={() => setHoveredItemId(routeMatch.routeId)}
                      onMouseLeave={() => setHoveredItemId(null)}>
@@ -49,7 +48,6 @@ function getRouteCardsWrapper  () {
           {state.currentCard.searchMatches.map(match=>{
               return new getRouteCard(match)})}
       </div>
-      <RefreshComponent/>
       </React.Fragment>);
 
  }
