@@ -6,12 +6,12 @@ import {OBA} from "../../js/oba";
 import L from "leaflet";
 import bus from "../../img/icon/bus.svg";
 import {CardStateContext} from "../util/CardStateComponent";
-import {VehicleStateContext} from "../util/VehicleStateComponent";
-import vehicleComponent from "./vehicleComponent";
+import {vehicleDataIdentifier, VehicleStateContext} from "../util/VehicleStateComponent";
 import MapRouteComponent from "./MapRouteComponent";
 import MapStopComponent from "./MapStopComponent";
 import siriEffect from "../../js/updateState/siriEffect";
 import {MapHighlightingStateContext} from "../util/MapHighlightingStateComponent";
+import MapVehicleComponent from "./MapVehicleComponent";
 
 
 
@@ -30,10 +30,10 @@ const MapVehicleElements = ({routeIds}) =>{
             console.log("vehicle state:", vehicleState)
             let routeId = route.split("_")[1]
             console.log("using abbreviated routeId ",routeId)
-            let vehicleComponentsForRoute = vehicleState[routeId+"_mapVehicleComponents"]
-            console.log("found these vehicle components", routeId,vehicleComponentsForRoute)
-            if(vehicleComponentsForRoute!=null){
-                vehicleComponentsForRoute.forEach(x=>{mapVehicleComponents.push(x)});
+            let vehicleDataForRoute = vehicleState[routeId+vehicleDataIdentifier]
+            if(vehicleDataForRoute!=null){
+                console.log(`processing {vehicleDataForRoute}`,vehicleDataForRoute)
+                vehicleDataForRoute.forEach(datum=>{mapVehicleComponents.push(new MapVehicleComponent(datum))});
             }
             console.log("map vehicle components", mapVehicleComponents)
         })

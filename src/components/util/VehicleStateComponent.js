@@ -18,4 +18,7 @@ const VehicleStateProvider = ({children}) => {
     );
 };
 
-export { VehicleStateProvider, VehicleStateContext };
+const vehicleDataIdentifier = "_vehicleData"
+const serviceAlertDataIdentifier = "_serviceAlertData"
+
+export { VehicleStateProvider, VehicleStateContext,vehicleDataIdentifier,serviceAlertDataIdentifier };

@@ -5,14 +5,14 @@ import L from "leaflet";
 import bus from "../../img/icon/bus.svg";
 import busStroller from "../../img/icon/bus-stroller.svg";
 
-const COMPONENT_IDENTIFIER = "mapVehicleComponent"
+const COMPONENT_IDENTIFIER = "MapVehicleComponent"
 
 const selectVehicle = (vehicleData) =>{
     console.log("clicked on " + vehicleData.vehicleId)
 }
 
 
-function vehicleComponent  (vehicleData) {
+function MapVehicleComponent  (vehicleData) {
     OBA.Util.trace('generating vehicle: ' + vehicleData.vehicleId)
     let imgDegrees = vehicleData.direction - vehicleData.direction%5
     OBA.Util.trace("img degrees" + imgDegrees)
@@ -59,5 +59,5 @@ function vehicleComponent  (vehicleData) {
 
     return out
 }
-export default vehicleComponent;
+export default MapVehicleComponent;
 
