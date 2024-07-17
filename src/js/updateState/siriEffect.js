@@ -17,24 +17,23 @@ import {VehicleCardContentComponent} from "../../components/views/VehicleCard";
 const siriEffect = (routeId) => {
 
 
-    function extractData (parsed,dataSpecifiers){
-        let listParser = dataSpecifiers.pathRouting.pathToList
-        let indivParser = dataSpecifiers.pathRouting.pathToIndividual
+    function extractData (siri,dataSpecifiers){
+        // let listParser = siri?.Siri?.ServiceDelivery?.VehicleMonitoringDelivery[0]?.VehicleActivity
+        // let indivParser = objList[i].MonitoredVehicleJourney
         let classList = dataSpecifiers.classList
-        let jsonList = listParser(parsed)
+        let vehicleActivity = siri?.Siri?.ServiceDelivery?.VehicleMonitoringDelivery[0]?.VehicleActivity
         OBA.Util.log(dataSpecifiers.keyword+" found:")
-        OBA.Util.log(jsonList)
-        if (jsonList != null && jsonList.length != 0) {
+        OBA.Util.log(vehicleActivity)
+        if (vehicleActivity != null && vehicleActivity.length != 0) {
             update = true;
-            for (let i = 0; i < jsonList.length; i++) {
+            for (let i = 0; i < vehicleActivity.length; i++) {
                 OBA.Util.trace("processing "+dataSpecifiers.keyword+"#" + i);
-                let obj= new classList.dataClass(indivParser(jsonList,i))
+                // let obj= new classList.dataClass(indivParser(jsonList,i))
+                let obj= new classList.dataClass(vehicleActivity[i].MonitoredVehicleJourney)
                 classList.dataContainer.push(obj)
                 classList.otherClasses.forEach((c)=>{
                     c.container.push(new c.targetClass(obj, i))
                 })
-                // mapComponents.push(new dataSpecifiers.classList.mapComponentClass(obj))
-                // routeComponents.push(new dataSpecifiers.classList.routeComponentClass(obj, i))
             };
 
             OBA.Util.log('processed '+dataSpecifiers.keyword)
@@ -107,13 +106,13 @@ const siriEffect = (routeId) => {
         }
         fetch(targetAddress)
             .then((response) => response.json())
-            .then((parsed) => {
+            .then((siri) => {
                 console.log(dataSpecifiersList)
                 dataSpecifiersList.forEach((dataSpecifiers)=>{
                     console.log(dataSpecifiers)
                     console.log(dataSpecifiers.keyword)
                     OBA.Util.log("reading "+dataSpecifiers.keyword+" from " + targetAddress)
-                    updateState(extractData(parsed,dataSpecifiers))
+                    updateState(extractData(siri,dataSpecifiers))
                 })
             })
             .catch((error) => {
