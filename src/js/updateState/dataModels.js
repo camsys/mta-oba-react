@@ -151,6 +151,11 @@ export class Card {
         this.name = this.type
     }
 
+    setToVehicle(vehicleId){
+        this.setType(Card.cardTypes.vehicleCard)
+        this.vehicleId=vehicleId
+    }
+
     setSearchResultType(searchResultType){
         this.searchResultType = searchResultType
         if(searchResultType==Card.STOPCARDIDENTIFIER){

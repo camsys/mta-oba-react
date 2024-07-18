@@ -177,7 +177,7 @@ export async function selectVehicleCard(vehicleData,state, setState) {
     console.log("setting card to " + vehicleData.vehicleId)
     //todo: should be current search term
     let currentCard = new Card("")
-    currentCard.setType(Card.cardTypes.vehicleCard)
+    currentCard.setToVehicle(vehicleData.vehicleId)
     let cardStack = state.cardStack
     cardStack.push(currentCard)
     console.log("updating state with new card:", currentCard)
