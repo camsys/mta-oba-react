@@ -151,6 +151,8 @@ export class Card {
         this.name = this.type
     }
 
+    // This method is outside of the normal card setting pattern because our search tool
+    // doesn't support vehicle searches
     setToVehicle(vehicleId){
         this.setType(Card.cardTypes.vehicleCard)
         this.vehicleId=vehicleId
