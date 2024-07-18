@@ -17,30 +17,58 @@ const siriEffect = (routeId) => {
 
 
     function extractData (siri){
-        console.log("extractData")
+        console.log("extractData from Siri")
         let keyword = "serviceAlert & vehicle"
-        let vehicleActivity = siri?.Siri?.ServiceDelivery?.VehicleMonitoringDelivery[0]?.VehicleActivity
-        OBA.Util.log(keyword+" found:")
-        OBA.Util.log(vehicleActivity)
-
-        let [vehicleDataList,serviceAlertDataList] = [[],[]]
-        console.log([vehicleDataList,serviceAlertDataList])
+        let vehicleActivity = siri?.Siri?.ServiceDelivery?.VehicleMonitoringDelivery
+        console.log(vehicleActivity)
+        vehicleActivity = vehicleActivity!=null ? vehicleActivity[0]?.VehicleActivity : null
+        console.log("vehicles found:",vehicleActivity)
+        let serviceAlertActivity = siri?.Siri?.ServiceDelivery?.SituationExchangeDelivery
+        serviceAlertActivity = serviceAlertActivity==null? null :serviceAlertActivity[0]?.Situations
+        console.log("service alerts found:", serviceAlertActivity)
+        let [vehicleDataMap,serviceAlertDataMap] = [new Map(), new Map()]
+        console.log([vehicleDataMap,serviceAlertDataMap])
         if (vehicleActivity != null && vehicleActivity.length != 0) {
             update = true;
             for (let i = 0; i < vehicleActivity.length; i++) {
-                OBA.Util.trace("processing "+keyword+"#" + i);
-                // let obj= new classList.dataClass(indivParser(jsonList,i))
+                OBA.Util.trace("processing vehicle #" + i);
                 let mvj = vehicleActivity[i].MonitoredVehicleJourney
-                vehicleDataList.push(new vehicleData(mvj))
-                serviceAlertDataList.push(new serviceAlertData(mvj))
+                vehicleDataMap.set(mvj.VehicleRef,new vehicleData(mvj))
+                // console.log("processing mvj: ",mvj)
             };
-            console.log([vehicleDataList,serviceAlertDataList])
+            OBA.Util.log('processed vehicles')
+        } else {
+            OBA.Util.log('no '+keyword+' recieved. not processing '+keyword)
+        }
+        // todo: setup service alerts
+        if (serviceAlertActivity != null) {
+            update = true;
+            for (let i = 0; i < serviceAlertActivity.length; i++) {
+                console.log("service alerts found:", serviceAlertActivity)
+                OBA.Util.trace("processing "+keyword+"#" + i);
+                let situationElement = vehicleActivity[i]?.PtSituationElement
+                console.log(situationElement)
+                let effects = situationElement.Affects.VehicleJourneys.AffectedVehicleJourney
+                console.log(effects)
+                effects.forEach((effect)=>{
+                    let delim = "_"
+                    // todo: externalize target for ease of reference & to easily generate multiple target types
+                    let serviceAlertTarget = effect?.LineRef + delim + effect?.DirectionRef
+                    let alerts = serviceAlertDataMap.get(serviceAlertTarget)
+                    alerts = alerts==null? [] : alerts
+                    alerts.push(new serviceAlertData(situationElement))
+                    console.log("adding service alert: ",serviceAlertTarget,alerts)
+                    serviceAlertDataMap.set(serviceAlertTarget,alerts)
+                })
+                console.log("processing service alert: ",situationElement)
+            };
+            console.log("maps made via siri: ",[vehicleDataMap,serviceAlertDataMap])
             OBA.Util.log('processed '+keyword)
         } else {
             OBA.Util.log('no '+keyword+' recieved. not processing '+keyword)
         }
         OBA.Util.log(keyword+" post process")
-        return [vehicleDataList,serviceAlertDataList]
+        return [vehicleDataMap,serviceAlertDataMap]
     }
 
 
