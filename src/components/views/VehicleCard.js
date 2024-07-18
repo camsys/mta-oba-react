@@ -11,9 +11,15 @@ export const VehicleCardContentComponent = (props) =>{
             <ul className="card-details">
                 <li className="vehicle-info">
                     <span className="vehicle">Vehicle #4717</span>
-                    <span className="stroller">Stroller storage available</span>
+                    {vehicle.strollerVehicle?<span className="stroller">Stroller storage available</span>:null}
                 </li>
-                <li className="passengers">~2 passengers</li>
+                {vehicle.passengerCount != null && (
+                    vehicle.passengerCapacity != null ? (
+                        <li className="passengers">{`~${(vehicle.passengerCount / vehicle.passengerCapacity) * 100}% full`}</li>
+                    ) : (
+                        <li className="passengers">{`~${vehicle.passengerCount} passengers`}</li>
+                    )
+                )}
             </ul>
             <h4>Next Stops:</h4>
             <ul className="next-stops route-stops" style={{ borderColor: '#'+routeMatch.color}}>
@@ -36,8 +42,6 @@ export const VehicleCardContentComponent = (props) =>{
 
 const VehicleCard = (routeMatch,vehicleId) => {
     const { vehicleState} = useContext(VehicleStateContext)
-    console.log(vehicleState)
-    console.log("creating VehicleCard: ",vehicleId,routeMatch)
     let routeId = routeMatch.routeId.split("_")[1];
     let vehicle = vehicleState[routeId+vehicleDataIdentifier].get(vehicleId)
     console.log("generating VehicleCard ",routeId,vehicle)
@@ -46,8 +50,8 @@ const VehicleCard = (routeMatch,vehicleId) => {
             <div className="card-header" style={{ borderColor: '#'+routeMatch.color}}>
                 <h3 className="card-title">
                     {/*determine bus-stroller via vehicleData*/}
-                    <img src={vehicle.strollerVehicle=="stroller"?"/img/icon/bus-stroller.svg":"/img/icon/bus.svg"}
-                         alt={vehicle.strollerVehicle=="stroller"?"bus and stroller icon":"bus icon"} className="icon" />
+                    <img src={vehicle.strollerVehicle?"/img/icon/bus-stroller.svg":"/img/icon/bus.svg"}
+                         alt={vehicle.strollerVehicle?"bus and stroller icon":"bus icon"} className="icon" />
                     {routeMatch.routeTitle}
                 </h3>
             </div>

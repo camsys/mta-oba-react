@@ -29,6 +29,11 @@ export class vehicleData {
         }else{
             this.strollerVehicle = false
         }
+        this.passengerCount = mvj?.MonitoredCall?.Extensions?.Capacities?.EstimatedPassengerCount
+        this.passengerCapacity = mvj?.MonitoredCall?.Extensions?.Capacities?.EstimatedPassengerCapacity
+        if(this.passengerCount!=null){
+            console.log("found passenger count",this)
+        }
         this.hasRealtime = mvj.Monitored;
         this.vehicleId = mvj.VehicleRef
         this.direction = mvj?.Bearing
