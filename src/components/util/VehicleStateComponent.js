@@ -2,6 +2,9 @@ import React, { createContext, useState } from 'react';
 
 const VehicleStateContext = createContext();
 
+
+//todo: should be broken out into two states based on features which change and do not change
+// eg. vehicle position vs vehicle features
 const VehicleStateProvider = ({children}) => {
     const [vehicleState, setState] = useState({
         renderCounter:1

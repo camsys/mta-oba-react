@@ -1,10 +1,11 @@
 import React, {useContext} from "react";
 import {CardStateContext} from "../util/CardStateComponent";
 import ServiceAlertContainerComponent from "./serviceAlertContainerComponent";
-import {VehicleStateContext} from "../util/VehicleStateComponent";
+import {vehicleDataIdentifier, VehicleStateContext} from "../util/VehicleStateComponent";
 
-export const VehicleCardContentComponent = (routeMatch, vehicleId) =>{
-    console.log("generating vehicleCardContentComponent for ",vehicleId)
+export const VehicleCardContentComponent = (props) =>{
+    let { routeMatch, vehicle } = props;
+    console.log("generating vehicleCardContentComponent for ",vehicle.vehicleId)
     return(
         <React.Fragment>
             <ul className="card-details">
@@ -35,18 +36,23 @@ export const VehicleCardContentComponent = (routeMatch, vehicleId) =>{
 
 const VehicleCard = (routeMatch,vehicleId) => {
     const { vehicleState} = useContext(VehicleStateContext)
+    console.log(vehicleState)
     console.log("creating VehicleCard: ",vehicleId,routeMatch)
+    let routeId = routeMatch.routeId.split("_")[1];
+    let vehicle = vehicleState[routeId+vehicleDataIdentifier].get(vehicleId)
+    console.log("generating VehicleCard ",routeId,vehicle)
     return (
         <div className={`card vehicle-card ${routeMatch.routeId}`}>
             <div className="card-header" style={{ borderColor: '#'+routeMatch.color}}>
                 <h3 className="card-title">
                     {/*determine bus-stroller via vehicleData*/}
-                    <img src="/img/icon/bus-stroller.svg" alt="bus and stroller icon" className="icon" />
+                    <img src={vehicle.strollerVehicle=="stroller"?"/img/icon/bus-stroller.svg":"/img/icon/bus.svg"}
+                         alt={vehicle.strollerVehicle=="stroller"?"bus and stroller icon":"bus icon"} className="icon" />
                     {routeMatch.routeTitle}
                 </h3>
             </div>
             <div className="card-content">
-                <VehicleCardContentComponent/>
+                <VehicleCardContentComponent {...{ routeMatch, vehicle }}/>
                 <ServiceAlertContainerComponent/>
             </div>
         </div>
