@@ -19,7 +19,7 @@ import MapVehicleComponent from "./MapVehicleComponent";
 
 
 const MapVehicleElements = ({routeIds}) =>{
-
+    const { state, setState} = useContext(CardStateContext);
     console.log("looking for vehicles from route ids: ",routeIds)
     let mapVehicleComponents = []
     if(routeIds!=null){
@@ -33,7 +33,7 @@ const MapVehicleElements = ({routeIds}) =>{
             let vehicleDataForRoute = vehicleState[routeId+vehicleDataIdentifier]
             if(vehicleDataForRoute!=null){
                 console.log(`processing {vehicleDataForRoute}`,vehicleDataForRoute)
-                vehicleDataForRoute.forEach(datum=>{mapVehicleComponents.push(new MapVehicleComponent(datum))});
+                vehicleDataForRoute.forEach(datum=>{mapVehicleComponents.push(new MapVehicleComponent(datum,state, setState))});
             }
             console.log("map vehicle components", mapVehicleComponents)
         })

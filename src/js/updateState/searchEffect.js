@@ -173,6 +173,19 @@ export async function fetchSearchData(state, setState, searchTerm) {
 
 //this function doesn't belong in "SearchEffect" but it does belong with card handling functions
 // which is what this has become
-export async function selectVehicleCard(vehicleData) {
-    console.log("clicked on " + vehicleData.vehicleId)
+export async function selectVehicleCard(vehicleData,state, setState) {
+    console.log("setting card to " + vehicleData.vehicleId)
+    //todo: should be current search term
+    let currentCard = new Card("")
+    currentCard.setType(Card.cardTypes.vehicleCard)
+    let cardStack = state.cardStack
+    cardStack.push(currentCard)
+    console.log("updating state with new card:", currentCard)
+    // todo: condense all of these into a single method, copied and pasted too many times
+    setState((prevState) => ({
+        ...prevState,
+        currentCard: currentCard,
+        cardStack: cardStack,
+        renderCounter:prevState.renderCounter+1
+    }))
 }

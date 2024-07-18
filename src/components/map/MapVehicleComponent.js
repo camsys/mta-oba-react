@@ -1,18 +1,18 @@
 import {OBA} from "../../js/oba";
-import React from "react";
+import React, {useContext} from "react";
 import {Marker, Popup} from "react-leaflet";
 import L from "leaflet";
 import bus from "../../img/icon/bus.svg";
 import busStroller from "../../img/icon/bus-stroller.svg";
+import {CardStateContext} from "../util/CardStateComponent";
+import {selectVehicleCard} from "../../js/updateState/searchEffect";
 
 const COMPONENT_IDENTIFIER = "MapVehicleComponent"
 
-const selectVehicle = (vehicleData) =>{
-    console.log("clicked on " + vehicleData.vehicleId)
-}
 
 
-function MapVehicleComponent  (vehicleData) {
+
+function MapVehicleComponent  (vehicleData,state, setState) {
     OBA.Util.trace('generating vehicle: ' + vehicleData.vehicleId)
     let imgDegrees = vehicleData.direction - vehicleData.direction%5
     OBA.Util.trace("img degrees" + imgDegrees)
@@ -24,6 +24,10 @@ function MapVehicleComponent  (vehicleData) {
     let vehicleIdParts = vehicleData.vehicleId.split("_");
     let vehicleIdWithoutAgency = vehicleIdParts[1];
 
+    const selectVehicle = (vehicleData) =>{
+        console.log("clicked on " + vehicleData.vehicleId)
+        selectVehicleCard(vehicleData,state,setState)
+    }
 
     let icon = L.icon({
         iconUrl: vehicleImageUrl,

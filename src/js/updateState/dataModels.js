@@ -143,6 +143,14 @@ export class Card {
         this.vehicleId = null
     }
 
+    setType(cardType){
+        if(Card.cardTypes[cardType]!==cardType){
+            console.error("failed to set card type",this)
+            return}
+        this.type = cardType
+        this.name = this.type
+    }
+
     setSearchResultType(searchResultType){
         this.searchResultType = searchResultType
         if(searchResultType==Card.STOPCARDIDENTIFIER){
