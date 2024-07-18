@@ -17,6 +17,18 @@ export class serviceAlertData {
 }
 
 
+export class VehicleArrivalDatum{
+    constructor(mc) {
+        let distances = mc?.Extensions?.Distances
+        this.prettyDistance = distances?.PresentableDistance
+        this.rawDistanceInfo = distances?.DistanceFromCall
+        this.stopsFromCall = distances?.StopsFromCall
+        this.rawDistanceOnRoute = distances?.CallDistanceAlongRoute
+        this.stopId = mc?.StopPointRef
+        this.stopName = mc?.StopPointName
+    }
+}
+
 export class vehicleData {
     constructor(mvj) {
         console.log("vehicle data",mvj)
@@ -25,6 +37,7 @@ export class vehicleData {
         this.longLat.push(mvj.VehicleLocation.Longitude)
         this.destination = mvj.DestinationName
         this.hasRealtime = mvj.Monitored;
+        this.vehicleArrivalData = []
         if(typeof this.hasRealtime !='undefined' && this.hasRealtime!=null) {
             let mc = mvj.MonitoredCall
             this.strollerVehicle = mc.Extensions.VehicleFeatures.StrollerVehicle
@@ -33,14 +46,19 @@ export class vehicleData {
             if (this.passengerCount != null) {
                 console.log("found passenger count", this)
             }
-            let distances = mc?.Extensions?.Distances
-            this.prettyDistance = distances?.PresentableDistance
-            this.rawDistanceInfo = distances?.DistanceFromCall
-            this.stopsTillReached = distances?.StopsFromCall
-            this.rawDistanceOnRoute = distances?.CallDistanceAlongRoute
-            this.stopId = mc?.StopPointRef
-            this.stopName = mc?.StopPointName
-
+            this.vehicleArrivalData.push(new VehicleArrivalDatum(mc))
+            // let distances = mc?.Extensions?.Distances
+            // this.prettyDistance = distances?.PresentableDistance
+            // this.rawDistanceInfo = distances?.DistanceFromCall
+            // this.stopsTillReached = distances?.StopsFromCall
+            // this.rawDistanceOnRoute = distances?.CallDistanceAlongRoute
+            // this.stopId = mc?.StopPointRef
+            // this.stopName = mc?.StopPointName
+            if(mvj?.OnwardCalls!=null && typeof this?.OnwardCalls !='undefined'){
+                mvj.OnwardCalls.OnwardCall.forEach((mc,index)=>
+                    index!=0?this.vehicleArrivalData.push(new VehicleArrivalDatum(mc)):
+                        console.log("skipping first monitored call ",mvj))
+            }
         }
         this.vehicleId = mvj.VehicleRef
         this.direction = mvj?.Bearing
