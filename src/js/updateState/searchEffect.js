@@ -184,21 +184,18 @@ export async function selectVehicleCard(vehicleData,state, setState) {
     let currentCard = new Card(routeId)
     let routeData
     pastCard.searchMatches.forEach((match)=>{
-            routeData = match.routeMatches.filter(value => {
-                console.log('checking for match: ',vehicleData.routeId,value.routeId,value)
-                return value.routeId==vehicleData.routeId})
-        }
-    )
+            routeData = match.routeMatches.filter(
+                value => {return value.routeId==vehicleData.routeId})})
     console.log("found routedata of target vehicle: ",routeData)
     currentCard.setToVehicle(vehicleData.vehicleId,[routeData],[vehicleData.routeId])
     let cardStack = state.cardStack
     cardStack.push(currentCard)
     console.log("updating state prev card -> new card: \n", pastCard,currentCard)
     // todo: condense all of these into a single method, copied and pasted too many times
-    // setState((prevState) => ({
-    //     ...prevState,
-    //     currentCard: currentCard,
-    //     cardStack: cardStack,
-    //     renderCounter:prevState.renderCounter+1
-    // }))
+    setState((prevState) => ({
+        ...prevState,
+        currentCard: currentCard,
+        cardStack: cardStack,
+        renderCounter:prevState.renderCounter+1
+    }))
 }

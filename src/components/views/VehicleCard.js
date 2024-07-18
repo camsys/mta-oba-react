@@ -35,8 +35,9 @@ export const VehicleCardContentComponent = (routeMatch, vehicleId) =>{
 
 const VehicleCard = (routeMatch,vehicleId) => {
     const { vehicleState} = useContext(VehicleStateContext)
+    console.log("creating VehicleCard: ",vehicleId,routeMatch)
     return (
-        <div className={`card vehicle-card {routeMatch.routeId}`}>
+        <div className={`card vehicle-card ${routeMatch.routeId}`}>
             <div className="card-header" style={{ borderColor: '#'+routeMatch.color}}>
                 <h3 className="card-title">
                     {/*determine bus-stroller via vehicleData*/}
@@ -62,7 +63,7 @@ function getVehicleCardsWrapper  () {
             <h2 className="cards-header">Vehicle:</h2>
             <div className="cards">
                 {state.currentCard.searchMatches.map(match=>{
-                    return new getVehicleCardsWrapper(match,state.currentCard.vehicleId)})}
+                    return match.map(route =>{return VehicleCard(route,state.currentCard.vehicleId)})})}
             </div>
         </React.Fragment>);
 
