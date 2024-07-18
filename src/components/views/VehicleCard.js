@@ -15,7 +15,7 @@ export const VehicleCardContentComponent = (props) =>{
         <React.Fragment>
             <ul className="card-details">
                 <li className="vehicle-info">
-                    <span className="vehicle">{`Vehicle #${vehicleDatum.vehicleId}`}</span>
+                    <span className="vehicle">{`Vehicle #${vehicleDatum.vehicleId.split("_")[1]}`}</span>
                     {vehicleDatum.strollerVehicle?<span className="stroller">Stroller storage available</span>:null}
                 </li>
                 {vehicleDatum.passengerCount != null && (
@@ -29,10 +29,10 @@ export const VehicleCardContentComponent = (props) =>{
             <h4>Next Stops:</h4>
             <ul className="next-stops route-stops" style={{ borderColor: '#'+routeMatch.color}}>
                 {
-                    vehicleDatum.vehicleArrivalData.map(d=>{
+                    vehicleDatum.vehicleArrivalData.map(vehicleArrival=>{
                         return(<li>
-                            <a href="#">{d.stopName}</a>
-                            <span className="stop-details">{prettyTime(d.time)}, {d.prettyDistance}</span>
+                            <a href="#">{vehicleArrival.stopName}</a>
+                            <span className="stop-details">{prettyTime(vehicleArrival.time)}, {vehicleArrival.prettyDistance}</span>
                         </li>)
                     })
                 }
