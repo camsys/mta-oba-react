@@ -15,7 +15,7 @@ export const VehicleCardContentComponent = (props) =>{
         <React.Fragment>
             <ul className="card-details">
                 <li className="vehicle-info">
-                    <span className="vehicle">Vehicle #4717</span>
+                    <span className="vehicle">{`Vehicle #${vehicleDatum.vehicleId}`}</span>
                     {vehicleDatum.strollerVehicle?<span className="stroller">Stroller storage available</span>:null}
                 </li>
                 {vehicleDatum.passengerCount != null && (
