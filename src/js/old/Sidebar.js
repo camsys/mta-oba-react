@@ -578,7 +578,7 @@ OBA.Sidebar = function() {
 					case "GeocodeResult":
 						// result is a region
 						if(matches[0].isRegion === true) {
-							showRoutePickerList(matches[0].nearbyRoutes,"Did you mean?");
+							showRoutePickerList(matches[0].routeMatches,"Did you mean?");
 							var latLngBounds = new google.maps.LatLngBounds(
 									new google.maps.LatLng(matches[0].bounds.minLat, matches[0].bounds.minLon), 
 									new google.maps.LatLng(matches[0].bounds.maxLat, matches[0].bounds.maxLon));
@@ -589,10 +589,10 @@ OBA.Sidebar = function() {
 							
 						// result is a point--intersection or address
 						} else {
-							if(matches[0].nearbyRoutes.length === 0) {
+							if(matches[0].routeMatches.length === 0) {
 								showNoResults("No stops nearby.");
 							} else {
-								addRoutesToLegend(matches[0].nearbyRoutes, "Nearby routes:", null, null);
+								addRoutesToLegend(matches[0].routeMatches, "Nearby routes:", null, null);
 							}
 							
 							var latlng = new google.maps.LatLng(matches[0].latitude, matches[0].longitude);
@@ -617,7 +617,7 @@ OBA.Sidebar = function() {
 						break;
 					
 					case "StopResult":
-						addRoutesToLegend(matches[0].routesAvailable, "Routes available:", routeFilterShortName, matches[0].id);
+						addRoutesToLegend(matches[0].routeMatches, "Routes available:", routeFilterShortName, matches[0].id);
 
 						var latlng = new google.maps.LatLng(matches[0].latitude, matches[0].longitude);
 						routeMap.addStop(matches[0], function(marker) {

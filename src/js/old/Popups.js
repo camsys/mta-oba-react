@@ -615,7 +615,7 @@ OBA.Popups = (function() {
 		
 		var filterExistsInResults = false;
 		
-		jQuery.each(stopResult.routesAvailable, function(_, routeResult) {
+		jQuery.each(stopResult.routeMatches, function(_, routeResult) {
 			if (routeResult.shortName === routeFilter) {
 				filterExistsInResults = true;
 				return false;
@@ -629,7 +629,7 @@ OBA.Popups = (function() {
 		filteredMatchesData.append(jQuery("<h2></h2>").text("Other Routes Here:").addClass("service"));
 		filteredMatchesData.append("<ul></ul>");
 	    
-		jQuery.each(stopResult.routesAvailable, function(_, route) {
+		jQuery.each(stopResult.routeMatches, function(_, route) {
 	    	if (filterExistsInResults && route.shortName !== routeFilter) {
 	    		var filteredMatch = jQuery("<li></li>").addClass("filtered-match");
 	    		var link = jQuery('<a href="#' + stopResult.id.match(/\d*$/) + '%20' + route.shortName + '"><span class="route-name">' + route.shortName + '</span></a>');

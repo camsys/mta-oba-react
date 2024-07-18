@@ -32,12 +32,7 @@ export class vehicleData {
         this.hasRealtime = mvj.Monitored;
         this.vehicleId = mvj.VehicleRef
         this.direction = mvj?.Bearing
-    }
-}
-
-export class searchMatch{
-    constructor(type) {
-        this.type = type
+        this.routeId = mvj.LineRef
     }
 }
 
@@ -92,7 +87,15 @@ export class routeMatchDirectionDatum {
         }
     }
 }
+export class searchMatch{
+    constructor(type) {
+        this.type = type
+    }
+}
 
+//todo split routematch into a wraper that matches the other match types and a route obj they all contain
+//and have card have a single searchMatches obj and make the routes field they all contain into a map w/
+// routeId:currentRouteMatch && then remove the routeIds obj in card
 export class routeMatch extends searchMatch{
     constructor(data) {
         super("routeMatch");
@@ -109,7 +112,6 @@ export class geocodeMatch extends searchMatch{
         super("geocodeMatch");
         let latitude
         let longitude
-        let nearbyRoutes = []
     }
 }
 
@@ -118,7 +120,6 @@ export class stopMatch extends searchMatch{
         super("stopMatch");
         let latitude
         let longitude
-        let routesAvailable = []
     }
 }
 
@@ -153,9 +154,11 @@ export class Card {
 
     // This method is outside of the normal card setting pattern because our search tool
     // doesn't support vehicle searches
-    setToVehicle(vehicleId){
+    setToVehicle(vehicleId,searchMatches,routeIdList){
         this.setType(Card.cardTypes.vehicleCard)
         this.vehicleId=vehicleId
+        this.searchMatches=searchMatches
+        this.routeIdList=routeIdList
     }
 
     setSearchResultType(searchResultType){

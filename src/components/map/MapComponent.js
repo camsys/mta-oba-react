@@ -78,12 +78,12 @@ export const MapComponent = (googleMaps) => {
         if(searchMatch.type=="geocodeMatch") {
             mapCenter = [searchMatch.latitude,searchMatch.longitude]
             // setMapCenter([searchMatch.latitude,searchMatch.longitude])
-            searchMatch.nearbyRoutes.forEach(route => {processRoute(route)})
+            searchMatch.routeMatches.forEach(route => {processRoute(route)})
         }
         if(searchMatch.type=="stopMatch") {
             mapCenter = [searchMatch.latitude,searchMatch.longitude]
             // setMapCenter([searchMatch.latitude,searchMatch.longitude])
-            searchMatch.routesAvailable.forEach(route => {processRoute(route)})
+            searchMatch.routeMatches.forEach(route => {processRoute(route)})
         }
     })}
 

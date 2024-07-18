@@ -15,6 +15,8 @@ import {Card, geocodeMatch, routeMatch, routeMatchDirectionDatum, stopMatch} fro
             match.routeTitle = route?.shortName + " " + route?.longName
             match.description = route?.description
             match.directions = []
+            match.routeMatches = []
+            match.routeMatches.push(match)
             console.log("assigned basic search values to card",route,match)
             for (let i = 0; i < route?.directions.length; i++) {
                 let directionDatum = new routeMatchDirectionDatum(route?.directions[i],match.routeId,match.color)
@@ -30,9 +32,9 @@ import {Card, geocodeMatch, routeMatch, routeMatchDirectionDatum, stopMatch} fro
         if (geocode != null && geocode.hasOwnProperty("latitude")) {
             match.latitude = geocode.latitude
             match.longitude = geocode.longitude
-            match.nearbyRoutes = []
+            match.routeMatches = []
             geocode?.nearbyRoutes.forEach(x=>{
-                match.nearbyRoutes.push(processRouteSearch(x,card))
+                match.routeMatches.push(processRouteSearch(x,card))
             })
         }
         console.log("geocode data processed: ",match)
@@ -45,9 +47,9 @@ import {Card, geocodeMatch, routeMatch, routeMatchDirectionDatum, stopMatch} fro
         if (stop != null && stop.hasOwnProperty("latitude")) {
             match.latitude = stop.latitude
             match.longitude = stop.longitude
-            match.routesAvailable = []
+            match.routeMatches = []
             stop?.routesAvailable.forEach(x=>{
-                match.routesAvailable.push(processRouteSearch(x,card))
+                match.routeMatches.push(processRouteSearch(x,card))
             })
         }
         console.log("stopMatch data processed: ",match)
@@ -176,16 +178,27 @@ export async function fetchSearchData(state, setState, searchTerm) {
 export async function selectVehicleCard(vehicleData,state, setState) {
     console.log("setting card to " + vehicleData.vehicleId)
     //todo: should be current search term
-    let currentCard = new Card("")
-    currentCard.setToVehicle(vehicleData.vehicleId)
+    let pastCard = state.currentCard
+    let routeId = vehicleData.routeId.split("_")[1];
+    console.log("found routeId of target vehicle: ",routeId)
+    let currentCard = new Card(routeId)
+    let routeData
+    pastCard.searchMatches.forEach((match)=>{
+            routeData = match.routeMatches.filter(value => {
+                console.log('checking for match: ',vehicleData.routeId,value.routeId,value)
+                return value.routeId==vehicleData.routeId})
+        }
+    )
+    console.log("found routedata of target vehicle: ",routeData)
+    currentCard.setToVehicle(vehicleData.vehicleId,[routeData],[vehicleData.routeId])
     let cardStack = state.cardStack
     cardStack.push(currentCard)
-    console.log("updating state with new card:", currentCard)
+    console.log("updating state prev card -> new card: \n", pastCard,currentCard)
     // todo: condense all of these into a single method, copied and pasted too many times
-    setState((prevState) => ({
-        ...prevState,
-        currentCard: currentCard,
-        cardStack: cardStack,
-        renderCounter:prevState.renderCounter+1
-    }))
+    // setState((prevState) => ({
+    //     ...prevState,
+    //     currentCard: currentCard,
+    //     cardStack: cardStack,
+    //     renderCounter:prevState.renderCounter+1
+    // }))
 }
