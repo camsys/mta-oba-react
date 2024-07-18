@@ -3,29 +3,34 @@ import {CardStateContext} from "../util/CardStateComponent";
 import ServiceAlertContainerComponent from "./serviceAlertContainerComponent";
 import {vehicleDataIdentifier, VehicleStateContext} from "../util/VehicleStateComponent";
 
+
+const prettyTime = (time) =>{
+    return "n minutes"
+}
+
 export const VehicleCardContentComponent = (props) =>{
-    let { routeMatch, vehicle } = props;
-    console.log("generating vehicleCardContentComponent for ",vehicle.vehicleId)
+    let { routeMatch, vehicleData } = props;
+    console.log("generating vehicleCardContentComponent for ",vehicleData.vehicleId)
     return(
         <React.Fragment>
             <ul className="card-details">
                 <li className="vehicle-info">
                     <span className="vehicle">Vehicle #4717</span>
-                    {vehicle.strollerVehicle?<span className="stroller">Stroller storage available</span>:null}
+                    {vehicleData.strollerVehicle?<span className="stroller">Stroller storage available</span>:null}
                 </li>
-                {vehicle.passengerCount != null && (
-                    vehicle.passengerCapacity != null ? (
-                        <li className="passengers">{`~${(vehicle.passengerCount / vehicle.passengerCapacity) * 100}% full`}</li>
+                {vehicleData.passengerCount != null && (
+                    vehicleData.passengerCapacity != null ? (
+                        <li className="passengers">{`~${(vehicleData.passengerCount / vehicleData.passengerCapacity) * 100}% full`}</li>
                     ) : (
-                        <li className="passengers">{`~${vehicle.passengerCount} passengers`}</li>
+                        <li className="passengers">{`~${vehicleData.passengerCount} passengers`}</li>
                     )
                 )}
             </ul>
             <h4>Next Stops:</h4>
             <ul className="next-stops route-stops" style={{ borderColor: '#'+routeMatch.color}}>
                 <li>
-                    <a href="#">DeKalb Av/Flatbush Av Ex</a>
-                    <span className="stop-details">1 minute, &lt; 1 stop away</span>
+                    <a href="#">{vehicleData.stopName}</a>
+                    <span className="stop-details">{prettyTime(vehicleData.time)}, {vehicleData.prettyDistance}</span>
                 </li>
                 <li>
                     <a href="#">DeKalb Av/Bond St</a>
@@ -43,20 +48,20 @@ export const VehicleCardContentComponent = (props) =>{
 const VehicleCard = (routeMatch,vehicleId) => {
     const { vehicleState} = useContext(VehicleStateContext)
     let routeId = routeMatch.routeId.split("_")[1];
-    let vehicle = vehicleState[routeId+vehicleDataIdentifier].get(vehicleId)
-    console.log("generating VehicleCard ",routeId,vehicle)
+    let vehicleData = vehicleState[routeId+vehicleDataIdentifier].get(vehicleId)
+    console.log("generating VehicleCard ",routeId,vehicleData)
     return (
         <div className={`card vehicle-card ${routeMatch.routeId}`}>
             <div className="card-header" style={{ borderColor: '#'+routeMatch.color}}>
                 <h3 className="card-title">
                     {/*determine bus-stroller via vehicleData*/}
-                    <img src={vehicle.strollerVehicle?"/img/icon/bus-stroller.svg":"/img/icon/bus.svg"}
-                         alt={vehicle.strollerVehicle?"bus and stroller icon":"bus icon"} className="icon" />
+                    <img src={vehicleData.strollerVehicle?"/img/icon/bus-stroller.svg":"/img/icon/bus.svg"}
+                         alt={vehicleData.strollerVehicle?"bus and stroller icon":"bus icon"} className="icon" />
                     {routeMatch.routeTitle}
                 </h3>
             </div>
             <div className="card-content">
-                <VehicleCardContentComponent {...{ routeMatch, vehicle }}/>
+                <VehicleCardContentComponent {...{ routeMatch, vehicleData }}/>
                 <ServiceAlertContainerComponent/>
             </div>
         </div>

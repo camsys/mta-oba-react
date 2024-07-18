@@ -24,17 +24,24 @@ export class vehicleData {
         this.longLat.push(mvj.VehicleLocation.Latitude)
         this.longLat.push(mvj.VehicleLocation.Longitude)
         this.destination = mvj.DestinationName
-        if(typeof mvj.MonitoredCall !='undefined'){
-            this.strollerVehicle = mvj.MonitoredCall.Extensions.VehicleFeatures.StrollerVehicle
-        }else{
-            this.strollerVehicle = false
-        }
-        this.passengerCount = mvj?.MonitoredCall?.Extensions?.Capacities?.EstimatedPassengerCount
-        this.passengerCapacity = mvj?.MonitoredCall?.Extensions?.Capacities?.EstimatedPassengerCapacity
-        if(this.passengerCount!=null){
-            console.log("found passenger count",this)
-        }
         this.hasRealtime = mvj.Monitored;
+        if(typeof this.hasRealtime !='undefined' && this.hasRealtime!=null) {
+            let mc = mvj.MonitoredCall
+            this.strollerVehicle = mc.Extensions.VehicleFeatures.StrollerVehicle
+            this.passengerCount = mc?.Extensions?.Capacities?.EstimatedPassengerCount
+            this.passengerCapacity = mc?.Extensions?.Capacities?.EstimatedPassengerCapacity
+            if (this.passengerCount != null) {
+                console.log("found passenger count", this)
+            }
+            let distances = mc?.Extensions?.Distances
+            this.prettyDistance = distances?.PresentableDistance
+            this.rawDistanceInfo = distances?.DistanceFromCall
+            this.stopsTillReached = distances?.StopsFromCall
+            this.rawDistanceOnRoute = distances?.CallDistanceAlongRoute
+            this.stopId = mc?.StopPointRef
+            this.stopName = mc?.StopPointName
+
+        }
         this.vehicleId = mvj.VehicleRef
         this.direction = mvj?.Bearing
         this.routeId = mvj.LineRef
