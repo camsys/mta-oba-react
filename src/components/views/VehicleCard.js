@@ -2,13 +2,19 @@ import React, {useContext} from "react";
 import {CardStateContext} from "../util/CardStateComponent";
 import ServiceAlertContainerComponent from "./serviceAlertContainerComponent";
 import {vehicleDataIdentifier, VehicleStateContext} from "../util/VehicleStateComponent";
+import {fetchSearchData} from "../../js/updateState/searchEffect";
 
 
 const prettyTime = (time) =>{
     return "n minutes"
 }
 
+
 export const VehicleCardContentComponent = (props) =>{
+    const { state, setState } = useContext(CardStateContext);
+    const search = (searchterm) =>{
+        fetchSearchData(state, setState, searchterm.split("_")[1])
+    }
     let { routeMatch, vehicleDatum} = props;
     console.log("generating vehicleCardContentComponent for ",vehicleDatum.vehicleId)
     return(
@@ -31,7 +37,7 @@ export const VehicleCardContentComponent = (props) =>{
                 {
                     vehicleDatum.vehicleArrivalData.map(vehicleArrival=>{
                         return(<li>
-                            <a href="#">{vehicleArrival.stopName}</a>
+                            <a href="#" onClick={() => search(vehicleArrival.stopId)}>{vehicleArrival.stopName}</a>
                             <span className="stop-details">{prettyTime(vehicleArrival.time)}, {vehicleArrival.prettyDistance}</span>
                         </li>)
                     })
