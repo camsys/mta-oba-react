@@ -471,8 +471,10 @@ button, .button
       top: -1px
   +mq($sidebar-switch)
     box-shadow: .25em .25em .5em 0 rgba($black, 0.25)
-    width: $sidebar-width
+    width: $sidebar-width-narrow
     height: auto
+  +mq($nine)
+    width: $sidebar-width
 
 .bottom-buttons
   width: 100vw
