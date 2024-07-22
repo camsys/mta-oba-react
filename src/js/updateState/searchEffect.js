@@ -187,7 +187,7 @@ export async function selectVehicleCard(vehicleData,state, setState) {
             routeData = match.routeMatches.filter(
                 value => {return value.routeId==vehicleData.routeId})})
     console.log("found routedata of target vehicle: ",routeData)
-    currentCard.setToVehicle(vehicleData.vehicleId,[routeData],[vehicleData.routeId])
+    currentCard.setToVehicle(vehicleData.vehicleId,routeData,[vehicleData.routeId])
     let cardStack = state.cardStack
     cardStack.push(currentCard)
     console.log("updating state prev card -> new card: \n", pastCard,currentCard)

@@ -71,6 +71,7 @@ export const MapComponent = (googleMaps) => {
         })
     }
     {state.currentCard.searchMatches.forEach(searchMatch=>{
+        console.log("adding routes for:",searchMatch)
         if(searchMatch.type=="routeMatch"){
             let route = searchMatch
             processRoute(route)

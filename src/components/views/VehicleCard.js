@@ -73,8 +73,9 @@ function getVehicleCardsWrapper  () {
         return (<React.Fragment>
             <h2 className="cards-header">Vehicle:</h2>
             <div className="cards">
-                {state.currentCard.searchMatches.map(match=>{
-                    return match.map(route =>{return VehicleCard(route,state.currentCard.vehicleId)})})}
+                {state.currentCard.searchMatches.map(route=>{
+                    console.log("vehicleCard",route)
+                    return VehicleCard(route,state.currentCard.vehicleId)})}
             </div>
         </React.Fragment>);
 
