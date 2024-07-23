@@ -3,6 +3,7 @@ import {serviceAlertData, vehicleData} from "./dataModels";
 import {
     serviceAlertDataIdentifier,
     vehicleDataIdentifier,
+    updatedTimeIdentifier,
     VehicleStateContext
 } from "../../components/util/VehicleStateComponent";
 import {OBA} from "../oba";
@@ -18,6 +19,7 @@ import {OBA} from "../oba";
         let update= false;
         console.log("extractData from Siri")
         let keyword = "serviceAlert & vehicle"
+        let lastCallTime = siri?.Siri?.ServiceDelivery?.ResponseTimestamp
         let vehicleActivity = siri?.Siri?.ServiceDelivery?.VehicleMonitoringDelivery
         console.log(vehicleActivity)
         vehicleActivity = vehicleActivity!=null ? vehicleActivity[0]?.VehicleActivity : null
@@ -25,6 +27,7 @@ import {OBA} from "../oba";
         let serviceAlertActivity = siri?.Siri?.ServiceDelivery?.SituationExchangeDelivery
         serviceAlertActivity = serviceAlertActivity==null? null :serviceAlertActivity[0]?.Situations
         console.log("service alerts found:", serviceAlertActivity)
+
         let [vehicleDataMap,serviceAlertDataMap] = [new Map(), new Map()]
         console.log([vehicleDataMap,serviceAlertDataMap])
         if (vehicleActivity != null && vehicleActivity.length != 0) {
@@ -67,17 +70,18 @@ import {OBA} from "../oba";
             OBA.Util.log('no '+keyword+' recieved. not processing '+keyword)
         }
         OBA.Util.log(keyword+" post process")
-        return [[vehicleDataMap,serviceAlertDataMap],update]
+        return [[vehicleDataMap,serviceAlertDataMap,lastCallTime],update]
     }
 
 
-    function updateVehiclesState([vehicleDataList,serviceAlertDataList],setState,lineRef){
+    function updateVehiclesState([vehicleDataList,serviceAlertDataList,lastCallTime],setState,lineRef){
         console.log("adding to serviceAlert & vehicle state:",[vehicleDataList,serviceAlertDataList])
         let stateFunc = (prevState) => {
             let newState = {...prevState}
             newState.renderCounter = prevState.renderCounter + 1
             newState[lineRef+serviceAlertDataIdentifier] = serviceAlertDataList
             newState[lineRef+vehicleDataIdentifier] = vehicleDataList
+            newState[lineRef+updatedTimeIdentifier]=lastCallTime
             return newState
         }
         setState(stateFunc);
@@ -109,10 +113,10 @@ const siriVehiclesEffect = (routeId) => {
     const lineRef = routeId.split("_")[1];
 
     let search = "&OperatorRef=" +operatorRef + "&LineRef"+"=" + lineRef.replace("+","%2B");
-    // search = search + "&MaximumNumberOfCallsOnwards=3&VehicleMonitoringDetailLevel=calls"
+    search = search + "&MaximumNumberOfCallsOnwards=3&VehicleMonitoringDetailLevel=calls"
     let targetAddress = "https://" + process.env.ENV_ADDRESS + "/" + process.env.VEHICLE_MONITORING_ENDPOINT + search
     console.log("searching for siri at: ",targetAddress)
-    targetAddress = lineRef==null?null:targetAddress
+    // targetAddress = lineRef==null?null:targetAddress
     const {vehicleState, setState } = useContext(VehicleStateContext);
 
 

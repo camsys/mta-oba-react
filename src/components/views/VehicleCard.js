@@ -1,12 +1,14 @@
 import React, {useContext} from "react";
 import {CardStateContext} from "../util/CardStateComponent";
 import ServiceAlertContainerComponent from "./serviceAlertContainerComponent";
-import {vehicleDataIdentifier, VehicleStateContext} from "../util/VehicleStateComponent";
+import {updatedTimeIdentifier, vehicleDataIdentifier, VehicleStateContext} from "../util/VehicleStateComponent";
 import {fetchSearchData} from "../../js/updateState/searchEffect";
+import {OBA} from "../../js/oba";
 
 
-const prettyTime = (time) =>{
-    return "n minutes"
+const prettyArrivalTime = (arrivalTime,updateTime) =>{
+    console.log("getting pretty time for ",arrivalTime)
+    return OBA.Util.getArrivalEstimateForISOString(arrivalTime,updateTime)
 }
 
 
@@ -15,7 +17,7 @@ export const VehicleCardContentComponent = (props) =>{
     const search = (searchterm) =>{
         fetchSearchData(state, setState, searchterm.split("_")[1])
     }
-    let { routeMatch, vehicleDatum} = props;
+    let { routeMatch, vehicleDatum,lastUpdateTime} = props;
     console.log("generating vehicleCardContentComponent for ",vehicleDatum.vehicleId)
     return(
         <React.Fragment>
@@ -38,7 +40,7 @@ export const VehicleCardContentComponent = (props) =>{
                     vehicleDatum.vehicleArrivalData.map(vehicleArrival=>{
                         return(<li>
                             <a href="#" onClick={() => search(vehicleArrival.stopId)}>{vehicleArrival.stopName}</a>
-                            <span className="stop-details">{prettyTime(vehicleArrival.time)}, {vehicleArrival.prettyDistance}</span>
+                            <span className="stop-details">{prettyArrivalTime(vehicleArrival.ISOTime,lastUpdateTime)}, {vehicleArrival.prettyDistance}</span>
                         </li>)
                     })
                 }
@@ -51,6 +53,7 @@ const VehicleCard = (routeMatch,vehicleId) => {
     const { vehicleState} = useContext(VehicleStateContext)
     let routeId = routeMatch.routeId.split("_")[1];
     let vehicleDatum = vehicleState[routeId+vehicleDataIdentifier].get(vehicleId)
+    let lastUpdateTime = OBA.Util.ISO8601StringToDate(vehicleState[routeId+updatedTimeIdentifier]).getTime()
     console.log("generating VehicleCard ",routeId,vehicleDatum)
     return (
         <div className={`card vehicle-card ${routeMatch.routeId}`}>
@@ -63,7 +66,7 @@ const VehicleCard = (routeMatch,vehicleId) => {
                 </h3>
             </div>
             <div className="card-content">
-                <VehicleCardContentComponent {...{ routeMatch, vehicleDatum }}/>
+                <VehicleCardContentComponent {...{ routeMatch, vehicleDatum,lastUpdateTime}}/>
                 <ServiceAlertContainerComponent/>
             </div>
         </div>

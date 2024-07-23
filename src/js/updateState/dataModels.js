@@ -26,6 +26,7 @@ export class VehicleArrivalDatum{
         this.rawDistanceOnRoute = distances?.CallDistanceAlongRoute
         this.stopId = mc?.StopPointRef
         this.stopName = mc?.StopPointName
+        this.ISOTime = mc?.ExpectedArrivalTime
     }
 }
 
