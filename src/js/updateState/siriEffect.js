@@ -11,12 +11,11 @@ import {OBA} from "../oba";
 
 
 
-const siriEffect = (routeId) => {
-    let operatorRef = routeId.split("_")[0].replace(" ","+");
-    const lineRef = routeId.split("_")[1];
+
 
 
     function extractData (siri){
+        let update= false;
         console.log("extractData from Siri")
         let keyword = "serviceAlert & vehicle"
         let vehicleActivity = siri?.Siri?.ServiceDelivery?.VehicleMonitoringDelivery
@@ -68,37 +67,33 @@ const siriEffect = (routeId) => {
             OBA.Util.log('no '+keyword+' recieved. not processing '+keyword)
         }
         OBA.Util.log(keyword+" post process")
-        return [vehicleDataMap,serviceAlertDataMap]
+        return [[vehicleDataMap,serviceAlertDataMap],update]
     }
 
 
-    function updateState([vehicleDataList,serviceAlertDataList]){
-        console.log("should update serviceAlert & vehicle state?",update)
-        if(update) {
-            console.log("adding to serviceAlert & vehicle state:",[vehicleDataList,serviceAlertDataList])
-            let stateFunc = (prevState) => {
-                let newState = {...prevState}
-                newState.renderCounter = prevState.renderCounter + 1
-                newState[lineRef+serviceAlertDataIdentifier] = serviceAlertDataList
-                newState[lineRef+vehicleDataIdentifier] = vehicleDataList
-                return newState
-            }
-            setState(stateFunc);
+    function updateState([vehicleDataList,serviceAlertDataList],setState,lineRef){
+        console.log("adding to serviceAlert & vehicle state:",[vehicleDataList,serviceAlertDataList])
+        let stateFunc = (prevState) => {
+            let newState = {...prevState}
+            newState.renderCounter = prevState.renderCounter + 1
+            newState[lineRef+serviceAlertDataIdentifier] = serviceAlertDataList
+            newState[lineRef+vehicleDataIdentifier] = vehicleDataList
+            return newState
         }
-        console.log("new serviceAlert & vehicle state",vehicleState)
-
+        setState(stateFunc);
     }
 
 
 
-
+const siriEffect = (routeId) => {
+    let operatorRef = routeId.split("_")[0].replace(" ","+");
+    const lineRef = routeId.split("_")[1];
 
     let search = "&OperatorRef=" +operatorRef + "&LineRef"+"=" + lineRef.replace("+","%2B");
     let targetAddress = "https://" + process.env.ENV_ADDRESS + "/" + process.env.VEHICLE_MONITORING_ENDPOINT + search
     console.log("searching for siri at: ",targetAddress)
     targetAddress = lineRef==null?null:targetAddress
     const {vehicleState, setState } = useContext(VehicleStateContext);
-    var update = false
 
 
     useEffect(() => {
@@ -109,7 +104,13 @@ const siriEffect = (routeId) => {
             .then((response) => response.json())
             .then((siri) => {
                 OBA.Util.log("reading serviceAlert & vehicle from " + targetAddress)
-                updateState(extractData(siri))
+                let processedData = extractData(siri)
+                let update = processedData[1]
+                if(update){
+                    console.log("should update serviceAlert & vehicle state?",update)
+                    updateState(processedData[0],setState,lineRef)
+                    console.log("new serviceAlert & vehicle state",vehicleState)
+                }
             })
             .catch((error) => {
                 console.error(error);
