@@ -1,9 +1,9 @@
-import siriEffect from "./siriEffect";
+import siriVehiclesEffect from "./siriVehiclesEffect";
 import {stopsEffect} from "./useStopsForDir"
 import {fillCard} from "./searchEffect";
 
 const useUpdateCurrentCardData = (currentCard) => {
-    siriEffect(currentCard.searchTerm)
+    siriVehiclesEffect(currentCard.searchTerm)
     // stopsEffect()
     return currentCard
 };

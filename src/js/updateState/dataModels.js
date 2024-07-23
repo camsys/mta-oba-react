@@ -54,7 +54,7 @@ export class vehicleData {
             // this.rawDistanceOnRoute = distances?.CallDistanceAlongRoute
             // this.stopId = mc?.StopPointRef
             // this.stopName = mc?.StopPointName
-            if(mvj?.OnwardCalls!=null && typeof this?.OnwardCalls !='undefined'){
+            if(mvj?.OnwardCalls?.OnwardCall!==null && typeof mvj?.OnwardCalls?.OnwardCall !=='undefined'){
                 mvj.OnwardCalls.OnwardCall.forEach((mc,index)=>
                     index!=0?this.vehicleArrivalData.push(new VehicleArrivalDatum(mc)):
                         console.log("skipping first monitored call ",mvj))
