@@ -88,6 +88,7 @@ import {OBA} from "../oba";
     }
 
 const fetchAndProcessSiri = async (targetAddress) =>{
+    console.log("searching for siri at: ",targetAddress)
     return fetch(targetAddress)
         .then((response) => response.json())
         .then((siri) => {
@@ -108,23 +109,28 @@ const fetchAndProcessSiri = async (targetAddress) =>{
 
 }
 
-const siriVehiclesEffect = (routeId) => {
+const siriVehiclesEffect = (routeId, vehicleId) => {
     let operatorRef = routeId.split("_")[0].replace(" ","+");
     const lineRef = routeId.split("_")[1];
 
     let search = "&OperatorRef=" +operatorRef + "&LineRef"+"=" + lineRef.replace("+","%2B");
-    search = search + "&MaximumNumberOfCallsOnwards=3&VehicleMonitoringDetailLevel=calls"
-    let targetAddress = "https://" + process.env.ENV_ADDRESS + "/" + process.env.VEHICLE_MONITORING_ENDPOINT + search
-    console.log("searching for siri at: ",targetAddress)
-    // targetAddress = lineRef==null?null:targetAddress
+    let searchForVehicle =  vehicleId==null?null:
+        `&VehicleRef=${vehicleId.split("_")[1]}&MaximumNumberOfCallsOnwards=3&VehicleMonitoringDetailLevel=calls`
+    let baseTargetAddress = "https://" + process.env.ENV_ADDRESS + "/" + process.env.VEHICLE_MONITORING_ENDPOINT
     const {vehicleState, setState } = useContext(VehicleStateContext);
+    let targetAddresses = []
+    lineRef!=null?targetAddresses.push(baseTargetAddress+search):null
+    searchForVehicle!=null?targetAddresses.push(baseTargetAddress+search+searchForVehicle):null
 
 
     useEffect( () => {
-        if (targetAddress == null) {
-            return
+        let getData = async () =>{
+            let promises = await Promise.all(targetAddresses.map(adr=>fetchAndProcessSiri(adr)))
+            console.log("siri data found: ",promises)
+            return promises[0]
         }
-        fetchAndProcessSiri(targetAddress).then((processedData) => {
+        getData().then((processedData) => {
+            console.log("processedData",processedData)
             processedData != null ? updateVehiclesState(processedData, setState, lineRef) : null
         })
     }, []);
