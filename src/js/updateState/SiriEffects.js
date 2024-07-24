@@ -15,7 +15,7 @@ import {OBA} from "../oba";
 
 
 
-    function extractData (siri){
+    function extractData (routeId,siri){
         let update= false;
         console.log("extractData from Siri")
         let keyword = "serviceAlert & vehicle"
@@ -70,30 +70,28 @@ import {OBA} from "../oba";
             OBA.Util.log('no '+keyword+' recieved. not processing '+keyword)
         }
         OBA.Util.log(keyword+" post process")
-        return [[vehicleDataMap,serviceAlertDataMap,lastCallTime],update]
+        return [[routeId,vehicleDataMap,serviceAlertDataMap,lastCallTime],update]
     }
 
 
-    function updateVehiclesState([vehicleDataList,serviceAlertDataList,lastCallTime],setState,lineRef){
-        console.log("adding to serviceAlert & vehicle state:",[vehicleDataList,serviceAlertDataList])
+    function updateVehiclesState(updates,setState,lineRef){
+        console.log("adding updates to vehicleState:",updates)
         let stateFunc = (prevState) => {
             let newState = {...prevState}
             newState.renderCounter = prevState.renderCounter + 1
-            newState[lineRef+serviceAlertDataIdentifier] = serviceAlertDataList
-            newState[lineRef+vehicleDataIdentifier] = vehicleDataList
-            newState[lineRef+updatedTimeIdentifier]=lastCallTime
+            Object.entries(updates).forEach(([key, val]) => {newState[key]=val})
             return newState
         }
         setState(stateFunc);
     }
 
-const fetchAndProcessSiri = async (targetAddress) =>{
+const fetchAndProcessSiri = async ([routeId,targetAddress]) =>{
     console.log("searching for siri at: ",targetAddress)
     return fetch(targetAddress)
         .then((response) => response.json())
         .then((siri) => {
             OBA.Util.log("reading serviceAlert & vehicle from " + targetAddress)
-            let processedData = extractData(siri)
+            let processedData = extractData(routeId,siri)
             let update = processedData[1]
             if(update){
                 console.log("should update serviceAlert & vehicle state?",update)
@@ -109,32 +107,35 @@ const fetchAndProcessSiri = async (targetAddress) =>{
 
 }
 
-const siriVehiclesEffect = (routeId, vehicleId) => {
-    let operatorRef = routeId.split("_")[0].replace(" ","+");
-    const lineRef = routeId.split("_")[1];
+export const siriGetVehiclesForRoutesEffect = (routeIdList) => {
+    let {vehicleState, setState } = useContext(VehicleStateContext);
+    console.log("looking for Siri Data!")
 
-    let search = "&OperatorRef=" +operatorRef + "&LineRef"+"=" + lineRef.replace("+","%2B");
-    let searchForVehicle =  vehicleId==null?null:
-        `&VehicleRef=${vehicleId.split("_")[1]}&MaximumNumberOfCallsOnwards=3&VehicleMonitoringDetailLevel=calls`
     let baseTargetAddress = "https://" + process.env.ENV_ADDRESS + "/" + process.env.VEHICLE_MONITORING_ENDPOINT
-    const {vehicleState, setState } = useContext(VehicleStateContext);
-    let targetAddresses = []
-    lineRef!=null?targetAddresses.push(baseTargetAddress+search):null
-    searchForVehicle!=null?targetAddresses.push(baseTargetAddress+search+searchForVehicle):null
 
+    let targetAddresses = routeIdList.map((routeId)=>{
+        let operatorRef = routeId.split("_")[0].replace(" ","+");
+        const lineRef = routeId.split("_")[1];
+        return [routeId,baseTargetAddress+"&OperatorRef=" +operatorRef + "&LineRef"+"=" + routeId.replace("+","%2B")];
+    })
 
     useEffect( () => {
         let getData = async () =>{
-            let promises = await Promise.all(targetAddresses.map(adr=>fetchAndProcessSiri(adr)))
-            console.log("siri data found: ",promises)
-            return promises[0]
+            let returnedPromises = await Promise.all(targetAddresses.map(adr=>fetchAndProcessSiri(adr)))
+            console.log("siri data found: ",returnedPromises)
+            return returnedPromises.map(([routeId, vehicleDataList,serviceAlertDataList,lastCallTime])=>{
+                let dataObj = {}
+                dataObj[routeId+serviceAlertDataIdentifier] = serviceAlertDataList
+                dataObj[routeId+vehicleDataIdentifier] = vehicleDataList
+                dataObj[routeId+updatedTimeIdentifier]=lastCallTime
+                return dataObj
+            }).reduce(((acc, vehiclesForRouteObj) => {
+                Object.entries(vehiclesForRouteObj).forEach(([key, val]) => {acc[key]=val})}))
         }
         getData().then((processedData) => {
             console.log("processedData",processedData)
-            processedData != null ? updateVehiclesState(processedData, setState, lineRef) : null
+            processedData != null ? updateVehiclesState(processedData, setState) : null
+            console.log("vehicleState",vehicleState)
         })
     }, []);
 };
-
-
-export default siriVehiclesEffect;

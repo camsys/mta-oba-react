@@ -11,6 +11,7 @@ import {CardStateContext} from "../util/CardStateComponent";
 import {Card} from "../../js/updateState/dataModels"
 import RefreshComponent from "../views/refreshComponent";
 import VehicleCard from "../views/VehicleCard";
+import siriVehiclesEffect from "../../js/updateState/SiriEffects";
 
 function getSideBar  () {
 
@@ -31,7 +32,7 @@ function getSideBar  () {
             return homeCard()
         }
         if(state.currentCard.type === Card.cardTypes.vehicleCard){
-            OBA.Util.log("adding home card")
+            OBA.Util.log("adding vehicle card")
             return VehicleCard()
         }
     }

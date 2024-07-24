@@ -8,13 +8,13 @@ import sideBarComponent from "./pageStructure/sideBar";
 import {VehicleStateProvider} from "./util/VehicleStateComponent";
 import {generateInitialCard} from "../js/updateState/searchEffect";
 import {MapHighlightingStateProvider} from "./util/MapHighlightingStateComponent";
-import siriVehiclesEffect from "../js/updateState/siriVehiclesEffect";
+import {siriGetVehiclesForRoutesEffect} from "../js/updateState/SiriEffects";
 
 
 
 const VehicleLoading=()=>{
     const { state} = useContext(CardStateContext)
-    state.currentCard.routeIdList.forEach(route=>siriVehiclesEffect(route))
+    siriGetVehiclesForRoutesEffect(state.currentCard.routeIdList)
 }
 
 function App  () {
@@ -60,8 +60,6 @@ function App  () {
     if (loading) {
         return <ErrorBoundary><div>Loading...</div></ErrorBoundary>;
     }
-
-
 
     return (
         <ErrorBoundary>

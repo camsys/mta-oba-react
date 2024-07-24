@@ -3,6 +3,7 @@ import React, {useContext, useEffect, useState} from "react";
 import {CardStateContext} from "../../components/util/CardStateComponent";
 import {OBA} from "../oba";
 import {Card, geocodeMatch, routeMatch, routeMatchDirectionDatum, stopMatch} from "./dataModels"
+import {siriGetVehiclesForRoutesEffect} from "./SiriEffects";
 
 
     function processRouteSearch(route,card) {
@@ -133,6 +134,7 @@ export const generateInitialCard = async ()=>{
     console.log("generating card")
     const searchRef = queryString.parse(location.search).LineRef;
     return await getData(new Card(searchRef))
+
 }
 
 export const getHomeCard = () =>{
@@ -164,6 +166,7 @@ export async function fetchSearchData(state, setState, searchTerm) {
                 cardStack: cardStack,
                 renderCounter:prevState.renderCounter+1
             }))
+            siriGetVehiclesForRoutesEffect(currentCard.routeIdList,currentCard.vehicleId)
         }
         }
         catch (error) {
