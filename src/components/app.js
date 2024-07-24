@@ -8,8 +8,14 @@ import sideBarComponent from "./pageStructure/sideBar";
 import {VehicleStateProvider} from "./util/VehicleStateComponent";
 import {generateInitialCard} from "../js/updateState/searchEffect";
 import {MapHighlightingStateProvider} from "./util/MapHighlightingStateComponent";
+import siriVehiclesEffect from "../js/updateState/siriVehiclesEffect";
 
 
+
+const VehicleLoading=()=>{
+    const { state} = useContext(CardStateContext)
+    state.currentCard.routeIdList.forEach(route=>siriVehiclesEffect(route))
+}
 
 function App  () {
 
@@ -55,8 +61,11 @@ function App  () {
         return <ErrorBoundary><div>Loading...</div></ErrorBoundary>;
     }
 
+
+
     return (
         <ErrorBoundary>
+            <VehicleLoading/>
             <div id="sidebar">
                 <GetSideBar />
             </div>

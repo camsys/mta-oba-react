@@ -9,7 +9,6 @@ import {CardStateContext} from "../util/CardStateComponent";
 import {vehicleDataIdentifier, VehicleStateContext} from "../util/VehicleStateComponent";
 import MapRouteComponent from "./MapRouteComponent";
 import MapStopComponent from "./MapStopComponent";
-import siriVehiclesEffect from "../../js/updateState/siriVehiclesEffect";
 import {MapHighlightingStateContext} from "../util/MapHighlightingStateComponent";
 import MapVehicleComponent from "./MapVehicleComponent";
 
@@ -25,7 +24,6 @@ const MapVehicleElements = ({routeIds}) =>{
     if(routeIds!=null){
         routeIds.forEach(route=>{
             console.log("looking for vehicles from route id: ",route)
-            siriVehiclesEffect(route)
             const { vehicleState} = useContext(VehicleStateContext);
             console.log("vehicle state:", vehicleState)
             let routeId = route.split("_")[1]
