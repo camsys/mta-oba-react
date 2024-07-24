@@ -74,7 +74,7 @@ import {OBA} from "../oba";
     }
 
 
-    function updateVehiclesState(updates,setState,lineRef){
+    function updateVehiclesState(updates,setState){
         console.log("adding updates to vehicleState:",updates)
         let stateFunc = (prevState) => {
             let newState = {...prevState}
@@ -116,21 +116,32 @@ export const siriGetVehiclesForRoutesEffect = (routeIdList) => {
     let targetAddresses = routeIdList.map((routeId)=>{
         let operatorRef = routeId.split("_")[0].replace(" ","+");
         const lineRef = routeId.split("_")[1];
-        return [routeId,baseTargetAddress+"&OperatorRef=" +operatorRef + "&LineRef"+"=" + routeId.replace("+","%2B")];
+        return [lineRef,baseTargetAddress+"&OperatorRef=" +operatorRef + "&LineRef"+"=" + routeId.replace("+","%2B")];
     })
 
     useEffect( () => {
         let getData = async () =>{
             let returnedPromises = await Promise.all(targetAddresses.map(adr=>fetchAndProcessSiri(adr)))
+            returnedPromises = returnedPromises.filter(
+                (result)=>result!==null && typeof result !== "undefined")
+                .map(
+                    ([routeId, vehicleDataList,serviceAlertDataList,lastCallTime])=>{
+                        let dataObj = {}
+                        dataObj[routeId+serviceAlertDataIdentifier] = serviceAlertDataList
+                        dataObj[routeId+vehicleDataIdentifier] = vehicleDataList
+                        dataObj[routeId+updatedTimeIdentifier]=lastCallTime
+                        return dataObj
+                    })
+                .reduce((acc, vehiclesForRouteObj) => {
+                        Object.entries(vehiclesForRouteObj).forEach(
+                            ([key, val]) => {acc[key]=val})
+                    return acc
+                })
             console.log("siri data found: ",returnedPromises)
-            return returnedPromises.map(([routeId, vehicleDataList,serviceAlertDataList,lastCallTime])=>{
-                let dataObj = {}
-                dataObj[routeId+serviceAlertDataIdentifier] = serviceAlertDataList
-                dataObj[routeId+vehicleDataIdentifier] = vehicleDataList
-                dataObj[routeId+updatedTimeIdentifier]=lastCallTime
-                return dataObj
-            }).reduce(((acc, vehiclesForRouteObj) => {
-                Object.entries(vehiclesForRouteObj).forEach(([key, val]) => {acc[key]=val})}))
+            if(returnedPromises.length===0){return null}
+
+            return returnedPromises
+
         }
         getData().then((processedData) => {
             console.log("processedData",processedData)

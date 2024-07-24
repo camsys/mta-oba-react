@@ -104,7 +104,7 @@ export class routeMatchDirectionDatum {
             directionJson.destination, stops)
         console.log("routeDirectionComponentDatum generated : ",this.routeDirectionComponentData)
         for (let j = 0; j < directionJson.polylines.length; j++) {
-            console.log("decoding route polylines ", directionJson, this)
+            // console.log("decoding route polylines ",j, directionJson, this)
             let encodedPolyline = directionJson.polylines[j]
             let decodedPolyline = OBA.Util.decodePolyline(encodedPolyline)
             let polylineId = routeId + "_dir_" + directionJson.directionId + "_polyLineNum_" + String(j)
