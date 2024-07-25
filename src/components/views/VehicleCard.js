@@ -8,7 +8,8 @@ import {OBA} from "../../js/oba";
 
 const prettyArrivalTime = (arrivalTime,updateTime) =>{
     console.log("getting pretty time for ",arrivalTime)
-    return OBA.Util.getArrivalEstimateForISOString(arrivalTime,updateTime)
+    return (arrivalTime===null || updateTime===null)? "" :
+        `${OBA.Util.getArrivalEstimateForISOString(arrivalTime,updateTime)},`
 }
 
 
@@ -40,7 +41,7 @@ export const VehicleCardContentComponent = (props) =>{
                     vehicleDatum.vehicleArrivalData.map(vehicleArrival=>{
                         return(<li>
                             <a href="#" onClick={() => search(vehicleArrival.stopId)}>{vehicleArrival.stopName}</a>
-                            <span className="stop-details">{prettyArrivalTime(vehicleArrival.ISOTime,lastUpdateTime)}, {vehicleArrival.prettyDistance}</span>
+                            <span className="stop-details">{prettyArrivalTime(vehicleArrival.ISOTime,lastUpdateTime)} {vehicleArrival.prettyDistance}</span>
                         </li>)
                     })
                 }
