@@ -5,7 +5,7 @@ import {CardStateContext, CardStateProvider} from "./util/CardStateComponent";
 import mapWrap from "./map/mapWrap";
 
 import sideBarComponent from "./pageStructure/sideBar";
-import {VehicleStateProvider} from "./util/VehicleStateComponent";
+import {VehicleStateContext, VehicleStateProvider} from "./util/VehicleStateComponent";
 import {generateInitialCard} from "../js/updateState/searchEffect";
 import {MapHighlightingStateProvider} from "./util/MapHighlightingStateComponent";
 import {siriGetVehiclesForRoutesEffect} from "../js/updateState/SiriEffects";
@@ -14,7 +14,10 @@ import {siriGetVehiclesForRoutesEffect} from "../js/updateState/SiriEffects";
 
 const VehicleLoading=()=>{
     const { state} = useContext(CardStateContext)
-    siriGetVehiclesForRoutesEffect(state.currentCard.routeIdList)
+    let {vehicleState, setState } = useContext(VehicleStateContext);
+    useEffect(() => {
+        siriGetVehiclesForRoutesEffect(state.currentCard.routeIdList,vehicleState,setState)
+    }, [state]);
 }
 
 function App  () {

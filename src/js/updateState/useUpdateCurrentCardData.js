@@ -3,7 +3,7 @@ import {stopsEffect} from "./useStopsForDir"
 import {fillCard} from "./searchEffect";
 
 const useUpdateCurrentCardData = (currentCard) => {
-    siriGetVehiclesForRoutesEffect(currentCard.searchTerm)
+    // siriGetVehiclesForRoutesEffect(currentCard.searchTerm)
     // stopsEffect()
     return currentCard
 };

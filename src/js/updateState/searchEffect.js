@@ -143,6 +143,7 @@ export const getHomeCard = () =>{
 
 export async function fetchSearchData(state, setState, searchTerm) {
     try {
+        console.log("fetch search data called \n\n\n\n\n\n\n\n")
         console.log("generating new card")
         console.log("logging previous state:",state)
         console.log("logging previous card:",state?.currentCard)
@@ -166,7 +167,7 @@ export async function fetchSearchData(state, setState, searchTerm) {
                 cardStack: cardStack,
                 renderCounter:prevState.renderCounter+1
             }))
-            siriGetVehiclesForRoutesEffect(currentCard.routeIdList,currentCard.vehicleId)
+            // siriGetVehiclesForRoutesEffect(currentCard.routeIdList,currentCard.vehicleId)
         }
         }
         catch (error) {
@@ -201,4 +202,5 @@ export async function selectVehicleCard(vehicleData,state, setState) {
         cardStack: cardStack,
         renderCounter:prevState.renderCounter+1
     }))
+    // siriGetVehiclesForRoutesEffect(currentCard.routeIdList,currentCard.vehicleId)
 }

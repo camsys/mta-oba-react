@@ -39,8 +39,9 @@ export class vehicleData {
         this.destination = mvj.DestinationName
         this.hasRealtime = mvj.Monitored;
         this.vehicleArrivalData = []
-        if(typeof this.hasRealtime !='undefined' && this.hasRealtime!=null) {
-            let mc = mvj.MonitoredCall
+        if(this.hasRealtime!=null  && typeof this.hasRealtime !='undefined'
+            && mvj?.MonitoredCall !== null && typeof mvj?.MonitoredCall !='undefined') {
+            let mc = mvj?.MonitoredCall
             this.strollerVehicle = mc.Extensions.VehicleFeatures.StrollerVehicle
             this.passengerCount = mc?.Extensions?.Capacities?.EstimatedPassengerCount
             this.passengerCapacity = mc?.Extensions?.Capacities?.EstimatedPassengerCapacity
