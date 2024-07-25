@@ -43,12 +43,13 @@ const MapVehicleElements = ({routeIds}) =>{
     )
 }
 
-export const MapComponent = (googleMaps) => {
+export const MapComponent = () => {
 
     OBA.Util.log("generating map")
-    const [Zoom, setZoom] = useState(11);
-    let mapCenter = OBA.Config.defaultMapCenter;
-    // const [mapCenter, setMapCenter] = useState(OBA.Config.defaultMapCenter)
+
+    let startingMapCenter = OBA.Config.defaultMapCenter;
+    let startingZoom = 11;
+
     const { state} = useContext(CardStateContext);
     let mapRouteComponents = []
     let mapStopComponents = []
@@ -67,28 +68,47 @@ export const MapComponent = (googleMaps) => {
                 mapStopComponents.push(new MapStopComponent(datum))
             })
         })
+
+        console.log("making collectedPoints")
+        let collectedPoints = []
+        route.directions.forEach(dir=> {
+            dir.mapRouteComponentData.forEach(routeDir=>{
+                if (typeof routeDir.points !== 'undefined') {
+                    let coordinates = routeDir.points;
+                    for (let k=0; k < coordinates.length; k++) {
+                        let coordinate = coordinates[k];
+                        console.log("adding cord to collectedPoints",coordinate)
+                        collectedPoints.push(coordinate);
+                    }
+                }
+            })
+        });
+        let newBounds = L.latLngBounds(collectedPoints);
+        console.log("made newbounds",newBounds)
+        return newBounds
     }
     {state.currentCard.searchMatches.forEach(searchMatch=>{
         console.log("adding routes for:",searchMatch)
         if(searchMatch.type=="routeMatch"){
             let route = searchMatch
             processRoute(route)
+            // map.fitBounds(newBounds);
         }
         if(searchMatch.type=="geocodeMatch") {
-            mapCenter = [searchMatch.latitude,searchMatch.longitude]
-            // setMapCenter([searchMatch.latitude,searchMatch.longitude])
+            startingMapCenter = [searchMatch.latitude,searchMatch.longitude]
+            startingZoom = 16
             searchMatch.routeMatches.forEach(route => {processRoute(route)})
         }
         if(searchMatch.type=="stopMatch") {
-            mapCenter = [searchMatch.latitude,searchMatch.longitude]
-            // setMapCenter([searchMatch.latitude,searchMatch.longitude])
+            startingMapCenter = [searchMatch.latitude,searchMatch.longitude]
+            startingZoom = 16
             searchMatch.routeMatches.forEach(route => {processRoute(route)})
         }
     })}
 
     console.log("map route components", mapRouteComponents)
     console.log("map stop components", mapStopComponents)
-    console.log("map center set to: ",mapCenter)
+    console.log("map center set to: ",startingMapCenter)
 
 
     let routeIds = state.currentCard.routeIdList
@@ -106,21 +126,22 @@ export const MapComponent = (googleMaps) => {
         return false;
     };
 
-    // <ReactLeafletGoogleLayer
-    //     apiKey='AIzaSyA-PBbsL_sXOTfo2KbkVx8XkEfcIe48xzw'
-    //     type={'roadmap'}
-    //     styles={OBA.Config.mutedTransitStylesArray}
-    // />
+    const [Zoom, setZoom] = useState(startingZoom);
+    const [mapCenter, setMapCenter] = useState(startingMapCenter)
+
     return (
         <React.Fragment>
             <MapContainer
                 style={{ height: '100vh', width: '100wh' }}
-                // center={mapCenter}
                 center={mapCenter}
                 zoom={Zoom}
                 scrollWheelZoom={true}
             >
-                {googleMaps}
+                <ReactLeafletGoogleLayer
+                    apiKey='AIzaSyA-PBbsL_sXOTfo2KbkVx8XkEfcIe48xzw'
+                    type={'roadmap'}
+                    styles={OBA.Config.mutedTransitStylesArray}
+                />
                 <MapEvents />
                 {mapRouteComponents}
                 {Zoom >= 15.1 ? mapStopComponents : null}
