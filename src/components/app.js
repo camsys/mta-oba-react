@@ -8,7 +8,8 @@ import sideBarComponent from "./pageStructure/sideBar";
 import {VehicleStateContext, VehicleStateProvider} from "./util/VehicleStateComponent";
 import {generateInitialCard} from "../js/updateState/searchEffect";
 import {MapHighlightingStateProvider} from "./util/MapHighlightingStateComponent";
-import {siriGetVehiclesForRoutesEffect} from "../js/updateState/SiriEffects";
+import {siriGetVehiclesForRoutesEffect, siriGetVehiclesForVehicleViewEffect} from "../js/updateState/SiriEffects";
+import {Card} from "../js/updateState/dataModels";
 
 
 
@@ -16,7 +17,10 @@ const VehicleLoading=()=>{
     const { state} = useContext(CardStateContext)
     let {vehicleState, setState } = useContext(VehicleStateContext);
     useEffect(() => {
-        siriGetVehiclesForRoutesEffect(state.currentCard.routeIdList,vehicleState,setState)
+        state.currentCard.type === Card.cardTypes.vehicleCard ?
+            siriGetVehiclesForVehicleViewEffect(state.currentCard.routeIdList,state.currentCard.vehicleId,vehicleState,setState)
+            : siriGetVehiclesForRoutesEffect(state.currentCard.routeIdList,vehicleState,setState)
+
     }, [state]);
 }
 

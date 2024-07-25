@@ -113,7 +113,7 @@ const siriGetVehiclesForAddressesEffect = (targetAddresses,vehicleState, setStat
         console.log("siri seeks promises from ", targetAddresses)
         let returnedPromises = await Promise.all(targetAddresses.map(adr => fetchAndProcessSiri(adr)))
         console.log("siri promises awaited ", returnedPromises)
-        let dataObjs = returnedPromises.filter(
+        let dataObjsList = returnedPromises.filter(
             (result) => result !== null && typeof result !== "undefined")
             .map(
                 ([routeId, vehicleDataList, serviceAlertDataList, lastCallTime]) => {
@@ -123,19 +123,24 @@ const siriGetVehiclesForAddressesEffect = (targetAddresses,vehicleState, setStat
                     dataObj[routeId + updatedTimeIdentifier] = lastCallTime
                     return dataObj
                 })
-        if (dataObjs.length === 0) {
+        if (dataObjsList.length === 0) {
             return null
         }
-        let vehicleDataObj = dataObjs.reduce((acc, vehiclesForRouteObj) => {
+        let siriCombinedDataObj = dataObjsList.reduce((combinedRoutes, vehiclesForRouteObj) => {
             Object.entries(vehiclesForRouteObj).forEach(
-                ([key, val]) => {
-                    acc[key] = val
-                })
-            return acc
+                ([routeInfoIdentifier, routeObj]) => {
+                    if(routeInfoIdentifier.includes(updatedTimeIdentifier)){
+                        combinedRoutes[routeInfoIdentifier] = routeObj
+                    }
+                    else if(combinedRoutes[routeInfoIdentifier] !==null && typeof combinedRoutes[routeInfoIdentifier] !=='undefined'){
+                        routeObj.forEach((siriData, siriIdentifier) => {
+                            combinedRoutes[routeInfoIdentifier].set(siriIdentifier, siriData)}
+                        )}
+                    else{combinedRoutes[routeInfoIdentifier] = routeObj}})
+            return combinedRoutes
         })
-        console.log("siri data found: ", vehicleDataObj)
-
-        return vehicleDataObj
+        console.log("siri data found: ", siriCombinedDataObj)
+        return siriCombinedDataObj
 
     }
     getData().then((processedData) => {
@@ -145,19 +150,32 @@ const siriGetVehiclesForAddressesEffect = (targetAddresses,vehicleState, setStat
     }).catch((x) => console.log("siri call issue!", x))
 }
 
-
-
-
-export const siriGetVehiclesForRoutesEffect = (routeIdList,vehicleState, setState ) => {
-    console.log("looking for Siri Data!",routeIdList)
-
+const getTargetList = (routeIdList) =>{
     let baseTargetAddress = "https://" + process.env.ENV_ADDRESS + "/" + process.env.VEHICLE_MONITORING_ENDPOINT
 
-    let targetAddresses = routeIdList.map((routeId)=>{
+    return routeIdList.map((routeId)=>{
         let operatorRef = routeId.split("_")[0].replace(" ","+");
         const lineRef = routeId.split("_")[1];
         return [lineRef,baseTargetAddress+"&OperatorRef=" +operatorRef + "&LineRef"+"=" + routeId.replace("+","%2B")];
     })
+}
 
+
+export const siriGetVehiclesForVehicleViewEffect = (routeIdList, vehicleId, vehicleState, setState ) => {
+    console.log("looking for Siri Data for vehicle!",routeIdList,vehicleId)
+    let targetAddresses = getTargetList(routeIdList)
+
+    if(targetAddresses.length!==1){
+        console.error("a very odd situation has occured and should be reported in siriGetVehiclesForVehicleViewEffect",routeIdList,vehicleId,vehicleState,setState)
+    }
+    targetAddresses = targetAddresses.concat(targetAddresses.map(adr=>{
+        return [adr[0],adr[1]+`&VehicleRef=${vehicleId.split('_')[1]}&MaximumNumberOfCallsOnwards=3&VehicleMonitoringDetailLevel=calls`]}))
+
+    return siriGetVehiclesForAddressesEffect(targetAddresses,vehicleState,setState)
+}
+
+export const siriGetVehiclesForRoutesEffect = (routeIdList,vehicleState, setState ) => {
+    console.log("looking for Siri Data!",routeIdList)
+    let targetAddresses = getTargetList(routeIdList)
     return siriGetVehiclesForAddressesEffect(targetAddresses,vehicleState,setState)
 };
