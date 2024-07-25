@@ -107,6 +107,47 @@ const fetchAndProcessSiri = async ([routeId,targetAddress]) =>{
 
 }
 
+const siriGetVehiclesForAddressesEffect = (targetAddresses,vehicleState, setState ) =>
+{
+    let getData = async () => {
+        console.log("siri seeks promises from ", targetAddresses)
+        let returnedPromises = await Promise.all(targetAddresses.map(adr => fetchAndProcessSiri(adr)))
+        console.log("siri promises awaited ", returnedPromises)
+        let dataObjs = returnedPromises.filter(
+            (result) => result !== null && typeof result !== "undefined")
+            .map(
+                ([routeId, vehicleDataList, serviceAlertDataList, lastCallTime]) => {
+                    let dataObj = {}
+                    dataObj[routeId + serviceAlertDataIdentifier] = serviceAlertDataList
+                    dataObj[routeId + vehicleDataIdentifier] = vehicleDataList
+                    dataObj[routeId + updatedTimeIdentifier] = lastCallTime
+                    return dataObj
+                })
+        if (dataObjs.length === 0) {
+            return null
+        }
+        let vehicleDataObj = dataObjs.reduce((acc, vehiclesForRouteObj) => {
+            Object.entries(vehiclesForRouteObj).forEach(
+                ([key, val]) => {
+                    acc[key] = val
+                })
+            return acc
+        })
+        console.log("siri data found: ", vehicleDataObj)
+
+        return vehicleDataObj
+
+    }
+    getData().then((processedData) => {
+        console.log("processedData", processedData)
+        processedData != null ? updateVehiclesState(processedData, setState) : null
+        console.log("vehicleState", vehicleState)
+    }).catch((x) => console.log("siri call issue!", x))
+}
+
+
+
+
 export const siriGetVehiclesForRoutesEffect = (routeIdList,vehicleState, setState ) => {
     console.log("looking for Siri Data!",routeIdList)
 
@@ -118,35 +159,5 @@ export const siriGetVehiclesForRoutesEffect = (routeIdList,vehicleState, setStat
         return [lineRef,baseTargetAddress+"&OperatorRef=" +operatorRef + "&LineRef"+"=" + routeId.replace("+","%2B")];
     })
 
-    console.log("using effect!")
-    let getData = async () =>{
-        console.log("siri seeks promises from ",targetAddresses)
-        let returnedPromises = await Promise.all(targetAddresses.map(adr=>fetchAndProcessSiri(adr)))
-        console.log("siri promises awaited ",returnedPromises)
-        let dataObjs = returnedPromises.filter(
-            (result)=>result!==null && typeof result !== "undefined")
-            .map(
-                ([routeId, vehicleDataList,serviceAlertDataList,lastCallTime])=>{
-                    let dataObj = {}
-                    dataObj[routeId+serviceAlertDataIdentifier] = serviceAlertDataList
-                    dataObj[routeId+vehicleDataIdentifier] = vehicleDataList
-                    dataObj[routeId+updatedTimeIdentifier]=lastCallTime
-                    return dataObj
-                })
-        if(dataObjs.length===0) {return null}
-        let vehicleDataObj = dataObjs.reduce((acc, vehiclesForRouteObj) => {
-                    Object.entries(vehiclesForRouteObj).forEach(
-                        ([key, val]) => {acc[key]=val})
-                return acc
-            })
-        console.log("siri data found: ",vehicleDataObj)
-
-        return vehicleDataObj
-
-    }
-    getData().then((processedData) => {
-        console.log("processedData",processedData)
-        processedData != null ? updateVehiclesState(processedData, setState) : null
-        console.log("vehicleState",vehicleState)
-    }).catch((x)=>console.log("siri call issue!",x))
+    return siriGetVehiclesForAddressesEffect(targetAddresses,vehicleState,setState)
 };
