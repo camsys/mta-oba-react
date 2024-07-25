@@ -45,31 +45,20 @@ const MapVehicleElements = ({routeIds}) =>{
 
 export const MapComponent = () => {
 
-    OBA.Util.log("generating map")
+    const processRoute = (route)=> {
+        console.log("processing route for map: ", route)
 
-    let startingMapCenter = OBA.Config.defaultMapCenter;
-    let startingZoom = 11;
-
-    const { state} = useContext(CardStateContext);
-    let mapRouteComponents = []
-    let mapStopComponents = []
-
-
-
-    const processRoute = (route)=>{
-        console.log("processing route for map: ",route)
-
-        route.directions.forEach(dir=>{
-            dir.mapRouteComponentData.forEach((datum)=>{
-                console.log("requesting new MapRouteComponent from: ",datum)
+        route.directions.forEach(dir => {
+            dir.mapRouteComponentData.forEach((datum) => {
+                console.log("requesting new MapRouteComponent from: ", datum)
                 mapRouteComponents.push(new MapRouteComponent(datum))
             })
-            dir.mapStopComponentData.forEach((datum)=>{
+            dir.mapStopComponentData.forEach((datum) => {
                 mapStopComponents.push(new MapStopComponent(datum))
             })
         })
-
-        console.log("making collectedPoints")
+    }
+    const getBoundsForRoute = (route)=> {
         let collectedPoints = []
         route.directions.forEach(dir=> {
             dir.mapRouteComponentData.forEach(routeDir=>{
@@ -77,7 +66,6 @@ export const MapComponent = () => {
                     let coordinates = routeDir.points;
                     for (let k=0; k < coordinates.length; k++) {
                         let coordinate = coordinates[k];
-                        console.log("adding cord to collectedPoints",coordinate)
                         collectedPoints.push(coordinate);
                     }
                 }
@@ -87,6 +75,28 @@ export const MapComponent = () => {
         console.log("made newbounds",newBounds)
         return newBounds
     }
+
+    const MapEvents = () => {
+        let map = useMap()
+        useMapEvents({
+            zoomend() { // zoom event (when zoom animation ended)
+                console.log("tryna use map")
+                console.log("map used")
+                const zoom = map.getZoom(); // get current Zoom of map
+                setZoom(zoom);
+            },
+        });
+        return false;
+    };
+
+    OBA.Util.log("generating map")
+
+    let startingMapCenter = OBA.Config.defaultMapCenter;
+    let startingZoom = 11;
+
+    const { state} = useContext(CardStateContext);
+    let mapRouteComponents = []
+    let mapStopComponents = []
     {state.currentCard.searchMatches.forEach(searchMatch=>{
         console.log("adding routes for:",searchMatch)
         if(searchMatch.type=="routeMatch"){
@@ -113,18 +123,7 @@ export const MapComponent = () => {
 
     let routeIds = state.currentCard.routeIdList
 
-    const MapEvents = () => {
-        let map = useMap()
-        useMapEvents({
-            zoomend() { // zoom event (when zoom animation ended)
-                console.log("tryna use map")
-                console.log("map used")
-                const zoom = map.getZoom(); // get current Zoom of map
-                setZoom(zoom);
-            },
-        });
-        return false;
-    };
+
 
     const [Zoom, setZoom] = useState(startingZoom);
     const [mapCenter, setMapCenter] = useState(startingMapCenter)
