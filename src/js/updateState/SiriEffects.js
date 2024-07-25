@@ -122,7 +122,7 @@ export const siriGetVehiclesForRoutesEffect = (routeIdList) => {
     useEffect( () => {
         let getData = async () =>{
             let returnedPromises = await Promise.all(targetAddresses.map(adr=>fetchAndProcessSiri(adr)))
-            returnedPromises = returnedPromises.filter(
+            let dataObjs = returnedPromises.filter(
                 (result)=>result!==null && typeof result !== "undefined")
                 .map(
                     ([routeId, vehicleDataList,serviceAlertDataList,lastCallTime])=>{
@@ -132,15 +132,15 @@ export const siriGetVehiclesForRoutesEffect = (routeIdList) => {
                         dataObj[routeId+updatedTimeIdentifier]=lastCallTime
                         return dataObj
                     })
-                .reduce((acc, vehiclesForRouteObj) => {
+            if(dataObjs.length===0) {return null}
+            let vehicleDataObj = dataObjs.reduce((acc, vehiclesForRouteObj) => {
                         Object.entries(vehiclesForRouteObj).forEach(
                             ([key, val]) => {acc[key]=val})
                     return acc
                 })
-            console.log("siri data found: ",returnedPromises)
-            if(returnedPromises.length===0){return null}
+            console.log("siri data found: ",vehicleDataObj)
 
-            return returnedPromises
+            return vehicleDataObj
 
         }
         getData().then((processedData) => {
