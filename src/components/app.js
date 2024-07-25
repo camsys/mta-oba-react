@@ -17,10 +17,16 @@ const VehicleLoading=()=>{
     const { state} = useContext(CardStateContext)
     let {vehicleState, setState } = useContext(VehicleStateContext);
     useEffect(() => {
-        state.currentCard.type === Card.cardTypes.vehicleCard ?
-            siriGetVehiclesForVehicleViewEffect(state.currentCard.routeIdList,state.currentCard.vehicleId,vehicleState,setState)
-            : siriGetVehiclesForRoutesEffect(state.currentCard.routeIdList,vehicleState,setState)
+        const getSiri = () =>{
+            state.currentCard.type === Card.cardTypes.vehicleCard ?
+                siriGetVehiclesForVehicleViewEffect(state.currentCard.routeIdList,state.currentCard.vehicleId,vehicleState,setState)
+                : siriGetVehiclesForRoutesEffect(state.currentCard.routeIdList,vehicleState,setState)
+        }
 
+        getSiri()
+        //todo: set interval back to 15s
+        const interval = setInterval(getSiri, 5*1000);
+        return () => clearInterval(interval);
     }, [state]);
 }
 
