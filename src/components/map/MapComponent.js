@@ -11,6 +11,7 @@ import MapRouteComponent from "./MapRouteComponent";
 import MapStopComponent from "./MapStopComponent";
 import {MapHighlightingStateContext} from "../util/MapHighlightingStateComponent";
 import MapVehicleComponent from "./MapVehicleComponent";
+import {Card} from "../../js/updateState/dataModels";
 
 
 
@@ -95,26 +96,43 @@ export const MapComponent = () => {
     let startingZoom = 11;
 
     const { state} = useContext(CardStateContext);
+    const { vehicleState} = useContext(VehicleStateContext);
     let mapRouteComponents = []
     let mapStopComponents = []
-    {state.currentCard.searchMatches.forEach(searchMatch=>{
+
+
+    state.currentCard.searchMatches.forEach(searchMatch=>{
         console.log("adding routes for:",searchMatch)
-        if(searchMatch.type=="routeMatch"){
+        if(state.currentCard.type===Card.cardTypes.routeCard){
             let route = searchMatch
             processRoute(route)
             // map.fitBounds(newBounds);
         }
-        if(searchMatch.type=="geocodeMatch") {
+        else if(state.currentCard.type===Card.cardTypes.vehicleCard){
+            let route = searchMatch
+            processRoute(route)
+            startingZoom = 16
+            console.log("getting vehicle from ",vehicleState,
+                state.currentCard.routeIdList[0]+vehicleDataIdentifier,
+                state.currentCard.vehicleId)
+            startingMapCenter = vehicleState
+                [state.currentCard.routeIdList[0].split("_")[1]+vehicleDataIdentifier]
+                .get(state.currentCard.vehicleId).longLat
+            // map.fitBounds(newBounds);
+        }
+        else if(state.currentCard.type===Card.cardTypes.geocodeCard) {
             startingMapCenter = [searchMatch.latitude,searchMatch.longitude]
             startingZoom = 16
             searchMatch.routeMatches.forEach(route => {processRoute(route)})
         }
-        if(searchMatch.type=="stopMatch") {
-            startingMapCenter = [searchMatch.latitude,searchMatch.longitude]
+        else if(state.currentCard.type===Card.cardTypes.stopCard) {
+            startingMapCenter = [searchMatch.latitude, searchMatch.longitude]
             startingZoom = 16
-            searchMatch.routeMatches.forEach(route => {processRoute(route)})
+            searchMatch.routeMatches.forEach(route => {
+                processRoute(route)
+            })
         }
-    })}
+    })
 
     console.log("map route components", mapRouteComponents)
     console.log("map stop components", mapStopComponents)
