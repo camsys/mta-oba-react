@@ -932,15 +932,31 @@ button:hover, .button:hover {
   -webkit-box-shadow: 0px 0px 12px 0px rgba(0, 0, 0, 0.25);
           box-shadow: 0px 0px 12px 0px rgba(0, 0, 0, 0.25);
 }
-#sidebar .search-instructions {
-  padding: 1rem;
-  padding-top: 0;
+#sidebar #search .search-instructions {
+  padding: 0;
   background: #0E61A9;
   color: #fff;
+  overflow: hidden;
+  height: 30px;
+  -webkit-transition: max-height 0.25s ease-in-out;
+  transition: max-height 0.25s ease-in-out;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: flex-end;
 }
-#sidebar .search-instructions p {
+#sidebar #search .search-instructions p {
   font-size: 0.75em;
-  margin: 0 0 0;
+  margin: 0;
+}
+#sidebar #search .search-instructions.hidden {
+  max-height: 0;
 }
 #sidebar .sidebar-content {
   -webkit-box-flex: 1;

@@ -53,9 +53,6 @@ function getSideBar  () {
             </header>
             <GetSearch />
             <div className="sidebar-content">
-                <div className="search-instructions">
-                    <p>Enter an intersection, bus route or bus stop code.</p>
-                </div>
                 <div className="content" id="app">
                     <GetCardInfo />
                     <RefreshComponent/>

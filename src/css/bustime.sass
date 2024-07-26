@@ -308,8 +308,7 @@ button, .button
   width: 100%
   // background-color: $ui-gray
   background-color: $mta-blue
-  // overflow: hidden
-  
+  // overflow: hidden 
   position: relative 
   z-index: 1
   display: inline-flex
@@ -441,15 +440,21 @@ button, .button
       &--open
         opacity: 1
         box-shadow: 0px 0px 12px 0px rgba($black, 0.25)
-
-  .search-instructions 
-    padding: $content-padding
-    padding-top: 0
-    background: $mta-blue
-    color: $white
-    p
-      font-size: .75em
-      margin: 0 0 0
+    .search-instructions 
+      padding: 0
+      background: $mta-blue
+      color: $white
+      overflow: hidden
+      height: 30px
+      transition: max-height .25s ease-in-out
+      display: flex
+      flex-direction: column
+      justify-content: flex-end
+      p
+        font-size: .75em
+        margin: 0
+      &.hidden
+        max-height: 0
   .sidebar-content
     flex: 1 0 0
     overflow-x: hidden

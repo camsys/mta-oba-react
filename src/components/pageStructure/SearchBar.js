@@ -46,15 +46,18 @@ const SearchBar = () => {
     return (
         <ErrorBoundary>
             <div id="search">
-            <Autosuggest
-                suggestions={suggestions}
-                onSuggestionsFetchRequested={onSuggestionsFetchRequested}
-                onSuggestionsClearRequested={onSuggestionsClearRequested}
-                onSuggestionSelected={onSuggestionSelected}
-                getSuggestionValue={(suggestion) => suggestion.label}
-                renderSuggestion={(suggestion) => <div>{suggestion.label}</div>}
-                inputProps={inputProps}
-            />
+                <Autosuggest
+                    suggestions={suggestions}
+                    onSuggestionsFetchRequested={onSuggestionsFetchRequested}
+                    onSuggestionsClearRequested={onSuggestionsClearRequested}
+                    onSuggestionSelected={onSuggestionSelected}
+                    getSuggestionValue={(suggestion) => suggestion.label}
+                    renderSuggestion={(suggestion) => <div>{suggestion.label}</div>}
+                    inputProps={inputProps}
+                />
+                <div className="search-instructions">
+                    <p>Enter an intersection, bus route or bus stop code.</p>
+                </div>
             </div>
         </ErrorBoundary>
     );

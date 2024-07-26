@@ -86,6 +86,42 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
 
+ // its possible that its better to build this into react so i dont have to go so roundabout to get there?
+  const observer = new MutationObserver((mutationsList) => {
+      for (const mutation of mutationsList) {
+          if (mutation.type === 'childList') {
+              const sidebarContent = document.querySelector('.sidebar-content');
+              const searchInstructions = document.querySelector('.search-instructions');
+              var searchInstructionsHeight = '30'; // default height as defined in CSS 
+              if (sidebarContent && searchInstructions) {
+                  sidebarContent.addEventListener('scroll', {
+                    handleEvent(event) {
+                      var scrollTop = event.target.scrollTop;
+                      window.console.log('boop ' + scrollTop);
+                      // check if amount sidebarContent is overflowed is more than searchInstructionsHeight
+                      // this avoids a weird jittery scroll jiggle if the sidebarContent is just barely overflowing
+                      var overFlowAmount = sidebarContent.scrollHeight - sidebarContent.clientHeight;
+                      if (overFlowAmount > searchInstructionsHeight) {
+                        if (scrollTop <= searchInstructionsHeight) {
+                          // set height to difference between scrolltop and searchInstructionsHeight
+                          searchInstructions.style.height = (searchInstructionsHeight - scrollTop) + 'px';
+                        } else if (scrollTop > searchInstructionsHeight) {
+                          searchInstructions.style.height = '0';
+                        } else {
+                          searchInstructions.style.height = '';
+                        }
+                      }
+                    },
+                  });
+                  observer.disconnect(); // Stop observing once the element is found
+                  break;
+              }
+          }
+      }
+  });
+
+  // Start observing the document body for childList changes
+  observer.observe(document.body, { childList: true, subtree: true });
 
 
 });
