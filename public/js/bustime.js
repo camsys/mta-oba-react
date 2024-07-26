@@ -96,11 +96,11 @@ document.addEventListener('DOMContentLoaded', function() {
         if (sidebarContent && searchInstructions) {
           sidebarContent.addEventListener('scroll', {
             handleEvent(event) {
-              var scrollTop = event.target.scrollTop;
-              window.console.log('boop ' + scrollTop);
+              scrollTop = event.target.scrollTop;
+              // window.console.log('boop ' + scrollTop);
               // check if amount sidebarContent is overflowed is more than searchInstructionsHeight
               // this avoids a weird jittery scroll jiggle if the sidebarContent is just barely overflowing
-              var overFlowAmount = sidebarContent.scrollHeight - sidebarContent.clientHeight;
+              overFlowAmount = sidebarContent.scrollHeight - sidebarContent.clientHeight;
               if (overFlowAmount > searchInstructionsHeight) {
                 if (scrollTop <= searchInstructionsHeight) {
                   // set height to difference between scrolltop and searchInstructionsHeight
