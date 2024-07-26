@@ -9,8 +9,10 @@ import {MapHighlightingStateContext} from "../util/MapHighlightingStateComponent
 
 const prettyArrivalTime = (arrivalTime,updateTime) =>{
     console.log("getting pretty time for ",arrivalTime)
-    return (arrivalTime===null || updateTime===null)? "" :
+    return (arrivalTime==="null" || typeof updateTime==="undefined")? "" :
         `${OBA.Util.getArrivalEstimateForISOString(arrivalTime,updateTime)},`
+    if(out==="null,"){console.error("found null bug for VehicleCard, check arrival times is there a weird result?")}
+    return typeof out==="undefined" || out===null || out==="null,"?"":out
 }
 
 
