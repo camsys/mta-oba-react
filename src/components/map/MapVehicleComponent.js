@@ -13,7 +13,7 @@ const COMPONENT_IDENTIFIER = "MapVehicleComponent"
 
 
 function MapVehicleComponent  (vehicleData,state, setState,targetVehicleId) {
-    OBA.Util.trace('generating vehicle: ' + vehicleData.vehicleId)
+    console.log('generating mapVehicle: ',vehicleData.vehicleId,vehicleData)
     let imgDegrees = vehicleData.direction - vehicleData.direction%5
     OBA.Util.trace("img degrees" + imgDegrees)
     let scheduled = vehicleData.hasRealtime?"":"scheduled/"
@@ -48,20 +48,12 @@ function MapVehicleComponent  (vehicleData,state, setState,targetVehicleId) {
         id: COMPONENT_IDENTIFIER+"_"+vehicleData.longLat
     };
 
-    const markerRef = useRef();
 
-    useEffect(() => {
-        if (markerRef.current) {
-            console.log("findme",targetVehicleId)
-            if(targetVehicleId!==null && typeof targetVehicleId!=='undefined' && targetVehicleId==vehicleData.vehicleId)
-            markerRef.current.openPopup();
-        }
-    }, []);
+    console.log("mapVehicle key: ",COMPONENT_IDENTIFIER+"_"+vehicleData.longLat,vehicleData.vehicleId,vehicleData)
 
 
     let out = (<Marker {...markerOptions}
-                       eventHandlers={{click : ()=>{selectVehicle(vehicleData)}}}
-                       ref={markerRef}>
+                       eventHandlers={{click : ()=>{selectVehicle(vehicleData)}}}>
         <Popup key={vehicleData.vehicleId+"_"+vehicleData.longLat} className="map-popup vehicle-popup">
             <img src={vehicleData.strollerVehicle?busStroller:bus} alt="bus" className="icon"/>
             <div className="popup-info">
