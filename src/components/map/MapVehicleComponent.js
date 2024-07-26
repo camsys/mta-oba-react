@@ -1,5 +1,5 @@
 import {OBA} from "../../js/oba";
-import React, {useContext} from "react";
+import React, {useContext, useEffect, useRef} from "react";
 import {Marker, Popup} from "react-leaflet";
 import L from "leaflet";
 import bus from "../../img/icon/bus.svg";
@@ -12,7 +12,7 @@ const COMPONENT_IDENTIFIER = "MapVehicleComponent"
 
 
 
-function MapVehicleComponent  (vehicleData,state, setState) {
+function MapVehicleComponent  (vehicleData,state, setState,targetVehicleId) {
     OBA.Util.trace('generating vehicle: ' + vehicleData.vehicleId)
     let imgDegrees = vehicleData.direction - vehicleData.direction%5
     OBA.Util.trace("img degrees" + imgDegrees)
@@ -48,10 +48,20 @@ function MapVehicleComponent  (vehicleData,state, setState) {
         id: COMPONENT_IDENTIFIER+"_"+vehicleData.longLat
     };
 
+    const markerRef = useRef();
+
+    useEffect(() => {
+        if (markerRef.current) {
+            console.log("findme",targetVehicleId)
+            if(targetVehicleId!==null && typeof targetVehicleId!=='undefined' && targetVehicleId==vehicleData.vehicleId)
+            markerRef.current.openPopup();
+        }
+    }, []);
 
 
-
-    let out = (<Marker {...markerOptions} eventHandlers={{click : ()=>{selectVehicle(vehicleData)}}}>
+    let out = (<Marker {...markerOptions}
+                       eventHandlers={{click : ()=>{selectVehicle(vehicleData)}}}
+                       ref={markerRef}>
         <Popup key={vehicleData.vehicleId+"_"+vehicleData.longLat} className="map-popup vehicle-popup">
             <img src={vehicleData.strollerVehicle?busStroller:bus} alt="bus" className="icon"/>
             <div className="popup-info">

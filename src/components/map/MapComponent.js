@@ -32,7 +32,7 @@ const MapVehicleElements = ({routeIds}) =>{
             let vehicleDataForRoute = vehicleState[routeId+vehicleDataIdentifier]
             if(vehicleDataForRoute!=null){
                 console.log(`processing {vehicleDataForRoute}`,vehicleDataForRoute)
-                vehicleDataForRoute.forEach(datum=>{mapVehicleComponents.push(new MapVehicleComponent(datum,state, setState))});
+                vehicleDataForRoute.forEach(datum=>{mapVehicleComponents.push(new MapVehicleComponent(datum,state, setState,state.currentCard.vehicleId))});
             }
             console.log("map vehicle components", mapVehicleComponents)
         })
