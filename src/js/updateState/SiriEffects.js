@@ -140,7 +140,7 @@ const siriGetVehiclesForAddressesEffect = (targetAddresses,vehicleState, setStat
         let dataObjsList = returnedPromises.filter(
             (result) => result !== null && typeof result !== "undefined")
             .map(
-                ([routeId, vehicleDataList, serviceAlertDataList, stopsToVehicles],lastCallTime) => {
+                ([routeId, vehicleDataList, serviceAlertDataList, stopsToVehicles, lastCallTime]) => {
                     let dataObj = {}
                     dataObj[routeId + serviceAlertDataIdentifier] = serviceAlertDataList
                     dataObj[routeId + vehicleDataIdentifier] = vehicleDataList
