@@ -648,10 +648,6 @@ button, .button
     border-bottom: $thick-border solid $mta-blue
   >.card-content
     +card-pad-sides
-  &.collapsible
-    &.open
-      >.card-content
-        +card-pad
 
 .inner-card
   margin: 0
@@ -664,8 +660,6 @@ button, .button
   .card-header
     border: none
     background: transparent
-  .card-content
-    padding: 0 $content-padding
   &:not(.service-alert)
     >.card-header
       padding-left: 0
@@ -678,11 +672,15 @@ button, .button
       font-weight: bold
       border-bottom: 0px solid $mta-yellow
       transition: border-bottom .25s ease-in-out
+    .card-content
+      padding: 0 $content-padding
+      p
+        &:first-child
+          margin-top: $content-padding
+          
     &.open
       .card-header
         border-bottom: $thick-border solid $mta-yellow
-      .card-content
-        padding: $content-padding
     &:last-child
       margin-bottom: $content-padding/2
   &.route-direction

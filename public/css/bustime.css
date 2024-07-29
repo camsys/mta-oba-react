@@ -1291,9 +1291,6 @@ button:hover, .button:hover {
 .card > .card-content {
   padding: 0 0.5rem;
 }
-.card.collapsible.open > .card-content {
-  padding: 1rem 0.5rem 0.875rem 0.5rem;
-}
 
 .inner-card {
   margin: 0;
@@ -1308,9 +1305,6 @@ button:hover, .button:hover {
 .inner-card .card-header {
   border: none;
   background: transparent;
-}
-.inner-card .card-content {
-  padding: 0 1rem;
 }
 .inner-card:not(.service-alert) > .card-header {
   padding-left: 0;
@@ -1328,11 +1322,14 @@ button:hover, .button:hover {
   -webkit-transition: border-bottom 0.25s ease-in-out;
   transition: border-bottom 0.25s ease-in-out;
 }
+.inner-card.service-alert .card-content {
+  padding: 0 1rem;
+}
+.inner-card.service-alert .card-content p:first-child {
+  margin-top: 1rem;
+}
 .inner-card.service-alert.open .card-header {
   border-bottom: 4px solid #f2a900;
-}
-.inner-card.service-alert.open .card-content {
-  padding: 1rem;
 }
 .inner-card.service-alert:last-child {
   margin-bottom: 0.5rem;
