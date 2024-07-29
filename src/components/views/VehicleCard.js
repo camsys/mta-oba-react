@@ -21,14 +21,14 @@ export const VehicleCardContentComponent = (props) =>{
     const search = (searchterm) =>{
         fetchSearchData(state, setState, searchterm.split("_")[1])
     }
-    let { routeMatch, vehicleDatum,lastUpdateTime} = props;
+    let { routeMatch, vehicleId, vehicleDatum,lastUpdateTime} = props;
     console.log("generating vehicleCardContentComponent for ",vehicleDatum.vehicleId)
     return(
         <React.Fragment>
             <ul className="card-details">
                 <li className="vehicle-info">
-                    <span className="vehicle">{`Vehicle #${vehicleDatum.vehicleId.split("_")[1]}`}</span>
-                    {vehicleDatum.strollerVehicle?<span className="stroller">Stroller storage available</span>:null}
+                    <span className="vehicle">{`Vehicle #${vehicleId.split("_")[1]}`}</span>
+                    {vehicleDatum?.strollerVehicle?<span className="stroller">Stroller storage available</span>:null}
                 </li>
                 {vehicleDatum.passengerCount != null && (
                     vehicleDatum.passengerCapacity != null ? (
@@ -41,12 +41,13 @@ export const VehicleCardContentComponent = (props) =>{
             <h4>Next Stops:</h4>
             <ul className="next-stops route-stops" style={{ borderColor: '#'+routeMatch.color}}>
                 {
+                    vehicleDatum?.vehicleArrivalData!=null?
                     vehicleDatum.vehicleArrivalData.map(vehicleArrival=>{
                         return(<li>
                             <a href="#" onClick={() => search(vehicleArrival.stopId)}>{vehicleArrival.stopName}</a>
                             <span className="stop-details">{prettyArrivalTime(vehicleArrival.ISOTime,lastUpdateTime)} {vehicleArrival.prettyDistance}</span>
                         </li>)
-                    })
+                    }) :null
                 }
             </ul>
         </React.Fragment>
@@ -84,7 +85,7 @@ const VehicleCard = (routeMatch,vehicleId) => {
                 </h3>
             </div>
             <div className="card-content">
-                <VehicleCardContentComponent {...{ routeMatch, vehicleDatum,lastUpdateTime}}/>
+                <VehicleCardContentComponent {...{ routeMatch, vehicleId,vehicleDatum,lastUpdateTime}}/>
                 <ServiceAlertContainerComponent/>
             </div>
         </div>
