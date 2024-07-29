@@ -51,11 +51,30 @@ import {OBA} from "../oba";
                 console.log("processing service alert:", situationElement)
                 let effects = situationElement.Affects.VehicleJourneys.AffectedVehicleJourney
                 console.log(effects)
+                const routesWithServiceAlerts = {}
                 effects.forEach((effect)=>{
                     let delim = "_"
                     // todo: externalize target for ease of reference & to easily generate multiple target types
-                    let serviceAlertTarget = effect?.LineRef + delim + effect?.DirectionRef
-                    let alerts = serviceAlertDataMap.get(serviceAlertTarget)
+                    let serviceAlertTarget = effect?.LineRef
+                    let alerts
+                    // if(routesWithServiceAlerts[serviceAlertTarget]===null){
+                    //     alerts = serviceAlertDataMap.get(serviceAlertTarget)
+                    //     alerts = alerts==null? [] : alerts
+                    //     alerts.push(new serviceAlertData(situationElement))
+                    //     console.log("adding service alert: ",serviceAlertTarget,alerts)
+                    //     serviceAlertDataMap.set(serviceAlertTarget,alerts)
+                    //     routesWithServiceAlerts[serviceAlertTarget] = alerts
+                    // }
+
+                    alerts = serviceAlertDataMap.get(serviceAlertTarget)
+                    alerts = alerts==null? [] : alerts
+                    alerts.push(new serviceAlertData(situationElement))
+                    console.log("adding service alert: ",serviceAlertTarget,alerts)
+                    serviceAlertDataMap.set(serviceAlertTarget,alerts)
+
+
+                    serviceAlertTarget = effect?.LineRef + delim + effect?.DirectionRef
+                    alerts = serviceAlertDataMap.get(serviceAlertTarget)
                     alerts = alerts==null? [] : alerts
                     alerts.push(new serviceAlertData(situationElement))
                     console.log("adding service alert: ",serviceAlertTarget,alerts)

@@ -13,6 +13,8 @@ export class StopData {
 export class serviceAlertData {
     constructor(serviceAlertJson) {
         this.json = serviceAlertJson
+        this.descriptionParts = serviceAlertJson.Description.split("\n")
+        this.title = serviceAlertJson.Summary
     }
 }
 

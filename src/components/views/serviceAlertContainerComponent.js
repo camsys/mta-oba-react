@@ -2,10 +2,19 @@ import React, {useContext, useEffect, useState} from "react";
 import ServiceAlertComponent from "./serviceAlertComponent"
 import {CardStateContext} from "../../components/util/CardStateComponent";
 import queryString from "query-string";
+import {serviceAlertDataIdentifier, vehicleDataIdentifier, VehicleStateContext} from "../util/VehicleStateComponent";
 
-function getServiceAlertContainerComponent  () {
-    const {state} = useContext(CardStateContext);
-    const lineRef = queryString.parse(location.search).LineRef;
+function getServiceAlertContainerComponent  (props) {
+    console.log("generating service alert component")
+    const { vehicleState} = useContext(VehicleStateContext)
+    let { routeId,serviceAlertIdentifier} = props;
+    routeId=routeId.split("_")[1]
+    console.log("getting service alert data",vehicleState,routeId+serviceAlertDataIdentifier,serviceAlertIdentifier)
+    let routeServiceAlerts = vehicleState[routeId+serviceAlertDataIdentifier]
+    if(routeServiceAlerts===null||typeof routeServiceAlerts==="undefined"){return null}
+    let serviceAlertDatum = vehicleState[routeId+serviceAlertDataIdentifier].get(serviceAlertIdentifier)
+    console.log("service alert datum found",serviceAlertDatum)
+    if(serviceAlertDatum===null||typeof serviceAlertDatum==="undefined"){return null}
     return (<div className="service-alert inner-card collapsible">
         <button className="card-header collapse-trigger" aria-haspopup="true"
                 aria-expanded="false" aria-label="Toggle Service Alert Open/Closed">
@@ -18,10 +27,10 @@ function getServiceAlertContainerComponent  () {
                               d="M9.99974 5.88691C10.5917 5.88691 11.0716 6.36681 11.0716 6.95879V11.6036C11.0716 12.1956 10.5917 12.6755 9.99974 12.6755C9.40776 12.6755 8.92785 12.1956 8.92785 11.6036V6.95879C8.92785 6.36681 9.40776 5.88691 9.99974 5.88691ZM11.4289 15.5339C11.4289 16.3232 10.789 16.963 9.99974 16.963C9.21043 16.963 8.57056 16.3232 8.57056 15.5339C8.57056 14.7445 9.21043 14.1047 9.99974 14.1047C10.789 14.1047 11.4289 14.7445 11.4289 15.5339Z"/>
                       </svg>
                     </span>
-            <span className="label">Service Alert for {lineRef}</span>
+            <span className="label">Service Alert for {routeId}</span>
         </button>
-        <ServiceAlertComponent/>
-    </div>) 
+        <ServiceAlertComponent {...{serviceAlertDatum}}/>
+    </div>)
 }
 
 export default getServiceAlertContainerComponent;   
