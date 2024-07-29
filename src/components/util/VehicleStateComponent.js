@@ -21,5 +21,7 @@ const VehicleStateProvider = ({children}) => {
 const vehicleDataIdentifier = "_vehicleData"
 const serviceAlertDataIdentifier = "_serviceAlertData"
 const updatedTimeIdentifier = "_updatedAt"
+const stopSortedDataIdentifier = "_vehicleDataSortedByStop"
 
-export { VehicleStateProvider, VehicleStateContext,vehicleDataIdentifier,updatedTimeIdentifier,serviceAlertDataIdentifier };
+export { VehicleStateProvider, VehicleStateContext,vehicleDataIdentifier,
+    updatedTimeIdentifier,serviceAlertDataIdentifier,stopSortedDataIdentifier };

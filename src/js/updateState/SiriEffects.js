@@ -4,7 +4,7 @@ import {
     serviceAlertDataIdentifier,
     vehicleDataIdentifier,
     updatedTimeIdentifier,
-    VehicleStateContext
+    VehicleStateContext, stopSortedDataIdentifier
 } from "../../components/util/VehicleStateComponent";
 import {OBA} from "../oba";
 
@@ -28,15 +28,21 @@ import {OBA} from "../oba";
         serviceAlertActivity = serviceAlertActivity==null? null :serviceAlertActivity[0]?.Situations?.PtSituationElement
         console.log("service alerts found:", serviceAlertActivity)
 
-        let [vehicleDataMap,serviceAlertDataMap] = [new Map(), new Map()]
-        console.log([vehicleDataMap,serviceAlertDataMap])
+        let [vehicleDataMap,serviceAlertDataMap,stopsToVehiclesMap] = [new Map(), new Map(),new Map()]
+        console.log([vehicleDataMap,serviceAlertDataMap,stopsToVehiclesMap])
         if (vehicleActivity != null && vehicleActivity.length != 0) {
             update = true;
             for (let i = 0; i < vehicleActivity.length; i++) {
                 OBA.Util.trace("processing vehicle #" + i);
                 let mvj = vehicleActivity[i].MonitoredVehicleJourney
-                vehicleDataMap.set(mvj.VehicleRef,new vehicleData(mvj))
-                // console.log("processing mvj: ",mvj)
+                let vehicleDatum = new vehicleData(mvj)
+                vehicleDataMap.set(mvj.VehicleRef,vehicleDatum)
+                let vehicles = stopsToVehiclesMap.get(vehicleDatum.nextStop)
+                if(vehicles===null || typeof vehicles === "undefined"){
+                    vehicles = []
+                    stopsToVehiclesMap.set(vehicleDatum.nextStop,vehicles)
+                }
+                vehicles.push(vehicleDatum)
             };
             OBA.Util.log('processed vehicles')
         } else {
@@ -82,13 +88,13 @@ import {OBA} from "../oba";
                 })
                 console.log("processing service alert: ",situationElement)
             };
-            console.log("maps made via siri: ",[vehicleDataMap,serviceAlertDataMap])
+            console.log("maps made via siri: ",[vehicleDataMap,serviceAlertDataMap,stopsToVehiclesMap])
             OBA.Util.log('processed '+keyword)
         } else {
             OBA.Util.log('no '+keyword+' recieved. not processing '+keyword)
         }
-        OBA.Util.log(keyword+" post process")
-        return [[routeId,vehicleDataMap,serviceAlertDataMap,lastCallTime],update]
+        console.log("maps made via siri: ",[vehicleDataMap,serviceAlertDataMap,stopsToVehiclesMap])
+        return [[routeId,vehicleDataMap,serviceAlertDataMap,stopsToVehiclesMap,lastCallTime],update]
     }
 
 
@@ -134,16 +140,18 @@ const siriGetVehiclesForAddressesEffect = (targetAddresses,vehicleState, setStat
         let dataObjsList = returnedPromises.filter(
             (result) => result !== null && typeof result !== "undefined")
             .map(
-                ([routeId, vehicleDataList, serviceAlertDataList, lastCallTime]) => {
+                ([routeId, vehicleDataList, serviceAlertDataList, stopsToVehicles],lastCallTime) => {
                     let dataObj = {}
                     dataObj[routeId + serviceAlertDataIdentifier] = serviceAlertDataList
                     dataObj[routeId + vehicleDataIdentifier] = vehicleDataList
                     dataObj[routeId + updatedTimeIdentifier] = lastCallTime
+                    dataObj[routeId + stopSortedDataIdentifier] = stopsToVehicles
                     return dataObj
                 })
         if (dataObjsList.length === 0) {
             return null
         }
+        console.log("combining siri objs",dataObjsList)
         let siriCombinedDataObj = dataObjsList.reduce((combinedRoutes, vehiclesForRouteObj) => {
             Object.entries(vehiclesForRouteObj).forEach(
                 ([routeInfoIdentifier, routeObj]) => {

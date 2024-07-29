@@ -40,6 +40,7 @@ export class vehicleData {
         this.longLat.push(mvj.VehicleLocation.Longitude)
         this.destination = mvj.DestinationName
         this.hasRealtime = mvj.Monitored;
+        this.nextStop = null
         this.vehicleArrivalData = []
         if(this.hasRealtime!=null  && typeof this.hasRealtime !='undefined'
             && mvj?.MonitoredCall !== null && typeof mvj?.MonitoredCall !='undefined') {
@@ -47,6 +48,7 @@ export class vehicleData {
             this.strollerVehicle = mc.Extensions.VehicleFeatures.StrollerVehicle
             this.passengerCount = mc?.Extensions?.Capacities?.EstimatedPassengerCount
             this.passengerCapacity = mc?.Extensions?.Capacities?.EstimatedPassengerCapacity
+            this.nextStop = mc?.StopPointRef
             if (this.passengerCount != null) {
                 console.log("found passenger count", this)
             }
