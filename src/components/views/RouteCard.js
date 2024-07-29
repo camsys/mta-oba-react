@@ -18,13 +18,13 @@ function getRouteCard (routeMatch){
                 highlightedComponentId:id}})
         }
     }
-    let routeId = routeMatch.routeId
-    let serviceAlertIdentifier = routeId
+    let routeId = routeMatch.routeId.split("_")[1]
+    let serviceAlertIdentifier = routeMatch.routeId
     return(
         <React.Fragment>
             <div className={`card route-card {routeMatch.routeId}`}>
                 <div className="card-header" style={{ borderColor: '#'+routeMatch.color}}
-                     onMouseEnter={() => setHoveredItemId(routeId)}
+                     onMouseEnter={() => setHoveredItemId(routeMatch.routeId)}
                      onMouseLeave={() => setHoveredItemId(null)}>
                     <h3 className="card-title">{OBA.Config.noWidows(routeMatch.routeTitle)}</h3>
                 </div>

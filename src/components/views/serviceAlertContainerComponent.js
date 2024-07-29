@@ -8,12 +8,11 @@ function getServiceAlertContainerComponent  (props) {
     console.log("generating service alert component")
     const { vehicleState} = useContext(VehicleStateContext)
     let { routeId,serviceAlertIdentifier} = props;
-    routeId=routeId.split("_")[1]
     console.log("getting service alert data",vehicleState,routeId+serviceAlertDataIdentifier,serviceAlertIdentifier)
     let routeServiceAlerts = vehicleState[routeId+serviceAlertDataIdentifier]
     if(routeServiceAlerts===null||typeof routeServiceAlerts==="undefined"){return null}
     let serviceAlertDatum = vehicleState[routeId+serviceAlertDataIdentifier].get(serviceAlertIdentifier)
-    console.log("service alert datum found",serviceAlertDatum)
+    console.log("service alert datum found from state",serviceAlertDatum)
     if(serviceAlertDatum===null||typeof serviceAlertDatum==="undefined"){return null}
     return (<div className="service-alert inner-card collapsible">
         <button className="card-header collapse-trigger" aria-haspopup="true"

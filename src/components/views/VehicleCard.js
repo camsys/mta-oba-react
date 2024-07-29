@@ -73,7 +73,7 @@ const VehicleCard = (routeMatch,vehicleId) => {
     let vehicleDatum = vehicleState[routeId+vehicleDataIdentifier].get(vehicleId)
     let lastUpdateTime = OBA.Util.ISO8601StringToDate(vehicleState[routeId+updatedTimeIdentifier]).getTime()
     console.log("generating VehicleCard ",routeId,vehicleDatum)
-    let serviceAlertIdentifier = routeId
+    let serviceAlertIdentifier = routeMatch.routeId
     return (
         <div className={`card vehicle-card ${routeMatch.routeId}`}>
             <div className="card-header" style={{ borderColor: '#'+routeMatch.color}}
