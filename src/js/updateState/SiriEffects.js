@@ -25,7 +25,7 @@ import {OBA} from "../oba";
         vehicleActivity = vehicleActivity!=null ? vehicleActivity[0]?.VehicleActivity : null
         console.log("vehicles found:",vehicleActivity)
         let serviceAlertActivity = siri?.Siri?.ServiceDelivery?.SituationExchangeDelivery
-        serviceAlertActivity = serviceAlertActivity==null? null :serviceAlertActivity[0]?.Situations
+        serviceAlertActivity = serviceAlertActivity==null? null :serviceAlertActivity[0]?.Situations?.PtSituationElement
         console.log("service alerts found:", serviceAlertActivity)
 
         let [vehicleDataMap,serviceAlertDataMap] = [new Map(), new Map()]
@@ -45,11 +45,10 @@ import {OBA} from "../oba";
         // todo: setup service alerts
         if (serviceAlertActivity != null) {
             update = true;
+            console.log("service alerts found:", serviceAlertActivity)
             for (let i = 0; i < serviceAlertActivity.length; i++) {
-                console.log("service alerts found:", serviceAlertActivity)
-                OBA.Util.trace("processing "+keyword+"#" + i);
-                let situationElement = vehicleActivity[i]?.PtSituationElement
-                console.log(situationElement)
+                let situationElement = serviceAlertActivity[i]
+                console.log("processing service alert:", situationElement)
                 let effects = situationElement.Affects.VehicleJourneys.AffectedVehicleJourney
                 console.log(effects)
                 effects.forEach((effect)=>{
