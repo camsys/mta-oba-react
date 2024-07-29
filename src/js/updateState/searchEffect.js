@@ -114,7 +114,11 @@ import {siriGetVehiclesForRoutesEffect} from "./SiriEffects";
     }
 
     const performNewSearch = (searchRef,currentCard) =>{
-        if(currentCard?.searchTerm == searchRef){
+        if(currentCard.type === Card.cardTypes.vehicleCard){
+            // this only works because vehicle searches are handled elsewhere
+            return true
+        }
+        else if(currentCard?.searchTerm == searchRef){
             return false
         }
         return true

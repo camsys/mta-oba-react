@@ -75,6 +75,19 @@ OBA.Config = {
         _gaq.push(['_trackEvent', "Desktop Web", type, value]);
     },
 
+    noWidows: function(str) {
+        // Find the index of the last space
+        let lastSpaceIndex = str.lastIndexOf(' ');
+
+        // If there is no space, return the original string
+        if (lastSpaceIndex === -1) {
+            return str;
+        }
+
+        // Replace the last space with a non-breaking space
+        return str.substring(0, lastSpaceIndex) + '\u00A0' + str.substring(lastSpaceIndex + 1);
+    },
+
     loadLocationIcons: function() {
         var locationIcons = [], activeLocationIcons = [];
         var size = [24, 32],

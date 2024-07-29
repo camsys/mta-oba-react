@@ -39,7 +39,7 @@ export const VehicleCardContentComponent = (props) =>{
                 )}
             </ul>
             <h4>Next Stops:</h4>
-            <ul className="next-stops route-stops" style={{ borderColor: '#'+routeMatch.color}}>
+            <ul className="next-stops route-stops" style={{ color: '#'+routeMatch.color}}>
                 {
                     vehicleDatum?.vehicleArrivalData!=null?
                     vehicleDatum.vehicleArrivalData.map(vehicleArrival=>{
@@ -56,11 +56,11 @@ export const VehicleCardContentComponent = (props) =>{
 
 const VehicleCard = (routeMatch,vehicleId) => {
 
-    const {mapHighlightingState, setState} = useContext(MapHighlightingStateContext);
+    const {mapHighlightingState, setHighlightingState} = useContext(MapHighlightingStateContext);
     const setHoveredItemId = (id) =>{
         console.log("highlighting: ",id)
         if(mapHighlightingState.highlightedComponentId!=id){
-            setState((prevState)=>{return {
+            setHighlightingState((prevState)=>{return {
                 ...prevState,
                 highlightedComponentId:id}})
         }
@@ -68,6 +68,7 @@ const VehicleCard = (routeMatch,vehicleId) => {
 
 
     const { vehicleState} = useContext(VehicleStateContext)
+    const {state, setState} = useContext(CardStateContext)
     let routeId = routeMatch.routeId.split("_")[1];
     let vehicleDatum = vehicleState[routeId+vehicleDataIdentifier].get(vehicleId)
     let lastUpdateTime = OBA.Util.ISO8601StringToDate(vehicleState[routeId+updatedTimeIdentifier]).getTime()
@@ -77,11 +78,11 @@ const VehicleCard = (routeMatch,vehicleId) => {
             <div className="card-header" style={{ borderColor: '#'+routeMatch.color}}
                  onMouseEnter={() => setHoveredItemId(routeMatch.routeId)}
                  onMouseLeave={() => setHoveredItemId(null)}>
-                <h3 className="card-title">
+                <h3 className="card-title" onClick={() => fetchSearchData(state, setState, routeMatch.routeId.split("_")[1])}>
                     {/*determine bus-stroller via vehicleDatum*/}
                     <img src={vehicleDatum.strollerVehicle?"/img/icon/bus-stroller.svg":"/img/icon/bus.svg"}
                          alt={vehicleDatum.strollerVehicle?"bus and stroller icon":"bus icon"} className="icon" />
-                    {routeMatch.routeTitle}
+                    {OBA.Config.noWidows(routeMatch.routeTitle)}
                 </h3>
             </div>
             <div className="card-content">

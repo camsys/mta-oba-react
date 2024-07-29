@@ -23,7 +23,8 @@ export default function getRouteDirectionComponent(routeDirectionComponentDatum,
                 {/*this should be broken out into a component which re-renders when the stops call completes*/}
                 {/* this ul needs to get the route color applied in the style attribute, says becky */}
                 {/*todo: fix this.*/}
-                <ul className="route-stops" styles="color: #00AEEF;" key="test">
+
+                <ul className="route-stops" style={{ color: '#'+color}}>
                     {console.log("preparing to get RouteStopComponents from: ", routeDirectionComponentDatum)}
                     {
                         getRouteStopComponents(routeDirectionComponentDatum.routeStopComponentsData)

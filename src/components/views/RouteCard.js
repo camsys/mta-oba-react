@@ -8,12 +8,12 @@ import {MapHighlightingStateContext} from "../util/MapHighlightingStateComponent
 
 function getRouteCard (routeMatch){
     console.log("generating route card: ",routeMatch)
-    const {mapHighlightingState, setState} = useContext(MapHighlightingStateContext);
+    const {mapHighlightingState, setHighlightingState} = useContext(MapHighlightingStateContext);
 
     const setHoveredItemId = (id) =>{
         console.log("highlighting: ",id)
         if(mapHighlightingState.highlightedComponentId!=id){
-            setState((prevState)=>{return {
+            setHighlightingState((prevState)=>{return {
                 ...prevState,
                 highlightedComponentId:id}})
         }
@@ -24,14 +24,14 @@ function getRouteCard (routeMatch){
                 <div className="card-header" style={{ borderColor: '#'+routeMatch.color}}
                      onMouseEnter={() => setHoveredItemId(routeMatch.routeId)}
                      onMouseLeave={() => setHoveredItemId(null)}>
-                    <h3 className="card-title">{routeMatch.routeTitle}</h3>
+                    <h3 className="card-title">{OBA.Config.noWidows(routeMatch.routeTitle)}</h3>
                 </div>
                 <div className="card-content">
                     <ul className="card-details">
                         <li className="via">{routeMatch.description}</li>
                     </ul>
                     <ServiceAlertContainerComponent/>
-                    {routeMatch.directions.map(dir=>{return new getRouteDirectionComponent(dir.routeDirectionComponentData)})}
+                    {routeMatch.directions.map(dir=>{return new getRouteDirectionComponent(dir.routeDirectionComponentData,routeMatch.color)})}
                 </div>
             </div>
         </React.Fragment>
