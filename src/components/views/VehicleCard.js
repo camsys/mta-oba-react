@@ -71,8 +71,8 @@ const VehicleCard = (routeMatch,vehicleId) => {
     const {state, setState} = useContext(CardStateContext)
     let routeId = routeMatch.routeId.split("_")[1];
     let vehicleDatum = vehicleState[routeId+vehicleDataIdentifier].get(vehicleId)
+    console.log("generating VehicleCard ",routeId,vehicleDatum,vehicleState[routeId+updatedTimeIdentifier])
     let lastUpdateTime = OBA.Util.ISO8601StringToDate(vehicleState[routeId+updatedTimeIdentifier]).getTime()
-    console.log("generating VehicleCard ",routeId,vehicleDatum)
     let serviceAlertIdentifier = routeMatch.routeId
     return (
         <div className={`card vehicle-card ${routeMatch.routeId}`}>

@@ -1,16 +1,24 @@
 import React from "react";
 
-function getRouteVehicleComponent(){
-    return(<ul className="approaching-buses"> <li><a href="/?content=route-b-38_vehicle&search=B38&refresh=true&vehicle-popup=true" className="bus">7619</a></li></ul>)
-    // <ul className="approaching-buses">
-    //     <li>
-    //         <a href="/?content=route-b-38_vehicle&search=B38&refresh=true&vehicle-popup=true"
-    //             className="bus">7619</a>
-    //         <span className="bus-info">
-    //           <span className="approaching">&lt;1 stop away</span>
-    //           <span className="passengers">~16 passengers</span>
-    //         </span>
-    //     </li>
-    // </ul>
+function RouteVehicleComponent(vehicleDatum){
+    console.log("generating RouteVehicleComponent",vehicleDatum)
+    return(
+        <li>
+            <a href="/?content=route-b-38_vehicle&search=B38&refresh=true&vehicle-popup=true"
+               className="bus">{vehicleDatum.vehicleId.split("_")[1]}</a>
+            <span className="bus-info">
+            <span className="approaching">{typeof vehicleDatum?.vehicleArrivalData!=='undefined'?
+                vehicleDatum?.vehicleArrivalData?.[0].prettyDistance:null}</span>
+            <span className="passengers">{vehicleDatum.passengerCount != null && (
+                vehicleDatum.passengerCapacity != null ?
+                    <li className="passengers">{`~${(vehicleDatum.passengerCount / vehicleDatum.passengerCapacity) * 100}% full`}</li>
+                    :
+                    <li className="passengers">{`~${vehicleDatum.passengerCount} passengers`}</li>
+                )}
+            </span>
+        </span>
+        </li>
+    )
+
 }
-export default getRouteVehicleComponent
+export default RouteVehicleComponent
