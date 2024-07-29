@@ -5,7 +5,7 @@ function RouteVehicleComponent(vehicleDatum){
     return(
         <li>
             <a href="/?content=route-b-38_vehicle&search=B38&refresh=true&vehicle-popup=true"
-               className="bus">{vehicleDatum.vehicleId.split("_")[1]}</a>
+               className={vehicleDatum?.strollerVehicle?"bus stroller-friendly":"bus"}>{vehicleDatum.vehicleId.split("_")[1]}</a>
             <span className="bus-info">
             <span className="approaching">{typeof vehicleDatum?.vehicleArrivalData!=='undefined'?
                 vehicleDatum?.vehicleArrivalData?.[0].prettyDistance:null}</span>
