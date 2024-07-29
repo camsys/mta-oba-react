@@ -55,7 +55,7 @@ function getSideBar  () {
             <div className="sidebar-content">
                 <div className="content" id="app">
                     <GetCardInfo />
-                    <RefreshComponent/>
+                    {state.currentCard.type === Card.cardTypes.homeCard ? null : <RefreshComponent/>}
                 </div>
                 <div className="footer" id="footer">
                     <GetFooter />
