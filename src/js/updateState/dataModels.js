@@ -156,6 +156,8 @@ export class stopMatch extends searchMatch{
         super("stopMatch");
         let latitude
         let longitude
+        let name
+        let id
     }
 }
 

@@ -12,7 +12,7 @@ import {Card} from "../../js/updateState/dataModels"
 import RefreshComponent from "../views/refreshComponent";
 import VehicleCard from "../views/VehicleCard";
 import siriVehiclesEffect from "../../js/updateState/SiriEffects";
-import {StopCard} from "../views/StopCard";
+import {StopCardWrapper} from "../views/StopCardWrapper";
 
 function getSideBar  () {
 
@@ -38,7 +38,7 @@ function getSideBar  () {
         }
         if(state.currentCard.type === Card.cardTypes.stopCard){
             OBA.Util.log("adding stop card")
-            return StopCard()
+            return StopCardWrapper()
         }
     }
 

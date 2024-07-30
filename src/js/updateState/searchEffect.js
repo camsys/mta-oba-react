@@ -49,6 +49,8 @@ import {siriGetVehiclesForRoutesEffect} from "./SiriEffects";
             match.latitude = stop.latitude
             match.longitude = stop.longitude
             match.routeMatches = []
+            match.name = stop.name
+            match.id = stop.id
             stop?.routesAvailable.forEach(x=>{
                 match.routeMatches.push(processRouteSearch(x,card))
             })
