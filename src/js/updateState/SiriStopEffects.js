@@ -165,7 +165,8 @@ const siriGetAndSetVehicles = (targetAddresses,vehicleState, setState, dataProce
                     let dataObj = {}
                     Object.entries(stopsToExtendedVehiclesMap.get(stopId)).forEach(
                         ([key,siriObj]) => {
-                            let mapOfStopsToVehicles = dataObj[siriObj.routeId + stopSortedFutureVehicleDataIdentifier]
+
+                            let mapOfStopsToVehicles = dataObj[siriObj.routeId +"_"+siriObj.direction+  stopSortedFutureVehicleDataIdentifier]
                             if(typeof mapOfStopsToVehicles === "undefined"){
                                 mapOfStopsToVehicles = new Map()
                                 dataObj[siriObj.routeId +"_"+siriObj.direction+ stopSortedFutureVehicleDataIdentifier] = mapOfStopsToVehicles
@@ -173,7 +174,7 @@ const siriGetAndSetVehicles = (targetAddresses,vehicleState, setState, dataProce
                             } else {
                                 mapOfStopsToVehicles.get(stopId).push(siriObj)
                             }
-
+                            console.log("puttins siriObj in place",siriObj.direction,siriObj,mapOfStopsToVehicles,dataObj)
                         }
                     )
                     console.log("made it!")
