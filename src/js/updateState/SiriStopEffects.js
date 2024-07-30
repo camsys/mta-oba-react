@@ -174,7 +174,6 @@ const siriGetAndSetVehicles = (targetAddresses,vehicleState, setState, dataProce
                             } else {
                                 mapOfStopsToVehicles.get(stopId).push(siriObj)
                             }
-                            console.log("puttins siriObj in place",siriObj.direction,siriObj,mapOfStopsToVehicles,dataObj)
                         }
                     )
                     console.log("made it!")

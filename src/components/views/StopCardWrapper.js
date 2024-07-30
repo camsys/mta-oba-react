@@ -35,12 +35,11 @@ const RouteDirection = (routeDirectionDatum,stopId) =>{
 
     stopCardVehicleData = typeof stopCardVehicleData !== 'undefined' &&
         stopCardVehicleData.has("MTA_"+stopId)
-            ?stopCardVehicleData.get("MTA_"+stopId):[]
-    console.log("StopCard RouteDirection stopCardVehicleData",routeDirectionDatum,stopCardVehicleData,routeDirectionDatum.routeId + "_"+routeDirectionDatum.direction+stopSortedFutureVehicleDataIdentifier)
+            ?stopCardVehicleData.get("MTA_"+stopId):null
     let routeId = routeDirectionDatum.routeId.split("_")[1];
     let serviceAlertIdentifier = routeDirectionDatum.routeId + "_"+routeDirectionDatum.directionId + "_" + routeDirectionDatum.directionId
     console.log("StopCard RouteDirection stopCardVehicleData",stopCardVehicleData)
-    return (
+    return (stopCardVehicleData === null? null :
         <div className="inner-card route-direction en-route collapsible open">
             <button
                 className="card-header collapse-trigger open"
