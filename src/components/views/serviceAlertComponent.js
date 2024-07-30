@@ -1,6 +1,6 @@
 import React, {useContext, useState} from "react";
 import {OBA} from "../../js/oba";
-import serviceAlertContainerComponent from "./serviceAlertContainerComponent";
+import serviceAlertContainerComponent from "./ServiceAlertContainerComponent";
 
 function getServiceAlertComponent  (props) {
     let {serviceAlertDatum} = props

@@ -4,7 +4,7 @@ import {CardStateContext} from "../../components/util/CardStateComponent";
 import queryString from "query-string";
 import {serviceAlertDataIdentifier, vehicleDataIdentifier, VehicleStateContext} from "../util/VehicleStateComponent";
 
-function getServiceAlertContainerComponent  (props) {
+function ServiceAlertContainerComponent  (props) {
     console.log("generating service alert component")
     const { vehicleState} = useContext(VehicleStateContext)
     let { routeId,serviceAlertIdentifier} = props;
@@ -32,4 +32,4 @@ function getServiceAlertContainerComponent  (props) {
     </div>)
 }
 
-export default getServiceAlertContainerComponent;   
+export default ServiceAlertContainerComponent;

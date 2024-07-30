@@ -1,7 +1,7 @@
 import React, {useContext, useState} from "react";
 import {OBA} from "../../js/oba";
 import {CardStateContext} from "../../components/util/CardStateComponent";
-import ServiceAlertContainerComponent from "./serviceAlertContainerComponent";
+import ServiceAlertContainerComponent from "./ServiceAlertContainerComponent";
 import getRouteDirectionComponent from "./RouteDirectionComponent";
 import {MapHighlightingStateContext} from "../util/MapHighlightingStateComponent";
 

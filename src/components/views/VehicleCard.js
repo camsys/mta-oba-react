@@ -1,6 +1,6 @@
 import React, {useContext} from "react";
 import {CardStateContext} from "../util/CardStateComponent";
-import ServiceAlertContainerComponent from "./serviceAlertContainerComponent";
+import ServiceAlertContainerComponent from "./ServiceAlertContainerComponent";
 import {updatedTimeIdentifier, vehicleDataIdentifier, VehicleStateContext} from "../util/VehicleStateComponent";
 import {fetchSearchData} from "../../js/updateState/searchEffect";
 import {OBA} from "../../js/oba";
