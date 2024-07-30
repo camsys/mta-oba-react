@@ -109,7 +109,7 @@ import {OBA} from "../oba";
         setState(stateFunc);
     }
 
-const fetchAndProcessSiri = async ([routeId,targetAddress]) =>{
+const fetchAndProcessVehicleMonitoring = async ([routeId,targetAddress]) =>{
     console.log("searching for siri at: ",targetAddress)
     return fetch(targetAddress)
         .then((response) => response.json())
@@ -131,11 +131,19 @@ const fetchAndProcessSiri = async ([routeId,targetAddress]) =>{
 
 }
 
-const siriGetVehiclesForAddressesEffect = (targetAddresses,vehicleState, setState ) =>
+const siriGetAndSetVehiclesForVehicleMonitoring = (targetAddresses,vehicleState, setState) =>{
+    siriGetAndSetVehicles(targetAddresses,vehicleState, setState,fetchAndProcessVehicleMonitoring)
+}
+
+const siriGetAndSetVehiclesForStopMonitoring = (targetAddresses,vehicleState, setState) =>{
+    siriGetAndSetVehicles(targetAddresses,vehicleState, setState,fetchAndProcessStopMonitoring)
+}
+
+const siriGetAndSetVehicles = (targetAddresses,vehicleState, setState, dataProcessFunction) =>
 {
     let getData = async () => {
         console.log("siri seeks promises from ", targetAddresses)
-        let returnedPromises = await Promise.all(targetAddresses.map(adr => fetchAndProcessSiri(adr)))
+        let returnedPromises = await Promise.all(targetAddresses.map(adr => dataProcessFunction(adr)))
         console.log("siri promises awaited ", returnedPromises)
         let dataObjsList = returnedPromises.filter(
             (result) => result !== null && typeof result !== "undefined")
@@ -187,17 +195,17 @@ const getTargetList = (routeIdList) =>{
 }
 
 
-export const siriGetVehiclesForStopViewEffect = (routeIdList, vehicleId, vehicleState, setState ) => {
-    console.log("looking for Siri Data for stop!",routeIdList,vehicleId)
-    let targetAddresses = getTargetList(routeIdList)
+export const siriGetVehiclesForStopViewEffect = (stopIdList, vehicleState, setState ) => {
+    let baseTargetAddress = "https://" + process.env.ENV_ADDRESS + "/" + process.env.STOP_MONITORING_ENDPOINT
+    console.log("looking for Siri Data for stops!",stopIdList)
 
-    if(targetAddresses.length!==1){
-        console.error("a very odd situation has occured and should be reported in siriGetVehiclesForVehicleViewEffect",routeIdList,vehicleId,vehicleState,setState)
-    }
-    targetAddresses = targetAddresses.concat(targetAddresses.map(adr=>{
-        return [adr[0],adr[1]+`&VehicleRef=${vehicleId.split('_')[1]}&MaximumNumberOfCallsOnwards=3&VehicleMonitoringDetailLevel=calls`]}))
+    let targetAddresses = stopIdList.map((stopId)=>{
+        let operatorRef = stopId.split("_")[0].replace(" ","+");
+        const lineRef = stopId.split("_")[1];
+        return [lineRef,baseTargetAddress+"&OperatorRef=" +operatorRef + "&LineRef"+"=" + stopId.replace("+","%2B")];
+    })
 
-    return siriGetVehiclesForAddressesEffect(targetAddresses,vehicleState,setState)
+    return siriGetAndSetVehiclesForStopMonitoring(targetAddresses,vehicleState,setState)
 }
 
 export const siriGetVehiclesForVehicleViewEffect = (routeIdList, vehicleId, vehicleState, setState ) => {
@@ -210,11 +218,11 @@ export const siriGetVehiclesForVehicleViewEffect = (routeIdList, vehicleId, vehi
     targetAddresses = targetAddresses.concat(targetAddresses.map(adr=>{
         return [adr[0],adr[1]+`&VehicleRef=${vehicleId.split('_')[1]}&MaximumNumberOfCallsOnwards=3&VehicleMonitoringDetailLevel=calls`]}))
 
-    return siriGetVehiclesForAddressesEffect(targetAddresses,vehicleState,setState)
+    return siriGetAndSetVehiclesForVehicleMonitoring(targetAddresses,vehicleState,setState)
 }
 
 export const siriGetVehiclesForRoutesEffect = (routeIdList,vehicleState, setState ) => {
     console.log("looking for Siri Data!",routeIdList)
     let targetAddresses = getTargetList(routeIdList)
-    return siriGetVehiclesForAddressesEffect(targetAddresses,vehicleState,setState)
+    return siriGetAndSetVehiclesForVehicleMonitoring(targetAddresses,vehicleState,setState)
 };
