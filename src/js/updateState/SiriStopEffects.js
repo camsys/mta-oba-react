@@ -94,23 +94,23 @@ function extractData (stopId,siri){
 
 
 function updateVehiclesState(updates,setState){
-    console.log("adding updates to vehicleState:",updates)
-    // let stateFunc = (prevState) => {
-    //     let newState = {...prevState}
-    //     newState.renderCounter = prevState.renderCounter + 1
-    //     Object.entries(updates).forEach(([key, val]) => {newState[key]=val})
-    //     return newState
-    // }
-    // setState(stateFunc);
+
+    let stateFunc = (prevState) => {
+        let newState = {...prevState}
+        newState.renderCounter = prevState.renderCounter + 1
+        Object.entries(updates).forEach(([key, val]) => {newState[key]=val})
+        return newState
+    }
+    setState(stateFunc);
 }
 
-const fetchAndProcessStopMonitoring = async ([routeId,targetAddress]) =>{
+const fetchAndProcessStopMonitoring = async ([stopId,targetAddress]) =>{
     console.log("searching for siri at: ",targetAddress)
     return fetch(targetAddress)
         .then((response) => response.json())
         .then((siri) => {
             OBA.Util.log("reading serviceAlert & vehicle from " + targetAddress)
-            let processedData = extractData(routeId,siri)
+            let processedData = extractData(stopId,siri)
             let update = processedData[1]
             if(update){
                 console.log("should update serviceAlert & vehicle state?",update)
@@ -155,13 +155,30 @@ const siriGetAndSetVehicles = (targetAddresses,vehicleState, setState, dataProce
         let dataObjsList = returnedPromises.filter(
             (result) => result !== null && typeof result !== "undefined")
             .map(
-                ([routeId, vehicleDataList, serviceAlertDataList, stopsToVehicles,stopsToExtendedVehiclesMap, lastCallTime]) => {
+                ([stopId, vehicleDataList, serviceAlertDataList, stopsToVehicles,stopsToExtendedVehiclesMap, lastCallTime]) => {
+
+                    // turn them into a list by route
+                    // then get them into <state route&keyword-> <map stopIden -> vehicles>>
+                    // not sure we'll stick with this, but it's fast and dirty because it needs to happen
+                    // before backend support for timing
+                    // todo: pls fix w/ proper backend support
                     let dataObj = {}
-                    dataObj[routeId + serviceAlertDataIdentifier] = serviceAlertDataList
-                    dataObj[routeId + vehicleDataIdentifier] = vehicleDataList
-                    dataObj[routeId + updatedTimeIdentifier] = lastCallTime
-                    dataObj[routeId + stopSortedDataIdentifier] = stopsToVehicles
-                    dataObj[routeId + stopSortedFutureVehicleDataIdentifier] =stopsToExtendedVehiclesMap
+                    Object.entries(stopsToExtendedVehiclesMap.get(stopId)).forEach(
+                        ([key,siriObj]) => {
+                            let mapOfStopsToVehicles = dataObj[siriObj.routeId + stopSortedFutureVehicleDataIdentifier]
+                            if(typeof mapOfStopsToVehicles === "undefined"){
+                                mapOfStopsToVehicles = new Map()
+                                dataObj[siriObj.routeId + stopSortedFutureVehicleDataIdentifier] = mapOfStopsToVehicles
+                                mapOfStopsToVehicles.set(stopId,[siriObj])
+                            } else {
+                                mapOfStopsToVehicles.get(stopId).push(siriObj)
+                            }
+
+                        }
+                    )
+                    console.log("made it!")
+
+                    dataObj[stopId + stopSortedFutureVehicleDataIdentifier] = stopsToExtendedVehiclesMap
                     return dataObj
                 })
         if (dataObjsList.length === 0) {
@@ -198,7 +215,7 @@ export const siriGetVehiclesForStopViewEffect = (routeIdList, stopIdList, vehicl
     // let targetAddresses = getTargetList(routeIdList)
     let targetAddresses = []
     targetAddresses = stopIdList.map((stopId)=>{
-        return [stopId,baseTargetAddress+ "&MonitoringRef=" + stopId.replace("+","%2B")
+        return ["MTA_"+stopId,baseTargetAddress+ "&MonitoringRef=" + stopId.replace("+","%2B")
             + "&StopMonitoringDetailLevel=normal&MinimumStopVisitsPerLine=3"];
     })
     console.log("siri stop data target addresses ", targetAddresses)

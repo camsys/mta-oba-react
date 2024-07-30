@@ -10,6 +10,7 @@ import {generateInitialCard} from "../js/updateState/searchEffect";
 import {MapHighlightingStateProvider} from "./util/MapHighlightingStateComponent";
 import {siriGetVehiclesForRoutesEffect, siriGetVehiclesForVehicleViewEffect} from "../js/updateState/SiriEffects";
 import {Card} from "../js/updateState/dataModels";
+import {siriGetVehiclesForStopViewEffect} from "../js/updateState/SiriStopEffects";
 
 
 
@@ -18,9 +19,15 @@ const VehicleLoading=()=>{
     let {vehicleState, setState } = useContext(VehicleStateContext);
     useEffect(() => {
         const getSiri = () =>{
-            state.currentCard.type === Card.cardTypes.vehicleCard ?
+            if(state.currentCard.type === Card.cardTypes.vehicleCard){
                 siriGetVehiclesForVehicleViewEffect(state.currentCard.routeIdList,state.currentCard.vehicleId,vehicleState,setState)
-                : siriGetVehiclesForRoutesEffect(state.currentCard.routeIdList,vehicleState,setState)
+            }
+            else if(state.currentCard.type === Card.cardTypes.stopCard){
+                siriGetVehiclesForStopViewEffect(state.currentCard.routeIdList,[state.currentCard.searchTerm],vehicleState,setState)
+            }
+            else{
+                siriGetVehiclesForRoutesEffect(state.currentCard.routeIdList,vehicleState,setState)
+            }
         }
 
         getSiri()

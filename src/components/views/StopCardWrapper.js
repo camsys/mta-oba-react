@@ -7,21 +7,30 @@ import ServiceAlertContainerComponent from "./ServiceAlertContainerComponent";
 
 
 const Vehicle = (vehicleDatum) =>{
-    console.log("generating StopCard RouteDirection",vehicleDatum)
-    return(<h2>fill StopCard-vehicles in w/ data pls</h2>)
+    console.log("generating StopCard Vehicle",vehicleDatum)
+    return(
+        <li>
+            <a href="/?content=route-b-38_vehicle&search=B38&refresh=true&vehicle-popup=true" className="bus">7354</a>
+            <span className="bus-info">
+                <span className="approaching">31 minutes, 3.9 miles away</span>
+                <span className="passengers">~18 passengers</span>
+              </span>
+        </li>
+    )
 }
 
-const RouteDirection = (routeDirectionDatum) =>{
+const RouteDirection = (routeDirectionDatum,stopId) =>{
     const {vehicleState} = useContext(VehicleStateContext)
     console.log("generating StopCard RouteDirection",routeDirectionDatum,vehicleState)
     let stopCardVehicleData = vehicleState[routeDirectionDatum.routeId+stopSortedFutureVehicleDataIdentifier]
 
     stopCardVehicleData = typeof stopCardVehicleData !== 'undefined' &&
-        stopCardVehicleData.has(routeDirectionDatum.directionId)
-            ?stopCardVehicleData.get(routeDirectionDatum.directionId):[]
+        stopCardVehicleData.has("MTA_"+stopId)
+            ?stopCardVehicleData.get("MTA_"+stopId):[]
 
     let routeId = routeDirectionDatum.routeId.split("_")[1];
     let serviceAlertIdentifier = routeDirectionDatum.routeId + "_" + routeDirectionDatum.directionId
+    console.log("StopCard RouteDirection stopCardVehicleData",stopCardVehicleData)
     return (
         <div className="inner-card route-direction en-route collapsible open">
             <button
@@ -67,7 +76,7 @@ const StopCard = () =>{
             <h4>Buses en-route:</h4>
             {match.routeMatches.map(
                 route=>route.directions.map(
-                    dir => RouteDirection(dir)
+                    dir => RouteDirection(dir,match.id.split("_")[1])
             ))}
 
             <div className="text-note">
