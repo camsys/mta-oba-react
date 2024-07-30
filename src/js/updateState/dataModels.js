@@ -67,7 +67,8 @@ export class vehicleData {
             }
         }
         this.vehicleId = mvj.VehicleRef
-        this.direction = mvj?.Bearing
+        this.bearing = mvj?.Bearing
+        this.direction = mvj?.DirectionRef
         this.routeId = mvj.LineRef
     }
 }

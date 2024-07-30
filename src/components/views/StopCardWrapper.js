@@ -4,32 +4,41 @@ import {CardStateContext} from "../util/CardStateComponent";
 import {fetchSearchData} from "../../js/updateState/searchEffect";
 import {stopSortedFutureVehicleDataIdentifier, VehicleStateContext} from "../util/VehicleStateComponent";
 import ServiceAlertContainerComponent from "./ServiceAlertContainerComponent";
+import RouteVehicleComponent from "./RouteVehicleComponent";
 
 
-const Vehicle = (vehicleDatum) =>{
-    console.log("generating StopCard Vehicle",vehicleDatum)
-    return(
-        <li>
-            <a href="/?content=route-b-38_vehicle&search=B38&refresh=true&vehicle-popup=true" className="bus">7354</a>
-            <span className="bus-info">
-                <span className="approaching">31 minutes, 3.9 miles away</span>
-                <span className="passengers">~18 passengers</span>
-              </span>
-        </li>
-    )
-}
+// const Vehicle = (vehicleDatum) =>{
+//     console.log("generating StopCard Vehicle",vehicleDatum)
+//     return(
+//         <li>
+//
+//             <a href="/?content=route-b-38_vehicle&search=B38&refresh=true&vehicle-popup=true"
+//                className={vehicleDatum?.strollerVehicle?"bus stroller-friendly":"bus"}>
+//                 {vehicleDatum.vehicleId.split("_")[1]}</a>
+//             <span className="approaching">{typeof vehicleDatum?.vehicleArrivalData!=='undefined'?
+//                 vehicleDatum?.vehicleArrivalData?.[0].prettyDistance:null}</span>
+//             <span className="passengers">{vehicleDatum.passengerCount != null && (
+//                 vehicleDatum.passengerCapacity != null ?
+//                     <li className="passengers">{`~${(vehicleDatum.passengerCount / vehicleDatum.passengerCapacity) * 100}% full`}</li>
+//                     :
+//                     <li className="passengers">{`~${vehicleDatum.passengerCount} passengers`}</li>
+//             )}
+//             </span>
+//         </li>
+//     )
+// }
 
 const RouteDirection = (routeDirectionDatum,stopId) =>{
     const {vehicleState} = useContext(VehicleStateContext)
     console.log("generating StopCard RouteDirection",routeDirectionDatum,vehicleState)
-    let stopCardVehicleData = vehicleState[routeDirectionDatum.routeId+stopSortedFutureVehicleDataIdentifier]
+    let stopCardVehicleData = vehicleState[routeDirectionDatum.routeId + "_"+routeDirectionDatum.directionId+stopSortedFutureVehicleDataIdentifier]
 
     stopCardVehicleData = typeof stopCardVehicleData !== 'undefined' &&
         stopCardVehicleData.has("MTA_"+stopId)
             ?stopCardVehicleData.get("MTA_"+stopId):[]
-
+    console.log("StopCard RouteDirection stopCardVehicleData",routeDirectionDatum,stopCardVehicleData,routeDirectionDatum.routeId + "_"+routeDirectionDatum.direction+stopSortedFutureVehicleDataIdentifier)
     let routeId = routeDirectionDatum.routeId.split("_")[1];
-    let serviceAlertIdentifier = routeDirectionDatum.routeId + "_" + routeDirectionDatum.directionId
+    let serviceAlertIdentifier = routeDirectionDatum.routeId + "_"+routeDirectionDatum.directionId + "_" + routeDirectionDatum.directionId
     console.log("StopCard RouteDirection stopCardVehicleData",stopCardVehicleData)
     return (
         <div className="inner-card route-direction en-route collapsible open">
@@ -45,7 +54,7 @@ const RouteDirection = (routeDirectionDatum,stopId) =>{
             </button>
             <div className="card-content collapse-content" style={{ maxHeight: '0px' }}>
                 <ul className="approaching-buses">
-                    {stopCardVehicleData.map(datum=>Vehicle(datum))}
+                    {stopCardVehicleData.map(datum=>RouteVehicleComponent(datum))}
                 </ul>
                 <ServiceAlertContainerComponent {...{routeId,serviceAlertIdentifier}}/>
             </div>

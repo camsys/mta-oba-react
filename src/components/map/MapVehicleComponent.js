@@ -14,7 +14,7 @@ const COMPONENT_IDENTIFIER = "MapVehicleComponent"
 
 function MapVehicleComponent  (vehicleData,state, setState,targetVehicleId) {
     console.log('generating mapVehicle: ',vehicleData.vehicleId,vehicleData)
-    let imgDegrees = vehicleData.direction - vehicleData.direction%5
+    let imgDegrees = vehicleData.bearing - vehicleData.direction%5
     OBA.Util.trace("img degrees" + imgDegrees)
     let scheduled = vehicleData.hasRealtime?"":"scheduled/"
     OBA.Util.trace(scheduled)

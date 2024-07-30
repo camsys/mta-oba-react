@@ -168,7 +168,7 @@ const siriGetAndSetVehicles = (targetAddresses,vehicleState, setState, dataProce
                             let mapOfStopsToVehicles = dataObj[siriObj.routeId + stopSortedFutureVehicleDataIdentifier]
                             if(typeof mapOfStopsToVehicles === "undefined"){
                                 mapOfStopsToVehicles = new Map()
-                                dataObj[siriObj.routeId + stopSortedFutureVehicleDataIdentifier] = mapOfStopsToVehicles
+                                dataObj[siriObj.routeId +"_"+siriObj.direction+ stopSortedFutureVehicleDataIdentifier] = mapOfStopsToVehicles
                                 mapOfStopsToVehicles.set(stopId,[siriObj])
                             } else {
                                 mapOfStopsToVehicles.get(stopId).push(siriObj)
