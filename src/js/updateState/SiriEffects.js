@@ -187,6 +187,19 @@ const getTargetList = (routeIdList) =>{
 }
 
 
+export const siriGetVehiclesForStopViewEffect = (routeIdList, vehicleId, vehicleState, setState ) => {
+    console.log("looking for Siri Data for stop!",routeIdList,vehicleId)
+    let targetAddresses = getTargetList(routeIdList)
+
+    if(targetAddresses.length!==1){
+        console.error("a very odd situation has occured and should be reported in siriGetVehiclesForVehicleViewEffect",routeIdList,vehicleId,vehicleState,setState)
+    }
+    targetAddresses = targetAddresses.concat(targetAddresses.map(adr=>{
+        return [adr[0],adr[1]+`&VehicleRef=${vehicleId.split('_')[1]}&MaximumNumberOfCallsOnwards=3&VehicleMonitoringDetailLevel=calls`]}))
+
+    return siriGetVehiclesForAddressesEffect(targetAddresses,vehicleState,setState)
+}
+
 export const siriGetVehiclesForVehicleViewEffect = (routeIdList, vehicleId, vehicleState, setState ) => {
     console.log("looking for Siri Data for vehicle!",routeIdList,vehicleId)
     let targetAddresses = getTargetList(routeIdList)

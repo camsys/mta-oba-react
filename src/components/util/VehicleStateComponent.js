@@ -22,6 +22,7 @@ const vehicleDataIdentifier = "_vehicleData"
 const serviceAlertDataIdentifier = "_serviceAlertData"
 const updatedTimeIdentifier = "_updatedAt"
 const stopSortedDataIdentifier = "_vehicleDataSortedByStop"
+const stopSortedFutureVehicleDataIdentifier = "_stopSortedFutureVehicleDataIdentifier"
 
 export { VehicleStateProvider, VehicleStateContext,vehicleDataIdentifier,
-    updatedTimeIdentifier,serviceAlertDataIdentifier,stopSortedDataIdentifier };
+    updatedTimeIdentifier,serviceAlertDataIdentifier,stopSortedDataIdentifier, stopSortedFutureVehicleDataIdentifier};

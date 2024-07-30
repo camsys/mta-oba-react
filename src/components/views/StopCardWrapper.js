@@ -2,62 +2,37 @@ import React, {useContext} from 'react';
 import busStopIcon from "../../img/icon/bus-stop.svg"
 import {CardStateContext} from "../util/CardStateComponent";
 import {fetchSearchData} from "../../js/updateState/searchEffect";
-import {VehicleStateContext} from "../util/VehicleStateComponent";
+import {stopSortedFutureVehicleDataIdentifier, VehicleStateContext} from "../util/VehicleStateComponent";
 
+
+const Vehicle = (vehicleDatum) =>{
+    console.log("generating StopCard RouteDirection",vehicleDatum)
+    return(<h2>fill StopCard-vehicles in w/ data pls</h2>)
+}
 
 const RouteDirection = (routeDirectionDatum) =>{
     const {vehicleState} = useContext(VehicleStateContext)
+    console.log("generating StopCard RouteDirection",routeDirectionDatum,vehicleState)
+    let stopCardVehicleData = vehicleState[routeDirectionDatum.routeId+stopSortedFutureVehicleDataIdentifier]
 
-    console.log("generating StopCard RouteDirection",vehicleState)
+    stopCardVehicleData = typeof stopCardVehicleData !== 'undefined' &&
+        stopCardVehicleData.has(routeDirectionDatum.directionId)
+            ?stopCardVehicleData.get(routeDirectionDatum.directionId):[]
     return (
         <div className="inner-card route-direction en-route collapsible open">
             <button
                 className="card-header collapse-trigger open"
                 aria-haspopup="true"
                 aria-expanded="false"
-                aria-label="Toggle B38 Limited to Downtown Brooklyn Tillary Street Open / Closed"
+                aria-label={`Toggle ${routeDirectionDatum.routeId.split("_")[1]} to ${routeDirectionDatum.destination}`}
             >
-              <span className="label" style={{ borderColor: '#00AEEF' }}>
-                <strong>B38 Limited</strong> Downtown Bklyn Tillary St
+              <span className="label" style={{ borderColor: '#'+routeDirectionDatum.color}}>
+                <strong>{routeDirectionDatum.routeId.split("_")[1]}</strong> {routeDirectionDatum.destination}
               </span>
             </button>
             <div className="card-content collapse-content" style={{ maxHeight: '0px' }}>
                 <ul className="approaching-buses">
-                    <li>
-                        <a
-                            href="/?content=route-b-38_vehicle&search=B38&refresh=true&vehicle-popup=true"
-                            className="bus"
-                        >
-                            7228
-                        </a>
-                        <span className="bus-info">
-                    <span className="approaching">1 minute, &lt; 1 stop away</span>
-                  </span>
-                    </li>
-                    <li>
-                        <a
-                            href="/?content=route-b-38_vehicle&search=B38&refresh=true&vehicle-popup=true"
-                            className="bus"
-                        >
-                            7299
-                        </a>
-                        <span className="bus-info">
-                    <span className="approaching">22 minutes, 2.8 miles away</span>
-                    <span className="passengers">~10 passengers</span>
-                  </span>
-                    </li>
-                    <li>
-                        <a
-                            href="/?content=route-b-38_vehicle&search=B38&refresh=true&vehicle-popup=true"
-                            className="bus"
-                        >
-                            7354
-                        </a>
-                        <span className="bus-info">
-                    <span className="approaching">31 minutes, 3.9 miles away</span>
-                    <span className="passengers">~18 passengers</span>
-                  </span>
-                    </li>
+                    {stopCardVehicleData.map(datum=>Vehicle(datum))}
                 </ul>
                 <div className="service-alert inner-card collapsible">
                     <button
