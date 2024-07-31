@@ -11,6 +11,7 @@ import ServiceAlertContainerComponent from "./ServiceAlertContainerComponent";
 import RouteVehicleComponent from "./RouteVehicleComponent";
 import {OBA} from "../../js/oba";
 import {MapHighlightingStateContext} from "../util/MapHighlightingStateComponent";
+import {getRouteCard} from "./RouteCard";
 
 
 
@@ -64,12 +65,11 @@ const RouteDirection = (routeDirectionDatum,stopId) =>{
     )
 }
 
-const StopCard = () =>{
+export function StopCard (match) {
     const { state, setState } = useContext(CardStateContext);
     const search = (searchterm) =>{
         fetchSearchData(state, setState, searchterm.split("_")[1])
     }
-    let match = state.currentCard.searchMatches[0]
 
     console.log("generating StopCard",match)
     return(
@@ -123,11 +123,13 @@ const StopCard = () =>{
 }
 
 export const StopCardWrapper = () => {
+    const { state } = useContext(CardStateContext);
+    let match = state.currentCard.searchMatches[0]
     return (
     <>
-        <h2 className="cards-header">Routes:</h2>
+        <h2 className="cards-header">Stops:</h2>
         <div className="cards">
-            <StopCard/>
+            {new StopCard(match)}
         </div>
     </>
 )};
