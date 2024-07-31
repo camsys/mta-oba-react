@@ -9,7 +9,7 @@ export function GeoCardWrapper  () {
 
     return (<React.Fragment>
         <h2 className="cards-header">Routes:</h2>
-        <div className="cards">
+        <div className="cards geocard routes">
             {state.currentCard.searchMatches.map(match=>{
                 return match.routeMatches.map(routeMatch=>{
                     return new getRouteCard(routeMatch)
@@ -17,6 +17,15 @@ export function GeoCardWrapper  () {
                 })
             }
         </div>
+        {/*<h2 className="cards-header">Stops:</h2>*/}
+        {/*<div className="cards geocard stops">*/}
+        {/*    /!*{state.currentCard.searchMatches.map(match=>{*!/*/}
+        {/*    /!*    return match.routeMatches.map(routeMatch=>{*!/*/}
+        {/*    /!*        return new getRouteCard(routeMatch)*!/*/}
+        {/*    /!*    })*!/*/}
+        {/*    /!*})*!/*/}
+        {/*    }*/}
+        {/*</div>*/}
     </React.Fragment>);
 
 }
