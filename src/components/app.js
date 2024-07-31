@@ -33,7 +33,11 @@ const VehicleLoading=()=>{
                 siriGetVehiclesForRoutesEffect(state.currentCard.routeIdList,
                     vehicleState,setState)
                 if(state.currentCard.type === Card.cardTypes.stopCard){
-                    siriGetVehiclesForStopViewEffect(state.currentCard.routeIdList,[state.currentCard.searchTerm],
+                    siriGetVehiclesForStopViewEffect(state.currentCard.routeIdList,state.currentCard.stopIdList,
+                        vehiclesApproachingStopsState,setVehiclesApproachingStopsState)
+                }
+                if(state.currentCard.type === Card.cardTypes.geocodeCard){
+                    siriGetVehiclesForStopViewEffect(state.currentCard.routeIdList,state.currentCard.stopIdList,
                         vehiclesApproachingStopsState,setVehiclesApproachingStopsState)
                 }
             }

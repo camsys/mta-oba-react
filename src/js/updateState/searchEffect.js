@@ -38,6 +38,10 @@ import {siriGetVehiclesForRoutesEffect} from "./SiriEffects";
                 match.routeMatches.push(processRouteSearch(x,card))
             })
         }
+        // todo: add a list of stops to card.stopIdList, probably need to search to get them,
+        // ... honestly this whole thing should be done async during the siri calls which means a minor
+        // refactor. but we knew that was coming. given this is a rly fast api call though, probably can make it
+        // done seperate for now. also will need to be done before the siri stop-monitoring calls
         console.log("geocode data processed: ",match)
         return match
     }
@@ -46,6 +50,7 @@ import {siriGetVehiclesForRoutesEffect} from "./SiriEffects";
         let match = new stopMatch()
         console.log("processing stopMatch search results",stop,card,match)
         if (stop != null && stop.hasOwnProperty("latitude")) {
+            card.stopIdList.push(card.searchTerm)
             match.latitude = stop.latitude
             match.longitude = stop.longitude
             match.routeMatches = []

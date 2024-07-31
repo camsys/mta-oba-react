@@ -179,6 +179,7 @@ export class Card {
         this.name = "homeCard"
         this.searchMatches = []
         this.routeIdList = []
+        this.stopIdList = []
         //this will almost always be null
         this.vehicleId = null
     }
