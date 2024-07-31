@@ -9,14 +9,7 @@ import {MapHighlightingStateContext} from "../util/MapHighlightingStateComponent
 const COMPONENT_IDENTIFIER = "mapStopComponent"
 
 function MapStopComponent  (stopData) {
-    // OBA.Util.trace('generating mapStopComponent: ' + stopData.id)
-
-
-
-    // map = useMap()
-    // let zoom = map.getZoom()
-    let zoom = 10
-    let defaultVisibility = ( zoom < 16) ? false : true;
+    console.log('generating MapStopComponent: ' + stopData)
 
 
     var direction = stopData?.stopDirection;
@@ -26,8 +19,6 @@ function MapStopComponent  (stopData) {
         directionKey = "unknown";
     }
     let stopImageUrl = "img/stop/stop-" + (directionKey==null? "unknown":directionKey) + ".png"
-    // let stopImageUrl = "img/stop/stop-" + "unknown" + ".png"
-    // console.log(stopImageUrl)
 
     let icon = L.icon({
         iconUrl: stopImageUrl,
