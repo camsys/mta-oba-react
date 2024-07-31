@@ -102,7 +102,7 @@ function updateVehiclesState(updates,setState){
 }
 
 const fetchAndProcessStopMonitoring = async ([stopId,targetAddress]) =>{
-    console.log("searching for siri at: ",targetAddress)
+    console.log("searching for siri stop at: ",targetAddress)
     return fetch(targetAddress)
         .then((response) => response.json())
         .then((siri) => {
@@ -146,9 +146,9 @@ const siriGetAndSetVehiclesForStopMonitoring = (targetAddresses,vehicleState, se
 const siriGetAndSetVehicles = (targetAddresses,vehicleState, setState, dataProcessFunction) =>
 {
     let getData = async () => {
-        console.log("siri seeks promises from ", targetAddresses)
+        console.log("siri stop seeks promises from ", targetAddresses)
         let returnedPromises = await Promise.all(targetAddresses.map(adr => dataProcessFunction(adr)))
-        console.log("siri promises awaited ", returnedPromises)
+        console.log("siri stop promises awaited ", returnedPromises)
         let dataObjsList = returnedPromises.filter(
             (result) => result !== null && typeof result !== "undefined")
             .map(
@@ -163,34 +163,34 @@ const siriGetAndSetVehicles = (targetAddresses,vehicleState, setState, dataProce
                     Object.entries(stopsToExtendedVehiclesMap.get(stopId)).forEach(
                         ([key,siriObj]) => {
 
-                            let mapOfStopsToVehicles = dataObj[siriObj.routeId +"_"+siriObj.direction+  stopSortedFutureVehicleDataIdentifier]
+                            let routeAndDir = siriObj.routeId +"_"+siriObj.direction
+                            let mapOfStopsToVehicles = dataObj[routeAndDir +  stopSortedFutureVehicleDataIdentifier]
                             if(typeof mapOfStopsToVehicles === "undefined"){
                                 mapOfStopsToVehicles = new Map()
-                                dataObj[siriObj.routeId +"_"+siriObj.direction+ stopSortedFutureVehicleDataIdentifier] = mapOfStopsToVehicles
+                                dataObj[routeAndDir + stopSortedFutureVehicleDataIdentifier] = mapOfStopsToVehicles
+                                dataObj[routeAndDir + updatedTimeIdentifier] = lastCallTime
                                 mapOfStopsToVehicles.set(stopId,[siriObj])
                             } else {
                                 mapOfStopsToVehicles.get(stopId).push(siriObj)
                             }
                         }
                     )
-                    console.log("made it!")
-
                     dataObj[stopId + stopSortedFutureVehicleDataIdentifier] = stopsToExtendedVehiclesMap
                     return dataObj
                 })
         if (dataObjsList.length === 0) {
             return null
         }
-        console.log("combining siri objs",dataObjsList)
+        console.log("combining siri stop objs",dataObjsList)
         let siriCombinedDataObj = mergeSiri(dataObjsList)
-        console.log("siri data found: ", siriCombinedDataObj)
+        console.log("siri stop data found: ", siriCombinedDataObj)
         return siriCombinedDataObj
 
     }
     getData().then((processedData) => {
-        console.log("processedData", processedData)
+        console.log("siri stop data processedData", processedData)
         processedData != null ? updateVehiclesState(processedData, setState) : null
-        console.log("vehicleState", vehicleState)
+        console.log("siri stop  data state", vehicleState)
     }).catch((x) => console.log("siri call issue!", x))
 }
 

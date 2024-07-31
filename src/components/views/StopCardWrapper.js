@@ -3,25 +3,31 @@ import busStopIcon from "../../img/icon/bus-stop.svg"
 import {CardStateContext} from "../util/CardStateComponent";
 import {fetchSearchData} from "../../js/updateState/searchEffect";
 import {
-    stopSortedFutureVehicleDataIdentifier,
+    stopSortedFutureVehicleDataIdentifier, updatedTimeIdentifier,
     VehiclesApproachingStopsContext,
     VehicleStateContext
 } from "../util/VehicleStateComponent";
 import ServiceAlertContainerComponent from "./ServiceAlertContainerComponent";
 import RouteVehicleComponent from "./RouteVehicleComponent";
+import {OBA} from "../../js/oba";
+
 
 
 const RouteDirection = (routeDirectionDatum,stopId) =>{
     const {vehiclesApproachingStopsState} = useContext(VehiclesApproachingStopsContext)
     console.log("generating StopCard RouteDirection",routeDirectionDatum,vehiclesApproachingStopsState)
-    let stopCardVehicleData = vehiclesApproachingStopsState[routeDirectionDatum.routeId + "_"+routeDirectionDatum.directionId+stopSortedFutureVehicleDataIdentifier]
+    let routeAndDir = routeDirectionDatum.routeId + "_"+routeDirectionDatum.directionId
+    let stopCardVehicleData = vehiclesApproachingStopsState[routeAndDir+stopSortedFutureVehicleDataIdentifier]
 
     stopCardVehicleData = typeof stopCardVehicleData !== 'undefined' &&
         stopCardVehicleData.has("MTA_"+stopId)
             ?stopCardVehicleData.get("MTA_"+stopId):null
     let routeId = routeDirectionDatum.routeId.split("_")[1];
-    let serviceAlertIdentifier = routeDirectionDatum.routeId + "_"+routeDirectionDatum.directionId + "_" + routeDirectionDatum.directionId
-    console.log("StopCard RouteDirection stopCardVehicleData",stopCardVehicleData)
+    let serviceAlertIdentifier = routeAndDir+ "_" + routeDirectionDatum.directionId
+    let timeUpdated = stopCardVehicleData!==null
+        ? OBA.Util.ISO8601StringToDate(vehiclesApproachingStopsState[routeAndDir+updatedTimeIdentifier]).getTime()
+        : null
+    console.log("StopCard RouteDirection stopCardVehicleData",stopCardVehicleData,timeUpdated)
     return (stopCardVehicleData === null? null :
         <div className="inner-card route-direction en-route collapsible open">
             <button
@@ -36,7 +42,7 @@ const RouteDirection = (routeDirectionDatum,stopId) =>{
             </button>
             <div className="card-content collapse-content" style={{ maxHeight: '0px' }}>
                 <ul className="approaching-buses">
-                    {stopCardVehicleData.map(datum=>RouteVehicleComponent(datum))}
+                    {stopCardVehicleData.map(datum=>RouteVehicleComponent(datum,timeUpdated))}
                 </ul>
                 <ServiceAlertContainerComponent {...{routeId,serviceAlertIdentifier}}/>
             </div>
