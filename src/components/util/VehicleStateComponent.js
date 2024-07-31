@@ -1,6 +1,7 @@
 import React, { createContext, useState } from 'react';
 
 const VehicleStateContext = createContext();
+const VehiclesApproachingStopsContext = createContext();
 
 
 //todo: should be broken out into two states based on features which change and do not change
@@ -18,11 +19,31 @@ const VehicleStateProvider = ({children}) => {
     );
 };
 
+const VehiclesApproachingStopsProvider = ({children}) => {
+    const [vehiclesApproachingStopsState, setVehiclesApproachingStopsState] = useState({
+        renderCounter:1
+    });
+    console.log("initial state set: ",vehiclesApproachingStopsState)
+
+    return (
+        <VehiclesApproachingStopsContext.Provider value={{vehiclesApproachingStopsState: vehiclesApproachingStopsState, setVehiclesApproachingStopsState}}>
+            {children}
+        </VehiclesApproachingStopsContext.Provider>
+    );
+};
+
 const vehicleDataIdentifier = "_vehicleData"
 const serviceAlertDataIdentifier = "_serviceAlertData"
 const updatedTimeIdentifier = "_updatedAt"
 const stopSortedDataIdentifier = "_vehicleDataSortedByStop"
 const stopSortedFutureVehicleDataIdentifier = "_stopSortedFutureVehicleDataIdentifier"
 
-export { VehicleStateProvider, VehicleStateContext,vehicleDataIdentifier,
-    updatedTimeIdentifier,serviceAlertDataIdentifier,stopSortedDataIdentifier, stopSortedFutureVehicleDataIdentifier};
+export { VehicleStateProvider,
+    VehicleStateContext,
+    VehiclesApproachingStopsProvider,
+    VehiclesApproachingStopsContext,
+    vehicleDataIdentifier,
+    updatedTimeIdentifier,
+    serviceAlertDataIdentifier,
+    stopSortedDataIdentifier,
+    stopSortedFutureVehicleDataIdentifier};

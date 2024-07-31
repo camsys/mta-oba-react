@@ -2,36 +2,19 @@ import React, {useContext} from 'react';
 import busStopIcon from "../../img/icon/bus-stop.svg"
 import {CardStateContext} from "../util/CardStateComponent";
 import {fetchSearchData} from "../../js/updateState/searchEffect";
-import {stopSortedFutureVehicleDataIdentifier, VehicleStateContext} from "../util/VehicleStateComponent";
+import {
+    stopSortedFutureVehicleDataIdentifier,
+    VehiclesApproachingStopsContext,
+    VehicleStateContext
+} from "../util/VehicleStateComponent";
 import ServiceAlertContainerComponent from "./ServiceAlertContainerComponent";
 import RouteVehicleComponent from "./RouteVehicleComponent";
 
 
-// const Vehicle = (vehicleDatum) =>{
-//     console.log("generating StopCard Vehicle",vehicleDatum)
-//     return(
-//         <li>
-//
-//             <a href="/?content=route-b-38_vehicle&search=B38&refresh=true&vehicle-popup=true"
-//                className={vehicleDatum?.strollerVehicle?"bus stroller-friendly":"bus"}>
-//                 {vehicleDatum.vehicleId.split("_")[1]}</a>
-//             <span className="approaching">{typeof vehicleDatum?.vehicleArrivalData!=='undefined'?
-//                 vehicleDatum?.vehicleArrivalData?.[0].prettyDistance:null}</span>
-//             <span className="passengers">{vehicleDatum.passengerCount != null && (
-//                 vehicleDatum.passengerCapacity != null ?
-//                     <li className="passengers">{`~${(vehicleDatum.passengerCount / vehicleDatum.passengerCapacity) * 100}% full`}</li>
-//                     :
-//                     <li className="passengers">{`~${vehicleDatum.passengerCount} passengers`}</li>
-//             )}
-//             </span>
-//         </li>
-//     )
-// }
-
 const RouteDirection = (routeDirectionDatum,stopId) =>{
-    const {vehicleState} = useContext(VehicleStateContext)
-    console.log("generating StopCard RouteDirection",routeDirectionDatum,vehicleState)
-    let stopCardVehicleData = vehicleState[routeDirectionDatum.routeId + "_"+routeDirectionDatum.directionId+stopSortedFutureVehicleDataIdentifier]
+    const {vehiclesApproachingStopsState} = useContext(VehiclesApproachingStopsContext)
+    console.log("generating StopCard RouteDirection",routeDirectionDatum,vehiclesApproachingStopsState)
+    let stopCardVehicleData = vehiclesApproachingStopsState[routeDirectionDatum.routeId + "_"+routeDirectionDatum.directionId+stopSortedFutureVehicleDataIdentifier]
 
     stopCardVehicleData = typeof stopCardVehicleData !== 'undefined' &&
         stopCardVehicleData.has("MTA_"+stopId)

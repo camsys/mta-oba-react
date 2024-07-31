@@ -5,7 +5,12 @@ import {CardStateContext, CardStateProvider} from "./util/CardStateComponent";
 import mapWrap from "./map/mapWrap";
 
 import sideBarComponent from "./pageStructure/sideBar";
-import {VehicleStateContext, VehicleStateProvider} from "./util/VehicleStateComponent";
+import {
+    VehiclesApproachingStopsContext,
+    VehiclesApproachingStopsProvider,
+    VehicleStateContext,
+    VehicleStateProvider
+} from "./util/VehicleStateComponent";
 import {generateInitialCard} from "../js/updateState/searchEffect";
 import {MapHighlightingStateProvider} from "./util/MapHighlightingStateComponent";
 import {siriGetVehiclesForRoutesEffect, siriGetVehiclesForVehicleViewEffect} from "../js/updateState/SiriEffects";
@@ -17,16 +22,20 @@ import {siriGetVehiclesForStopViewEffect} from "../js/updateState/SiriStopEffect
 const VehicleLoading=()=>{
     const { state} = useContext(CardStateContext)
     let {vehicleState, setState } = useContext(VehicleStateContext);
+    let {vehiclesApproachingStopsState, setVehiclesApproachingStopsState } = useContext(VehiclesApproachingStopsContext);
     useEffect(() => {
         const getSiri = () =>{
             if(state.currentCard.type === Card.cardTypes.vehicleCard){
-                siriGetVehiclesForVehicleViewEffect(state.currentCard.routeIdList,state.currentCard.vehicleId,vehicleState,setState)
-            }
-            else if(state.currentCard.type === Card.cardTypes.stopCard){
-                siriGetVehiclesForStopViewEffect(state.currentCard.routeIdList,[state.currentCard.searchTerm],vehicleState,setState)
+                siriGetVehiclesForVehicleViewEffect(state.currentCard.routeIdList,state.currentCard.vehicleId,
+                    vehicleState,setState)
             }
             else{
-                siriGetVehiclesForRoutesEffect(state.currentCard.routeIdList,vehicleState,setState)
+                siriGetVehiclesForRoutesEffect(state.currentCard.routeIdList,
+                    vehicleState,setState)
+                if(state.currentCard.type === Card.cardTypes.stopCard){
+                    siriGetVehiclesForStopViewEffect(state.currentCard.routeIdList,[state.currentCard.searchTerm],
+                        vehiclesApproachingStopsState,setVehiclesApproachingStopsState)
+                }
             }
         }
 
@@ -97,9 +106,11 @@ const Root = () => {
         <ErrorBoundary>
             <CardStateProvider>
                 <VehicleStateProvider>
-                    <MapHighlightingStateProvider>
-                        <App/>
-                    </MapHighlightingStateProvider>
+                    <VehiclesApproachingStopsProvider>
+                        <MapHighlightingStateProvider>
+                            <App/>
+                        </MapHighlightingStateProvider>
+                    </VehiclesApproachingStopsProvider>
                 </VehicleStateProvider>
             </CardStateProvider>
         </ErrorBoundary>

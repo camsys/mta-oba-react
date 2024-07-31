@@ -1,10 +1,7 @@
-import React, {useContext, useEffect, useState} from "react";
+import React from "react";
 import {serviceAlertData, vehicleData} from "./dataModels";
 import {
-    serviceAlertDataIdentifier,
-    vehicleDataIdentifier,
-    updatedTimeIdentifier,
-    VehicleStateContext, stopSortedDataIdentifier, stopSortedFutureVehicleDataIdentifier
+    updatedTimeIdentifier,stopSortedFutureVehicleDataIdentifier
 } from "../../components/util/VehicleStateComponent";
 import {OBA} from "../oba";
 
