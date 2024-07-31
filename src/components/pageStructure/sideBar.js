@@ -2,7 +2,7 @@ import React, {useContext} from 'react';
 import {OBA} from "../../js/oba";
 import ErrorBoundary from "../util/errorBoundary";
 import queryString from "query-string";
-import getRouteCard from "./../views/RouteCard";
+import {RouteCardWrapper} from "./../views/RouteCard";
 import homeCard from "./../views/homeCard";
 import headerComponent from "./header";
 import footerComponent from "./footer";
@@ -13,6 +13,7 @@ import RefreshComponent from "../views/refreshComponent";
 import VehicleCard from "../views/VehicleCard";
 import siriVehiclesEffect from "../../js/updateState/SiriEffects";
 import {StopCardWrapper} from "../views/StopCardWrapper";
+import {GeoCardWrapper} from "../views/GeoCardWrapper";
 
 function getSideBar  () {
 
@@ -26,7 +27,7 @@ function getSideBar  () {
         console.log("setting card info based on currentCard type: ", state.currentCard)
         if(state.currentCard.type === Card.cardTypes.routeCard){
             OBA.Util.log("adding route card")
-            return getRouteCard();
+            return RouteCardWrapper();
         }
         if(state.currentCard.type === Card.cardTypes.homeCard){
             OBA.Util.log("adding home card")
@@ -39,6 +40,10 @@ function getSideBar  () {
         if(state.currentCard.type === Card.cardTypes.stopCard){
             OBA.Util.log("adding stop card")
             return StopCardWrapper()
+        }
+        if(state.currentCard.type === Card.cardTypes.geocodeCard){
+            OBA.Util.log("adding geo card")
+            return GeoCardWrapper()
         }
     }
 

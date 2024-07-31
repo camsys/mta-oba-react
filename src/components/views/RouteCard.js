@@ -6,7 +6,7 @@ import getRouteDirectionComponent from "./RouteDirectionComponent";
 import {MapHighlightingStateContext} from "../util/MapHighlightingStateComponent";
 
 
-function getRouteCard (routeMatch){
+export function getRouteCard (routeMatch){
     console.log("generating route card: ",routeMatch)
     const {mapHighlightingState, setHighlightingState} = useContext(MapHighlightingStateContext);
 
@@ -40,7 +40,7 @@ function getRouteCard (routeMatch){
     )
 }
 
-function getRouteCardsWrapper  () {
+export function RouteCardWrapper  () {
     const { state} = useContext(CardStateContext);
     console.log("adding route cards for matches:", state.currentCard.searchMatches);
 
@@ -53,5 +53,3 @@ function getRouteCardsWrapper  () {
       </React.Fragment>);
 
  }
-
-export default getRouteCardsWrapper;
