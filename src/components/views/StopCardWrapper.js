@@ -10,10 +10,22 @@ import {
 import ServiceAlertContainerComponent from "./ServiceAlertContainerComponent";
 import RouteVehicleComponent from "./RouteVehicleComponent";
 import {OBA} from "../../js/oba";
+import {MapHighlightingStateContext} from "../util/MapHighlightingStateComponent";
 
 
 
 const RouteDirection = (routeDirectionDatum,stopId) =>{
+    const {mapHighlightingState, setHighlightingState} = useContext(MapHighlightingStateContext);
+
+    const setHoveredItemId = (id) =>{
+        console.log("highlighting: ",id)
+        if(mapHighlightingState.highlightedComponentId!=id){
+            setHighlightingState((prevState)=>{return {
+                ...prevState,
+                highlightedComponentId:id}})
+        }
+    }
+
     const {vehiclesApproachingStopsState} = useContext(VehiclesApproachingStopsContext)
     console.log("generating StopCard RouteDirection",routeDirectionDatum,vehiclesApproachingStopsState)
     let routeAndDir = routeDirectionDatum.routeId + "_"+routeDirectionDatum.directionId
@@ -35,6 +47,8 @@ const RouteDirection = (routeDirectionDatum,stopId) =>{
                 aria-haspopup="true"
                 aria-expanded="false"
                 aria-label={`Toggle ${routeDirectionDatum.routeId.split("_")[1]} to ${routeDirectionDatum.destination}`}
+                onMouseEnter={() => setHoveredItemId(routeDirectionDatum.routeId)}
+                onMouseLeave={() => setHoveredItemId(null)}
             >
               <span className="label" style={{ borderColor: '#'+routeDirectionDatum.color}}>
                 <strong>{routeDirectionDatum.routeId.split("_")[1]}</strong> {routeDirectionDatum.destination}
