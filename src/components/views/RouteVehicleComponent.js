@@ -1,5 +1,7 @@
-import React from "react";
+import React, {useContext} from "react";
 import {OBA} from "../../js/oba";
+import {selectVehicleCard} from "../../js/updateState/searchEffect";
+import {CardStateContext} from "../util/CardStateComponent";
 
 
 const prettyArrivalTime = (arrivalTime,updateTime) =>{
@@ -10,16 +12,27 @@ const prettyArrivalTime = (arrivalTime,updateTime) =>{
     return typeof out==="undefined" || out===null || out==="null,"?"":out
 }
 
+
+
 function RouteVehicleComponent(vehicleDatum,lastUpdateTime){
+
+    let {state,setState} = useContext(CardStateContext)
+    const selectVehicle = (vehicleData) =>{
+        console.log("clicked on " + vehicleData.vehicleId)
+        selectVehicleCard(vehicleData,state,setState)
+    }
+
     console.log("generating RouteVehicleComponent",vehicleDatum,lastUpdateTime)
     let hasArrivalData = typeof vehicleDatum?.vehicleArrivalData!=='undefined'
     let hasUpdateTime = typeof lastUpdateTime !=="undefined"
     let arrivalTime = hasArrivalData && hasUpdateTime
         ? prettyArrivalTime(vehicleDatum?.vehicleArrivalData?.[0].ISOTime,lastUpdateTime)+" "
         :null
+
     return(
         <li>
-            <a href="/?content=route-b-38_vehicle&search=B38&refresh=true&vehicle-popup=true"
+            <a href="#"
+               onClick={()=>{selectVehicle(vehicleDatum)}}
                className={vehicleDatum?.strollerVehicle?"bus stroller-friendly":"bus"}>{vehicleDatum.vehicleId.split("_")[1]}</a>
             <span className="bus-info">
             <span className="approaching">
