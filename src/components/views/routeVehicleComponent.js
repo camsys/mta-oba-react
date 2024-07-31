@@ -14,14 +14,17 @@ function RouteVehicleComponent(vehicleDatum,lastUpdateTime){
     console.log("generating RouteVehicleComponent",vehicleDatum,lastUpdateTime)
     let hasArrivalData = typeof vehicleDatum?.vehicleArrivalData!=='undefined'
     let hasUpdateTime = typeof lastUpdateTime !=="undefined"
+    let arrivalTime = hasArrivalData && hasUpdateTime
+        ? prettyArrivalTime(vehicleDatum?.vehicleArrivalData?.[0].ISOTime,lastUpdateTime)+" "
+        :null
     return(
         <li>
             <a href="/?content=route-b-38_vehicle&search=B38&refresh=true&vehicle-popup=true"
                className={vehicleDatum?.strollerVehicle?"bus stroller-friendly":"bus"}>{vehicleDatum.vehicleId.split("_")[1]}</a>
             <span className="bus-info">
             <span className="approaching">
-                {hasArrivalData && hasUpdateTime
-                    ? prettyArrivalTime(vehicleDatum?.vehicleArrivalData?.[0].ISOTime,lastUpdateTime)+" "
+                {typeof arrivalTime !== "undefined" && arrivalTime!== "null, "
+                    ? arrivalTime
                     :null}
                 {hasArrivalData?
                     vehicleDatum?.vehicleArrivalData?.[0].prettyDistance
