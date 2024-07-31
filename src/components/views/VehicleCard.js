@@ -9,10 +9,11 @@ import {MapHighlightingStateContext} from "../util/MapHighlightingStateComponent
 
 const prettyArrivalTime = (arrivalTime,updateTime) =>{
     console.log("getting pretty time for ",arrivalTime)
-    return (arrivalTime==="null" || typeof updateTime==="undefined")? "" :
+    let prettyArrivalTime = (arrivalTime==="null" || typeof updateTime==="undefined")? "" :
         `${OBA.Util.getArrivalEstimateForISOString(arrivalTime,updateTime)},`
-    if(out==="null,"){console.error("found null bug for VehicleCard, check arrival times is there a weird result?")}
-    return typeof out==="undefined" || out===null || out==="null,"?"":out
+    return typeof prettyArrivalTime !== "undefined" && prettyArrivalTime!== "null,"
+        ? prettyArrivalTime
+        :""
 }
 
 
@@ -23,6 +24,7 @@ export const VehicleCardContentComponent = (props) =>{
     }
     let { routeMatch, vehicleId, vehicleDatum,lastUpdateTime} = props;
     console.log("generating vehicleCardContentComponent for ",vehicleDatum.vehicleId)
+
     return(
         <React.Fragment>
             <ul className="card-details">
@@ -45,7 +47,9 @@ export const VehicleCardContentComponent = (props) =>{
                     vehicleDatum.vehicleArrivalData.map(vehicleArrival=>{
                         return(<li>
                             <a href="#" onClick={() => search(vehicleArrival.stopId)}>{vehicleArrival.stopName}</a>
-                            <span className="stop-details">{prettyArrivalTime(vehicleArrival.ISOTime,lastUpdateTime)} {vehicleArrival.prettyDistance}</span>
+                            <span className="stop-details">
+                                {prettyArrivalTime(vehicleArrival.ISOTime,lastUpdateTime)+" "}
+                                {vehicleArrival.prettyDistance}</span>
                         </li>)
                     }) :null
                 }
