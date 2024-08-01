@@ -54,4 +54,4 @@ const SearchStateProviders = ({children}) =>{
     </CardStateProvider>)
 }
 
-export { SearchStateProviders, CardStateContext,StopsProvider,RoutesProvider};
+export { SearchStateProviders, CardStateContext,StopsContext,RoutesContext};
