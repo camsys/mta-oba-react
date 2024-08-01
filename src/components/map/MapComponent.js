@@ -23,7 +23,7 @@ const MapVehicleElements = ({routeIds}) =>{
     console.log("looking for vehicles from route ids: ",routeIds)
     let mapVehicleComponents = []
     if(routeIds!=null){
-        routeIds.forEach(route=>{
+        [...routeIds].forEach(route=>{
             console.log("looking for vehicles from route id: ",route)
             const { vehicleState} = useContext(VehicleStateContext);
             console.log("vehicle state:", vehicleState)
@@ -31,7 +31,7 @@ const MapVehicleElements = ({routeIds}) =>{
             console.log("using abbreviated routeId ",routeId)
             let vehicleDataForRoute = vehicleState[routeId+vehicleDataIdentifier]
             if(vehicleDataForRoute!=null){
-                console.log(`processing {vehicleDataForRoute}`,vehicleDataForRoute)
+                console.log(`processing vehicleDataForRoute`,vehicleDataForRoute)
                 vehicleDataForRoute.forEach(datum=>{mapVehicleComponents.push(new MapVehicleComponent(datum,state, setState,state.currentCard.vehicleId))});
             }
             console.log("map vehicle components", mapVehicleComponents)
@@ -113,10 +113,10 @@ export const MapComponent = () => {
             processRoute(route)
             startingZoom = 16
             console.log("getting vehicle from ",vehicleState,
-                state.currentCard.routeIdList[0]+vehicleDataIdentifier,
+                state.currentCard.routeIdList.values().next()+vehicleDataIdentifier,
                 state.currentCard.vehicleId)
             startingMapCenter = vehicleState
-                [state.currentCard.routeIdList[0].split("_")[1]+vehicleDataIdentifier]
+                [state.currentCard.routeIdList.values().next().split("_")[1]+vehicleDataIdentifier]
                 .get(state.currentCard.vehicleId).longLat
             // map.fitBounds(newBounds);
         }

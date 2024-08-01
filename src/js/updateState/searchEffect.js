@@ -12,7 +12,7 @@ import {siriGetVehiclesForRoutesEffect} from "./SiriEffects";
         if (route != null && route.hasOwnProperty("directions")) {
             match.color = route?.color
             match.routeId = route?.id
-            card.routeIdList.push(match.routeId)
+            card.routeIdList.add(match.routeId)
             match.routeTitle = route?.shortName + " " + route?.longName
             match.description = route?.description
             match.directions = []
@@ -56,7 +56,7 @@ import {siriGetVehiclesForRoutesEffect} from "./SiriEffects";
         let match = new stopMatch()
         console.log("processing stopMatch search results",stop,card,match)
         if (stop != null && stop.hasOwnProperty("latitude")) {
-            card.stopIdList.push(card.searchTerm)
+            card.stopIdList.add(stop.id)
             match.latitude = stop.latitude
             match.longitude = stop.longitude
             match.routeMatches = []

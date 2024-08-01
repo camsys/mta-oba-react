@@ -34,7 +34,7 @@ export class VehicleArrivalDatum{
 
 export class vehicleData {
     constructor(mvj) {
-        console.log("vehicle data",mvj)
+        // console.log("vehicle data",mvj)
         this.longLat = []
         this.longLat.push(mvj.VehicleLocation.Latitude)
         this.longLat.push(mvj.VehicleLocation.Longitude)
@@ -49,9 +49,6 @@ export class vehicleData {
             this.passengerCount = mc?.Extensions?.Capacities?.EstimatedPassengerCount
             this.passengerCapacity = mc?.Extensions?.Capacities?.EstimatedPassengerCapacity
             this.nextStop = mc?.StopPointRef
-            if (this.passengerCount != null) {
-                console.log("found passenger count", this)
-            }
             this.vehicleArrivalData.push(new VehicleArrivalDatum(mc))
             // let distances = mc?.Extensions?.Distances
             // this.prettyDistance = distances?.PresentableDistance
@@ -183,8 +180,8 @@ export class Card {
         this.searchResultType = null
         this.name = "homeCard"
         this.searchMatches = []
-        this.routeIdList = []
-        this.stopIdList = []
+        this.routeIdList = new Set()
+        this.stopIdList = new Set()
         //this will almost always be null
         this.vehicleId = null
     }

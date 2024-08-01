@@ -42,14 +42,15 @@ function MapVehicleComponent  (vehicleData,state, setState,targetVehicleId) {
         title: "Vehicle " + vehicleIdWithoutAgency + ", " + vehicleData.route + " to " + vehicleData.destination,
         vehicleId: vehicleData.vehicleId,
         routeId: vehicleData.route,
-        key:COMPONENT_IDENTIFIER+"_"+vehicleData.longLat,
+        // key:COMPONENT_IDENTIFIER+"_"+vehicleData.vehicleId,
+        key:COMPONENT_IDENTIFIER+"_"+vehicleData.vehicleId + "_"+vehicleData.longLat,
         position:vehicleData.longLat,
         icon: icon,
-        id: COMPONENT_IDENTIFIER+"_"+vehicleData.longLat
+        id: COMPONENT_IDENTIFIER+"_"+vehicleData.vehicleId
     };
 
 
-    console.log("mapVehicle key: ",COMPONENT_IDENTIFIER+"_"+vehicleData.longLat,vehicleData.vehicleId,vehicleData)
+    console.log("mapVehicle key: ",markerOptions.key,vehicleData)
 
 
     let out = (<Marker {...markerOptions}

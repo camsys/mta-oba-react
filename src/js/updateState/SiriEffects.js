@@ -179,7 +179,7 @@ const siriGetAndSetVehicles = (targetAddresses,vehicleState, setState, dataProce
 const getTargetList = (routeIdList) =>{
     let baseTargetAddress = "https://" + process.env.ENV_ADDRESS + "/" + process.env.VEHICLE_MONITORING_ENDPOINT
 
-    return routeIdList.map((routeId)=>{
+    return [...routeIdList].map((routeId)=>{
         let operatorRef = routeId.split("_")[0].replace(" ","+");
         const lineRef = routeId.split("_")[1];
         return [lineRef,baseTargetAddress+"&OperatorRef=" +operatorRef + "&LineRef"+"=" + routeId.replace("+","%2B")];
@@ -191,7 +191,7 @@ export const siriGetVehiclesForStopViewEffect = (stopIdList, vehicleState, setSt
     let baseTargetAddress = "https://" + process.env.ENV_ADDRESS + "/" + process.env.STOP_MONITORING_ENDPOINT
     console.log("looking for Siri Data for stops!",stopIdList)
 
-    let targetAddresses = stopIdList.map((stopId)=>{
+    let targetAddresses = [...stopIdList].map((stopId)=>{
         let operatorRef = stopId.split("_")[0].replace(" ","+");
         const lineRef = stopId.split("_")[1];
         return [lineRef,baseTargetAddress+"&OperatorRef=" +operatorRef + "&LineRef"+"=" + stopId.replace("+","%2B")];
