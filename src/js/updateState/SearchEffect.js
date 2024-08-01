@@ -174,11 +174,27 @@ export const useSearch = () =>{
         }
     }
 
-    const generateInitialCard = async ()=>{
-        console.log("generating card")
-        const searchRef = queryString.parse(location.search).LineRef;
-        let [stops,routes] = [{},{}]
-        return await getData(new Card(searchRef),stops,routes)
+    const generateInitialCard = async (setLoading)=>{
+        try {
+            console.log("generating card")
+            const searchRef = queryString.parse(location.search).LineRef;
+            let [stops,routes] = [{},{}]
+            let currentCard = await getData(new Card(searchRef),stops,routes)
+            console.log("setting initial state data with base card",currentCard)
+
+            let cardStack = state.cardStack
+            cardStack.push(currentCard)
+            setState((prevState) => ({
+                ...prevState,
+                currentCard: currentCard,
+                cardStack: cardStack,
+                renderCounter:prevState.renderCounter+1
+            }))
+        } catch (error) {
+            console.error('There was a problem with the fetch operation:', error);
+        } finally {
+            setLoading(false);
+        }
     }
 
     return { search , generateInitialCard};

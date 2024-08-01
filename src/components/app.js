@@ -66,28 +66,7 @@ function App  () {
     const { generateInitialCard } = useSearch();
 
     useEffect(() => {
-        async function fetchData() {
-            try {
-
-                let currentCard = await generateInitialCard()
-                console.log("setting initial state data with base card",currentCard)
-
-                let cardStack = state.cardStack
-                cardStack.push(currentCard)
-                setState((prevState) => ({
-                    ...prevState,
-                    currentCard: currentCard,
-                    cardStack: cardStack,
-                    renderCounter:prevState.renderCounter+1
-                }))
-            } catch (error) {
-                console.error('There was a problem with the fetch operation:', error);
-            } finally {
-                setLoading(false);
-            }
-        }
-
-        fetchData();
+        generateInitialCard(setLoading)
     }, []);
 
 
