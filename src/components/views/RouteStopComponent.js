@@ -19,7 +19,7 @@ function getRouteStopComponent  (stopData,routeId) {
 
 
     return (
-        <li  class={hasVehicleChildren?"has-info":null} key={stopData.name + " " + stopData.id}>
+        <li  className={hasVehicleChildren?"has-info":null} key={stopData.name + " " + stopData.id}>
             <a href="#" onClick={() => search(stopData.id.split("_")[1])} tabIndex={stopData.id}>{stopData.name}</a>
             {
                 hasVehicleChildren ?
