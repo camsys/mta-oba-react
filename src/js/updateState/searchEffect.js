@@ -6,152 +6,151 @@ import {Card, geocodeMatch, routeMatch, routeMatchDirectionDatum, stopMatch} fro
 import {siriGetVehiclesForRoutesEffect} from "./SiriEffects";
 
 
-    function processRouteSearch(route,card) {
-        let match = new routeMatch()
-        console.log("processing route search results",route)
-        if (route != null && route.hasOwnProperty("directions")) {
-            match.color = route?.color
-            match.routeId = route?.id
-            card.routeIdList.add(match.routeId)
-            match.routeTitle = route?.shortName + " " + route?.longName
-            match.description = route?.description
-            match.directions = []
-            match.routeMatches = []
-            match.routeMatches.push(match)
-            console.log("assigned basic search values to card",route,match)
-            for (let i = 0; i < route?.directions.length; i++) {
-                let directionDatum = new routeMatchDirectionDatum(route?.directions[i],match.routeId,match.color)
-                match.directions.push(directionDatum)
+function processRouteSearch(route,card,stops,routes) {
+    let match = new routeMatch()
+    console.log("processing route search results",route)
+    if (route != null && route.hasOwnProperty("directions")) {
+        match.color = route?.color
+        match.routeId = route?.id
+        card.routeIdList.add(match.routeId)
+        match.routeTitle = route?.shortName + " " + route?.longName
+        match.description = route?.description
+        match.directions = []
+        match.routeMatches = []
+        match.routeMatches.push(match)
+        console.log("assigned basic search values to card",route,match)
+        for (let i = 0; i < route?.directions.length; i++) {
+            let directionDatum = new routeMatchDirectionDatum(route?.directions[i],match.routeId,match.color)
+            directionDatum.mapStopComponentData.forEach(stop=>stops[stop.id]=stop)
+            match.directions.push(directionDatum)
+        }
+    }
+    routes[match.routeId]=match
+    return match
+}
+
+function processGeocodeSearch(geocode,card,stops,routes){
+    let match = new geocodeMatch()
+    console.log("processing geocode search results",geocode,card,match)
+    if (geocode != null && geocode.hasOwnProperty("latitude")) {
+        match.latitude = geocode.latitude
+        match.longitude = geocode.longitude
+        match.routeMatches = []
+        geocode?.nearbyRoutes.forEach(searchResult=>{
+            if(typeof searchResult?.stopDirection !== "undefined")
+            {
+                match.routeMatches.push(processStopSearch(searchResult,card,stops,routes))
             }
-        }
-        return match
+            else if(typeof searchResult?.longName !== "undefined") {
+                match.routeMatches.push(processRouteSearch(searchResult,card,stops,routes))
+            }
+        })
     }
+    // todo: add a list of stops to card.stopIdList, probably need to search to get them,
+    // ... honestly this whole thing should be done async during the siri calls which means a minor
+    // refactor. but we knew that was coming. given this is a rly fast api call though, probably can make it
+    // done seperate for now. also will need to be done before the siri stop-monitoring calls
+    console.log("geocode data processed: ",match)
+    return match
+}
 
-    function processGeocodeSearch(geocode,card){
-        let match = new geocodeMatch()
-        console.log("processing geocode search results",geocode,card,match)
-        if (geocode != null && geocode.hasOwnProperty("latitude")) {
-            match.latitude = geocode.latitude
-            match.longitude = geocode.longitude
-            match.routeMatches = []
-            geocode?.nearbyRoutes.forEach(searchResult=>{
-                if(typeof searchResult?.stopDirection !== "undefined")
-                {
-                    match.routeMatches.push(processStopSearch(searchResult,card))
-                }
-                else if(typeof searchResult?.longName !== "undefined") {
-                    match.routeMatches.push(processRouteSearch(searchResult, card))
-                }
-            })
-        }
-        // todo: add a list of stops to card.stopIdList, probably need to search to get them,
-        // ... honestly this whole thing should be done async during the siri calls which means a minor
-        // refactor. but we knew that was coming. given this is a rly fast api call though, probably can make it
-        // done seperate for now. also will need to be done before the siri stop-monitoring calls
-        console.log("geocode data processed: ",match)
-        return match
+function processStopSearch(stop,card,stops,routes){
+    let match = new stopMatch()
+    console.log("processing stopMatch search results",stop,card,match)
+    if (stop != null && stop.hasOwnProperty("latitude")) {
+        card.stopIdList.add(stop.id)
+        match.latitude = stop.latitude
+        match.longitude = stop.longitude
+        match.routeMatches = []
+        match.name = stop.name
+        match.id = stop.id
+        stop?.routesAvailable.forEach(x=>{
+            match.routeMatches.push(processRouteSearch(x,card,stops,routes))
+        })
     }
+    console.log("stopMatch data processed: ",match)
+    return match
+}
 
-    function processStopSearch(stop,card){
-        let match = new stopMatch()
-        console.log("processing stopMatch search results",stop,card,match)
-        if (stop != null && stop.hasOwnProperty("latitude")) {
-            card.stopIdList.add(stop.id)
-            match.latitude = stop.latitude
-            match.longitude = stop.longitude
-            match.routeMatches = []
-            match.name = stop.name
-            match.id = stop.id
-            stop?.routesAvailable.forEach(x=>{
-                match.routeMatches.push(processRouteSearch(x,card))
-            })
-        }
-        console.log("stopMatch data processed: ",match)
-        return match
-    }
-
-    async function getData(card){
-        console.log("filling card data with search",card)
-        if(card.searchTerm == null || card.searchTerm == ''){
-            console.log("empty search means home",card)
-            return card
-        }
-        let address = "https://" + OBA.Config.envAddress + "/" + OBA.Config.searchUrl + "?q=" + card.searchTerm
-        console.log('requesting search results from ',address)
-        await fetch(address)
-            .then((response) => response.json())
-            .then((parsed) => {
-                console.log("got back search results")
-                console.log("parsed: ",parsed)
-                let searchResults = parsed?.searchResults
-                console.log("search results found ",searchResults)
-                console.log("resultType = ", searchResults.resultType)
-                card.setSearchResultType(searchResults.resultType)
-                console.log(card)
-
-                if(searchResults.resultType=="StopResult"){
-                    searchResults.matches.forEach(x=>{
-                        card.searchMatches.push(processStopSearch(x,card))
-                    })
-                }
-                if(searchResults.resultType=="GeocodeResult"){
-                    searchResults.matches.forEach(x=>{
-                        card.searchMatches.push(processGeocodeSearch(x,card))
-                    })
-                }
-                if(searchResults.resultType=="RouteResult"){
-                    searchResults.matches.forEach(x=>{
-                        card.searchMatches.push(processRouteSearch(x,card))
-                    })
-                }
-                console.log('completed search results: ',card)
-            })
-            .catch((error) => {
-                console.error(error);
-            });
-        console.log("card: ", card, typeof card, card==null)
+async function getData(card,stops,routes){
+    console.log("filling card data with search",card,stops,routes)
+    if(card.searchTerm == null || card.searchTerm == ''){
+        console.log("empty search means home",card)
         return card
     }
+    let address = "https://" + OBA.Config.envAddress + "/" + OBA.Config.searchUrl + "?q=" + card.searchTerm
+    console.log('requesting search results from ',address)
+    await fetch(address)
+        .then((response) => response.json())
+        .then((parsed) => {
+            console.log("got back search results")
+            console.log("parsed: ",parsed)
+            let searchResults = parsed?.searchResults
+            console.log("search results found ",searchResults)
+            console.log("resultType = ", searchResults.resultType)
+            card.setSearchResultType(searchResults.resultType)
+            console.log(card)
+
+            if(searchResults.resultType=="StopResult"){
+                searchResults.matches.forEach(x=>{
+                    card.searchMatches.push(processStopSearch(x,card,stops,routes))
+                })
+            }
+            if(searchResults.resultType=="GeocodeResult"){
+                searchResults.matches.forEach(x=>{
+                    card.searchMatches.push(processGeocodeSearch(x,card,stops,routes))
+                })
+            }
+            if(searchResults.resultType=="RouteResult"){
+                searchResults.matches.forEach(x=>{
+                    card.searchMatches.push(processRouteSearch(x,card,stops,routes))
+                })
+            }
+            console.log('completed search results: ',card,stops,routes)
+        })
+        .catch((error) => {
+            console.error(error);
+        });
+    console.log("got card data: ", card, typeof card, card==null,stops,routes)
+    return card
+}
 
 
-    function postData(card){
-        const { state, setState } = useContext(CardStateContext);
-        let cardStack = state.cardStack
-        cardStack.push(card)
-        setState((prevState) => ({
-            ...prevState,
-            currentCard: card,
-            cardStack: cardStack,
-            renderCounter:prevState.renderCounter+1
-        }))
-    }
+function postData(card){
+    const { state, setState } = useContext(CardStateContext);
+    let cardStack = state.cardStack
+    cardStack.push(card)
+    setState((prevState) => ({
+        ...prevState,
+        currentCard: card,
+        cardStack: cardStack,
+        renderCounter:prevState.renderCounter+1
+    }))
+}
 
-    const performNewSearch = (searchRef,currentCard) =>{
-        if(currentCard.type === Card.cardTypes.vehicleCard){
-            // this only works because vehicle searches are handled elsewhere
-            return true
-        }
-        else if(currentCard?.searchTerm == searchRef){
-            return false
-        }
+const performNewSearch = (searchRef,currentCard) =>{
+    if(currentCard.type === Card.cardTypes.vehicleCard){
+        // this only works because vehicle searches are handled elsewhere
         return true
     }
+    else if(currentCard?.searchTerm == searchRef){
+        return false
+    }
+    return true
+}
 
 
-export const updateCard = async (searchRef,currentCard) =>{
+export const updateCard = async (searchRef,stops,routes) =>{
     console.log("received new search input:",searchRef)
-    // useEffect(() => {
-            console.log("performing search")
-            searchRef = searchRef.replaceAll(" ","%2520")
-            return await getData(new Card(searchRef))
-    // })
+    searchRef = searchRef.replaceAll(" ","%2520")
+    return await getData(new Card(searchRef),stops,routes)
 }
 
 export const generateInitialCard = async ()=>{
     console.log("generating card")
     const searchRef = queryString.parse(location.search).LineRef;
-    return await getData(new Card(searchRef))
-
+    let [stops,routes] = [{},{}]
+    return await getData(new Card(searchRef),stops,routes)
 }
 
 export const getHomeCard = () =>{
@@ -170,7 +169,7 @@ export async function fetchSearchData(state, setState, searchTerm) {
             window.history.pushState({}, '', url);
             let currentCard
             if(searchTerm!=null|searchTerm!=""|searchTerm!="#"){
-                 currentCard = await updateCard(searchTerm, state?.currentCard)
+                 currentCard = await updateCard(searchTerm, {},{})
             } else {
                 currentCard = getHomeCard()
             }
