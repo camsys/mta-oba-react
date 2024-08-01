@@ -173,7 +173,7 @@ export const MapComponent = () => {
                 />
                 <MapEvents />
                 {Array.from(mapRouteComponents.values())}
-                {Zoom >= 15.1 ? Array.from(mapStopComponents.values()) : null}
+                {Zoom >= 15.1 ? Array.from(mapStopComponents.values()).flat() : null}
                 <MapVehicleElements routeIds={routeIds}/>
             </MapContainer>
         </React.Fragment>

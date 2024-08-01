@@ -9,7 +9,7 @@ import {MapHighlightingStateContext} from "../util/MapHighlightingStateComponent
 const COMPONENT_IDENTIFIER = "mapStopComponent"
 
 function MapStopComponent  (stopDatum) {
-    console.log('generating MapStopComponent: ', stopDatum)
+    // console.log('generating MapStopComponent: ', stopDatum)
 
 
     var direction = stopDatum?.stopDirection;
