@@ -11,7 +11,7 @@ import MapRouteComponent from "./MapRouteComponent";
 import MapStopComponent from "./MapStopComponent";
 import {MapHighlightingStateContext} from "../util/MapHighlightingStateComponent";
 import MapVehicleComponent from "./MapVehicleComponent";
-import {Card} from "../../js/updateState/dataModels";
+import {Card, SearchMatch} from "../../js/updateState/dataModels";
 
 
 
@@ -123,7 +123,13 @@ export const MapComponent = () => {
         else if(state.currentCard.type===Card.cardTypes.geocodeCard) {
             startingMapCenter = [searchMatch.latitude,searchMatch.longitude]
             startingZoom = 16
-            searchMatch.routeMatches.forEach(route => {processRoute(route)})
+            searchMatch.routeMatches.forEach(match => {
+                if(match.type === SearchMatch.matchTypes.routeMatch){processRoute(match)}
+                if(match.type === SearchMatch.matchTypes.stopMatch){
+                    match.routeMatches.forEach(route => {
+                        processRoute(route)
+                    })
+                }})
         }
         else if(state.currentCard.type===Card.cardTypes.stopCard) {
             startingMapCenter = [searchMatch.latitude, searchMatch.longitude]

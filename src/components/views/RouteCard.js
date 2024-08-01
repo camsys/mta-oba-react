@@ -4,10 +4,12 @@ import {CardStateContext} from "../../components/util/CardStateComponent";
 import ServiceAlertContainerComponent from "./ServiceAlertContainerComponent";
 import getRouteDirectionComponent from "./RouteDirectionComponent";
 import {MapHighlightingStateContext} from "../util/MapHighlightingStateComponent";
+import {SearchMatch} from "../../js/updateState/dataModels";
 
 
 export function getRouteCard (routeMatch){
     console.log("generating route card: ",routeMatch)
+    if(routeMatch.type!==SearchMatch.matchTypes.routeMatch){return <></>}
     const {mapHighlightingState, setHighlightingState} = useContext(MapHighlightingStateContext);
 
     const setHoveredItemId = (id) =>{

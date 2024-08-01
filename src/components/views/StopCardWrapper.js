@@ -12,6 +12,7 @@ import RouteVehicleComponent from "./RouteVehicleComponent";
 import {OBA} from "../../js/oba";
 import {MapHighlightingStateContext} from "../util/MapHighlightingStateComponent";
 import {getRouteCard} from "./RouteCard";
+import {SearchMatch} from "../../js/updateState/dataModels";
 
 
 
@@ -66,6 +67,7 @@ const RouteDirection = (routeDirectionDatum,stopId) =>{
 }
 
 export function StopCard (match) {
+    if(match.type!==SearchMatch.matchTypes.stopMatch){return <></>}
     const { state, setState } = useContext(CardStateContext);
     const search = (searchterm) =>{
         fetchSearchData(state, setState, searchterm.split("_")[1])

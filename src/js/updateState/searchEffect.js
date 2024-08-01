@@ -34,8 +34,14 @@ import {siriGetVehiclesForRoutesEffect} from "./SiriEffects";
             match.latitude = geocode.latitude
             match.longitude = geocode.longitude
             match.routeMatches = []
-            geocode?.nearbyRoutes.forEach(x=>{
-                match.routeMatches.push(processRouteSearch(x,card))
+            geocode?.nearbyRoutes.forEach(searchResult=>{
+                if(typeof searchResult?.stopDirection !== "undefined")
+                {
+                    match.routeMatches.push(processStopSearch(searchResult,card))
+                }
+                else if(typeof searchResult?.longName !== "undefined") {
+                    match.routeMatches.push(processRouteSearch(searchResult, card))
+                }
             })
         }
         // todo: add a list of stops to card.stopIdList, probably need to search to get them,
@@ -93,7 +99,7 @@ import {siriGetVehiclesForRoutesEffect} from "./SiriEffects";
                         card.searchMatches.push(processGeocodeSearch(x,card))
                     })
                 }
-                if(card.type == Card.cardTypes.routeCard){
+                if(searchResults.resultType=="RouteResult"){
                     searchResults.matches.forEach(x=>{
                         card.searchMatches.push(processRouteSearch(x,card))
                     })

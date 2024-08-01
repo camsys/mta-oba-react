@@ -124,7 +124,12 @@ export class routeMatchDirectionDatum {
         }
     }
 }
-export class searchMatch{
+export class SearchMatch {
+    static matchTypes = {
+        routeMatch:"routeMatch",
+        geocodeMatch:"geocodeMatch",
+        stopMatch:"stopMatch"
+    }
     constructor(type) {
         this.type = type
     }
@@ -133,9 +138,9 @@ export class searchMatch{
 //todo split routematch into a wraper that matches the other match types and a route obj they all contain
 //and have card have a single searchMatches obj and make the routes field they all contain into a map w/
 // routeId:currentRouteMatch && then remove the routeIds obj in card
-export class routeMatch extends searchMatch{
+export class routeMatch extends SearchMatch{
     constructor(data) {
-        super("routeMatch");
+        super(SearchMatch.matchTypes.routeMatch);
         let color
         let routeId
         let routeTitle
@@ -144,17 +149,17 @@ export class routeMatch extends searchMatch{
     }
 }
 
-export class geocodeMatch extends searchMatch{
+export class geocodeMatch extends SearchMatch{
     constructor(data) {
-        super("geocodeMatch");
+        super(SearchMatch.matchTypes.geocodeMatch);
         let latitude
         let longitude
     }
 }
 
-export class stopMatch extends searchMatch{
+export class stopMatch extends SearchMatch{
     constructor(data) {
-        super("stopMatch");
+        super(SearchMatch.matchTypes.stopMatch);
         let latitude
         let longitude
         let name
