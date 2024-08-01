@@ -172,7 +172,7 @@ export const MapComponent = () => {
                     styles={OBA.Config.mutedTransitStylesArray}
                 />
                 <MapEvents />
-                {Array.from(mapRouteComponents.values())}
+                {Array.from(mapRouteComponents.values()).flat()}
                 {Zoom >= 15.1 ? Array.from(mapStopComponents.values()).flat() : null}
                 <MapVehicleElements routeIds={routeIds}/>
             </MapContainer>

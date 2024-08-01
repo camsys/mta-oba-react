@@ -22,7 +22,8 @@ export default function getRouteDirectionComponent(routeDirectionComponentDatum,
                     {console.log("preparing to get RouteStopComponents from: ", routeDirectionComponentDatum)}
                     {
                         routeDirectionComponentDatum.routeStopComponentsData.map(
-                            stopDatum =><RouteStopComponent stopDatum={stopDatum} routeId = {routeDirectionComponentDatum.routeId} />)
+                            (stopDatum,index) =>{
+                                return <RouteStopComponent stopDatum={stopDatum} routeId = {routeDirectionComponentDatum.routeId} index = {index}/>})
                     }
                 </ul>
             </div>

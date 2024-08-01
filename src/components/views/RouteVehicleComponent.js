@@ -29,7 +29,7 @@ function RouteVehicleComponent({vehicleDatum,lastUpdateTime}){
         :null
 
     return(
-        <li>
+        <li key={vehicleDatum.vehicleId}>
             <a href="#"
                onClick={()=>{selectVehicle(vehicleDatum)}}
                className={vehicleDatum?.strollerVehicle?"bus stroller-friendly":"bus"}>{vehicleDatum.vehicleId.split("_")[1]}</a>
