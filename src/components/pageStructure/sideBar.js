@@ -4,7 +4,7 @@ import ErrorBoundary from "../util/errorBoundary";
 import queryString from "query-string";
 import {RouteCardWrapper} from "./../views/RouteCard";
 import homeCard from "./../views/homeCard";
-import headerComponent from "./header";
+import Header from "./Header";
 import footerComponent from "./footer";
 import searchComponent from "./SearchBar"
 import {CardStateContext} from "../util/CardStateComponent";
@@ -16,10 +16,6 @@ import {StopCardWrapper} from "../views/StopCardWrapper";
 import {GeoCardWrapper} from "../views/GeoCardWrapper";
 
 function getSideBar  () {
-
-    function GetHeader () {
-        return headerComponent()
-    }
 
     const { state } = useContext(CardStateContext);
 
@@ -59,7 +55,7 @@ function getSideBar  () {
     return (
         <ErrorBoundary>
             <header className="header" id="header">
-                <GetHeader />
+                <Header />
             </header>
             <GetSearch />
             <div className="sidebar-content">

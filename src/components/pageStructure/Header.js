@@ -7,7 +7,7 @@ import {useSearch} from "../../js/updateState/SearchEffect";
 
 
 
-function getHeader  () {
+function Header  () {
     OBA.Util.log("adding header")
     const { search } = useSearch();
     return (
@@ -30,4 +30,4 @@ function getHeader  () {
     )
 }
 
-export default getHeader;
+export default Header;
