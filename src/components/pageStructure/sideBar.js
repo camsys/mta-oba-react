@@ -2,7 +2,6 @@ import React, {useContext} from 'react';
 import {OBA} from "../../js/oba";
 import ErrorBoundary from "../util/errorBoundary";
 import {RouteCardWrapper} from "./../views/RouteCard";
-import homeCard from "./../views/homeCard";
 import Header from "./Header";
 import Footer from "./Footer";
 import SearchBar from "./SearchBar"
@@ -12,6 +11,7 @@ import RefreshComponent from "../views/refreshComponent";
 import VehicleCard from "../views/VehicleCard";
 import {StopCardWrapper} from "../views/StopCardWrapper";
 import {GeoCardWrapper} from "../views/GeoCardWrapper";
+import HomeCard from "../views/HomeCard";
 
 function getSideBar  () {
 
@@ -21,23 +21,23 @@ function getSideBar  () {
         console.log("setting card info based on currentCard type: ", state.currentCard)
         if(state.currentCard.type === Card.cardTypes.routeCard){
             OBA.Util.log("adding route card")
-            return RouteCardWrapper();
+            return <RouteCardWrapper/>
         }
         if(state.currentCard.type === Card.cardTypes.homeCard){
             OBA.Util.log("adding home card")
-            return homeCard()
+            return <HomeCard/>
         }
         if(state.currentCard.type === Card.cardTypes.vehicleCard){
             OBA.Util.log("adding vehicle card")
-            return VehicleCard()
+            return <VehicleCard/>
         }
         if(state.currentCard.type === Card.cardTypes.stopCard){
             OBA.Util.log("adding stop card")
-            return StopCardWrapper()
+            return <StopCardWrapper/>
         }
         if(state.currentCard.type === Card.cardTypes.geocodeCard){
             OBA.Util.log("adding geo card")
-            return GeoCardWrapper()
+            return <GeoCardWrapper/>
         }
     }
 
