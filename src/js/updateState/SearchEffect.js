@@ -1,6 +1,6 @@
 import queryString from "query-string";
 import React, {useContext, useEffect, useRef, useState} from "react";
-import {CardStateContext} from "../../components/util/CardStateComponent";
+import {CardStateContext, RoutesContext, StopsContext} from "../../components/util/CardStateComponent";
 import {OBA} from "../oba";
 import {Card, geocodeMatch, routeMatch, routeMatchDirectionDatum, stopMatch} from "./dataModels"
 import {siriGetVehiclesForRoutesEffect} from "./SiriEffects";
@@ -8,7 +8,7 @@ import {siriGetVehiclesForRoutesEffect} from "./SiriEffects";
 
 function processRouteSearch(route,card,stops,routes) {
     let match = new routeMatch()
-    console.log("processing route search results",route)
+    console.log("processing route search results",route,card,stops,routes)
     if (route != null && route.hasOwnProperty("directions")) {
         match.color = route?.color
         match.routeId = route?.id
@@ -21,11 +21,11 @@ function processRouteSearch(route,card,stops,routes) {
         console.log("assigned basic search values to card",route,match)
         for (let i = 0; i < route?.directions.length; i++) {
             let directionDatum = new routeMatchDirectionDatum(route?.directions[i],match.routeId,match.color)
-            directionDatum.mapStopComponentData.forEach(stop=>stops[stop.id]=stop)
+            directionDatum.mapStopComponentData.forEach(stop=>stops.current[stop.id]=stop)
             match.directions.push(directionDatum)
         }
     }
-    routes[match.routeId]=match
+    routes.current[match.routeId]=match
     return match
 }
 
@@ -140,6 +140,10 @@ export const getHomeCard = () =>{
 
 export const useSearch = () =>{
     const { state, setState } = useContext(CardStateContext);
+    const routes = useContext(RoutesContext)
+    const stops = useContext(StopsContext)
+
+
     const search = async (searchTerm) =>{
         try {
             console.log("fetch search data called \n\n\n\n\n\n\n\n")
@@ -152,14 +156,14 @@ export const useSearch = () =>{
                 window.history.pushState({}, '', url);
                 let currentCard
                 if(searchTerm!=null|searchTerm!=""|searchTerm!="#"){
-                    currentCard = await updateCard(searchTerm, {},{})
+                    currentCard = await updateCard(searchTerm, stops,routes)
                 } else {
                     currentCard = getHomeCard()
                 }
 
                 let cardStack = state.cardStack
                 cardStack.push(currentCard)
-                console.log("updating state with new card:", currentCard)
+                console.log("updating state with new card:", currentCard,stops,routes)
                 setState((prevState) => ({
                     ...prevState,
                     currentCard: currentCard,
@@ -176,9 +180,8 @@ export const useSearch = () =>{
 
     const generateInitialCard = async (setLoading)=>{
         try {
-            console.log("generating card")
+            console.log("generating initial card")
             const searchRef = queryString.parse(location.search).LineRef;
-            let [stops,routes] = [{},{}]
             let currentCard = await getData(new Card(searchRef),stops,routes)
             console.log("setting initial state data with base card",currentCard)
 
