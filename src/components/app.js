@@ -1,7 +1,7 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {OBA} from "../js/oba";
 import ErrorBoundary from "./util/errorBoundary";
-import {CardStateContext, CardStateProvider} from "./util/CardStateComponent";
+import {CardStateContext, CardStateProvider, SearchStateProviders} from "./util/CardStateComponent";
 import mapWrap from "./map/mapWrap";
 
 import sideBarComponent from "./pageStructure/sideBar";
@@ -108,7 +108,7 @@ function App  () {
 const Root = () => {
     return (
         <ErrorBoundary>
-            <CardStateProvider>
+            <SearchStateProviders>
                 <VehicleStateProvider>
                     <VehiclesApproachingStopsProvider>
                         <MapHighlightingStateProvider>
@@ -116,7 +116,7 @@ const Root = () => {
                         </MapHighlightingStateProvider>
                     </VehiclesApproachingStopsProvider>
                 </VehicleStateProvider>
-            </CardStateProvider>
+            </SearchStateProviders>
         </ErrorBoundary>
     )
 }
