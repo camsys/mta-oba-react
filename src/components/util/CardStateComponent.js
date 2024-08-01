@@ -1,10 +1,10 @@
-import React, { createContext, useState } from 'react';
+import React, {createContext, useRef, useState} from 'react';
 
 import {generateInitialCard} from "../../js/updateState/searchEffect";
 import {fetchAllStopsData} from "../../js/updateState/useStopsForDir";
 const CardStateContext = createContext();
-const RouteStateContext = createContext();
-const StopStateContext = createContext();
+const RoutesContext = createContext();
+const StopsContext = createContext();
 
 const CardStateProvider = ({children}) => {
     let currentCard = generateInitialCard()
@@ -24,42 +24,34 @@ const CardStateProvider = ({children}) => {
     );
 };
 
-const RouteStateProvider = ({children}) => {
-    const [routeState, setRouteState] = useState({
-        routes: new Set()
-    });
-    console.log("initial routeState set: ",routeState)
+const RoutesProvider = ({ children }) => {
+    const routes = useRef({});
 
     return (
-        <RouteStateContext.Provider value={{routeState, setRouteState}}>
+        <RoutesContext.Provider value={routes}>
             {children}
-        </RouteStateContext.Provider>
+        </RoutesContext.Provider>
     );
 };
 
-const StopStateProvider = ({children}) => {
-    let currentCard = generateInitialCard()
-    console.log("setting initial state data with base card",currentCard)
-    const [stopState, setStopState] = useState({
-        stops: new Set()
-    });
-    console.log("initial stopState set: ",stopState)
+const StopsProvider = ({ children }) => {
+    const stops = useRef({});
 
     return (
-        <StopStateContext.Provider value={{stopState, setStopState}}>
+        <StopsContext.Provider value={stops}>
             {children}
-        </StopStateContext.Provider>
+        </StopsContext.Provider>
     );
 };
 
 const SearchStateProviders = ({children}) =>{
     return(<CardStateProvider>
-        <StopStateProvider>
-            <RouteStateProvider>
+        <StopsProvider>
+            <RoutesProvider>
                 {children}
-            </RouteStateProvider>
-        </StopStateProvider>
+            </RoutesProvider>
+        </StopsProvider>
     </CardStateProvider>)
 }
 
-export { SearchStateProviders, CardStateContext,RouteStateProvider,StopStateProvider};
+export { SearchStateProviders, CardStateContext,StopsProvider,RoutesProvider};
