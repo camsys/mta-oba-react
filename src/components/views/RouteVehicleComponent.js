@@ -14,8 +14,7 @@ const prettyArrivalTime = (arrivalTime,updateTime) =>{
 
 
 
-function RouteVehicleComponent(vehicleDatum,lastUpdateTime){
-
+function RouteVehicleComponent({vehicleDatum,lastUpdateTime}){
     let {state,setState} = useContext(CardStateContext)
     const selectVehicle = (vehicleData) =>{
         console.log("clicked on " + vehicleData.vehicleId)
