@@ -11,7 +11,7 @@ import {
     VehicleStateContext,
     VehicleStateProvider
 } from "./util/VehicleStateComponent";
-import {generateInitialCard} from "../js/updateState/SearchEffect";
+import {useSearch} from "../js/updateState/SearchEffect";
 import {MapHighlightingStateProvider} from "./util/MapHighlightingStateComponent";
 import {siriGetVehiclesForRoutesEffect, siriGetVehiclesForVehicleViewEffect} from "../js/updateState/SiriEffects";
 import {Card} from "../js/updateState/dataModels";
@@ -63,6 +63,7 @@ function App  () {
 
     const [loading, setLoading] = useState(true);
     const { state, setState } = useContext(CardStateContext);
+    const { generateInitialCard } = useSearch();
 
     useEffect(() => {
         async function fetchData() {

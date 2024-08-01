@@ -133,13 +133,6 @@ export const updateCard = async (searchRef,stops,routes) =>{
     return await getData(new Card(searchRef),stops,routes)
 }
 
-export const generateInitialCard = async ()=>{
-    console.log("generating card")
-    const searchRef = queryString.parse(location.search).LineRef;
-    let [stops,routes] = [{},{}]
-    return await getData(new Card(searchRef),stops,routes)
-}
-
 export const getHomeCard = () =>{
     return new Card("")
 }
@@ -148,46 +141,49 @@ export const getHomeCard = () =>{
 export const useSearch = () =>{
     const { state, setState } = useContext(CardStateContext);
     const search = async (searchTerm) =>{
-        fetchSearchData(state,setState,searchTerm)
-    }
-    return { search };
-}
+        try {
+            console.log("fetch search data called \n\n\n\n\n\n\n\n")
+            console.log("generating new card")
+            console.log("logging previous state:",state)
+            console.log("logging previous card:",state?.currentCard)
+            if (performNewSearch(searchTerm,state?.currentCard)) {
+                let url = new URL(window.location.href);
+                url.searchParams.set('LineRef', searchTerm);
+                window.history.pushState({}, '', url);
+                let currentCard
+                if(searchTerm!=null|searchTerm!=""|searchTerm!="#"){
+                    currentCard = await updateCard(searchTerm, {},{})
+                } else {
+                    currentCard = getHomeCard()
+                }
 
-export async function fetchSearchData(state, setState, searchTerm) {
-
-    try {
-        console.log("fetch search data called \n\n\n\n\n\n\n\n")
-        console.log("generating new card")
-        console.log("logging previous state:",state)
-        console.log("logging previous card:",state?.currentCard)
-        if (performNewSearch(searchTerm,state?.currentCard)) {
-            let url = new URL(window.location.href);
-            url.searchParams.set('LineRef', searchTerm);
-            window.history.pushState({}, '', url);
-            let currentCard
-            if(searchTerm!=null|searchTerm!=""|searchTerm!="#"){
-                 currentCard = await updateCard(searchTerm, {},{})
-            } else {
-                currentCard = getHomeCard()
+                let cardStack = state.cardStack
+                cardStack.push(currentCard)
+                console.log("updating state with new card:", currentCard)
+                setState((prevState) => ({
+                    ...prevState,
+                    currentCard: currentCard,
+                    cardStack: cardStack,
+                    renderCounter:prevState.renderCounter+1
+                }))
             }
-
-            let cardStack = state.cardStack
-            cardStack.push(currentCard)
-            console.log("updating state with new card:", currentCard)
-            setState((prevState) => ({
-                ...prevState,
-                currentCard: currentCard,
-                cardStack: cardStack,
-                renderCounter:prevState.renderCounter+1
-            }))
-            // siriGetVehiclesForRoutesEffect(currentCard.routeIdList,currentCard.vehicleId)
-        }
         }
         catch (error) {
             console.error('There was a problem with the fetch operation:', error);
         } finally {
+        }
     }
+
+    const generateInitialCard = async ()=>{
+        console.log("generating card")
+        const searchRef = queryString.parse(location.search).LineRef;
+        let [stops,routes] = [{},{}]
+        return await getData(new Card(searchRef),stops,routes)
+    }
+
+    return { search , generateInitialCard};
 }
+
 
 
 //this function doesn't belong in "SearchEffect" but it does belong with card handling functions

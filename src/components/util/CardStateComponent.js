@@ -1,13 +1,12 @@
 import React, {createContext, useRef, useState} from 'react';
 
-import {generateInitialCard} from "../../js/updateState/SearchEffect";
-import {fetchAllStopsData} from "../../js/updateState/useStopsForDir";
+import {getHomeCard} from "../../js/updateState/SearchEffect";
 const CardStateContext = createContext();
 const RoutesContext = createContext();
 const StopsContext = createContext();
 
 const CardStateProvider = ({children}) => {
-    let currentCard = generateInitialCard()
+    let currentCard = getHomeCard()
     console.log("setting initial state data with base card",currentCard)
     const [state, setState] = useState({
         someGlobalState: {},
