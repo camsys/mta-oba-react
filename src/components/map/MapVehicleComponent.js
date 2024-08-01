@@ -5,7 +5,7 @@ import L from "leaflet";
 import bus from "../../img/icon/bus.svg";
 import busStroller from "../../img/icon/bus-stroller.svg";
 import {CardStateContext} from "../util/CardStateComponent";
-import {selectVehicleCard} from "../../js/updateState/searchEffect";
+import {selectVehicleCard} from "../../js/updateState/SearchEffect";
 
 const COMPONENT_IDENTIFIER = "MapVehicleComponent"
 

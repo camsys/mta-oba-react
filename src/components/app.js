@@ -11,7 +11,7 @@ import {
     VehicleStateContext,
     VehicleStateProvider
 } from "./util/VehicleStateComponent";
-import {generateInitialCard} from "../js/updateState/searchEffect";
+import {generateInitialCard} from "../js/updateState/SearchEffect";
 import {MapHighlightingStateProvider} from "./util/MapHighlightingStateComponent";
 import {siriGetVehiclesForRoutesEffect, siriGetVehiclesForVehicleViewEffect} from "../js/updateState/SiriEffects";
 import {Card} from "../js/updateState/dataModels";

@@ -1,6 +1,6 @@
 import React, {useContext} from "react";
 import {OBA} from "../../js/oba";
-import {selectVehicleCard} from "../../js/updateState/searchEffect";
+import {selectVehicleCard} from "../../js/updateState/SearchEffect";
 import {CardStateContext} from "../util/CardStateComponent";
 
 

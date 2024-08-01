@@ -1,19 +1,14 @@
 import React, {useContext} from "react";
 import RouteVehicleComponent from "./RouteVehicleComponent"
-import {CardStateContext} from "../util/CardStateComponent";
-import {fetchSearchData} from "../../js/updateState/searchEffect";
+import {useSearch} from "../../js/updateState/SearchEffect";
 import {stopSortedDataIdentifier, vehicleDataIdentifier, VehicleStateContext} from "../util/VehicleStateComponent";
 
 function getRouteStopComponent  (stopData,routeId) {
     // console.log("generating RouteStopComponent for ",stopData)
 
-    const { state, setState } = useContext(CardStateContext);
     const {vehicleState} = useContext(VehicleStateContext)
-    const search = (searchterm) =>{
-        fetchSearchData(state, setState, searchterm)
-    }
+    const { search } = useSearch();
     routeId=routeId.split("_")[1]
-//className="has-info" should be added if it has a child vehicle
 
     let vehicleChildComponents = vehicleState[routeId+stopSortedDataIdentifier]
     let hasVehicleChildren = vehicleChildComponents!==null && typeof vehicleChildComponents!=="undefined"

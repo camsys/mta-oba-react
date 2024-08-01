@@ -1,5 +1,5 @@
 import queryString from "query-string";
-import React, {useContext, useEffect, useState} from "react";
+import React, {useContext, useEffect, useRef, useState} from "react";
 import {CardStateContext} from "../../components/util/CardStateComponent";
 import {OBA} from "../oba";
 import {Card, geocodeMatch, routeMatch, routeMatchDirectionDatum, stopMatch} from "./dataModels"
@@ -115,19 +115,6 @@ async function getData(card,stops,routes){
     return card
 }
 
-
-function postData(card){
-    const { state, setState } = useContext(CardStateContext);
-    let cardStack = state.cardStack
-    cardStack.push(card)
-    setState((prevState) => ({
-        ...prevState,
-        currentCard: card,
-        cardStack: cardStack,
-        renderCounter:prevState.renderCounter+1
-    }))
-}
-
 const performNewSearch = (searchRef,currentCard) =>{
     if(currentCard.type === Card.cardTypes.vehicleCard){
         // this only works because vehicle searches are handled elsewhere
@@ -157,7 +144,17 @@ export const getHomeCard = () =>{
     return new Card("")
 }
 
+
+export const useSearch = () =>{
+    const { state, setState } = useContext(CardStateContext);
+    const search = async (searchTerm) =>{
+        fetchSearchData(state,setState,searchTerm)
+    }
+    return { search };
+}
+
 export async function fetchSearchData(state, setState, searchTerm) {
+
     try {
         console.log("fetch search data called \n\n\n\n\n\n\n\n")
         console.log("generating new card")

@@ -1,7 +1,7 @@
 import React, {useContext} from 'react';
 import busStopIcon from "../../img/icon/bus-stop.svg"
 import {CardStateContext} from "../util/CardStateComponent";
-import {fetchSearchData} from "../../js/updateState/searchEffect";
+import {useSearch} from "../../js/updateState/SearchEffect";
 import {
     stopSortedFutureVehicleDataIdentifier, updatedTimeIdentifier,
     VehiclesApproachingStopsContext,
@@ -68,10 +68,7 @@ const RouteDirection = (routeDirectionDatum,stopId) =>{
 
 export function StopCard (match) {
     if(match.type!==SearchMatch.matchTypes.stopMatch){return <></>}
-    const { state, setState } = useContext(CardStateContext);
-    const search = (searchterm) =>{
-        fetchSearchData(state, setState, searchterm.split("_")[1])
-    }
+    const { search } = useSearch();
 
     console.log("generating StopCard",match)
     return(

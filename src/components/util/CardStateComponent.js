@@ -1,6 +1,6 @@
 import React, {createContext, useRef, useState} from 'react';
 
-import {generateInitialCard} from "../../js/updateState/searchEffect";
+import {generateInitialCard} from "../../js/updateState/SearchEffect";
 import {fetchAllStopsData} from "../../js/updateState/useStopsForDir";
 const CardStateContext = createContext();
 const RoutesContext = createContext();

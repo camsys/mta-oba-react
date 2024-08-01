@@ -2,7 +2,7 @@ import React, {useContext} from "react";
 import {CardStateContext} from "../util/CardStateComponent";
 import ServiceAlertContainerComponent from "./ServiceAlertContainerComponent";
 import {updatedTimeIdentifier, vehicleDataIdentifier, VehicleStateContext} from "../util/VehicleStateComponent";
-import {fetchSearchData} from "../../js/updateState/searchEffect";
+import {useSearch} from "../../js/updateState/SearchEffect";
 import {OBA} from "../../js/oba";
 import {MapHighlightingStateContext} from "../util/MapHighlightingStateComponent";
 
@@ -18,10 +18,7 @@ const prettyArrivalTime = (arrivalTime,updateTime) =>{
 
 
 export const VehicleCardContentComponent = (props) =>{
-    const { state, setState } = useContext(CardStateContext);
-    const search = (searchterm) =>{
-        fetchSearchData(state, setState, searchterm.split("_")[1])
-    }
+    const { search } = useSearch();
     let { routeMatch, vehicleId, vehicleDatum,lastUpdateTime} = props;
     console.log("generating vehicleCardContentComponent for ",vehicleDatum.vehicleId)
 
@@ -70,9 +67,8 @@ const VehicleCard = (routeMatch,vehicleId) => {
         }
     }
 
-
+    const { search } = useSearch();
     const { vehicleState} = useContext(VehicleStateContext)
-    const {state, setState} = useContext(CardStateContext)
     let routeId = routeMatch.routeId.split("_")[1];
     let vehicleDatum = vehicleState[routeId+vehicleDataIdentifier].get(vehicleId)
     console.log("generating VehicleCard ",routeId,vehicleDatum,vehicleState[routeId+updatedTimeIdentifier])
@@ -83,7 +79,7 @@ const VehicleCard = (routeMatch,vehicleId) => {
             <div className="card-header" style={{ borderColor: '#'+routeMatch.color}}
                  onMouseEnter={() => setHoveredItemId(routeMatch.routeId)}
                  onMouseLeave={() => setHoveredItemId(null)}>
-                <h3 className="card-title" onClick={() => fetchSearchData(state, setState, routeMatch.routeId.split("_")[1])}>
+                <h3 className="card-title" onClick={() => search(routeMatch.routeId.split("_")[1])}>
                     {/*determine bus-stroller via vehicleDatum*/}
                     <img src={vehicleDatum.strollerVehicle?"/img/icon/bus-stroller.svg":"/img/icon/bus.svg"}
                          alt={vehicleDatum.strollerVehicle?"bus and stroller icon":"bus icon"} className="icon" />
