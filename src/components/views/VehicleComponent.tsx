@@ -1,28 +1,27 @@
 import React, {useContext} from "react";
 import {OBA} from "../../js/oba";
 import {useSearch} from "../../js/updateState/SearchEffect";
+import {VehicleRtInterface} from "../../js/updateState/DataModels";
 
 
-function VehicleComponent({vehicleDatum,lastUpdateTime}){
+function VehicleComponent({vehicleDatum,lastUpdateTime}:
+                              { vehicleDatum :VehicleRtInterface, lastUpdateTime:string}):JSX.Element{
     let {vehicleSearch} = useSearch()
-    const selectVehicle = (vehicleData) =>{
-        console.log("clicked on " + vehicleData.vehicleId)
-        vehicleSearch(vehicleData)
-    }
 
     console.log("generating VehicleComponent",vehicleDatum,lastUpdateTime)
     let hasArrivalData = typeof vehicleDatum?.vehicleArrivalData!=='undefined'
     return(
         <li key={vehicleDatum.vehicleId}>
             <a href="#"
-               onClick={()=>{selectVehicle(vehicleDatum)}}
+               onClick={()=>{vehicleSearch(vehicleDatum)}}
                className={vehicleDatum?.strollerVehicle?"bus stroller-friendly":"bus"}>{vehicleDatum.vehicleId.split("_")[1]}</a>
             <span className="bus-info">
                 <span className="approaching">
                     {OBA.Util.getArrivalEstimateForISOString(vehicleDatum?.vehicleArrivalData?.[0].ISOTime,lastUpdateTime)}
                     {hasArrivalData?
                         vehicleDatum?.vehicleArrivalData?.[0].prettyDistance
-                        :null} </span>
+                        :null}
+                </span>
                 <span className="passengers">{vehicleDatum.passengerCount != null && (
                     vehicleDatum.passengerCapacity != null ?
                         <span className="passengers">{`~${(vehicleDatum.passengerCount / vehicleDatum.passengerCapacity) * 100}% full`}</span>
