@@ -5,17 +5,19 @@ import {updatedTimeIdentifier, vehicleDataIdentifier, VehicleStateContext} from 
 import {useSearch} from "../../js/updateState/SearchEffect";
 import {OBA} from "../../js/oba";
 import {MapHighlightingStateContext, useHighlight} from "../util/MapHighlightingStateComponent.tsx";
+import {MatchType, RouteMatch, SearchMatch, VehicleRtInterface} from "../../js/updateState/DataModels";
 
-export const VehicleCardContentComponent = (props) =>{
+export const VehicleCardContentComponent = ({routeMatch,vehicleDatum}
+                                                :{routeMatch:RouteMatch,vehicleDatum:VehicleRtInterface})
+                                                : JSX.Element=>{
     const { search } = useSearch();
-    let { routeMatch, vehicleId, vehicleDatum,lastUpdateTime} = props;
     console.log("generating vehicleCardContentComponent for ",vehicleDatum.vehicleId)
 
     return(
         <React.Fragment>
             <ul className="card-details">
                 <li className="vehicle-info">
-                    <span className="vehicle">{`Vehicle #${vehicleId.split("_")[1]}`}</span>
+                    <span className="vehicle">{`Vehicle #${vehicleDatum.vehicleId.split("_")[1]}`}</span>
                     {vehicleDatum?.strollerVehicle?<span className="stroller">Stroller storage available</span>:null}
                 </li>
                 {vehicleDatum.passengerCount != null && (
@@ -34,7 +36,7 @@ export const VehicleCardContentComponent = (props) =>{
                         return(<li>
                             <a href="#" onClick={() => search(vehicleArrival.stopId)}>{vehicleArrival.stopName}</a>
                             <span className="stop-details">
-                                {OBA.Util.getArrivalEstimateForISOString(vehicleArrival.ISOTime,lastUpdateTime)}
+                                {OBA.Util.getArrivalEstimateForISOString(vehicleArrival.ISOTime,vehicleDatum.lastUpdate)}
                                 {vehicleArrival.prettyDistance}</span>
                         </li>)
                     }) :null
@@ -44,7 +46,11 @@ export const VehicleCardContentComponent = (props) =>{
     )
 }
 
-const VehicleCard = (routeMatch,vehicleId) => {
+const VehicleCard = (routeMatch:RouteMatch,vehicleId:string) : JSX.Element=> {
+    console.log("generating route card: ", routeMatch);
+    if (routeMatch.type !== MatchType.RouteMatch) {
+        return null
+    }
 
     let {highlightId} = useHighlight()
 
@@ -53,7 +59,6 @@ const VehicleCard = (routeMatch,vehicleId) => {
     let routeId = routeMatch.routeId.split("_")[1];
     let vehicleDatum = vehicleState[routeId+vehicleDataIdentifier].get(vehicleId)
     console.log("generating VehicleCard ",routeId,vehicleDatum,vehicleState[routeId+updatedTimeIdentifier])
-    let lastUpdateTime = OBA.Util.ISO8601StringToDate(vehicleState[routeId+updatedTimeIdentifier]).getTime()
     let serviceAlertIdentifier = routeMatch.routeId
     return (
         <div className={`card vehicle-card ${routeMatch.routeId}`}>
@@ -61,14 +66,13 @@ const VehicleCard = (routeMatch,vehicleId) => {
                  onMouseEnter={() => highlightId(routeMatch.routeId)}
                  onMouseLeave={() => highlightId(null)}>
                 <h3 className="card-title" onClick={() => search(routeMatch.routeId.split("_")[1])}>
-                    {/*determine bus-stroller via vehicleDatum*/}
                     <img src={vehicleDatum.strollerVehicle?"/img/icon/bus-stroller.svg":"/img/icon/bus.svg"}
                          alt={vehicleDatum.strollerVehicle?"bus and stroller icon":"bus icon"} className="icon" />
                     {OBA.Config.noWidows(routeMatch.routeTitle)}
                 </h3>
             </div>
             <div className="card-content">
-                <VehicleCardContentComponent {...{ routeMatch, vehicleId,vehicleDatum,lastUpdateTime}}/>
+                <VehicleCardContentComponent {...{ routeMatch, vehicleDatum}}/>
                 <ServiceAlertContainerComponent {...{routeId,serviceAlertIdentifier}}/>
             </div>
         </div>
@@ -77,7 +81,7 @@ const VehicleCard = (routeMatch,vehicleId) => {
 
 
 //This one breaks the pattern because vehicles are not searched elsewhere. sorry
-function getVehicleCardsWrapper  () {
+const getVehicleCardsWrapper = () : JSX.Element => {
         const { state} = useContext(CardStateContext);
         console.log("adding vehicles for match:", state.currentCard.searchMatches);
 
@@ -91,6 +95,4 @@ function getVehicleCardsWrapper  () {
         </React.Fragment>);
 
     }
-
-export default getVehicleCardsWrapper;
-
+export default getVehicleCardsWrapper
