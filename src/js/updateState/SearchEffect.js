@@ -117,7 +117,7 @@ async function getData(card,stops,routes){
 }
 
 const performNewSearch = (searchRef,currentCard) =>{
-    if(currentCard.type === Card.cardTypes.vehicleCard){
+    if(currentCard.type === CardType.VehicleCard){
         // this only works because vehicle searches are handled elsewhere
         return true
     }

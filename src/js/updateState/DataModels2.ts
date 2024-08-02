@@ -273,7 +273,7 @@ export class Card {
     }
 
     setType(cardType: CardType): void {
-        if (!(cardType in Card.cardTypes)) {
+        if (!(cardType in CardType)) {
             console.error("failed to set card type", this);
             return;
         }

@@ -16,6 +16,7 @@ import {MapHighlightingStateProvider} from "./util/MapHighlightingStateComponent
 import {siriGetVehiclesForRoutesEffect, siriGetVehiclesForVehicleViewEffect} from "../js/updateState/SiriEffects";
 import {Card} from "../js/updateState/dataModels";
 import {siriGetVehiclesForStopViewEffect} from "../js/updateState/SiriStopEffects";
+import {CardType} from "../js/updateState/DataModels2";
 
 
 
@@ -25,18 +26,18 @@ const VehicleLoading=()=>{
     let {vehiclesApproachingStopsState, setVehiclesApproachingStopsState } = useContext(VehiclesApproachingStopsContext);
     useEffect(() => {
         const getSiri = () =>{
-            if(state.currentCard.type === Card.cardTypes.vehicleCard){
+            if(state.currentCard.type === CardType.VehicleCard){
                 siriGetVehiclesForVehicleViewEffect(state.currentCard.routeIdList,state.currentCard.vehicleId,
                     vehicleState,setState)
             }
             else{
                 siriGetVehiclesForRoutesEffect(state.currentCard.routeIdList,
                     vehicleState,setState)
-                if(state.currentCard.type === Card.cardTypes.stopCard){
+                if(state.currentCard.type === CardType.StopCard){
                     siriGetVehiclesForStopViewEffect(state.currentCard.routeIdList,state.currentCard.stopIdList,
                         vehiclesApproachingStopsState,setVehiclesApproachingStopsState)
                 }
-                if(state.currentCard.type === Card.cardTypes.geocodeCard){
+                if(state.currentCard.type === CardType.GeocodeCard){
                     siriGetVehiclesForStopViewEffect(state.currentCard.routeIdList,state.currentCard.stopIdList,
                         vehiclesApproachingStopsState,setVehiclesApproachingStopsState)
                 }
@@ -45,8 +46,8 @@ const VehicleLoading=()=>{
 
         getSiri()
         //todo: set interval back to 15s
-        const interval = setInterval(getSiri, 15*1000);
-        return () => clearInterval(interval);
+        // const interval = setInterval(getSiri, 15*1000);
+        // return () => clearInterval(interval);
     }, [state]);
 }
 

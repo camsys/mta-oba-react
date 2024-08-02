@@ -6,7 +6,7 @@ import Header from "./Header";
 import Footer from "./Footer";
 import SearchBar from "./SearchBar"
 import {CardStateContext} from "../util/CardStateComponent";
-import {Card} from "../../js/updateState/dataModels"
+import {Card, CardType} from "../../js/updateState/DataModels2"
 import RefreshComponent from "../views/refreshComponent";
 import VehicleCard from "../views/VehicleCard";
 import {StopCardWrapper} from "../views/StopCardWrapper";
@@ -19,23 +19,23 @@ function getSideBar  () {
 
     function renderCardInfo  () {
         console.log("setting card info based on currentCard type: ", state.currentCard)
-        if(state.currentCard.type === Card.cardTypes.routeCard){
+        if(state.currentCard.type === CardType.RouteCard){
             OBA.Util.log("adding route card")
             return <RouteCardWrapper/>
         }
-        if(state.currentCard.type === Card.cardTypes.homeCard){
+        if(state.currentCard.type === CardType.HomeCard){
             OBA.Util.log("adding home card")
             return <HomeCard/>
         }
-        if(state.currentCard.type === Card.cardTypes.vehicleCard){
+        if(state.currentCard.type === CardType.VehicleCard){
             OBA.Util.log("adding vehicle card")
             return <VehicleCard/>
         }
-        if(state.currentCard.type === Card.cardTypes.stopCard){
+        if(state.currentCard.type === CardType.StopCard){
             OBA.Util.log("adding stop card")
             return <StopCardWrapper/>
         }
-        if(state.currentCard.type === Card.cardTypes.geocodeCard){
+        if(state.currentCard.type === CardType.GeocodeCard){
             OBA.Util.log("adding geo card")
             return <GeoCardWrapper/>
         }
@@ -49,7 +49,7 @@ function getSideBar  () {
             <div className="sidebar-content">
                 <div className="content" id="app">
                     {renderCardInfo()}
-                    {state.currentCard.type === Card.cardTypes.homeCard ? null : <RefreshComponent/>}
+                    {state.currentCard.type === CardType.HomeCard ? null : <RefreshComponent/>}
                 </div>
                 <Footer />
             </div>

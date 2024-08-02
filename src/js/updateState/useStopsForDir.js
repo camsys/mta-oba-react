@@ -48,7 +48,7 @@ function fetchStopsDataForDir(address,routeDirection){
 export async function fetchAllStopsData(card){
     console.log("getting all stops: ",card)
     let promises = []
-    if(card.type===Card.cardTypes.routeCard){
+    if(card.type===CardType.RouteCard){
         console.log("getting all stops: card is routes")
         card.searchMatches.forEach((match)=>{
             console.log("getting all stops: match: ",match)

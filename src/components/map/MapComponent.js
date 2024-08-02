@@ -109,12 +109,12 @@ export const MapComponent = () => {
 
     state.currentCard.searchMatches.forEach(searchMatch=>{
         console.log("adding routes for:",searchMatch)
-        if(state.currentCard.type===Card.cardTypes.routeCard){
+        if(state.currentCard.type===CardType.RouteCard){
             let route = searchMatch
             processRoute(route)
             // map.fitBounds(newBounds);
         }
-        else if(state.currentCard.type===Card.cardTypes.vehicleCard){
+        else if(state.currentCard.type===CardType.VehicleCard){
             let route = searchMatch
             processRoute(route)
             startingZoom = 16
@@ -126,7 +126,7 @@ export const MapComponent = () => {
                 .get(state.currentCard.vehicleId).longLat
             // map.fitBounds(newBounds);
         }
-        else if(state.currentCard.type===Card.cardTypes.geocodeCard) {
+        else if(state.currentCard.type===CardType.GeocodeCard) {
             startingMapCenter = [searchMatch.latitude,searchMatch.longitude]
             startingZoom = 16
             searchMatch.routeMatches.forEach(match => {
@@ -137,7 +137,7 @@ export const MapComponent = () => {
                     })
                 }})
         }
-        else if(state.currentCard.type===Card.cardTypes.stopCard) {
+        else if(state.currentCard.type===CardType.StopCard) {
             startingMapCenter = [searchMatch.latitude, searchMatch.longitude]
             startingZoom = 16
             searchMatch.routeMatches.forEach(route => {
