@@ -31,7 +31,7 @@ function extractData (routeId,siri){
         for (let i = 0; i < vehicleActivity.length; i++) {
             OBA.Util.trace("processing vehicle #" + i);
             let mvj = vehicleActivity[i].MonitoredVehicleJourney
-            let vehicleDatum = createVehicleRtInterface(mvj)
+            let vehicleDatum = createVehicleRtInterface(mvj,OBA.Util.ISO8601StringToDate(lastCallTime))
             vehicleDataMap.set(mvj.VehicleRef,vehicleDatum)
             let vehicles = stopsToVehiclesMap.get(vehicleDatum.nextStop)
             if(vehicles===null || typeof vehicles === "undefined"){

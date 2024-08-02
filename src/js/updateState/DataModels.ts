@@ -47,6 +47,7 @@ export interface VehicleRtInterface {
     bearing?: number;
     direction?: string;
     routeId: string;
+    lastUpdate:Date
 }
 
 
@@ -104,7 +105,7 @@ export function createVehicleArrivalInterface(mc: any): VehicleArrivalInterface 
     };
 }
 
-export function createVehicleRtInterface(mvj: any): VehicleRtInterface {
+export function createVehicleRtInterface(mvj: any,updateTime:Date): VehicleRtInterface {
     const vehicleArrivalData = [];
 
     if (mvj?.MonitoredCall != null) {
@@ -121,6 +122,7 @@ export function createVehicleRtInterface(mvj: any): VehicleRtInterface {
     }
 
     return {
+        lastUpdate: updateTime,
         longLat: [mvj.VehicleLocation.Latitude, mvj.VehicleLocation.Longitude],
         destination: mvj.DestinationName,
         hasRealtime: mvj.Monitored,

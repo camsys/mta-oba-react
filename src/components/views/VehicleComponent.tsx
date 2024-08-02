@@ -4,11 +4,11 @@ import {useSearch} from "../../js/updateState/SearchEffect";
 import {VehicleRtInterface} from "../../js/updateState/DataModels";
 
 
-function VehicleComponent({vehicleDatum,lastUpdateTime}:
-                              { vehicleDatum :VehicleRtInterface, lastUpdateTime:string}):JSX.Element{
+function VehicleComponent({vehicleDatum}:
+                              { vehicleDatum :VehicleRtInterface}):JSX.Element{
     let {vehicleSearch} = useSearch()
 
-    console.log("generating VehicleComponent",vehicleDatum,lastUpdateTime)
+    console.log("generating VehicleComponent",vehicleDatum)
     let hasArrivalData = typeof vehicleDatum?.vehicleArrivalData!=='undefined'
     return(
         <li key={vehicleDatum.vehicleId}>
@@ -17,7 +17,7 @@ function VehicleComponent({vehicleDatum,lastUpdateTime}:
                className={vehicleDatum?.strollerVehicle?"bus stroller-friendly":"bus"}>{vehicleDatum.vehicleId.split("_")[1]}</a>
             <span className="bus-info">
                 <span className="approaching">
-                    {OBA.Util.getArrivalEstimateForISOString(vehicleDatum?.vehicleArrivalData?.[0].ISOTime,lastUpdateTime)}
+                    {OBA.Util.getArrivalEstimateForISOString(vehicleDatum?.vehicleArrivalData?.[0].ISOTime,vehicleDatum.lastUpdate)}
                     {hasArrivalData?
                         vehicleDatum?.vehicleArrivalData?.[0].prettyDistance
                         :null}

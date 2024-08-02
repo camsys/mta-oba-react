@@ -115,6 +115,7 @@ OBA.Util = (function() {
         },
         ISO8601StringToDate: ISO8601StringToDate,
         getArrivalEstimateForISOString: function(predictionDateString, referenceDateObj) {
+            console.log("getting arrival from iso string",predictionDateString,referenceDateObj)
             let prettyArrivalTime = ""
 
            if(predictionDateString===null || referenceDateObj ===null || typeof referenceDateObj==="undefined") {return ""}
