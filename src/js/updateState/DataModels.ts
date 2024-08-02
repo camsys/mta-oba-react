@@ -200,9 +200,11 @@ export class SearchMatch {
     static matchTypes = MatchType;
 
     type: MatchType;
+    routeMatches: [RouteMatch]
 
     constructor(type: MatchType) {
         this.type = type;
+        this.routeMatches = []
     }
 }
 

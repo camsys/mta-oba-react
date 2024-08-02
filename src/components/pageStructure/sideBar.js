@@ -9,7 +9,7 @@ import {CardStateContext} from "../util/CardStateComponent";
 import {Card, CardType} from "../../js/updateState/DataModels"
 import RefreshComponent from "../views/refreshComponent";
 import VehicleCard from "../views/VehicleCard";
-import {StopCardWrapper} from "../views/StopCardWrapper";
+import {StopCardWrapper} from "../views/StopCardWrapper.tsx";
 import {GeoCardWrapper} from "../views/GeoCardWrapper";
 import HomeCard from "../views/HomeCard.tsx";
 

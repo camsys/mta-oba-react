@@ -11,11 +11,18 @@ import ServiceAlertContainerComponent from "./ServiceAlertContainerComponent";
 import VehicleComponent from "./VehicleComponent.tsx";
 import {OBA} from "../../js/oba";
 import {useHighlight} from "../util/MapHighlightingStateComponent.tsx";
-import {MatchType} from "../../js/updateState/DataModels";
+import {
+    MatchType,
+    RouteDirectionInterface,
+    RouteMatch,
+    RouteMatchDirectionInterface,
+    SearchMatch,
+    StopMatch
+} from "../../js/updateState/DataModels";
 
 
 
-const RouteDirection = (routeDirectionDatum,stopId) =>{
+const RouteDirection = (routeDirectionDatum:RouteMatchDirectionInterface,stopId:string) : JSX.Element=>{
     const {highlightId} = useHighlight();
 
     const {vehiclesApproachingStopsState} = useContext(VehiclesApproachingStopsContext)
@@ -56,32 +63,33 @@ const RouteDirection = (routeDirectionDatum,stopId) =>{
     )
 }
 
-export function StopCard (match) {
+export function StopCard (match: SearchMatch) : JSX.Element{
     if(match.type!==MatchType.StopMatch){return <></>}
+    let routeMatch = match as StopMatch
     const { search } = useSearch();
 
-    console.log("generating StopCard",match)
+    console.log("generating StopCard",routeMatch)
     return(
     <div className="card stop-card">
         <div className="card-header">
             <h3 className="card-title">
                 <img src={busStopIcon} alt="bus stop icon" className="icon" />
-                {match.name}
+                {routeMatch.name}
             </h3>
         </div>
         <div className="card-content">
             <ul className="card-details">
-                <li className="stopcode">Stopcode {match.id.split("_")[1]}</li>
+                <li className="stopcode">Stopcode {routeMatch.id.split("_")[1]}</li>
             </ul>
             <h4>Buses en-route:</h4>
-            {match.routeMatches.map(
+            {routeMatch.routeMatches.map(
                 route=>route.directions.map(
-                    dir => RouteDirection(dir,match.id.split("_")[1])
+                    dir => RouteDirection(dir,routeMatch.id.split("_")[1])
             ))}
 
             <div className="text-note">
                 <p>
-                    Text stopcode <strong>{match.id.split("_")[1]}</strong> to 511123 to receive an up-to-date list of buses
+                    Text stopcode <strong>{routeMatch.id.split("_")[1]}</strong> to 511123 to receive an up-to-date list of buses
                     en-route on your phone.
                 </p>
             </div>
@@ -111,7 +119,7 @@ export function StopCard (match) {
     )
 }
 
-export const StopCardWrapper = () => {
+export const StopCardWrapper = () : JSX.Element => {
     const { state } = useContext(CardStateContext);
     let match = state.currentCard.searchMatches[0]
     return (

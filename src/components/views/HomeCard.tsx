@@ -3,7 +3,7 @@ import {OBA} from "../../js/oba";
 import {useSearch} from "../../js/updateState/SearchEffect";
 
 
-function HomeCard  () {
+function HomeCard  () : JSX.Element {
 
     OBA.Util.log("adding home card")
     const { search } = useSearch();

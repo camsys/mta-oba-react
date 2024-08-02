@@ -1,7 +1,7 @@
 import React, {useContext} from "react";
 import {CardStateContext} from "../util/CardStateComponent";
 import {RouteCard} from "./RouteCard";
-import {StopCard} from "./StopCardWrapper";
+import {StopCard} from "./StopCardWrapper.tsx";
 
 
 export function GeoCardWrapper  () {
