@@ -5,7 +5,7 @@ import queryString from "query-string";
 import {OBA} from "../../js/oba";
 import L from "leaflet";
 import bus from "../../img/icon/bus.svg";
-import {CardStateContext, RoutesContext, StopsContext} from "../util/CardStateComponent";
+import {CardStateContext, RoutesContext, StopsContext} from "../util/CardStateComponent.tsx";
 import {vehicleDataIdentifier, VehicleStateContext} from "../util/VehicleStateComponent";
 import MapRouteComponent from "./MapRouteComponent";
 import MapStopComponent from "./MapStopComponent";

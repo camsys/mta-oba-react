@@ -1,6 +1,6 @@
 import queryString from "query-string";
 import React, {useContext, useEffect, useRef, useState} from "react";
-import {CardStateContext, RoutesContext, StopsContext} from "../../components/util/CardStateComponent";
+import {CardStateContext, RoutesContext, StopsContext} from "Components/util/CardStateComponent";
 import {OBA} from "../oba";
 import {Card, GeocodeMatch, RouteMatch, StopMatch, createRouteMatchDirectionInterface, CardType} from "./DataModels";
 

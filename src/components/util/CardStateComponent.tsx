@@ -1,9 +1,9 @@
 import React, {createContext, useRef, useState} from 'react';
 
 import {getHomeCard} from "../../js/updateState/SearchEffect";
-const CardStateContext = createContext();
-const RoutesContext = createContext();
-const StopsContext = createContext();
+const CardStateContext = createContext({});
+const RoutesContext = createContext({});
+const StopsContext = createContext({});
 
 const CardStateProvider = ({children}) => {
     let currentCard = getHomeCard()

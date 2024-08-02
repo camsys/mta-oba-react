@@ -2,7 +2,7 @@ import React, {Component, useContext, useEffect, useState} from 'react';
 import {Marker, Polyline, Popup} from "react-leaflet";
 
 import {useHighlight} from "../util/MapHighlightingStateComponent.tsx";
-import {CardStateContext} from "../util/CardStateComponent";
+import {CardStateContext} from "../util/CardStateComponent.tsx";
 
 function MapRouteComponent  ({mapRouteComponentDatum}) {
     // console.log('generating mapRouteComponent: ', mapRouteComponentDatum)

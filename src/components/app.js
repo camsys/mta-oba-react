@@ -1,7 +1,7 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {OBA} from "../js/oba";
 import ErrorBoundary from "./util/errorBoundary";
-import {CardStateContext, CardStateProvider, SearchStateProviders} from "./util/CardStateComponent";
+import {CardStateContext, CardStateProvider, SearchStateProviders} from "./util/CardStateComponent.tsx";
 import mapWrap from "./map/mapWrap";
 
 import sideBarComponent from "./pageStructure/sideBar";

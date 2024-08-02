@@ -1,6 +1,6 @@
 import React, {useContext, useEffect, useState} from "react";
 import ServiceAlertComponent from "./ServiceAlertComponent"
-import {CardStateContext} from "../../components/util/CardStateComponent";
+import {CardStateContext} from "../util/CardStateComponent";
 import queryString from "query-string";
 import {serviceAlertDataIdentifier, vehicleDataIdentifier, VehicleStateContext} from "../util/VehicleStateComponent";
 
