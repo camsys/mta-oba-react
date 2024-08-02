@@ -50,7 +50,7 @@ function MapVehicleComponent  (vehicleData,state, setState,targetVehicleId) {
     };
 
 
-    console.log("mapVehicle key: ",markerOptions.key,vehicleData)
+    // console.log("mapVehicle key: ",markerOptions.key,vehicleData)
 
 
     let out = (<Marker {...markerOptions}

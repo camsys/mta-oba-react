@@ -118,11 +118,11 @@ export const MapComponent = () => {
             let route = searchMatch
             processRoute(route)
             startingZoom = 16
-            console.log("getting vehicle from ",vehicleState,
-                state.currentCard.routeIdList.values().next()+vehicleDataIdentifier,
-                state.currentCard.vehicleId)
+            // console.log("getting vehicle from ",vehicleState,
+            //     state.currentCard.routeIdList[0].split("_")[1]+vehicleDataIdentifier,
+            //     state.currentCard.vehicleId)
             startingMapCenter = vehicleState
-                [state.currentCard.routeIdList.values().next().split("_")[1]+vehicleDataIdentifier]
+                [state.currentCard.routeIdList[0].split("_")[1]+vehicleDataIdentifier]
                 .get(state.currentCard.vehicleId).longLat
             // map.fitBounds(newBounds);
         }
