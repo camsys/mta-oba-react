@@ -11,7 +11,7 @@ import RefreshComponent from "../views/refreshComponent";
 import VehicleCard from "../views/VehicleCard";
 import {StopCardWrapper} from "../views/StopCardWrapper";
 import {GeoCardWrapper} from "../views/GeoCardWrapper";
-import HomeCard from "../views/HomeCard";
+import HomeCard from "../views/HomeCard.tsx";
 
 function getSideBar  () {
 

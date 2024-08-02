@@ -8,7 +8,7 @@ import {
     VehicleStateContext
 } from "../util/VehicleStateComponent";
 import ServiceAlertContainerComponent from "./ServiceAlertContainerComponent";
-import VehicleComponent from "./VehicleComponent";
+import VehicleComponent from "./VehicleComponent.tsx";
 import {OBA} from "../../js/oba";
 import {useHighlight} from "../util/MapHighlightingStateComponent.tsx";
 import {MatchType} from "../../js/updateState/DataModels";
