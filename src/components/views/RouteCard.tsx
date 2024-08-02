@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react";
 import { OBA } from "../../js/oba";
 import { CardStateContext } from "../../components/util/CardStateComponent";
 import ServiceAlertContainerComponent from "./ServiceAlertContainerComponent";
-import { MapHighlightingStateContext } from "../util/MapHighlightingStateComponent";
+import { useHighlight } from "../util/MapHighlightingStateComponent";
 import {
     RouteDirectionInterface,
     MatchType,
@@ -79,17 +79,7 @@ export function RouteCard({ routeMatch }: SearchMatch): JSX.Element {
         return null
     }
 
-    const { mapHighlightingState, setHighlightingState } = useContext(MapHighlightingStateContext);
-    const setHoveredItemId = (id: string | null): void => {
-        console.log("highlighting: ", id);
-        if (mapHighlightingState.highlightedComponentId !== id) {
-            setHighlightingState((prevState) => ({
-                ...prevState,
-                highlightedComponentId: id,
-            }));
-        }
-    };
-
+    const { highlightId } = useHighlight();
     let routeId = routeMatch.routeId.split("_")[1];
     let serviceAlertIdentifier = routeMatch.routeId;
 
@@ -99,8 +89,8 @@ export function RouteCard({ routeMatch }: SearchMatch): JSX.Element {
                 <div
                     className="card-header"
                     style={{ borderColor: "#" + routeMatch.color }}
-                    onMouseEnter={() => setHoveredItemId(routeMatch.routeId)}
-                    onMouseLeave={() => setHoveredItemId(null)}
+                    onMouseEnter={() => highlightId(routeMatch.routeId)}
+                    onMouseLeave={() => highlightId(null)}
                     >
                     <h3 className="card-title">{OBA.Config.noWidows(routeMatch.routeTitle)}</h3>
                 </div>

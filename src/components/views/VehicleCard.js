@@ -4,7 +4,7 @@ import ServiceAlertContainerComponent from "./ServiceAlertContainerComponent";
 import {updatedTimeIdentifier, vehicleDataIdentifier, VehicleStateContext} from "../util/VehicleStateComponent";
 import {useSearch} from "../../js/updateState/SearchEffect";
 import {OBA} from "../../js/oba";
-import {MapHighlightingStateContext} from "../util/MapHighlightingStateComponent";
+import {MapHighlightingStateContext, useHighlight} from "../util/MapHighlightingStateComponent.tsx";
 
 
 const prettyArrivalTime = (arrivalTime,updateTime) =>{
@@ -57,15 +57,7 @@ export const VehicleCardContentComponent = (props) =>{
 
 const VehicleCard = (routeMatch,vehicleId) => {
 
-    const {mapHighlightingState, setHighlightingState} = useContext(MapHighlightingStateContext);
-    const setHoveredItemId = (id) =>{
-        console.log("highlighting: ",id)
-        if(mapHighlightingState.highlightedComponentId!=id){
-            setHighlightingState((prevState)=>{return {
-                ...prevState,
-                highlightedComponentId:id}})
-        }
-    }
+    let {highlightId} = useHighlight()
 
     const { search } = useSearch();
     const { vehicleState} = useContext(VehicleStateContext)
@@ -77,8 +69,8 @@ const VehicleCard = (routeMatch,vehicleId) => {
     return (
         <div className={`card vehicle-card ${routeMatch.routeId}`}>
             <div className="card-header" style={{ borderColor: '#'+routeMatch.color}}
-                 onMouseEnter={() => setHoveredItemId(routeMatch.routeId)}
-                 onMouseLeave={() => setHoveredItemId(null)}>
+                 onMouseEnter={() => highlightId(routeMatch.routeId)}
+                 onMouseLeave={() => highlightId(null)}>
                 <h3 className="card-title" onClick={() => search(routeMatch.routeId.split("_")[1])}>
                     {/*determine bus-stroller via vehicleDatum*/}
                     <img src={vehicleDatum.strollerVehicle?"/img/icon/bus-stroller.svg":"/img/icon/bus.svg"}

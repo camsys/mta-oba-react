@@ -1,14 +1,14 @@
 import React, {Component, useContext, useEffect, useState} from 'react';
 import {Marker, Polyline, Popup} from "react-leaflet";
 
-import {MapHighlightingStateContext} from "../util/MapHighlightingStateComponent";
+import {useHighlight} from "../util/MapHighlightingStateComponent.tsx";
 import {CardStateContext} from "../util/CardStateComponent";
 
 function MapRouteComponent  ({mapRouteComponentDatum}) {
     // console.log('generating mapRouteComponent: ', mapRouteComponentDatum)
 
-    const { mapHighlightingState} = useContext(MapHighlightingStateContext);
-    let highlightedId = mapHighlightingState.highlightedComponentId
+    let {getHighlightedId} = useHighlight()
+    let highlightedId = getHighlightedId()
 
     let polylineOptions = {
         key:mapRouteComponentDatum.id,
