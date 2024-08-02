@@ -150,10 +150,7 @@ export const useSearch = () =>{
                 .toUpperCase()
             : searchTerm.toUpperCase();
         try {
-            console.log("fetch search data called \n\n\n\n\n\n\n\n")
-            console.log("generating new card")
-            console.log("logging previous state:",state)
-            console.log("logging previous card:",state?.currentCard)
+            console.log("fetch search data called, generating new card",state,searchTerm)
             if (performNewSearch(searchTerm,state?.currentCard)) {
                 let url = new URL(window.location.href);
                 url.searchParams.set('LineRef', searchTerm);
