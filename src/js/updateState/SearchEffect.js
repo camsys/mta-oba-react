@@ -78,7 +78,7 @@ async function getData(card,stops,routes){
         console.log("empty search means home",card)
         return card
     }
-    let address = "http://localhost:8080" + "/" + OBA.Config.searchUrl + "?q=" + card.searchTerm
+    let address = "https://" + process.env.ENV_ADDRESS + "/" + OBA.Config.searchUrl + "?q=" + card.searchTerm
     console.log('requesting search results from ',address)
     await fetch(address)
         .then((response) => response.json())
