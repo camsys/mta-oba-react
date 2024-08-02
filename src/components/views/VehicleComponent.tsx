@@ -3,16 +3,6 @@ import {OBA} from "../../js/oba";
 import {useSearch} from "../../js/updateState/SearchEffect";
 
 
-const prettyArrivalTime = (arrivalTime,updateTime) =>{
-    console.log("getting pretty time for ",arrivalTime)
-    return (arrivalTime==="null" || typeof updateTime==="undefined")? "" :
-        `${OBA.Util.getArrivalEstimateForISOString(arrivalTime,updateTime)},`
-    if(out==="null,"){console.error("found null bug for VehicleCard, check arrival times is there a weird result?")}
-    return typeof out==="undefined" || out===null || out==="null,"?"":out
-}
-
-
-
 function VehicleComponent({vehicleDatum,lastUpdateTime}){
     let {vehicleSearch} = useSearch()
     const selectVehicle = (vehicleData) =>{
@@ -22,11 +12,6 @@ function VehicleComponent({vehicleDatum,lastUpdateTime}){
 
     console.log("generating VehicleComponent",vehicleDatum,lastUpdateTime)
     let hasArrivalData = typeof vehicleDatum?.vehicleArrivalData!=='undefined'
-    let hasUpdateTime = typeof lastUpdateTime !=="undefined"
-    let arrivalTime = hasArrivalData && hasUpdateTime
-        ? prettyArrivalTime(vehicleDatum?.vehicleArrivalData?.[0].ISOTime,lastUpdateTime)+" "
-        :null
-
     return(
         <li key={vehicleDatum.vehicleId}>
             <a href="#"
@@ -34,9 +19,7 @@ function VehicleComponent({vehicleDatum,lastUpdateTime}){
                className={vehicleDatum?.strollerVehicle?"bus stroller-friendly":"bus"}>{vehicleDatum.vehicleId.split("_")[1]}</a>
             <span className="bus-info">
                 <span className="approaching">
-                    {typeof arrivalTime !== "undefined" && arrivalTime!== "null, "
-                        ? arrivalTime
-                        :null}
+                    {OBA.Util.getArrivalEstimateForISOString(vehicleDatum?.vehicleArrivalData?.[0].ISOTime,lastUpdateTime)}
                     {hasArrivalData?
                         vehicleDatum?.vehicleArrivalData?.[0].prettyDistance
                         :null} </span>

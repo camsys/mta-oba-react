@@ -6,17 +6,6 @@ import {useSearch} from "../../js/updateState/SearchEffect";
 import {OBA} from "../../js/oba";
 import {MapHighlightingStateContext, useHighlight} from "../util/MapHighlightingStateComponent.tsx";
 
-
-const prettyArrivalTime = (arrivalTime,updateTime) =>{
-    console.log("getting pretty time for ",arrivalTime)
-    let prettyArrivalTime = (arrivalTime==="null" || typeof updateTime==="undefined")? "" :
-        `${OBA.Util.getArrivalEstimateForISOString(arrivalTime,updateTime)},`
-    return typeof prettyArrivalTime !== "undefined" && prettyArrivalTime!== "null,"
-        ? prettyArrivalTime
-        :""
-}
-
-
 export const VehicleCardContentComponent = (props) =>{
     const { search } = useSearch();
     let { routeMatch, vehicleId, vehicleDatum,lastUpdateTime} = props;
@@ -45,7 +34,7 @@ export const VehicleCardContentComponent = (props) =>{
                         return(<li>
                             <a href="#" onClick={() => search(vehicleArrival.stopId)}>{vehicleArrival.stopName}</a>
                             <span className="stop-details">
-                                {prettyArrivalTime(vehicleArrival.ISOTime,lastUpdateTime)+" "}
+                                {OBA.Util.getArrivalEstimateForISOString(vehicleArrival.ISOTime,lastUpdateTime)}
                                 {vehicleArrival.prettyDistance}</span>
                         </li>)
                     }) :null
