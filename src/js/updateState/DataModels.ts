@@ -1,5 +1,15 @@
 import {OBA} from "../oba";
 
+export class AgencyAndId {
+    agency: string;
+    id: string
+    constructor(datum:string) {
+        let parts = datum.split("_")
+        this.agency = parts[0]
+        this.id = parts.reduce((acc, part, nth) => nth !== 0 ? acc + part : acc, "")
+    }
+}
+
 export interface StopInterface {
     name: string;
     longLat: [number, number];
