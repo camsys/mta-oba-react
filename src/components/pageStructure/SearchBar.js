@@ -1,8 +1,7 @@
 import React, {useContext, useState} from 'react';
 import Autosuggest from 'react-autosuggest';
 import ErrorBoundary from "../util/errorBoundary";
-import {fetchSearchData} from "../../js/updateState/searchEffect";
-import {CardStateContext} from "../util/CardStateComponent";
+import {useSearch} from "../../js/updateState/SearchEffect";
 
 // Function to fetch suggestions from an external API
 const getSuggestions = async (value) => {
@@ -27,14 +26,12 @@ const SearchBar = () => {
     };
 
 
-    const { state, setState } = useContext(CardStateContext);
-
     const onSuggestionSelected = (event, { suggestion }) => {
         console.log('Selected suggestion:', suggestion);
         const lineRef = suggestion.value
+        const { search } = useSearch();
 
-
-        fetchSearchData(state,setState,lineRef);
+        search(lineRef);
     };
 
     const inputProps = {

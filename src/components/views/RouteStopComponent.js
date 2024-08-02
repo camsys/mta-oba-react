@@ -1,35 +1,34 @@
 import React, {useContext} from "react";
 import RouteVehicleComponent from "./RouteVehicleComponent"
-import {CardStateContext} from "../util/CardStateComponent";
-import {fetchSearchData} from "../../js/updateState/searchEffect";
+import {useSearch} from "../../js/updateState/SearchEffect";
 import {stopSortedDataIdentifier, vehicleDataIdentifier, VehicleStateContext} from "../util/VehicleStateComponent";
 
-function getRouteStopComponent  (stopData,routeId) {
-    // console.log("generating RouteStopComponent for ",stopData)
+function getRouteStopComponent  ({stopDatum, routeId, index}) {
+    // console.log("generating RouteStopComponent for ",stopDatum)
 
-    const { state, setState } = useContext(CardStateContext);
     const {vehicleState} = useContext(VehicleStateContext)
-    const search = (searchterm) =>{
-        fetchSearchData(state, setState, searchterm)
-    }
+    const { search } = useSearch();
     routeId=routeId.split("_")[1]
-//className="has-info" should be added if it has a child vehicle
 
     let vehicleChildComponents = vehicleState[routeId+stopSortedDataIdentifier]
     let hasVehicleChildren = vehicleChildComponents!==null && typeof vehicleChildComponents!=="undefined"
     if(hasVehicleChildren){
-        hasVehicleChildren = vehicleChildComponents.has(stopData.id)
-        vehicleChildComponents = vehicleChildComponents.get(stopData.id)
+        hasVehicleChildren = vehicleChildComponents.has(stopDatum.id)
+        vehicleChildComponents = vehicleChildComponents.get(stopDatum.id)
     }
 
+    let uniqueId = stopDatum.name + "_" + stopDatum.id + "_"+index
 
     return (
-        <li  class={hasVehicleChildren?"has-info":null} key={stopData.name + " " + stopData.id}>
-            <a href="#" onClick={() => search(stopData.id.split("_")[1])} tabIndex={stopData.id}>{stopData.name}</a>
+        <li  className={hasVehicleChildren?"has-info":null}
+             key={uniqueId}
+             id={uniqueId}>
+            <a href="#" onClick={() => search(stopDatum.id.split("_")[1])} tabIndex={stopDatum.id}>{stopDatum.name}</a>
             {
                 hasVehicleChildren ?
                     <ul className="approaching-buses">
-                        {vehicleChildComponents.map((vehicleDatum)=>{return new RouteVehicleComponent(vehicleDatum)})}
+                        {vehicleChildComponents.map((vehicleDatum)=>{
+                            return <RouteVehicleComponent vehicleDatum={vehicleDatum} lastUpdateTime={null} />})}
                     </ul>
                     :null
             }

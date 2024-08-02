@@ -1,7 +1,6 @@
 import React, {useContext} from "react";
 import {OBA} from "../../js/oba";
-import {selectVehicleCard} from "../../js/updateState/searchEffect";
-import {CardStateContext} from "../util/CardStateComponent";
+import {useSearch} from "../../js/updateState/SearchEffect";
 
 
 const prettyArrivalTime = (arrivalTime,updateTime) =>{
@@ -14,12 +13,11 @@ const prettyArrivalTime = (arrivalTime,updateTime) =>{
 
 
 
-function RouteVehicleComponent(vehicleDatum,lastUpdateTime){
-
-    let {state,setState} = useContext(CardStateContext)
+function RouteVehicleComponent({vehicleDatum,lastUpdateTime}){
+    let {vehicleSearch} = useSearch()
     const selectVehicle = (vehicleData) =>{
         console.log("clicked on " + vehicleData.vehicleId)
-        selectVehicleCard(vehicleData,state,setState)
+        vehicleSearch(vehicleData)
     }
 
     console.log("generating RouteVehicleComponent",vehicleDatum,lastUpdateTime)
@@ -30,26 +28,26 @@ function RouteVehicleComponent(vehicleDatum,lastUpdateTime){
         :null
 
     return(
-        <li>
+        <li key={vehicleDatum.vehicleId}>
             <a href="#"
                onClick={()=>{selectVehicle(vehicleDatum)}}
                className={vehicleDatum?.strollerVehicle?"bus stroller-friendly":"bus"}>{vehicleDatum.vehicleId.split("_")[1]}</a>
             <span className="bus-info">
-            <span className="approaching">
-                {typeof arrivalTime !== "undefined" && arrivalTime!== "null, "
-                    ? arrivalTime
-                    :null}
-                {hasArrivalData?
-                    vehicleDatum?.vehicleArrivalData?.[0].prettyDistance
-                    :null} </span>
-            <span className="passengers">{vehicleDatum.passengerCount != null && (
-                vehicleDatum.passengerCapacity != null ?
-                    <li className="passengers">{`~${(vehicleDatum.passengerCount / vehicleDatum.passengerCapacity) * 100}% full`}</li>
-                    :
-                    <li className="passengers">{`~${vehicleDatum.passengerCount} passengers`}</li>
-                )}
+                <span className="approaching">
+                    {typeof arrivalTime !== "undefined" && arrivalTime!== "null, "
+                        ? arrivalTime
+                        :null}
+                    {hasArrivalData?
+                        vehicleDatum?.vehicleArrivalData?.[0].prettyDistance
+                        :null} </span>
+                <span className="passengers">{vehicleDatum.passengerCount != null && (
+                    vehicleDatum.passengerCapacity != null ?
+                        <span className="passengers">{`~${(vehicleDatum.passengerCount / vehicleDatum.passengerCapacity) * 100}% full`}</span>
+                        :
+                        <span className="passengers">{`~${vehicleDatum.passengerCount} passengers`}</span>
+                    )}
+                </span>
             </span>
-        </span>
         </li>
     )
 

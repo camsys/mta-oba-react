@@ -8,11 +8,11 @@ import {MapHighlightingStateContext} from "../util/MapHighlightingStateComponent
 
 const COMPONENT_IDENTIFIER = "mapStopComponent"
 
-function MapStopComponent  (stopData) {
-    console.log('generating MapStopComponent: ' + stopData)
+function MapStopComponent  (stopDatum) {
+    // console.log('generating MapStopComponent: ', stopDatum)
 
 
-    var direction = stopData?.stopDirection;
+    var direction = stopDatum?.stopDirection;
     var directionKey = direction;
 
     if(directionKey === null) {
@@ -28,17 +28,17 @@ function MapStopComponent  (stopData) {
         popupAnchor: [0,0]
     })
 
-    // console.log(stopData.longLat)
+    // console.log(stopDatum.longLat)
     var markerOptions = {
-        position: stopData.longLat,
+        position: stopDatum.longLat,
         icon: icon,
         zIndexOffset: -10,
-        title: stopData.name,
-        stopId: stopData.id,
+        title: stopDatum.name,
+        stopId: stopDatum.id,
         // map: map,
         // visible: defaultVisibility,
-        key: COMPONENT_IDENTIFIER+"_"+String(stopData.id),
-        id: COMPONENT_IDENTIFIER+"_"+String(stopData.id)
+        key: COMPONENT_IDENTIFIER+"_"+String(stopDatum.id),
+        id: COMPONENT_IDENTIFIER+"_"+String(stopDatum.id)
     };
 
     // const { mapHighlightingState} = useContext(MapHighlightingStateContext);
@@ -48,11 +48,11 @@ function MapStopComponent  (stopData) {
 
     let out = (
         <Marker {...markerOptions}>
-            <Popup key={stopData.id} className="map-popup stop-popup">
+            <Popup key={stopDatum.id} className="map-popup stop-popup">
                 <img src={stopPopupIcon} alt="busstop icon" className="icon"/>
                 <div className="popup-info">
-                    <span className="name">{stopData.name}</span>
-                    <span className="stop-code">{"Stopcode "+stopData.id}</span>
+                    <span className="name">{stopDatum.name}</span>
+                    <span className="stop-code">{"Stopcode "+stopDatum.id}</span>
                 </div>
             </Popup>
         </Marker>);

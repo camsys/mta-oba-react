@@ -3,11 +3,6 @@ import {CardStateContext} from "../util/CardStateComponent";
 import {OBA} from "../../js/oba";
 import RouteStopComponent from "./RouteStopComponent";
 
-function getRouteStopComponents(routeStopComponentsData,routeId){
-    console.log("getting RouteStopComponents for: ", routeStopComponentsData)
-    let out = routeStopComponentsData.map((datum)=>{return new RouteStopComponent(datum,routeId)})
-    return out
-}
 
 export default function getRouteDirectionComponent(routeDirectionComponentDatum,color){
     console.log("generating RouteDirectionComponent:", routeDirectionComponentDatum)
@@ -26,8 +21,9 @@ export default function getRouteDirectionComponent(routeDirectionComponentDatum,
                 <ul className="route-stops" style={{ color: '#'+color}}>
                     {console.log("preparing to get RouteStopComponents from: ", routeDirectionComponentDatum)}
                     {
-                        getRouteStopComponents(routeDirectionComponentDatum.routeStopComponentsData,
-                            routeDirectionComponentDatum.routeId)
+                        routeDirectionComponentDatum.routeStopComponentsData.map(
+                            (stopDatum,index) =>{
+                                return <RouteStopComponent stopDatum={stopDatum} routeId = {routeDirectionComponentDatum.routeId} index = {index}/>})
                     }
                 </ul>
             </div>

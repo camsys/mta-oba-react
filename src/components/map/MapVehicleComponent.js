@@ -4,8 +4,7 @@ import {Marker, Popup} from "react-leaflet";
 import L from "leaflet";
 import bus from "../../img/icon/bus.svg";
 import busStroller from "../../img/icon/bus-stroller.svg";
-import {CardStateContext} from "../util/CardStateComponent";
-import {selectVehicleCard} from "../../js/updateState/searchEffect";
+import {useSearch} from "../../js/updateState/SearchEffect";
 
 const COMPONENT_IDENTIFIER = "MapVehicleComponent"
 
@@ -13,7 +12,7 @@ const COMPONENT_IDENTIFIER = "MapVehicleComponent"
 
 
 function MapVehicleComponent  (vehicleData,state, setState,targetVehicleId) {
-    console.log('generating mapVehicle: ',vehicleData.vehicleId,vehicleData)
+    // console.log('generating mapVehicle: ',vehicleData.vehicleId,vehicleData)
     let imgDegrees = vehicleData.bearing - vehicleData.bearing%5
     OBA.Util.trace("img degrees" + imgDegrees)
     let scheduled = vehicleData.hasRealtime?"":"scheduled/"
@@ -24,9 +23,10 @@ function MapVehicleComponent  (vehicleData,state, setState,targetVehicleId) {
     let vehicleIdParts = vehicleData.vehicleId.split("_");
     let vehicleIdWithoutAgency = vehicleIdParts[1];
 
+    let {vehicleSearch} = useSearch()
     const selectVehicle = (vehicleData) =>{
         console.log("clicked on " + vehicleData.vehicleId)
-        selectVehicleCard(vehicleData,state,setState)
+        vehicleSearch(vehicleData)
     }
 
     let icon = L.icon({
@@ -50,7 +50,7 @@ function MapVehicleComponent  (vehicleData,state, setState,targetVehicleId) {
     };
 
 
-    console.log("mapVehicle key: ",markerOptions.key,vehicleData)
+    // console.log("mapVehicle key: ",markerOptions.key,vehicleData)
 
 
     let out = (<Marker {...markerOptions}

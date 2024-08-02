@@ -5,7 +5,7 @@ import queryString from "query-string";
 import {OBA} from "../../js/oba";
 import L from "leaflet";
 import bus from "../../img/icon/bus.svg";
-import {CardStateContext} from "../util/CardStateComponent";
+import {CardStateContext, RoutesContext, StopsContext} from "../util/CardStateComponent";
 import {vehicleDataIdentifier, VehicleStateContext} from "../util/VehicleStateComponent";
 import MapRouteComponent from "./MapRouteComponent";
 import MapStopComponent from "./MapStopComponent";
@@ -46,16 +46,22 @@ const MapVehicleElements = ({routeIds}) =>{
 
 export const MapComponent = () => {
 
+    const stops = useContext(StopsContext)
+    const routes = useContext(RoutesContext)
+
     const processRoute = (route)=> {
         console.log("processing route for map: ", route)
 
         route.directions.forEach(dir => {
             dir.mapRouteComponentData.forEach((datum) => {
                 console.log("requesting new MapRouteComponent from: ", datum)
-                mapRouteComponents.push(new MapRouteComponent(datum))
+                mapRouteComponents.set(datum.id,<MapRouteComponent mapRouteComponentDatum ={datum}/>)
             })
             dir.mapStopComponentData.forEach((datum) => {
-                mapStopComponents.push(new MapStopComponent(datum))
+                let stopId = datum.id
+                ! mapStopComponents.has(stopId)
+                    ? mapStopComponents.set(datum.id,new MapStopComponent(datum))
+                    : null
             })
         })
     }
@@ -97,8 +103,8 @@ export const MapComponent = () => {
 
     const { state} = useContext(CardStateContext);
     const { vehicleState} = useContext(VehicleStateContext);
-    let mapRouteComponents = []
-    let mapStopComponents = []
+    let mapRouteComponents = new Map()
+    let mapStopComponents = new Map()
 
 
     state.currentCard.searchMatches.forEach(searchMatch=>{
@@ -112,11 +118,11 @@ export const MapComponent = () => {
             let route = searchMatch
             processRoute(route)
             startingZoom = 16
-            console.log("getting vehicle from ",vehicleState,
-                state.currentCard.routeIdList.values().next()+vehicleDataIdentifier,
-                state.currentCard.vehicleId)
+            // console.log("getting vehicle from ",vehicleState,
+            //     state.currentCard.routeIdList[0].split("_")[1]+vehicleDataIdentifier,
+            //     state.currentCard.vehicleId)
             startingMapCenter = vehicleState
-                [state.currentCard.routeIdList.values().next().split("_")[1]+vehicleDataIdentifier]
+                [state.currentCard.routeIdList[0].split("_")[1]+vehicleDataIdentifier]
                 .get(state.currentCard.vehicleId).longLat
             // map.fitBounds(newBounds);
         }
@@ -166,8 +172,8 @@ export const MapComponent = () => {
                     styles={OBA.Config.mutedTransitStylesArray}
                 />
                 <MapEvents />
-                {mapRouteComponents}
-                {Zoom >= 15.1 ? mapStopComponents : null}
+                {Array.from(mapRouteComponents.values()).flat()}
+                {Zoom >= 15.1 ? Array.from(mapStopComponents.values()).flat() : null}
                 <MapVehicleElements routeIds={routeIds}/>
             </MapContainer>
         </React.Fragment>

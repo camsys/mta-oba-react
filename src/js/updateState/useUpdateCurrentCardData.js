@@ -1,6 +1,6 @@
 import {siriGetVehiclesForRoutesEffect} from "./SiriEffects";
 import {stopsEffect} from "./useStopsForDir"
-import {fillCard} from "./searchEffect";
+import {fillCard} from "./SearchEffect";
 
 const useUpdateCurrentCardData = (currentCard) => {
     // siriGetVehiclesForRoutesEffect(currentCard.searchTerm)

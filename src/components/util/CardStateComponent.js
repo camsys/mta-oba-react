@@ -1,19 +1,17 @@
-import React, { createContext, useState } from 'react';
+import React, {createContext, useRef, useState} from 'react';
 
-import {generateInitialCard} from "../../js/updateState/searchEffect";
-import {fetchAllStopsData} from "../../js/updateState/useStopsForDir";
+import {getHomeCard} from "../../js/updateState/SearchEffect";
 const CardStateContext = createContext();
+const RoutesContext = createContext();
+const StopsContext = createContext();
 
 const CardStateProvider = ({children}) => {
-    let currentCard = generateInitialCard()
+    let currentCard = getHomeCard()
     console.log("setting initial state data with base card",currentCard)
     const [state, setState] = useState({
         someGlobalState: {},
         currentCard: currentCard,
         cardStack: [currentCard],
-        routeComponents: [],
-        mapVehicleComponents: [],
-        mapStopComponents: [],
         renderCounter:1
     });
     console.log("initial state set: ",state)
@@ -25,4 +23,34 @@ const CardStateProvider = ({children}) => {
     );
 };
 
-export { CardStateProvider, CardStateContext };
+const RoutesProvider = ({ children }) => {
+    const routes = useRef({});
+
+    return (
+        <RoutesContext.Provider value={routes}>
+            {children}
+        </RoutesContext.Provider>
+    );
+};
+
+const StopsProvider = ({ children }) => {
+    const stops = useRef({});
+
+    return (
+        <StopsContext.Provider value={stops}>
+            {children}
+        </StopsContext.Provider>
+    );
+};
+
+const SearchStateProviders = ({children}) =>{
+    return(<CardStateProvider>
+        <StopsProvider>
+            <RoutesProvider>
+                {children}
+            </RoutesProvider>
+        </StopsProvider>
+    </CardStateProvider>)
+}
+
+export { SearchStateProviders, CardStateContext,StopsContext,RoutesContext};

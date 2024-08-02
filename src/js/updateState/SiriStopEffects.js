@@ -159,10 +159,11 @@ const siriGetAndSetVehicles = (targetAddresses,vehicleState, setState, dataProce
                     // not sure we'll stick with this, but it's fast and dirty because it needs to happen
                     // before backend support for timing
                     // todo: pls fix w/ proper backend support
+                    console.log( stopsToExtendedVehiclesMap,stopId)
                     let dataObj = {}
                     Object.entries(stopsToExtendedVehiclesMap.get(stopId)).forEach(
                         ([key,siriObj]) => {
-
+                            console.log(dataObj,key,siriObj)
                             let routeAndDir = siriObj.routeId +"_"+siriObj.direction
                             let mapOfStopsToVehicles = dataObj[routeAndDir +  stopSortedFutureVehicleDataIdentifier]
                             if(typeof mapOfStopsToVehicles === "undefined"){
@@ -191,17 +192,7 @@ const siriGetAndSetVehicles = (targetAddresses,vehicleState, setState, dataProce
         console.log("siri stop data processedData", processedData)
         processedData != null ? updateVehiclesState(processedData, setState) : null
         console.log("siri stop  data state", vehicleState)
-    }).catch((x) => console.log("siri call issue!", x))
-}
-
-const getTargetList = (routeIdList) =>{
-    let baseTargetAddress = "https://" + process.env.ENV_ADDRESS + "/" + process.env.VEHICLE_MONITORING_ENDPOINT
-
-    return [...routeIdList].map((routeId)=>{
-        let operatorRef = routeId.split("_")[0].replace(" ","+");
-        const lineRef = routeId.split("_")[1];
-        return [lineRef,baseTargetAddress+"&OperatorRef=" +operatorRef + "&LineRef"+"=" + routeId.replace("+","%2B")];
-    })
+    }).catch((x) => console.log("siri stop call issue!", x))
 }
 
 
@@ -212,7 +203,7 @@ export const siriGetVehiclesForStopViewEffect = (routeIdList, stopIdList, vehicl
     // let targetAddresses = getTargetList(routeIdList)
     let targetAddresses = []
     targetAddresses = [... stopIdList].map((stopId)=>{
-        return ["MTA_"+stopId,baseTargetAddress+ "&MonitoringRef=" + stopId.replace("+","%2B")
+        return [stopId,baseTargetAddress+ "&MonitoringRef=" + stopId.replace("+","%2B")
             + "&StopMonitoringDetailLevel=normal&MinimumStopVisitsPerLine=3"];
     })
     console.log("siri stop data target addresses ", targetAddresses)

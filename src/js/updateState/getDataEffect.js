@@ -1,10 +1,6 @@
 import React, {useContext, useEffect, useState} from "react";
 import {OBA} from "../oba";
 import {VehicleStateContext} from "../../components/util/VehicleStateComponent";
-import queryString from "query-string";
-import RouteStopComponent from "../../components/views/RouteStopComponent";
-import {stopData} from "./dataModels"
-import {classList, pathRouting,dataSpecifiers} from "./dataEffectsSupport";
 
 const getDataEffect = (currentCard, targetAddress,
                        dataSpecifiersList) => {

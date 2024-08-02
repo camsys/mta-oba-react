@@ -1,17 +1,12 @@
 import React, {useContext} from 'react';
 import {OBA} from "../../js/oba";
-import {fetchSearchData} from "../../js/updateState/searchEffect";
-import {CardStateContext} from "../util/CardStateComponent";
+import {useSearch} from "../../js/updateState/SearchEffect";
 
 
-function getHomeCard  () {
+function HomeCard  () {
 
-
-    const { state, setState } = useContext(CardStateContext);
-    const search = (searchterm) =>{
-        fetchSearchData(state, setState, searchterm)
-    }
     OBA.Util.log("adding home card")
+    const { search } = useSearch();
     return (<div><h2>Try these example searches:</h2>
     <ul>
         <li>Route:
@@ -46,4 +41,4 @@ function getHomeCard  () {
     </ul></div>);
 }
 
-export default getHomeCard;
+export default HomeCard;
