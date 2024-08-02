@@ -29,11 +29,9 @@ function processRouteSearch(route,card,stops,routes) {
 }
 
 function processGeocodeSearch(geocode,card,stops,routes){
-    let match = new GeocodeMatch()
+    let match = new GeocodeMatch(geocode)
     console.log("processing geocode search results",geocode,card,match)
     if (geocode != null && geocode.hasOwnProperty("latitude")) {
-        match.latitude = geocode.latitude
-        match.longitude = geocode.longitude
         match.routeMatches = []
         geocode?.nearbyRoutes.forEach(searchResult=>{
             if(typeof searchResult?.stopDirection !== "undefined")
@@ -54,15 +52,11 @@ function processGeocodeSearch(geocode,card,stops,routes){
 }
 
 function processStopSearch(stop,card,stops,routes){
-    let match = new StopMatch()
+    let match = new StopMatch(stop)
     console.log("processing stopMatch search results",stop,card,match)
     if (stop != null && stop.hasOwnProperty("latitude")) {
         card.stopIdList.add(stop.id)
-        match.latitude = stop.latitude
-        match.longitude = stop.longitude
         match.routeMatches = []
-        match.name = stop.name
-        match.id = stop.id
         stop?.routesAvailable.forEach(x=>{
             match.routeMatches.push(processRouteSearch(x,card,stops,routes))
         })
