@@ -123,7 +123,7 @@ const performNewSearch = (searchRef,currentCard) =>{
 
 export const updateCard = async (searchRef,stops,routes) =>{
     console.log("received new search input:",searchRef)
-    searchRef = searchRef.replaceAll(" ","%2520")
+    // searchRef = searchRef.replaceAll(" ","%2520")
     return await getData(new Card(searchRef),stops,routes)
 }
 
