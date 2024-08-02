@@ -1,7 +1,6 @@
 import React, {useContext} from "react";
 import {OBA} from "../../js/oba";
-import {selectVehicleCard} from "../../js/updateState/SearchEffect";
-import {CardStateContext} from "../util/CardStateComponent";
+import {useSearch} from "../../js/updateState/SearchEffect";
 
 
 const prettyArrivalTime = (arrivalTime,updateTime) =>{
@@ -15,10 +14,10 @@ const prettyArrivalTime = (arrivalTime,updateTime) =>{
 
 
 function RouteVehicleComponent({vehicleDatum,lastUpdateTime}){
-    let {state,setState} = useContext(CardStateContext)
+    let {vehicleSearch} = useSearch()
     const selectVehicle = (vehicleData) =>{
         console.log("clicked on " + vehicleData.vehicleId)
-        selectVehicleCard(vehicleData,state,setState)
+        vehicleSearch(vehicleData)
     }
 
     console.log("generating RouteVehicleComponent",vehicleDatum,lastUpdateTime)

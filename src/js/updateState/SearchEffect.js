@@ -78,7 +78,7 @@ async function getData(card,stops,routes){
         console.log("empty search means home",card)
         return card
     }
-    let address = "https://" + OBA.Config.envAddress + "/" + OBA.Config.searchUrl + "?q=" + card.searchTerm
+    let address = "http://localhost:8080" + "/" + OBA.Config.searchUrl + "?q=" + card.searchTerm
     console.log('requesting search results from ',address)
     await fetch(address)
         .then((response) => response.json())
@@ -200,35 +200,36 @@ export const useSearch = () =>{
         }
     }
 
-    return { search , generateInitialCard};
-}
-
-
-
-//this function doesn't belong in "SearchEffect" but it does belong with card handling functions
+    //this function doesn't belong in "SearchEffect" but it does belong with card handling functions
 // which is what this has become
-export async function selectVehicleCard(vehicleData,state, setState) {
-    console.log("setting card to " + vehicleData.vehicleId)
-    //todo: should be current search term
-    let pastCard = state.currentCard
-    let routeId = vehicleData.routeId.split("_")[1];
-    console.log("found routeId of target vehicle: ",routeId)
-    let currentCard = new Card(routeId)
-    let routeData
-    pastCard.searchMatches.forEach((match)=>{
+
+    const vehicleSearch = async (vehicleData)=> {
+        console.log("setting card to vehicle card",vehicleData)
+        //todo: should be current search term
+        let pastCard = state.currentCard
+        let routeId = vehicleData.routeId.split("_")[1];
+        console.log("found routeId of target vehicle: ",routeId)
+        let currentCard = new Card(routeId)
+        let routeData
+        pastCard.searchMatches.forEach((match)=>{
             routeData = match.routeMatches.filter(
                 value => {return value.routeId==vehicleData.routeId})})
-    console.log("found routedata of target vehicle: ",routeData)
-    currentCard.setToVehicle(vehicleData.vehicleId,routeData,[vehicleData.routeId])
-    let cardStack = state.cardStack
-    cardStack.push(currentCard)
-    console.log("updating state prev card -> new card: \n", pastCard,currentCard)
-    // todo: condense all of these into a single method, copied and pasted too many times
-    setState((prevState) => ({
-        ...prevState,
-        currentCard: currentCard,
-        cardStack: cardStack,
-        renderCounter:prevState.renderCounter+1
-    }))
-    // siriGetVehiclesForRoutesEffect(currentCard.routeIdList,currentCard.vehicleId)
+        console.log("found routedata of target vehicle: ",routeData)
+        currentCard.setToVehicle(vehicleData.vehicleId,routeData,[vehicleData.routeId])
+        let cardStack = state.cardStack
+        cardStack.push(currentCard)
+        console.log("updating state prev card -> new card: \n", pastCard,currentCard)
+        // todo: condense all of these into a single method, copied and pasted too many times
+        setState((prevState) => ({
+            ...prevState,
+            currentCard: currentCard,
+            cardStack: cardStack,
+            renderCounter:prevState.renderCounter+1
+        }))
+    }
+
+    return { search , generateInitialCard, vehicleSearch};
 }
+
+
+
