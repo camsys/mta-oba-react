@@ -12,6 +12,7 @@ import MapStopComponent from "./MapStopComponent";
 import {MapHighlightingStateContext} from "../util/MapHighlightingStateComponent";
 import MapVehicleComponent from "./MapVehicleComponent";
 import {Card, SearchMatch} from "../../js/updateState/dataModels";
+import {CardType} from "../../js/updateState/DataModels2";
 
 
 

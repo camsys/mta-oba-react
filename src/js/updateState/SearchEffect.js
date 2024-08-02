@@ -2,13 +2,11 @@ import queryString from "query-string";
 import React, {useContext, useEffect, useRef, useState} from "react";
 import {CardStateContext, RoutesContext, StopsContext} from "../../components/util/CardStateComponent";
 import {OBA} from "../oba";
-// import {Card, GeocodeMatch, routeMatch, routeMatchDirectionDatum, stopMatch} from "./dataModels"
-// import {siriGetVehiclesForRoutesEffect} from "./SiriEffects";
-import {Card,GeocodeMatch, RouteMatch, StopMatch, createRouteMatchDirectionInterface} from "./DataModels2";
+import {Card, GeocodeMatch, RouteMatch, StopMatch, createRouteMatchDirectionInterface, CardType} from "./DataModels2";
 
 
 function processRouteSearch(route,card,stops,routes) {
-    let match = new RouteMatch()
+    let match = new RouteMatch(route)
     console.log("processing route search results",route,card,stops,routes)
     if (route != null && route.hasOwnProperty("directions")) {
         match.color = route?.color
@@ -79,7 +77,8 @@ async function getData(card,stops,routes){
         console.log("empty search means home",card)
         return card
     }
-    let address = "http://localhost:8080" + "/" + OBA.Config.searchUrl + "?q=" + card.searchTerm
+    // let address = "https://" + process.env.ENV_ADDRESS + "/" + OBA.Config.searchUrl + "?q=" + card.searchTerm
+    let address = "https://" + 'app.dev.obanyc.com' + "/" + OBA.Config.searchUrl + "?q=" + card.searchTerm
     console.log('requesting search results from ',address)
     await fetch(address)
         .then((response) => response.json())
@@ -121,7 +120,7 @@ const performNewSearch = (searchRef,currentCard) =>{
         // this only works because vehicle searches are handled elsewhere
         return true
     }
-    else if(currentCard?.searchTerm == searchRef){
+    else if(currentCard?.searchTerm === searchRef){
         return false
     }
     return true
