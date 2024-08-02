@@ -38,10 +38,10 @@ const RouteDirection = (routeDirectionDatum,stopId) =>{
             ?stopCardVehicleData.get("MTA_"+stopId):null
     let routeId = routeDirectionDatum.routeId.split("_")[1];
     let serviceAlertIdentifier = routeAndDir+ "_" + routeDirectionDatum.directionId
-    let timeUpdated = stopCardVehicleData!==null
+    let lastUpdateTime = stopCardVehicleData!==null
         ? OBA.Util.ISO8601StringToDate(vehiclesApproachingStopsState[routeAndDir+updatedTimeIdentifier]).getTime()
         : null
-    console.log("StopCard RouteDirection stopCardVehicleData",stopCardVehicleData,timeUpdated)
+    console.log("StopCard RouteDirection stopCardVehicleData",stopCardVehicleData,lastUpdateTime)
     return (stopCardVehicleData === null? null :
         <div className="inner-card route-direction en-route collapsible open">
             <button
@@ -58,7 +58,7 @@ const RouteDirection = (routeDirectionDatum,stopId) =>{
             </button>
             <div className="card-content collapse-content" style={{ maxHeight: '0px' }}>
                 <ul className="approaching-buses">
-                    {stopCardVehicleData.map(datum=>RouteVehicleComponent(datum,timeUpdated))}
+                    {stopCardVehicleData.map(vehicleDatum=><RouteVehicleComponent {...{vehicleDatum,lastUpdateTime}}/>)}
                 </ul>
                 <ServiceAlertContainerComponent {...{routeId,serviceAlertIdentifier}}/>
             </div>
