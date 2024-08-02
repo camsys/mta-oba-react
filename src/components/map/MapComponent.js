@@ -31,7 +31,7 @@ const MapVehicleElements = ({routeIds}) =>{
             let vehicleDataForRoute = vehicleState[routeId+vehicleDataIdentifier]
             if(vehicleDataForRoute!=null){
                 console.log(`processing vehicleDataForRoute`,vehicleDataForRoute)
-                vehicleDataForRoute.forEach(vehicleDatum=>{mapVehicleComponents.push(<MapVehicleComponent {...{vehicleDatum}}/>)});
+                vehicleDataForRoute.forEach(vehicleDatum=>{mapVehicleComponents.push(<MapVehicleComponent {...{vehicleDatum}} key={vehicleDatum.vehicleId}/>)});
             }
             console.log("map vehicle components", mapVehicleComponents)
         })
@@ -54,7 +54,7 @@ export const MapComponent = () => {
         route.directions.forEach(dir => {
             dir.mapRouteComponentData.forEach((datum) => {
                 console.log("requesting new MapRouteComponent from: ", datum)
-                mapRouteComponents.set(datum.id,<MapRouteComponent mapRouteComponentDatum ={datum}/>)
+                mapRouteComponents.set(datum.id,<MapRouteComponent mapRouteComponentDatum ={datum} key={datum.id}/>)
             })
             dir.mapStopComponentData.forEach((datum) => {
                 let stopId = datum.id
