@@ -8,7 +8,7 @@ import {
     VehicleStateContext
 } from "../util/VehicleStateComponent";
 import ServiceAlertContainerComponent from "./ServiceAlertContainerComponent";
-import RouteVehicleComponent from "./RouteVehicleComponent";
+import VehicleComponent from "./VehicleComponent";
 import {OBA} from "../../js/oba";
 import {MapHighlightingStateContext} from "../util/MapHighlightingStateComponent";
 import {MatchType} from "../../js/updateState/DataModels";
@@ -57,7 +57,7 @@ const RouteDirection = (routeDirectionDatum,stopId) =>{
             </button>
             <div className="card-content collapse-content" style={{ maxHeight: '0px' }}>
                 <ul className="approaching-buses">
-                    {stopCardVehicleData.map(vehicleDatum=><RouteVehicleComponent {...{vehicleDatum,lastUpdateTime}}/>)}
+                    {stopCardVehicleData.map(vehicleDatum=><VehicleComponent {...{vehicleDatum,lastUpdateTime}}/>)}
                 </ul>
                 <ServiceAlertContainerComponent {...{routeId,serviceAlertIdentifier}}/>
             </div>

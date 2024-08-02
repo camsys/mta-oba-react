@@ -13,14 +13,14 @@ const prettyArrivalTime = (arrivalTime,updateTime) =>{
 
 
 
-function RouteVehicleComponent({vehicleDatum,lastUpdateTime}){
+function VehicleComponent({vehicleDatum,lastUpdateTime}){
     let {vehicleSearch} = useSearch()
     const selectVehicle = (vehicleData) =>{
         console.log("clicked on " + vehicleData.vehicleId)
         vehicleSearch(vehicleData)
     }
 
-    console.log("generating RouteVehicleComponent",vehicleDatum,lastUpdateTime)
+    console.log("generating VehicleComponent",vehicleDatum,lastUpdateTime)
     let hasArrivalData = typeof vehicleDatum?.vehicleArrivalData!=='undefined'
     let hasUpdateTime = typeof lastUpdateTime !=="undefined"
     let arrivalTime = hasArrivalData && hasUpdateTime
@@ -52,4 +52,4 @@ function RouteVehicleComponent({vehicleDatum,lastUpdateTime}){
     )
 
 }
-export default RouteVehicleComponent
+export default VehicleComponent

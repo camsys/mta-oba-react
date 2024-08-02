@@ -1,6 +1,6 @@
 import {OBA} from "../oba";
 
-interface StopInterface {
+export interface StopInterface {
     name: string;
     longLat: [number, number];
     id: string;
@@ -8,13 +8,13 @@ interface StopInterface {
 }
 
 
-interface ServiceAlertInterface {
+export interface ServiceAlertInterface {
     json: any;
     descriptionParts: string[];
     title: string;
 }
 
-interface VehicleArrivalInterface {
+export interface VehicleArrivalInterface {
     prettyDistance?: string;
     rawDistanceInfo?: number;
     stopsFromCall?: number;
@@ -24,7 +24,7 @@ interface VehicleArrivalInterface {
     ISOTime?: string;
 }
 
-interface VehicleRtInterface {
+export interface VehicleRtInterface {
     longLat: [number, number];
     destination: string;
     hasRealtime: boolean;
@@ -40,28 +40,28 @@ interface VehicleRtInterface {
 }
 
 
-interface MapRouteComponentInterface {
+export interface MapRouteComponentInterface {
     routeId: string;
     id: string;
     points: any; // Replace 'any' with a specific type if available
     color: string;
 }
 
-interface RouteDirectionComponentInterface {
+export interface RouteDirectionInterface {
     routeId: string;
     directionId: string;
     routeDestination: string;
     routeStopComponentsData: StopInterface[];
 }
 
-interface RouteMatchDirectionInterface {
+export interface RouteMatchDirectionInterface {
     routeId: string;
     color: string;
     directionId: string;
     destination: string;
     mapRouteComponentData: MapRouteComponentInterface[];
     mapStopComponentData: StopInterface[];
-    routeDirectionComponentData: RouteDirectionComponentInterface;
+    routeDirectionComponentData: RouteDirectionInterface;
 }
 
 
@@ -135,7 +135,7 @@ export function createMapRouteComponentInterface(routeId: string, componentId: s
     };
 }
 
-export function createRouteDirectionComponentInterface(routeId: string, directionId: string, routeDestination: string, stops: StopInterface[]): RouteDirectionComponentInterface {
+export function createRouteDirectionComponentInterface(routeId: string, directionId: string, routeDestination: string, stops: StopInterface[]): RouteDirectionInterface {
     const routeStopComponentsData = stops.map(stop => createStopInterface(stop));
     return {
         routeId,
