@@ -38,8 +38,8 @@ export function RouteStopComponent
             {
                 hasVehicleChildren ?
                     <ul className="approaching-buses">
-                        {vehicleChildComponents.map((vehicleDatum)=>{
-                            return <VehicleComponent vehicleDatum={vehicleDatum} lastUpdateTime={null} />})}
+                        {vehicleChildComponents.map((vehicleDatum, index)=>{
+                            return <VehicleComponent vehicleDatum={vehicleDatum} lastUpdateTime={null} key = {index}/>})}
                     </ul>
                     :null
             }
@@ -64,7 +64,7 @@ export const RouteDirection = ({datum,color}: { datum: RouteDirectionInterface, 
                     {
                         datum.routeStopComponentsData.map(
                             (stopDatum,index) =>{
-                                return <RouteStopComponent stopDatum={stopDatum} routeId = {datum.routeId} index = {index}/>})
+                                return <RouteStopComponent stopDatum={stopDatum} routeId = {datum.routeId} key = {index}/>})
                     }
                 </ul>
             </div>
@@ -102,7 +102,7 @@ export function RouteCard({ routeMatch }: SearchMatch): JSX.Element {
                     {routeMatch.directions.map((dir, index) =>
                         (<RouteDirection
                             datum={dir.routeDirectionComponentData}
-                            color={routeMatch.color}/>))}
+                            color={routeMatch.color} key={index}/>))}
                 </div>
             </div>
         </React.Fragment>
