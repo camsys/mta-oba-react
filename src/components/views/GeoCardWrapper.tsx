@@ -4,7 +4,7 @@ import {RouteCard} from "./RouteCard";
 import {StopCard} from "./StopCardWrapper.tsx";
 
 
-export function GeoCardWrapper  () {
+export function GeoCardWrapper  () :JSX.Element {
     const { state} = useContext(CardStateContext);
     console.log("generating GeoCard:", state.currentCard.searchMatches);
 

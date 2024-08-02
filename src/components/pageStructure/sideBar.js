@@ -8,9 +8,9 @@ import SearchBar from "./SearchBar"
 import {CardStateContext} from "../util/CardStateComponent";
 import {Card, CardType} from "../../js/updateState/DataModels"
 import RefreshComponent from "../views/refreshComponent";
-import VehicleCard from "../views/VehicleCard";
+import VehicleCard from "../views/VehicleCard.tsx";
 import {StopCardWrapper} from "../views/StopCardWrapper.tsx";
-import {GeoCardWrapper} from "../views/GeoCardWrapper";
+import {GeoCardWrapper} from "../views/GeoCardWrapper.tsx";
 import HomeCard from "../views/HomeCard.tsx";
 
 function getSideBar  () {
