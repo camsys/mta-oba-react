@@ -2,12 +2,13 @@ import queryString from "query-string";
 import React, {useContext, useEffect, useRef, useState} from "react";
 import {CardStateContext, RoutesContext, StopsContext} from "../../components/util/CardStateComponent";
 import {OBA} from "../oba";
-import {Card, geocodeMatch, routeMatch, routeMatchDirectionDatum, stopMatch} from "./dataModels"
-import {siriGetVehiclesForRoutesEffect} from "./SiriEffects";
+// import {Card, GeocodeMatch, routeMatch, routeMatchDirectionDatum, stopMatch} from "./dataModels"
+// import {siriGetVehiclesForRoutesEffect} from "./SiriEffects";
+import {Card,GeocodeMatch, RouteMatch, StopMatch, createRouteMatchDirectionInterface} from "./DataModels2";
 
 
 function processRouteSearch(route,card,stops,routes) {
-    let match = new routeMatch()
+    let match = new RouteMatch()
     console.log("processing route search results",route,card,stops,routes)
     if (route != null && route.hasOwnProperty("directions")) {
         match.color = route?.color
@@ -20,7 +21,7 @@ function processRouteSearch(route,card,stops,routes) {
         match.routeMatches.push(match)
         console.log("assigned basic search values to card",route,match)
         for (let i = 0; i < route?.directions.length; i++) {
-            let directionDatum = new routeMatchDirectionDatum(route?.directions[i],match.routeId,match.color)
+            let directionDatum = createRouteMatchDirectionInterface(route?.directions[i],match.routeId,match.color)
             directionDatum.mapStopComponentData.forEach(stop=>stops.current[stop.id]=stop)
             match.directions.push(directionDatum)
         }
@@ -30,7 +31,7 @@ function processRouteSearch(route,card,stops,routes) {
 }
 
 function processGeocodeSearch(geocode,card,stops,routes){
-    let match = new geocodeMatch()
+    let match = new GeocodeMatch()
     console.log("processing geocode search results",geocode,card,match)
     if (geocode != null && geocode.hasOwnProperty("latitude")) {
         match.latitude = geocode.latitude
@@ -55,7 +56,7 @@ function processGeocodeSearch(geocode,card,stops,routes){
 }
 
 function processStopSearch(stop,card,stops,routes){
-    let match = new stopMatch()
+    let match = new StopMatch()
     console.log("processing stopMatch search results",stop,card,match)
     if (stop != null && stop.hasOwnProperty("latitude")) {
         card.stopIdList.add(stop.id)
@@ -78,7 +79,7 @@ async function getData(card,stops,routes){
         console.log("empty search means home",card)
         return card
     }
-    let address = "https://" + process.env.ENV_ADDRESS + "/" + OBA.Config.searchUrl + "?q=" + card.searchTerm
+    let address = "http://localhost:8080" + "/" + OBA.Config.searchUrl + "?q=" + card.searchTerm
     console.log('requesting search results from ',address)
     await fetch(address)
         .then((response) => response.json())

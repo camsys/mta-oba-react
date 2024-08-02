@@ -1,5 +1,4 @@
 import React, {useContext, useEffect, useState} from "react";
-import {serviceAlertData, vehicleData} from "./dataModels";
 import {
     serviceAlertDataIdentifier,
     vehicleDataIdentifier,
@@ -7,6 +6,7 @@ import {
     VehicleStateContext, stopSortedDataIdentifier
 } from "../../components/util/VehicleStateComponent";
 import {OBA} from "../oba";
+import {createServiceAlertInterface, createVehicleRtInterface} from "./DataModels2";
 
 
 
@@ -31,7 +31,7 @@ function extractData (routeId,siri){
         for (let i = 0; i < vehicleActivity.length; i++) {
             OBA.Util.trace("processing vehicle #" + i);
             let mvj = vehicleActivity[i].MonitoredVehicleJourney
-            let vehicleDatum = new vehicleData(mvj)
+            let vehicleDatum = createVehicleRtInterface(mvj)
             vehicleDataMap.set(mvj.VehicleRef,vehicleDatum)
             let vehicles = stopsToVehiclesMap.get(vehicleDatum.nextStop)
             if(vehicles===null || typeof vehicles === "undefined"){
@@ -64,13 +64,13 @@ function extractData (routeId,siri){
                 let alerts
                 alerts = serviceAlertDataMap.get(serviceAlertTarget)
                 alerts = alerts==null? [] : alerts
-                alerts.push(new serviceAlertData(situationElement))
+                alerts.push(createServiceAlertInterface(situationElement))
                 console.log("adding service alert: ",serviceAlertTarget,alerts)
                 serviceAlertDataMap.set(serviceAlertTarget,alerts)
                 serviceAlertTarget = effect?.LineRef + delim + effect?.DirectionRef
                 alerts = serviceAlertDataMap.get(serviceAlertTarget)
                 alerts = alerts==null? [] : alerts
-                alerts.push(new serviceAlertData(situationElement))
+                alerts.push(createServiceAlertInterface(situationElement))
                 console.log("adding service alert: ",serviceAlertTarget,alerts)
                 serviceAlertDataMap.set(serviceAlertTarget,alerts)
             })

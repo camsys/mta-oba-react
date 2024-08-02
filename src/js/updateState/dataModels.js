@@ -1,6 +1,6 @@
 import {OBA} from "../oba";
 
-export class StopData {
+export class StopDatum {
     constructor(stopJson) {
         this.name = stopJson.name
         this.longLat = [stopJson.latitude,stopJson.longitude]
@@ -10,7 +10,10 @@ export class StopData {
 }
 
 
-export class serviceAlertData {
+
+
+
+export class ServiceAlertDatum {
     constructor(serviceAlertJson) {
         this.json = serviceAlertJson
         this.descriptionParts = serviceAlertJson.Description.split("\n")
@@ -50,13 +53,6 @@ export class vehicleData {
             this.passengerCapacity = mc?.Extensions?.Capacities?.EstimatedPassengerCapacity
             this.nextStop = mc?.StopPointRef
             this.vehicleArrivalData.push(new VehicleArrivalDatum(mc))
-            // let distances = mc?.Extensions?.Distances
-            // this.prettyDistance = distances?.PresentableDistance
-            // this.rawDistanceInfo = distances?.DistanceFromCall
-            // this.stopsTillReached = distances?.StopsFromCall
-            // this.rawDistanceOnRoute = distances?.CallDistanceAlongRoute
-            // this.stopId = mc?.StopPointRef
-            // this.stopName = mc?.StopPointName
             if(mvj?.OnwardCalls?.OnwardCall!==null && typeof mvj?.OnwardCalls?.OnwardCall !=='undefined'){
                 mvj.OnwardCalls.OnwardCall.forEach((mc,index)=>
                     index!=0?this.vehicleArrivalData.push(new VehicleArrivalDatum(mc)):
@@ -88,7 +84,7 @@ export class RouteDirectionComponentDatum{
         console.log("RouteDirectionComponentDatum received stops: ",stops)
         this.routeStopComponentsData = []
         if(stops != null){
-            stops.forEach(stop=>{this.routeStopComponentsData.push(new StopData(stop))})
+            stops.forEach(stop=>{this.routeStopComponentsData.push(new StopDatum(stop))})
         }
         console.log("RouteDirectionComponentDatum stopsComponents data: ",this.routeStopComponentsData)
     }
@@ -116,7 +112,7 @@ export class routeMatchDirectionDatum {
         }
         if(stops != null) {
             stops.forEach(stop => {
-                this.mapStopComponentData.push(new StopData(stop))
+                this.mapStopComponentData.push(new StopDatum(stop))
             })
         }
     }
