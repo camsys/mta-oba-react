@@ -1,7 +1,7 @@
 import React, {useContext} from 'react';
 import {OBA} from "../../js/oba";
 import ErrorBoundary from "../util/errorBoundary";
-import {RouteCardWrapper} from "./../views/RouteCard";
+import {RouteCardWrapper} from "../views/RouteCard";
 import Header from "./Header";
 import Footer from "./Footer";
 import SearchBar from "./SearchBar"

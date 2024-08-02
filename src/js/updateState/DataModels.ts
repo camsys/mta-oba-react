@@ -199,7 +199,7 @@ export class RouteMatch extends SearchMatch {
     routeId: string;
     routeTitle: string;
     description: string;
-    directions: any[]; // should be of type RouteMatchDirectionDatum
+    directions: RouteMatchDirectionInterface[];
 
     constructor(data: any) {
         super(MatchType.RouteMatch);
@@ -207,7 +207,7 @@ export class RouteMatch extends SearchMatch {
         this.routeId = data.routeId;
         this.routeTitle = data.routeTitle;
         this.description = data.description;
-        this.directions = []; // should only be RouteMatchDirectionDatum
+        this.directions = [];
     }
 }
 
