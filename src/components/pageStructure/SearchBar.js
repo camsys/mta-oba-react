@@ -1,7 +1,8 @@
-import React, {useContext, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import Autosuggest from 'react-autosuggest';
 import ErrorBoundary from "../util/errorBoundary";
 import {useSearch} from "../../js/updateState/SearchEffect";
+import {CardStateContext} from "../util/CardStateComponent";
 
 // Function to fetch suggestions from an external API
 const getSuggestions = async (value) => {
@@ -34,8 +35,26 @@ const SearchBar = () => {
         search(lineRef);
     };
 
+
+    const {state} = useContext(CardStateContext)
+    const [searchTerm, setSearchTerm] = useState("Search");
+    console.log("Search",searchTerm)
+    useEffect(() => {
+        let newSearchTerm = state?.currentCard?.searchTerm
+        console.log("new Search",newSearchTerm,state,state?.currentCard,state?.currentCard?.searchTerm)
+        if(newSearchTerm!==searchTerm){
+            if(newSearchTerm===null || newSearchTerm==="" || typeof newSearchTerm ==="undefined"){
+                if(searchTerm!=="Search")
+                {setSearchTerm("Search")}
+            }
+            else {
+                setSearchTerm(newSearchTerm)
+            }
+        }
+    }, [state]);
+    console.log("Search",searchTerm)
     const inputProps = {
-        placeholder: 'Search',
+        placeholder: searchTerm,
         value,
         onChange: (event, { newValue }) => setValue(newValue),
     };
