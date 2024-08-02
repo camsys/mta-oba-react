@@ -145,6 +145,10 @@ export const useSearch = () =>{
 
 
     const search = async (searchTerm) =>{
+        searchTerm = searchTerm.split("_").length > 1
+            ? searchTerm.split("_").reduce((acc, part, nth) => nth !== 0 ? acc + part : acc, "")
+                .toUpperCase()
+            : searchTerm.toUpperCase();
         try {
             console.log("fetch search data called \n\n\n\n\n\n\n\n")
             console.log("generating new card")
