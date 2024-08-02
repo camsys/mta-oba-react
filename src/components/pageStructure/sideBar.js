@@ -6,7 +6,7 @@ import Header from "./Header";
 import Footer from "./Footer";
 import SearchBar from "./SearchBar"
 import {CardStateContext} from "../util/CardStateComponent";
-import {Card, CardType} from "../../js/updateState/DataModels2"
+import {Card, CardType} from "../../js/updateState/DataModels"
 import RefreshComponent from "../views/refreshComponent";
 import VehicleCard from "../views/VehicleCard";
 import {StopCardWrapper} from "../views/StopCardWrapper";

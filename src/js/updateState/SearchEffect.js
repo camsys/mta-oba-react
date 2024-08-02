@@ -2,7 +2,7 @@ import queryString from "query-string";
 import React, {useContext, useEffect, useRef, useState} from "react";
 import {CardStateContext, RoutesContext, StopsContext} from "../../components/util/CardStateComponent";
 import {OBA} from "../oba";
-import {Card, GeocodeMatch, RouteMatch, StopMatch, createRouteMatchDirectionInterface, CardType} from "./DataModels2";
+import {Card, GeocodeMatch, RouteMatch, StopMatch, createRouteMatchDirectionInterface, CardType} from "./DataModels";
 
 
 function processRouteSearch(route,card,stops,routes) {

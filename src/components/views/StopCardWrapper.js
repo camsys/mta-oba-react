@@ -11,8 +11,7 @@ import ServiceAlertContainerComponent from "./ServiceAlertContainerComponent";
 import RouteVehicleComponent from "./RouteVehicleComponent";
 import {OBA} from "../../js/oba";
 import {MapHighlightingStateContext} from "../util/MapHighlightingStateComponent";
-import {getRouteCard} from "./RouteCard";
-import {SearchMatch} from "../../js/updateState/dataModels";
+import {MatchType} from "../../js/updateState/DataModels";
 
 
 
@@ -67,7 +66,7 @@ const RouteDirection = (routeDirectionDatum,stopId) =>{
 }
 
 export function StopCard (match) {
-    if(match.type!==SearchMatch.matchTypes.stopMatch){return <></>}
+    if(match.type!==MatchType.StopMatch){return <></>}
     const { search } = useSearch();
 
     console.log("generating StopCard",match)

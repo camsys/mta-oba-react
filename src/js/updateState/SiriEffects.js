@@ -6,7 +6,7 @@ import {
     VehicleStateContext, stopSortedDataIdentifier
 } from "../../components/util/VehicleStateComponent";
 import {OBA} from "../oba";
-import {createServiceAlertInterface, createVehicleRtInterface} from "./DataModels2";
+import {createServiceAlertInterface, createVehicleRtInterface} from "./DataModels";
 
 
 

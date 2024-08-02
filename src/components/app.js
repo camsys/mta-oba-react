@@ -14,9 +14,8 @@ import {
 import {useSearch} from "../js/updateState/SearchEffect";
 import {MapHighlightingStateProvider} from "./util/MapHighlightingStateComponent";
 import {siriGetVehiclesForRoutesEffect, siriGetVehiclesForVehicleViewEffect} from "../js/updateState/SiriEffects";
-import {Card} from "../js/updateState/dataModels";
 import {siriGetVehiclesForStopViewEffect} from "../js/updateState/SiriStopEffects";
-import {CardType} from "../js/updateState/DataModels2";
+import {CardType} from "../js/updateState/DataModels";
 
 
 

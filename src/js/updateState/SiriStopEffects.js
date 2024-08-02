@@ -1,5 +1,5 @@
 import React from "react";
-import {createServiceAlertInterface, createVehicleRtInterface} from "./DataModels2";
+import {createServiceAlertInterface, createVehicleRtInterface} from "./DataModels";
 import {
     updatedTimeIdentifier,stopSortedFutureVehicleDataIdentifier
 } from "../../components/util/VehicleStateComponent";

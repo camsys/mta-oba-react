@@ -9,10 +9,8 @@ import {CardStateContext, RoutesContext, StopsContext} from "../util/CardStateCo
 import {vehicleDataIdentifier, VehicleStateContext} from "../util/VehicleStateComponent";
 import MapRouteComponent from "./MapRouteComponent";
 import MapStopComponent from "./MapStopComponent";
-import {MapHighlightingStateContext} from "../util/MapHighlightingStateComponent";
 import MapVehicleComponent from "./MapVehicleComponent";
-import {Card, SearchMatch} from "../../js/updateState/dataModels";
-import {CardType} from "../../js/updateState/DataModels2";
+import {CardType, MatchType} from "../../js/updateState/DataModels";
 
 
 
@@ -131,8 +129,8 @@ export const MapComponent = () => {
             startingMapCenter = [searchMatch.latitude,searchMatch.longitude]
             startingZoom = 16
             searchMatch.routeMatches.forEach(match => {
-                if(match.type === SearchMatch.matchTypes.routeMatch){processRoute(match)}
-                if(match.type === SearchMatch.matchTypes.stopMatch){
+                if(match.type === MatchType.RouteMatch){processRoute(match)}
+                if(match.type === MatchType.StopMatch){
                     match.routeMatches.forEach(route => {
                         processRoute(route)
                     })
