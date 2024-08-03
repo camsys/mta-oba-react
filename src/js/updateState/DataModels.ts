@@ -200,7 +200,7 @@ export class SearchMatch {
     static matchTypes = MatchType;
 
     type: MatchType;
-    routeMatches: [RouteMatch]
+    routeMatches: [SearchMatch]
 
     constructor(type: MatchType) {
         this.type = type;
@@ -228,11 +228,13 @@ export class RouteMatch extends SearchMatch {
 export class GeocodeMatch extends SearchMatch {
     latitude: number;
     longitude: number;
+    routeMatches: [RouteMatch|StopMatch]
 
     constructor(data: any) {
         super(MatchType.GeocodeMatch);
         this.latitude = data.latitude;
         this.longitude = data.longitude;
+        this.routeMatches = []
     }
 }
 
@@ -241,6 +243,7 @@ export class StopMatch extends SearchMatch {
     longitude: number;
     name: string;
     id: string;
+    routeMatches: [RouteMatch]
 
     constructor(data: any) {
         super(MatchType.StopMatch);
@@ -248,6 +251,7 @@ export class StopMatch extends SearchMatch {
         this.longitude = data.longitude;
         this.name = data.name;
         this.id = data.id;
+        this.routeMatches = []
     }
 }
 
@@ -329,4 +333,17 @@ export class Card {
             this.searchResultType === that?.searchResultType
         );
     }
+}
+
+
+export interface CardStateObject {
+    currentCard: Card,
+    cardStack: [Card],
+    renderCounter:number
+}
+export interface RoutesObject {
+    [key: string]: RouteMatch;
+}
+export interface StopsObject {
+    [key: string]: StopInterface;
 }

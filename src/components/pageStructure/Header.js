@@ -3,7 +3,7 @@ import {OBA} from "../../js/oba";
 import ErrorBoundary from "../util/errorBoundary";
 import bustimeLogo from '../../img/bustime-logo.png';
 import favicon from '../../img/favicon.ico';
-import {useSearch} from "../../js/updateState/SearchEffect";
+import {useSearch} from "../../js/updateState/SearchEffect.tsx";
 
 
 

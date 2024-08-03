@@ -11,7 +11,7 @@ import {
     VehicleStateContext,
     VehicleStateProvider
 } from "./util/VehicleStateComponent";
-import {useSearch} from "../js/updateState/SearchEffect";
+import {useSearch} from "../js/updateState/SearchEffect.tsx";
 import {MapHighlightingStateProvider} from "./util/MapHighlightingStateComponent.tsx";
 import {siriGetVehiclesForRoutesEffect, siriGetVehiclesForVehicleViewEffect} from "../js/updateState/SiriEffects";
 import {siriGetVehiclesForStopViewEffect} from "../js/updateState/SiriStopEffects";

@@ -2,10 +2,18 @@ import queryString from "query-string";
 import React, {useContext, useEffect, useRef, useState} from "react";
 import {CardStateContext, RoutesContext, StopsContext} from "Components/util/CardStateComponent";
 import {OBA} from "../oba";
-import {Card, GeocodeMatch, RouteMatch, StopMatch, createRouteMatchDirectionInterface, CardType} from "./DataModels";
+import {
+    Card,
+    GeocodeMatch,
+    RouteMatch,
+    StopMatch,
+    createRouteMatchDirectionInterface,
+    CardType,
+    StopInterface, RoutesObject, StopsObject, SearchMatch, MatchType, VehicleRtInterface
+} from "./DataModels";
 
 
-function processRouteSearch(route,card,stops,routes) {
+function processRouteSearch(route,card:Card,stops: StopsObject,routes:RoutesObject):RouteMatch {
     let match = new RouteMatch(route)
     console.log("processing route search results",route,card,stops,routes)
     if (route != null && route.hasOwnProperty("directions")) {
@@ -28,11 +36,10 @@ function processRouteSearch(route,card,stops,routes) {
     return match
 }
 
-function processGeocodeSearch(geocode,card,stops,routes){
+function processGeocodeSearch(geocode,card:Card,stops: StopsObject,routes:RoutesObject):GeocodeMatch{
     let match = new GeocodeMatch(geocode)
     console.log("processing geocode search results",geocode,card,match)
     if (geocode != null && geocode.hasOwnProperty("latitude")) {
-        match.routeMatches = []
         geocode?.nearbyRoutes.forEach(searchResult=>{
             if(typeof searchResult?.stopDirection !== "undefined")
             {
@@ -51,7 +58,7 @@ function processGeocodeSearch(geocode,card,stops,routes){
     return match
 }
 
-function processStopSearch(stop,card,stops,routes){
+function processStopSearch(stop,card:Card,stops: StopsObject,routes:RoutesObject):StopMatch{
     let match = new StopMatch(stop)
     console.log("processing stopMatch search results",stop,card,match)
     if (stop != null && stop.hasOwnProperty("latitude")) {
@@ -65,7 +72,7 @@ function processStopSearch(stop,card,stops,routes){
     return match
 }
 
-async function getData(card,stops,routes){
+async function getData(card:Card,stops: StopsObject,routes:RoutesObject):Promise<Card>{
     console.log("filling card data with search",card,stops,routes)
     if(card.searchTerm == null || card.searchTerm == ''){
         console.log("empty search means home",card)
@@ -109,7 +116,7 @@ async function getData(card,stops,routes){
     return card
 }
 
-const performNewSearch = (searchRef,currentCard) =>{
+const performNewSearch = (searchRef:String,currentCard:Card):boolean=>{
     if(currentCard.type === CardType.VehicleCard){
         // this only works because vehicle searches are handled elsewhere
         return true
@@ -121,13 +128,13 @@ const performNewSearch = (searchRef,currentCard) =>{
 }
 
 
-export const updateCard = async (searchRef,stops,routes) =>{
+export const updateCard = async (searchRef:String,stops: StopsObject,routes:RoutesObject):Promise<Card> =>{
     console.log("received new search input:",searchRef)
     // searchRef = searchRef.replaceAll(" ","%2520")
     return await getData(new Card(searchRef),stops,routes)
 }
 
-export const getHomeCard = () =>{
+export const getHomeCard = () :Card=>{
     return new Card("")
 }
 
@@ -176,7 +183,7 @@ export const useSearch = () =>{
     const generateInitialCard = async (setLoading)=>{
         try {
             console.log("generating initial card")
-            const searchRef = queryString.parse(location.search).LineRef;
+            const searchRef = queryString.parse(location.search).LineRef as string;
             let currentCard = await getData(new Card(searchRef),stops,routes)
             console.log("setting initial state data with base card",currentCard)
 
@@ -198,19 +205,21 @@ export const useSearch = () =>{
     //this function doesn't belong in "SearchEffect" but it does belong with card handling functions
 // which is what this has become
 
-    const vehicleSearch = async (vehicleData)=> {
-        console.log("setting card to vehicle card",vehicleData)
+    const vehicleSearch = async (vehicleDatum : VehicleRtInterface)=> {
+        console.log("setting card to vehicle card",vehicleDatum)
         //todo: should be current search term
         let pastCard = state.currentCard
-        let routeId = vehicleData.routeId.split("_")[1];
+        let routeId = vehicleDatum.routeId.split("_")[1];
         console.log("found routeId of target vehicle: ",routeId)
         let currentCard = new Card(routeId)
         let routeData
         pastCard.searchMatches.forEach((match)=>{
-            routeData = match.routeMatches.filter(
-                value => {return value.routeId==vehicleData.routeId})})
+            routeData = match.routeMatches
+                .filter(value => value.type===MatchType.RouteMatch)
+                .map(value=> value as RouteMatch)
+                .filter(value => value.routeId==vehicleDatum.routeId)})
         console.log("found routedata of target vehicle: ",routeData)
-        currentCard.setToVehicle(vehicleData.vehicleId,routeData,[vehicleData.routeId])
+        currentCard.setToVehicle(vehicleDatum.vehicleId,routeData,new Set([vehicleDatum.routeId]))
         let cardStack = state.cardStack
         cardStack.push(currentCard)
         console.log("updating state prev card -> new card: \n", pastCard,currentCard)
