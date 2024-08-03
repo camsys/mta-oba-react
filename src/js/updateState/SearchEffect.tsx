@@ -141,8 +141,8 @@ export const getHomeCard = () :Card=>{
 
 export const useSearch = () =>{
     const { state, setState } = useContext(CardStateContext);
-    const routes = useContext(RoutesContext)
-    const stops = useContext(StopsContext)
+    const routes = useContext(RoutesContext) as RoutesObject
+    const stops = useContext(StopsContext) as StopsObject
 
 
     const search = async (searchTerm) =>{
