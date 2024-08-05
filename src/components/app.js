@@ -2,9 +2,7 @@ import React, {useContext, useEffect, useState} from 'react';
 import {OBA} from "../js/oba";
 import ErrorBoundary from "./util/errorBoundary";
 import {CardStateContext, CardStateProvider, SearchStateProviders} from "./util/CardStateComponent.tsx";
-import mapWrap from "./map/mapWrap";
-
-import sideBarComponent from "./pageStructure/sideBar";
+import SideBar from "./pageStructure/SideBar";
 import {
     VehiclesApproachingStopsContext,
     VehiclesApproachingStopsProvider,
@@ -16,10 +14,12 @@ import {MapHighlightingStateProvider} from "./util/MapHighlightingStateComponent
 import {siriGetVehiclesForRoutesEffect, siriGetVehiclesForVehicleViewEffect} from "../js/updateState/SiriEffects";
 import {siriGetVehiclesForStopViewEffect} from "../js/updateState/SiriStopEffects";
 import {CardType} from "../js/updateState/DataModels";
+import MapWrapper from "./map/MapWrapper";
 
 
 
 const VehicleLoading=()=>{
+    console.log("vehicle loading initiated")
     const { state} = useContext(CardStateContext)
     let {vehicleState, setState } = useContext(VehicleStateContext);
     let {vehiclesApproachingStopsState, setVehiclesApproachingStopsState } = useContext(VehiclesApproachingStopsContext);
@@ -50,37 +50,31 @@ const VehicleLoading=()=>{
     }, [state]);
 }
 
-function App  () {
-
-    function GetSideBar () {
-        return sideBarComponent()
-    }
-    function GetMapWrapper () {
-        return mapWrap()
-    }
-
-    OBA.Util.log("adding app")
-
-    const [loading, setLoading] = useState(true);
-    const { state, setState } = useContext(CardStateContext);
+function InitialCardGeneration ({setLoading}){
     const { generateInitialCard } = useSearch();
 
     useEffect(() => {
         generateInitialCard(setLoading)
     }, []);
+}
 
-
-    if (loading) {
-        return <ErrorBoundary><div>Loading...</div></ErrorBoundary>;
-    }
+function App  () {
+    OBA.Util.log("adding app")
+    const [loading, setLoading] = useState(true);
 
     return (
         <ErrorBoundary>
             <VehicleLoading/>
-            <div id="sidebar">
-                <GetSideBar />
-            </div>
-            <GetMapWrapper />
+            <InitialCardGeneration setLoading={setLoading}/>
+            {loading
+                ?
+                (<ErrorBoundary><div>Loading...</div></ErrorBoundary>)
+                :(<React.Fragment>
+                <div id="sidebar">
+                    <SideBar/>
+                </div>
+                <MapWrapper/>
+            </React.Fragment>)}
         </ErrorBoundary>
     )
 }

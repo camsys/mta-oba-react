@@ -13,7 +13,7 @@ import {StopCardWrapper} from "../views/StopCardWrapper.tsx";
 import {GeoCardWrapper} from "../views/GeoCardWrapper.tsx";
 import HomeCard from "../views/HomeCard.tsx";
 
-function getSideBar  () {
+function SideBar  () {
 
     const { state } = useContext(CardStateContext);
 
@@ -57,4 +57,4 @@ function getSideBar  () {
     )
 }
 
-export default getSideBar;
+export default SideBar;
