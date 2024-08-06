@@ -63,14 +63,14 @@ const RouteDirection = (routeDirectionDatum:RouteMatchDirectionInterface,stopId:
     )
 }
 
-export function StopCard (match: SearchMatch) : JSX.Element{
+export function StopCard (match: SearchMatch,oneOfMany:boolean) : JSX.Element{
     if(match.type!==MatchType.StopMatch){return <></>}
     let routeMatch = match as StopMatch
     const { search } = useSearch();
 
     console.log("generating StopCard",routeMatch)
     return(
-    <div className="card stop-card">
+    <div className={`card stop-card ${oneOfMany?"collapsible":""}`}>
         <div className="card-header">
             <h3 className="card-title">
                 <img src={busStopIcon} alt="bus stop icon" className="icon" />

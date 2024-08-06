@@ -6,7 +6,7 @@ import { useHighlight } from "../util/MapHighlightingStateComponent";
 import {
     RouteDirectionInterface,
     MatchType,
-    SearchMatch, StopInterface
+    SearchMatch, StopInterface, RouteMatch
 } from "../../js/updateState/DataModels";
 import {stopSortedDataIdentifier, vehicleDataIdentifier, VehicleStateContext} from "../util/VehicleStateComponent";
 import {useSearch} from "../../js/updateState/SearchEffect"
@@ -73,7 +73,7 @@ export const RouteDirection = ({datum,color}: { datum: RouteDirectionInterface, 
 }
 
 
-export function RouteCard({ routeMatch }: SearchMatch): JSX.Element {
+export function RouteCard({ routeMatch, oneOfMany}: {routeMatch:RouteMatch, oneOfMany:boolean}): JSX.Element {
     console.log("generating route card: ", routeMatch);
     if (routeMatch.type !== MatchType.RouteMatch) {
         return null
@@ -85,7 +85,7 @@ export function RouteCard({ routeMatch }: SearchMatch): JSX.Element {
 
     return (
         <React.Fragment>
-            <div className={`card route-card ${routeMatch.routeId}`}>
+            <div className={`card route-card ${oneOfMany?"collapsible":""}`}>
                 <div
                     className="card-header"
                     style={{ borderColor: "#" + routeMatch.color }}
