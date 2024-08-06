@@ -5,13 +5,12 @@ import queryString from "query-string";
 import {OBA} from "../../js/oba";
 import L from "leaflet";
 import bus from "../../img/icon/bus.svg";
-import {CardStateContext, RoutesContext, StopsContext} from "../util/CardStateComponent";
+import {CardStateContext, RoutesContext, StopsContext} from "../util/CardStateComponent.tsx";
 import {vehicleDataIdentifier, VehicleStateContext} from "../util/VehicleStateComponent";
 import MapRouteComponent from "./MapRouteComponent";
 import MapStopComponent from "./MapStopComponent";
-import {MapHighlightingStateContext} from "../util/MapHighlightingStateComponent";
 import MapVehicleComponent from "./MapVehicleComponent";
-import {Card, SearchMatch} from "../../js/updateState/dataModels";
+import {CardType, MatchType} from "../../js/updateState/DataModels";
 
 
 
@@ -32,7 +31,7 @@ const MapVehicleElements = ({routeIds}) =>{
             let vehicleDataForRoute = vehicleState[routeId+vehicleDataIdentifier]
             if(vehicleDataForRoute!=null){
                 console.log(`processing vehicleDataForRoute`,vehicleDataForRoute)
-                vehicleDataForRoute.forEach(datum=>{mapVehicleComponents.push(new MapVehicleComponent(datum,state, setState,state.currentCard.vehicleId))});
+                vehicleDataForRoute.forEach(vehicleDatum=>{mapVehicleComponents.push(<MapVehicleComponent {...{vehicleDatum}} key={vehicleDatum.vehicleId}/>)});
             }
             console.log("map vehicle components", mapVehicleComponents)
         })
@@ -55,7 +54,7 @@ export const MapComponent = () => {
         route.directions.forEach(dir => {
             dir.mapRouteComponentData.forEach((datum) => {
                 console.log("requesting new MapRouteComponent from: ", datum)
-                mapRouteComponents.set(datum.id,<MapRouteComponent mapRouteComponentDatum ={datum}/>)
+                mapRouteComponents.set(datum.id,<MapRouteComponent mapRouteComponentDatum ={datum} key={datum.id}/>)
             })
             dir.mapStopComponentData.forEach((datum) => {
                 let stopId = datum.id
@@ -109,12 +108,12 @@ export const MapComponent = () => {
 
     state.currentCard.searchMatches.forEach(searchMatch=>{
         console.log("adding routes for:",searchMatch)
-        if(state.currentCard.type===Card.cardTypes.routeCard){
+        if(state.currentCard.type===CardType.RouteCard){
             let route = searchMatch
             processRoute(route)
             // map.fitBounds(newBounds);
         }
-        else if(state.currentCard.type===Card.cardTypes.vehicleCard){
+        else if(state.currentCard.type===CardType.VehicleCard){
             let route = searchMatch
             processRoute(route)
             startingZoom = 16
@@ -126,18 +125,18 @@ export const MapComponent = () => {
                 .get(state.currentCard.vehicleId).longLat
             // map.fitBounds(newBounds);
         }
-        else if(state.currentCard.type===Card.cardTypes.geocodeCard) {
+        else if(state.currentCard.type===CardType.GeocodeCard) {
             startingMapCenter = [searchMatch.latitude,searchMatch.longitude]
             startingZoom = 16
             searchMatch.routeMatches.forEach(match => {
-                if(match.type === SearchMatch.matchTypes.routeMatch){processRoute(match)}
-                if(match.type === SearchMatch.matchTypes.stopMatch){
+                if(match.type === MatchType.RouteMatch){processRoute(match)}
+                if(match.type === MatchType.StopMatch){
                     match.routeMatches.forEach(route => {
                         processRoute(route)
                     })
                 }})
         }
-        else if(state.currentCard.type===Card.cardTypes.stopCard) {
+        else if(state.currentCard.type===CardType.StopCard) {
             startingMapCenter = [searchMatch.latitude, searchMatch.longitude]
             startingZoom = 16
             searchMatch.routeMatches.forEach(route => {

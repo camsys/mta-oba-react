@@ -1,15 +1,24 @@
-import React, {createContext, useRef, useState} from 'react';
+import React, {createContext, ReactNode, useRef, useState} from 'react';
 
 import {getHomeCard} from "../../js/updateState/SearchEffect";
-const CardStateContext = createContext();
-const RoutesContext = createContext();
-const StopsContext = createContext();
+import {
+    Card,
+    CardStateObject,
+    RouteMatch,
+    RoutesObject,
+    StopInterface,
+    StopsObject
+} from "../../js/updateState/DataModels";
 
-const CardStateProvider = ({children}) => {
+
+const CardStateContext = createContext<{
+    state: CardStateObject;
+    setState: React.Dispatch<React.SetStateAction<CardStateObject>>;
+} | undefined>(undefined);
+const CardStateProvider = ({ children }: { children: ReactNode }): JSX.Element => {
     let currentCard = getHomeCard()
     console.log("setting initial state data with base card",currentCard)
-    const [state, setState] = useState({
-        someGlobalState: {},
+    const [state, setState] = useState<CardStateObject>({
         currentCard: currentCard,
         cardStack: [currentCard],
         renderCounter:1
@@ -23,9 +32,11 @@ const CardStateProvider = ({children}) => {
     );
 };
 
-const RoutesProvider = ({ children }) => {
-    const routes = useRef({});
 
+
+const RoutesContext = createContext<React.MutableRefObject<RoutesObject>>({ current: {} });
+const RoutesProvider = ({ children }) => {
+    const routes = useRef<RoutesObject>({});
     return (
         <RoutesContext.Provider value={routes}>
             {children}
@@ -33,9 +44,10 @@ const RoutesProvider = ({ children }) => {
     );
 };
 
-const StopsProvider = ({ children }) => {
-    const stops = useRef({});
 
+const StopsContext = createContext<React.MutableRefObject<StopsObject>>({ current: {} });
+const StopsProvider = ({ children }) => {
+    const stops = useRef<StopsObject>({});
     return (
         <StopsContext.Provider value={stops}>
             {children}

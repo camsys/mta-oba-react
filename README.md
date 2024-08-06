@@ -28,7 +28,7 @@ Theoretically this should work!
 basic overview of codebase:
 
 data storage
-- dataModels.js
+- DataModels.js
   - a refactor is needed so that data objects corresponding to a component are kept in that component
   - otherwise this js file contains a number of data objects and is fairly relevant for data processing of effects
     - the choice to have it help process data was made to makeup for javascript's limitations around typing

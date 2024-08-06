@@ -1,10 +1,10 @@
 import React, {useContext} from "react";
 import {CardStateContext} from "../util/CardStateComponent";
-import {getRouteCard} from "./RouteCard";
-import {StopCard} from "./StopCardWrapper";
+import {RouteCard} from "./RouteCard";
+import {StopCard} from "./StopCardWrapper.tsx";
 
 
-export function GeoCardWrapper  () {
+export function GeoCardWrapper  () :JSX.Element {
     const { state} = useContext(CardStateContext);
     console.log("generating GeoCard:", state.currentCard.searchMatches);
 
@@ -13,7 +13,7 @@ export function GeoCardWrapper  () {
         <div className="cards geocard routes">
             {state.currentCard.searchMatches.map(match=>{
                 return match.routeMatches.map(routeMatch=>{
-                    return new getRouteCard(routeMatch)
+                    return <RouteCard routeMatch={routeMatch} />
                     })
                 })
             }

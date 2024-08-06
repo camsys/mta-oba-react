@@ -1,13 +1,12 @@
 import React, {useContext, useEffect, useState} from "react";
-import ServiceAlertComponent from "./serviceAlertComponent"
-import {CardStateContext} from "../../components/util/CardStateComponent";
+import ServiceAlertComponent from "./ServiceAlertComponent"
+import {CardStateContext} from "../util/CardStateComponent";
 import queryString from "query-string";
 import {serviceAlertDataIdentifier, vehicleDataIdentifier, VehicleStateContext} from "../util/VehicleStateComponent";
 
-function ServiceAlertContainerComponent  (props) {
+function ServiceAlertContainerComponent  ({ routeId,serviceAlertIdentifier}:{ routeId : string ,serviceAlertIdentifier : string}) : JSX.Element {
     console.log("generating service alert component")
     const { vehicleState} = useContext(VehicleStateContext)
-    let { routeId,serviceAlertIdentifier} = props;
     console.log("getting service alert data",vehicleState,routeId+serviceAlertDataIdentifier,serviceAlertIdentifier)
     let routeServiceAlerts = vehicleState[routeId+serviceAlertDataIdentifier]
     if(routeServiceAlerts===null||typeof routeServiceAlerts==="undefined"){return null}

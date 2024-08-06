@@ -4,12 +4,20 @@ import {Marker, Popup, useMap} from "react-leaflet";
 import L from "leaflet";
 import stopMapIcon from "../../img/icon/star_black.svg"
 import stopPopupIcon from "../../img/icon/bus-stop.svg"
-import {MapHighlightingStateContext} from "../util/MapHighlightingStateComponent";
+import {useHighlight} from "../util/MapHighlightingStateComponent.tsx";
 
 const COMPONENT_IDENTIFIER = "mapStopComponent"
 
 function MapStopComponent  (stopDatum) {
     // console.log('generating MapStopComponent: ', stopDatum)
+
+
+    let {getHighlightedId} = useHighlight()
+    let highlightedId = getHighlightedId()
+    // const { mapHighlightingState} = useContext(MapHighlightingStateContext);
+    // if(mapHighlightingState.highlightedComponentId!=mapRouteComponentDatum.id){
+    //     markerOptions.zIndexOffset=10
+    // }
 
 
     var direction = stopDatum?.stopDirection;
@@ -41,10 +49,7 @@ function MapStopComponent  (stopDatum) {
         id: COMPONENT_IDENTIFIER+"_"+String(stopDatum.id)
     };
 
-    // const { mapHighlightingState} = useContext(MapHighlightingStateContext);
-    // if(mapHighlightingState.highlightedComponentId!=mapRouteComponentDatum.id){
-    //     markerOptions.zIndexOffset=10
-    // }
+
 
     let out = (
         <Marker {...markerOptions}>

@@ -4,24 +4,25 @@ import {Marker, Popup} from "react-leaflet";
 import L from "leaflet";
 import bus from "../../img/icon/bus.svg";
 import busStroller from "../../img/icon/bus-stroller.svg";
-import {useSearch} from "../../js/updateState/SearchEffect";
+import {useSearch} from "../../js/updateState/SearchEffect.tsx";
 
 const COMPONENT_IDENTIFIER = "MapVehicleComponent"
 
 
 
 
-function MapVehicleComponent  (vehicleData,state, setState,targetVehicleId) {
-    // console.log('generating mapVehicle: ',vehicleData.vehicleId,vehicleData)
-    parseInt(vehicleData.vehicleId.split("_")[1])>1000?console.log('use this vehicle: ',vehicleData.vehicleId,vehicleData):null
-    let imgDegrees = vehicleData.bearing - vehicleData.bearing%5
+function MapVehicleComponent  ({vehicleDatum}) {
+
+    // let targetVehicleId = state.currentCard.vehicleId
+    // console.log('generating mapVehicle: ',vehicleDatum.vehicleId,vehicleDatum)
+    let imgDegrees = vehicleDatum.bearing - vehicleDatum.bearing%5
     OBA.Util.trace("img degrees" + imgDegrees)
-    let scheduled = vehicleData.hasRealtime?"":"scheduled/"
+    let scheduled = vehicleDatum.hasRealtime?"":"scheduled/"
     OBA.Util.trace(scheduled)
     let vehicleImageUrl = "img/vehicle/"+scheduled+"vehicle-"+imgDegrees+".png"
     OBA.Util.trace("vehicleImageUrl:")
     OBA.Util.trace(vehicleImageUrl)
-    let vehicleIdParts = vehicleData.vehicleId.split("_");
+    let vehicleIdParts = vehicleDatum.vehicleId.split("_");
     let vehicleIdWithoutAgency = vehicleIdParts[1];
 
     let {vehicleSearch} = useSearch()
@@ -40,26 +41,26 @@ function MapVehicleComponent  (vehicleData,state, setState,targetVehicleId) {
 
     let markerOptions = {
         zIndex: 3,
-        title: "Vehicle " + vehicleIdWithoutAgency + ", " + vehicleData.route + " to " + vehicleData.destination,
-        vehicleId: vehicleData.vehicleId,
-        routeId: vehicleData.route,
-        // key:COMPONENT_IDENTIFIER+"_"+vehicleData.vehicleId,
-        key:COMPONENT_IDENTIFIER+"_"+vehicleData.vehicleId + "_"+vehicleData.longLat,
-        position:vehicleData.longLat,
+        title: "Vehicle " + vehicleIdWithoutAgency + ", " + vehicleDatum.route + " to " + vehicleDatum.destination,
+        vehicleId: vehicleDatum.vehicleId,
+        routeId: vehicleDatum.route,
+        // key:COMPONENT_IDENTIFIER+"_"+vehicleDatum.vehicleId,
+        key:COMPONENT_IDENTIFIER+"_"+vehicleDatum.vehicleId + "_"+vehicleDatum.longLat,
+        position:vehicleDatum.longLat,
         icon: icon,
-        id: COMPONENT_IDENTIFIER+"_"+vehicleData.vehicleId
+        id: COMPONENT_IDENTIFIER+"_"+vehicleDatum.vehicleId
     };
 
 
-    // console.log("mapVehicle key: ",markerOptions.key,vehicleData)
+    // console.log("mapVehicle key: ",markerOptions.key,vehicleDatum)
 
 
     let out = (<Marker {...markerOptions}
-                       eventHandlers={{click : ()=>{selectVehicle(vehicleData)}}}>
-        <Popup key={vehicleData.vehicleId+"_"+vehicleData.longLat} className="map-popup vehicle-popup">
-            <img src={vehicleData.strollerVehicle?busStroller:bus} alt="bus" className="icon"/>
+                       eventHandlers={{click : ()=>{selectVehicle(vehicleDatum)}}}>
+        <Popup key={vehicleDatum.vehicleId+"_"+vehicleDatum.longLat} className="map-popup vehicle-popup">
+            <img src={vehicleDatum.strollerVehicle?busStroller:bus} alt="bus" className="icon"/>
             <div className="popup-info">
-                <span className="route">{vehicleData.route} {vehicleData.destination}</span>
+                <span className="route">{vehicleDatum.route} {vehicleDatum.destination}</span>
                 <span className="vehicle">Vehicle #{vehicleIdWithoutAgency}</span>
             </div>
         </Popup>

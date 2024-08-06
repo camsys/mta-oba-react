@@ -1,5 +1,4 @@
 import React, {useContext, useEffect, useState} from "react";
-import {serviceAlertData, vehicleData} from "./dataModels";
 import {
     serviceAlertDataIdentifier,
     vehicleDataIdentifier,
@@ -7,6 +6,7 @@ import {
     VehicleStateContext, stopSortedDataIdentifier
 } from "../../components/util/VehicleStateComponent";
 import {OBA} from "../oba";
+import {createServiceAlertInterface, createVehicleRtInterface} from "./DataModels";
 
 
 
@@ -31,7 +31,7 @@ function extractData (routeId,siri){
         for (let i = 0; i < vehicleActivity.length; i++) {
             OBA.Util.trace("processing vehicle #" + i);
             let mvj = vehicleActivity[i].MonitoredVehicleJourney
-            let vehicleDatum = new vehicleData(mvj)
+            let vehicleDatum = createVehicleRtInterface(mvj,OBA.Util.ISO8601StringToDate(lastCallTime))
             vehicleDataMap.set(mvj.VehicleRef,vehicleDatum)
             let vehicles = stopsToVehiclesMap.get(vehicleDatum.nextStop)
             if(vehicles===null || typeof vehicles === "undefined"){
@@ -64,13 +64,13 @@ function extractData (routeId,siri){
                 let alerts
                 alerts = serviceAlertDataMap.get(serviceAlertTarget)
                 alerts = alerts==null? [] : alerts
-                alerts.push(new serviceAlertData(situationElement))
+                alerts.push(createServiceAlertInterface(situationElement))
                 console.log("adding service alert: ",serviceAlertTarget,alerts)
                 serviceAlertDataMap.set(serviceAlertTarget,alerts)
                 serviceAlertTarget = effect?.LineRef + delim + effect?.DirectionRef
                 alerts = serviceAlertDataMap.get(serviceAlertTarget)
                 alerts = alerts==null? [] : alerts
-                alerts.push(new serviceAlertData(situationElement))
+                alerts.push(createServiceAlertInterface(situationElement))
                 console.log("adding service alert: ",serviceAlertTarget,alerts)
                 serviceAlertDataMap.set(serviceAlertTarget,alerts)
             })
@@ -184,20 +184,6 @@ const getTargetList = (routeIdList) =>{
         const lineRef = routeId.split("_")[1];
         return [lineRef,baseTargetAddress+"&OperatorRef=" +operatorRef + "&LineRef"+"=" + routeId.replace("+","%2B")];
     })
-}
-
-
-export const siriGetVehiclesForStopViewEffect = (stopIdList, vehicleState, setState ) => {
-    let baseTargetAddress = "https://" + process.env.ENV_ADDRESS + "/" + process.env.STOP_MONITORING_ENDPOINT
-    console.log("looking for Siri Data for stops!",stopIdList)
-
-    let targetAddresses = [...stopIdList].map((stopId)=>{
-        let operatorRef = stopId.split("_")[0].replace(" ","+");
-        const lineRef = stopId.split("_")[1];
-        return [lineRef,baseTargetAddress+"&OperatorRef=" +operatorRef + "&LineRef"+"=" + stopId.replace("+","%2B")];
-    })
-
-    return siriGetAndSetVehiclesForStopMonitoring(targetAddresses,vehicleState,setState)
 }
 
 export const siriGetVehiclesForVehicleViewEffect = (routeIdList, vehicleId, vehicleState, setState ) => {
