@@ -23,7 +23,7 @@ export function GeoCardWrapper  () :JSX.Element {
     console.log("geocard routes&stops",routes,stops)
 
     return (<React.Fragment>
-        <h2 className={`cards-header ${stops.length > 1 ? "collapsible" : ""}`}>Routes:</h2>
+        <h2 className={`cards-header`}>Routes:</h2>
         <div className="cards geocard routes">
             {state.currentCard.searchMatches.map(match=>{
                 return match.routeMatches.map(routeMatch=>{

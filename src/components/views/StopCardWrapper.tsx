@@ -70,14 +70,18 @@ export function StopCard (match: SearchMatch,oneOfMany:boolean) : JSX.Element{
 
     console.log("generating StopCard",routeMatch)
     return(
-    <div className={`card stop-card ${oneOfMany?"collapsible":""}`}>
-        <div className="card-header">
-            <h3 className="card-title">
+    <div className={`card stop-card ${oneOfMany?"collapsible open":""}`}>
+        <button className="card-header collapse-trigger"
+                // onMouseEnter={() => highlightId(routeMatch.routeId)}
+                // onMouseLeave={() => highlightId(null)}
+                aria-haspopup="true" aria-expanded="true"
+                aria-label={`Toggle ${routeMatch.id.split("_")[1]} ${routeMatch.name} open/close`}>
+            <span className="card-title label">
                 <img src={busStopIcon} alt="bus stop icon" className="icon" />
                 {routeMatch.name}
-            </h3>
-        </div>
-        <div className="card-content">
+            </span>
+        </button>
+        <div className="card-content collapse-content">
             <ul className="card-details">
                 <li className="stopcode">Stopcode {routeMatch.id.split("_")[1]}</li>
             </ul>

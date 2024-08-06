@@ -85,16 +85,18 @@ export function RouteCard({ routeMatch, oneOfMany}: {routeMatch:RouteMatch, oneO
 
     return (
         <React.Fragment>
-            <div className={`card route-card ${oneOfMany?"collapsible":""}`}>
-                <div
-                    className="card-header"
+            <div className={`card route-card ${oneOfMany?"collapsible open":""}`}>
+                <button
+                    className="card-header collapse-trigger"
                     style={{ borderColor: "#" + routeMatch.color }}
                     onMouseEnter={() => highlightId(routeMatch.routeId)}
                     onMouseLeave={() => highlightId(null)}
+                    aria-haspopup="true" aria-expanded="true"
+                    aria-label={`Toggle ${routeMatch.routeId.split("_")[1]} ${routeMatch.description} open/close`}
                     >
-                    <h3 className="card-title">{OBA.Config.noWidows(routeMatch.routeTitle)}</h3>
-                </div>
-                <div className="card-content">
+                    <span className="card-title label">{OBA.Config.noWidows(routeMatch.routeTitle)}</span>
+                </button>
+                <div className="card-content collapse-content">
                     <ul className="card-details">
                         <li className="via">{routeMatch.description}</li>
                     </ul>
