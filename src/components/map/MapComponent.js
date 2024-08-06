@@ -1,5 +1,5 @@
 import ReactLeafletGoogleLayer from "react-leaflet-google-layer";
-import {MapContainer, useMap, useMapEvents} from "react-leaflet";
+import {LayerGroup, MapContainer, useMap, useMapEvents} from "react-leaflet";
 import React, {useContext, useEffect, useState} from "react";
 import queryString from "query-string";
 import {OBA} from "../../js/oba";
@@ -10,21 +10,22 @@ import {vehicleDataIdentifier, VehicleStateContext} from "../util/VehicleStateCo
 import MapRouteComponent from "./MapRouteComponent";
 import MapStopComponent from "./MapStopComponent";
 import MapVehicleComponent from "./MapVehicleComponent";
-import {CardType, MatchType} from "../../js/updateState/DataModels";
+import {CardType, MatchType, StopMatch} from "../../js/updateState/DataModels";
 
 
 
 
 
 
-const MapVehicleElements = ({routeIds}) =>{
-    const { state, setState} = useContext(CardStateContext);
+const MapVehicleElements = () =>{
+    const { state} = useContext(CardStateContext);
+    const { vehicleState} = useContext(VehicleStateContext);
+    let routeIds = state.currentCard.routeIdList
     console.log("looking for vehicles from route ids: ",routeIds)
     let mapVehicleComponents = []
     if(routeIds!=null){
         [...routeIds].forEach(route=>{
             console.log("looking for vehicles from route id: ",route)
-            const { vehicleState} = useContext(VehicleStateContext);
             console.log("vehicle state:", vehicleState)
             let routeId = route.split("_")[1]
             console.log("using abbreviated routeId ",routeId)
@@ -43,10 +44,12 @@ const MapVehicleElements = ({routeIds}) =>{
     )
 }
 
-export const MapComponent = () => {
 
-    const stops = useContext(StopsContext)
-    const routes = useContext(RoutesContext)
+
+
+
+const RoutesAndStops = () =>{
+    console.log("generating RoutesAndStops")
 
     const processRoute = (route)=> {
         console.log("processing route for map: ", route)
@@ -82,29 +85,19 @@ export const MapComponent = () => {
         return newBounds
     }
 
-    const MapEvents = () => {
-        let map = useMap()
-        useMapEvents({
-            zoomend() { // zoom event (when zoom animation ended)
-                console.log("tryna use map")
-                console.log("map used")
-                const zoom = map.getZoom(); // get current Zoom of map
-                setZoom(zoom);
-            },
-        });
-        return false;
-    };
-
-    OBA.Util.log("generating map")
-
-    let startingMapCenter = OBA.Config.defaultMapCenter;
-    let startingZoom = 11;
-
+    const stops = useContext(StopsContext)
+    const routes = useContext(RoutesContext)
     const { state} = useContext(CardStateContext);
     const { vehicleState} = useContext(VehicleStateContext);
+
     let mapRouteComponents = new Map()
     let mapStopComponents = new Map()
 
+
+    let map = useMap()
+    let duration = 1.15
+    let [lat, long] = [map.getCenter().lat,map.getCenter().lng]
+    let zoom = map.getZoom()
 
     state.currentCard.searchMatches.forEach(searchMatch=>{
         console.log("adding routes for:",searchMatch)
@@ -114,55 +107,115 @@ export const MapComponent = () => {
             // map.fitBounds(newBounds);
         }
         else if(state.currentCard.type===CardType.VehicleCard){
-            let route = searchMatch
-            processRoute(route)
-            startingZoom = 16
-            // console.log("getting vehicle from ",vehicleState,
-            //     state.currentCard.routeIdList[0].split("_")[1]+vehicleDataIdentifier,
-            //     state.currentCard.vehicleId)
-            startingMapCenter = vehicleState
-                [state.currentCard.routeIdList[0].split("_")[1]+vehicleDataIdentifier]
-                .get(state.currentCard.vehicleId).longLat
-            // map.fitBounds(newBounds);
+            console.log("vehicle route works here");
+            let route = searchMatch;
+            processRoute(route);
+            zoom = 16;
+            [lat, long] = vehicleState[state.currentCard.routeIdList.values().next().value.split("_")[1]
+                +vehicleDataIdentifier].get(state.currentCard.vehicleId).longLat;
         }
         else if(state.currentCard.type===CardType.GeocodeCard) {
-            startingMapCenter = [searchMatch.latitude,searchMatch.longitude]
-            startingZoom = 16
+            [lat, long] = [searchMatch.latitude,searchMatch.longitude];
+            zoom = 16;
             searchMatch.routeMatches.forEach(match => {
-                if(match.type === MatchType.RouteMatch){processRoute(match)}
+                if(match.type === MatchType.RouteMatch){processRoute(match);}
                 if(match.type === MatchType.StopMatch){
                     match.routeMatches.forEach(route => {
-                        processRoute(route)
+                        processRoute(route);
                     })
                 }})
         }
         else if(state.currentCard.type===CardType.StopCard) {
-            startingMapCenter = [searchMatch.latitude, searchMatch.longitude]
-            startingZoom = 16
+            [lat, long] = [searchMatch.latitude, searchMatch.longitude];
+            zoom = 16;
             searchMatch.routeMatches.forEach(route => {
-                processRoute(route)
+                processRoute(route);
             })
         }
     })
 
     console.log("map route components", mapRouteComponents)
     console.log("map stop components", mapStopComponents)
-    console.log("map center set to: ",startingMapCenter)
+
+    return (
+        <React.Fragment>
+            <SetMapBoundsAndZoom {...{duration,lat, long,zoom}}/>
+            <LayerGroup>
+                {Array.from(mapRouteComponents.values()).flat()}
+            </LayerGroup>
+            <LayerGroup>
+                {StopComponents(Array.from(mapStopComponents.values()).flat())}
+            </LayerGroup>
+        </React.Fragment>
+    )
+}
+
+const SetMapBoundsAndZoom = ({duration,lat, long,zoom}) =>{
+    console.log("setting map bounds:",duration,lat,long,zoom)
+    const { state} = useContext(CardStateContext);
+    let map = useMap()
+
+    //todo: add a lil function so this is skipped if there's no meaningful change
+    map.flyTo([lat, long], zoom, {
+        animate: true,
+        duration: duration
+    });
+}
+
+const StopComponents = (stopComponents) => {
+    let map = useMap()
+    let [Zoom,setZoom] = useState(map.getZoom().valueOf())
+
+    // useMapEvents({
+    //     click() {
+    //         console.log("running map click method")
+    //
+    //     },
+    //     zoomend() { // zoom event (when zoom animation ended)
+    //         console.log("map zoom event end")
+    //         setZoom(map.getZoom())
+    //     }
+    // });
+    // console.log("show stops? ",map.getZoom() >= 15.1)
+    return(Zoom>15.1?stopComponents:null)
+}
+
+const MapEvents = () => {
+    let map = useMap()
+    useMapEvents({
+        click() {
+            console.log("running map click method")
+
+        },
+        zoomend() { // zoom event (when zoom animation ended)
+            // console.log("tryna use map")
+            // console.log("map used")
+            // const zoom = map.getZoom(); // get current Zoom of map
+
+        }
+    });
+
+    return false;
+};
 
 
-    let routeIds = state.currentCard.routeIdList
+const CardChange = () =>{
+
+}
 
 
+export const MapComponent = () => {
+    OBA.Util.log("generating map")
 
-    const [Zoom, setZoom] = useState(startingZoom);
-    const [mapCenter, setMapCenter] = useState(startingMapCenter)
+    let startingMapCenter = OBA.Config.defaultMapCenter;
+    let startingZoom = 11;
 
     return (
         <React.Fragment>
             <MapContainer
                 style={{ height: '100vh', width: '100wh' }}
-                center={mapCenter}
-                zoom={Zoom}
+                center={startingMapCenter}
+                zoom={startingZoom}
                 scrollWheelZoom={true}
             >
                 <ReactLeafletGoogleLayer
@@ -171,9 +224,8 @@ export const MapComponent = () => {
                     styles={OBA.Config.mutedTransitStylesArray}
                 />
                 <MapEvents />
-                {Array.from(mapRouteComponents.values()).flat()}
-                {Zoom >= 15.1 ? Array.from(mapStopComponents.values()).flat() : null}
-                <MapVehicleElements routeIds={routeIds}/>
+                <RoutesAndStops/>
+                <MapVehicleElements/>
             </MapContainer>
         </React.Fragment>
     );
