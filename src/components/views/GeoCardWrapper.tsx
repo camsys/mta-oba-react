@@ -25,20 +25,15 @@ export function GeoCardWrapper  () :JSX.Element {
     return (<React.Fragment>
         <h2 className={`cards-header`}>Routes:</h2>
         <div className="cards geocard routes">
-            {state.currentCard.searchMatches.map(match=>{
-                return match.routeMatches.map(routeMatch=>{
-                    return <CollapsableRouteCard routeMatch={routeMatch} oneOfMany={routes.length>1}/>
-                    })
-                })
-            }
+            {routes.map((routeMatch,index) => {
+                return <CollapsableRouteCard routeMatch={routeMatch} oneOfMany={routes.length > 1} key={index}/>
+            })}
         </div>
         <h2 className={`cards-header ${stops.length>1?"collapsible":""}`}>Stops:</h2>
         <div className="cards geocard stops">
             {
-                state.currentCard.searchMatches.map(match=>{
-                return match.routeMatches.map(routeMatch=>{
-                    return new CollapsableStopCard(routeMatch,stops.length>1)
-                    })
+                stops.map((match,index) => {
+                    return <CollapsableStopCard match={match} oneOfMany={routes.length>1} key={index}/>
                 })
             }
         </div>

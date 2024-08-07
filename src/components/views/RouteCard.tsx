@@ -11,7 +11,7 @@ import {
 import {stopSortedDataIdentifier, vehicleDataIdentifier, VehicleStateContext} from "../util/VehicleStateComponent";
 import {useSearch} from "../../js/updateState/SearchEffect"
 import VehicleComponent from "./VehicleComponent"
-
+import {RunScriptAfterRender,ScriptForAfterCollapsible} from "../util/RunScriptAfterRender"
 
 
 export function RouteStopComponent
@@ -118,8 +118,9 @@ export function RouteCard({ routeMatch}: RouteMatch): JSX.Element {
     );
 }
 
+export const CollapsableRouteCard = RunScriptAfterRender(InnerCollapsableRouteCard, ScriptForAfterCollapsible);
 
-export function CollapsableRouteCard({ routeMatch, oneOfMany}: {routeMatch:RouteMatch, oneOfMany:boolean}): JSX.Element {
+function InnerCollapsableRouteCard({ routeMatch, oneOfMany}: {routeMatch:RouteMatch, oneOfMany:boolean}): JSX.Element {
     console.log("generating route card: ", routeMatch);
     if (routeMatch.type !== MatchType.RouteMatch) {
         return null

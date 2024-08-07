@@ -57,7 +57,7 @@ const RoutesAndStops = () =>{
 
         route.directions.forEach(dir => {
             dir.mapRouteComponentData.forEach((datum) => {
-                console.log("requesting new MapRouteComponent from: ", datum)
+                // console.log("requesting new MapRouteComponent from: ", datum)
                 mapRouteComponents.set(datum.id,<MapRouteComponent mapRouteComponentDatum ={datum} key={datum.id}/>)
             })
             dir.mapStopComponentData.forEach((datum) => {

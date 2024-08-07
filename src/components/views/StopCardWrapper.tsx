@@ -19,7 +19,7 @@ import {
     SearchMatch,
     StopMatch
 } from "../../js/updateState/DataModels";
-
+import {RunScriptAfterRender,ScriptForAfterCollapsible} from "../util/RunScriptAfterRender"
 
 
 const RouteDirection = (routeDirectionDatum:RouteMatchDirectionInterface,stopId:string) : JSX.Element=>{
@@ -134,9 +134,9 @@ export function StopCard (match: SearchMatch) : JSX.Element {
 }
 
 
+export const CollapsableStopCard = RunScriptAfterRender(InnerCollapsableStopCard, ScriptForAfterCollapsible);
 
-
-export function CollapsableStopCard (match: SearchMatch,oneOfMany:boolean) : JSX.Element{
+function InnerCollapsableStopCard ({ match, oneOfMany}: {match:SearchMatch, oneOfMany:boolean}) : JSX.Element{
     if(match.type!==MatchType.StopMatch){return <></>}
     let stopMatch = match as StopMatch
     const { search } = useSearch();
