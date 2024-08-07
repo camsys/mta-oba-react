@@ -12,6 +12,7 @@ export const VehicleCardContentComponent = ({routeMatch,vehicleDatum}
                                                 : JSX.Element=>{
     const { search } = useSearch();
     console.log("generating vehicleCardContentComponent for ",vehicleDatum.vehicleId)
+    let {highlightId} = useHighlight()
 
     return(
         <React.Fragment>
@@ -33,12 +34,16 @@ export const VehicleCardContentComponent = ({routeMatch,vehicleDatum}
                 {
                     vehicleDatum?.vehicleArrivalData!=null?
                     vehicleDatum.vehicleArrivalData.map(vehicleArrival=>{
-                        return(<li>
-                            <a href="#" onClick={() => search(vehicleArrival.stopId)}>{vehicleArrival.stopName}</a>
-                            <span className="stop-details">
-                                {OBA.Util.getArrivalEstimateForISOString(vehicleArrival.ISOTime,vehicleDatum.lastUpdate)}
-                                {vehicleArrival.prettyDistance}</span>
-                        </li>)
+                        return(
+                            <li
+                            onMouseEnter={() => highlightId(vehicleArrival.stopId)}
+                            onMouseLeave={() => highlightId(null)}>
+                                <a href="#" onClick={() => search(vehicleArrival.stopId)}>{vehicleArrival.stopName}</a>
+                                <span className="stop-details">
+                                    {OBA.Util.getArrivalEstimateForISOString(vehicleArrival.ISOTime,vehicleDatum.lastUpdate)}
+                                    {vehicleArrival.prettyDistance}
+                                </span>
+                            </li>)
                     }) :null
                 }
             </ul>
