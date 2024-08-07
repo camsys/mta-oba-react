@@ -74,8 +74,10 @@ ul
 button, .button
   font-size: 1em
   vertical-align: middle
+  text-decoration: none
   &:hover
     cursor: pointer
+    text-decoration: underline
 
 .button
   font-weight: bold
@@ -156,9 +158,10 @@ button, .button
     padding: 0
     border-bottom: 1px solid $mta-blue
     // position: relative
+    a
+      text-decoration: none
     a, button
       color: currentColor
-      text-decoration: none
       display: flex
       width: 100%
       padding: 1em .25em 1em .5em

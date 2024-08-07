@@ -419,9 +419,11 @@ ul:not(.menu):not(.card-details):not(.route-stops):not(.approaching-buses):not([
 button, .button {
   font-size: 1em;
   vertical-align: middle;
+  text-decoration: none;
 }
 button:hover, .button:hover {
   cursor: pointer;
+  text-decoration: underline;
 }
 
 .button {
@@ -514,9 +516,11 @@ button:hover, .button:hover {
   padding: 0;
   border-bottom: 1px solid #0E61A9;
 }
+.icon-menu li a {
+  text-decoration: none;
+}
 .icon-menu li a, .icon-menu li button {
   color: currentColor;
-  text-decoration: none;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
