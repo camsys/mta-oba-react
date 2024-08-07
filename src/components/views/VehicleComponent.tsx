@@ -12,7 +12,7 @@ function VehicleComponent({vehicleDatum}:
     let hasArrivalData = typeof vehicleDatum?.vehicleArrivalData!=='undefined'
     return(
         <li key={vehicleDatum.vehicleId}>
-            <a href="#"
+            <a href="#" tabIndex="-1"
                onClick={()=>{vehicleSearch(vehicleDatum)}}
                className={vehicleDatum?.strollerVehicle?"bus stroller-friendly":"bus"}>{vehicleDatum.vehicleId.split("_")[1]}</a>
             <span className="bus-info">

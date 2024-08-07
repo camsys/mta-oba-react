@@ -11,7 +11,7 @@ import {
 import {stopSortedDataIdentifier, vehicleDataIdentifier, VehicleStateContext} from "../util/VehicleStateComponent";
 import {useSearch} from "../../js/updateState/SearchEffect"
 import VehicleComponent from "./VehicleComponent"
-import {RunScriptAfterRender,ScriptForAfterCollapsible} from "../util/RunScriptAfterRender"
+
 
 
 export function RouteStopComponent
@@ -38,7 +38,7 @@ export function RouteStopComponent
              onMouseEnter={() => highlightId(stopDatum.id)}
              onMouseLeave={() => highlightId(null)}
         >
-            <a href="#" onClick={() => search(stopDatum.id.split("_")[1])} tabIndex={stopDatum.id}>{stopDatum.name}</a>
+            <a href="#" onClick={() => search(stopDatum.id.split("_")[1])} tabIndex="-1">{stopDatum.name}</a>
             {
                 hasVehicleChildren ?
                     <ul className="approaching-buses">
@@ -118,9 +118,8 @@ export function RouteCard({ routeMatch}: RouteMatch): JSX.Element {
     );
 }
 
-export const CollapsableRouteCard = RunScriptAfterRender(InnerCollapsableRouteCard, ScriptForAfterCollapsible);
 
-function InnerCollapsableRouteCard({ routeMatch, oneOfMany}: {routeMatch:RouteMatch, oneOfMany:boolean}): JSX.Element {
+export function CollapsableRouteCard({ routeMatch, oneOfMany}: {routeMatch:RouteMatch, oneOfMany:boolean}): JSX.Element {
     console.log("generating route card: ", routeMatch);
     if (routeMatch.type !== MatchType.RouteMatch) {
         return null

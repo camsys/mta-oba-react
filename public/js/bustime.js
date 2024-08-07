@@ -1,8 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
 
-  
-
-
   // have to do clicks this way so they work on objects added after the page loads
 
   // collapse trigger buttons open and close (for icon rotation) and content reveal/toggle
@@ -15,32 +12,42 @@ document.addEventListener('DOMContentLoaded', function() {
         // console.log('caretToggle clicked');
 
         var parent = collapseTrigger.closest('.collapsible');
-        // window.console.log(parent);
+        var collapseContent = parent.querySelector('.collapse-content');
     
-        if (parent) {
-          parent.classList.toggle('open');
-  
-          var collapseContent = parent.querySelector('.collapse-content');
-          if (collapseContent) {
-            // Calculate the actual height of the collapse-content content
-            var actualHeight = collapseContent.scrollHeight;
-  
-            // Clear the inline height style before setting a new height
-            collapseContent.style.maxHeight = '';
-  
-            // Set the height property to achieve animation
-            collapseContent.style.maxHeight = parent.classList.contains('open') ? actualHeight + 'px' : '0';
-  
-            // Toggle tabindex of <a> or <button> elements within .collapse-content
-            var innerTabbableItems = collapseContent.querySelectorAll('a[tabindex], button[tabindex]');
-            innerTabbableItems.forEach(function(element) {
-              var currentIndex = element.getAttribute('tabindex');
-              element.setAttribute('tabindex', currentIndex === '0' ? '-1' : '0');
-            });
-  
-            // Set aria-expanded attribute
-            collapseTrigger.setAttribute('aria-expanded', parent.classList.contains('open'));
+        if (parent && collapseContent) {
+
+          // if the card is open
+          if (parent.classList.contains('open')) {
+            
+            collapseContent.style.maxHeight = collapseContent.scrollHeight + 'px'; // Set maxHeight before collapsing
+            setTimeout(() => {
+              parent.classList.remove('open');
+              collapseContent.style.maxHeight = '0'; // Collapse the content
+            }, 10); // Small delay to trigger transition
+            
+          } 
+          // if the card is closed
+          else {
+
+            parent.classList.add('open');
+            collapseContent.style.maxHeight = collapseContent.scrollHeight + 'px'; // Allow it to expand
+            setTimeout(() => {
+              collapseContent.style.maxHeight = 'none'; // Reset to none to allow further expansion
+            }, 500); // Timeout matches the transition duration
+
           }
+
+          // Update aria-expanded attribute
+
+          collapseTrigger.setAttribute('aria-expanded', parent.classList.contains('open'));
+
+          // Toggle tabindex of <a> or <button> elements within .collapse-content
+          var innerTabbableItems = collapseContent.querySelectorAll('a[tabindex], button[tabindex]');
+          innerTabbableItems.forEach(function(element) {
+            var currentIndex = element.getAttribute('tabindex');
+            element.setAttribute('tabindex', currentIndex === '0' ? '-1' : '0');
+          });
+            
         }
 
     }
