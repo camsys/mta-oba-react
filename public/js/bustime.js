@@ -3,8 +3,9 @@
 //-----------
 
 // Define the function to update collapsibles
-function updateCollapsibles() {
-  var collapsibles = document.querySelectorAll('.collapsible.open');
+function updateCollapsibles(collapsibles) {
+  // var collapsibles = document.querySelectorAll('.collapsible.open');
+  window.console.log('boop' + collapsibles);
   collapsibles.forEach(function(collapsible) {
     var collapseContent = collapsible.querySelector('.collapse-content');
     if (collapseContent) {
@@ -26,6 +27,7 @@ function updateCollapsibles() {
 
 document.addEventListener('DOMContentLoaded', function() {
 
+  
 
 
   // have to do clicks this way so they work on objects added after the page loads
@@ -90,7 +92,12 @@ document.addEventListener('DOMContentLoaded', function() {
   const observer = new MutationObserver((mutationsList) => {
     for (const mutation of mutationsList) {
       if (mutation.type === 'childList') {
+
+        // search instructions scrolling
+
         const sidebarContent = document.querySelector('.sidebar-content');
+        // window.console.log('boop boop boop');
+        // window.console.log(sidebarContent);
         const searchInstructions = document.querySelector('.search-instructions');
         var searchInstructionsHeight = '30'; // default height as defined in CSS 
         if (sidebarContent && searchInstructions) {
@@ -113,9 +120,18 @@ document.addEventListener('DOMContentLoaded', function() {
               }
             },
           });
-          observer.disconnect(); // Stop observing once the element is found
+
+          // update collapsibles
+          var collapsibles = document.querySelectorAll('.collapsible.open');
+          updateCollapsibles(collapsibles);
+
+          // Stop observing once the elements are found
+          observer.disconnect(); 
           break;
         }
+
+        
+
       }
     }
   });

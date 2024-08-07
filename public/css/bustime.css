@@ -1150,7 +1150,6 @@ button:hover, .button:hover {
   -webkit-transition: max-height 0.5s ease-in-out, margin 0.25s ease-in-out, padding 0.25s ease-in-out;
   transition: max-height 0.5s ease-in-out, margin 0.25s ease-in-out, padding 0.25s ease-in-out;
 }
-
 .refresh-button {
   overflow: hidden;
   text-overflow: ellipsis;
