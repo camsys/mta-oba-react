@@ -1,7 +1,7 @@
 import React, {useContext} from "react";
 import {CardStateContext} from "../util/CardStateComponent";
-import {RouteCard} from "./RouteCard";
-import {StopCard} from "./StopCardWrapper.tsx";
+import {CollapsableRouteCard, RouteCard} from "./RouteCard";
+import {CollapsableStopCard, StopCard} from "./StopCardWrapper.tsx";
 import {MatchType} from "../../js/updateState/DataModels";
 
 
@@ -27,7 +27,7 @@ export function GeoCardWrapper  () :JSX.Element {
         <div className="cards geocard routes">
             {state.currentCard.searchMatches.map(match=>{
                 return match.routeMatches.map(routeMatch=>{
-                    return <RouteCard routeMatch={routeMatch} oneOfMany={routes.length>1}/>
+                    return <CollapsableRouteCard routeMatch={routeMatch} oneOfMany={routes.length>1}/>
                     })
                 })
             }
@@ -37,7 +37,7 @@ export function GeoCardWrapper  () :JSX.Element {
             {
                 state.currentCard.searchMatches.map(match=>{
                 return match.routeMatches.map(routeMatch=>{
-                    return new StopCard(routeMatch,stops.length>1)
+                    return new CollapsableStopCard(routeMatch,stops.length>1)
                     })
                 })
             }

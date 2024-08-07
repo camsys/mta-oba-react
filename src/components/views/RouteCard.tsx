@@ -76,8 +76,50 @@ export const RouteDirection = ({datum,color}: { datum: RouteDirectionInterface, 
     )
 }
 
+export function RouteCardContent({ routeMatch}: RouteMatch): JSX.Element  {
+    let routeId = routeMatch.routeId.split("_")[1];
+    let serviceAlertIdentifier = routeMatch.routeId;
+    return(
+        <React.Fragment>
+            <ul className="card-details">
+                <li className="via">{routeMatch.description}</li>
+            </ul>
+            <ServiceAlertContainerComponent {...{ routeId, serviceAlertIdentifier }} />
+            {routeMatch.directions.map((dir, index) =>
+                (<RouteDirection
+                    datum={dir.routeDirectionComponentData}
+                    color={routeMatch.color} key={index}/>))}
+        </React.Fragment>)
+}
 
-export function RouteCard({ routeMatch, oneOfMany}: {routeMatch:RouteMatch, oneOfMany:boolean}): JSX.Element {
+
+export function RouteCard({ routeMatch}: RouteMatch): JSX.Element {
+    console.log("generating route card: ", routeMatch);
+    if (routeMatch.type !== MatchType.RouteMatch) {
+        return null
+    }
+    const { highlightId } = useHighlight();
+    return (
+        <React.Fragment>
+            <div className={`card route-card ${routeMatch.routeId}`}>
+                <div
+                    className="card-header"
+                    style={{ borderColor: "#" + routeMatch.color }}
+                    onMouseEnter={() => highlightId(routeMatch.routeId)}
+                    onMouseLeave={() => highlightId(null)}
+                >
+                    <h3 className="card-title">{OBA.Config.noWidows(routeMatch.routeTitle)}</h3>
+                </div>
+                <div className="card-content">
+                    <RouteCardContent routeMatch={routeMatch}/>
+                </div>
+            </div>
+        </React.Fragment>
+    );
+}
+
+
+export function CollapsableRouteCard({ routeMatch, oneOfMany}: {routeMatch:RouteMatch, oneOfMany:boolean}): JSX.Element {
     console.log("generating route card: ", routeMatch);
     if (routeMatch.type !== MatchType.RouteMatch) {
         return null
@@ -97,22 +139,15 @@ export function RouteCard({ routeMatch, oneOfMany}: {routeMatch:RouteMatch, oneO
                     onMouseLeave={() => highlightId(null)}
                     aria-haspopup="true" aria-expanded="true"
                     aria-label={`Toggle ${routeMatch.routeId.split("_")[1]} ${routeMatch.description} open/close`}
-                    >
+                >
                     <span className="card-title label">{OBA.Config.noWidows(routeMatch.routeTitle)}</span>
                 </button>
                 <div className="card-content collapse-content">
-                    <ul className="card-details">
-                        <li className="via">{routeMatch.description}</li>
-                    </ul>
-                    <ServiceAlertContainerComponent {...{ routeId, serviceAlertIdentifier }} />
-                    {routeMatch.directions.map((dir, index) =>
-                        (<RouteDirection
-                            datum={dir.routeDirectionComponentData}
-                            color={routeMatch.color} key={index}/>))}
+                    <RouteCardContent routeMatch={routeMatch}/>
                 </div>
             </div>
         </React.Fragment>
-);
+    );
 }
 
 export function RouteCardWrapper(): JSX.Element {

@@ -63,37 +63,22 @@ const RouteDirection = (routeDirectionDatum:RouteMatchDirectionInterface,stopId:
     )
 }
 
-export function StopCard (match: SearchMatch,oneOfMany:boolean) : JSX.Element{
-    if(match.type!==MatchType.StopMatch){return <></>}
-    let routeMatch = match as StopMatch
-    const { search } = useSearch();
-
-    console.log("generating StopCard",routeMatch)
+export function StopCardContent({stopMatch}: StopMatch):JSX.Element{
+    console.log("generating StopCardContent",stopMatch)
     return(
-    <div className={`card stop-card ${oneOfMany?"collapsible open":""}`}>
-        <button className="card-header collapse-trigger"
-                // onMouseEnter={() => highlightId(routeMatch.routeId)}
-                // onMouseLeave={() => highlightId(null)}
-                aria-haspopup="true" aria-expanded="true"
-                aria-label={`Toggle ${routeMatch.id.split("_")[1]} ${routeMatch.name} open/close`}>
-            <span className="card-title label">
-                <img src={busStopIcon} alt="bus stop icon" className="icon" />
-                {routeMatch.name}
-            </span>
-        </button>
-        <div className="card-content collapse-content">
+        <React.Fragment>
             <ul className="card-details">
-                <li className="stopcode">Stopcode {routeMatch.id.split("_")[1]}</li>
+                <li className="stopcode">Stopcode {stopMatch.id.split("_")[1]}</li>
             </ul>
             <h4>Buses en-route:</h4>
-            {routeMatch.routeMatches.map(
+            {stopMatch.routeMatches.map(
                 route=>route.directions.map(
-                    dir => RouteDirection(dir,routeMatch.id.split("_")[1])
-            ))}
+                    dir => RouteDirection(dir,stopMatch.id.split("_")[1])
+                ))}
 
             <div className="text-note">
                 <p>
-                    Text stopcode <strong>{routeMatch.id.split("_")[1]}</strong> to 511123 to receive an up-to-date list of buses
+                    Text stopcode <strong>{stopMatch.id.split("_")[1]}</strong> to 511123 to receive an up-to-date list of buses
                     en-route on your phone.
                 </p>
             </div>
@@ -118,6 +103,59 @@ export function StopCard (match: SearchMatch,oneOfMany:boolean) : JSX.Element{
                     </button>
                 </li>
             </ul>
+        </React.Fragment>
+    )
+
+}
+
+
+export function StopCard (match: SearchMatch) : JSX.Element {
+    if (match.type !== MatchType.StopMatch) {
+        return <></>
+    }
+    let stopMatch = match as StopMatch
+    const {search} = useSearch();
+
+    console.log("generating StopCard", match)
+    console.log("generating StopCard", stopMatch)
+    return (
+        <div className="card stop-card">
+            <div className="card-header">
+                <h3 className="card-title">
+                    <img src={busStopIcon} alt="bus stop icon" className="icon"/>
+                    {stopMatch.name}
+                </h3>
+            </div>
+            <div className="card-content">
+                <StopCardContent stopMatch={stopMatch}/>
+            </div>
+        </div>
+    )
+}
+
+
+
+
+export function CollapsableStopCard (match: SearchMatch,oneOfMany:boolean) : JSX.Element{
+    if(match.type!==MatchType.StopMatch){return <></>}
+    let stopMatch = match as StopMatch
+    const { search } = useSearch();
+
+    console.log("generating StopCard",stopMatch)
+    return(
+    <div className={`card stop-card ${oneOfMany?"collapsible open":""}`}>
+        <button className="card-header collapse-trigger"
+                // onMouseEnter={() => highlightId(stopMatch.routeId)}
+                // onMouseLeave={() => highlightId(null)}
+                aria-haspopup="true" aria-expanded="true"
+                aria-label={`Toggle ${stopMatch.id.split("_")[1]} ${stopMatch.name} open/close`}>
+            <span className="card-title label">
+                <img src={busStopIcon} alt="bus stop icon" className="icon" />
+                {stopMatch.name}
+            </span>
+        </button>
+        <div className="card-content collapse-content">
+            <StopCardContent stopMatch={stopMatch}/>
         </div>
     </div>
     )
