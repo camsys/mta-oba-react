@@ -45,8 +45,8 @@ const VehicleLoading=()=>{
 
         getSiri()
         //todo: set interval back to 15s
-        // const interval = setInterval(getSiri, 15*1000);
-        // return () => clearInterval(interval);
+        const interval = setInterval(getSiri, 5*1000);
+        return () => clearInterval(interval);
     }, [state]);
 }
 

@@ -89,15 +89,9 @@ const RoutesAndStops = () =>{
     const stops = useContext(StopsContext)
     const routes = useContext(RoutesContext)
     const { state} = useContext(CardStateContext);
-    const { vehicleState} = useContext(VehicleStateContext);
 
     let mapRouteComponents = new Map()
     let mapStopComponents = new Map()
-
-
-    let duration = 1.15
-    let [lat, long] = [null,null]
-    let zoom = null
 
     state.currentCard.searchMatches.forEach(searchMatch=>{
         console.log("adding routes for:",searchMatch)
@@ -110,13 +104,8 @@ const RoutesAndStops = () =>{
             console.log("vehicle route works here");
             let route = searchMatch;
             processRoute(route);
-            zoom = 16;
-            [lat, long] = vehicleState[state.currentCard.routeIdList.values().next().value.split("_")[1]
-                +vehicleDataIdentifier].get(state.currentCard.vehicleId).longLat;
         }
         else if(state.currentCard.type===CardType.GeocodeCard) {
-            [lat, long] = [searchMatch.latitude,searchMatch.longitude];
-            zoom = 16;
             searchMatch.routeMatches.forEach(match => {
                 if(match.type === MatchType.RouteMatch){processRoute(match);}
                 if(match.type === MatchType.StopMatch){
@@ -126,8 +115,6 @@ const RoutesAndStops = () =>{
                 }})
         }
         else if(state.currentCard.type===CardType.StopCard) {
-            [lat, long] = [searchMatch.latitude, searchMatch.longitude];
-            zoom = 16;
             searchMatch.routeMatches.forEach(route => {
                 processRoute(route);
             })
@@ -165,36 +152,8 @@ const Highlighted = () =>{
     }
 }
 
-const SetMapBoundsAndZoom = () =>{
-    const { state} = useContext(CardStateContext);
-    let duration = 1.15
-    let [lat, long] = [null,null]
-    let zoom = null
-
-    state.currentCard.searchMatches.forEach(searchMatch=>{
-        if(state.currentCard.type===CardType.RouteCard){
-            // map.fitBounds(newBounds);
-        }
-        else if(state.currentCard.type===CardType.VehicleCard){
-            zoom = 16;
-            [lat, long] = vehicleState[state.currentCard.routeIdList.values().next().value.split("_")[1]
-            +vehicleDataIdentifier].get(state.currentCard.vehicleId).longLat;
-        }
-        else if(state.currentCard.type===CardType.GeocodeCard) {
-            [lat, long] = [searchMatch.latitude,searchMatch.longitude];
-            zoom = 16;
-
-        }
-        else if(state.currentCard.type===CardType.StopCard) {
-            [lat, long] = [searchMatch.latitude, searchMatch.longitude];
-            zoom = 16;
-        }
-    })
-
+const setMapBoundsAndZoom = (duration, lat, long,zoom) =>{
     console.log("setting map bounds:",duration,lat,long,zoom)
-
-
-
     if(lat===null|long===null|zoom===null){return}
     let map = useMap()
     let [currentLat, currentLong,currentZoom] = [map.getCenter().lat,map.getCenter().lng,map.getZoom()]
@@ -209,6 +168,50 @@ const SetMapBoundsAndZoom = () =>{
         animate: true,
         duration: duration
     });
+}
+
+const HandleMapForVehiclesBoundsAndZoom = () =>{
+    // todo: later have it just confirm it's in the bounding box
+    const { vehicleState} = useContext(VehicleStateContext);
+    const { state} = useContext(CardStateContext);
+    if(state.currentCard.type!==CardType.VehicleCard){
+        return
+    }
+    let duration = 1.15
+    let zoom = 16;
+    let [lat, long] = vehicleState[state.currentCard.routeIdList.values().next().value.split("_")[1]
+    +vehicleDataIdentifier].get(state.currentCard.vehicleId).longLat;
+    setMapBoundsAndZoom(duration,lat,long,zoom)
+}
+
+const HandleMapBoundsAndZoom = () =>{
+    const { state} = useContext(CardStateContext);
+    let duration = 1.15
+    let [lat, long] = [null,null]
+    let zoom = null
+
+
+    state.currentCard.searchMatches.forEach(searchMatch=>{
+        if(state.currentCard.type===CardType.RouteCard){
+            // map.fitBounds(newBounds);
+        }
+        else if(state.currentCard.type===CardType.GeocodeCard) {
+            [lat, long] = [searchMatch.latitude,searchMatch.longitude];
+            zoom = 16;
+
+        }
+        else if(state.currentCard.type===CardType.StopCard) {
+            [lat, long] = [searchMatch.latitude, searchMatch.longitude];
+            zoom = 16;
+        }
+    })
+    if(state.currentCard.type===CardType.HomeCard)
+        {
+            [lat, long] = OBA.Config.defaultMapCenter;
+            zoom = 11;
+        }
+
+    setMapBoundsAndZoom(duration,lat,long,zoom)
 }
 
 const StopComponents = (stopComponents) => {
@@ -276,7 +279,8 @@ export const MapComponent = () => {
                 <MapEvents />
                 <RoutesAndStops/>
                 <MapVehicleElements/>
-                <SetMapBoundsAndZoom />
+                <HandleMapBoundsAndZoom />
+                <HandleMapForVehiclesBoundsAndZoom/>
             </MapContainer>
         </React.Fragment>
     );
