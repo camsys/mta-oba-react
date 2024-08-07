@@ -1289,7 +1289,13 @@ button:hover, .button:hover {
           box-shadow: 0px 0px 12px 0px rgba(0, 0, 0, 0.1);
 }
 .card > .card-header {
+  background: transparent;
+  border: 0px transparent;
+  outline: none;
   border-bottom: 4px solid #0E61A9;
+}
+.card > .card-header .card-title {
+  font-weight: bold;
 }
 .card > .card-content {
   padding: 0 0.5rem;
