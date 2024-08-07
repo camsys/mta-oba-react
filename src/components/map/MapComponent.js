@@ -94,10 +94,9 @@ const RoutesAndStops = () =>{
     let mapStopComponents = new Map()
 
 
-    let map = useMap()
     let duration = 1.15
-    let [lat, long] = [map.getCenter().lat,map.getCenter().lng]
-    let zoom = map.getZoom()
+    let [lat, long] = [null,null]
+    let zoom = null
 
     state.currentCard.searchMatches.forEach(searchMatch=>{
         console.log("adding routes for:",searchMatch)
@@ -139,7 +138,6 @@ const RoutesAndStops = () =>{
 
     return (
         <React.Fragment>
-            <SetMapBoundsAndZoom {...{duration,lat, long,zoom}}/>
             <LayerGroup>
                 {Array.from(mapRouteComponents.values()).flat()}
             </LayerGroup>
@@ -150,12 +148,46 @@ const RoutesAndStops = () =>{
     )
 }
 
-const SetMapBoundsAndZoom = ({duration,lat, long,zoom}) =>{
-    console.log("setting map bounds:",duration,lat,long,zoom)
+const SetMapBoundsAndZoom = () =>{
     const { state} = useContext(CardStateContext);
+    let duration = 1.15
+    let [lat, long] = [null,null]
+    let zoom = null
+
+    state.currentCard.searchMatches.forEach(searchMatch=>{
+        if(state.currentCard.type===CardType.RouteCard){
+            // map.fitBounds(newBounds);
+        }
+        else if(state.currentCard.type===CardType.VehicleCard){
+            zoom = 16;
+            [lat, long] = vehicleState[state.currentCard.routeIdList.values().next().value.split("_")[1]
+            +vehicleDataIdentifier].get(state.currentCard.vehicleId).longLat;
+        }
+        else if(state.currentCard.type===CardType.GeocodeCard) {
+            [lat, long] = [searchMatch.latitude,searchMatch.longitude];
+            zoom = 16;
+
+        }
+        else if(state.currentCard.type===CardType.StopCard) {
+            [lat, long] = [searchMatch.latitude, searchMatch.longitude];
+            zoom = 16;
+        }
+    })
+
+    console.log("setting map bounds:",duration,lat,long,zoom)
+
+
+
+    if(lat===null|long===null|zoom===null){return}
     let map = useMap()
+    let [currentLat, currentLong,currentZoom] = [map.getCenter().lat,map.getCenter().lng,map.getZoom()]
+    let latsMatch = currentLat+.1<lat && currentLat-.1>lat
+    let longsMatch = currentLong+.1<long && currentLong-.1>long
+    let zoomsMatch = zoom-.3<currentZoom && zoom+.3>currentZoom
+    console.log("update map bounds and zoom?",latsMatch,longsMatch,zoomsMatch)
 
     //todo: add a lil function so this is skipped if there's no meaningful change
+    if(latsMatch&&longsMatch&&zoomsMatch){ return }
     map.flyTo([lat, long], zoom, {
         animate: true,
         duration: duration
@@ -166,21 +198,22 @@ const StopComponents = (stopComponents) => {
     let map = useMap()
     let [Zoom,setZoom] = useState(map.getZoom().valueOf())
 
-    // useMapEvents({
-    //     click() {
-    //         console.log("running map click method")
-    //
-    //     },
-    //     zoomend() { // zoom event (when zoom animation ended)
-    //         console.log("map zoom event end")
-    //         setZoom(map.getZoom())
-    //     }
-    // });
-    // console.log("show stops? ",map.getZoom() >= 15.1)
+    useMapEvents({
+        click() {
+            console.log("running map click method")
+
+        },
+        zoomend() { // zoom event (when zoom animation ended)
+            console.log("map zoom event end")
+            setZoom(map.getZoom())
+        }
+    });
+    console.log("show stops? ",map.getZoom() >= 15.1)
     return(Zoom>15.1?stopComponents:null)
 }
 
 const MapEvents = () => {
+    console.log("generating map events")
     let map = useMap()
     useMapEvents({
         click() {
@@ -226,6 +259,7 @@ export const MapComponent = () => {
                 <MapEvents />
                 <RoutesAndStops/>
                 <MapVehicleElements/>
+                <SetMapBoundsAndZoom />
             </MapContainer>
         </React.Fragment>
     );
