@@ -43,7 +43,7 @@ function getMapWrap  () {
                         Refresh <span className="updated-at">(<span className="updated">updated </span>4:13 PM)</span>
                     </button>
                     <button id="map-toggle" className="button" aria-controls="map" aria-expanded={mapVisible} aria-pressed={mapVisible}
-                            aria-label={ariaLabel} onClick={mapToggle}><span className="hide-label">Hide </span>Map
+                            aria-label={ariaLabel} onClick={mapToggle}><span className="label"><span className="hide-label">Hide </span>Map</span>
                     </button>
                 </div>
                 <MapComponent/>
