@@ -113,7 +113,7 @@ const fetchAndProcessVehicleMonitoring = async ([routeId,targetAddress]) =>{
             return null
         })
         .catch((error) => {
-            console.error(error);
+            console.error("error processing Siri data",error);
         });
 
 
