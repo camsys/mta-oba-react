@@ -89,15 +89,9 @@ const RoutesAndStops = () =>{
     const stops = useContext(StopsContext)
     const routes = useContext(RoutesContext)
     const { state} = useContext(CardStateContext);
-    const { vehicleState} = useContext(VehicleStateContext);
 
     let mapRouteComponents = new Map()
     let mapStopComponents = new Map()
-
-
-    let duration = 1.15
-    let [lat, long] = [null,null]
-    let zoom = null
 
     state.currentCard.searchMatches.forEach(searchMatch=>{
         console.log("adding routes for:",searchMatch)
@@ -158,21 +152,48 @@ const Highlighted = () =>{
     }
 }
 
-const SetMapBoundsAndZoom = () =>{
+const setMapBoundsAndZoom = (duration, lat, long,zoom) =>{
+    console.log("setting map bounds:",duration,lat,long,zoom)
+    if(lat===null|long===null|zoom===null){return}
+    let map = useMap()
+    let [currentLat, currentLong,currentZoom] = [map.getCenter().lat,map.getCenter().lng,map.getZoom()]
+    let latsMatch = currentLat+.1<lat && currentLat-.1>lat
+    let longsMatch = currentLong+.1<long && currentLong-.1>long
+    let zoomsMatch = zoom-.3<currentZoom && zoom+.3>currentZoom
+    console.log("update map bounds and zoom?",latsMatch,longsMatch,zoomsMatch)
+
+    //todo: add a lil function so this is skipped if there's no meaningful change
+    if(latsMatch&&longsMatch&&zoomsMatch){ return }
+    map.flyTo([lat, long], zoom, {
+        animate: true,
+        duration: duration
+    });
+}
+
+const HandleMapForVehiclesBoundsAndZoom = () =>{
+    // todo: later have it just confirm it's in the bounding box
+    const { vehicleState} = useContext(VehicleStateContext);
+    const { state} = useContext(CardStateContext);
+    if(state.currentCard.type!==CardType.VehicleCard){
+        return
+    }
+    let duration = 1.15
+    let zoom = 16;
+    let [lat, long] = vehicleState[state.currentCard.routeIdList.values().next().value.split("_")[1]
+    +vehicleDataIdentifier].get(state.currentCard.vehicleId).longLat;
+    setMapBoundsAndZoom(duration,lat,long,zoom)
+}
+
+const HandleMapBoundsAndZoom = () =>{
     const { state} = useContext(CardStateContext);
     let duration = 1.15
     let [lat, long] = [null,null]
     let zoom = null
-    const { vehicleState} = useContext(VehicleStateContext);
+
 
     state.currentCard.searchMatches.forEach(searchMatch=>{
         if(state.currentCard.type===CardType.RouteCard){
             // map.fitBounds(newBounds);
-        }
-        else if(state.currentCard.type===CardType.VehicleCard){
-            zoom = 16;
-            [lat, long] = vehicleState[state.currentCard.routeIdList.values().next().value.split("_")[1]
-            +vehicleDataIdentifier].get(state.currentCard.vehicleId).longLat;
         }
         else if(state.currentCard.type===CardType.GeocodeCard) {
             [lat, long] = [searchMatch.latitude,searchMatch.longitude];
@@ -189,24 +210,8 @@ const SetMapBoundsAndZoom = () =>{
             [lat, long] = OBA.Config.defaultMapCenter;
             zoom = 11;
         }
-    console.log("setting map bounds:",duration,lat,long,zoom)
 
-
-
-    if(lat===null|long===null|zoom===null){return}
-    let map = useMap()
-    let [currentLat, currentLong,currentZoom] = [map.getCenter().lat,map.getCenter().lng,map.getZoom()]
-    let latsMatch = currentLat+.1<lat && currentLat-.1>lat
-    let longsMatch = currentLong+.1<long && currentLong-.1>long
-    let zoomsMatch = zoom-.3<currentZoom && zoom+.3>currentZoom
-    console.log("update map bounds and zoom?",latsMatch,longsMatch,zoomsMatch)
-
-    //todo: add a lil function so this is skipped if there's no meaningful change
-    if(latsMatch&&longsMatch&&zoomsMatch){ return }
-    map.flyTo([lat, long], zoom, {
-        animate: true,
-        duration: duration
-    });
+    setMapBoundsAndZoom(duration,lat,long,zoom)
 }
 
 const StopComponents = (stopComponents) => {
@@ -274,7 +279,8 @@ export const MapComponent = () => {
                 <MapEvents />
                 <RoutesAndStops/>
                 <MapVehicleElements/>
-                <SetMapBoundsAndZoom />
+                <HandleMapBoundsAndZoom />
+                <HandleMapForVehiclesBoundsAndZoom/>
             </MapContainer>
         </React.Fragment>
     );
