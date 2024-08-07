@@ -190,7 +190,11 @@ const SetMapBoundsAndZoom = () =>{
             zoom = 16;
         }
     })
-
+    if(state.currentCard.type===CardType.HomeCard)
+        {
+            [lat, long] = OBA.Config.defaultMapCenter;
+            zoom = 11;
+        }
     console.log("setting map bounds:",duration,lat,long,zoom)
 
 
