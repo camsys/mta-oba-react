@@ -671,7 +671,7 @@ button, .button
   border: 1px solid $border-gray
   +card-shadow
   >.card-header
-    background: transparent
+    background-color: transparent
     border: 0px transparent
     border-color: $mta-blue
     outline: 0px
@@ -680,8 +680,9 @@ button, .button
       font-weight: bold
   .card-header
     &.collapse-trigger
+      transition: background-color .25s ease-in-out, color .25s ease-in-out
       &:focus
-        background: $black
+        background-color: $black
         color: $white
         outline: none
         &::after

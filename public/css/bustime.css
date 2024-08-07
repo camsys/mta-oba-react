@@ -1321,7 +1321,7 @@ button:hover, .button:hover {
           box-shadow: 0px 0px 12px 0px rgba(0, 0, 0, 0.1);
 }
 .card > .card-header {
-  background: transparent;
+  background-color: transparent;
   border: 0px transparent;
   border-color: #0E61A9;
   outline: 0px;
@@ -1330,8 +1330,12 @@ button:hover, .button:hover {
 .card > .card-header .card-title {
   font-weight: bold;
 }
+.card .card-header.collapse-trigger {
+  -webkit-transition: background-color 0.25s ease-in-out, color 0.25s ease-in-out;
+  transition: background-color 0.25s ease-in-out, color 0.25s ease-in-out;
+}
 .card .card-header.collapse-trigger:focus {
-  background: #000;
+  background-color: #000;
   color: #fff;
   outline: none;
 }
