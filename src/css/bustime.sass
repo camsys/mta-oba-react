@@ -673,10 +673,19 @@ button, .button
   >.card-header
     background: transparent
     border: 0px transparent
-    outline: none
-    border-bottom: $thick-border solid $mta-blue
+    border-color: $mta-blue
+    outline: 0px
+    border-bottom: $thick-border solid
     .card-title
       font-weight: bold
+  .card-header
+    &.collapse-trigger
+      &:focus
+        background: $black
+        color: $white
+        outline: none
+        &::after
+          background-image: url(/img/icon/right-caret_white.svg)
   >.card-content
     +card-pad-sides
 
@@ -685,7 +694,6 @@ button, .button
   font-size: .875em
   border: none
   background: transparent
-  +rounded
   .inner-card
     font-size: 1em
   .card-header
@@ -696,9 +704,15 @@ button, .button
       padding-left: 0
       &:not(.collapse-trigger)
         padding-right: 0
+    .card-header
+      &.collapse-trigger
+        &:focus
+          padding-left: $content-padding/2
   &.service-alert
+    +rounded
     border: 1px solid $border-gray
     background-color: $ui-gray
+    overflow: hidden
     .card-header
       font-weight: bold
       border-bottom: 0px solid $mta-yellow
