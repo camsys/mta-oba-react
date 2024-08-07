@@ -9,7 +9,7 @@ import {useSearch} from "../../js/updateState/SearchEffect";
 
 const COMPONENT_IDENTIFIER = "mapStopComponent"
 
-function MapStopComponent  (stopDatum) {
+function MapStopComponent  (stopDatum,zIndexOverride) {
     // console.log('generating MapStopComponent: ', stopDatum)
 
 
@@ -42,7 +42,7 @@ function MapStopComponent  (stopDatum) {
     var markerOptions = {
         position: stopDatum.longLat,
         icon: icon,
-        zIndexOffset: -10,
+        zIndexOffset: zIndexOverride!==null?zIndexOverride:-10,
         title: stopDatum.name,
         stopId: stopDatum.id,
         // map: map,

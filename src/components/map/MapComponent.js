@@ -11,6 +11,7 @@ import MapRouteComponent from "./MapRouteComponent";
 import MapStopComponent from "./MapStopComponent";
 import MapVehicleComponent from "./MapVehicleComponent";
 import {CardType, MatchType, StopMatch} from "../../js/updateState/DataModels";
+import {useHighlight} from "Components/util/MapHighlightingStateComponent";
 
 
 
@@ -144,8 +145,24 @@ const RoutesAndStops = () =>{
             <LayerGroup>
                 {StopComponents(Array.from(mapStopComponents.values()).flat())}
             </LayerGroup>
+            <LayerGroup>
+                <Highlighted/>
+            </LayerGroup>
         </React.Fragment>
     )
+}
+
+const Highlighted = () =>{
+    let {getHighlightedId} = useHighlight()
+    let highlightedId = getHighlightedId()
+
+    const stops = useContext(StopsContext)
+    const routes = useContext(RoutesContext)
+
+    let stopDatum = stops.current[highlightedId]
+    if(stopDatum!==null && typeof stopDatum !=='undefined'){
+        return new MapStopComponent(stopDatum,20)
+    }
 }
 
 const SetMapBoundsAndZoom = () =>{

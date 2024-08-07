@@ -17,6 +17,7 @@ import VehicleComponent from "./VehicleComponent"
 export function RouteStopComponent
 ({stopDatum, routeId, index}:{stopDatum:StopInterface,routeId:string,index:string}):JSX.Element{
 
+    const { highlightId } = useHighlight();
     const {vehicleState} = useContext(VehicleStateContext)
     const { search } = useSearch();
     routeId=routeId.split("_")[1]
@@ -33,7 +34,10 @@ export function RouteStopComponent
     return (
         <li  className={hasVehicleChildren?"has-info":null}
              key={uniqueId}
-             id={uniqueId}>
+             id={uniqueId}
+             onMouseEnter={() => highlightId(stopDatum.id)}
+             onMouseLeave={() => highlightId(null)}
+        >
             <a href="#" onClick={() => search(stopDatum.id.split("_")[1])} tabIndex={stopDatum.id}>{stopDatum.name}</a>
             {
                 hasVehicleChildren ?
