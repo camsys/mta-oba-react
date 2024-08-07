@@ -133,7 +133,7 @@ export function CollapsableRouteCard({ routeMatch, oneOfMany}: {routeMatch:Route
         <React.Fragment>
             <div className={`card route-card ${oneOfMany?"collapsible open":""}`}>
                 <button
-                    className="card-header collapse-trigger"
+                    className="card-header collapse-trigger open"
                     style={{ borderColor: "#" + routeMatch.color }}
                     onMouseEnter={() => highlightId(routeMatch.routeId)}
                     onMouseLeave={() => highlightId(null)}

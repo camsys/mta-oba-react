@@ -144,7 +144,7 @@ export function CollapsableStopCard (match: SearchMatch,oneOfMany:boolean) : JSX
     console.log("generating StopCard",stopMatch)
     return(
     <div className={`card stop-card ${oneOfMany?"collapsible open":""}`}>
-        <button className="card-header collapse-trigger"
+        <button className="card-header collapse-trigger open"
                 // onMouseEnter={() => highlightId(stopMatch.routeId)}
                 // onMouseLeave={() => highlightId(null)}
                 aria-haspopup="true" aria-expanded="true"
