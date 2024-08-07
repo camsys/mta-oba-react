@@ -110,13 +110,8 @@ const RoutesAndStops = () =>{
             console.log("vehicle route works here");
             let route = searchMatch;
             processRoute(route);
-            zoom = 16;
-            [lat, long] = vehicleState[state.currentCard.routeIdList.values().next().value.split("_")[1]
-                +vehicleDataIdentifier].get(state.currentCard.vehicleId).longLat;
         }
         else if(state.currentCard.type===CardType.GeocodeCard) {
-            [lat, long] = [searchMatch.latitude,searchMatch.longitude];
-            zoom = 16;
             searchMatch.routeMatches.forEach(match => {
                 if(match.type === MatchType.RouteMatch){processRoute(match);}
                 if(match.type === MatchType.StopMatch){
@@ -126,8 +121,6 @@ const RoutesAndStops = () =>{
                 }})
         }
         else if(state.currentCard.type===CardType.StopCard) {
-            [lat, long] = [searchMatch.latitude, searchMatch.longitude];
-            zoom = 16;
             searchMatch.routeMatches.forEach(route => {
                 processRoute(route);
             })
@@ -170,6 +163,7 @@ const SetMapBoundsAndZoom = () =>{
     let duration = 1.15
     let [lat, long] = [null,null]
     let zoom = null
+    const { vehicleState} = useContext(VehicleStateContext);
 
     state.currentCard.searchMatches.forEach(searchMatch=>{
         if(state.currentCard.type===CardType.RouteCard){
