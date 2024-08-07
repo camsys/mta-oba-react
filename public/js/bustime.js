@@ -1,30 +1,3 @@
-//-----------
-// below two functions are used to get the URL parameters and load the content based on the URL parameter, so we can load different bustime views for styling in just one HTML file, this should not move over
-//-----------
-
-// Define the function to update collapsibles
-function updateCollapsibles(collapsibles) {
-  // var collapsibles = document.querySelectorAll('.collapsible.open');
-  window.console.log('boop' + collapsibles);
-  collapsibles.forEach(function(collapsible) {
-    var collapseContent = collapsible.querySelector('.collapse-content');
-    if (collapseContent) {
-      // Calculate the actual height of the collapse-content
-      var actualHeight = collapseContent.scrollHeight;
-
-      // Set the max-height for animation
-      collapseContent.style.maxHeight = actualHeight + 'px';
-
-      // Toggle tabindex of <a> or <button> elements within .collapse-content
-      var innerTabbableItems = collapseContent.querySelectorAll('a[tabindex], button[tabindex]');
-      innerTabbableItems.forEach(function(element) {
-        var currentIndex = element.getAttribute('tabindex');
-        element.setAttribute('tabindex', currentIndex === '0' ? '-1' : '0');
-      });
-    }
-  });
-}
-
 document.addEventListener('DOMContentLoaded', function() {
 
   
@@ -96,8 +69,6 @@ document.addEventListener('DOMContentLoaded', function() {
         // search instructions scrolling
 
         const sidebarContent = document.querySelector('.sidebar-content');
-        // window.console.log('boop boop boop');
-        // window.console.log(sidebarContent);
         const searchInstructions = document.querySelector('.search-instructions');
         var searchInstructionsHeight = '30'; // default height as defined in CSS 
         if (sidebarContent && searchInstructions) {
@@ -120,10 +91,6 @@ document.addEventListener('DOMContentLoaded', function() {
               }
             },
           });
-
-          // update collapsibles
-          var collapsibles = document.querySelectorAll('.collapsible.open');
-          updateCollapsibles(collapsibles);
 
           // Stop observing once the elements are found
           observer.disconnect(); 
