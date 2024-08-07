@@ -62,7 +62,7 @@ export const RouteDirection = ({datum,color}: { datum: RouteDirectionInterface, 
                     aria-label={"Toggle "+datum.routeId+" to " + datum.routeDestination +" Open / Closed"}>
                 <span className="label">to <strong> {datum.routeDestination}</strong></span>
             </button>
-            <div className="card-content collapse-content" styles="max-height: 0px;">
+            <div className="card-content collapse-content">
                 <ul className="route-stops" style={{ color: '#'+color}}>
                     {console.log("preparing to get RouteStopComponents from: ", datum)}
                     {

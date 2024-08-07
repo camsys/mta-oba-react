@@ -18,6 +18,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
           // if the card is open
           if (parent.classList.contains('open')) {
+
+            // window.console.log('boop closing collapsible')
             
             collapseContent.style.maxHeight = collapseContent.scrollHeight + 'px'; // Set maxHeight before collapsing
             setTimeout(() => {
@@ -29,8 +31,13 @@ document.addEventListener('DOMContentLoaded', function() {
           // if the card is closed
           else {
 
-            parent.classList.add('open');
+            // window.console.log('boop opening collapsible')
+
+            // parent.classList.add('open');
             collapseContent.style.maxHeight = collapseContent.scrollHeight + 'px'; // Allow it to expand
+            setTimeout(() => {
+              parent.classList.add('open');
+            }, 10); // Small delay to trigger transition
             setTimeout(() => {
               collapseContent.style.maxHeight = 'none'; // Reset to none to allow further expansion
             }, 500); // Timeout matches the transition duration
