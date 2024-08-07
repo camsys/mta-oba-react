@@ -5,6 +5,7 @@ import L from "leaflet";
 import stopMapIcon from "../../img/icon/star_black.svg"
 import stopPopupIcon from "../../img/icon/bus-stop.svg"
 import {useHighlight} from "../util/MapHighlightingStateComponent.tsx";
+import {useSearch} from "../../js/updateState/SearchEffect";
 
 const COMPONENT_IDENTIFIER = "mapStopComponent"
 
@@ -27,6 +28,7 @@ function MapStopComponent  (stopDatum) {
         directionKey = "unknown";
     }
     let stopImageUrl = "img/stop/stop-" + (directionKey==null? "unknown":directionKey) + ".png"
+    let {search} = useSearch()
 
     let icon = L.icon({
         iconUrl: stopImageUrl,
@@ -52,7 +54,7 @@ function MapStopComponent  (stopDatum) {
 
 
     let out = (
-        <Marker {...markerOptions}>
+        <Marker {...markerOptions} eventHandlers={{click : ()=>{search(stopDatum.id)}}}>
             <Popup key={stopDatum.id} className="map-popup stop-popup">
                 <img src={stopPopupIcon} alt="busstop icon" className="icon"/>
                 <div className="popup-info">
