@@ -5,13 +5,14 @@ import L from "leaflet";
 import bus from "../../img/icon/bus.svg";
 import busStroller from "../../img/icon/bus-stroller.svg";
 import {useSearch} from "../../js/updateState/SearchEffect.tsx";
+import {VehicleRtInterface} from "../../js/updateState/DataModels";
 
 const COMPONENT_IDENTIFIER = "MapVehicleComponent"
 
 
 
 
-function MapVehicleComponent  ({vehicleDatum}) {
+function MapVehicleComponent  ({vehicleDatum}:VehicleRtInterface) :JSX.Element{
 
     // let targetVehicleId = state.currentCard.vehicleId
     // console.log('generating mapVehicle: ',vehicleDatum.vehicleId,vehicleDatum)

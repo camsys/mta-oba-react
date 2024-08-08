@@ -6,10 +6,14 @@ import stopMapIcon from "../../img/icon/star_black.svg"
 import stopPopupIcon from "../../img/icon/bus-stop.svg"
 import {useHighlight} from "../util/MapHighlightingStateComponent.tsx";
 import {useSearch} from "../../js/updateState/SearchEffect";
+import {StopInterface} from "../../js/updateState/DataModels";
 
 const COMPONENT_IDENTIFIER = "mapStopComponent"
 
-function MapStopComponent  ({stopDatum, mapStopMarkers, zIndexOverride}) {
+function MapStopComponent  ({stopDatum, mapStopMarkers, zIndexOverride}:
+                                {stopDatum:StopInterface,
+                                mapStopMarkers:React.MutableRefObject<Map<string,SVGMarkerElement>>,
+                                zIndexOverride:number}) : JSX.Element{
     // console.log('generating MapStopComponent: ', stopDatum)
 
 

@@ -10,7 +10,14 @@ import {vehicleDataIdentifier, VehicleStateContext} from "../util/VehicleStateCo
 import MapRouteComponent from "./MapRouteComponent";
 import MapStopComponent from "./MapStopComponent";
 import MapVehicleComponent from "./MapVehicleComponent";
-import {CardType, MatchType, StopMatch} from "../../js/updateState/DataModels";
+import {
+    CardType,
+    MapRouteComponentInterface,
+    MatchType,
+    RouteMatch,
+    StopInterface,
+    StopMatch
+} from "../../js/updateState/DataModels";
 import {useHighlight} from "Components/util/MapHighlightingStateComponent";
 
 
@@ -18,7 +25,7 @@ import {useHighlight} from "Components/util/MapHighlightingStateComponent";
 
 
 
-const MapVehicleElements = () =>{
+const MapVehicleElements = () :JSX.Element =>{
     const { state} = useContext(CardStateContext);
     const { vehicleState} = useContext(VehicleStateContext);
 
@@ -51,18 +58,18 @@ const MapVehicleElements = () =>{
 
 
 
-const RoutesAndStops = () =>{
+const RoutesAndStops = () :JSX.Element=>{
     console.log("generating RoutesAndStops")
 
-    const processRoute = (route)=> {
+    const processRoute = (route : RouteMatch)=> {
         console.log("processing route for map: ", route)
 
         route.directions.forEach(dir => {
-            dir.mapRouteComponentData.forEach((datum) => {
+            dir.mapRouteComponentData.forEach((datum:MapRouteComponentInterface) => {
                 // console.log("requesting new MapRouteComponent from: ", datum)
                 mapRouteComponents.set(datum.id,<MapRouteComponent mapRouteComponentDatum ={datum} key={datum.id}/>)
             })
-            dir.mapStopComponentData.forEach((datum) => {
+            dir.mapStopComponentData.forEach((datum:StopInterface) => {
                 let stopId = datum.id;
                 ! mapStopComponents.current.has(stopId)
                     ? mapStopComponents.current.set(
@@ -72,7 +79,7 @@ const RoutesAndStops = () =>{
             })
         })
     }
-    const getBoundsForRoute = (route)=> {
+    const getBoundsForRoute = (route:RouteMatch)=> {
         let collectedPoints = []
         route.directions.forEach(dir=> {
             dir.mapRouteComponentData.forEach(routeDir=>{
@@ -124,14 +131,14 @@ const RoutesAndStops = () =>{
             searchMatch.routeMatches.forEach(route => {
                 processRoute(route);
             })
-            let stopId =state.currentCard.datumId
+            let stopId =state.currentCard.datumId;
             mapStopComponentsToDisplay.set(stopId,mapStopComponents.current.get(stopId));
         }
     })
 
-    console.log("map route components", mapRouteComponents)
-    console.log("map stop components", mapStopComponents.current)
-    console.log("map stop component markers", mapStopMarkers.current)
+    console.log("map route components", mapRouteComponents);
+    console.log("map stop components", mapStopComponents.current);
+    console.log("map stop component markers", mapStopMarkers.current);
 
     return (
         <React.Fragment>
@@ -161,7 +168,7 @@ const Highlighted = () =>{
     }
 }
 
-const setMapBoundsAndZoom = (duration, lat, long,zoom) =>{
+const setMapBoundsAndZoom = (duration :number , lat : number, long :number,zoom:number) :void =>{
     console.log("setting map bounds:",duration,lat,long,zoom)
     if(lat===null|long===null|zoom===null){return}
     let map = useMap()
@@ -179,7 +186,7 @@ const setMapBoundsAndZoom = (duration, lat, long,zoom) =>{
     });
 }
 
-const HandleMapForVehiclesBoundsAndZoom = () =>{
+const HandleMapForVehiclesBoundsAndZoom = () :void=>{
     // todo: later have it just confirm it's in the bounding box
     const { vehicleState} = useContext(VehicleStateContext);
     const { state} = useContext(CardStateContext);
@@ -193,7 +200,7 @@ const HandleMapForVehiclesBoundsAndZoom = () =>{
     setMapBoundsAndZoom(duration,lat,long,zoom)
 }
 
-const HandleMapBoundsAndZoom = () =>{
+const HandleMapBoundsAndZoom = () : void=>{
     const { state} = useContext(CardStateContext);
     let duration = 1.15
     let [lat, long] = [null,null]
@@ -241,7 +248,7 @@ const StopComponents = (stopComponents) => {
     return(Zoom>15.1?stopComponents:null)
 }
 
-const MapEvents = () => {
+const MapEvents = () :void=> {
     console.log("generating map events")
     let map = useMap()
     useMapEvents({
@@ -266,7 +273,7 @@ const CardChange = () =>{
 }
 
 
-export const MapComponent = () => {
+export const MapComponent = () :JSX.Element => {
     OBA.Util.log("generating map")
 
     let startingMapCenter = OBA.Config.defaultMapCenter;
