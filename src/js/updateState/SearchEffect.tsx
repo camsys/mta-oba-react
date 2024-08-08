@@ -96,6 +96,8 @@ async function getData(card:Card,stops: StopsObject,routes:RoutesObject):Promise
                 searchResults.matches.forEach(x=>{
                     card.searchMatches.push(processStopSearch(x,card,stops,routes))
                 })
+                let stopMatch = card.searchMatches[0] as StopMatch
+                card.datumId=stopMatch.id
             }
             if(searchResults.resultType=="GeocodeResult"){
                 searchResults.matches.forEach(x=>{
@@ -106,6 +108,8 @@ async function getData(card:Card,stops: StopsObject,routes:RoutesObject):Promise
                 searchResults.matches.forEach(x=>{
                     card.searchMatches.push(processRouteSearch(x,card,stops,routes))
                 })
+                let routeMatch = card.searchMatches[0] as RouteMatch
+                card.datumId=routeMatch.routeId
             }
             console.log('completed search results: ',card,stops,routes)
         })

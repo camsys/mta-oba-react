@@ -63,11 +63,12 @@ const RoutesAndStops = () =>{
                 mapRouteComponents.set(datum.id,<MapRouteComponent mapRouteComponentDatum ={datum} key={datum.id}/>)
             })
             dir.mapStopComponentData.forEach((datum) => {
-                let stopId = datum.id
+                let stopId = datum.id;
                 ! mapStopComponents.current.has(stopId)
                     ? mapStopComponents.current.set(
                         datum.id,<MapStopComponent stopDatum={datum} mapStopMarkers={mapStopMarkers}/>)
                     : null
+                mapStopComponentsToDisplay.set(datum.id,mapStopComponents.current.get(datum.id));
             })
         })
     }
@@ -89,13 +90,14 @@ const RoutesAndStops = () =>{
         return newBounds
     }
 
-    const stops = useContext(StopsContext)
-    const routes = useContext(RoutesContext)
+    const stops = useContext(StopsContext);
+    const routes = useContext(RoutesContext);
     const { state} = useContext(CardStateContext);
 
-    let mapRouteComponents = new Map()
-    let mapStopComponents = useRef(new Map())
-    let mapStopMarkers = useRef(new Map())
+    let mapRouteComponents = new Map();
+    let mapStopComponents = useRef(new Map());
+    let mapStopMarkers = useRef(new Map());
+    let mapStopComponentsToDisplay = new Map();
 
     state.currentCard.searchMatches.forEach(searchMatch=>{
         console.log("adding routes for:",searchMatch)
@@ -122,11 +124,14 @@ const RoutesAndStops = () =>{
             searchMatch.routeMatches.forEach(route => {
                 processRoute(route);
             })
+            let stopId =state.currentCard.datumId
+            mapStopComponentsToDisplay.set(stopId,mapStopComponents.current.get(stopId));
         }
     })
 
     console.log("map route components", mapRouteComponents)
     console.log("map stop components", mapStopComponents.current)
+    console.log("map stop component markers", mapStopMarkers.current)
 
     return (
         <React.Fragment>
@@ -134,7 +139,7 @@ const RoutesAndStops = () =>{
                 {Array.from(mapRouteComponents.values()).flat()}
             </LayerGroup>
             <LayerGroup>
-                {StopComponents(Array.from(mapStopComponents.current.values()).flat())}
+                {StopComponents(Array.from(mapStopComponentsToDisplay.values()).flat())}
             </LayerGroup>
             <LayerGroup>
                 <Highlighted/>

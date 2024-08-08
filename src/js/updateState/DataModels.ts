@@ -271,6 +271,7 @@ export class Card {
     static cardTypes = CardType;
 
     searchTerm: string;
+    datumId:string;
     searchResultType: string | null;
     name: string;
     searchMatches: SearchMatch[];
@@ -288,6 +289,7 @@ export class Card {
         this.stopIdList = new Set();
         this.vehicleId = null;
         this.type = CardType.HomeCard; // Default or initial type if applicable
+        this.datumId = null;
     }
 
     setType(cardType: CardType): void {
@@ -302,6 +304,7 @@ export class Card {
     ): void {
         this.setType(CardType.VehicleCard);
         this.vehicleId = vehicleId;
+        this.datumId = vehicleId;
         this.searchMatches = searchMatches;
         this.routeIdList = routeIdList;
     }
