@@ -1,6 +1,6 @@
 import ReactLeafletGoogleLayer from "react-leaflet-google-layer";
 import {LayerGroup, MapContainer, useMap, useMapEvents} from "react-leaflet";
-import React, {useContext, useEffect, useState} from "react";
+import React, {useContext, useEffect, useRef, useState} from "react";
 import queryString from "query-string";
 import {OBA} from "../../js/oba";
 import L from "leaflet";
@@ -21,6 +21,8 @@ import {useHighlight} from "Components/util/MapHighlightingStateComponent";
 const MapVehicleElements = () =>{
     const { state} = useContext(CardStateContext);
     const { vehicleState} = useContext(VehicleStateContext);
+
+
     let routeIds = state.currentCard.routeIdList
     console.log("looking for vehicles from route ids: ",routeIds)
     let mapVehicleComponents = []
@@ -62,8 +64,9 @@ const RoutesAndStops = () =>{
             })
             dir.mapStopComponentData.forEach((datum) => {
                 let stopId = datum.id
-                ! mapStopComponents.has(stopId)
-                    ? mapStopComponents.set(datum.id,new MapStopComponent(datum))
+                ! mapStopComponents.current.has(stopId)
+                    ? mapStopComponents.current.set(
+                        datum.id,<MapStopComponent stopDatum={datum} mapStopMarkers={mapStopMarkers}/>)
                     : null
             })
         })
@@ -91,7 +94,8 @@ const RoutesAndStops = () =>{
     const { state} = useContext(CardStateContext);
 
     let mapRouteComponents = new Map()
-    let mapStopComponents = new Map()
+    let mapStopComponents = useRef(new Map())
+    let mapStopMarkers = useRef(new Map())
 
     state.currentCard.searchMatches.forEach(searchMatch=>{
         console.log("adding routes for:",searchMatch)
@@ -122,7 +126,7 @@ const RoutesAndStops = () =>{
     })
 
     console.log("map route components", mapRouteComponents)
-    console.log("map stop components", mapStopComponents)
+    console.log("map stop components", mapStopComponents.current)
 
     return (
         <React.Fragment>
@@ -130,7 +134,7 @@ const RoutesAndStops = () =>{
                 {Array.from(mapRouteComponents.values()).flat()}
             </LayerGroup>
             <LayerGroup>
-                {StopComponents(Array.from(mapStopComponents.values()).flat())}
+                {StopComponents(Array.from(mapStopComponents.current.values()).flat())}
             </LayerGroup>
             <LayerGroup>
                 <Highlighted/>
@@ -148,7 +152,7 @@ const Highlighted = () =>{
 
     let stopDatum = stops.current[highlightedId]
     if(stopDatum!==null && typeof stopDatum !=='undefined'){
-        return new MapStopComponent(stopDatum,20)
+        return <MapStopComponent stopDatum={stopDatum} zIndexOverride={20}/>
     }
 }
 

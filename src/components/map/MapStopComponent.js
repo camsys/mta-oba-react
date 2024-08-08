@@ -9,7 +9,7 @@ import {useSearch} from "../../js/updateState/SearchEffect";
 
 const COMPONENT_IDENTIFIER = "mapStopComponent"
 
-function MapStopComponent  (stopDatum,zIndexOverride) {
+function MapStopComponent  ({stopDatum, mapStopMarkers, zIndexOverride}) {
     // console.log('generating MapStopComponent: ', stopDatum)
 
 
@@ -54,7 +54,9 @@ function MapStopComponent  (stopDatum,zIndexOverride) {
 
 
     let out = (
-        <Marker {...markerOptions} eventHandlers={{click : ()=>{search(stopDatum.id)}}}>
+        <Marker {...markerOptions}
+                eventHandlers={{click : ()=>{search(stopDatum.id)}}}
+                ref={r=>typeof mapStopMarkers!=='undefined'?mapStopMarkers.current.set(stopDatum.id,r):null}>
             <Popup key={stopDatum.id} className="map-popup stop-popup">
                 <img src={stopPopupIcon} alt="busstop icon" className="icon"/>
                 <div className="popup-info">
