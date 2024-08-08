@@ -280,7 +280,7 @@ export const MapComponent = () => {
                 <RoutesAndStops/>
                 <MapVehicleElements/>
                 <HandleMapBoundsAndZoom />
-                <HandleMapForVehiclesBoundsAndZoom/>
+                {/*<HandleMapForVehiclesBoundsAndZoom/>*/}
             </MapContainer>
         </React.Fragment>
     );
