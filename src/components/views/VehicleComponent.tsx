@@ -2,7 +2,7 @@ import React, {useContext} from "react";
 import {OBA} from "../../js/oba";
 import {useSearch} from "../../js/updateState/SearchEffect";
 import {VehicleRtInterface} from "../../js/updateState/DataModels";
-
+import meeples from '../../../public/img/meeples/meeples-blank.png';
 
 function VehicleComponent({vehicleDatum}:
                               { vehicleDatum :VehicleRtInterface}):JSX.Element{
@@ -22,13 +22,16 @@ function VehicleComponent({vehicleDatum}:
                         vehicleDatum?.vehicleArrivalData?.[0].prettyDistance
                         :null}
                 </span>
-                <span className="passengers">{vehicleDatum.passengerCount != null && (
+                {vehicleDatum.passengerCount != null && (
                     vehicleDatum.passengerCapacity != null ?
-                        <span className="passengers">{`~${(vehicleDatum.passengerCount / vehicleDatum.passengerCapacity) * 100}% full`}</span>
+                        <span className="passengers">
+                            <span className={'meeples meeples-'+`${Math.ceil((vehicleDatum.passengerCount / vehicleDatum.passengerCapacity) * 10)}`}>
+                                <img src={meeples} alt={`~${(vehicleDatum.passengerCount / vehicleDatum.passengerCapacity) * 100}% full`} className="meeples-blank" />
+                            </span>
+                        </span>
                         :
                         <span className="passengers">{`~${vehicleDatum.passengerCount} passengers`}</span>
                     )}
-                </span>
             </span>
         </li>
     )
