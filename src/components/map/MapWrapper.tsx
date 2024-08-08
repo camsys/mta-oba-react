@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import {OBA} from "../../js/oba";
-import {MapComponent} from './MapComponent.js';
+import {MapComponent} from './MapComponent';
 import ErrorBoundary from "../util/errorBoundary";
 import ReactLeafletGoogleLayer from "react-leaflet-google-layer";
 
