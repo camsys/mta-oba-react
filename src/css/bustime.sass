@@ -643,7 +643,6 @@ button, .button
   width: 100%
   >.card-header
     width: 100%
-    +card-pad
     display: flex
     justify-content: space-between
     text-align: left
@@ -671,6 +670,7 @@ button, .button
   border: 1px solid $border-gray
   +card-shadow
   >.card-header
+    +card-pad
     background-color: transparent
     border: 0px transparent
     border-color: $mta-blue
@@ -698,6 +698,7 @@ button, .button
   .inner-card
     font-size: 1em
   .card-header
+    +card-pad
     border: none
     background: transparent
   &:not(.service-alert)
@@ -710,15 +711,21 @@ button, .button
         &:focus
           padding-left: $content-padding/2
   &.service-alert
-    +rounded
-    border: 1px solid $border-gray
+    // +rounded
     background-color: $ui-gray
     overflow: hidden
     .card-header
       font-weight: bold
+      border: 1px solid $border-gray
       border-bottom: 0px solid $mta-yellow
       transition: border-bottom .25s ease-in-out
+      &:focus
+        border-top-color: $black
+        border-right-color: $black
+        border-left-color: $black
     .card-content
+      border: 1px solid $border-gray
+      border-top: 0px solid transparent
       padding: 0 $content-padding
       p
         &:first-child
@@ -754,7 +761,7 @@ button, .button
        
 .route-stops
   list-style: none
-  margin: 0
+  margin: $content-padding/2 0 0 0
   padding: 0
   >li
     padding: 0 0 1em 1.5em
