@@ -10,23 +10,17 @@ import ReactLeafletGoogleLayer from "react-leaflet-google-layer";
 
 
 
-function getMapWrap  () {
+function getMapWrap  () : JSX.Element {
 
 
     const [mapVisible,setMapVisible] = useState(false)
 
-    function mapToggle(){
+    function mapToggle():null{
         setMapVisible(!mapVisible)
     }
 
-    const ariaLabel = ()=>{
+    const ariaLabel = () : string =>{
             return mapVisible ? 'Toggle Map Visibility (currently visible)' : 'Toggle Map Visibility (currently hidden)'
-    }
-
-    function mapWrapClass(){
-        if(mapVisible){
-            return "open"
-        }
     }
 
 

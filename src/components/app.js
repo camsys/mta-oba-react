@@ -14,7 +14,7 @@ import {MapHighlightingStateProvider} from "./util/MapHighlightingStateComponent
 import {siriGetVehiclesForRoutesEffect, siriGetVehiclesForVehicleViewEffect} from "../js/updateState/SiriEffects";
 import {siriGetVehiclesForStopViewEffect} from "../js/updateState/SiriStopEffects";
 import {CardType} from "../js/updateState/DataModels";
-import MapWrapper from "./map/MapWrapper";
+import MapWrapper from "./map/MapWrapper.tsx";
 
 
 
