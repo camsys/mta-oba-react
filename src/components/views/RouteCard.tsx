@@ -57,9 +57,7 @@ export const RouteDirection = ({datum,color}: { datum: RouteDirectionInterface, 
     console.log("generating RouteDirectionComponent:", datum)
     return (
         <div className="route-direction inner-card collapsible" key={datum.routeId+datum.directionId}>
-            <button className="card-header collapse-trigger" aria-haspopup="true"
-                    aria-expanded="false"
-                    aria-label={"Toggle "+datum.routeId+" to " + datum.routeDestination +" Open / Closed"}>
+            <button className="card-header collapse-trigger" aria-haspopup="true" aria-expanded="false" aria-label={"Toggle "+datum.routeId+" to " + datum.routeDestination +" Open / Closed"} tabIndex="0">
                 <span className="label">to <strong> {datum.routeDestination}</strong></span>
             </button>
             <div className="card-content collapse-content">

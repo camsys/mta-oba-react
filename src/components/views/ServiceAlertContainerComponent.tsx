@@ -14,8 +14,7 @@ function ServiceAlertContainerComponent  ({ routeId,serviceAlertIdentifier}:{ ro
     console.log("service alert datum found from state",serviceAlertDatum)
     if(serviceAlertDatum===null||typeof serviceAlertDatum==="undefined"){return null}
     return (<div className="service-alert inner-card collapsible">
-        <button className="card-header collapse-trigger" aria-haspopup="true"
-                aria-expanded="false" aria-label="Toggle Service Alert Open/Closed">
+        <button className="card-header collapse-trigger" aria-haspopup="true" aria-expanded="false" aria-label="Toggle Service Alert Open/Closed" tabIndex="0">
                     <span className="svg-icon-wrap" role="presentation" aria-hidden="true">
                       <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
                            xmlns="http://www.w3.org/2000/svg">

@@ -13,47 +13,74 @@ document.addEventListener('DOMContentLoaded', function() {
 
         var parent = collapseTrigger.closest('.collapsible');
         var collapseContent = parent.querySelector('.collapse-content');
+        var allInnerTabbableItems = collapseContent.querySelectorAll('a[tabindex], button[tabindex]');
+        // only the inner tabbable items that are children of a .collapse-content that is a direct child of parent
+        var openParentTabbableItems = Array.from(allInnerTabbableItems).filter(function(element) {
+          if (element.closest('.collapsible').classList.contains('open')) {
+            return element;
+          }
+        });
+        var allInnerCollapseTriggers = collapseContent.querySelectorAll('.collapse-trigger');
     
         if (parent && collapseContent) {
 
-          // if the card is open
+          // if the card is open, close it, adjust the max height, and tabindex of inner elements
           if (parent.classList.contains('open')) {
 
             // window.console.log('boop closing collapsible')
             
             collapseContent.style.maxHeight = collapseContent.scrollHeight + 'px'; // Set maxHeight before collapsing
+
             setTimeout(() => {
               parent.classList.remove('open');
               collapseContent.style.maxHeight = '0'; // Collapse the content
             }, 10); // Small delay to trigger transition
+
+            // set tabindex of all inner elements to -1
+            allInnerTabbableItems.forEach(function(element) {
+              element.setAttribute('tabindex', '-1');
+            });
             
           } 
-          // if the card is closed
+          // if the card is closed, open it, adjust the max height, and tabindex of inner elements 
           else {
 
             // window.console.log('boop opening collapsible')
 
-            // parent.classList.add('open');
+            // Set maxHeight to actual height before expanding
             collapseContent.style.maxHeight = collapseContent.scrollHeight + 'px'; // Allow it to expand
+
+            // Add class to parent to trigger transition
             setTimeout(() => {
               parent.classList.add('open');
             }, 10); // Small delay to trigger transition
+            
+            // Set maxHeight back to none after transition
             setTimeout(() => {
               collapseContent.style.maxHeight = 'none'; // Reset to none to allow further expansion
             }, 500); // Timeout matches the transition duration
+
+            // if parent has class 'inner-card', set tabindex of all inner elements to 0
+            if (parent.classList.contains('inner-card')) {
+              allInnerTabbableItems.forEach(function(element) {
+                element.setAttribute('tabindex', '0');
+              });
+            }
+            // else if parent has class 'card', set tabindex of all inner elements whose closest parent .collapsible has class .open to 0, and set tabindex of all inner collapse triggers to 0
+            else if (parent.classList.contains('card')) {
+              openParentTabbableItems.forEach(function(element) {
+                element.setAttribute('tabindex', '0');
+              });
+              allInnerCollapseTriggers.forEach(function(element) {
+                element.setAttribute('tabindex', '0');
+              });
+            }
 
           }
 
           // Update aria-expanded attribute
 
           collapseTrigger.setAttribute('aria-expanded', parent.classList.contains('open'));
-
-          // Toggle tabindex of <a> or <button> elements within .collapse-content
-          var innerTabbableItems = collapseContent.querySelectorAll('a[tabindex], button[tabindex]');
-          innerTabbableItems.forEach(function(element) {
-            var currentIndex = element.getAttribute('tabindex');
-            element.setAttribute('tabindex', currentIndex === '0' ? '-1' : '0');
-          });
             
         }
 

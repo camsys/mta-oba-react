@@ -44,7 +44,7 @@ const RouteDirection = (routeDirectionDatum:RouteMatchDirectionInterface,stopId:
             <button
                 className="card-header collapse-trigger open"
                 aria-haspopup="true"
-                aria-expanded="false"
+                aria-expanded="true"
                 aria-label={`Toggle ${routeDirectionDatum.routeId.split("_")[1]} to ${routeDirectionDatum.destination}`}
                 onMouseEnter={() => highlightId(routeDirectionDatum.routeId)}
                 onMouseLeave={() => highlightId(null)}
@@ -53,7 +53,7 @@ const RouteDirection = (routeDirectionDatum:RouteMatchDirectionInterface,stopId:
                 <strong>{routeDirectionDatum.routeId.split("_")[1]}</strong> {routeDirectionDatum.destination}
               </span>
             </button>
-            <div className="card-content collapse-content" style={{ maxHeight: '0px' }}>
+            <div className="card-content collapse-content">
                 <ul className="approaching-buses">
                     {stopCardVehicleData.map(vehicleDatum=><VehicleComponent {...{vehicleDatum,lastUpdateTime}}/>)}
                 </ul>
@@ -84,7 +84,7 @@ export function StopCardContent({stopMatch}: StopMatch):JSX.Element{
             </div>
             <ul className="menu icon-menu card-menu">
                 <li>
-                    <button aria-label="Center & Zoom here on the Map">
+                    <button aria-label="Center & Zoom here on the Map" tabIndex="0">
                 <span className="svg-icon-wrap" role="presentation" aria-hidden="true">
                   <svg
                       xmlns="http://www.w3.org/2000/svg"
