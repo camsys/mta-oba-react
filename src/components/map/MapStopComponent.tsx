@@ -1,20 +1,22 @@
 import {OBA} from "../../js/oba";
-import React, {useContext} from "react";
+import React, {useContext, useEffect} from "react";
 import {Marker, Popup, useMap} from "react-leaflet";
 import L from "leaflet";
 import stopMapIcon from "../../img/icon/star_black.svg"
 import stopPopupIcon from "../../img/icon/bus-stop.svg"
 import {useHighlight} from "../util/MapHighlightingStateComponent.tsx";
 import {useSearch} from "../../js/updateState/SearchEffect";
-import {StopInterface} from "../../js/updateState/DataModels";
+import {CardType, StopInterface} from "../../js/updateState/DataModels";
+import {CardStateContext} from "../util/CardStateComponent";
 
 const COMPONENT_IDENTIFIER = "mapStopComponent"
 
+
 function MapStopComponent  ({stopDatum, mapStopMarkers, zIndexOverride}:
                                 {stopDatum:StopInterface,
-                                mapStopMarkers:React.MutableRefObject<Map<string,SVGMarkerElement>>,
+                                mapStopMarkers:React.MutableRefObject<Map<string,Marker>>,
                                 zIndexOverride:number}) : JSX.Element{
-    // console.log('generating MapStopComponent: ', stopDatum)
+    console.log('generating MapStopComponent: ', stopDatum,mapStopMarkers,zIndexOverride)
 
 
     let {getHighlightedId} = useHighlight()
@@ -54,13 +56,26 @@ function MapStopComponent  ({stopDatum, mapStopMarkers, zIndexOverride}:
         key: COMPONENT_IDENTIFIER+"_"+String(stopDatum.id),
         id: COMPONENT_IDENTIFIER+"_"+String(stopDatum.id)
     };
+    console.log('generating MapStopComponent: ', stopDatum,markerOptions,mapStopMarkers,zIndexOverride)
 
-
+    const { state} = useContext(CardStateContext);
+    useEffect(() => {
+        if(mapStopMarkers && state.currentCard.type===CardType.StopCard) {
+            let stopId = state.currentCard.datumId;
+            console.log("map stop component markers opening popup ",mapStopMarkers.current.get(stopId))
+            mapStopMarkers.current.get(stopId).openPopup()
+        }
+    },[state])
 
     let out = (
         <Marker {...markerOptions}
                 eventHandlers={{click : ()=>{search(stopDatum.id)}}}
-                ref={r=>typeof mapStopMarkers!=='undefined'?mapStopMarkers.current.set(stopDatum.id,r):null}>
+                ref={r=>
+                {
+                    // console.log("ref for stop component",stopDatum,r);
+                    typeof mapStopMarkers!=='undefined' && !mapStopMarkers.current.get(stopDatum.id)
+                        ?mapStopMarkers.current.set(stopDatum.id,r):null}}
+                >
             <Popup key={stopDatum.id} className="map-popup stop-popup">
                 <img src={stopPopupIcon} alt="busstop icon" className="icon"/>
                 <div className="popup-info">

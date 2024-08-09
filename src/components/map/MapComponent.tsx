@@ -1,5 +1,5 @@
 import ReactLeafletGoogleLayer from "react-leaflet-google-layer";
-import {LayerGroup, MapContainer, useMap, useMapEvents} from "react-leaflet";
+import {LayerGroup, MapContainer, Marker, useMap, useMapEvents} from "react-leaflet";
 import React, {useContext, useEffect, useRef, useState} from "react";
 import queryString from "query-string";
 import {OBA} from "../../js/oba";
@@ -71,11 +71,12 @@ const RoutesAndStops = () :JSX.Element=>{
             })
             dir.mapStopComponentData.forEach((datum:StopInterface) => {
                 let stopId = datum.id;
-                ! mapStopComponents.current.has(stopId)
+                (! mapStopComponents.current.has(stopId))
                     ? mapStopComponents.current.set(
                         datum.id,<MapStopComponent stopDatum={datum} mapStopMarkers={mapStopMarkers}/>)
                     : null
                 mapStopComponentsToDisplay.set(datum.id,mapStopComponents.current.get(datum.id));
+
             })
         })
     }
@@ -102,9 +103,14 @@ const RoutesAndStops = () :JSX.Element=>{
     const { state} = useContext(CardStateContext);
 
     let mapRouteComponents = new Map();
-    let mapStopComponents = useRef(new Map());
-    let mapStopMarkers = useRef(new Map());
+    const mapStopComponents = useRef(new Map());
+    const mapStopMarkers = useRef(new Map()<string,Marker>);
     let mapStopComponentsToDisplay = new Map();
+
+
+    console.log("map route components before", mapRouteComponents);
+    console.log("map stop components before", mapStopComponents.current);
+    console.log("map stop component markers before", mapStopMarkers.current);
 
     state.currentCard.searchMatches.forEach(searchMatch=>{
         console.log("adding routes for:",searchMatch)
@@ -135,6 +141,13 @@ const RoutesAndStops = () :JSX.Element=>{
             mapStopComponentsToDisplay.set(stopId,mapStopComponents.current.get(stopId));
         }
     })
+    // useEffect(() => {
+    //     if(state.currentCard.type===CardType.StopCard) {
+    //         let stopId = state.currentCard.datumId;
+    //         console.log("map stop component markers opening popup ",mapStopMarkers.current.get(stopId))
+    //         mapStopMarkers.current.get(stopId).openPopup()
+    //     }
+    // },[state])
 
     console.log("map route components", mapRouteComponents);
     console.log("map stop components", mapStopComponents.current);
@@ -146,8 +159,9 @@ const RoutesAndStops = () :JSX.Element=>{
                 {Array.from(mapRouteComponents.values()).flat()}
             </LayerGroup>
             <LayerGroup>
-                {StopComponents(Array.from(mapStopComponentsToDisplay.values()).flat())}
+
             </LayerGroup>
+            {StopComponents(Array.from(mapStopComponentsToDisplay.values()).flat())}
             <LayerGroup>
                 <Highlighted/>
             </LayerGroup>
@@ -231,6 +245,9 @@ const HandleMapBoundsAndZoom = () : void=>{
 }
 
 const StopComponents = (stopComponents) => {
+    return stopComponents
+
+
     let map = useMap()
     let [Zoom,setZoom] = useState(map.getZoom().valueOf())
 
@@ -244,11 +261,12 @@ const StopComponents = (stopComponents) => {
             setZoom(map.getZoom())
         }
     });
+
     console.log("show stops? ",map.getZoom() >= 15.1)
     return(Zoom>15.1?stopComponents:null)
 }
 
-const MapEvents = () :void=> {
+const MapEvents = () :boolean=> {
     console.log("generating map events")
     let map = useMap()
     useMapEvents({
