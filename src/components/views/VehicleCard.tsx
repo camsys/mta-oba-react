@@ -6,6 +6,7 @@ import {useSearch} from "../../js/updateState/SearchEffect";
 import {OBA} from "../../js/oba";
 import {MapHighlightingStateContext, useHighlight} from "../util/MapHighlightingStateComponent.tsx";
 import {MatchType, RouteMatch, SearchMatch, VehicleRtInterface} from "../../js/updateState/DataModels";
+import meeples from '../../../public/img/meeples/meeples-blank.png';
 
 export const VehicleCardContentComponent = ({routeMatch,vehicleDatum}
                                                 :{routeMatch:RouteMatch,vehicleDatum:VehicleRtInterface})
@@ -23,7 +24,11 @@ export const VehicleCardContentComponent = ({routeMatch,vehicleDatum}
                 </li>
                 {vehicleDatum.passengerCount != null && (
                     vehicleDatum.passengerCapacity != null ? (
-                        <li className="passengers">{`~${(vehicleDatum.passengerCount / vehicleDatum.passengerCapacity) * 100}% full`}</li>
+                        <li className="passengers">
+                            <span className={'meeples meeples-'+`${Math.ceil((vehicleDatum.passengerCount / vehicleDatum.passengerCapacity) * 10)}`}>
+                                <img src={meeples} alt={`vehicle is ~${Math.ceil((vehicleDatum.passengerCount / vehicleDatum.passengerCapacity) * 100)}% full`} title={`vehicle is ~${Math.ceil((vehicleDatum.passengerCount / vehicleDatum.passengerCapacity) * 100)}% full`} className="meeples-blank" />
+                            </span>
+                        </li>
                     ) : (
                         <li className="passengers">{`~${vehicleDatum.passengerCount} passengers`}</li>
                     )

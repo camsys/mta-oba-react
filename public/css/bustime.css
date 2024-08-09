@@ -1556,19 +1556,20 @@ button:hover, .button:hover {
 .en-route .approaching-buses {
   margin: 0 0 0.5rem 0;
 }
-.approaching-buses .passengers .meeples {
+
+.meeples {
   display: inline-block;
   line-height: 1;
   margin-top: 0.25em;
   position: relative;
 }
-.approaching-buses .passengers .meeples img {
+.meeples img {
   width: 6em;
   height: 1em;
   position: relative;
   z-index: 0;
 }
-.approaching-buses .passengers .meeples::after {
+.meeples::after {
   content: "";
   position: absolute;
   z-index: 1;
@@ -1580,31 +1581,31 @@ button:hover, .button:hover {
   background-size: auto 100%;
   background-repeat: no-repeat;
 }
-.approaching-buses .passengers .meeples-1::after {
+.meeples-1::after {
   width: 10%;
 }
-.approaching-buses .passengers .meeples-2::after {
+.meeples-2::after {
   width: 20%;
 }
-.approaching-buses .passengers .meeples-3::after {
+.meeples-3::after {
   width: 30%;
 }
-.approaching-buses .passengers .meeples-4::after {
+.meeples-4::after {
   width: 40%;
 }
-.approaching-buses .passengers .meeples-5::after {
+.meeples-5::after {
   width: 50%;
 }
-.approaching-buses .passengers .meeples-6::after {
+.meeples-6::after {
   width: 60%;
 }
-.approaching-buses .passengers .meeples-7::after {
+.meeples-7::after {
   width: 70%;
 }
-.approaching-buses .passengers .meeples-8::after {
+.meeples-8::after {
   width: 80%;
 }
-.approaching-buses .passengers .meeples-9::after {
+.meeples-9::after {
   width: 90%;
 }
 

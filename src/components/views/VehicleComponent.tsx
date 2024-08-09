@@ -26,7 +26,7 @@ function VehicleComponent({vehicleDatum}:
                     vehicleDatum.passengerCapacity != null ?
                         <span className="passengers">
                             <span className={'meeples meeples-'+`${Math.ceil((vehicleDatum.passengerCount / vehicleDatum.passengerCapacity) * 10)}`}>
-                                <img src={meeples} alt={`vehicle is ~${(vehicleDatum.passengerCount / vehicleDatum.passengerCapacity) * 100}% full`} title={`vehicle is ~${(vehicleDatum.passengerCount / vehicleDatum.passengerCapacity) * 100}% full`} className="meeples-blank" />
+                                <img src={meeples} alt={`vehicle is ~${Math.ceil((vehicleDatum.passengerCount / vehicleDatum.passengerCapacity) * 100)}% full`} title={`vehicle is ~${Math.ceil((vehicleDatum.passengerCount / vehicleDatum.passengerCapacity) * 100)}% full`} className="meeples-blank" />
                             </span>
                         </span>
                         :
