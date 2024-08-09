@@ -873,33 +873,11 @@ button, .button
         background-image: url(/img/meeples/meeples-filled.png)
         background-size: auto 100%
         background-repeat: no-repeat
-      &-1
-        &::after
-          width: 10%
-      &-2
-        &::after
-          width: 20%
-      &-3
-        &::after
-          width: 30%
-      &-4
-        &::after
-          width: 40%
-      &-5
-        &::after
-          width: 50%
-      &-6
-        &::after
-          width: 60%
-      &-7
-        &::after
-          width: 70%
-      &-8
-        &::after
-          width: 80%
-      &-9
-        &::after
-          width: 90%
+      @for $i from 1 through 9
+        &-#{$i}
+          &::after
+            width: $i*10%
+
 .next-stops
   font-size: .875em
   li
