@@ -59,13 +59,6 @@ function MapStopComponent  ({stopDatum, mapStopMarkers, zIndexOverride}:
     console.log('generating MapStopComponent: ', stopDatum,markerOptions,mapStopMarkers,zIndexOverride)
 
     const { state} = useContext(CardStateContext);
-    useEffect(() => {
-        if(mapStopMarkers && state.currentCard.type===CardType.StopCard) {
-            let stopId = state.currentCard.datumId;
-            console.log("map stop component markers opening popup ",mapStopMarkers.current.get(stopId))
-            mapStopMarkers.current.get(stopId).openPopup()
-        }
-    },[state])
 
     let out = (
         <Marker {...markerOptions}
@@ -73,8 +66,9 @@ function MapStopComponent  ({stopDatum, mapStopMarkers, zIndexOverride}:
                 ref={r=>
                 {
                     // console.log("ref for stop component",stopDatum,r);
-                    typeof mapStopMarkers!=='undefined' && !mapStopMarkers.current.get(stopDatum.id)
-                        ?mapStopMarkers.current.set(stopDatum.id,r):null}}
+                    typeof mapStopMarkers!=='undefined'
+                        ?mapStopMarkers.current.set(stopDatum.id,r):null
+                }}
                 >
             <Popup key={stopDatum.id} className="map-popup stop-popup">
                 <img src={stopPopupIcon} alt="busstop icon" className="icon"/>

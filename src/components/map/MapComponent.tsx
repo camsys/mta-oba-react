@@ -141,13 +141,31 @@ const RoutesAndStops = () :JSX.Element=>{
             mapStopComponentsToDisplay.set(stopId,mapStopComponents.current.get(stopId));
         }
     })
-    // useEffect(() => {
-    //     if(state.currentCard.type===CardType.StopCard) {
-    //         let stopId = state.currentCard.datumId;
-    //         console.log("map stop component markers opening popup ",mapStopMarkers.current.get(stopId))
-    //         mapStopMarkers.current.get(stopId).openPopup()
-    //     }
-    // },[state])
+    console.log("map stop component markers opening popup outside of effect",mapStopMarkers.current)
+    useEffect(() => {
+        console.log("map stop component markers opening popup ",mapStopMarkers.current)
+        if(mapStopMarkers && state.currentCard.type===CardType.StopCard) {
+            let stopId = state.currentCard.datumId;
+            console.log("map stop component markers opening popup ",
+                mapStopMarkers.current.get(stopId).isPopupOpen(),
+                mapStopMarkers.current.get(stopId),
+                mapStopMarkers.current.get(stopId).getPopup(),
+                state.currentCard.datumId,
+                mapStopMarkers)
+            if(mapStopMarkers.current.get(stopId).getPopup()){
+                console.log("map stop component markers popup value is",
+                    mapStopMarkers.current.get(stopId).getPopup(),
+                    state.currentCard.datumId,)
+            }
+            mapStopMarkers.current.get(stopId).openPopup()
+            console.log("map stop component markers opened popup? ",
+                mapStopMarkers.current.get(stopId).isPopupOpen(),
+                mapStopMarkers.current.get(stopId),
+                mapStopMarkers.current.get(stopId).getPopup(),
+                state.currentCard.datumId,
+                mapStopMarkers)
+        }
+    },[state])
 
     console.log("map route components", mapRouteComponents);
     console.log("map stop components", mapStopComponents.current);
