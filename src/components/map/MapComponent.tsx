@@ -259,7 +259,7 @@ const HandleMapForVehiclesBoundsAndZoom = () :void=>{
     if(state.currentCard.type!==CardType.VehicleCard){
         return
     }
-    let duration = 1.15
+    let duration = .85
     let zoom = 16;
     let [lat, long] = vehicleState[state.currentCard.routeIdList.values().next().value.split("_")[1]
     +vehicleDataIdentifier].get(state.currentCard.vehicleId).longLat;
