@@ -85,7 +85,7 @@ const MapVehicleElements = () :JSX.Element =>{
 
 
 const loadPopup = (datumId,leafletRefObjs) :void=>{
-    if(leafletRefObjs &&typeof leafletRefObjs.current.get(datumId)!=='undefined'
+    if(leafletRefObjs && typeof leafletRefObjs.current.get(datumId)!=='undefined'
         && leafletRefObjs.current.get(datumId)!==null
         && leafletRefObjs.current.get(datumId).getPopup()){
         leafletRefObjs.current.get(datumId).openPopup()
@@ -127,6 +127,7 @@ const RoutesAndStops = () :JSX.Element=>{
     const mapStopComponents = useRef(new Map());
     const mapStopMarkers = useRef(new Map()<string,Marker>);
     let mapStopComponentsToDisplay = new Map();
+    let stopsToNonConditionallyDisplay = new Map();
 
 
     console.log("map route components before", mapRouteComponents);
@@ -159,7 +160,7 @@ const RoutesAndStops = () :JSX.Element=>{
                 processRoute(route);
             })
             let stopId =state.currentCard.datumId;
-            mapStopComponentsToDisplay.set(stopId,mapStopComponents.current.get(stopId));
+            stopsToNonConditionallyDisplay.set(stopId,mapStopComponents.current.get(stopId));
         }
     })
 
@@ -192,7 +193,7 @@ const RoutesAndStops = () :JSX.Element=>{
                 {Array.from(mapRouteComponents.values()).flat()}
             </LayerGroup>
             {StopComponents(Array.from(mapStopComponentsToDisplay.values()).flat())}
-
+            {Array.from(stopsToNonConditionallyDisplay.values()).flat()}
             <LayerGroup>
                 <Highlighted/>
             </LayerGroup>
