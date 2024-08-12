@@ -3,7 +3,7 @@ import {LayerGroup, MapContainer, Marker, useMap, useMapEvents} from "react-leaf
 import React, {useContext, useEffect, useRef, useState} from "react";
 import queryString from "query-string";
 import {OBA} from "../../js/oba";
-import L from "leaflet";
+import L, {LatLngBounds} from "leaflet";
 import bus from "../../img/icon/bus.svg";
 import {CardStateContext, RoutesContext, StopsContext} from "../util/CardStateComponent.tsx";
 import {vehicleDataIdentifier, VehicleStateContext} from "../util/VehicleStateComponent";
@@ -80,23 +80,7 @@ const RoutesAndStops = () :JSX.Element=>{
             })
         })
     }
-    const getBoundsForRoute = (route:RouteMatch)=> {
-        let collectedPoints = []
-        route.directions.forEach(dir=> {
-            dir.mapRouteComponentData.forEach(routeDir=>{
-                if (typeof routeDir.points !== 'undefined') {
-                    let coordinates = routeDir.points;
-                    for (let k=0; k < coordinates.length; k++) {
-                        let coordinate = coordinates[k];
-                        collectedPoints.push(coordinate);
-                    }
-                }
-            })
-        });
-        let newBounds = L.latLngBounds(collectedPoints);
-        console.log("made newbounds",newBounds)
-        return newBounds
-    }
+
 
     const stops = useContext(StopsContext);
     const routes = useContext(RoutesContext);
@@ -200,7 +184,7 @@ const Highlighted = () =>{
     }
 }
 
-const setMapBoundsAndZoom = (duration :number , lat : number, long :number,zoom:number) :void =>{
+const setMapLatLngAndZoom = (duration :number , lat : number, long :number,zoom:number) :void =>{
     console.log("setting map bounds:",duration,lat,long,zoom)
     if(lat===null|long===null|zoom===null){return}
     let map = useMap()
@@ -218,6 +202,11 @@ const setMapBoundsAndZoom = (duration :number , lat : number, long :number,zoom:
     });
 }
 
+const setMapBounds = (bounds: LatLngBounds):void =>{
+    let map = useMap()
+    map.fitBounds(bounds)
+}
+
 const HandleMapForVehiclesBoundsAndZoom = () :void=>{
     // todo: later have it just confirm it's in the bounding box
     const { vehicleState} = useContext(VehicleStateContext);
@@ -229,7 +218,25 @@ const HandleMapForVehiclesBoundsAndZoom = () :void=>{
     let zoom = 16;
     let [lat, long] = vehicleState[state.currentCard.routeIdList.values().next().value.split("_")[1]
     +vehicleDataIdentifier].get(state.currentCard.vehicleId).longLat;
-    setMapBoundsAndZoom(duration,lat,long,zoom)
+    setMapLatLngAndZoom(duration,lat,long,zoom)
+}
+
+const getBoundsForRoute = (route:RouteMatch)=> {
+    let collectedPoints = []
+    route.directions.forEach(dir=> {
+        dir.mapRouteComponentData.forEach(routeDir=>{
+            if (typeof routeDir.points !== 'undefined') {
+                let coordinates = routeDir.points;
+                for (let k=0; k < coordinates.length; k++) {
+                    let coordinate = coordinates[k];
+                    collectedPoints.push(coordinate);
+                }
+            }
+        })
+    });
+    let newBounds = L.latLngBounds(collectedPoints);
+    console.log("made newbounds",newBounds)
+    return newBounds
 }
 
 const HandleMapBoundsAndZoom = () : void=>{
@@ -241,7 +248,8 @@ const HandleMapBoundsAndZoom = () : void=>{
 
     state.currentCard.searchMatches.forEach(searchMatch=>{
         if(state.currentCard.type===CardType.RouteCard){
-            // map.fitBounds(newBounds);
+            setMapBounds(getBoundsForRoute(searchMatch))
+            return
         }
         else if(state.currentCard.type===CardType.GeocodeCard) {
             [lat, long] = [searchMatch.latitude,searchMatch.longitude];
@@ -259,7 +267,7 @@ const HandleMapBoundsAndZoom = () : void=>{
             zoom = 11;
         }
 
-    setMapBoundsAndZoom(duration,lat,long,zoom)
+    setMapLatLngAndZoom(duration,lat,long,zoom)
 }
 
 const StopComponents = (stopComponents) => {
