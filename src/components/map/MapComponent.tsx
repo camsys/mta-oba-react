@@ -166,6 +166,9 @@ const RoutesAndStops = () :JSX.Element=>{
     })
 
 
+    let mapRouteElementsLayerGroupRef : L.LayerGroup = null
+
+
     console.log("map stop component markers opening popup outside of effect",mapStopMarkers.current)
     const addStopPopup = () =>{
         console.log("map stop component markers opening popup ",mapStopMarkers,mapStopMarkers.current)
@@ -176,13 +179,23 @@ const RoutesAndStops = () :JSX.Element=>{
     useEffect(() => {
         addStopPopup()
     },[state])
+
+    let map = useMap()
     useMapEvents(
         {
+            zoomstart() {
+                console.log("zoomstart mapRouteElementsLayerGroupRef",mapRouteElementsLayerGroupRef)
+                if(mapRouteElementsLayerGroupRef!==null){
+                    mapRouteElementsLayerGroupRef.removeFrom(map)
+                }
+            },
             zoomend() {
                 addStopPopup()
+                mapRouteElementsLayerGroupRef.addTo(map)
             }
         }
     )
+
 
     console.log("map route components", mapRouteComponents);
     console.log("map stop components", mapStopComponents.current);
@@ -190,10 +203,11 @@ const RoutesAndStops = () :JSX.Element=>{
 
     return (
         <React.Fragment>
-            <LayerGroup className={"MapRouteElements"}>
+            <LayerGroup className={"MapRouteElements"}
+                    ref = {r=>{mapRouteElementsLayerGroupRef=r}}>
                 {Array.from(mapRouteComponents.values()).flat()}
             </LayerGroup>
-            {StopComponents(Array.from(mapStopComponentsToDisplay.values()).flat())}
+            {ConditionallyDisplayStopComponents(Array.from(mapStopComponentsToDisplay.values()).flat())}
             {Array.from(stopsToNonConditionallyDisplay.values()).flat()}
             <LayerGroup>
                 <Highlighted/>
@@ -235,7 +249,7 @@ const setMapLatLngAndZoom = (duration :number , lat : number, long :number,zoom:
 
 const setMapBounds = (bounds: LatLngBounds):void =>{
     let map = useMap()
-    map.fitBounds(bounds)
+    map.flyToBounds(bounds)
 }
 
 const HandleMapForVehiclesBoundsAndZoom = () :void=>{
@@ -272,7 +286,7 @@ const getBoundsForRoute = (route:RouteMatch)=> {
 
 const HandleMapBoundsAndZoom = () : void=>{
     const { state} = useContext(CardStateContext);
-    let duration = 1.15
+    let duration = .85
     let [lat, long] = [null,null]
     let zoom = null
 
@@ -301,9 +315,7 @@ const HandleMapBoundsAndZoom = () : void=>{
     setMapLatLngAndZoom(duration,lat,long,zoom)
 }
 
-const StopComponents = (stopComponents) => {
-
-
+const ConditionallyDisplayStopComponents = (stopComponents) => {
     let map = useMap()
     let [Zoom,setZoom] = useState(map.getZoom().valueOf())
 
