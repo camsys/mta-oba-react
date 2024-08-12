@@ -27,8 +27,8 @@ function MapStopComponent  ({stopDatum, mapStopMarkers, zIndexOverride}:
     // }
 
 
-    var direction = stopDatum?.stopDirection;
-    var directionKey = direction;
+    let direction = stopDatum?.stopDirection;
+    let directionKey = direction;
 
     if(directionKey === null) {
         directionKey = "unknown";

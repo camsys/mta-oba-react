@@ -127,27 +127,28 @@ const RoutesAndStops = () :JSX.Element=>{
     })
     console.log("map stop component markers opening popup outside of effect",mapStopMarkers.current)
     useEffect(() => {
-        console.log("map stop component markers opening popup ",mapStopMarkers.current)
+        console.log("map stop component markers opening popup ",mapStopMarkers,mapStopMarkers.current)
         if(mapStopMarkers && state.currentCard.type===CardType.StopCard) {
             let stopId = state.currentCard.datumId;
-            console.log("map stop component markers opening popup ",
-                mapStopMarkers.current.get(stopId).isPopupOpen(),
-                mapStopMarkers.current.get(stopId),
-                mapStopMarkers.current.get(stopId).getPopup(),
-                state.currentCard.datumId,
-                mapStopMarkers)
-            if(mapStopMarkers.current.get(stopId).getPopup()){
+            // console.log("map stop component markers opening popup ",
+            //     mapStopMarkers.current.get(stopId).isPopupOpen(),
+            //     mapStopMarkers.current.get(stopId),
+            //     mapStopMarkers.current.get(stopId).getPopup(),
+            //     state.currentCard.datumId,
+            //     mapStopMarkers)
+            if(mapStopMarkers.current.get(stopId)!==null && mapStopMarkers.current.get(stopId).getPopup()){
                 console.log("map stop component markers popup value is",
                     mapStopMarkers.current.get(stopId).getPopup(),
-                    state.currentCard.datumId,)
+                    state.currentCard.datumId)
+                mapStopMarkers.current.get(stopId).openPopup()
             }
-            mapStopMarkers.current.get(stopId).openPopup()
-            console.log("map stop component markers opened popup? ",
-                mapStopMarkers.current.get(stopId).isPopupOpen(),
-                mapStopMarkers.current.get(stopId),
-                mapStopMarkers.current.get(stopId).getPopup(),
-                state.currentCard.datumId,
-                mapStopMarkers)
+            // mapStopMarkers.current.get(stopId).openPopup()
+            // console.log("map stop component markers opened popup? ",
+            //     mapStopMarkers.current.get(stopId).isPopupOpen(),
+            //     mapStopMarkers.current.get(stopId),
+            //     mapStopMarkers.current.get(stopId).getPopup(),
+            //     state.currentCard.datumId,
+            //     mapStopMarkers)
         }
     },[state])
 
