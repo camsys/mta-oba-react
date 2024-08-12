@@ -1,4 +1,5 @@
 import {OBA} from "../oba";
+import {LatLngLiteral} from "leaflet";
 
 export class AgencyAndId {
     agency: string;
@@ -36,6 +37,7 @@ export interface VehicleArrivalInterface {
 
 export interface VehicleRtInterface {
     longLat: [number, number];
+    latLngLiteral:LatLngLiteral;
     destination: string;
     hasRealtime: boolean;
     nextStop: string | null;
@@ -124,6 +126,7 @@ export function createVehicleRtInterface(mvj: any,updateTime:Date): VehicleRtInt
     return {
         lastUpdate: updateTime,
         longLat: [mvj.VehicleLocation.Latitude, mvj.VehicleLocation.Longitude],
+        latLngLiteral: {lat:mvj.VehicleLocation.Latitude, lng:mvj.VehicleLocation.Longitude},
         destination: mvj.DestinationName,
         hasRealtime: mvj.Monitored,
         nextStop: mvj.MonitoredCall?.StopPointRef || null,
@@ -271,6 +274,7 @@ export class Card {
     static cardTypes = CardType;
 
     searchTerm: string;
+    datumId:string;
     searchResultType: string | null;
     name: string;
     searchMatches: SearchMatch[];
@@ -288,6 +292,7 @@ export class Card {
         this.stopIdList = new Set();
         this.vehicleId = null;
         this.type = CardType.HomeCard; // Default or initial type if applicable
+        this.datumId = null;
     }
 
     setType(cardType: CardType): void {
@@ -302,6 +307,7 @@ export class Card {
     ): void {
         this.setType(CardType.VehicleCard);
         this.vehicleId = vehicleId;
+        this.datumId = vehicleId;
         this.searchMatches = searchMatches;
         this.routeIdList = routeIdList;
     }

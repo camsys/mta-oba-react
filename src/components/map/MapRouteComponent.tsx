@@ -3,8 +3,9 @@ import {Marker, Polyline, Popup} from "react-leaflet";
 
 import {useHighlight} from "../util/MapHighlightingStateComponent.tsx";
 import {CardStateContext} from "../util/CardStateComponent.tsx";
+import {RouteDirectionInterface} from "../../js/updateState/DataModels";
 
-function MapRouteComponent  ({mapRouteComponentDatum}) {
+function MapRouteComponent  ({mapRouteComponentDatum}:RouteDirectionInterface) :JSX.Element{
     // console.log('generating mapRouteComponent: ', mapRouteComponentDatum)
 
     let {getHighlightedId} = useHighlight()
@@ -28,8 +29,8 @@ function MapRouteComponent  ({mapRouteComponentDatum}) {
     }
 
     let out = (<React.Fragment>
-        <Polyline {...polylineOptions}/>
-        {highlightedId==mapRouteComponentDatum.routeId ? <Polyline {...highlightedPolylineOptions}/>: null
+        <Polyline {...polylineOptions} tabIndex={-1}/>
+        {highlightedId==mapRouteComponentDatum.routeId ? <Polyline {...highlightedPolylineOptions} tabIndex={-1}/>: null
         }
     </React.Fragment>)
     return out

@@ -65,13 +65,13 @@ function extractData (routeId,siri){
                 alerts = serviceAlertDataMap.get(serviceAlertTarget)
                 alerts = alerts==null? [] : alerts
                 alerts.push(createServiceAlertInterface(situationElement))
-                console.log("adding service alert: ",serviceAlertTarget,alerts)
+                // console.log("adding service alert: ",serviceAlertTarget,alerts)
                 serviceAlertDataMap.set(serviceAlertTarget,alerts)
                 serviceAlertTarget = effect?.LineRef + delim + effect?.DirectionRef
                 alerts = serviceAlertDataMap.get(serviceAlertTarget)
                 alerts = alerts==null? [] : alerts
                 alerts.push(createServiceAlertInterface(situationElement))
-                console.log("adding service alert: ",serviceAlertTarget,alerts)
+                // console.log("adding service alert: ",serviceAlertTarget,alerts)
                 serviceAlertDataMap.set(serviceAlertTarget,alerts)
             })
             console.log("processing service alert: ",situationElement)

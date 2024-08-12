@@ -69,13 +69,13 @@ function extractData (stopId,siri){
                 alerts = serviceAlertDataMap.get(serviceAlertTarget)
                 alerts = alerts==null? [] : alerts
                 alerts.push(createServiceAlertInterface(situationElement))
-                console.log("siri stop adding service alert: ",serviceAlertTarget,alerts)
+                // console.log("siri stop adding service alert: ",serviceAlertTarget,alerts)
                 serviceAlertDataMap.set(serviceAlertTarget,alerts)
                 serviceAlertTarget = effect?.LineRef + delim + effect?.DirectionRef
                 alerts = serviceAlertDataMap.get(serviceAlertTarget)
                 alerts = alerts==null? [] : alerts
                 alerts.push(createServiceAlertInterface(situationElement))
-                console.log("adding service alert: ",serviceAlertTarget,alerts)
+                // console.log("adding service alert: ",serviceAlertTarget,alerts)
                 serviceAlertDataMap.set(serviceAlertTarget,alerts)
             })
             console.log("siri stop processing service alert: ",situationElement)
@@ -159,11 +159,9 @@ const siriGetAndSetVehicles = (targetAddresses,vehicleState, setState, dataProce
                     // not sure we'll stick with this, but it's fast and dirty because it needs to happen
                     // before backend support for timing
                     // todo: pls fix w/ proper backend support
-                    console.log( stopsToExtendedVehiclesMap,stopId)
                     let dataObj = {}
                     Object.entries(stopsToExtendedVehiclesMap.get(stopId)).forEach(
                         ([key,siriObj]) => {
-                            console.log(dataObj,key,siriObj)
                             let routeAndDir = siriObj.routeId +"_"+siriObj.direction
                             let mapOfStopsToVehicles = dataObj[routeAndDir +  stopSortedFutureVehicleDataIdentifier]
                             if(typeof mapOfStopsToVehicles === "undefined"){

@@ -8,7 +8,7 @@ function VehicleComponent({vehicleDatum}:
                               { vehicleDatum :VehicleRtInterface}):JSX.Element{
     let {vehicleSearch} = useSearch()
 
-    console.log("generating VehicleComponent",vehicleDatum)
+    // console.log("generating VehicleComponent",vehicleDatum)
     let hasArrivalData = typeof vehicleDatum?.vehicleArrivalData!=='undefined'
     return(
         <li key={vehicleDatum.vehicleId}>
