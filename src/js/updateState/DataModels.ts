@@ -1,4 +1,5 @@
 import {OBA} from "../oba";
+import {LatLngLiteral} from "leaflet";
 
 export class AgencyAndId {
     agency: string;
@@ -36,6 +37,7 @@ export interface VehicleArrivalInterface {
 
 export interface VehicleRtInterface {
     longLat: [number, number];
+    latLngLiteral:LatLngLiteral;
     destination: string;
     hasRealtime: boolean;
     nextStop: string | null;
@@ -124,6 +126,7 @@ export function createVehicleRtInterface(mvj: any,updateTime:Date): VehicleRtInt
     return {
         lastUpdate: updateTime,
         longLat: [mvj.VehicleLocation.Latitude, mvj.VehicleLocation.Longitude],
+        latLngLiteral: {lat:mvj.VehicleLocation.Latitude, lng:mvj.VehicleLocation.Longitude},
         destination: mvj.DestinationName,
         hasRealtime: mvj.Monitored,
         nextStop: mvj.MonitoredCall?.StopPointRef || null,

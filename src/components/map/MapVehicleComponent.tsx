@@ -12,17 +12,14 @@ const COMPONENT_IDENTIFIER = "MapVehicleComponent"
 
 
 
-function MapVehicleComponent  ({vehicleDatum}:VehicleRtInterface) :JSX.Element{
+function MapVehicleComponent  (
+    {vehicleDatum,vehicleRefs}:{vehicleDatum:VehicleRtInterface,vehicleRefs:React.MutableRefObject<Map<string,Marker>>}) :JSX.Element{
 
     // let targetVehicleId = state.currentCard.vehicleId
-    // console.log('generating mapVehicle: ',vehicleDatum.vehicleId,vehicleDatum)
+    console.log('generating mapVehicle: ',vehicleDatum.vehicleId,vehicleDatum)
     let imgDegrees = vehicleDatum.bearing - vehicleDatum.bearing%5
-    OBA.Util.trace("img degrees" + imgDegrees)
     let scheduled = vehicleDatum.hasRealtime?"":"scheduled/"
-    OBA.Util.trace(scheduled)
     let vehicleImageUrl = "img/vehicle/"+scheduled+"vehicle-"+imgDegrees+".png"
-    OBA.Util.trace("vehicleImageUrl:")
-    OBA.Util.trace(vehicleImageUrl)
     let vehicleIdParts = vehicleDatum.vehicleId.split("_");
     let vehicleIdWithoutAgency = vehicleIdParts[1];
 
@@ -42,11 +39,11 @@ function MapVehicleComponent  ({vehicleDatum}:VehicleRtInterface) :JSX.Element{
 
     let markerOptions = {
         zIndex: 3,
-        title: "Vehicle " + vehicleIdWithoutAgency + ", " + vehicleDatum.route + " to " + vehicleDatum.destination,
+        title: "Vehicle " + vehicleIdWithoutAgency + ", " + vehicleDatum.routeId + " to " + vehicleDatum.destination,
         vehicleId: vehicleDatum.vehicleId,
-        routeId: vehicleDatum.route,
+        routeId: vehicleDatum.routeId,
         // key:COMPONENT_IDENTIFIER+"_"+vehicleDatum.vehicleId,
-        key:COMPONENT_IDENTIFIER+"_"+vehicleDatum.vehicleId + "_"+vehicleDatum.longLat,
+        key:COMPONENT_IDENTIFIER+"_"+vehicleDatum.vehicleId,
         position:vehicleDatum.longLat,
         icon: icon,
         id: COMPONENT_IDENTIFIER+"_"+vehicleDatum.vehicleId
@@ -57,11 +54,17 @@ function MapVehicleComponent  ({vehicleDatum}:VehicleRtInterface) :JSX.Element{
 
 
     let out = (<Marker {...markerOptions}
-                       eventHandlers={{click : ()=>{selectVehicle(vehicleDatum)}}}>
+                       eventHandlers={{click : ()=>{selectVehicle(vehicleDatum)}}}
+                       ref={r=>{
+                           console.log("ref for vehicle component",vehicleDatum,r);
+                           typeof vehicleRefs!=='undefined'
+                               ?vehicleRefs.current.set(vehicleDatum.vehicleId,r):null
+                       }}
+    >
         <Popup key={vehicleDatum.vehicleId+"_"+vehicleDatum.longLat} className="map-popup vehicle-popup">
             <img src={vehicleDatum.strollerVehicle?busStroller:bus} alt="bus" className="icon"/>
             <div className="popup-info">
-                <span className="route">{vehicleDatum.route} {vehicleDatum.destination}</span>
+                <span className="route">{vehicleDatum.routeId} {vehicleDatum.destination}</span>
                 <span className="vehicle">Vehicle #{vehicleIdWithoutAgency}</span>
             </div>
         </Popup>

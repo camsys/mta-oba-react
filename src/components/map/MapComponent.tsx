@@ -28,7 +28,8 @@ import {useHighlight} from "Components/util/MapHighlightingStateComponent";
 const MapVehicleElements = () :JSX.Element =>{
     const { state} = useContext(CardStateContext);
     const { vehicleState} = useContext(VehicleStateContext);
-
+    const vehicleComponentsRef = useRef(new Map())
+    const vehicleObjsRefs = useRef(new Map())
 
     let routeIds = state.currentCard.routeIdList
     console.log("looking for vehicles from route ids: ",routeIds)
@@ -42,11 +43,38 @@ const MapVehicleElements = () :JSX.Element =>{
             let vehicleDataForRoute = vehicleState[routeId+vehicleDataIdentifier]
             if(vehicleDataForRoute!=null){
                 console.log(`processing vehicleDataForRoute`,vehicleDataForRoute)
-                vehicleDataForRoute.forEach(vehicleDatum=>{mapVehicleComponents.push(<MapVehicleComponent {...{vehicleDatum}} key={vehicleDatum.vehicleId}/>)});
+                vehicleDataForRoute.forEach(vehicleDatum=>{
+                    if(vehicleObjsRefs.current.has(vehicleDatum.vehicleId) && typeof vehicleObjsRefs.current.get(vehicleDatum.vehicleId)!=="undefined"){
+                        // update vehicle to be in new pos
+                        vehicleObjsRefs.current.get(vehicleDatum.vehicleId).setLatLng(vehicleDatum.longLat)
+                    }
+                    else{
+                        vehicleComponentsRef.current.set(vehicleDatum.vehicleId,
+                            <MapVehicleComponent {...{vehicleDatum,vehicleRefs: vehicleObjsRefs}} key={vehicleDatum.vehicleId}/>)
+                    }
+                    mapVehicleComponents.push(vehicleComponentsRef.current.get(vehicleDatum.vehicleId))
+                });
             }
             console.log("map vehicle components", mapVehicleComponents)
         })
     }
+
+    // useEffect(() => {
+    //     console.log("map stop component markers opening popup ",mapStopMarkers,mapStopMarkers.current)
+    //     if(mapStopMarkers && state.currentCard.type===CardType.StopCard) {
+    //         let stopId = state.currentCard.datumId;
+    //         if(typeof mapStopMarkers.current.get(stopId)!=='undefined'
+    //             && mapStopMarkers.current.get(stopId).getPopup()){
+    //
+    //             console.log("map stop component markers popup value is",
+    //                 mapStopMarkers.current.get(stopId).getPopup(),
+    //                 state.currentCard.datumId)
+    //             mapStopMarkers.current.get(stopId).openPopup()
+    //         }
+    //     }
+    // },[state])
+
+
     return (
         <React.Fragment>
             {mapVehicleComponents}
@@ -130,25 +158,14 @@ const RoutesAndStops = () :JSX.Element=>{
         console.log("map stop component markers opening popup ",mapStopMarkers,mapStopMarkers.current)
         if(mapStopMarkers && state.currentCard.type===CardType.StopCard) {
             let stopId = state.currentCard.datumId;
-            // console.log("map stop component markers opening popup ",
-            //     mapStopMarkers.current.get(stopId).isPopupOpen(),
-            //     mapStopMarkers.current.get(stopId),
-            //     mapStopMarkers.current.get(stopId).getPopup(),
-            //     state.currentCard.datumId,
-            //     mapStopMarkers)
-            if(mapStopMarkers.current.get(stopId)!==null && mapStopMarkers.current.get(stopId).getPopup()){
+            if(typeof mapStopMarkers.current.get(stopId)!=='undefined'
+                && mapStopMarkers.current.get(stopId).getPopup()){
+
                 console.log("map stop component markers popup value is",
                     mapStopMarkers.current.get(stopId).getPopup(),
                     state.currentCard.datumId)
                 mapStopMarkers.current.get(stopId).openPopup()
             }
-            // mapStopMarkers.current.get(stopId).openPopup()
-            // console.log("map stop component markers opened popup? ",
-            //     mapStopMarkers.current.get(stopId).isPopupOpen(),
-            //     mapStopMarkers.current.get(stopId),
-            //     mapStopMarkers.current.get(stopId).getPopup(),
-            //     state.currentCard.datumId,
-            //     mapStopMarkers)
         }
     },[state])
 
