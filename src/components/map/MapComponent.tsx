@@ -161,6 +161,7 @@ const RoutesAndStops = () :JSX.Element=>{
             })
             let stopId =state.currentCard.datumId;
             stopsToNonConditionallyDisplay.set(stopId,mapStopComponents.current.get(stopId));
+            mapStopComponentsToDisplay.delete(stopId)
         }
     })
 
