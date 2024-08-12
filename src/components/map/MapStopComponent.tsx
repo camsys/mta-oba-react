@@ -54,9 +54,10 @@ function MapStopComponent  ({stopDatum, mapStopMarkers, zIndexOverride}:
         // map: map,
         // visible: defaultVisibility,
         key: COMPONENT_IDENTIFIER+"_"+String(stopDatum.id),
-        id: COMPONENT_IDENTIFIER+"_"+String(stopDatum.id)
+        id: COMPONENT_IDENTIFIER+"_"+String(stopDatum.id),
+        keyboard:false
     };
-    console.log('generating MapStopComponent: ', stopDatum,markerOptions,mapStopMarkers,zIndexOverride)
+    // console.log('generating MapStopComponent: ', stopDatum,markerOptions,mapStopMarkers,zIndexOverride)
 
     const { state} = useContext(CardStateContext);
 
@@ -69,8 +70,9 @@ function MapStopComponent  ({stopDatum, mapStopMarkers, zIndexOverride}:
                     typeof mapStopMarkers!=='undefined'
                         ?mapStopMarkers.current.set(stopDatum.id,r):null
                 }}
+                tabIndex={-1}
                 >
-            <Popup key={stopDatum.id} className="map-popup stop-popup">
+            <Popup key={stopDatum.id} className="map-popup stop-popup" tabIndex={-1}>
                 <img src={stopPopupIcon} alt="busstop icon" className="icon"/>
                 <div className="popup-info">
                     <span className="name">{stopDatum.name}</span>

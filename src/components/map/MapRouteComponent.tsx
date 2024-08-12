@@ -29,8 +29,8 @@ function MapRouteComponent  ({mapRouteComponentDatum}:RouteDirectionInterface) :
     }
 
     let out = (<React.Fragment>
-        <Polyline {...polylineOptions}/>
-        {highlightedId==mapRouteComponentDatum.routeId ? <Polyline {...highlightedPolylineOptions}/>: null
+        <Polyline {...polylineOptions} tabIndex={-1}/>
+        {highlightedId==mapRouteComponentDatum.routeId ? <Polyline {...highlightedPolylineOptions} tabIndex={-1}/>: null
         }
     </React.Fragment>)
     return out

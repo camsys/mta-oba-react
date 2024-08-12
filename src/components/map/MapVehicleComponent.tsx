@@ -43,7 +43,7 @@ function MapVehicleComponent  (
         vehicleId: vehicleDatum.vehicleId,
         routeId: vehicleDatum.routeId,
         // key:COMPONENT_IDENTIFIER+"_"+vehicleDatum.vehicleId,
-        key:COMPONENT_IDENTIFIER+"_"+vehicleDatum.vehicleId,
+        key:COMPONENT_IDENTIFIER+"_"+vehicleDatum.vehicleId + "_"+vehicleDatum.longLat,
         position:vehicleDatum.longLat,
         icon: icon,
         id: COMPONENT_IDENTIFIER+"_"+vehicleDatum.vehicleId
@@ -60,6 +60,7 @@ function MapVehicleComponent  (
                            typeof vehicleRefs!=='undefined'
                                ?vehicleRefs.current.set(vehicleDatum.vehicleId,r):null
                        }}
+                       keyboard={false}
     >
         <Popup key={vehicleDatum.vehicleId+"_"+vehicleDatum.longLat} className="map-popup vehicle-popup">
             <img src={vehicleDatum.strollerVehicle?busStroller:bus} alt="bus" className="icon"/>

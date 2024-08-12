@@ -44,35 +44,36 @@ const MapVehicleElements = () :JSX.Element =>{
             if(vehicleDataForRoute!=null){
                 console.log(`processing vehicleDataForRoute`,vehicleDataForRoute)
                 vehicleDataForRoute.forEach(vehicleDatum=>{
-                    if(vehicleObjsRefs.current.has(vehicleDatum.vehicleId) && typeof vehicleObjsRefs.current.get(vehicleDatum.vehicleId)!=="undefined"){
-                        // update vehicle to be in new pos
-                        vehicleObjsRefs.current.get(vehicleDatum.vehicleId).setLatLng(vehicleDatum.longLat)
-                    }
-                    else{
-                        vehicleComponentsRef.current.set(vehicleDatum.vehicleId,
-                            <MapVehicleComponent {...{vehicleDatum,vehicleRefs: vehicleObjsRefs}} key={vehicleDatum.vehicleId}/>)
-                    }
-                    mapVehicleComponents.push(vehicleComponentsRef.current.get(vehicleDatum.vehicleId))
+                    // if(vehicleObjsRefs.current.has(vehicleDatum.vehicleId) && typeof vehicleObjsRefs.current.get(vehicleDatum.vehicleId)!=="undefined"){
+                    //     // update vehicle to be in new pos
+                    //     vehicleObjsRefs.current.get(vehicleDatum.vehicleId).setLatLng(vehicleDatum.longLat)
+                    // }
+                    // else{
+                    //     vehicleComponentsRef.current.set(vehicleDatum.vehicleId,
+                    //         <MapVehicleComponent {...{vehicleDatum,vehicleRefs: vehicleObjsRefs}} key={vehicleDatum.vehicleId}/>)
+                    // }
+                    // mapVehicleComponents.push(vehicleComponentsRef.current.get(vehicleDatum.vehicleId))
+                    mapVehicleComponents.push(<MapVehicleComponent {...{vehicleDatum,vehicleRefs: vehicleObjsRefs}} key={vehicleDatum.vehicleId}/>)
                 });
             }
             console.log("map vehicle components", mapVehicleComponents)
         })
     }
 
-    // useEffect(() => {
-    //     console.log("map stop component markers opening popup ",mapStopMarkers,mapStopMarkers.current)
-    //     if(mapStopMarkers && state.currentCard.type===CardType.StopCard) {
-    //         let stopId = state.currentCard.datumId;
-    //         if(typeof mapStopMarkers.current.get(stopId)!=='undefined'
-    //             && mapStopMarkers.current.get(stopId).getPopup()){
-    //
-    //             console.log("map stop component markers popup value is",
-    //                 mapStopMarkers.current.get(stopId).getPopup(),
-    //                 state.currentCard.datumId)
-    //             mapStopMarkers.current.get(stopId).openPopup()
-    //         }
-    //     }
-    // },[state])
+    useEffect(() => {
+        console.log("updating vehicle markers ",state.currentCard,vehicleObjsRefs.current)
+        if(vehicleObjsRefs && state.currentCard.type===CardType.VehicleCard) {
+            let vehicleId = state.currentCard.datumId;
+            if(typeof vehicleObjsRefs.current.get(vehicleId)!=='undefined'
+                && vehicleObjsRefs.current.get(vehicleId).getPopup()){
+
+                console.log("map vehicle component markers popup value is",
+                    vehicleObjsRefs.current.get(vehicleId).getPopup(),
+                    state.currentCard.datumId)
+                vehicleObjsRefs.current.get(vehicleId).openPopup()
+            }
+        }
+    },[state,vehicleState])
 
 
     return (
@@ -82,6 +83,14 @@ const MapVehicleElements = () :JSX.Element =>{
     )
 }
 
+
+const loadPopup = (datumId,leafletRefObjs) :void=>{
+    if(leafletRefObjs &&typeof leafletRefObjs.current.get(datumId)!=='undefined'
+        && leafletRefObjs.current.get(datumId)!==null
+        && leafletRefObjs.current.get(datumId).getPopup()){
+        leafletRefObjs.current.get(datumId).openPopup()
+    }
+}
 
 
 
@@ -153,21 +162,25 @@ const RoutesAndStops = () :JSX.Element=>{
             mapStopComponentsToDisplay.set(stopId,mapStopComponents.current.get(stopId));
         }
     })
-    console.log("map stop component markers opening popup outside of effect",mapStopMarkers.current)
-    useEffect(() => {
-        console.log("map stop component markers opening popup ",mapStopMarkers,mapStopMarkers.current)
-        if(mapStopMarkers && state.currentCard.type===CardType.StopCard) {
-            let stopId = state.currentCard.datumId;
-            if(typeof mapStopMarkers.current.get(stopId)!=='undefined'
-                && mapStopMarkers.current.get(stopId).getPopup()){
 
-                console.log("map stop component markers popup value is",
-                    mapStopMarkers.current.get(stopId).getPopup(),
-                    state.currentCard.datumId)
-                mapStopMarkers.current.get(stopId).openPopup()
+
+    console.log("map stop component markers opening popup outside of effect",mapStopMarkers.current)
+    const addStopPopup = () =>{
+        console.log("map stop component markers opening popup ",mapStopMarkers,mapStopMarkers.current)
+        if( state.currentCard.type===CardType.StopCard) {
+            loadPopup(state.currentCard.datumId,mapStopMarkers)
+        }
+    }
+    useEffect(() => {
+        addStopPopup()
+    },[state])
+    useMapEvents(
+        {
+            zoomend() {
+                addStopPopup()
             }
         }
-    },[state])
+    )
 
     console.log("map route components", mapRouteComponents);
     console.log("map stop components", mapStopComponents.current);
@@ -175,13 +188,11 @@ const RoutesAndStops = () :JSX.Element=>{
 
     return (
         <React.Fragment>
-            <LayerGroup>
+            <LayerGroup className={"MapRouteElements"}>
                 {Array.from(mapRouteComponents.values()).flat()}
             </LayerGroup>
-            <LayerGroup>
-
-            </LayerGroup>
             {StopComponents(Array.from(mapStopComponentsToDisplay.values()).flat())}
+
             <LayerGroup>
                 <Highlighted/>
             </LayerGroup>
@@ -289,7 +300,6 @@ const HandleMapBoundsAndZoom = () : void=>{
 }
 
 const StopComponents = (stopComponents) => {
-    return stopComponents
 
 
     let map = useMap()
@@ -303,28 +313,31 @@ const StopComponents = (stopComponents) => {
         zoomend() { // zoom event (when zoom animation ended)
             console.log("map zoom event end")
             setZoom(map.getZoom())
+
         }
     });
 
     console.log("show stops? ",map.getZoom() >= 15.1)
-    return(Zoom>15.1?stopComponents:null)
+    // return(Zoom>15.1?<LayerGroup>stopComponents</LayerGroup>:<LayerGroup display={false}>stopComponents</LayerGroup>)
+    return(Zoom>15.1?stopComponents:<LayerGroup display={false}>stopComponents</LayerGroup>)
+    // return stopComponents
 }
 
 const MapEvents = () :boolean=> {
     console.log("generating map events")
-    let map = useMap()
-    useMapEvents({
-        click() {
-            console.log("running map click method")
-
-        },
-        zoomend() { // zoom event (when zoom animation ended)
-            // console.log("tryna use map")
-            // console.log("map used")
-            // const zoom = map.getZoom(); // get current Zoom of map
-
-        }
-    });
+    // let map = useMap()
+    // useMapEvents({
+    //     click() {
+    //         console.log("running map click method")
+    //
+    //     },
+    //     zoomend() { // zoom event (when zoom animation ended)
+    //         // console.log("tryna use map")
+    //         // console.log("map used")
+    //         // const zoom = map.getZoom(); // get current Zoom of map
+    //
+    //     }
+    // });
 
     return false;
 };
@@ -348,6 +361,7 @@ export const MapComponent = () :JSX.Element => {
                 center={startingMapCenter}
                 zoom={startingZoom}
                 scrollWheelZoom={true}
+                tabIndex={-1}
             >
                 <ReactLeafletGoogleLayer
                     apiKey='AIzaSyA-PBbsL_sXOTfo2KbkVx8XkEfcIe48xzw'
