@@ -30,12 +30,12 @@ const SearchBar = () => {
     const onSuggestionSelected = (event, { suggestion }) => {
         console.log('Selected suggestion:', suggestion);
         const lineRef = suggestion.value
-        const { search } = useSearch();
+
 
         search(lineRef);
     };
 
-
+    const { search } = useSearch();
     const {state} = useContext(CardStateContext)
     const [searchTerm, setSearchTerm] = useState("Search");
     console.log("Search",searchTerm)
