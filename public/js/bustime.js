@@ -88,18 +88,16 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Check if the clicked element or any of its ancestrs have the id 'map-toggle'
 
-    // map trigger open and close
-    var mapToggle = event.target.closest('#map-toggle');
-    
-    // map trigger closest parent with class 'map-wrap'
-    var mapWrap = mapToggle.closest('#map-wrap');
-    
-    window.console.log('boop');
-    window.console.log(mapToggle);
-    window.console.log(mapWrap);
 
     if (mapToggle) {
-      // window.console.log('mapToggle clicked');
+      // map trigger open and close
+      var mapToggle = event.target.closest('#map-toggle');
+      
+      // map trigger closest parent with class 'map-wrap'
+      var mapWrap = mapToggle.closest('#map-wrap');
+      
+      window.console.log(mapToggle);
+      window.console.log(mapWrap);
       
       mapWrap.classList.toggle('open');
 
