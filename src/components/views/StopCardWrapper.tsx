@@ -48,6 +48,7 @@ const RouteDirection = (routeDirectionDatum:RouteMatchDirectionInterface,stopId:
                 aria-label={`Toggle ${routeDirectionDatum.routeId.split("_")[1]} to ${routeDirectionDatum.destination}`}
                 onMouseEnter={() => highlightId(routeDirectionDatum.routeId)}
                 onMouseLeave={() => highlightId(null)}
+                tabIndex={0}
             >
               <span className="label" style={{ borderColor: '#'+routeDirectionDatum.color}}>
                 <strong>{routeDirectionDatum.routeId.split("_")[1]}</strong> {routeDirectionDatum.destination}
