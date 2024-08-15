@@ -85,22 +85,48 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
     }
+
+    // Check if the clicked element or any of its ancestrs have the id 'map-toggle'
+
+    // map trigger open and close
+    var mapToggle = event.target.closest('#map-toggle');
+    
+    // map trigger closest parent with class 'map-wrap'
+    var mapWrap = mapToggle.closest('#map-wrap');
+    
+    window.console.log('boop');
+    window.console.log(mapToggle);
+    window.console.log(mapWrap);
+
+    if (mapToggle) {
+      // window.console.log('mapToggle clicked');
+      
+      mapWrap.classList.toggle('open');
+
+      mapToggle.setAttribute('aria-expanded', mapWrap.classList.contains('open'));
+      mapToggle.setAttribute('aria-label', mapWrap.classList.contains('open') ? 'Toggle Map Visibility (currently visible)' : 'Toggle Map Visibility (currently hidden)');
+      mapToggle.setAttribute('aria-pressed', mapWrap.classList.contains('open'));
+    }
+
+
   });
+
+
 
 
 
   // all .close-popup-button buttons close their parent popup
-  var popupCloseButtons = document.querySelectorAll('.close-popup-button');
+  // var popupCloseButtons = document.querySelectorAll('.close-popup-button');
 
-  popupCloseButtons.forEach(function(button) {
-    button.addEventListener('click', function() {
-      var parent = this.closest('.map-popup');
-      if (parent) {
-        // add class to hide the popup
-        parent.classList.add('hidden');
-      }
-    });
-  });
+  // popupCloseButtons.forEach(function(button) {
+  //   button.addEventListener('click', function() {
+  //     var parent = this.closest('.map-popup');
+  //     if (parent) {
+  //       // add class to hide the popup
+  //       parent.classList.add('hidden');
+  //     }
+  //   });
+  // });
 
  // its possible that its better to build this into react so i dont have to go so roundabout to get there?
   const observer = new MutationObserver((mutationsList) => {

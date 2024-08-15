@@ -27,7 +27,7 @@ function getMapWrap  () : JSX.Element {
     OBA.Util.log("adding map-wrapper")
     return(
         <ErrorBoundary>
-            <div id="map-wrap" style={{top: mapVisible?null:0}}>
+            <div id="map-wrap">
                 <div className="bottom-buttons" id="map-trigger-wrao">
                     <button id="refresh" className="button icon-button-left" style={{display: 'none'}}>
                   <span className="svg-icon-wrap" role="presentation" aria-hidden="true">
