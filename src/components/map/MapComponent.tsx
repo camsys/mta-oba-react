@@ -371,7 +371,6 @@ export const MapComponent = () :JSX.Element => {
     return (
         <React.Fragment>
             <MapContainer
-                style={{ height: '100vh', width: '100wh' }}
                 center={startingMapCenter}
                 zoom={startingZoom}
                 scrollWheelZoom={true}
