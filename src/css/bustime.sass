@@ -33,6 +33,10 @@ h1, h2, h3, h4, h5, h6
   margin: 0
   padding: 0
 
+h1
+  font-size: 2em
+  margin: 0 0 .5em 0
+
 h4
   .card &, .inner-card &
     font-size: .875em
@@ -42,6 +46,7 @@ h4
 p
   margin: 0 0 1em 0
   padding: 0
+  line-height: 1.4
     
 ul
   &:not(.menu):not(.card-details):not(.route-stops):not(.approaching-buses):not([role="listbox"])
@@ -306,6 +311,95 @@ button, .button
   display: flex
   flex-wrap: nowrap
   align-items: stretch
+  &.no-map
+    flex-direction: column
+    background-color: $ui-gray
+    .main-content
+      padding: $content-padding
+      max-width: $content-max-width
+      flex-grow: 1
+    .page-content
+      background-color: $white
+      padding: $content-padding
+      p
+        color: $black2
+      
+
+.header
+  background-color: $black2
+  color: $white
+  padding: $header-padding
+  border-bottom: .25em solid $border-gray
+  #logo-link
+    display: block
+    width: 100%
+    height: auto
+    max-width: 100%
+    margin: 0 0 1.25em 0
+    padding: 0
+    position: relative
+    &::after
+      opacity: 0
+      transition: opacity .25s ease-in-out
+      content: ''
+      position: absolute
+      right: 0
+      bottom: -#{$thick-border}
+      left: 0
+      background-color: $mta-yellow
+      height: $thick-border
+    .logo
+      display: inline-block
+      width: 100%
+      height: auto
+      margin: 0
+      padding: 0
+      opacity: 1
+      transition: opacity .25s ease-in-out
+    &:hover
+      .logo
+        opacity: .75
+    &:focus
+      outline: none
+      border: none
+      &::after
+        opacity: 1
+  .menu
+    display: flex
+    flex-wrap: nowrap
+    justify-content: space-between
+    font-size: .75em
+    line-height: 1
+    list-style: none
+    padding: 0
+    margin: 0
+    a
+      color: $white
+      text-decoration: none
+      display: inline-block
+      position: relative
+      +yellow-bottom-focus
+      &:hover
+        color: $white
+        text-decoration: underline
+  .no-map &
+    padding: 0
+    .header-inner
+      display: flex
+      flex-wrap: nowrap
+      justify-content: space-between
+      align-items: baseline
+      width: 100%
+      max-width: $content-max-width
+      padding: $header-padding
+      gap: $content-padding
+    #logo-link
+      width: 100%
+      max-width: calc($sidebar-width - $content-padding*2)
+      margin: 0
+    .menu
+      gap: $content-padding
+      font-size: 1em
 
 #sidebar
   width: 100%
@@ -319,64 +413,6 @@ button, .button
   align-items: stretch
   align-content: stretch
   height: calc(100vh - #{$button-height + 2rem})
-  .header
-    background-color: $black2
-    color: $white
-    padding: $content-padding
-    padding-top: .5em
-    border-bottom: .25em solid $border-gray
-    #logo-link
-      display: block
-      width: 100%
-      height: auto
-      max-width: 100%
-      margin: 0 0 1.25em 0
-      padding: 0
-      position: relative
-      &::after
-        opacity: 0
-        transition: opacity .25s ease-in-out
-        content: ''
-        position: absolute
-        right: 0
-        bottom: -#{$thick-border}
-        left: 0
-        background-color: $mta-yellow
-        height: $thick-border
-      .logo
-        display: inline-block
-        width: 100%
-        height: auto
-        margin: 0
-        padding: 0
-        opacity: 1
-        transition: opacity .25s ease-in-out
-      &:hover
-        .logo
-          opacity: .75
-      &:focus
-        outline: none
-        border: none
-        &::after
-          opacity: 1
-    .menu
-      display: flex
-      flex-wrap: nowrap
-      justify-content: space-between
-      font-size: .75em
-      line-height: 1
-      list-style: none
-      padding: 0
-      margin: 0
-      a
-        color: $white
-        text-decoration: none
-        display: inline-block
-        position: relative
-        +yellow-bottom-focus
-        &:hover
-          color: $white
-          text-decoration: underline
   #search
     padding: $content-padding
     background: $mta-blue
