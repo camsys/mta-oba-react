@@ -375,6 +375,7 @@ export const MapComponent = () :JSX.Element => {
                 zoom={startingZoom}
                 scrollWheelZoom={true}
                 tabIndex={-1}
+                id="map"
             >
                 <ReactLeafletGoogleLayer
                     apiKey='AIzaSyA-PBbsL_sXOTfo2KbkVx8XkEfcIe48xzw'
