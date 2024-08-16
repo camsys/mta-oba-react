@@ -76,7 +76,7 @@ function MapStopComponent  ({stopDatum, mapStopMarkers, zIndexOverride}:
                 <img src={stopPopupIcon} alt="busstop icon" className="icon"/>
                 <div className="popup-info">
                     <span className="name">{stopDatum.name}</span>
-                    <span className="stop-code">{"Stopcode "+stopDatum.id}</span>
+                    <span className="stop-code">{"Stopcode "+stopDatum.id.split("_")[1]}</span>
                 </div>
             </Popup>
         </Marker>);
