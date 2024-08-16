@@ -75,7 +75,9 @@ const VehicleCard = (routeMatch:RouteMatch,vehicleId:string) : JSX.Element=> {
             <div className="card-header" style={{ borderColor: '#'+routeMatch.color}}
                  onMouseEnter={() => highlightId(routeMatch.routeId)}
                  onMouseLeave={() => highlightId(null)}>
-                <h3 className="card-title" onClick={() => search(routeMatch.routeId.split("_")[1])}>
+                <h3 className="card-title"
+                    tabIndex={0}
+                    onClick={() => search(routeMatch.routeId.split("_")[1])}>
                     <img src={vehicleDatum.strollerVehicle?"/img/icon/bus-stroller.svg":"/img/icon/bus.svg"}
                          alt={vehicleDatum.strollerVehicle?"bus and stroller icon":"bus icon"} className="icon" />
                     {OBA.Config.noWidows(routeMatch.routeTitle)}
