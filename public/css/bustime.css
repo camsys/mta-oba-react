@@ -743,6 +743,9 @@ button:hover, .button:hover {
 .main-body.no-map .page-content p {
   color: #202025;
 }
+.main-body.no-map .page-content p a {
+  font-weight: bold;
+}
 
 .header {
   background-color: #202025;
@@ -864,6 +867,9 @@ button:hover, .button:hover {
 .no-map .header .menu {
   gap: 1rem;
   font-size: 1em;
+}
+.no-map .header .menu a.active {
+  font-weight: bold;
 }
 
 #sidebar {
