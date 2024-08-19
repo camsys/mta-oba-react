@@ -8,10 +8,11 @@
 body
   font-family: Helvetica, Arial, sans-serif
   font-size: 16px
-  min-width: 100vw
+  width: 100vw
   min-height: 100vh
   position: relative
   color: $black
+  overflow-x: hidden
   *
     box-sizing: border-box
   +mq($sidebar-switch)
@@ -32,10 +33,19 @@ h1, h2, h3, h4, h5, h6
   font-size: 1em
   margin: 0
   padding: 0
+  // a
+  //   font-size: inherit
+  //   color: inherit
 
 h1
   font-size: 2em
   margin: 0 0 .5em 0
+
+h2
+  font-size: 1.5em
+  margin: 0 0 .5em 0
+  #app &
+    font-size: 1em
 
 h4
   .card &, .inner-card &
@@ -53,7 +63,7 @@ ul
     list-style: none
     padding: 0
     margin: 1em 0
-    li
+    >li
       margin: 0 0 .5em 0
       padding: 0 0 0 .75em
       position: relative
@@ -314,6 +324,11 @@ button, .button
   &.no-map
     flex-direction: column
     background-color: $ui-gray
+    height: auto
+    width: 100vw
+    position: relative
+    flex-grow: 1
+    min-height: 100vh
     .main-content
       padding: $content-padding
       max-width: $content-max-width
@@ -321,10 +336,19 @@ button, .button
     .page-content
       background-color: $white
       padding: $content-padding
+      margin-top: $content-padding
       p
         color: $black2
+      p, ul, ol
         a
           font-weight: bold
+      ul, ol
+        padding: 0px
+        margin-left: 1em!important
+        ul, ol
+          margin: 1em 0
+      &:first-child
+        margin-top: 0
       
 
 .header
@@ -762,6 +786,23 @@ button, .button
           background-image: url(/img/icon/right-caret_white.svg)
   >.card-content
     +card-pad-sides
+  &.favorite
+    .favorite-toggle
+      .add, .add-icon
+        display: none
+      .remove, .remove-icon
+        display: inline-block!important
+    .card-details
+      padding-right: 2em
+      position: relative
+      .favorite-indicator
+        content: ''
+        display: block
+        width: 1.25rem
+        height: 1.25rem
+        position: absolute
+        top: $content-padding - .125rem
+        right: 0
 
 .inner-card
   margin: 0
