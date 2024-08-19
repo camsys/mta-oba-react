@@ -786,15 +786,12 @@ button, .button
           background-image: url(/img/icon/right-caret_white.svg)
   >.card-content
     +card-pad-sides
-  .favorite-toggle
-    width: 100%
-    margin-bottom: $content-padding/2
   &.favorite
     .favorite-toggle
-      .add
+      .add, .add-icon
         display: none
-      .remove
-        display: inline!important
+      .remove, .remove-icon
+        display: inline-block!important
 
 .inner-card
   margin: 0
