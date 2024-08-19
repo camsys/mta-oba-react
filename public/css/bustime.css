@@ -315,10 +315,11 @@ template {
 body {
   font-family: Helvetica, Arial, sans-serif;
   font-size: 16px;
-  min-width: 100vw;
+  width: 100vw;
   min-height: 100vh;
   position: relative;
   color: #000;
+  overflow-x: hidden;
 }
 body * {
   -webkit-box-sizing: border-box;
@@ -357,6 +358,11 @@ h1 {
   margin: 0 0 0.5em 0;
 }
 
+h2 {
+  font-size: 1.5em;
+  margin: 0 0 0.5em 0;
+}
+
 .card h4, .inner-card h4 {
   font-size: 0.875em;
   font-weight: bold;
@@ -374,12 +380,12 @@ ul:not(.menu):not(.card-details):not(.route-stops):not(.approaching-buses):not([
   padding: 0;
   margin: 1em 0;
 }
-ul:not(.menu):not(.card-details):not(.route-stops):not(.approaching-buses):not([role=listbox]):not(.breadcrumb) li {
+ul:not(.menu):not(.card-details):not(.route-stops):not(.approaching-buses):not([role=listbox]):not(.breadcrumb) > li {
   margin: 0 0 0.5em 0;
   padding: 0 0 0 0.75em;
   position: relative;
 }
-ul:not(.menu):not(.card-details):not(.route-stops):not(.approaching-buses):not([role=listbox]):not(.breadcrumb) li::before {
+ul:not(.menu):not(.card-details):not(.route-stops):not(.approaching-buses):not([role=listbox]):not(.breadcrumb) > li::before {
   content: "■";
   display: inline-block;
   font-size: 0.375em;
@@ -387,21 +393,21 @@ ul:not(.menu):not(.card-details):not(.route-stops):not(.approaching-buses):not([
   left: 0;
   top: 0.875em;
 }
-ul:not(.menu):not(.card-details):not(.route-stops):not(.approaching-buses):not([role=listbox]):not(.breadcrumb) li ul.links {
+ul:not(.menu):not(.card-details):not(.route-stops):not(.approaching-buses):not([role=listbox]):not(.breadcrumb) > li ul.links {
   display: -webkit-inline-box;
   display: -ms-inline-flexbox;
   display: inline-flex;
   gap: 0.75em;
   margin: 0 0 0 0.5em;
 }
-ul:not(.menu):not(.card-details):not(.route-stops):not(.approaching-buses):not([role=listbox]):not(.breadcrumb) li ul.links li {
+ul:not(.menu):not(.card-details):not(.route-stops):not(.approaching-buses):not([role=listbox]):not(.breadcrumb) > li ul.links li {
   padding: 0;
   margin: 0;
 }
-ul:not(.menu):not(.card-details):not(.route-stops):not(.approaching-buses):not([role=listbox]):not(.breadcrumb) li ul.links li::before {
+ul:not(.menu):not(.card-details):not(.route-stops):not(.approaching-buses):not([role=listbox]):not(.breadcrumb) > li ul.links li::before {
   content: none;
 }
-ul:not(.menu):not(.card-details):not(.route-stops):not(.approaching-buses):not([role=listbox]):not(.breadcrumb) li ul.links li a::after {
+ul:not(.menu):not(.card-details):not(.route-stops):not(.approaching-buses):not([role=listbox]):not(.breadcrumb) > li ul.links li a::after {
   content: "";
   position: absolute;
   left: 0;
@@ -413,12 +419,12 @@ ul:not(.menu):not(.card-details):not(.route-stops):not(.approaching-buses):not([
   -webkit-transition: opacity 0.25s ease-in-out;
   transition: opacity 0.25s ease-in-out;
 }
-ul:not(.menu):not(.card-details):not(.route-stops):not(.approaching-buses):not([role=listbox]):not(.breadcrumb) li ul.links li a:focus {
+ul:not(.menu):not(.card-details):not(.route-stops):not(.approaching-buses):not([role=listbox]):not(.breadcrumb) > li ul.links li a:focus {
   outline: none;
   border: none;
   text-decoration: none;
 }
-ul:not(.menu):not(.card-details):not(.route-stops):not(.approaching-buses):not([role=listbox]):not(.breadcrumb) li ul.links li a:focus::after {
+ul:not(.menu):not(.card-details):not(.route-stops):not(.approaching-buses):not([role=listbox]):not(.breadcrumb) > li ul.links li a:focus::after {
   opacity: 1;
 }
 
@@ -728,6 +734,13 @@ button:hover, .button:hover {
       -ms-flex-direction: column;
           flex-direction: column;
   background-color: #f3f3f3;
+  height: auto;
+  width: 100vw;
+  position: relative;
+  -webkit-box-flex: 1;
+      -ms-flex-positive: 1;
+          flex-grow: 1;
+  min-height: 100vh;
 }
 .main-body.no-map .main-content {
   padding: 1rem;
@@ -739,12 +752,23 @@ button:hover, .button:hover {
 .main-body.no-map .page-content {
   background-color: #fff;
   padding: 1rem;
+  margin-top: 1rem;
 }
 .main-body.no-map .page-content p {
   color: #202025;
 }
-.main-body.no-map .page-content p a {
+.main-body.no-map .page-content p a, .main-body.no-map .page-content ul a, .main-body.no-map .page-content ol a {
   font-weight: bold;
+}
+.main-body.no-map .page-content ul, .main-body.no-map .page-content ol {
+  padding: 0px;
+  margin-left: 1em !important;
+}
+.main-body.no-map .page-content ul ul, .main-body.no-map .page-content ul ol, .main-body.no-map .page-content ol ul, .main-body.no-map .page-content ol ol {
+  margin: 1em 0;
+}
+.main-body.no-map .page-content:first-child {
+  margin-top: 0;
 }
 
 .header {
