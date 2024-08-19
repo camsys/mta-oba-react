@@ -1,12 +1,13 @@
-import React, {useContext, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import Cookies from "js-cookie";
-import {RouteInterface} from "../../js/updateState/DataModels";
-import {FavoritesCookieStateContext} from "../util/MiscStateComponent";
-import {isRouteInterface} from "../../js/updateState/DataModelsUtils";
+import {RouteInterface, StopInterface} from "../../js/updateState/DataModels";
+import {FavoritesCookieStateContext, useFavorite} from "../util/MiscStateComponent";
+import {isRouteInterface, isStopInterface} from "../../js/updateState/DataModelsUtils";
 
 
 export const FavoriteItem = ({datum}) =>{
-    const {removeFavorite} = useContext(FavoritesCookieStateContext)
+    let {removeFavorite} = useFavorite();
+
 
     if(isRouteInterface(datum)){
         let routeDatum = datum as RouteInterface
@@ -16,19 +17,33 @@ export const FavoriteItem = ({datum}) =>{
                                             <strong>{routeDatum.routeId.split("_")[1]}</strong> {routeDatum.description}
                                         </span>
             </a>
-            <button className="remove-favorite small-link clear-button" tabIndex="-1" onClick={()=>{removeFavorite(routeDatum.routeId)}}>Remove Route From Favorites</button>
+            <button className="remove-favorite small-link clear-button" tabIndex="-1" onClick={()=>{removeFavorite(datum)}}>Remove Route From Favorites</button>
         </li>)
     }
 
-
-
+    if(isStopInterface(datum)){
+        let stopDatum = datum as StopInterface
+        return(
+            <li>
+                <a href="#" className="favorite-stop" tabIndex="-1">
+                    <span className="label"><strong>{stopDatum.name}</strong> {stopDatum.name}</span>
+                </a>
+                <button className="remove-favorite small-link clear-button" tabIndex="-1" onClick={()=>{removeFavorite(datum)}}>Remove Stop From Favorites</button>
+            </li>
+        )
+    }
 }
 
 export const FavoritesMenu = () => {
 
     Cookies.set('favorites', "{\"favorites\":[{\"color\":\"00AEEF\",\"description\":\"via 86th St \\/ Ocean Pkwy\",\"routeId\":\"MTA NYCT_B1\",\"longName\":\"Bay Ridge - Manhattan Beach\",\"routeTitle\":\"B1\",\"textColor\":\"FFFFFF\",\"type\":3}]}")
+    // Cookies.set('favorites', "{\"favorites\":[{\"name\":\"00AEEF\",\"longLat\":[100,94],\"id\":\"MTA NYCT_B1\",\"stopDirection\":\"Bay Ridge - Manhattan Beach\"")
 
     const {favoritesState} = useContext(FavoritesCookieStateContext)
+    const [, setForceUpdate] = useState(0);
+    useEffect(() => {
+        setForceUpdate(n => n + 1);
+    }, [favoritesState]);
 
 
     // let {jsonCookie} = useJsonCookie("favorites")
