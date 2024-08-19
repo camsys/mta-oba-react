@@ -11,6 +11,10 @@ export class AgencyAndId {
     }
 }
 
+export interface FavoritesCookie{
+    favorites : [StopInterface | RouteInterface]
+}
+
 export interface StopInterface {
     name: string;
     longLat: [number, number];
@@ -211,7 +215,14 @@ export class SearchMatch {
     }
 }
 
-export class RouteMatch extends SearchMatch {
+export interface RouteInterface {
+    color: string;
+    routeId: string;
+    routeTitle: string;
+    description: string;
+}
+
+export class RouteMatch extends SearchMatch implements RouteInterface{
     color: string;
     routeId: string;
     routeTitle: string;

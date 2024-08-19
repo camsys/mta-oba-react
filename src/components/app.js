@@ -15,6 +15,7 @@ import {siriGetVehiclesForRoutesEffect, siriGetVehiclesForVehicleViewEffect} fro
 import {siriGetVehiclesForStopViewEffect} from "../js/updateState/SiriStopEffects";
 import {CardType} from "../js/updateState/DataModels";
 import MapWrapper from "./map/MapWrapper.tsx";
+import {FavoritesCookieStateProvider} from "Components/util/MiscStateComponent";
 
 
 
@@ -85,9 +86,11 @@ const Root = () => {
             <SearchStateProviders>
                 <VehicleStateProvider>
                     <VehiclesApproachingStopsProvider>
-                        <MapHighlightingStateProvider>
-                            <App/>
-                        </MapHighlightingStateProvider>
+                        <FavoritesCookieStateProvider>
+                            <MapHighlightingStateProvider>
+                                <App/>
+                            </MapHighlightingStateProvider>
+                        </FavoritesCookieStateProvider>
                     </VehiclesApproachingStopsProvider>
                 </VehicleStateProvider>
             </SearchStateProviders>
