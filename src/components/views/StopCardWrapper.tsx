@@ -76,13 +76,16 @@ export function StopCardContent({stopMatch}: StopMatch):JSX.Element{
                 route=>route.directions.map(
                     dir => RouteDirection(dir,stopMatch.id.split("_")[1])
                 ))}
-
             <div className="text-note">
                 <p>
                     Text stopcode <strong>{stopMatch.id.split("_")[1]}</strong> to 511123 to receive an up-to-date list of buses
                     en-route on your phone.
                 </p>
             </div>
+            <button className="favorite-toggle button" tabIndex={0}>
+                <span className="add">Add Stop to Favorites</span>
+                <span className="remove" style={{ display: 'none'}}>Remove Stop from Favorites</span>
+            </button>
             <ul className="menu icon-menu card-menu">
                 <li>
                     <button aria-label="Center & Zoom here on the Map" tabIndex="0">

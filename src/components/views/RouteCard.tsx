@@ -87,6 +87,10 @@ export function RouteCardContent({ routeMatch}: RouteMatch): JSX.Element  {
                 (<RouteDirection
                     datum={dir.routeDirectionComponentData}
                     color={routeMatch.color} key={index}/>))}
+            <button className="favorite-toggle button" tabIndex={0}>
+                <span className="add">Add Route to Favorites</span>
+                <span className="remove" style={{ display: 'none'}}>Remove Route from Favorites</span>
+            </button>
         </React.Fragment>)
 }
 

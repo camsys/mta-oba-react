@@ -1484,6 +1484,16 @@ button:hover, .button:hover {
 .card > .card-content {
   padding: 0 0.5rem;
 }
+.card .favorite-toggle {
+  width: 100%;
+  margin-bottom: 0.5rem;
+}
+.card.favorite .favorite-toggle .add {
+  display: none;
+}
+.card.favorite .favorite-toggle .remove {
+  display: inline !important;
+}
 
 .inner-card {
   margin: 0;
