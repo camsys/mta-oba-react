@@ -1490,6 +1490,19 @@ button:hover, .button:hover {
 .card.favorite .favorite-toggle .remove, .card.favorite .favorite-toggle .remove-icon {
   display: inline-block !important;
 }
+.card.favorite .card-details {
+  padding-right: 2em;
+  position: relative;
+}
+.card.favorite .card-details .favorite-indicator {
+  content: "";
+  display: block;
+  width: 1.25rem;
+  height: 1.25rem;
+  position: absolute;
+  top: 0.875rem;
+  right: 0;
+}
 
 .inner-card {
   margin: 0;
