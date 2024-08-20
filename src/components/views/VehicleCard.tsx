@@ -6,7 +6,9 @@ import {useSearch} from "../../js/updateState/SearchEffect";
 import {OBA} from "../../js/oba";
 import {useHighlight} from "../util/MapHighlightingStateComponent.tsx";
 import {MatchType, RouteMatch, SearchMatch, VehicleRtInterface} from "../../js/updateState/DataModels";
-import meeples from '../../../public/img/meeples/meeples-blank.png';
+import meeples from "../../../public/img/meeples/meeples-blank.png";
+import {useEffect, useState} from "react";
+import ErrorBoundary from "../util/errorBoundary";
 
 export const VehicleCardContentComponent = ({routeMatch,vehicleDatum}
                                                 :{routeMatch:RouteMatch,vehicleDatum:VehicleRtInterface})
@@ -68,6 +70,29 @@ const VehicleCard = (routeMatch:RouteMatch,vehicleId:string) : JSX.Element=> {
     const { vehicleState} = useContext(VehicleStateContext)
     let routeId = routeMatch.routeId.split("_")[1];
     let vehicleDatum = vehicleState[routeId+vehicleDataIdentifier].get(vehicleId)
+
+
+    const [loading, setLoading] = useState(true);
+    // bug where vehicle datum was null, happened shortly before release, temp fix, assuming it's because asyncs
+    // if vehicle datum is null, check every half second and then load
+
+    const checkLoading = () =>{
+        if(loading && vehicleDatum!==null && typeof vehicleDatum!=='undefined'){
+            setLoading(false)
+        }
+    }
+    checkLoading()
+    useEffect(() => {
+        if(loading){
+            const interval = setInterval(()=>{
+                checkLoading();
+                !loading?clearInterval(interval):null}, 100);
+            return () => clearInterval(interval);
+        }
+    }, [loading]);
+    if(loading) return(<ErrorBoundary><div>Loading...</div></ErrorBoundary>)
+
+
     console.log("generating VehicleCard ",routeId,vehicleDatum,vehicleState[routeId+updatedTimeIdentifier])
     let serviceAlertIdentifier = routeMatch.routeId
     return (

@@ -62,7 +62,9 @@ const MapVehicleElements = () :JSX.Element =>{
 
     useEffect(() => {
         console.log("updating vehicle markers ",state.currentCard,vehicleObjsRefs.current)
-        if(vehicleObjsRefs && state.currentCard.type===CardType.VehicleCard) {
+        if(vehicleObjsRefs && typeof vehicleObjsRefs.current === "object"
+            && typeof vehicleObjsRefs.current.map === 'function'
+            && state.currentCard.type===CardType.VehicleCard) {
             let vehicleId = state.currentCard.datumId;
             if(typeof vehicleObjsRefs.current.get(vehicleId)!=='undefined'
                 && vehicleObjsRefs.current.get(vehicleId).getPopup()){
