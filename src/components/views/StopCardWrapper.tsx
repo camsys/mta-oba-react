@@ -35,7 +35,7 @@ const RouteDirection = (routeDirectionDatum:RouteMatchDirectionInterface,stopId:
         stopCardVehicleData.has("MTA_"+stopId)
             ?stopCardVehicleData.get("MTA_"+stopId):null
     let routeId = routeDirectionDatum.routeId.split("_")[1];
-    let serviceAlertIdentifier = routeAndDir+ "_" + routeDirectionDatum.directionId
+    let serviceAlertIdentifier = routeAndDir
     let lastUpdateTime = stopCardVehicleData!==null
         ? OBA.Util.ISO8601StringToDate(vehiclesApproachingStopsState[routeAndDir+updatedTimeIdentifier]).getTime()
         : null
