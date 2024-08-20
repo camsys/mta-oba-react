@@ -3,16 +3,19 @@ import Cookies from "js-cookie";
 import {RouteInterface, StopInterface} from "../../js/updateState/DataModels";
 import {FavoritesCookieStateContext, useFavorite} from "../util/MiscStateComponent";
 import {isRouteInterface, isStopInterface} from "../../js/updateState/DataModelsUtils";
+import {useSearch} from "../../js/updateState/SearchEffect";
 
 
 export const FavoriteItem = ({datum}) =>{
     let {removeFavorite} = useFavorite();
+    let {search} = useSearch()
 
 
     if(isRouteInterface(datum)){
         let routeDatum = datum as RouteInterface
         return(<li>
-            <a href="#" className={`favorite-route route-border-left ${routeDatum.routeId.split("_")[1]}`} tabIndex="-1">
+            <a href="#" className={`favorite-route route-border-left ${routeDatum.routeId.split("_")[1]}`}
+               tabIndex="-1" onClick={()=>{search(routeDatum.routeId)}}>
                                         <span className="label" style={{ borderColor: '#'+routeDatum.color }}>
                                             <strong>{routeDatum.routeId.split("_")[1]}</strong> {routeDatum.description}
                                         </span>
@@ -25,8 +28,8 @@ export const FavoriteItem = ({datum}) =>{
         let stopDatum = datum as StopInterface
         return(
             <li>
-                <a href="#" className="favorite-stop" tabIndex="-1">
-                    <span className="label"><strong>{stopDatum.name}</strong> {stopDatum.name}</span>
+                <a href="#" className="favorite-stop" tabIndex="-1" onClick={()=>{search(stopDatum.id)}}>
+                    <span className="label"><strong>{stopDatum.id.split("_")[1]}</strong> {stopDatum.name}</span>
                 </a>
                 <button className="remove-favorite small-link clear-button" tabIndex="-1" onClick={()=>{removeFavorite(datum)}}>Remove Stop From Favorites</button>
             </li>
