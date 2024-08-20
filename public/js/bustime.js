@@ -75,6 +75,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 element.setAttribute('tabindex', '0');
               });
             }
+            // else, set tabindex of all inner elements to 0
+            else {
+              allInnerTabbableItems.forEach(function(element) {
+                element.setAttribute('tabindex', '0');
+              });
+            }
 
           }
 
