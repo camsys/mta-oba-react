@@ -50,13 +50,23 @@ const setCookies =(cookie:FavoritesCookie)=>{
     Cookies.set(favoritesIdentifier,JSON.stringify(cookie))
 }
 
+const isValidFavorite =(datum) =>{
+    if(!(isStopInterface(datum) || isRouteInterface(datum))){return false}
+    return true
+}
+
+const getId = (datum) =>{
+    if(!isValidFavorite(datum)){return null}
+    return (isRouteInterface(datum)? datum?.routeId : datum?.id)
+}
+
 const useFavorite = () =>{
     const {favoritesState,setFavoritesState} = useContext(FavoritesCookieStateContext)
     const removeFavorite = (datum:StopInterface | RouteInterface)=>{
-        if(!(isStopInterface(datum) || isRouteInterface(datum))){return}
+        if(!isValidFavorite(datum)){return}
         let targetId = isRouteInterface(datum)? datum?.routeId : datum?.id
         let newFavorites = {favorites:[]}
-        newFavorites["favorites"] = favoritesState.favorites.filter((d)=>{return (isRouteInterface(d)? d?.routeId : d?.id) !== targetId})
+        newFavorites["favorites"] = favoritesState.favorites.filter(d=> getId(d) !== targetId)
         setCookies(newFavorites)
         console.log("previous favorites state",favoritesState)
         setFavoritesState(newFavorites)
@@ -65,16 +75,13 @@ const useFavorite = () =>{
 
 
     const addFavorite = (datum:StopInterface | RouteInterface)=>{
-        if(!(isStopInterface(datum) || isRouteInterface(datum))){return}
+        if(!isValidFavorite(datum)){return}
         datum = isRouteInterface(datum)? extractRouteInterface(datum):extractStopInterface(datum)
-        console.log("adding favorite")
-        let newFavorites = {favorites:favoritesState.favorites}
+        let newFavorites = {favorites: favoritesState.favorites}
+        if(newFavorites.favorites.some(f=>(getId(datum)===getId(f)))){return}
         newFavorites.favorites.push(datum)
-        console.log("new favorites",newFavorites)
         setCookies(newFavorites)
-        console.log("previous favorites state",favoritesState)
         setFavoritesState(newFavorites)
-        console.log("new favorites state",favoritesState)
     }
 
     return {addFavorite,removeFavorite}
