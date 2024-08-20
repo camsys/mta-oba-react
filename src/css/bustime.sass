@@ -304,6 +304,22 @@ button, .button
     li
       &:last-child
         border-bottom: none
+  &.inner-card-menu, &.sub-menu-menu
+    border-top: 1px solid $border-gray
+    li
+      border-bottom: 1px solid $border-gray
+      button
+        color: $dark-gray
+        .svg-icon-wrap
+          svg
+            path
+              fill: $dark-gray
+  &.sub-menu-menu
+    font-size: .75em
+    li
+      button, a
+        padding-right: .25em
+        padding-left: .5em
 
 //
   
@@ -864,7 +880,7 @@ button, .button
         border-bottom: $thick-border solid $mta-yellow
     &:last-child
       margin-bottom: $content-padding/2
-    & + .inner-card-menu
+    & + .inner-card-menu, & + .card-menu
       margin-top: $content-padding/2
   &.route-direction
     position: relative

@@ -712,6 +712,25 @@ button:hover, .button:hover {
 .card .icon-menu li:last-child {
   border-bottom: none;
 }
+.icon-menu.inner-card-menu, .icon-menu.sub-menu-menu {
+  border-top: 1px solid #ddd;
+}
+.icon-menu.inner-card-menu li, .icon-menu.sub-menu-menu li {
+  border-bottom: 1px solid #ddd;
+}
+.icon-menu.inner-card-menu li button, .icon-menu.sub-menu-menu li button {
+  color: #666;
+}
+.icon-menu.inner-card-menu li button .svg-icon-wrap svg path, .icon-menu.sub-menu-menu li button .svg-icon-wrap svg path {
+  fill: #666;
+}
+.icon-menu.sub-menu-menu {
+  font-size: 0.75em;
+}
+.icon-menu.sub-menu-menu li button, .icon-menu.sub-menu-menu li a {
+  padding-right: 0.25em;
+  padding-left: 0.5em;
+}
 
 .main-body {
   width: 100%;
@@ -1579,7 +1598,7 @@ button:hover, .button:hover {
 .inner-card.service-alert:last-child {
   margin-bottom: 0.5rem;
 }
-.inner-card.service-alert + .inner-card-menu {
+.inner-card.service-alert + .inner-card-menu, .inner-card.service-alert + .card-menu {
   margin-top: 0.5rem;
 }
 .inner-card.route-direction {

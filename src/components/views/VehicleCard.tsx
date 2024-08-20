@@ -111,7 +111,7 @@ const VehicleCard = (routeMatch:RouteMatch,vehicleId:string) : JSX.Element=> {
             <div className="card-content">
                 <VehicleCardContentComponent {...{ routeMatch, vehicleDatum}}/>
                 <ServiceAlertContainerComponent {...{routeId,serviceAlertIdentifier}}/>
-                <ul className="menu icon-menu inner-card-menu">
+                <ul className="menu icon-menu card-menu">
                     <li>
                         <button className="favorite-toggle" tabIndex="0" aria-label='Toggle favorites status for this stop' onClick={() => search(routeMatch.routeId.split("_")[1])}>
                             <span className="svg-icon-wrap">
