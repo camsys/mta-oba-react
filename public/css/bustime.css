@@ -1494,7 +1494,7 @@ button:hover, .button:hover {
   padding-right: 2em;
   position: relative;
 }
-.card.favorite .card-details .favorite-indicator {
+.card.favorite .card-details::after {
   content: "";
   display: block;
   width: 1.25rem;
