@@ -1579,6 +1579,9 @@ button:hover, .button:hover {
 .inner-card.service-alert:last-child {
   margin-bottom: 0.5rem;
 }
+.inner-card.service-alert + .inner-card-menu {
+  margin-top: 0.5rem;
+}
 .inner-card.route-direction {
   position: relative;
 }
