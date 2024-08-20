@@ -1585,7 +1585,7 @@ button:hover, .button:hover {
 .inner-card.route-direction {
   position: relative;
 }
-.inner-card.route-direction .card-content {
+.inner-card.route-direction > .card-content {
   padding-right: 0;
   padding-left: 0;
 }
