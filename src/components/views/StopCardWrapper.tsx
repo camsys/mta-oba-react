@@ -57,7 +57,8 @@ const RouteDirection = (routeDirectionDatum:RouteMatchDirectionInterface,stopId:
             </button>
             <div className="card-content collapse-content">
                 <ul className="approaching-buses">
-                    {stopCardVehicleData.map(vehicleDatum=><VehicleComponent {...{vehicleDatum,lastUpdateTime}}/>)}
+                    {stopCardVehicleData.map((vehicleDatum,index)=>{
+                        if(index<3){return <VehicleComponent {...{vehicleDatum,lastUpdateTime}}/>}})}
                 </ul>
                 <ServiceAlertContainerComponent {...{routeId,serviceAlertIdentifier}}/>
             </div>
