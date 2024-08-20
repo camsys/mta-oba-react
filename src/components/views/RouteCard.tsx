@@ -142,12 +142,13 @@ export function CollapsableRouteCard({ routeMatch, oneOfMany}: {routeMatch:Route
     }
 
     const { highlightId } = useHighlight();
+    let {isFavorite} = useFavorite();
     let routeId = routeMatch.routeId.split("_")[1];
     let serviceAlertIdentifier = routeMatch.routeId;
 
     return (
         <React.Fragment>
-            <div className={`card route-card ${oneOfMany?"collapsible open":""}`}>
+            <div className={`card route-card ${oneOfMany?"collapsible open":""} ${isFavorite(routeMatch)?"favorite":""}`}>
                 <button
                     className="card-header collapse-trigger open"
                     style={{ borderColor: "#" + routeMatch.color }}

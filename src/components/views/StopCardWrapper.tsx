@@ -146,10 +146,11 @@ function InnerCollapsableStopCard ({ match, oneOfMany}: {match:SearchMatch, oneO
     if(match.type!==MatchType.StopMatch){return <></>}
     let stopMatch = match as StopMatch
     const { search } = useSearch();
+    const {isFavorite} = useFavorite()
 
     console.log("generating StopCard",stopMatch)
     return(
-    <div className={`card stop-card ${oneOfMany?"collapsible open":""}`}>
+    <div className={`card stop-card ${oneOfMany?"collapsible open":""} ${isFavorite(stopMatch)?"favorite":""}`}>
         <button className="card-header collapse-trigger open"
                 // onMouseEnter={() => highlightId(stopMatch.routeId)}
                 // onMouseLeave={() => highlightId(null)}
