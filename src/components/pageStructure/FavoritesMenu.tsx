@@ -36,7 +36,7 @@ export const FavoriteItem = ({datum}) =>{
 
 export const FavoritesMenu = () => {
 
-    Cookies.set('favorites', "{\"favorites\":[{\"color\":\"00AEEF\",\"description\":\"via 86th St \\/ Ocean Pkwy\",\"routeId\":\"MTA NYCT_B1\",\"longName\":\"Bay Ridge - Manhattan Beach\",\"routeTitle\":\"B1\",\"textColor\":\"FFFFFF\",\"type\":3}]}")
+    // Cookies.set('favorites', "{\"favorites\":[{\"color\":\"00AEEF\",\"description\":\"via 86th St \\/ Ocean Pkwy\",\"routeId\":\"MTA NYCT_B1\",\"longName\":\"Bay Ridge - Manhattan Beach\",\"routeTitle\":\"B1\",\"textColor\":\"FFFFFF\",\"type\":3}]}")
     // Cookies.set('favorites', "{\"favorites\":[{\"name\":\"00AEEF\",\"longLat\":[100,94],\"id\":\"MTA NYCT_B1\",\"stopDirection\":\"Bay Ridge - Manhattan Beach\"")
 
     const {favoritesState} = useContext(FavoritesCookieStateContext)

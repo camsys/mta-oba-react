@@ -252,12 +252,14 @@ export class GeocodeMatch extends SearchMatch {
     }
 }
 
-export class StopMatch extends SearchMatch {
+export class StopMatch extends SearchMatch implements StopInterface{
     latitude: number;
     longitude: number;
     name: string;
     id: string;
-    routeMatches: [RouteMatch]
+    routeMatches: [RouteMatch];
+    longLat: [number, number];
+    stopDirection: string;
 
     constructor(data: any) {
         super(MatchType.StopMatch);
@@ -265,7 +267,9 @@ export class StopMatch extends SearchMatch {
         this.longitude = data.longitude;
         this.name = data.name;
         this.id = data.id;
-        this.routeMatches = []
+        this.routeMatches = [];
+        this.longLat = [data.latitude,data.longitude];
+        this.stopDirection = data.stopDirection;
     }
 }
 

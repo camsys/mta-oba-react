@@ -18,3 +18,21 @@ export const isRouteInterface = (obj: any): obj is RouteInterface =>
     typeof obj?.routeId === "string" &&
     typeof obj?.routeTitle === "string" &&
     typeof obj?.description === "string";
+
+export const extractRouteInterface = (obj: any): RouteInterface | null => {
+    if (isRouteInterface(obj)) {
+        const { color, routeId, routeTitle, description } = obj;
+        return { color, routeId, routeTitle, description };
+    }
+    return null;
+};
+
+
+
+export const extractStopInterface = (obj: any): StopInterface | null => {
+    if (isStopInterface(obj)) {
+        const { name, longLat, id, stopDirection } = obj;
+        return { name, longLat, id, stopDirection };
+    }
+    return null;
+};
