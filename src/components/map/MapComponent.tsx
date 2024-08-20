@@ -191,7 +191,9 @@ const RoutesAndStops = () :JSX.Element=>{
             },
             zoomend() {
                 addStopPopup()
-                mapRouteElementsLayerGroupRef.addTo(map)
+                if(mapRouteElementsLayerGroupRef!==null) {
+                    mapRouteElementsLayerGroupRef.addTo(map)
+                }
             }
         }
     )
