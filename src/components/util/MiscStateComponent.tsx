@@ -84,7 +84,13 @@ const useFavorite = () =>{
         setFavoritesState(newFavorites)
     }
 
-    return {addFavorite,removeFavorite}
+    const isFavorite = (datum:StopInterface | RouteInterface) =>{
+        if(!isValidFavorite(datum)){return false}
+        if(favoritesState.favorites.some(f=>(getId(datum)===getId(f)))){return true}
+        return false
+    }
+
+    return {addFavorite,removeFavorite,isFavorite}
 }
 
 

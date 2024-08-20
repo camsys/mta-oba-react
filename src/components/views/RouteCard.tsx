@@ -114,9 +114,10 @@ export function RouteCard({ routeMatch}: RouteMatch): JSX.Element {
         return null
     }
     const { highlightId } = useHighlight();
+    let {isFavorite} = useFavorite();
     return (
         <React.Fragment>
-            <div className={`card route-card ${routeMatch.routeId}`}>
+            <div className={`card route-card ${routeMatch.routeId} ${isFavorite(routeMatch)?"favorite":""}`}>
                 <div
                     className="card-header"
                     style={{ borderColor: "#" + routeMatch.color }}

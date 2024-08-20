@@ -120,11 +120,12 @@ export function StopCard (match: SearchMatch) : JSX.Element {
     }
     let stopMatch = match as StopMatch
     const {search} = useSearch();
+    const {isFavorite} = useFavorite()
 
     console.log("generating StopCard", match)
     console.log("generating StopCard", stopMatch)
     return (
-        <div className="card stop-card">
+        <div className={`card stop-card ${isFavorite(stopMatch)?"favorite":""}`}>
             <div className="card-header">
                 <h3 className="card-title">
                     <img src={busStopIcon} alt="bus stop icon" className="icon"/>
