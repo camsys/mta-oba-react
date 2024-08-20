@@ -765,6 +765,7 @@ button, .button
 .card
   background-color: $white
   border: 1px solid $border-gray
+  overflow: hidden
   +card-shadow
   >.card-header
     +card-pad
@@ -784,6 +785,24 @@ button, .button
         outline: none
         &::after
           background-image: url(/img/icon/right-caret_white.svg)
+  .card-details
+    position: relative
+    transition: padding .25s ease-in-out
+    &::after
+      content: ''
+      display: block
+      width: 1.25rem
+      height: 1.25rem
+      background-size: auto 100%
+      background-repeat: no-repeat
+      background-position: center
+      background-image: url(/img/icon/star_blue-yellow.svg)
+      position: absolute
+      top: $content-padding - .125rem
+      right: -2rem
+      opacity: 0
+      transition: opacity .5s ease-in-out, right .25s ease-in-out, transform .25s ease-in-out
+      transform: rotate(180deg)
   >.card-content
     +card-pad-sides
   &.favorite
@@ -794,18 +813,9 @@ button, .button
         display: inline-block!important
     .card-details
       padding-right: 2em
-      position: relative
       &::after
-        content: ''
-        display: block
-        width: 1.25rem
-        height: 1.25rem
-        background-size: auto 100%
-        background-repeat: no-repeat
-        background-position: center
-        background-image: url(/img/icon/star_blue-yellow.svg)
-        position: absolute
-        top: $content-padding - .125rem
+        transform: rotate(0deg)
+        opacity: 1
         right: 0
 
 .inner-card
