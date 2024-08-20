@@ -1499,6 +1499,10 @@ button:hover, .button:hover {
   display: block;
   width: 1.25rem;
   height: 1.25rem;
+  background-size: auto 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-image: url(/img/icon/star_blue-yellow.svg);
   position: absolute;
   top: 0.875rem;
   right: 0;
