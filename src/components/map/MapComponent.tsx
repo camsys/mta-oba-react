@@ -185,7 +185,7 @@ const RoutesAndStops = () :JSX.Element=>{
     let map = useMap()
     useMapEvents(
         {
-            zoomstart() {
+            zoom() {
                 console.log("zoomstart mapRouteElementsLayerGroupRef",mapRouteElementsLayerGroupRef)
                 if(mapRouteElementsLayerGroupRef!==null){
                     mapRouteElementsLayerGroupRef.removeFrom(map)
