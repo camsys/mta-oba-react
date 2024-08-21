@@ -133,12 +133,15 @@ export function StopCard (match: SearchMatch) : JSX.Element {
     let stopMatch = match as StopMatch
     const {search} = useSearch();
     const {isFavorite} = useFavorite()
+    const { highlightId } = useHighlight();
 
     console.log("generating StopCard", match)
     console.log("generating StopCard", stopMatch)
     return (
         <div className={`card stop-card ${isFavorite(stopMatch)?"favorite":""}`}>
-            <div className="card-header">
+            <div className="card-header"
+                 onMouseEnter={() => highlightId(stopMatch.id)}
+                 onMouseLeave={() => highlightId(null)}>
                 <h3 className="card-title">
                     <img src={busStopIcon} alt="bus stop icon" className="icon"/>
                     {stopMatch.name}
@@ -159,15 +162,17 @@ function InnerCollapsableStopCard ({ match, oneOfMany}: {match:SearchMatch, oneO
     let stopMatch = match as StopMatch
     const { search } = useSearch();
     const {isFavorite} = useFavorite()
+    const { highlightId } = useHighlight();
 
     console.log("generating StopCard",stopMatch)
     return(
     <div className={`card stop-card ${oneOfMany?"collapsible open":""} ${isFavorite(stopMatch)?"favorite":""}`}>
         <button className="card-header collapse-trigger open"
-                // onMouseEnter={() => highlightId(stopMatch.routeId)}
-                // onMouseLeave={() => highlightId(null)}
+                onMouseEnter={() => highlightId(stopMatch.id)}
+                onMouseLeave={() => highlightId(null)}
                 aria-haspopup="true" aria-expanded="true"
-                aria-label={`Toggle ${stopMatch.id.split("_")[1]} ${stopMatch.name} open/close`}>
+                aria-label={`Toggle ${stopMatch.id.split("_")[1]} ${stopMatch.name} open/close`}
+        >
             <span className="card-title label">
                 <img src={busStopIcon} alt="bus stop icon" className="icon" />
                 {stopMatch.name}
