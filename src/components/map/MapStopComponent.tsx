@@ -40,8 +40,8 @@ function MapStopComponent  ({stopDatum, mapStopMarkers, zIndexOverride}:
     let icon = L.icon({
         iconUrl: stopImageUrl,
         className: "svg-icon",
-        iconSize: [27, 27],
-        iconAnchor: [13, 13],
+        iconSize: zIndexOverride?[36,36]:[27, 27],
+        iconAnchor: zIndexOverride?[17,17]:[13, 13],
         popupAnchor: [0,0]
     })
 
