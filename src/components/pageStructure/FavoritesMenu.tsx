@@ -14,12 +14,12 @@ export const FavoriteItem = ({datum}) =>{
     if(isRouteInterface(datum)){
         let routeDatum = datum as RouteInterface
         return(<li>
-            <a href="#" className={`favorite-route route-border-left ${routeDatum.routeId.split("_")[1]}`}
+            <button className={`favorite-route route-border-left ${routeDatum.routeId.split("_")[1]}`}
                tabIndex="-1" onClick={()=>{search(routeDatum.routeId)}}>
                                         <span className="label" style={{ borderColor: '#'+routeDatum.color }}>
                                             <strong>{routeDatum.routeId.split("_")[1]}</strong> {routeDatum.description}
                                         </span>
-            </a>
+            </button>
             <ul className="menu icon-menu sub-menu-menu">
                     <li>
                         <button className="favorite-toggle" tabIndex="0" aria-label='Toggle favorites status for this stop' onClick={()=>{removeFavorite(datum)}}>

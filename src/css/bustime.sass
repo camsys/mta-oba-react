@@ -197,32 +197,32 @@ button, .button
     position: relative
     background-color: transparent
     transition: background-color .125s ease-in-out
-    // .svg-icon-wrap
-    //   svg
-    //     transition: fill .125s ease-in-out .5s
-    //     *
-    //       transition: fill .125s ease .5s
+    .svg-icon-wrap
+      svg
+        transition: fill .125s ease-in-out
+        *
+          transition: fill .125s ease-in-out
     >a, >button
       border: 0px solid
       transition: color .25s ease-in-out, background-color .25s ease-in-out, padding-left .25s ease-in-out, border-bottom .25s ease-in-out
       &:focus
-        text-decoration: none
-        font-weight: bold
-        // color: $black
-        background-color: $white
+        background-color: $black
+        color: $white
         padding-left: .5em
+        .svg-icon-wrap
+          svg, path
+            fill: $white
+          .blue
+            fill: $white
+          .yellow
+            fill: $mta-yellow
         &::after
-          background-image: url(/img/icon/right-caret_black.svg)
-        .card &
-          background-color: $black
+          background-image: url(/img/icon/right-caret_white.svg)
+        &:hover
           color: $white
-          .svg-icon-wrap
-            svg, path
-              fill: $white
-            .blue
-              fill: $mta-blue
-            .yellow
-              fill: $mta-yellow
+          text-decoration: underline
+          .label
+            text-decoration: underline
       &:hover
         .label
           text-decoration: underline
@@ -244,12 +244,25 @@ button, .button
             position: relative
             left: 0
             transition: left .25s ease-in-out
-          &:hover, &:focus
+          &:hover
             .label
               text-decoration: underline
               color: $black2
             &::after
               left: .25em
+          &:focus
+            background-color: $black
+            color: $white
+            padding-left: .5em
+            .label
+              color: $white
+            .svg-icon-wrap
+              svg, path
+                fill: $white
+              .blue
+                fill: $white
+              .yellow
+                fill: $mta-yellow
         &:last-child
           border-bottom: none
       &#favorites-menu
@@ -284,9 +297,6 @@ button, .button
               transition: fill .125s ease-in-out
             .blue
               fill: $white
-        &:focus
-          background-color: transparent
-          // border: 1px solid $mta-yellow
         .sub-menu
           padding: $content-padding/2 $content-padding
           max-height: 200vh

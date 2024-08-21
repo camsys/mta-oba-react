@@ -570,32 +570,42 @@ button:hover, .button:hover {
   -webkit-transition: background-color 0.125s ease-in-out;
   transition: background-color 0.125s ease-in-out;
 }
+.icon-menu > li .svg-icon-wrap svg {
+  -webkit-transition: fill 0.125s ease-in-out;
+  transition: fill 0.125s ease-in-out;
+}
+.icon-menu > li .svg-icon-wrap svg * {
+  -webkit-transition: fill 0.125s ease-in-out;
+  transition: fill 0.125s ease-in-out;
+}
 .icon-menu > li > a, .icon-menu > li > button {
   border: 0px solid;
   -webkit-transition: color 0.25s ease-in-out, background-color 0.25s ease-in-out, padding-left 0.25s ease-in-out, border-bottom 0.25s ease-in-out;
   transition: color 0.25s ease-in-out, background-color 0.25s ease-in-out, padding-left 0.25s ease-in-out, border-bottom 0.25s ease-in-out;
 }
 .icon-menu > li > a:focus, .icon-menu > li > button:focus {
-  text-decoration: none;
-  font-weight: bold;
-  background-color: #fff;
-  padding-left: 0.5em;
-}
-.icon-menu > li > a:focus::after, .icon-menu > li > button:focus::after {
-  background-image: url(/img/icon/right-caret_black.svg);
-}
-.card .icon-menu > li > a:focus, .card .icon-menu > li > button:focus {
   background-color: #000;
   color: #fff;
+  padding-left: 0.5em;
 }
-.card .icon-menu > li > a:focus .svg-icon-wrap svg, .card .icon-menu > li > a:focus .svg-icon-wrap path, .card .icon-menu > li > button:focus .svg-icon-wrap svg, .card .icon-menu > li > button:focus .svg-icon-wrap path {
+.icon-menu > li > a:focus .svg-icon-wrap svg, .icon-menu > li > a:focus .svg-icon-wrap path, .icon-menu > li > button:focus .svg-icon-wrap svg, .icon-menu > li > button:focus .svg-icon-wrap path {
   fill: #fff;
 }
-.card .icon-menu > li > a:focus .svg-icon-wrap .blue, .card .icon-menu > li > button:focus .svg-icon-wrap .blue {
-  fill: #0E61A9;
+.icon-menu > li > a:focus .svg-icon-wrap .blue, .icon-menu > li > button:focus .svg-icon-wrap .blue {
+  fill: #fff;
 }
-.card .icon-menu > li > a:focus .svg-icon-wrap .yellow, .card .icon-menu > li > button:focus .svg-icon-wrap .yellow {
+.icon-menu > li > a:focus .svg-icon-wrap .yellow, .icon-menu > li > button:focus .svg-icon-wrap .yellow {
   fill: #f2a900;
+}
+.icon-menu > li > a:focus::after, .icon-menu > li > button:focus::after {
+  background-image: url(/img/icon/right-caret_white.svg);
+}
+.icon-menu > li > a:focus:hover, .icon-menu > li > button:focus:hover {
+  color: #fff;
+  text-decoration: underline;
+}
+.icon-menu > li > a:focus:hover .label, .icon-menu > li > button:focus:hover .label {
+  text-decoration: underline;
 }
 .icon-menu > li > a:hover .label, .icon-menu > li > button:hover .label {
   text-decoration: underline;
@@ -622,12 +632,29 @@ button:hover, .button:hover {
   -webkit-transition: left 0.25s ease-in-out;
   transition: left 0.25s ease-in-out;
 }
-.icon-menu > li .sub-menu li a:hover .label, .icon-menu > li .sub-menu li a:focus .label, .icon-menu > li .sub-menu li button:hover .label, .icon-menu > li .sub-menu li button:focus .label {
+.icon-menu > li .sub-menu li a:hover .label, .icon-menu > li .sub-menu li button:hover .label {
   text-decoration: underline;
   color: #202025;
 }
-.icon-menu > li .sub-menu li a:hover::after, .icon-menu > li .sub-menu li a:focus::after, .icon-menu > li .sub-menu li button:hover::after, .icon-menu > li .sub-menu li button:focus::after {
+.icon-menu > li .sub-menu li a:hover::after, .icon-menu > li .sub-menu li button:hover::after {
   left: 0.25em;
+}
+.icon-menu > li .sub-menu li a:focus, .icon-menu > li .sub-menu li button:focus {
+  background-color: #000;
+  color: #fff;
+  padding-left: 0.5em;
+}
+.icon-menu > li .sub-menu li a:focus .label, .icon-menu > li .sub-menu li button:focus .label {
+  color: #fff;
+}
+.icon-menu > li .sub-menu li a:focus .svg-icon-wrap svg, .icon-menu > li .sub-menu li a:focus .svg-icon-wrap path, .icon-menu > li .sub-menu li button:focus .svg-icon-wrap svg, .icon-menu > li .sub-menu li button:focus .svg-icon-wrap path {
+  fill: #fff;
+}
+.icon-menu > li .sub-menu li a:focus .svg-icon-wrap .blue, .icon-menu > li .sub-menu li button:focus .svg-icon-wrap .blue {
+  fill: #fff;
+}
+.icon-menu > li .sub-menu li a:focus .svg-icon-wrap .yellow, .icon-menu > li .sub-menu li button:focus .svg-icon-wrap .yellow {
+  fill: #f2a900;
 }
 .icon-menu > li .sub-menu li:last-child {
   border-bottom: none;
@@ -681,9 +708,6 @@ button:hover, .button:hover {
 }
 .icon-menu > li.open > a .svg-icon-wrap svg .blue, .icon-menu > li.open > button .svg-icon-wrap svg .blue {
   fill: #fff;
-}
-.icon-menu > li.open > a:focus, .icon-menu > li.open > button:focus {
-  background-color: transparent;
 }
 .icon-menu > li.open > a .sub-menu, .icon-menu > li.open > button .sub-menu {
   padding: 0.5rem 1rem;
