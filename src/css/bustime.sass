@@ -197,11 +197,11 @@ button, .button
     position: relative
     background-color: transparent
     transition: background-color .125s ease-in-out
-    .svg-icon-wrap
-      svg
-        transition: fill .125s ease-in-out .5s
-        *
-          transition: fill .125s ease .5s
+    // .svg-icon-wrap
+    //   svg
+    //     transition: fill .125s ease-in-out .5s
+    //     *
+    //       transition: fill .125s ease .5s
     >a, >button
       border: 0px solid
       transition: color .25s ease-in-out, background-color .25s ease-in-out, padding-left .25s ease-in-out, border-bottom .25s ease-in-out
@@ -213,6 +213,16 @@ button, .button
         padding-left: .5em
         &::after
           background-image: url(/img/icon/right-caret_black.svg)
+        .card &
+          background-color: $black
+          color: $white
+          .svg-icon-wrap
+            svg, path
+              fill: $white
+            .blue
+              fill: $mta-blue
+            .yellow
+              fill: $mta-yellow
       &:hover
         .label
           text-decoration: underline
