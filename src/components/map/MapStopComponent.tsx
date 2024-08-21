@@ -34,6 +34,7 @@ function MapStopComponent  ({stopDatum, mapStopMarkers, zIndexOverride}:
         directionKey = "unknown";
     }
     let stopImageUrl = "img/stop/stop-" + (directionKey==null? "unknown":directionKey) + ".png"
+    if(zIndexOverride){stopImageUrl = "img/stop/stop-" + (directionKey==null? "unknown":directionKey) + "-active.png"}
     let {search} = useSearch()
 
     let icon = L.icon({
