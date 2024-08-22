@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MTA Bus Time | Developers > SIRI > Situation Exchange Delivery
+    </title>
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="/img/favicon.ico" />
+
+    <link rel="stylesheet" href="/css/bustime.css">
+    <script src="/js/bustime.js"></script>
+</head>
+<body>
+  <div class="main-body no-map">
+    <header class="header" id="header">
+      <div class="header-inner">
+        <a href="/" aria-label="MTA Bus Time Home" id="logo-link">
+          <img id="logo" src="/img/bustime-logo.png" alt="MTA Bus Time" class="logo" />
+        </a>
+        <nav>
+            <ul class="menu">
+                <li><a href="/">Home</a></li>
+                <li><a href="/help/text/">Text</a></li>
+                <li><a href="/about/">About</a></li>
+                <li><a href="/contact/">Contact</a></li>
+                <li><a href="/developers/" class="active">Developers</a></li>
+                <li><a href="/help/">Help</a></li>
+            </ul>
+        </nav>
+      </div>
+    </header>
+    <div class="main-content">
+      <ul class="breadcrumb">
+        <li><a href="/developers/">Developers</a></li>
+        <li><a href="/developers/SIRI/">SIRI</a></li>
+      </ul>
+      <h1 class="page-title">Situation Exchange Delivery</h1>
+      <div class="content-and-toc">
+        <nav class="toc">
+          <h2 class="toc-header">Table of Contents</h2>
+          <ul class="menu toc-menu">
+            <li>
+              <a href="/developers/">MTA Bus Time Developer&nbsp;Access</a></span>
+            </li>
+            <li><a href="/developers/gtfs-realtime">GTFS-Realtime</a></li>
+            <li>
+              <a href="/developers/siri/">The SIRI API</a>
+              <ul class="menu toc-sub-menu">
+                <li><a href="/developers/siri/change-log/">Change Log</a></li>
+                <li><a href="/developers/siri/vehicle-monitoring/">Vehicle Monitoring</a></li>
+                <li><a href="/developers/siri/stop-monitoring/">Stop Monitoring</a></li>
+                <li><a href="/developers/siri/monitored-vehicle-journey/">Monitored Vehicle Journey</a></li>
+                <li><a href="/developers/siri/situation-exchange-delivery/" class="active">Situation Exchange Delivery</a></li>
+              </ul>
+            </li>
+           <li><a href="/developers/restful-api/">OneBusAway "Discovery"&nbsp;API</a></li>
+           <li><a href="/developers/cancelled-trip-api-features/">Cancelled Trip API&nbsp;Features</a></li>
+           <li><a href="/developers/archive-data/">Archived Bus Time&nbsp;Data</a></li>
+           <li><a href="/developers/open-source/">Improving the MTA Bus Time&nbsp;System</a>
+          </ul>
+        </nav>
+        <div class="page-content card">
+         <p>The SIRI SituationExchangeDelivery element only appears when there is a service alert active for a route or stop being called on. It is used by the responses to both the <a href="/developers/siri/vehicle-monitoring">VehicleMonitoring</a> and <a href="/developers/siri/stop-monitoring">StopMonitoring calls.</a></p>
+         <p>The XML below illustrates the SIRI SituationExchangeDelivery element.</p>
+<pre><code>&lt;SituationExchangeDelivery&gt;
+
+  &lt;Situations&gt;
+  &lt;!-- One each per Service Alert --&gt;
+  &lt;PtSituationElement&gt;
+      &lt;!-- Unique ID --&gt;
+    &lt;SituationNumber&gt;MTA NYCT_8d065d76-2813-46ee-b024-20f956232831&lt;/SituationNumber&gt;
+      &lt;!-- Information on temporal applicability of the service alert --&gt;
+    &lt;PublicationWindow&gt;
+      &lt;!-- Start time of Service Alert --&gt;
+    &lt;StartTime&gt;2011-12-12T08:45:00-05:00&lt;/StartTime&gt;
+      &lt;!-- End time of Service Alert --&gt;
+    &lt;EndTime&gt;2011-12-13T08:45:00-05:00&lt;/EndTime&gt;
+    &lt;/PublicationWindow&gt;
+    &lt;!-- Severity of the event --&gt;
+    &lt;Severity&gt;undefined&lt;/Severity&gt;
+
+    &lt;!-- Summary text --&gt;
+    &lt;Summary xml:lang=&quot;EN&quot;&gt;The B63 is having a party!&lt;/Summary&gt;
+    &lt;!-- Long description Text --&gt;
+    &lt;Description xml:lang=&quot;EN&quot;&gt;The B63 is having a party! (SMS)&lt;/Description&gt;
+
+    &lt;Affects&gt;
+    &lt;!-- Element containing VehicleJourney lines and directions --&gt;
+    &lt;VehicleJourneys&gt;
+    &lt;!-- One for each Line/Direction --&gt;
+      &lt;AffectedVehicleJourney&gt;
+    &lt;!-- GTFS Route_ID, prefixed by agency_id --&gt;
+      &lt;LineRef&gt;MTA NYCT_B63&lt;/LineRef&gt;
+    &lt;!-- GTFS Route direction_id --&gt;
+      &lt;DirectionRef&gt;1&lt;/DirectionRef&gt;
+
+      &lt;/AffectedVehicleJourney&gt;
+      &lt;AffectedVehicleJourney&gt;
+      &lt;LineRef&gt;MTA NYCT_B63&lt;/LineRef&gt;
+    &lt;!-- GTFS Opposite Route direction_id --&gt;
+      &lt;DirectionRef&gt;0&lt;/DirectionRef&gt;
+      &lt;/AffectedVehicleJourney&gt;
+    &lt;/VehicleJourneys&gt;
+    &lt;/Affects&gt;
+
+    &lt;Consequences&gt;
+
+    &lt;Consequence&gt;
+    &lt;!-- Service alert consequence: CANCELLED, NO_SERVICE, DISRUPTED, INTERMITTENT_SERVICE, DELAYED, DIVERTED etc --&gt;
+      &lt;Condition&gt;altered&lt;/Condition&gt;
+    &lt;/Consequence&gt;
+    &lt;/Consequences&gt;
+  &lt;/PtSituationElement&gt;
+  &lt;/Situations&gt;
+&lt;/SituationExchangeDelivery&gt;
+&lt;/ServiceDelivery&gt;</code></pre>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

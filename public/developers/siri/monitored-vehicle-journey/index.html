@@ -63,7 +63,7 @@
         </nav>
         <div class="page-content card">
           <h2>SIRI MonitoredVehicleJourney Element</h2>
-          <p>The SIRI MonitoredVehicleJourney element contains most of the relevant real-time information about particular vehicles in the MTA Bus Time system.  It is used by the responses to both the VehicleMonitoring and StopMonitoring calls.  As much as possible, the values in a MonitoredVehicleJourney element correspond to the values in the MTA's GTFS data.</p>
+          <p>The SIRI MonitoredVehicleJourney element contains most of the relevant real-time information about particular vehicles in the MTA Bus Time system.  It is used by the responses to both the <a href="/developers/siri/vehicle-monitoring/">VehicleMonitoring</a> and <a href="/developers/siri/stop-monitoring/">StopMonitoring</a> calls.  As much as possible, the values in a MonitoredVehicleJourney element correspond to the values in the MTA's GTFS data.</p>
           <p>The XML below illustrates the SIRI MonitoredVehicleJourney element.  Other notes on the contents of a MonitoredVehicleJourney follow the example.</p>
 <pre><code>&lt;MonitoredVehicleJourney&gt;
 
@@ -213,8 +213,7 @@
     ... more OnwardCalls
 
   &lt;/OnwardCalls&gt;
-&lt;/MonitoredVehicleJourney&gt;
-</code></pre>
+&lt;/MonitoredVehicleJourney&gt;</code></pre>
           <h3>The PresentableDistance field:</h3>
           <p>The logic that determines whether stops or miles are shown in the PresentableDistance field is below:</p>
           <p>show distance in miles if and only if:</p>
