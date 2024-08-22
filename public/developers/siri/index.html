@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MTA Bus Time | Developers > Introduction to SIRI
+    </title>
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="/img/favicon.ico" />
+
+    <link rel="stylesheet" href="/css/bustime.css">
+    <script src="/js/bustime.js"></script>
+</head>
+<body>
+  <div class="main-body no-map">
+    <header class="header" id="header">
+      <div class="header-inner">
+        <a href="/" aria-label="MTA Bus Time Home" id="logo-link">
+          <img id="logo" src="/img/bustime-logo.png" alt="MTA Bus Time" class="logo" />
+        </a>
+        <nav>
+            <ul class="menu">
+                <li><a href="/">Home</a></li>
+                <li><a href="/help/text/">Text</a></li>
+                <li><a href="/about/">About</a></li>
+                <li><a href="/contact/">Contact</a></li>
+                <li><a href="/developers/" class="active">Developers</a></li>
+                <li><a href="/help/">Help</a></li>
+            </ul>
+        </nav>
+      </div>
+    </header>
+    <div class="main-content">
+      <ul class="breadcrumb">
+        <li><a href="/developers/">Developers</a></li>
+      </ul>
+      <h1 class="page-title">Introduction to SIRI</h1>
+      <div class="content-and-toc">
+        <nav class="toc">
+          <h2 class="toc-header">Table of Contents</h2>
+          <ul class="menu toc-menu">
+            <li>
+              <a href="/developers/">MTA Bus Time Developer&nbsp;Access</a></span>
+            </li>
+            <li><a href="/developers/gtfs-realtime">GTFS-Realtime</a></li>
+            <li>
+              <a href="/developers/siri/" class="active">The SIRI API</a>
+              <ul class="menu toc-sub-menu">
+                <li><a href="/developers/siri/change-log/">Change Log</a></li>
+                <li><a href="/developers/siri/vehicle-monitoring">SIRI Vehicle Monitoring</a></li>
+                <li><a href="/developers/siri/stop-monitoring">SIRI Stop Monitoring</a></li>
+                <li><a href="/developers/siri/monitored-vehicle-journey">SIRI Monitored Vehicle&nbsp;Journey</a></li>
+                <li><a href="/developers/siri/situation-exchange-delivery">SIRI Situation Exchange&nbsp;Delivery</a></li>
+              </ul>
+            </li>
+           <li><a href="/developers/restful-api">OneBusAway "Discovery"&nbsp;API</a></li>
+           <li><a href="/developers/cancelled-trip-api-features">Cancelled Trip API&nbsp;Features</a></li>
+           <li><a href="/developers/archive-data">Archived Bus Time&nbsp;Data</a></li>
+           <li><a href="/developers/open-source">Improving the MTA Bus Time&nbsp;System</a>
+          </ul>
+        </nav>
+        <div class="page-content card">
+          <p>MTA is dedicated to providing free real-time developer API's to the MTA Bus Time system, but did not want to develop Yet Another real time transit data standard. After some research and consultation with the local developer community, we identified the <a href="https://user47094.vs.easily.co.uk/siri/" target="_blank">SIRI</a> standard and are using it in this project.</p>
+          <p>SIRI (Service Interface for Real Time Information) is a standard covering a wide range of types of real-time information for public transportation. This standard has been adopted by the European standards-setting body <a href="https://www.cen.eu/" target="_blank">CEN</a>, and is not owned by any one vendor, public transportation agency or operator. It has been implemented in a growing number of different projects by vendors and agencies around Europe.&nbsp;&nbsp;</p>
+          <h2>SIRI for the MTA Bus Time Developer API</h2>
+          <p>The open nature of this standard and its growing adoption were the two primary selling points to MTA in the context of the open-architecture, standards-based MTA Bus Time project. Based on our research, this project represents the first SIRI implementation that is public-facing and free to access.</p>
+          <p>SIRI is not a simple standard, but it has a degree of elegance in it's complexity. Unlike GTFS and GTFS-RT, SIRI objects include layers of elements that are primarily designed to provide small pieces of information. SIRI can be thought of as a menu; having picked a few items from that menu, we feel the results are simple and legible, if a bit verbose. If you are curious to read about all of the features of SIRI, the <a href="https://user47094.vs.easily.co.uk/siri/schema/1.3/doc/Handbook/Handbookv15.pdf" target="_blank">SIRI Handbook</a> makes for a bit of light reading.</p>
+          <p>One thing SIRI did not cover is the "distance away" (rather than time-based predictions) concept that we have introduced in this project. Fortunately, SIRI is an extensible standard so we were able to make it work for this project. As well, while SIRI requests are typically SOAP requests sent via HTTP POST, in this case we implemented a slimmed-down RESTful interface using HTTP GET requests.</p>
+          <p>The SIRI web service calls implemented by MTA Bus Time are:</p>
+          <ul>
+            <li><a href="/developers/siri/monitored-vehicle-journey">VehicleMonitoring</a>: real-time information about one, many, or all vehicles tracked by the system.</li>
+            <li><a href="/developers/siri/stop-monitoring">StopMonitoring</a>: real-time information about vehicles serving a particular stop.</li>
+          </ul>
+          <p>These results of these two calls have many of the same elements; they simply represent different slices through the same pie.</p>
+          <h3>JSON and XML</h3>
+          <p>While the SIRI standard specifies XML as an interchange format, it incurs a substantial penalty in data-transfer and processing requirements. In contrast,  <a href="https://json.org/" target="_blank">JSON</a> (Javascript Object Notation) is a lightweight data-interchange format. Human-readable, lightweight, and easy to parse, JSON offers an alternative. Thus, MTA Bus Time provides both XML and JSON versions of its API.</p>
+          <h3>GTFS Reference Data</h3>
+          <p>These two SIRI calls use the MTA's <a href="https://mta.info/developers/download.html" target="_blank">GTFS data</a> as a reference, for example for stop ID's and names. The OneBusAway software that powers MTA Bus Time comes with a <a href="https://code.google.com/p/onebusaway/wiki/TransformingGtfs" target="_blank">free utility</a> to strip down a GTFS file to only the data relevant to a given route. Developers can use this utility to generate the GTFS for only the routes that are served by Bus Time.</p>
+          <h3>SIRI Going Forward</h3>
+          <p>Please let us know what you think of this API by posting to the <a href="https://groups.google.com/group/mtadeveloperresources" target="_blank">MTA Developer Resources Google Group</a>. Your feedback can help us plan improvements to this API. It may be worth noting that the body/committee which manages the SIRI standard has adopted many of the changes/extension we made for this project into SIRI 2.0 specification, including: inclusion of "distance-away" values, RESTful request-response, and non-XML encodings.</p>
+          <h2>Other API's</h2>
+          <p>MTA Bus Time uses SIRI to expose real-time information about buses serving the routes and stops covered by the system. MTA Bus Time also exposes a modified version of the <a href="/developers/restful-api">OneBusAway RESTful API</a> for so-called "discovery" services. This API will allow you to "discover" static/baseline information about the bus services covered under MTA Bus Time. It is, effectively, a set of web services that gives you convenient HTTP-based access to selected subsets of information otherwise available from the GTFS files.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

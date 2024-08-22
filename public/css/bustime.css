@@ -362,14 +362,28 @@ h2 {
   font-size: 1.5em;
   margin: 0 0 0.5em 0;
 }
+h2:not(:first-child) {
+  margin-top: 1em;
+}
 #app h2 {
   font-size: 1em;
+}
+
+h3 {
+  font-size: 1.25em;
+  margin: 0 0 0.5em 0;
+}
+h3:not(first-child) {
+  margin-top: 1em;
 }
 
 .card h4, .inner-card h4 {
   font-size: 0.875em;
   font-weight: bold;
   margin: 0 0 0.75em 0;
+}
+.card h4:not(first-child), .inner-card h4:not(first-child) {
+  margin-top: 1em;
 }
 
 p {
@@ -804,10 +818,10 @@ button:hover, .button:hover {
   background-color: #fff;
   padding: 1rem;
 }
-.main-body.no-map .page-content p {
+.main-body.no-map .page-content p, .main-body.no-map .page-content ul, .main-body.no-map .page-content ol, .main-body.no-map .page-content h1, .main-body.no-map .page-content h2, .main-body.no-map .page-content h3, .main-body.no-map .page-content h4, .main-body.no-map .page-content h5, .main-body.no-map .page-content h6 {
   color: #202025;
 }
-.main-body.no-map .page-content p a, .main-body.no-map .page-content ul a, .main-body.no-map .page-content ol a {
+.main-body.no-map .page-content p a, .main-body.no-map .page-content ul a, .main-body.no-map .page-content ol a, .main-body.no-map .page-content h1 a, .main-body.no-map .page-content h2 a, .main-body.no-map .page-content h3 a, .main-body.no-map .page-content h4 a, .main-body.no-map .page-content h5 a, .main-body.no-map .page-content h6 a {
   font-weight: bold;
 }
 .main-body.no-map .page-content ul, .main-body.no-map .page-content ol {
