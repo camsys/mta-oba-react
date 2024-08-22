@@ -1983,7 +1983,6 @@ button:hover, .button:hover {
   position: relative;
   z-index: 2;
   font-size: 1em;
-  width: auto !important;
 }
 .map-popup .leaflet-popup-content > .icon, .leaflet-popup .leaflet-popup-content > .icon {
   height: 2.25em;
@@ -2004,7 +2003,6 @@ button:hover, .button:hover {
 }
 .map-popup .leaflet-popup-content .popup-info .route, .map-popup .leaflet-popup-content .popup-info .name, .map-popup .leaflet-popup-content .popup-info .vehicle, .map-popup .leaflet-popup-content .popup-info .stop-code, .leaflet-popup .leaflet-popup-content .popup-info .route, .leaflet-popup .leaflet-popup-content .popup-info .name, .leaflet-popup .leaflet-popup-content .popup-info .vehicle, .leaflet-popup .leaflet-popup-content .popup-info .stop-code {
   display: inline-block;
-  white-space: nowrap;
 }
 .map-popup .leaflet-popup-content::after, .leaflet-popup .leaflet-popup-content::after {
   content: "";
