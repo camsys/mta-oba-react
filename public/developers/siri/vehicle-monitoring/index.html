@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MTA Bus Time | Developers > SIRI > Vehicle Monitoring
+    </title>
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="/img/favicon.ico" />
+
+    <link rel="stylesheet" href="/css/bustime.css">
+    <script src="/js/bustime.js"></script>
+</head>
+<body>
+  <div class="main-body no-map">
+    <header class="header" id="header">
+      <div class="header-inner">
+        <a href="/" aria-label="MTA Bus Time Home" id="logo-link">
+          <img id="logo" src="/img/bustime-logo.png" alt="MTA Bus Time" class="logo" />
+        </a>
+        <nav>
+            <ul class="menu">
+                <li><a href="/">Home</a></li>
+                <li><a href="/help/text/">Text</a></li>
+                <li><a href="/about/">About</a></li>
+                <li><a href="/contact/">Contact</a></li>
+                <li><a href="/developers/" class="active">Developers</a></li>
+                <li><a href="/help/">Help</a></li>
+            </ul>
+        </nav>
+      </div>
+    </header>
+    <div class="main-content">
+      <ul class="breadcrumb">
+        <li><a href="/developers/">Developers</a></li>
+        <li><a href="/developers/SIRI/">SIRI</a></li>
+      </ul>
+      <h1 class="page-title">Vehicle Monitoring</h1>
+      <div class="content-and-toc">
+        <nav class="toc">
+          <h2 class="toc-header">Table of Contents</h2>
+          <ul class="menu toc-menu">
+            <li>
+              <a href="/developers/">MTA Bus Time Developer&nbsp;Access</a></span>
+            </li>
+            <li><a href="/developers/gtfs-realtime">GTFS-Realtime</a></li>
+            <li>
+              <a href="/developers/siri/">The SIRI API</a>
+              <ul class="menu toc-sub-menu">
+                <li><a href="/developers/siri/change-log/">Change Log</a></li>
+                <li><a href="/developers/siri/vehicle-monitoring/" class="active">SIRI Vehicle Monitoring</a></li>
+                <li><a href="/developers/siri/stop-monitoring/">SIRI Stop Monitoring</a></li>
+                <li><a href="/developers/siri/monitored-vehicle-journe/y">SIRI Monitored Vehicle&nbsp;Journey</a></li>
+                <li><a href="/developers/siri/situation-exchange-delivery/">SIRI Situation Exchange&nbsp;Delivery</a></li>
+              </ul>
+            </li>
+           <li><a href="/developers/restful-api/">OneBusAway "Discovery"&nbsp;API</a></li>
+           <li><a href="/developers/cancelled-trip-api-features/">Cancelled Trip API&nbsp;Features</a></li>
+           <li><a href="/developers/archive-data/">Archived Bus Time&nbsp;Data</a></li>
+           <li><a href="/developers/open-source/">Improving the MTA Bus Time&nbsp;System</a>
+          </ul>
+        </nav>
+        <div class="page-content card">
+          <h2>SIRI VehicleMonitoring Call</h2>
+            <p>The SIRI VehicleMonitoring ("SIRI VM") call allows the developer to request information about one, some, or all vehicles monitored by the MTA Bus Time system. As much as possible, the values used both in the VM request and the VM response correspond to the values in the GTFS data.</p>
+            <h2>SIRI VehicleMonitoring Requests</h2>
+            <p>It is accessible at the following URLs:</p>
+            <p><a href="https://bustime.mta.info/api/siri/vehicle-monitoring.json" target="_blank">https://bustime.mta.info/api/siri/vehicle-monitoring.json</a></p>
+            <p>Please note that the calls made without either a VehicleRef or LineRef produces quite a load on the system, so use them sparingly. Any developers found to be making repeated calls (e.g. at less than &nbsp;30 second intervals) for all vehicles in the system may find their key revoked.</p>
+            <p>with the following GET parameters:</p>
+            <ul>
+              <li><strong>key</strong> - your MTA Bus Time developer API key (required). Go <a href="https://register.developer.obanyc.com" target="_blank">here</a> to get one.</li>
+              <li><strong>version</strong> - which version of the SIRI API to use (1 or 2). Defaults to 1, but 2 is preferrable.</li>
+              <li><strong>OperatorRef</strong> - the GTFS agency ID to be monitored (optional). Currently <code>MTA</code>.</li>
+              <li><strong>VehicleRef</strong> - the ID of the vehicle to be monitored (optional). This is the 4-digit number painted on the side of the bus, for example <code>7560</code>. Response will include all buses if not included.&nbsp;</li>
+              <li><strong>LineRef</strong> - a filter by 'fully qualified' route name, GTFS agency ID + route ID (optional).</li>
+              <li><strong>DirectionRef</strong> - a filter by GTFS direction ID (optional). Either <code>0</code> or <code>1</code>.</li>
+              <li><strong>VehicleMonitoringDetailLevel</strong> - Level of detail present in response. In order of verbosity:
+                <ul>
+                  <li><code>minimum</code> - only available in version 2. Designed for front-end use.</li>
+                  <li><code>basic</code> - only available in version 2. Designed for system-to-system interchange when GTFS is loaded.</li>
+                  <li><code>normal</code> - default.</li>
+                  <li><code>calls</code> Determines whether or not the response will include the stops ("calls" in SIRI-speak) each vehicle is going to make <strong>after</strong> it serves the selected stop.</li>
+                </ul>
+              </li>
+              <li><strong>MaximumNumberOfCallsOnwards</strong> Limit on the number of <code>OnwardCall</code> elements for each vehicle when <code>VehicleMonitoringDetailLevel=calls</code></li>
+              <li><strong>MaximumStopVisits</strong> - an upper bound on the number of buses to return in the results.</li>
+              <li><strong>MinimumStopVisitsPerLine</strong> - a lower bound on the number of buses to return in the results per line/route (assuming that many are available)</li>
+            </ul>
+            <h2>SIRI VehicleMonitoring Responses</h2>
+            <p>The XML below illustrates the SIRI VehicleMonitoring response. The comments in the XML below document the meaning of each of the XML elements that are unique to the SIRI VehicleMonitoring call. Much of the interesting data is contained inside the <code>MonitoredVehicleJourney</code> element, which has <span class="wikilink"><a href="/wiki/Developers/SIRIMonitoredVehicleJourney">its own documentation</a>.</p>
+            <pre>
+              <code>
+&lt;!-- SIRI container elements --&gt;
+&lt;Siri version=&quot;1.3&quot; xmlns=&quot;http://www.siri.org.uk/siri&quot;&gt;
+  &lt;ServiceDelivery&gt;
+
+    &lt;!-- The timestamp on the MTA Bus Time server at the time the request was fulfilled --&gt;
+    &lt;ResponseTimestamp&gt;2011-01-28T14:22:48-05:00&lt;/ResponseTimestamp&gt;
+
+    &lt;!-- SIRI container for VehicleMonitoring response data --&gt;
+    &lt;VehicleMonitoringDelivery version=&quot;1.3&quot;&gt;
+
+      &lt;!-- Same as above.  Required by the SIRI spec. --&gt;
+      &lt;ResponseTimestamp&gt;2011-01-28T14:22:48-05:00&lt;/ResponseTimestamp&gt;
+      &lt;!-- The time until which the response data is valid until. --&gt;
+      &lt;ValidUntil&gt;2011-01-28T14:23:48-05:00&lt;/ValidUntil&gt;
+
+      &lt;!-- SIRI container for data about a particular vehicle --&gt;
+      &lt;VehicleActivity&gt;
+
+        &lt;!-- The timestamp of the last real-time update from the particular vehicle --&gt;
+        &lt;RecordedAtTime&gt;2011-01-28T14:22:30-05:00&lt;/RecordedAtTime&gt;
+
+        &lt;!-- A MonitoredVehicleJourney element for a vehicle in revenue service. Please See the MonitoredVehicleJourney page for a thorough description --&gt;
+        &lt;MonitoredVehicleJourney&gt;
+          ...
+        &lt;/MonitoredVehicleJourney&gt;
+      &lt;/VehicleActivity&gt;
+
+      &lt;!-- The next vehicle. --&gt;
+      &lt;VehicleActivity&gt;
+        &lt;RecordedAtTime&gt;2011-01-28T14:22:43-05:00&lt;/RecordedAtTime&gt;
+
+        &lt;!-- A complete MonitoredVehicleJourney element. See the MonitoredVehicleJourney page for more information --&gt;
+        &lt;MonitoredVehicleJourney&gt;...&lt;/MonitoredVehicleJourney&gt;
+      &lt;/VehicleActivity&gt;
+
+      ... More VehicleActivity elements
+
+    &lt;/VehicleMonitoringDelivery&gt;
+  &lt;/ServiceDelivery&gt;
+&lt;/Siri&gt;
+              </code>
+            </pre>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
