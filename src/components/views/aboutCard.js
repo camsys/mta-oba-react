@@ -18,11 +18,11 @@ function getAboutCard  () {
             <p>MTA Bus Time is available using a desktop website, a mobile website (which can also be used as an accessibility-friendly text-only desktop website) on iPhone, 
                 Android, BlackBerry, or other smartphones, and using SMS text messaging on any mobile phone. 
                 &nbsp;For instructions on how to use each version of MTA Bus Time visit the 
-                <span class="wikilink"><a href="/wiki/doc:Help/Index">Help Pages</a></span>.
+                <span class="wikilink"><a href="/developers/doc:Help/Index">Help Pages</a></span>.
             </p>
             <div class="wikimodel-emptyline" />
             <p>For more information about the technology behind MTA Bus Time please visit the 
-                <span class="wikilink"><a href="/wiki/doc:Main/Technology">Technology</a></span> page.</p><p class="meta">
+                <span class="wikilink"><a href="/developers/doc:Main/Technology">Technology</a></span> page.</p><p class="meta">
             </p>
         </div>
     </div>);

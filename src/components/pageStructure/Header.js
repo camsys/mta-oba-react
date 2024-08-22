@@ -22,7 +22,7 @@ function Header  () {
                         <li><a href="/help/text">Text</a></li>
                         <li><a href="/about">About</a></li>
                         <li><a href="/contact">Contact</a></li>
-                        <li><a href="/wiki">Developers</a></li>
+                        <li><a href="/developers">Developers</a></li>
                         <li><a href="/help">Help</a></li>
                     </ul>
                 </nav>

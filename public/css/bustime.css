@@ -803,7 +803,6 @@ button:hover, .button:hover {
 .main-body.no-map .page-content {
   background-color: #fff;
   padding: 1rem;
-  margin-top: 1rem;
 }
 .main-body.no-map .page-content p {
   color: #202025;
@@ -820,6 +819,55 @@ button:hover, .button:hover {
 }
 .main-body.no-map .page-content:first-child {
   margin-top: 0;
+}
+.main-body.no-map .content-and-toc {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: nowrap;
+      flex-wrap: nowrap;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: reverse;
+      -ms-flex-direction: row-reverse;
+          flex-direction: row-reverse;
+  gap: 1rem;
+}
+.main-body.no-map .content-and-toc .page-content {
+  margin-top: 0;
+}
+.main-body.no-map .content-and-toc .toc .toc-header {
+  font-size: 1em;
+}
+.main-body.no-map .content-and-toc .toc .toc-menu {
+  font-size: 0.875em;
+}
+.main-body.no-map .content-and-toc .toc a {
+  text-decoration: none;
+  color: #666;
+  display: block;
+  padding: 0.3125em 0;
+}
+.main-body.no-map .content-and-toc .toc a:hover {
+  text-decoration: underline;
+  color: #000;
+}
+.main-body.no-map .content-and-toc .toc a.current {
+  font-weight: bold;
+}
+.main-body.no-map .content-and-toc .toc ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.main-body.no-map .content-and-toc .toc ul li {
+  margin: 0;
+  padding: 0;
+}
+.main-body.no-map .content-and-toc .toc ul ul {
+  margin: 0 0 0.0625em 0.5em;
+}
+.main-body.no-map .content-and-toc .toc ul ul a {
+  padding: 0.25em 0;
 }
 
 .header {
