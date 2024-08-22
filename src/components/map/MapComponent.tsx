@@ -61,7 +61,7 @@ const MapVehicleElements = () :JSX.Element =>{
     }
 
     useEffect(() => {
-        console.log("updating vehicle markers ",state.currentCard,vehicleObjsRefs.current)
+        // console.log("updating vehicle markers ",state.currentCard,vehicleObjsRefs.current)
             try {
                 if (vehicleObjsRefs && typeof vehicleObjsRefs.current === "object"
                     && typeof vehicleObjsRefs.current.get === 'function'

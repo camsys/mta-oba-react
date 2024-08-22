@@ -59,25 +59,34 @@ export const VehicleCardContentComponent = ({routeMatch,vehicleDatum}
 }
 
 const VehicleCard = (routeMatch:RouteMatch,vehicleId:string) : JSX.Element=> {
-    console.log("generating route card: ", routeMatch);
-    if (routeMatch.type !== MatchType.RouteMatch) {
-        return null
-    }
+    console.log("generating VehicleCard: ", routeMatch);
 
     let {highlightId} = useHighlight()
-
     const { search } = useSearch();
     const { vehicleState} = useContext(VehicleStateContext)
-    let routeId = routeMatch.routeId.split("_")[1];
-    let vehicleDatum;
+    const {state} = useContext(CardStateContext)
 
 
     const [loading, setLoading] = useState(true);
+    useEffect(() => {
+        setLoading(true)
+    },[state])
+
+    let routeId;
+    let vehicleDatum;
+
+
+
     // bug where vehicle datum was null, happened shortly before release, temp fix, assuming it's because asyncs
     // if vehicle datum is null, check every half second and then load
 
     const checkLoading = () =>{
+        if (routeMatch.type !== MatchType.RouteMatch) {
+            console.log("card is still loading so VehicleCard is still loading",loading)
+            return}
+        routeId = routeMatch.routeId.split("_")[1];
         vehicleDatum = vehicleState[routeId+vehicleDataIdentifier].get(vehicleId)
+        console.log("is VehicleCard data still loading?",loading,vehicleDatum)
         if(loading && vehicleDatum!==null && typeof vehicleDatum!=='undefined'){
             setLoading(false)
         }
@@ -85,9 +94,10 @@ const VehicleCard = (routeMatch:RouteMatch,vehicleId:string) : JSX.Element=> {
     checkLoading()
     useEffect(() => {
         if(loading){
+            console.log("vehicle not loaded yet, attempting VehicleCard reload")
             const interval = setInterval(()=>{
                 checkLoading();
-                !loading?clearInterval(interval):null}, 100);
+                (!loading)?clearInterval(interval):null}, 100);
             return () => clearInterval(interval);
         }
     }, [loading]);
@@ -133,7 +143,7 @@ const VehicleCard = (routeMatch:RouteMatch,vehicleId:string) : JSX.Element=> {
 //This one breaks the pattern because vehicles are not searched elsewhere. sorry
 const getVehicleCardsWrapper = () : JSX.Element => {
         const { state} = useContext(CardStateContext);
-        console.log("adding vehicles for match:", state.currentCard.searchMatches);
+        console.log("adding vehicleCard info for match:", state.currentCard.searchMatches);
 
         return (<React.Fragment>
             <h2 className="cards-header">Vehicle:</h2>
