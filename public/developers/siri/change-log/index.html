@@ -62,7 +62,66 @@
           </ul>
         </nav>
         <div class="page-content card">
-          <p>info</p>
+          <h2>Changes for Fall 2016 Release</h2>
+          <p>SIRI Version 2 for StopMonitoring and VehicleMonitoring. now supports <code>minimum</code> detail level, cutting data usage by approximately 50% over the <code>normal</code> level.</p>
+          <h2>Changes for Fall 2015 Release</h2>
+          <p>SIRI Version 2 support for StopMonitoring and VehicleMonitoring. Using SIRI version 2 and new <code>basic</code> detail level cuts data usage by approximately 20%.</p>
+          <h2>Changes for Fall 2012 Release</h2>
+          <p>A number of changes are coming in the Fall of 2012</p>
+          <h3>Deployment of OneBusAway RESTful API for "Discovery" of static information</h3>
+          <p>MTA Bus Time is powered (in part) by the open source <a href="https://github.com/OneBusAway/onebusaway/wiki" target="_blank">OneBusAway</a> (OBA) software. While MTA Bus Time's SIRI API is a new addition to the OBA project, OBA does have its own RESTful developer API. We will be providing access to that that API, with some minor modifications, for the MTA Bus Time project.</p>
+          <p>The documentation for the OBA RESTful API is available <a href="https://developer.onebusaway.org/modules/onebusaway-application-modules/current/api/where/index.html" target="_blank">online</a>. The modifications to this API with respect to MTA Bus Time are described <a href="https://github.com/OneBusAway/onebusaway-application-modules/wiki/RESTful-API-Roadmap" target="_blank">here</a>. This API will allow you to "discover" static/baseline information about the bus services covered under MTA Bus Time. It is, effectively, a set of web services that gives you convenient HTTP-based access to selected subsets of information otherwise available from the GTFS files.</p>
+          <h3>Multi-agency/operator expansion</h3>
+          <p>MTA has two bus operating agencies: MTA New York City Transit and MTA Bus Company (with GTFS <code>agency_id</code>'s "MTA NYCT" and "MTABC", respectively). These two agencies share the same bus stops and set of bus stop ID's. While their co-existence will be invisible to users of MTA Bus Time's web, mobile, and SMS interfaces, some slight changes are required to the developer API's to handle this situation:</p>
+          <ul>
+            <li>All stops will have an <code>agency_id</code>/<code>OperatorRef</code> of "MTA" (eg "MTA_308209") rather than "MTA NYCT" or "MTABC".</li>
+            <li>The <code>OperatorRef</code> parameter of the <a href="/developers/siri/vehicle-monitoring/">VehicleMonitoring</a> and <a href="/developers/siri/stop-monitoring/">StopMonitoring</a> calls will become optional. You should still use it when you can (it will make the responses come back more quickly) but it's not strictly necessary.</li>
+            <li>All routes will still have the <code>agency_id</code>/<code>OperatorRef</code> of the GTFS file from which the routes originally came.</li>
+          </ul>
+          <h2>Changes for July 2012 Release</h2>
+          <p>(Full documentation will be updated to include these changes closer to release date)</p>
+          <h3>New Parameters on StopMonitoring</h3>
+          <p>2 new parameters that allow you to modulate the amount of information you get back from the <code>StopMonitoring</code> call:</p>
+          <ul>
+            <li><code>MaximumStopVisits</code> - an upper bound on the number of buses to return in the results.</li>
+            <li><code>MinimumStopVisitsPerLine</code> - a lower bound on the number of buses to return in the results per line/route (assuming that many are available)</li>
+          </ul>
+          <h3>OnwardCalls Starting Point in StopMonitoring Results</h3>
+          <p>In <code>StopMonitoring</code>, <code>OnwardCalls</code> currently start after the stop that is being monitored. With this new release, they start with the immediate next stop the bus will make.</p>
+          <h3>Transparency of Block vs. Trip-Level Assignment</h3>
+          <p>MTA Bus Time tries to assign buses to blocks- a sequence of trips that start and end at a depot. This allows the system to make a statement about what a bus will do after it reaches the end of its current trip.&nbsp;</p>
+          <p>However, there is not always enough affirmative and corresponding evidence to make such a strong statement. In this case, MTA Bus Time falls back to a trip-level assignment, where it just picks a trip from the schedule that is representative of the route and stopping pattern that the bus is likely to pursue.</p>
+          <p>The SIRI API now reflects this distinction as described here and in other items below. If the assignment is block-level, the new <code>BlockRef</code> field of the <code>MonitoredVehicleJourney</code> is present, and populated with the assigned block id.</p>
+          <h3>Scheduled Departure Time from Terminal</h3>
+          <p>When a bus has a block-level assignment and is in the layover at a terminal, a new <code>OriginAimedDepartureTime</code> field on <code>MonitoredVehicleJourney</code> indicates the scheduled departure time of that bus from that terminal in ISO8601 format. This is reflected in the Bus Time UIs as <strong>"At Terminal, Scheduled to depart at HH:MM."</strong></p>
+          <h3>StopMonitoring Updates to Use Block-Level Assignment</h3>
+          <p><code>StopMonitoring</code> results will now include buses that are scheduled to stop at the monitored stop according to the schedule for their assigned blocks, even if they are not yet on the trip that will serve the monitored stop. This occurs only when those buses have a block-level assignment; otherwise, they are not included until they reach the terminal and present evidence that they will continue on to serve the monitored stop. In general, this means that <code>StopMonitoring</code> requests will have more results. The diagram below shows an example of this behavior.</p>
+          <!--<p><img src="https://xwiki.dev.obanyc.com/bin/download/Developers/WebHome/wraparound/png" alt="wraparound/png"></p>!-->
+          <p>This is indicated by:</p>
+          <ul>
+            <li>The <code>ProgressStatus</code> field will include a <code>prevTrip</code> flag, indicating that the bus is still on a trip prior to the one that will serve the monitored stop. The <code>prevTrip</code> flag may also be combined with <code>layover</code> when the bus is laying over and scheduled to depart.</li>
+            <li>the <code>OnwardCalls</code> will start at the beginning of the trip on which the bus will serve the monitored stop. That means that the first <code>OnwardCall</code> will be often be more than 1 stop away.</li>
+            <li>The <code>FramedJourneyRef</code> (which has the GTFS trip_id) being different for a given bus than in in the <code>VehicleMonitoring</code> result for that bus.</li>
+          </ul>
+          <h2>Changes from MTA Bus Time B63 Pilot to Production Launch</h2>
+          <p>Summary of changes to the Bus Time API</p>
+          <h3>JSON:</h3>
+          <p>API calls will return JSON rather than XML if the suffix of the URL is .json rather than .xml.</p>
+          <h3>SituationExchangeDelivery:</h3>
+          <p>The SIRI SituationExchangeDelivery element in the response only appears when there is a service change active for a route or stop being called on. It is used by the responses to both the VehicleMonitoring and StopMonitoring calls.</p>
+          <h3>New Parameters:</h3>
+          <p>MaximumNumberOfCallsOnwards in VehicleMonitoring and StopMonitoring:<br>Limits the number of OnwardCall elements returned in the query when VehicleMonitoringDetailLevel or StopMonitoringDetailLevel =calls</p>
+          <h3>Changes to elements in MonitoredVehicleJourney and StopMonitoring include:</h3>
+          <ol>
+            <li>Inclusion of PresentableDistance element, a UI friendly distance field</li>
+            <li>Bearing is now more accurate</li>
+            <li>CourseOfJourneyRef has been removed</li>
+            <li>GTFS route_short_name now in PublishedLineName</li>
+            <li>GTFS trip_headsign now in DestinationName</li>
+            <li>Layover status information now in ProgressStatus<br></li>
+            <li>OperatorRef is now the same as the GTFS Agency ID.</li>
+            <li>OperatorRef/ GTFS Agency ID is prepended to the LineRef element.</li>
+          </ol>
         </div>
       </div>
     </div>

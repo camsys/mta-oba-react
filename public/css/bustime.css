@@ -820,6 +820,7 @@ button:hover, .button:hover {
 }
 .main-body.no-map .page-content p, .main-body.no-map .page-content ul, .main-body.no-map .page-content ol, .main-body.no-map .page-content h1, .main-body.no-map .page-content h2, .main-body.no-map .page-content h3, .main-body.no-map .page-content h4, .main-body.no-map .page-content h5, .main-body.no-map .page-content h6 {
   color: #202025;
+  line-height: 1.4;
 }
 .main-body.no-map .page-content p a, .main-body.no-map .page-content ul a, .main-body.no-map .page-content ol a, .main-body.no-map .page-content h1 a, .main-body.no-map .page-content h2 a, .main-body.no-map .page-content h3 a, .main-body.no-map .page-content h4 a, .main-body.no-map .page-content h5 a, .main-body.no-map .page-content h6 a {
   font-weight: bold;
@@ -830,6 +831,12 @@ button:hover, .button:hover {
 }
 .main-body.no-map .page-content ul ul, .main-body.no-map .page-content ul ol, .main-body.no-map .page-content ol ul, .main-body.no-map .page-content ol ol {
   margin: 1em 0;
+}
+.main-body.no-map .page-content code {
+  font-size: 0.875em;
+  background-color: #f3f3f3;
+  padding: 0.125em 0.5em;
+  border: 1px solid #fff;
 }
 .main-body.no-map .page-content:first-child {
   margin-top: 0;
