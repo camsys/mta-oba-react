@@ -353,6 +353,12 @@ h1, h2, h3, h4, h5, h6 {
   padding: 0;
 }
 
+.card h4, .inner-card h4 {
+  font-size: 0.875em;
+  font-weight: bold;
+  margin: 0 0 0.75em 0;
+}
+
 p {
   margin: 0 0 1em 0;
   padding: 0;
@@ -795,13 +801,18 @@ button:hover, .button:hover {
 .main-body.no-map h3:not(first-child) {
   margin-top: 1em;
 }
-.card .main-body.no-map h4, .inner-card .main-body.no-map h4 {
-  font-size: 0.875em;
-  font-weight: bold;
-  margin: 0 0 0.75em 0;
-}
-.card .main-body.no-map h4:not(first-child), .inner-card .main-body.no-map h4:not(first-child) {
+.main-body.no-map h4:not(first-child) {
   margin-top: 1em;
+}
+.main-body.no-map table {
+  text-align: left;
+  vertical-align: middle;
+  border-spacing: 1px;
+  background: #ddd;
+}
+.main-body.no-map table td, .main-body.no-map table th {
+  padding: 0.5em;
+  background: #fff;
 }
 .main-body.no-map .main-content {
   padding: 1rem;
