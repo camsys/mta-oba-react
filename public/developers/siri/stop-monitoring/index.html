@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MTA Bus Time | Developers > SIRI > Stop Monitoring
+    </title>
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="/img/favicon.ico" />
+
+    <link rel="stylesheet" href="/css/bustime.css">
+    <script src="/js/bustime.js"></script>
+</head>
+<body>
+  <div class="main-body no-map">
+    <header class="header" id="header">
+      <div class="header-inner">
+        <a href="/" aria-label="MTA Bus Time Home" id="logo-link">
+          <img id="logo" src="/img/bustime-logo.png" alt="MTA Bus Time" class="logo" />
+        </a>
+        <nav>
+            <ul class="menu">
+                <li><a href="/">Home</a></li>
+                <li><a href="/help/text/">Text</a></li>
+                <li><a href="/about/">About</a></li>
+                <li><a href="/contact/">Contact</a></li>
+                <li><a href="/developers/" class="active">Developers</a></li>
+                <li><a href="/help/">Help</a></li>
+            </ul>
+        </nav>
+      </div>
+    </header>
+    <div class="main-content">
+      <ul class="breadcrumb">
+        <li><a href="/developers/">Developers</a></li>
+        <li><a href="/developers/SIRI/">SIRI</a></li>
+      </ul>
+      <h1 class="page-title">Stop Monitoring</h1>
+      <div class="content-and-toc">
+        <nav class="toc">
+          <h2 class="toc-header">Table of Contents</h2>
+          <ul class="menu toc-menu">
+            <li>
+              <a href="/developers/">MTA Bus Time Developer&nbsp;Access</a></span>
+            </li>
+            <li><a href="/developers/gtfs-realtime">GTFS-Realtime</a></li>
+            <li>
+              <a href="/developers/siri/">The SIRI API</a>
+              <ul class="menu toc-sub-menu">
+                <li><a href="/developers/siri/change-log/">Change Log</a></li>
+                <li><a href="/developers/siri/vehicle-monitoring/">SIRI Vehicle Monitoring</a></li>
+                <li><a href="/developers/siri/stop-monitoring/" class="active">SIRI Stop Monitoring</a></li>
+                <li><a href="/developers/siri/monitored-vehicle-journey/">SIRI Monitored Vehicle&nbsp;Journey</a></li>
+                <li><a href="/developers/siri/situation-exchange-delivery/">SIRI Situation Exchange&nbsp;Delivery</a></li>
+              </ul>
+            </li>
+           <li><a href="/developers/restful-api/">OneBusAway "Discovery"&nbsp;API</a></li>
+           <li><a href="/developers/cancelled-trip-api-features/">Cancelled Trip API&nbsp;Features</a></li>
+           <li><a href="/developers/archive-data/">Archived Bus Time&nbsp;Data</a></li>
+           <li><a href="/developers/open-source/">Improving the MTA Bus Time&nbsp;System</a>
+          </ul>
+        </nav>
+        <div class="page-content card">
+          <h2>SIRI StopMonitoring Call</h2>
+          <p>The SIRI StopMonitoring ("SIRI SM") call allows the developer to request information about the vehicles serving a particular stop. As much as possible, the values used both in the SM request and the SM response correspond to the values in the GTFS data for the B63.</p>
+          <h2>SIRI StopMonitoring Requests</h2>
+          <p>It is accessible at the following URLs:</p>
+          <p><a href="https://bustime.mta.info/api/siri/stop-monitoring.json" target="_blank">https://bustime.mta.info/api/siri/stop-monitoring.json</a></p>
+          <p>with the following GET parameters:</p>
+          <ul>
+            <li><strong>key</strong> - your MTA Bus Time developer API key (required). Go <a href="https://register.developer.obanyc.com" target="_blank">here</a> to get one.</li>
+            <li><strong>version</strong> - which version of the SIRI API to use (1 or 2). Defaults to 1, but 2 is preferrable.</li>
+            <li><strong>OperatorRef</strong> - the GTFS agency ID to be monitored (optional). Currently, all stops have operator/agency ID of <code>MTA</code>. If left out, the system will make a best guess. Usage of the OperatorRef is suggested, as calls will return faster when populated.</li>
+            <li><strong>MonitoringRef</strong> - the GTFS stop ID of the stop to be monitored (required). For example, <code>308214</code> for the stop at 5th Avenue and Union St towards Bay Ridge.</li>
+            <li><strong>LineRef</strong> - a filter by 'fully qualified' route name, GTFS agency ID + route ID (e.g. MTA NYCT_B63).</li>
+            <li><strong>DirectionRef</strong> - a filter by GTFS direction ID (optional). Either <code>0</code> or <code>1</code>.</li>
+            <li><strong>StopMonitoringDetailLevel</strong> - Level of detail present in response. In order of verbosity:<br><code>minimum</code> - only available in version 2. Designed for front-end use.<br><code>basic</code> - only available in version 2. Designed for system-to-system interchange when GTFS is loaded.<br><code>normal</code> - default.<br><code>calls</code> Determines whether or not the response will include the stops ("calls" in SIRI-speak) each vehicle is going to make <strong>after</strong> it serves the selected stop (optional).</li>
+            <li><strong>MaximumNumberOfCallsOnwards</strong> - Limits the number of <code>OnwardCall</code> elements returned in the query.</li>
+            <li><strong>MaximumStopVisits</strong> - an upper bound on the number of buses to return in the results.</li>
+            <li><strong>MinimumStopVisitsPerLine</strong> - a lower bound on the number of buses to return in the results per line/route (assuming that many are available)</li>
+          </ul>
+          <p>An example URL, incorporating some of these GET parameters, is <a href="https://bustime.mta.info/api/siri/stop-monitoring.json?key=##KEY##&amp;OperatorRef=MTA&amp;MonitoringRef=308209&amp;LineRef=MTA%20NYCT_B63" target="_blank">
+            https://bustime.mta.info/api/siri/stop-monitoring.json?key=##KEY##&OperatorRef=MTA&MonitoringRef=308209&LineRef=MTA%20NYCT_B63
+            </a>
+          </p>
+          <h2>SIRI StopMonitoring Responses</h2>
+          <p>The XML below illustrates the SIRI StopMonitoring response. The comments in the XML below document the meaning of each of the XML elements that are unique to the SIRI StopMonitoring call. Much of the interesting data is contained inside the <code>MonitoredVehicleJourney</code> element, which has <a href="/developers/siri/monitored-vehicle-journey" target="_blank">its own documentation</a>.</p>
+          <p>Note that the MonitoredVehicleJourney of a SIRI SM call will always have a <code>MonitoredCall</code> element. The first <code>OnwardCall</code> element (if requested) will always be the next stop the bus will make, which in most cases is a stop before the <code>MonitoredCall</code>.</p>
+          <p>Other notes about the particularities of <code>StopMonitoring</code> data is shown after the example response.</p>
+<pre><code>&lt;!-- SIRI container elements --&gt;
+  &lt;Siri version=&quot;1.3&quot; xmlns=&quot;http://www.siri.org.uk/siri&quot;&gt;
+    &lt;ServiceDelivery&gt;
+  
+      &lt;!-- The timestamp on the MTA Bus Time server at the time the request was fulfilled --&gt;
+      &lt;ResponseTimestamp&gt;2011-01-28T14:49:58-05:00&lt;/ResponseTimestamp&gt;
+  
+      &lt;!-- SIRI container for VehicleMonitoring response data --&gt;
+      &lt;StopMonitoringDelivery version=&quot;1.3&quot;&gt;
+  
+        &lt;!-- Same as above.  Required by the SIRI spec. --&gt;
+        &lt;ResponseTimestamp&gt;2011-01-28T14:49:58-05:00&lt;/ResponseTimestamp&gt;
+        &lt;!-- The time until which the response data is valid until. --&gt;
+        &lt;ValidUntil&gt;2011-01-28T14:50:58-05:00&lt;/ValidUntil&gt;
+  
+        &lt;!-- SIRI container for data about a particular vehicle service the selected stop --&gt;
+        &lt;MonitoredStopVisit&gt;
+  
+          &lt;!-- The timestamp of the last real-time update from the particular vehicle --&gt;
+          &lt;RecordedAtTime&gt;2011-01-28T14:49:27-05:00&lt;/RecordedAtTime&gt;
+  
+          &lt;!-- A complete MonitoredVehicleJourney element. See the MonitoredVehicleJourney page for more information--&gt;
+          &lt;MonitoredVehicleJourney&gt;...&lt;/MonitoredVehicleJourney&gt;
+  
+        &lt;/MonitoredStopVisit&gt;
+  
+        ... More MonitoredStopVisit elements
+  
+      &lt;/StopMonitoringDelivery&gt;
+    &lt;/ServiceDelivery&gt;
+  &lt;/Siri&gt;</code></pre>
+          <h3>StopMonitoring Updates to Use Block-Level Assignment</h3>
+          <p><code>StopMonitoring</code> results will now include buses that are scheduled to stop at the monitored stop according to the schedule for their assigned blocks, even if they are not yet on the trip that will serve the monitored stop. This occurs only when those buses have a block-level assignment; otherwise, they are not included until they reach the terminal and present evidence that they will continue on to serve the monitored stop. In general, this means that <code>StopMonitoring</code> requests will have more results. The diagram below shows an example of this behavior.</p>
+          <!--<p><img src="https://xwiki.dev.obanyc.com/bin/download/Developers/WebHome/wraparound.png" data-xwiki-image-style-alignment="center" alt="wraparound.png"></p>!-->
+          <p>This is indicated by:</p>
+          <ul>
+            <li>The <code>ProgressStatus</code> field will include a <code>prevTrip</code> flag, indicating that the bus is still on a trip prior to the one that will serve the monitored stop. The <code>prevTrip</code> flag may also be combined with <code>layover</code> when the bus is laying over and scheduled to depart.&nbsp;</li>
+            <li>the <code>OnwardCalls</code> will start at the beginning of the trip on which the bus will serve the monitored stop. That means that the first <code>OnwardCall</code> will be often be more than 1 stop away.</li>
+            <li>The <code>FramedJourneyRef</code> (which has the GTFS trip_id) being different for a given bus than in in the <code>VehicleMonitoring</code> result for that bus.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
