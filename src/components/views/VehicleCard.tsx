@@ -69,7 +69,7 @@ const VehicleCard = (routeMatch:RouteMatch,vehicleId:string) : JSX.Element=> {
     const { search } = useSearch();
     const { vehicleState} = useContext(VehicleStateContext)
     let routeId = routeMatch.routeId.split("_")[1];
-    let vehicleDatum = vehicleState[routeId+vehicleDataIdentifier].get(vehicleId)
+    let vehicleDatum;
 
 
     const [loading, setLoading] = useState(true);
@@ -77,6 +77,7 @@ const VehicleCard = (routeMatch:RouteMatch,vehicleId:string) : JSX.Element=> {
     // if vehicle datum is null, check every half second and then load
 
     const checkLoading = () =>{
+        vehicleDatum = vehicleState[routeId+vehicleDataIdentifier].get(vehicleId)
         if(loading && vehicleDatum!==null && typeof vehicleDatum!=='undefined'){
             setLoading(false)
         }
@@ -90,7 +91,9 @@ const VehicleCard = (routeMatch:RouteMatch,vehicleId:string) : JSX.Element=> {
             return () => clearInterval(interval);
         }
     }, [loading]);
-    if(loading) return(<ErrorBoundary><div>Loading...</div></ErrorBoundary>)
+    if(loading) {
+        console.log("waiting on generating VehicleCard")
+        return(<ErrorBoundary><div>Loading...</div></ErrorBoundary>)}
 
 
     console.log("generating VehicleCard ",routeId,vehicleDatum,vehicleState[routeId+updatedTimeIdentifier])
