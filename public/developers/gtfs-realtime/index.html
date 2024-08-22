@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MTA Bus Time | Developers</title>
+    <title>MTA Bus Time | Developers > GTFS-Realtime Support
+    </title>
 
     <!-- Favicon -->
     <link rel="shortcut icon" href="/img/favicon.ico" />
@@ -31,15 +32,18 @@
       </div>
     </header>
     <div class="main-content">
-      <h1 class="page-title">Developers</h1>
+      <ul class="breadcrumb">
+        <li><a href="/developers">Developers</a></li>
+      </ul>
+      <h1 class="page-title">GTFS-Realtime Support</h1>
       <div class="content-and-toc">
         <nav class="toc">
           <h2 class="toc-header">Table of Contents</h2>
           <ul class="menu toc-menu">
             <li>
-              <a href="/developers/" class="active">MTA Bus Time Developer&nbsp;Access</a></span>
+              <a href="/developers/">MTA Bus Time Developer&nbsp;Access</a></span>
             </li>
-            <li><a href="/developers/gtfs-realtime">GTFS-Realtime</a></li>
+            <li><a href="/developers/gtfs-realtime" class="active" >GTFS-Realtime</a></li>
             <li>
               <a href="/developers/siri/">The SIRI API</a>
               <ul class="menu toc-sub-menu">
@@ -57,12 +61,14 @@
           </ul>
         </nav>
         <div class="page-content card">
-          <h2>MTA Bus Time has a developer API from day one!</h2>
-          <p>Transit developers, web developers, hobbyists, hackers, or anyone who uses mass transit and has a bit of tech skills - you are part of the solution. MTA Bus Time is built with a real-time developer API that anyone can use for free. We are excited to see what you come up with.</p>
-          <h2>How To Get Involved</h2>
-          <p>Go <a href="https://register.developer.obanyc.com/" target="_blank">here</a> to request an API Key. You will receive one within half an hour. While you're waiting, please check out the documentation for the <a href="/developers/siri/">SIRI Real-Time API</a> and the <a href="/developers/restful-api">OneBusAway "Discovery" API</a>.</p>
-          <p>If you have any questions, comments, bug reports, or anything else to say about the MTA Bus Time API, please post them to the <a href="https://groups.google.com/group/mtadeveloperresources" target="_blank">MTA Developer Resources Google Group</a>. We look forward to hearing from you. Remember, this is a pilot project, so your input can help shape the future deployments of the MTA Bus Time system.</p>
-          <p>For information about licensing and about MTA's other developer feeds, please see the <a href="https://www.mta.info/developers/" target="_blank">MTA's Developer Resources page</a>.</p>
+          <p>MTA Bus Time now supports <a href="https://github.com/google/transit/tree/master/gtfs-realtime/spec/en" target="_blank"> GTFS-Realtime</a>.</p>
+          <p>TripUpdates, VehiclePositions, and Alerts are available at the following URLs:</p>
+          <ul>
+            <li>https://gtfsrt.prod.obanyc.com/tripUpdates?key=&lt;YOUR_KEY&gt;</li>
+            <li>https://gtfsrt.prod.obanyc.com/vehiclePositions?key=&lt;YOUR_KEY&gt;</li>
+            <li>https://gtfsrt.prod.obanyc.com/alerts?key=&lt;YOUR_KEY&gt;</li>
+          </ul>
+          <p>Where <strong>&lt;YOUR_KEY&gt;</strong> is your MTA Bus Time developer API key (required). &nbsp;Go <a href="https://register.developer.obanyc.com" target="_blank">here</a> to get one.</p>
         </div>
       </div>
     </div>
