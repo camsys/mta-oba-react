@@ -62,20 +62,22 @@ const MapVehicleElements = () :JSX.Element =>{
 
     useEffect(() => {
         console.log("updating vehicle markers ",state.currentCard,vehicleObjsRefs.current)
+            try {
+                if (vehicleObjsRefs && typeof vehicleObjsRefs.current === "object"
+                    && typeof vehicleObjsRefs.current.get === 'function'
+                    && state.currentCard.type === CardType.VehicleCard) {
+                    let vehicleId = state.currentCard.datumId;
+                    let vehicleDatum = vehicleObjsRefs.current.get(vehicleId)
+                    if (typeof vehicleDatum !== 'undefined'
+                        && vehicleDatum.getPopup()) {
 
-            if(vehicleObjsRefs && typeof vehicleObjsRefs.current === "object"
-                && typeof vehicleObjsRefs.current.get === 'function'
-                && state.currentCard.type===CardType.VehicleCard) {
-                let vehicleId = state.currentCard.datumId;
-                if(typeof vehicleObjsRefs.current.get(vehicleId)!=='undefined'
-                    && vehicleObjsRefs.current.get(vehicleId).getPopup()){
-
-                    console.log("map vehicle component markers popup value is",
-                        vehicleObjsRefs.current.get(vehicleId).getPopup(),
-                        state.currentCard.datumId)
-                    vehicleObjsRefs.current.get(vehicleId).openPopup()
+                        console.log("map vehicle component markers popup value is",
+                            vehicleDatum.getPopup(),
+                            state.currentCard.datumId)
+                        vehicleDatum.openPopup()
+                    }
                 }
-        }
+            }catch(e){console.error("caught vehicle datum error when using vehicleObjsRefs.current.get")}
     },[state,vehicleState])
 
 
