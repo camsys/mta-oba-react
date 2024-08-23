@@ -216,14 +216,10 @@ export const useSearch = () =>{
         let routeId = vehicleDatum.routeId.split("_")[1];
         console.log("found routeId of target vehicle: ",routeId)
         let currentCard = new Card(routeId)
-        let routeData
-        pastCard.searchMatches.forEach((match)=>{
-            routeData = match.routeMatches
-                .filter(value => value.type===MatchType.RouteMatch)
-                .map(value=> value as RouteMatch)
-                .filter(value => value.routeId==vehicleDatum.routeId)})
+        let routeData = routes?.current
+        if(routeData){routeData=routeData[vehicleDatum.routeId]}
         console.log("found routedata of target vehicle: ",routeData)
-        currentCard.setToVehicle(vehicleDatum.vehicleId,routeData,new Set([vehicleDatum.routeId]))
+        currentCard.setToVehicle(vehicleDatum.vehicleId,[routeData],new Set([vehicleDatum.routeId]))
         let cardStack = state.cardStack
         cardStack.push(currentCard)
         console.log("updating state prev card -> new card: \n", pastCard,currentCard)
