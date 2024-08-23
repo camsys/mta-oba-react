@@ -911,6 +911,11 @@ button:hover, .button:hover {
 .main-body.no-map .content-and-toc .toc ul ul a {
   padding: 0.25em 0;
 }
+.main-body.no-map .content-and-toc .content {
+  -webkit-box-flex: 1;
+      -ms-flex-positive: 1;
+          flex-grow: 1;
+}
 
 .header {
   background-color: #202025;
