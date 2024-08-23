@@ -35,56 +35,72 @@
         <li><a href="/help/">Help</a></li>
       </ul>
       <h1 class="page-title">Tips & Tricks</h1>
-      <div class="page-content card">
-        <p>When using MTA Bus Time, you'll see certain display conventions and standards that tell you about upcoming arrivals at your stop. This page outlines some of those conventions so that you can better interpret the results and use MTA Bus Time to reliably catch your bus.</p>
-        <p>
-          When interpreting the information on MTA Bus Time, it is important to remember that the system gets location information from the buses approximately every 30 seconds. Of course, the closer the bus is reported to be to your stop, the more those 30 seconds matter, so always head out to your stop a little bit early.
-        </p>
-        <h2>Distance Display</h2>
-        <p>
-          MTA Bus Time reports information in four levels of accuracy or specificity, depending on how close a bus is to your stop. They are:
-        </p>
-        <ul>
-          <li>
-            <h3>...miles away</h3>
-            <p>This is the most imprecise display of distance, used when buses are the farthest away. Because of this distance, a bus' rate of travel may change due to factors beyond its control: traffic, passenger boarding time, etc. Seeing an arrival in miles assures you that a bus is headed towards your stop, but that you should keep checking back with MTA Bus Time to better gauge when to start heading to your stop.</p>
-          </li>
-          <li>
-            <h3>...stops away</h3>
-            <p>When a bus is three stops or closer, distance display will switch from miles to the number of stops away. At this point, you should begin heading towards the stop to catch your bus, depending on how far away you are from the stop.</p>
-          </li>
-          <li>
-            <h3>&lt; 1 stop away</h3>
-            <p>The bus was last measured less than one stop away.</p>
-          </li>
-          <li>
-            <h3>approaching</h3>
-            <p>The bus was last measured is within 500 feet and has left its previous stop. If you are waiting at a nearby business, you should begin heading towards the stop to catch the bus. Obviously, if you are further away, give yourself even more time to reach the stop.</p>
-          </li>
-          <li>
-            <h3>at stop</h3>
-            <p>The bus was last measured within 100 feet of your stop or at the stop. You should now be at the stop to board your bus.</p>
-          </li>
-        </ul>
-        <h2>Other Conventions</h2>
-        <ul>
-          <li>
-            <h3>at terminal</h3>
-            <p>All three interfaces may show a vehicle to be "at terminal". "At terminal" refers to the fact that the bus is currently at its terminal (usually located at the start or end of its route) and is waiting until it begins its next scheduled trip. These buses will resume serving the route, but should not be assumed to currently be traveling towards your stop.</p>
-          </li>
-          <li>
-            <h3>+scheduled layover at terminal</h3>
-            <p>When the bus has not reached the terminal yet, but is within 5 miles, and will reach your stop after turning around at the terminal, all three interfaces will include "+ scheduled layover at terminal" (or an abbreviation for SMS/Text Messaging). This indicates that the bus will be entering a terminal and there will be a usually-brief wait before it resumes service on the route. It will then resume serving the route and reach your stop.</p>
-          </li>
-          <li>
-            <h3>Scheduled to depart at &lt;TIME&gt;</h3>
-            <p>During a bus' brief wait at the terminal, all three interfaces may indicate the scheduled departure time. Again, this is abbreviated for SMS/Text Messaging.</p>
-          </li>
-          <li>
-            <h3>old data</h3>
-            <p>The desktop web interface will show the time of the GPS measurement in red in this case, while the mobile and SMS interfaces will add "old data" to an arrival. If a bus hasn't reported its location back to the system in the last two minutes, data is considered to be old. If this happens, be more conservative and head towards your stop early to be sure you don't miss your bus.</p>
-          </li>
-        </ul>
+      <div class="content-and-toc">
+        <nav class="toc">
+          <h2 class="toc-header">Table of Contents</h2>
+          <ul class="menu toc-menu">
+            <li><a href="/help/">MTA Bus Time Help</a></span></li>
+            <li><a href="/help/click/">Click It</a></span></li>
+            <li><a href="/help/text/">Text It</a></li>
+            <li><a href="/help/scan/">Scan It</a></li>
+            <li><a href="/help/troubleshooting/">Troubleshooting</a></li>
+            <li><a href="/help/faq/">Frequently Asked Questions</a></li>
+            <li><a href="/help/tips/" class="active">Tips and Tricks</a></li>
+          </ul>
+        </nav>
+        <div class="content">
+          <div class="page-content card">
+            <p>When using MTA Bus Time, you'll see certain display conventions and standards that tell you about upcoming arrivals at your stop. This page outlines some of those conventions so that you can better interpret the results and use MTA Bus Time to reliably catch your bus.</p>
+            <p>
+              When interpreting the information on MTA Bus Time, it is important to remember that the system gets location information from the buses approximately every 30 seconds. Of course, the closer the bus is reported to be to your stop, the more those 30 seconds matter, so always head out to your stop a little bit early.
+            </p>
+            <h2>Distance Display</h2>
+            <p>
+              MTA Bus Time reports information in four levels of accuracy or specificity, depending on how close a bus is to your stop. They are:
+            </p>
+            <ul>
+              <li>
+                <strong>...miles away</strong>
+                <p>This is the most imprecise display of distance, used when buses are the farthest away. Because of this distance, a bus' rate of travel may change due to factors beyond its control: traffic, passenger boarding time, etc. Seeing an arrival in miles assures you that a bus is headed towards your stop, but that you should keep checking back with MTA Bus Time to better gauge when to start heading to your stop.</p>
+              </li>
+              <li>
+                <strong>...stops away</strong>
+                <p>When a bus is three stops or closer, distance display will switch from miles to the number of stops away. At this point, you should begin heading towards the stop to catch your bus, depending on how far away you are from the stop.</p>
+              </li>
+              <li>
+                <strong>&lt; 1 stop away</strong>
+                <p>The bus was last measured less than one stop away.</p>
+              </li>
+              <li>
+                <strong>approaching</strong>
+                <p>The bus was last measured is within 500 feet and has left its previous stop. If you are waiting at a nearby business, you should begin heading towards the stop to catch the bus. Obviously, if you are further away, give yourself even more time to reach the stop.</p>
+              </li>
+              <li>
+                <strong>at stop</strong>
+                <p>The bus was last measured within 100 feet of your stop or at the stop. You should now be at the stop to board your bus.</p>
+              </li>
+            </ul>
+            <h2>Other Conventions</h2>
+            <ul>
+              <li>
+                <strong>at terminal</strong>
+                <p>All three interfaces may show a vehicle to be "at terminal". "At terminal" refers to the fact that the bus is currently at its terminal (usually located at the start or end of its route) and is waiting until it begins its next scheduled trip. These buses will resume serving the route, but should not be assumed to currently be traveling towards your stop.</p>
+              </li>
+              <li>
+                <strong>+scheduled layover at terminal</strong>
+                <p>When the bus has not reached the terminal yet, but is within 5 miles, and will reach your stop after turning around at the terminal, all three interfaces will include "+ scheduled layover at terminal" (or an abbreviation for SMS/Text Messaging). This indicates that the bus will be entering a terminal and there will be a usually-brief wait before it resumes service on the route. It will then resume serving the route and reach your stop.</p>
+              </li>
+              <li>
+                <strong>Scheduled to depart at &lt;TIME&gt;</strong>
+                <p>During a bus' brief wait at the terminal, all three interfaces may indicate the scheduled departure time. Again, this is abbreviated for SMS/Text Messaging.</p>
+              </li>
+              <li>
+                <strong>old data</strong>
+                <p>The desktop web interface will show the time of the GPS measurement in red in this case, while the mobile and SMS interfaces will add "old data" to an arrival. If a bus hasn't reported its location back to the system in the last two minutes, data is considered to be old. If this happens, be more conservative and head towards your stop early to be sure you don't miss your bus.</p>
+              </li>
+            </ul>
+          </div>
+        </div>
       </div>
     </div>
   </div>
