@@ -71,12 +71,12 @@ OBA.Util = (function() {
     return {
         log: function(s) {
             if( OBAConfig.debug === true && typeof console !== 'undefined' && typeof console.log !== 'undefined') {
-                console.log(s);
+                //console.log(s);
             }
         },
         trace: function(s) {
             if( OBAConfig.trace === true && typeof console !== 'undefined' && typeof console.log !== 'undefined') {
-                console.log(s);
+                //console.log(s);
             }
         },
         decodePolyline: function(encoded) {
@@ -115,7 +115,7 @@ OBA.Util = (function() {
         },
         ISO8601StringToDate: ISO8601StringToDate,
         getArrivalEstimateForISOString: function(predictionDateString, referenceDateObj) {
-            // console.log("getting arrival from iso string",predictionDateString,referenceDateObj)
+            // //console.log("getting arrival from iso string",predictionDateString,referenceDateObj)
             let prettyArrivalTime = ""
 
            if(predictionDateString===null || referenceDateObj ===null || typeof referenceDateObj==="undefined") {return ""}

@@ -9,6 +9,8 @@ export default function getRefreshComponent(){
         window.location.reload();
     }
 
+
+
     return(<ul className="menu icon-menu middle-menu refresh-menu" role="menu">
         <li>
             <button className="refresh-button" aria-label="Refresh the data" onClick={handleRefresh}>

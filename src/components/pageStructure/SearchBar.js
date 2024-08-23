@@ -6,10 +6,10 @@ import {CardStateContext} from "../util/CardStateComponent.tsx";
 
 // Function to fetch suggestions from an external API
 const getSuggestions = async (value) => {
-    console.log(`fetching autocomplete for ${value}: https://${process.env.ENV_ADDRESS}/api/autocomplete?term=${value}`)
+    //console.log(`fetching autocomplete for ${value}: https://${process.env.ENV_ADDRESS}/api/autocomplete?term=${value}`)
     const response = await fetch(`https://${process.env.ENV_ADDRESS}/api/autocomplete?term=${value}`);
     const suggestions = await response.json();
-    console.log("got suggestions!",suggestions)
+    //console.log("got suggestions!",suggestions)
     return suggestions;
 };
 
@@ -28,7 +28,7 @@ const SearchBar = () => {
 
 
     const onSuggestionSelected = (event, { suggestion }) => {
-        console.log('Selected suggestion:', suggestion);
+        //console.log('Selected suggestion:', suggestion);
         const lineRef = suggestion.value
 
 
@@ -38,10 +38,10 @@ const SearchBar = () => {
     const { search } = useSearch();
     const {state} = useContext(CardStateContext)
     const [searchTerm, setSearchTerm] = useState("Search");
-    console.log("Search",searchTerm)
+    //console.log("Search",searchTerm)
     useEffect(() => {
         let newSearchTerm = state?.currentCard?.searchTerm
-        console.log("new Search",newSearchTerm,state,state?.currentCard,state?.currentCard?.searchTerm)
+        //console.log("new Search",newSearchTerm,state,state?.currentCard,state?.currentCard?.searchTerm)
         if(newSearchTerm!==searchTerm){
             if(newSearchTerm===null || newSearchTerm==="" || typeof newSearchTerm ==="undefined"){
                 if(searchTerm!=="Search")
@@ -52,7 +52,7 @@ const SearchBar = () => {
             }
         }
     }, [state]);
-    console.log("Search",searchTerm)
+    //console.log("Search",searchTerm)
     const inputProps = {
         placeholder: searchTerm,
         value,

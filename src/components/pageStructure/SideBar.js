@@ -18,7 +18,7 @@ function SideBar  () {
     const { state } = useContext(CardStateContext);
 
     function renderCardInfo  () {
-        console.log("setting card info based on currentCard type: ", state.currentCard)
+        //console.log("setting card info based on currentCard type: ", state.currentCard)
         if(state.currentCard.type === CardType.RouteCard){
             OBA.Util.log("adding route card")
             return <RouteCardWrapper/>
