@@ -68,10 +68,10 @@ const getDataEffect = (currentCard, targetAddress,
         fetch(targetAddress)
             .then((response) => response.json())
             .then((parsed) => {
-                //console.log(dataSpecifiersList)
+                console.log(dataSpecifiersList)
                 dataSpecifiersList.forEach((dataSpecifiers)=>{
-                    //console.log(dataSpecifiers)
-                    //console.log(dataSpecifiers.keyword)
+                    console.log(dataSpecifiers)
+                    console.log(dataSpecifiers.keyword)
                     OBA.Util.log("reading "+dataSpecifiers.keyword+" from " + targetAddress)
                     updateState(extractData(parsed,dataSpecifiers))
                 })

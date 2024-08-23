@@ -14,16 +14,16 @@ import {OBA} from "../oba";
 
 function extractData (stopId,siri){
     let update= false;
-    //console.log("extractData for siri stop ",stopId,siri)
+    console.log("extractData for siri stop ",stopId,siri)
     let keyword = "serviceAlert & vehicle"
     let lastCallTime = siri?.Siri?.ServiceDelivery?.ResponseTimestamp
     let [vehicleDataMap,serviceAlertDataMap,stopsToVehiclesMap,stopsToExtendedVehiclesMap] =
         [new Map(), new Map(),new Map(),new Map()]
 
     let stopActivity = siri?.Siri?.ServiceDelivery?.StopMonitoringDelivery
-    //console.log("siri stop activity",stopActivity)
+    console.log("siri stop activity",stopActivity)
     stopActivity = stopActivity!=null ? stopActivity[0]?.MonitoredStopVisit : null
-    //console.log("siri stop vehicles found:",stopActivity)
+    console.log("siri stop vehicles found:",stopActivity)
     if (stopActivity != null && stopActivity.length != 0) {
         update = true;
         for (let i = 0; i < stopActivity.length; i++) {
@@ -51,15 +51,15 @@ function extractData (stopId,siri){
 
     let serviceAlertActivity = siri?.Siri?.ServiceDelivery?.SituationExchangeDelivery
     serviceAlertActivity = serviceAlertActivity==null? null :serviceAlertActivity[0]?.Situations?.PtSituationElement
-    //console.log("siri stop service alerts found:", serviceAlertActivity)
+    console.log("siri stop service alerts found:", serviceAlertActivity)
     if (serviceAlertActivity != null) {
         update = true;
-        //console.log("siri stop service alerts found:", serviceAlertActivity)
+        console.log("siri stop service alerts found:", serviceAlertActivity)
         for (let i = 0; i < serviceAlertActivity.length; i++) {
             let situationElement = serviceAlertActivity[i]
-            //console.log("siri stop processing service alert:", situationElement)
+            console.log("siri stop processing service alert:", situationElement)
             let effects = situationElement.Affects.VehicleJourneys.AffectedVehicleJourney
-            //console.log(effects)
+            console.log(effects)
             const routesWithServiceAlerts = {}
             effects.forEach((effect)=>{
                 let delim = "_"
@@ -69,23 +69,23 @@ function extractData (stopId,siri){
                 alerts = serviceAlertDataMap.get(serviceAlertTarget)
                 alerts = alerts==null? [] : alerts
                 alerts.push(createServiceAlertInterface(situationElement))
-                // //console.log("siri stop adding service alert: ",serviceAlertTarget,alerts)
+                // console.log("siri stop adding service alert: ",serviceAlertTarget,alerts)
                 serviceAlertDataMap.set(serviceAlertTarget,alerts)
                 serviceAlertTarget = effect?.LineRef + delim + effect?.DirectionRef
                 alerts = serviceAlertDataMap.get(serviceAlertTarget)
                 alerts = alerts==null? [] : alerts
                 alerts.push(createServiceAlertInterface(situationElement))
-                // //console.log("adding service alert: ",serviceAlertTarget,alerts)
+                // console.log("adding service alert: ",serviceAlertTarget,alerts)
                 serviceAlertDataMap.set(serviceAlertTarget,alerts)
             })
-            //console.log("siri stop processing service alert: ",situationElement)
+            console.log("siri stop processing service alert: ",situationElement)
         };
-        //console.log("siri stop maps made via siri: ",[vehicleDataMap,serviceAlertDataMap,stopsToVehiclesMap])
+        console.log("siri stop maps made via siri: ",[vehicleDataMap,serviceAlertDataMap,stopsToVehiclesMap])
         OBA.Util.log('siri stop processed '+keyword)
     } else {
         OBA.Util.log('no '+keyword+' recieved. not processing '+keyword)
     }
-    //console.log("maps made via siri stop : ",[vehicleDataMap,serviceAlertDataMap,stopsToVehiclesMap,stopsToExtendedVehiclesMap])
+    console.log("maps made via siri stop : ",[vehicleDataMap,serviceAlertDataMap,stopsToVehiclesMap,stopsToExtendedVehiclesMap])
     return [[stopId,vehicleDataMap,serviceAlertDataMap,stopsToVehiclesMap,stopsToExtendedVehiclesMap,lastCallTime],update]
 }
 
@@ -102,7 +102,7 @@ function updateVehiclesState(updates,setState){
 }
 
 const fetchAndProcessStopMonitoring = async ([stopId,targetAddress]) =>{
-    //console.log("searching for siri stop at: ",targetAddress)
+    console.log("searching for siri stop at: ",targetAddress)
     return fetch(targetAddress)
         .then((response) => response.json())
         .then((siri) => {
@@ -110,9 +110,9 @@ const fetchAndProcessStopMonitoring = async ([stopId,targetAddress]) =>{
             let processedData = extractData(stopId,siri)
             let update = processedData[1]
             if(update){
-                //console.log("should update serviceAlert & vehicle state?",update)
+                console.log("should update serviceAlert & vehicle state?",update)
                 return processedData[0]
-                //console.log("new serviceAlert & vehicle state",vehicleState)
+                console.log("new serviceAlert & vehicle state",vehicleState)
             }
             return null
         })
@@ -146,9 +146,9 @@ const siriGetAndSetVehiclesForStopMonitoring = (targetAddresses,vehicleState, se
 const siriGetAndSetVehicles = (targetAddresses,vehicleState, setState, dataProcessFunction) =>
 {
     let getData = async () => {
-        //console.log("siri stop seeks promises from ", targetAddresses)
+        console.log("siri stop seeks promises from ", targetAddresses)
         let returnedPromises = await Promise.all(targetAddresses.map(adr => dataProcessFunction(adr)))
-        //console.log("siri stop promises awaited ", returnedPromises)
+        console.log("siri stop promises awaited ", returnedPromises)
         let dataObjsList = returnedPromises.filter(
             (result) => result !== null && typeof result !== "undefined")
             .map(
@@ -180,23 +180,23 @@ const siriGetAndSetVehicles = (targetAddresses,vehicleState, setState, dataProce
         if (dataObjsList.length === 0) {
             return null
         }
-        //console.log("combining siri stop objs",dataObjsList)
+        console.log("combining siri stop objs",dataObjsList)
         let siriCombinedDataObj = mergeSiri(dataObjsList)
-        //console.log("siri stop data found: ", siriCombinedDataObj)
+        console.log("siri stop data found: ", siriCombinedDataObj)
         return siriCombinedDataObj
 
     }
     getData().then((processedData) => {
-        //console.log("siri stop data processedData", processedData)
+        console.log("siri stop data processedData", processedData)
         processedData != null ? updateVehiclesState(processedData, setState) : null
-        //console.log("siri stop  data state", vehicleState)
+        console.log("siri stop  data state", vehicleState)
     }).catch((x) => console.log("siri stop call issue!", x))
 }
 
 
 export const siriGetVehiclesForStopViewEffect = (routeIdList, stopIdList, vehicleState, setState ) => {
     let baseTargetAddress = "https://" + process.env.ENV_ADDRESS + "/" + process.env.STOP_MONITORING_ENDPOINT
-    //console.log("looking for Siri Data for stops!",stopIdList)
+    console.log("looking for Siri Data for stops!",stopIdList)
 
     // let targetAddresses = getTargetList(routeIdList)
     let targetAddresses = []
@@ -204,7 +204,7 @@ export const siriGetVehiclesForStopViewEffect = (routeIdList, stopIdList, vehicl
         return [stopId,baseTargetAddress+ "&MonitoringRef=" + stopId.replace("+","%2B")
             + "&StopMonitoringDetailLevel=normal&MinimumStopVisitsPerLine=3"];
     })
-    //console.log("siri stop data target addresses ", targetAddresses)
+    console.log("siri stop data target addresses ", targetAddresses)
 
     return siriGetAndSetVehiclesForStopMonitoring(targetAddresses,vehicleState,setState)
 }

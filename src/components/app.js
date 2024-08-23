@@ -20,7 +20,7 @@ import {FavoritesCookieStateProvider} from "Components/util/MiscStateComponent";
 
 
 const VehicleLoading=()=>{
-    //console.log("vehicle loading initiated")
+    console.log("vehicle loading initiated")
     const { state} = useContext(CardStateContext)
     let {vehicleState, setState } = useContext(VehicleStateContext);
     let {vehiclesApproachingStopsState, setVehiclesApproachingStopsState } = useContext(VehiclesApproachingStopsContext);

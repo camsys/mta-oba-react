@@ -10,7 +10,7 @@ const VehicleStateProvider = ({children}) => {
     const [vehicleState, setState] = useState({
         renderCounter:1
     });
-    //console.log("initial state set: ",vehicleState)
+    console.log("initial state set: ",vehicleState)
 
     return (
         <VehicleStateContext.Provider value={{vehicleState, setState}}>
@@ -23,7 +23,7 @@ const VehiclesApproachingStopsProvider = ({children}) => {
     const [vehiclesApproachingStopsState, setVehiclesApproachingStopsState] = useState({
         renderCounter:1
     });
-    //console.log("initial state set: ",vehiclesApproachingStopsState)
+    console.log("initial state set: ",vehiclesApproachingStopsState)
 
     return (
         <VehiclesApproachingStopsContext.Provider value={{vehiclesApproachingStopsState: vehiclesApproachingStopsState, setVehiclesApproachingStopsState}}>

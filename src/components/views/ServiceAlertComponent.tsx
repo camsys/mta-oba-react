@@ -4,7 +4,7 @@ import serviceAlertContainerComponent from "./ServiceAlertContainerComponent.tsx
 import {ServiceAlertInterface} from "../../js/updateState/DataModels";
 
 function getServiceAlertComponent  ({serviceAlertDatum}:ServiceAlertInterface) : JSX.Element {
-    //console.log("service alert component contents generating ",serviceAlertDatum)
+    console.log("service alert component contents generating ",serviceAlertDatum)
     return(
         <div className="card-content collapse-content">
             {serviceAlertDatum[0].descriptionParts.map((part,itt)=> {return(<p key = {itt}>{part}</p>)})}

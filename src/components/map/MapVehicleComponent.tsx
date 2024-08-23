@@ -16,7 +16,7 @@ function MapVehicleComponent  (
     {vehicleDatum,vehicleRefs}:{vehicleDatum:VehicleRtInterface,vehicleRefs:React.MutableRefObject<Map<string,Marker>>}) :JSX.Element{
 
     // let targetVehicleId = state.currentCard.vehicleId
-    //console.log('generating mapVehicle: ',vehicleDatum.vehicleId,vehicleDatum)
+    console.log('generating mapVehicle: ',vehicleDatum.vehicleId,vehicleDatum)
     let imgDegrees = vehicleDatum.bearing - vehicleDatum.bearing%5
     let scheduled = vehicleDatum.hasRealtime?"":"scheduled/"
     let vehicleImageUrl = "img/vehicle/"+scheduled+"vehicle-"+imgDegrees+".png"
@@ -25,7 +25,7 @@ function MapVehicleComponent  (
 
     let {vehicleSearch} = useSearch()
     const selectVehicle = (vehicleData) =>{
-        //console.log("clicked on " + vehicleData.vehicleId)
+        console.log("clicked on " + vehicleData.vehicleId)
         vehicleSearch(vehicleData)
     }
 
@@ -50,13 +50,13 @@ function MapVehicleComponent  (
     };
 
 
-    // //console.log("mapVehicle key: ",markerOptions.key,vehicleDatum)
+    // console.log("mapVehicle key: ",markerOptions.key,vehicleDatum)
 
 
     let out = (<Marker {...markerOptions}
                        eventHandlers={{click : ()=>{selectVehicle(vehicleDatum)}}}
                        ref={r=>{
-                           //console.log("ref for vehicle component",vehicleDatum,r);
+                           console.log("ref for vehicle component",vehicleDatum,r);
                            typeof vehicleRefs!=='undefined'
                                ?vehicleRefs.current.set(vehicleDatum.vehicleId,r):null
                        }}

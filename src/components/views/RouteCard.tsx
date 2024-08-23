@@ -55,7 +55,7 @@ export function RouteStopComponent
 
 
 export const RouteDirection = ({datum,color}: { datum: RouteDirectionInterface, color: string }): JSX.Element => {
-    //console.log("generating RouteDirectionComponent:", datum)
+    console.log("generating RouteDirectionComponent:", datum)
     return (
         <div className="route-direction inner-card collapsible" key={datum.routeId+datum.directionId}>
             <button className="card-header collapse-trigger" aria-haspopup="true" aria-expanded="false" aria-label={"Toggle "+datum.routeId+" to " + datum.routeDestination +" Open / Closed"} tabIndex="0">
@@ -63,8 +63,7 @@ export const RouteDirection = ({datum,color}: { datum: RouteDirectionInterface, 
             </button>
             <div className="card-content collapse-content">
                 <ul className="route-stops" style={{ color: '#'+color}}>
-                    {//console.log("preparing to get RouteStopComponents from: ", datum)
-                        }
+                    {console.log("preparing to get RouteStopComponents from: ", datum)}
                     {
                         datum.routeStopComponentsData.map(
                             (stopDatum,index) =>{
@@ -112,7 +111,7 @@ export function RouteCardContent({ routeMatch}: RouteMatch): JSX.Element  {
 
 
 export function RouteCard({ routeMatch}: RouteMatch): JSX.Element {
-    //console.log("generating route card: ", routeMatch);
+    console.log("generating route card: ", routeMatch);
     if (routeMatch.type !== MatchType.RouteMatch) {
         return null
     }
@@ -139,7 +138,7 @@ export function RouteCard({ routeMatch}: RouteMatch): JSX.Element {
 
 
 export function CollapsableRouteCard({ routeMatch, oneOfMany}: {routeMatch:RouteMatch, oneOfMany:boolean}): JSX.Element {
-    //console.log("generating route card: ", routeMatch);
+    console.log("generating route card: ", routeMatch);
     if (routeMatch.type !== MatchType.RouteMatch) {
         return null
     }
@@ -172,7 +171,7 @@ export function CollapsableRouteCard({ routeMatch, oneOfMany}: {routeMatch:Route
 
 export function RouteCardWrapper(): JSX.Element {
     const { state } = useContext(CardStateContext);
-    //console.log("adding route cards for matches:", state.currentCard.searchMatches);
+    console.log("adding route cards for matches:", state.currentCard.searchMatches);
 
     return (
         <React.Fragment>

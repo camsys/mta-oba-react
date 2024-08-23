@@ -27,7 +27,7 @@ const RouteDirection = (routeDirectionDatum:RouteMatchDirectionInterface,stopId:
     const {highlightId} = useHighlight();
     const { search } = useSearch();
     const {vehiclesApproachingStopsState} = useContext(VehiclesApproachingStopsContext)
-    //console.log("generating StopCard RouteDirection",routeDirectionDatum,vehiclesApproachingStopsState)
+    console.log("generating StopCard RouteDirection",routeDirectionDatum,vehiclesApproachingStopsState)
     let routeAndDir = routeDirectionDatum.routeId + "_"+routeDirectionDatum.directionId
     let stopCardVehicleData = vehiclesApproachingStopsState[routeAndDir+stopSortedFutureVehicleDataIdentifier]
 
@@ -39,7 +39,7 @@ const RouteDirection = (routeDirectionDatum:RouteMatchDirectionInterface,stopId:
     let lastUpdateTime = stopCardVehicleData!==null
         ? OBA.Util.ISO8601StringToDate(vehiclesApproachingStopsState[routeAndDir+updatedTimeIdentifier]).getTime()
         : null
-    //console.log("StopCard RouteDirection stopCardVehicleData",stopCardVehicleData,lastUpdateTime)
+    console.log("StopCard RouteDirection stopCardVehicleData",stopCardVehicleData,lastUpdateTime)
     return (stopCardVehicleData === null? null :
         <div className="inner-card route-direction en-route collapsible open">
             <button
@@ -77,7 +77,7 @@ const RouteDirection = (routeDirectionDatum:RouteMatchDirectionInterface,stopId:
 }
 
 export function StopCardContent({stopMatch}: StopMatch):JSX.Element{
-    //console.log("generating StopCardContent",stopMatch)
+    console.log("generating StopCardContent",stopMatch)
     let {isFavorite,addFavorite,removeFavorite} = useFavorite();
     return(
         <React.Fragment>
@@ -135,8 +135,8 @@ export function StopCard (match: SearchMatch) : JSX.Element {
     const {isFavorite} = useFavorite()
     const { highlightId } = useHighlight();
 
-    //console.log("generating StopCard", match)
-    //console.log("generating StopCard", stopMatch)
+    console.log("generating StopCard", match)
+    console.log("generating StopCard", stopMatch)
     return (
         <div className={`card stop-card ${isFavorite(stopMatch)?"favorite":""}`}>
             <div className="card-header"
@@ -164,7 +164,7 @@ function InnerCollapsableStopCard ({ match, oneOfMany}: {match:SearchMatch, oneO
     const {isFavorite} = useFavorite()
     const { highlightId } = useHighlight();
 
-    //console.log("generating StopCard",stopMatch)
+    console.log("generating StopCard",stopMatch)
     return(
     <div className={`card stop-card ${oneOfMany?"collapsible open":""} ${isFavorite(stopMatch)?"favorite":""}`}>
         <button className="card-header collapse-trigger open"

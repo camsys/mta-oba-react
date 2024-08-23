@@ -17,7 +17,7 @@ const MapHighlightingStateProvider = ({children}) => {
 const useHighlight = () =>{
     const { mapHighlightingState, setHighlightingState } = useContext(MapHighlightingStateContext);
     const highlightId = (id:string) =>{
-        //console.log("highlighting: ", id);
+        console.log("highlighting: ", id);
         if (mapHighlightingState.highlightedComponentId !== id) {
             setHighlightingState((prevState) => ({
                 highlightedComponentId: id,

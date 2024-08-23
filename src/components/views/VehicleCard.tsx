@@ -14,7 +14,7 @@ export const VehicleCardContentComponent = ({routeMatch,vehicleDatum}
                                                 :{routeMatch:RouteMatch,vehicleDatum:VehicleRtInterface})
                                                 : JSX.Element=>{
     const { search } = useSearch();
-    // //console.log("generating vehicleCardContentComponent for ",vehicleDatum.vehicleId)
+    // console.log("generating vehicleCardContentComponent for ",vehicleDatum.vehicleId)
     let {highlightId} = useHighlight()
 
     return(
@@ -59,7 +59,7 @@ export const VehicleCardContentComponent = ({routeMatch,vehicleDatum}
 }
 
 const VehicleCard = (routeMatch:RouteMatch,vehicleId:string) : JSX.Element=> {
-    //console.log("generating VehicleCard: ", routeMatch);
+    console.log("generating VehicleCard: ", routeMatch);
 
     let {highlightId} = useHighlight()
     const { search } = useSearch();
@@ -82,11 +82,11 @@ const VehicleCard = (routeMatch:RouteMatch,vehicleId:string) : JSX.Element=> {
 
     const checkLoading = () =>{
         if (routeMatch.type !== MatchType.RouteMatch) {
-            //console.log("card is still loading so VehicleCard is still loading",loading)
+            console.log("card is still loading so VehicleCard is still loading",loading)
             return}
         routeId = routeMatch.routeId.split("_")[1];
         vehicleDatum = vehicleState[routeId+vehicleDataIdentifier].get(vehicleId)
-        //console.log("is VehicleCard data still loading?",loading,vehicleDatum)
+        console.log("is VehicleCard data still loading?",loading,vehicleDatum)
         if(loading && vehicleDatum!==null && typeof vehicleDatum!=='undefined'){
             setLoading(false)
         }
@@ -94,7 +94,7 @@ const VehicleCard = (routeMatch:RouteMatch,vehicleId:string) : JSX.Element=> {
     checkLoading()
     useEffect(() => {
         if(loading){
-            //console.log("vehicle not loaded yet, attempting VehicleCard reload")
+            console.log("vehicle not loaded yet, attempting VehicleCard reload")
             const interval = setInterval(()=>{
                 checkLoading();
                 (!loading)?clearInterval(interval):null}, 100);
@@ -102,11 +102,11 @@ const VehicleCard = (routeMatch:RouteMatch,vehicleId:string) : JSX.Element=> {
         }
     }, [loading]);
     if(loading) {
-        //console.log("waiting on generating VehicleCard")
+        console.log("waiting on generating VehicleCard")
         return(<ErrorBoundary><div>Loading...</div></ErrorBoundary>)}
 
 
-    //console.log("generating VehicleCard ",routeId,vehicleDatum,vehicleState[routeId+updatedTimeIdentifier])
+    console.log("generating VehicleCard ",routeId,vehicleDatum,vehicleState[routeId+updatedTimeIdentifier])
     let serviceAlertIdentifier = routeMatch.routeId
     return (
         <div className={`card vehicle-card ${routeMatch.routeId}`}>
@@ -143,13 +143,13 @@ const VehicleCard = (routeMatch:RouteMatch,vehicleId:string) : JSX.Element=> {
 //This one breaks the pattern because vehicles are not searched elsewhere. sorry
 const getVehicleCardsWrapper = () : JSX.Element => {
         const { state} = useContext(CardStateContext);
-        //console.log("adding vehicleCard info for match:", state.currentCard.searchMatches);
+        console.log("adding vehicleCard info for match:", state.currentCard.searchMatches);
 
         return (<React.Fragment>
             <h2 className="cards-header">Vehicle:</h2>
             <div className="cards">
                 {state.currentCard.searchMatches.map(route=>{
-                    //console.log("vehicleCard",route)
+                    console.log("vehicleCard",route)
                     return VehicleCard(route,state.currentCard.vehicleId)})}
             </div>
         </React.Fragment>);
