@@ -48,7 +48,7 @@ const SearchBar = () => {
                 {setSearchTerm("Search")}
             }
             else {
-                setSearchTerm(newSearchTerm)
+                setValue(newSearchTerm)
             }
         }
     }, [state]);
