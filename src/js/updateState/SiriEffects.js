@@ -194,7 +194,7 @@ export const siriGetVehiclesForVehicleViewEffect = (routeIdList, vehicleId, vehi
         console.error("a very odd situation has occured and should be reported in siriGetVehiclesForVehicleViewEffect",routeIdList,vehicleId,vehicleState,setState)
     }
     targetAddresses = targetAddresses.concat(targetAddresses.map(adr=>{
-        return [adr[0],adr[1]+`&VehicleRef=${vehicleId.split('_')[1]}&MaximumNumberOfCallsOnwards=3&VehicleMonitoringDetailLevel=calls`]}))
+        return [adr[0],adr[1]+`&VehicleRef=${vehicleId.split('_')[1]}&MaximumNumberOfCallsOnwards=50&VehicleMonitoringDetailLevel=calls`]}))
 
     return siriGetAndSetVehiclesForVehicleMonitoring(targetAddresses,vehicleState,setState)
 }

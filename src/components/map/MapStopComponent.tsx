@@ -21,10 +21,6 @@ function MapStopComponent  ({stopDatum, mapStopMarkers, zIndexOverride}:
 
     let {getHighlightedId} = useHighlight()
     let highlightedId = getHighlightedId()
-    // const { mapHighlightingState} = useContext(MapHighlightingStateContext);
-    // if(mapHighlightingState.highlightedComponentId!=mapRouteComponentDatum.id){
-    //     markerOptions.zIndexOffset=10
-    // }
 
 
     let direction = stopDatum?.stopDirection;
@@ -40,8 +36,8 @@ function MapStopComponent  ({stopDatum, mapStopMarkers, zIndexOverride}:
     let icon = L.icon({
         iconUrl: stopImageUrl,
         className: "svg-icon",
-        iconSize: zIndexOverride?[36,36]:[27, 27],
-        iconAnchor: zIndexOverride?[17,17]:[13, 13],
+        iconSize: zIndexOverride?[40,40]:[27, 27],
+        iconAnchor: zIndexOverride?[20,20]:[13, 13],
         popupAnchor: [0,0]
     })
 
