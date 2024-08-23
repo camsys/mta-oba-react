@@ -391,8 +391,6 @@ button, .button
     .page-content
       background-color: $white
       padding: $content-padding
-      &:not(:first-child)
-        margin-top: $content-padding
       p, ul, ol, h1, h2, h3, h4, h5, h6
         color: $black2
         line-height: 1.4
@@ -424,7 +422,9 @@ button, .button
       flex-direction: row-reverse
       gap: $content-padding
       .toc
-        min-width: 12em
+        flex-basis: 12em
+        flex-grow: 0
+        flex-shrink: 0
         .toc-header
           font-size: 1em
         .toc-menu
@@ -452,6 +452,12 @@ button, .button
               padding: .25em 0
       .content
         flex-grow: 1
+        display: flex
+        flex-wrap: nowrap
+        flex-direction: column
+        gap: $content-padding
+        .page-content
+          flex-grow: 1
 .header
   background-color: $black2
   color: $white

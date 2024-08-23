@@ -826,9 +826,6 @@ button:hover, .button:hover {
   background-color: #fff;
   padding: 1rem;
 }
-.main-body.no-map .page-content:not(:first-child) {
-  margin-top: 1rem;
-}
 .main-body.no-map .page-content p, .main-body.no-map .page-content ul, .main-body.no-map .page-content ol, .main-body.no-map .page-content h1, .main-body.no-map .page-content h2, .main-body.no-map .page-content h3, .main-body.no-map .page-content h4, .main-body.no-map .page-content h5, .main-body.no-map .page-content h6 {
   color: #202025;
   line-height: 1.4;
@@ -875,7 +872,13 @@ button:hover, .button:hover {
   gap: 1rem;
 }
 .main-body.no-map .content-and-toc .toc {
-  min-width: 12em;
+  -ms-flex-preferred-size: 12em;
+      flex-basis: 12em;
+  -webkit-box-flex: 0;
+      -ms-flex-positive: 0;
+          flex-grow: 0;
+  -ms-flex-negative: 0;
+      flex-shrink: 0;
 }
 .main-body.no-map .content-and-toc .toc .toc-header {
   font-size: 1em;
@@ -912,6 +915,21 @@ button:hover, .button:hover {
   padding: 0.25em 0;
 }
 .main-body.no-map .content-and-toc .content {
+  -webkit-box-flex: 1;
+      -ms-flex-positive: 1;
+          flex-grow: 1;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: nowrap;
+      flex-wrap: nowrap;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  gap: 1rem;
+}
+.main-body.no-map .content-and-toc .content .page-content {
   -webkit-box-flex: 1;
       -ms-flex-positive: 1;
           flex-grow: 1;
