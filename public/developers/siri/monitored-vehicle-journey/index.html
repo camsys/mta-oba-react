@@ -61,10 +61,11 @@
            <li><a href="/developers/open-source/">Improving the MTA Bus Time&nbsp;System</a>
           </ul>
         </nav>
-        <div class="page-content card">
-          <h2>SIRI MonitoredVehicleJourney Element</h2>
-          <p>The SIRI MonitoredVehicleJourney element contains most of the relevant real-time information about particular vehicles in the MTA Bus Time system.  It is used by the responses to both the <a href="/developers/siri/vehicle-monitoring/">VehicleMonitoring</a> and <a href="/developers/siri/stop-monitoring/">StopMonitoring</a> calls.  As much as possible, the values in a MonitoredVehicleJourney element correspond to the values in the MTA's GTFS data.</p>
-          <p>The XML below illustrates the SIRI MonitoredVehicleJourney element.  Other notes on the contents of a MonitoredVehicleJourney follow the example.</p>
+        <div class="content">
+          <div class="page-content card">
+            <h2>SIRI MonitoredVehicleJourney Element</h2>
+            <p>The SIRI MonitoredVehicleJourney element contains most of the relevant real-time information about particular vehicles in the MTA Bus Time system.  It is used by the responses to both the <a href="/developers/siri/vehicle-monitoring/">VehicleMonitoring</a> and <a href="/developers/siri/stop-monitoring/">StopMonitoring</a> calls.  As much as possible, the values in a MonitoredVehicleJourney element correspond to the values in the MTA's GTFS data.</p>
+            <p>The XML below illustrates the SIRI MonitoredVehicleJourney element.  Other notes on the contents of a MonitoredVehicleJourney follow the example.</p>
 <pre><code>&lt;MonitoredVehicleJourney&gt;
 
   &lt;!-- The 'fully qualified' route name (GTFS agency ID + route ID) for the trip the vehicle is serving. Not intended to be customer-facing. --&gt;
@@ -214,57 +215,58 @@
 
   &lt;/OnwardCalls&gt;
 &lt;/MonitoredVehicleJourney&gt;</code></pre>
-          <h3>The PresentableDistance field:</h3>
-          <p>The logic that determines whether stops or miles are shown in the PresentableDistance field is below:</p>
-          <p>show distance in miles if and only if:</p>
-          <ul>
-            <li><code>(distance in miles to _immediate next stop_ is &gt; D) OR (distance in stops to current stop is &gt; N AND distance in miles to current stop &gt; E)</code></li>
-          </ul>
-          <p>in other words, show distance in stops if and only if (the below is just the inverse of the above, according to DeMorgan's law):</p>
-          <ul>
-            <li><code>(distance in miles to _immediate next stop_ is &lt;= D) AND (distance in stops to current stop &lt;= N OR distance in miles to current stop &lt;= E)</code></li>
-          </ul>
-          <p>Show "approaching" if and only if:</p>
-          <ul>
-            <li><code>distance_in_miles to immediate next stop &lt; P</code></li>
-          </ul>
-          <p>show "at stop" if and only if:</p>
-          <ul>
-            <li><code>distance_in_miles to immediate next stop &lt; T</code></li>
-          </ul>
-          <p>Current Parameter Values:</p>
-          <table>
-            <tbody>
-              <tr>
-                <th scope="col">Parameter</th>
-                <th scope="col">Value</th>
-              </tr>
-              <tr>
-                <td>D</td>
-                <td>.5 miles</td>
-              </tr>
-              <tr>
-                <td>N</td>
-                <td>3 stops</td>
-              </tr>
-              <tr>
-                <td>E</td>
-                <td>.5 miles</td>
-              </tr>
-              <tr>
-                <td>P</td>
-                <td>500 feet</td>
-              </tr>
-              <tr>
-                <td>T</td>
-                <td>100 feet</td>
-              </tr>
-            </tbody>
-          </table>
-          <h3>Transparency of Block vs. Trip-Level Assignment</h3>
-          <p>MTA Bus Time tries to assign buses to blocks- a sequence of trips that start and end at a depot. This allows the system to make a statement about what a bus will do after it reaches the end of its current trip.</p>
-          <p>However, there is not always enough affirmative and corresponding evidence to make such a strong statement. In this case, MTA Bus Time falls back to a trip-level assignment, where it just picks a trip from the schedule that is representative of the route and stopping pattern that the bus is likely to pursue.</p>
-          <p>The SIRI API now reflects this distinction as described here and in other items below. If the assignment is block-level, the new <code>BlockRef</code> field of the <code>MonitoredVehicleJourney</code> is present, and populated with the assigned block id.</p>
+            <h3>The PresentableDistance field:</h3>
+            <p>The logic that determines whether stops or miles are shown in the PresentableDistance field is below:</p>
+            <p>show distance in miles if and only if:</p>
+            <ul>
+              <li><code>(distance in miles to _immediate next stop_ is &gt; D) OR (distance in stops to current stop is &gt; N AND distance in miles to current stop &gt; E)</code></li>
+            </ul>
+            <p>in other words, show distance in stops if and only if (the below is just the inverse of the above, according to DeMorgan's law):</p>
+            <ul>
+              <li><code>(distance in miles to _immediate next stop_ is &lt;= D) AND (distance in stops to current stop &lt;= N OR distance in miles to current stop &lt;= E)</code></li>
+            </ul>
+            <p>Show "approaching" if and only if:</p>
+            <ul>
+              <li><code>distance_in_miles to immediate next stop &lt; P</code></li>
+            </ul>
+            <p>show "at stop" if and only if:</p>
+            <ul>
+              <li><code>distance_in_miles to immediate next stop &lt; T</code></li>
+            </ul>
+            <p>Current Parameter Values:</p>
+            <table>
+              <tbody>
+                <tr>
+                  <th scope="col">Parameter</th>
+                  <th scope="col">Value</th>
+                </tr>
+                <tr>
+                  <td>D</td>
+                  <td>.5 miles</td>
+                </tr>
+                <tr>
+                  <td>N</td>
+                  <td>3 stops</td>
+                </tr>
+                <tr>
+                  <td>E</td>
+                  <td>.5 miles</td>
+                </tr>
+                <tr>
+                  <td>P</td>
+                  <td>500 feet</td>
+                </tr>
+                <tr>
+                  <td>T</td>
+                  <td>100 feet</td>
+                </tr>
+              </tbody>
+            </table>
+            <h3>Transparency of Block vs. Trip-Level Assignment</h3>
+            <p>MTA Bus Time tries to assign buses to blocks- a sequence of trips that start and end at a depot. This allows the system to make a statement about what a bus will do after it reaches the end of its current trip.</p>
+            <p>However, there is not always enough affirmative and corresponding evidence to make such a strong statement. In this case, MTA Bus Time falls back to a trip-level assignment, where it just picks a trip from the schedule that is representative of the route and stopping pattern that the bus is likely to pursue.</p>
+            <p>The SIRI API now reflects this distinction as described here and in other items below. If the assignment is block-level, the new <code>BlockRef</code> field of the <code>MonitoredVehicleJourney</code> is present, and populated with the assigned block id.</p>
+          </div>
         </div>
       </div>
     </div>

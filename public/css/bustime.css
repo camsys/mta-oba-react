@@ -874,6 +874,9 @@ button:hover, .button:hover {
           flex-direction: row-reverse;
   gap: 1rem;
 }
+.main-body.no-map .content-and-toc .toc {
+  min-width: 12em;
+}
 .main-body.no-map .content-and-toc .toc .toc-header {
   font-size: 1em;
 }
@@ -907,9 +910,6 @@ button:hover, .button:hover {
 }
 .main-body.no-map .content-and-toc .toc ul ul a {
   padding: 0.25em 0;
-}
-.main-body.no-map .content-and-toc .toc + .page-content {
-  margin-top: 0;
 }
 
 .header {
