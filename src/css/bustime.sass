@@ -380,6 +380,7 @@ button, .button
       vertical-align: middle
       border-spacing: 1px
       background: $border-gray
+      margin: 0 0 1em 0
       td, th
         padding: .5em
         background: $white
@@ -390,6 +391,8 @@ button, .button
     .page-content
       background-color: $white
       padding: $content-padding
+      &:not(:first-child)
+        margin-top: $content-padding
       p, ul, ol, h1, h2, h3, h4, h5, h6
         color: $black2
         line-height: 1.4
@@ -420,8 +423,6 @@ button, .button
       flex-wrap: nowrap
       flex-direction: row-reverse
       gap: $content-padding
-      .page-content
-        margin-top: 0
       .toc
         .toc-header
           font-size: 1em
@@ -448,7 +449,8 @@ button, .button
             margin: 0 0 .0625em .5em
             a
               padding: .25em 0
-      
+        & + .page-content
+          margin-top: 0
 
 .header
   background-color: $black2

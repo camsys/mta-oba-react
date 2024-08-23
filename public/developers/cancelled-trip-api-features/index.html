@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MTA Bus Time | Developers > Cancelled Trip API Features
+    </title>
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="/img/favicon.ico" />
+
+    <link rel="stylesheet" href="/css/bustime.css">
+    <script src="/js/bustime.js"></script>
+</head>
+<body>
+  <div class="main-body no-map">
+    <header class="header" id="header">
+      <div class="header-inner">
+        <a href="/" aria-label="MTA Bus Time Home" id="logo-link">
+          <img id="logo" src="/img/bustime-logo.png" alt="MTA Bus Time" class="logo" />
+        </a>
+        <nav>
+            <ul class="menu">
+                <li><a href="/">Home</a></li>
+                <li><a href="/help/text/">Text</a></li>
+                <li><a href="/about/">About</a></li>
+                <li><a href="/contact/">Contact</a></li>
+                <li><a href="/developers/" class="active">Developers</a></li>
+                <li><a href="/help/">Help</a></li>
+            </ul>
+        </nav>
+      </div>
+    </header>
+    <div class="main-content">
+      <ul class="breadcrumb">
+        <li><a href="/developers/">Developers</a></li>
+      </ul>
+      <h1 class="page-title">Cancelled Trip API Features</h1>
+      <div class="content-and-toc">
+        <nav class="toc">
+          <h2 class="toc-header">Table of Contents</h2>
+          <ul class="menu toc-menu">
+            <li>
+              <a href="/developers/">MTA Bus Time Developer&nbsp;Access</a></span>
+            </li>
+            <li><a href="/developers/gtfs-realtime">GTFS-Realtime</a></li>
+            <li>
+              <a href="/developers/siri/">The SIRI API</a>
+              <ul class="menu toc-sub-menu">
+                <li><a href="/developers/siri/change-log/">Change Log</a></li>
+                <li><a href="/developers/siri/vehicle-monitoring/">Vehicle Monitoring</a></li>
+                <li><a href="/developers/siri/stop-monitoring/">Stop Monitoring</a></li>
+                <li><a href="/developers/siri/monitored-vehicle-journey/">Monitored Vehicle Journey</a></li>
+                <li><a href="/developers/siri/situation-exchange-delivery/">Situation Exchange Delivery</a></li>
+              </ul>
+            </li>
+           <li><a href="/developers/restful-api/">OneBusAway "Discovery"&nbsp;API</a></li>
+           <li><a href="/developers/cancelled-trip-api-features/" class="active">Cancelled Trip API&nbsp;Features</a></li>
+           <li><a href="/developers/archive-data/">Archived Bus Time&nbsp;Data</a></li>
+           <li><a href="/developers/open-source/">Improving the MTA Bus Time&nbsp;System</a>
+          </ul>
+        </nav>
+        <div class="page-content card">
+          <h2>SIRI API</h2>
+          <h3>API paths</h3>
+          <p>There are two available versions of the SIRI api and each of those is available with or without cancelled trip information. This table shows the API path to reach the four possible combinations:</p>
+          <table>
+            <tbody>
+              <tr>
+                <th scope="col"></th>
+                <th style="font-family: sans-serif; font-size: 14px; font-style: normal; font-weight: 700; text-align: start;" scope="col">Without Cancelled Trip Information</th>
+                <th scope="col">With Cancelled Trip Information</th>
+              </tr>
+              <tr>
+                <th scope="row">SIRI v1</th>
+                <td>/api/siri/stop-monitoring.xml</td>
+                <td>/api/2/siri/stop-monitoring.xml</td>
+              </tr>
+              <tr>
+                <th scope="row">SIRI v2</th>
+                <td>/api/siri/stop-monitoring.xml?version=2</td>
+                <td>/api/2/siri/stop-monitoring.xml?version=2</td>
+              </tr>
+            </tbody>
+          </table>
+          <p>As before, the version of SIRI is specified with a query parameter "version" and the possible values are '1' or '2'.</p>
+          <p>If cancelled trip information is not desired, you can continue to use the same path as before.</p>
+          <p>To include cancelled trip information add a '2' path parameter between /api/ and /siri/</p>
+          <h3>Stop-monitoring output</h3>
+          <p>If the stop being queried has no cancelled trips, there is no change to the output.</p>
+          <p>If there are relevant cancelled trips for the stop, they will appear as a MonitoredStopVisit.</p>
+          <p>It's important to note that previously, scheduled trips without corresponding real-time data would simply not appear. But if a scheduled trip missing real time data is also marked as cancelled, it will appear in the output.</p>
+          <p>Cancelled trips which are relevant to the stop being monitored will appear as a MonitoredStopVisit.</p>
+          <p>For SIRI V1, if a trip is cancelled then MonitoredStopVisit&gt;MonitoredVehicleJourney&gt;MonitoredCall will have two properties, ArrivalStatus and DepartureStatus, both of which will show cancelled:</p>
+<pre><code>&lt;MonitoredVehicleJourney&gt;
+
+  &lt;MonitoredStopVisit&gt;
+
+      &lt;MonitoredCall&gt;
+
+          &lt;ArrivalStatus&gt;cancelled&lt;/ArrivalStatus&gt;
+
+          &lt;DepartureStatus&gt;cancelled&lt;/DepartureStatus&gt;
+
+      &lt;/MonitoredCall&gt;
+
+  &lt;/MonitoredStopVisit&gt;
+
+&lt;/MonitoredVehicleJourney&gt;</code></pre>
+<p>For SIRI V2 if a trip is cancelled then its MonitoredStopVisit>MonitoredVehicleJourney will have one property, VehicleStatus, which will show cancelled:</p>
+<pre><code>&lt;MonitoredStopVisit&gt;
+
+  &lt;MonitoredVehicleJourney&gt;
+
+      &lt;VehicleStatus&gt;cancelled&lt;/VehicleStatus&gt;
+
+  &lt;/MonitoredVehicleJourney&gt;
+
+&lt;/MonitoredStopVisit&gt;</code></pre>
+          <h2>GTFS-RT</h2>
+          <h3>Trip Update Support</h3>
+          <p>The GTFS-RT component has been extended to support Trip Updates of the type ScheduleRelationship.CANCELLED:</p>
+<pre><code>entity {
+  id: &quot;GH_A2-Weekday-SDon-056200_BX39_754&quot;
+  trip_update {
+    trip {
+      trip_id: &quot;GH_A2-Weekday-SDon-056200_BX39_754&quot;
+      start_date: &quot;20220310&quot;
+      schedule_relationship: CANCELED
+      route_id: &quot;BX39&quot;
+      direction_id: 0
+    }
+    timestamp: 1646921884575
+  }
+}</code></pre>
+          <p>The GTFS-RT trip updates feed remains at the same location, no change is necessary to consume the new data. <a href="https://gtfsrt.prod.obanyc.com/tripUpdates" target="_blank">https://gtfsrt.prod.obanyc.com/tripUpdates</a></p>
+          <h3>Alert Support</h3>
+          <p>The GTFS-RT component now includes a consequence effect to allow CAPI alerts to be readily differentiated from Mercury alerts. The consequence are of the type REDUCED_SERVICE as shown below:</p>
+<pre><code>entity {
+  id: "MTA NYCT_GH_A2-Weekday-SDon-063200_BX39_765"
+  alert {
+    informed_entity {
+      agency_id: "MTA NYCT"
+      trip {
+        route_id: "BX39"
+        direction_id: 0
+      }
+    }
+    informed_entity {
+      agency_id: "MTA NYCT"
+      trip {
+        route_id: "BX39"
+        direction_id: 1
+      }
+    }
+    effect: REDUCED_SERVICE
+    description_text {
+      translation {
+        text: "The 10:32am BX39 to SOUNDVIEW AV/CORNELL AV is canceled"
+        language: "EN"
+      }
+    }
+  }
+}</code></pre>
+          <p>The GTFS-RT alerts feed remains at the same location, no change is necessary to consume the new data.<a href="https://gtfsrt.prod.obanyc.com/alerts">https://gtfsrt.prod.obanyc.com/alerts</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

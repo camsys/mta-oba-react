@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MTA Bus Time | Developers > OneBusAway API
+    </title>
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="/img/favicon.ico" />
+
+    <link rel="stylesheet" href="/css/bustime.css">
+    <script src="/js/bustime.js"></script>
+</head>
+<body>
+  <div class="main-body no-map">
+    <header class="header" id="header">
+      <div class="header-inner">
+        <a href="/" aria-label="MTA Bus Time Home" id="logo-link">
+          <img id="logo" src="/img/bustime-logo.png" alt="MTA Bus Time" class="logo" />
+        </a>
+        <nav>
+            <ul class="menu">
+                <li><a href="/">Home</a></li>
+                <li><a href="/help/text/">Text</a></li>
+                <li><a href="/about/">About</a></li>
+                <li><a href="/contact/">Contact</a></li>
+                <li><a href="/developers/" class="active">Developers</a></li>
+                <li><a href="/help/">Help</a></li>
+            </ul>
+        </nav>
+      </div>
+    </header>
+    <div class="main-content">
+      <ul class="breadcrumb">
+        <li><a href="/developers/">Developers</a></li>
+      </ul>
+      <h1 class="page-title">MTA Bus Time and the OneBusAway API</h1>
+      <div class="content-and-toc">
+        <nav class="toc">
+          <h2 class="toc-header">Table of Contents</h2>
+          <ul class="menu toc-menu">
+            <li>
+              <a href="/developers/">MTA Bus Time Developer&nbsp;Access</a></span>
+            </li>
+            <li><a href="/developers/gtfs-realtime">GTFS-Realtime</a></li>
+            <li>
+              <a href="/developers/siri/">The SIRI API</a>
+              <ul class="menu toc-sub-menu">
+                <li><a href="/developers/siri/change-log/">Change Log</a></li>
+                <li><a href="/developers/siri/vehicle-monitoring/">Vehicle Monitoring</a></li>
+                <li><a href="/developers/siri/stop-monitoring/">Stop Monitoring</a></li>
+                <li><a href="/developers/siri/monitored-vehicle-journey/">Monitored Vehicle Journey</a></li>
+                <li><a href="/developers/siri/situation-exchange-delivery/">Situation Exchange Delivery</a></li>
+              </ul>
+            </li>
+           <li><a href="/developers/restful-api/" class="active">OneBusAway "Discovery"&nbsp;API</a></li>
+           <li><a href="/developers/cancelled-trip-api-features/">Cancelled Trip API&nbsp;Features</a></li>
+           <li><a href="/developers/archive-data/">Archived Bus Time&nbsp;Data</a></li>
+           <li><a href="/developers/open-source/">Improving the MTA Bus Time&nbsp;System</a>
+          </ul>
+        </nav>
+        <div class="page-content card">
+          <p>MTA Bus Time is powered (in part) by the open source <a href="https://github.com/OneBusAway/onebusaway/wiki" target="_blank">OneBusAway</a> (OBA) software. While MTA Bus Time's SIRI API is a new addition to the OBA project, OBA does have its own (non-standards-based) RESTful developer API. MTA Bus Time now exposes a modified version of the OBA RESTful API, as described below. The primary modification is to exclude all real-time data, which in the context of MTA Bus Time should come from the standards-based SIRI API.</p>
+          <h2>Documentation</h2>
+          <p>The documentation for the OBA RESTful API is available <a href="https://developer.onebusaway.org/modules/onebusaway-application-modules/current/api/where/index.html" target="_blank">online</a>. The modifications to this API with respect to MTA Bus Time are described <a href="https://github.com/OneBusAway/onebusaway-application-modules/wiki/RESTful-API-Roadmap" target="_blank">here</a>. This API will allow you to "discover" static/baseline information about the bus services covered under MTA Bus Time. It is, effectively, a set of web services that gives you convenient HTTP-based access to selected subsets of information otherwise available from the GTFS schedule files. This API provides, for example:</p>
+          <ul>
+            <li>The list of routes covered by MTA Bus Time</li>
+            <li>Full information about each stop covered by MTA Bus Time (e.g. the lat/lon coordinates, stop name, list of routes serving that stop)</li>
+            <li>The stops served by a given route</li>
+            <li>The physical geometry for a given route (for mapping and geographic calculations)</li>
+            <li>The schedule of trips serving a given stop or route (repeat: <em>schedule</em>, having nothing to do with the real-time data)</li>
+            <li>The stops or routes near a given location</li>
+          </ul>
+          <h2>Access</h2>
+          <p>The root of the OBA API in the MTA Bus Time deployment is <code>https://bustime.mta.info/api/where/</code>. So, for example:</p>
+          <ul>
+            <li>To get the list of and metadata for the agencies covered by MTA Bus Time, use: <code>https://bustime.mta.info/api/where/agencies-with-coverage.xml?key=&lt;YOUR_KEY&gt;</code></li>
+            <li>To get the list of and metadata for the MTA NYCT and MTABC routes covered by MTA Bus Time, use: <code>https://bustime.mta.info/api/where/routes-for-agency/MTA%20NYCT.xml?key=&lt;YOUR_KEY&gt;</code></li>
+            <li>For information on one specific stop served by MTA Bus Time, use: <code>https://bustime.mta.info/api/where/stop/MTA_STOP-ID.xml?key=&lt;YOUR_KEY&gt;</code></li>
+            <li>For information on the stops that serve a route, use: <code>https://bustime.mta.info/api/where/stops-for-route/MTA%20NYCT_M1.json?key=&lt;YOUR_KEY&gt;&amp;includePolylines=false&amp;version=2</code></li>
+            <li>For information on stops near a location, use: <code>https://bustime.mta.info/api/where/stops-for-location.json?lat=40.748433&amp;lon=-73.985656&amp;latSpan=0.005&amp;lonSpan=0.005&amp;key=&lt;YOUR_KEY&gt;</code></li>
+            <li>and so on...</li>
+          </ul>
+          <p>Please use the same API key for the OBA API as for the SIRI API.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

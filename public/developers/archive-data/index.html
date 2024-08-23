@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MTA Bus Time | Developers > Archived Bus Time Data
+    </title>
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="/img/favicon.ico" />
+
+    <link rel="stylesheet" href="/css/bustime.css">
+    <script src="/js/bustime.js"></script>
+</head>
+<body>
+  <div class="main-body no-map">
+    <header class="header" id="header">
+      <div class="header-inner">
+        <a href="/" aria-label="MTA Bus Time Home" id="logo-link">
+          <img id="logo" src="/img/bustime-logo.png" alt="MTA Bus Time" class="logo" />
+        </a>
+        <nav>
+            <ul class="menu">
+                <li><a href="/">Home</a></li>
+                <li><a href="/help/text/">Text</a></li>
+                <li><a href="/about/">About</a></li>
+                <li><a href="/contact/">Contact</a></li>
+                <li><a href="/developers/" class="active">Developers</a></li>
+                <li><a href="/help/">Help</a></li>
+            </ul>
+        </nav>
+      </div>
+    </header>
+    <div class="main-content">
+      <ul class="breadcrumb">
+        <li><a href="/developers/">Developers</a></li>
+      </ul>
+      <h1 class="page-title">Archived Bus Time Data</h1>
+      <div class="content-and-toc">
+        <nav class="toc">
+          <h2 class="toc-header">Table of Contents</h2>
+          <ul class="menu toc-menu">
+            <li>
+              <a href="/developers/">MTA Bus Time Developer&nbsp;Access</a></span>
+            </li>
+            <li><a href="/developers/gtfs-realtime">GTFS-Realtime</a></li>
+            <li>
+              <a href="/developers/siri/">The SIRI API</a>
+              <ul class="menu toc-sub-menu">
+                <li><a href="/developers/siri/change-log/">Change Log</a></li>
+                <li><a href="/developers/siri/vehicle-monitoring/">Vehicle Monitoring</a></li>
+                <li><a href="/developers/siri/stop-monitoring/">Stop Monitoring</a></li>
+                <li><a href="/developers/siri/monitored-vehicle-journey/">Monitored Vehicle Journey</a></li>
+                <li><a href="/developers/siri/situation-exchange-delivery/">Situation Exchange Delivery</a></li>
+              </ul>
+            </li>
+           <li><a href="/developers/restful-api/">OneBusAway "Discovery"&nbsp;API</a></li>
+           <li><a href="/developers/cancelled-trip-api-features/">Cancelled Trip API&nbsp;Features</a></li>
+           <li><a href="/developers/archive-data/" class="active">Archived Bus Time&nbsp;Data</a></li>
+           <li><a href="/developers/open-source/">Improving the MTA Bus Time&nbsp;System</a>
+          </ul>
+        </nav>
+        <div class="page-content card">
+          <h2>Archived MTA Bus Time data, Aug 2014- Oct 2014</h2>
+          <p>As part of MTA's App Quest, 3 Months of MTA Bus Time data was released <a href="https://web.mta.info/developers/MTA-Bus-Time-historical-data.html" target="_blank">here.</a></p>
+          <h2>Archived B63 MTA Bus Time Data</h2>
+          <p>As requested by a number of developers on the <a href="https://groups.google.com/group/mtadeveloperresources" target="_blank">MTA's Developer Resources list</a>, we have posted an extract of data archived by the MTA Bus Time system. This first extract contains historical records for the <strong>B63</strong> route in Brooklyn from April 3, 2011 through May 3, 2011. Each record in this data set contains, for a single bus, the time of observation, bus location, bus route, next stop, distance from that stop, and other variables described below.</p>
+          <p>Additional data from Staten Island are not yet available.</p>
+          <p>The data can be found <a href="https://s3.amazonaws.com/MTABusTime/B63-2011-04-03_2011-05-03.zip" target="_blank">here</a>. This page describes caveats with respect to this data, and the format of the data itself.</p>
+          <p>The B63-only GTFS which powers MTA Bus Time and provides a reference baseline for this archive data is available <a href="https://s3.amazonaws.com/MTABusTime/gtfs/google_transit_brooklyn.zip" target="_blank">here</a></p>
+          <p>Because of the prototype nature of the MTA Bus Time pilot system, it takes some effort to generate these extracts. Future extracts will be posted if demand and applications for this first extract merit the effort.</p>
+          <h2>Caveats</h2>
+          <p>There are a number of caveats to this data set. MTA Bus Time on the B63 is a pilot project, where the gear on the bus and the backend server is exceedingly simple.</p>
+          <ul>
+            <li><strong>There is no formal integration with the schedule, so trip ID's in this data can not be used at any point to infer whether a bus was early or late</strong>. The trip ID's only indicate a particular stopping pattern.</li>
+            <li>The data itself, while voluminous, is not perfectly clean.</li>
+            <li>This data does not indicate the particular time that a given bus served (or passed) a particular stop. It simply relates, for every observation the server received from a bus, the ID of the next stop on that bus' trip and the distance to that stop. To infer when a bus served a given stop, one can look at consecutive observations where the ID of the next stop changed.</li>
+          </ul>
+          <p>We hope to fix all but the last of these issues in the forthcoming MTA Bus Time implementation on Staten Island (and beyond). Please let us know, via the email list, any issues you find.</p>
+          <h2>Documentation</h2>
+          <p>The data comes in a big zipped CSV file, with the following columns. As much as possible, these columns are named to match the corresponding GTFS values.</p>
+          <ul>
+            <li><strong>vehicle_id</strong> - the 4-digit ID of the bus</li>
+            <li><strong>timestamp</strong> - the date and time of the observation</li>
+            <li><strong>latitude</strong> - the latitude of the bus</li>
+            <li><strong>longitude</strong> - the longitude of the bus</li>
+            <li><strong>phase</strong> - the phase of the bus in its duty cycle; current extract includes only observations when the bus is inferred to be IN_PROGRESS (i.e. driving on the route) or LAYOVER_DURING (i.e. waiting at a terminal for a trip to begin)</li>
+            <li><strong>trip_id</strong> - a GTFS trip_id representing the stopping pattern inferred for the given bus at the given time</li>
+            <li><strong>direction_id</strong> - the GTFS direction_id for the direction the bus is traveling</li>
+            <li><strong>trip_headsign</strong> - the GTFS destination sign value for the inferred representative trip</li>
+            <li><strong>shape_dist_traveled</strong> - the distance the bus has traveled (in meters) along the precise geographic route of the inferred representative trip</li>
+            <li><strong>stop_id</strong> - the GTFS stop_id of the next stop the bus will serve</li>
+            <li><strong>stop_sequence</strong> - the GTFS stop_sequence of the next stop the bus will serve</li>
+            <li><strong>dist_from_stop</strong> - the distance of the bus (in meters) from that next stop</li>
+          </ul>
+          <p>For description and hints on how to work with CSV files, please see <a href="https://en.wikipedia.org/wiki/Comma-separated_values" target="_blank">Wikipedia</a>, or this <a href="https://www.imf.org/external/help/csv.htm" target="_blank">helpful guide</a>.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
