@@ -61,7 +61,7 @@ const SearchBar = () => {
 
     return (
         <ErrorBoundary>
-            <div id="search">
+            <div id="search" onKeyDown={(event)=>{if(event.key=="Enter"){search(event.target?.value)}}}>
                 <Autosuggest
                     suggestions={suggestions}
                     onSuggestionsFetchRequested={onSuggestionsFetchRequested}
