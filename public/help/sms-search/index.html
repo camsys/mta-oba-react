@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MTA Bus Time | Help > Searching for Your Stop using SMS/Text Message</title>
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="/img/favicon.ico" />
+
+    <link rel="stylesheet" href="/css/bustime.css">
+    <script src="/js/bustime.js"></script>
+</head>
+<body>
+  <div class="main-body no-map">
+    <header class="header" id="header">
+      <div class="header-inner">
+        <a href="/" aria-label="MTA Bus Time Home" id="logo-link">
+          <img id="logo" src="/img/bustime-logo.png" alt="MTA Bus Time" class="logo"/>
+        </a>
+        <nav>
+            <ul class="menu">
+                <li><a href="/">Home</a></li>
+                <li><a href="/help/text/">Text</a></li>
+                <li><a href="/about/">About</a></li>
+                <li><a href="/contact/">Contact</a></li>
+                <li><a href="/developers/">Developers</a></li>
+                <li><a href="/help/" class="active">Help</a></li>
+            </ul>
+        </nav>
+      </div>
+    </header>
+    <div class="main-content">
+      <ul class="breadcrumb">
+        <li><a href="/help/">Help</a></li>
+      </ul>
+      <h1 class="page-title">Searching for Your Stop using SMS/Text Message</h1>
+      <div class="content-and-toc">
+        <nav class="toc">
+          <h2 class="toc-header">Table of Contents</h2>
+          <ul class="menu toc-menu">
+            <li><a href="/help/">MTA Bus Time Help</a></span></li>
+            <li><a href="/help/click/">Click It</a></span></li>
+            <li><a href="/help/text/">Text It</a></li>
+            <li><a href="/help/scan/">Scan It</a></li>
+            <li><a href="/help/troubleshooting/">Troubleshooting</a></li>
+            <li><a href="/help/faq/">Frequently Asked Questions</a></li>
+            <li><a href="/help/tips/">Tips and Tricks</a></li>
+            <li><a href="/help/mobile-search/">Searching on Mobile</a></li>
+            <li><a href="/help/desktop-search/">Searching on Desktop</a></li>
+            <li><a href="/help/sms-search/" class="active">Searching with SMS/Text </a></li>
+            <li><a href="/help/technology/">Technology</a></li>
+            <li><a href="/help/finding-a-stop-code/">Finding Your Bus Stop Code</a></li>
+          </ul>
+        </nav>
+        <div class="content">
+          <div class="page-content card">
+            <p>To search for a specific stop, you must use one of the following two ways to search for upcoming bus arrivals at a bus stop with the MTA Bus Time Text Message/SMS interface: </p>
+            <ul>
+              <li><a href="#stopcode">By Bus Stop Code</a></li>
+              <li><a href="#intersection">By Intersection</a></li>
+            </ul>
+            <p>If you send just a bus route, MTA Bus Time returns only whether the route is scheduled to run or not. It does not include any information about when buses will arrive to your stop.</p>
+            <p><em>Adding a route to either type of search</em> limits the results to that bus route.</p>
+          </div>
+          <div class="page-content card">
+            <h2 id="stopcode">By Bus Stop Code (and Route)</h2>
+            <p>Sending a stop code to MTA Bus Time returns a list of all upcoming bus arrivals to that stop. Searching by bus stop code is the most precise way to find out about upcoming bus arrivals to your stop. </p>
+            <p>When you're at the bus stop, you can find the stop's code by looking at the schedule box posted on the bus stop pole. See Finding Your Bus Stop Code for more information.</p>
+            <p>Let's look at what you can send:</p>
+            <ul>
+              <li>The most basic option is to <strong></strong>send a text message with the 6-digit bus stop code <em>TO: 511123</em></strong>. MTA Bus Time responds with upcoming bus arrivals for the stop:
+              </li>
+              <li><strong>Some bus stops are served by multiple routes.</strong> In this case, MTA Bus Time responds with the upcoming buses for any of them. Note that this means you may not see the route you are looking for if other buses are closer. To get bus arrival information for just one route at a stop, send the stop code and the route of interest:
+              </li>
+              <li><strong>Sometimes, a stop will have routes that are not scheduled at that time</strong>. In this case, MTA Bus Time responds with a message to this effect. Similarly, a route can be scheduled to run, but the buses have passed your stop and there are no buses headed to it at this time. In this case, MTA Bus Time responds that there are no buses en route.</li>
+              <li><strong>If a stop code is sent with a bus route that doesn't serve it</strong>, MTA Bus Time will respond in one of two ways- if the route goes nearby, it will say that the route selected does not serve this stop:</li>
+              <li>If the route does not go nearby, MTA Bus Time will respond that there are no nearby stops for that route:</li>
+            </ul>
+          </div>
+          <div class="page-content card">
+            <h2>Service Changes</h2>
+            <p>Bus routes with service changes are marked by asterisks. Service changes details are available by replying "C + ROUTE". Note that you don't actually have to type a '+', just separate the route with a space.  MTA Bus Time will only display the first part of the service change, up to the length of a single text message.  There may be more than one service change, in which case MTA Bus Time will prompt you to send "N" for the next one.</p>
+            <p>For more details on Service Changes for a bus route please <a href="https://www.mta.info/nyct/service/BusServiceChanges.htm" target="_blank">refer to Bus Service Changes from MTA.info.</a></p>
+            <p>If you receive a "no stops found" message, verify the bus stop code you entered is correct, try sending an INTERSECTION + ROUTE or refer to <a href="https://bustime.mta.info/wiki/Help/Troubleshooting" target="_blank">Troubleshooting.</a></p>
+          </div>
+          <div class="page-content card">
+            <h2 id="intersection">By Intersection (and Route)</h2>
+            <p>When you send MTA Bus Time an intersection (with or without a bus route), MTA Bus Time will return a list of bus stops nearby, up to the character limit of one SMS message. If you specify a route, MTA Bus Time will also show bus arrivals for the route you specify.</p>
+            <p>Let's look at what you can send:</p>
+            <ul>
+              <li>Send a text message to <strong>511123</strong> with an intersection.  MTA Bus Time responds with the routes which go near the intersection:
+              </li>
+              <li>Send a selection (the name of a route which Bus Time has suggestion).  MTA Bus Time responds with the two directions that route travels.  Send your selection ("1" or "2") again and MTA Bus Time responds with the stop information corresponding to your selections:</li>
+              <li>Send a text message to 511123 with an intersection and route. MTA Bus Time will send back the two directions that route travels.  Send your selection and MTA Bus Time responds with the stop information corresponding to your selections, as above.</li>
+            </ul>
+            <h3>Ambiguous Searches for an Intersection</h3>
+            <p>Ambiguous addresses and intersections return a list of possible intersections along with their ZIP codes in NY (not all location results returned are served by MTA Bus Time yet).</p>
+            <p>At any time, reply with one of the suggested options to see which stops are near that intersection (you may be prompted to select a route and  direction) or try the suggestions under <a href="/help/troubleshooting">Troubleshooting</a>.</p>
+          </div>
+          <div class="page-content card">
+            <h2>Glossary of SMS Terms</h2>
+            <ul>
+              <li><strong>(old)</strong> bus location data shown is more than 2 minutes old (but not more than 5 minutes)</li>
+              <li><strong>@term.</strong> a bus is at the bus terminal, check the bus route schedule for more information</li>
+              <li><strong>@term. sched. dep.</strong> a bus is at the bus terminal and is expected to leave at the given time</li>
+              <li><strong>+layover@term.</strong> the bus is scheduled to wait at the terminal before it arrives at this stop</li>
+              <li><strong>no bus en-route</strong> no buses are approaching this stop at this time</li>
+              <li><strong>ROUTE#</strong> no scheduled bus service for the route planned at this stop at this time</li>
+              <li><strong>ROUTE*</strong> service change notice for a route: reply with 'C' + ROUTE for more information or visit <a href="https://www.mta.info/nyct/service/BusServiceChanges.htm" target="_blank">Bus Service Changes from MTA.info</a>.</li>
+              <li><strong>'No matches'</strong> messages may occur because your stop code or intersection could not be found or your stop is not yet being served by routes equipped with MTA Bus Time.</li>
+            </ul>
+          </div>
+          <div class="page-content card">
+            <h2>Message Blocked?</h2>
+            <p>If a phone isn’t receiving text messages – or if it's getting texts that say “mobile messaging is blocked” – there’s usually one of two reasons.</p>
+            <ol>
+              <li>The phone plan doesn’t support messages from short codes (the 5-6 digit numbers many organizations use for SMS such as MTA Bus Time's 511123).</li>
+              <li>There’s a parental control in place that prohibits text messages.</li>
+            </ol>
+            <p>The best solution is to contact the service provider and check the phone plan. Make sure that the phone can receive messages from short codes, and there are no parental controls in place.</p>
+            <p>Also try <a href="/help/troubleshooting/">Troubleshooting</a> for more help.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
