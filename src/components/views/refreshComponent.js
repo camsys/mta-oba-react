@@ -1,13 +1,18 @@
-import React from "react";
+import React, {useContext, useEffect, useState} from "react";
+import {VehicleStateContext} from "Components/util/VehicleStateComponent";
 
 export default function getRefreshComponent(){
 
     var time = new Date();
-    time = time.toLocaleString('en-US', { hour: 'numeric',  minute: 'numeric', hour12: true });
+    time = time.toLocaleString('en-US', { hour: 'numeric',  minute: 'numeric', hour12: true , second:'numeric'});
+    const {vehicleState}=useContext(VehicleStateContext)
 
     const handleRefresh = () => {
         window.location.reload();
     }
+    useEffect(()=>{
+        time = time.toLocaleString('en-US', { hour: 'numeric',  minute: 'numeric', hour12: true , second:'numeric'});
+    },[vehicleState])
 
     return(<ul className="menu icon-menu middle-menu refresh-menu" role="menu">
         <li>
