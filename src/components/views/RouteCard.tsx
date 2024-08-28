@@ -12,6 +12,7 @@ import {stopSortedDataIdentifier, vehicleDataIdentifier, VehicleStateContext} fr
 import {useSearch} from "../../js/updateState/SearchEffect"
 import VehicleComponent from "./VehicleComponent"
 import {useFavorite} from "../util/MiscStateComponent";
+import {ViewSearchItem} from "./MiscComponents";
 
 
 
@@ -151,7 +152,7 @@ export function CollapsableRouteCard({ routeMatch, oneOfMany}: {routeMatch:Route
 
     const { highlightId } = useHighlight();
     let {isFavorite} = useFavorite();
-    const {search} = useSearch()
+
     let routeId = routeMatch.routeId.split("_")[1];
     let serviceAlertIdentifier = routeMatch.routeId;
 
@@ -175,12 +176,7 @@ export function CollapsableRouteCard({ routeMatch, oneOfMany}: {routeMatch:Route
                             <RouteFavoriteButton routeMatch={routeMatch}/>
                         </li>
                         <li>
-                            <button className="favorite-toggle" tabIndex="0" aria-label='Toggle favorites status for this stop' onClick={() => search(routeMatch.routeId.split("_")[1])}>
-                            <span className="svg-icon-wrap">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20"><path fill="#0E61A9" fillRule="evenodd" d="M10.078 1.78571H15.1071C17.5727 1.78571 19.5714 3.78444 19.5714 6.25C19.5714 8.71556 17.5727 10.7143 15.1071 10.7143H14.3637C13.9399 11.7614 12.9133 12.5 11.7143 12.5C10.5152 12.5 9.48867 11.7614 9.06483 10.7143H5.46429C4.1822 10.7143 3.14286 11.7536 3.14286 13.0357C3.14286 14.0935 3.85031 14.986 4.81789 15.266C5.26324 14.2674 6.26463 13.5714 7.42857 13.5714C8.62763 13.5714 9.65419 14.31 10.078 15.3571H15.9133L15.2424 14.6861C14.824 14.2678 14.824 13.5894 15.2424 13.171C15.6609 12.7525 16.3391 12.7525 16.7576 13.171L19.2576 15.671C19.676 16.0894 19.676 16.7677 19.2576 17.1861L16.7576 19.6861C16.3391 20.1046 15.6609 20.1046 15.2424 19.6861C14.824 19.2677 14.824 18.5894 15.2424 18.171L15.9133 17.5H10.078C9.65419 18.5471 8.62763 19.2857 7.42857 19.2857C6.20837 19.2857 5.16681 18.5209 4.75726 17.4443C2.62767 17.1054 1 15.2607 1 13.0357C1 10.5702 2.99873 8.57143 5.46429 8.57143H9.06483C9.48867 7.52434 10.5152 6.78571 11.7143 6.78571C12.9133 6.78571 13.9399 7.52434 14.3637 8.57143H15.1071C16.3893 8.57143 17.4286 7.53209 17.4286 6.25C17.4286 4.96791 16.3893 3.92857 15.1071 3.92857H10.078C9.65419 4.97566 8.62763 5.71429 7.42857 5.71429C6.22951 5.71429 5.20296 4.97566 4.77911 3.92857H2.07143C1.47969 3.92857 1 3.44887 1 2.85714C1 2.26541 1.47969 1.78571 2.07143 1.78571H4.77911C5.20296 0.738631 6.22951 0 7.42857 0C8.62763 0 9.65419 0.738631 10.078 1.78571Z" clipRule="evenodd"/></svg>
-                            </span>
-                                View Route
-                            </button>
+                            <ViewSearchItem datumId={routeMatch.routeId} text={"Route"}/>
                         </li>
                     </ul>
                 </div>
