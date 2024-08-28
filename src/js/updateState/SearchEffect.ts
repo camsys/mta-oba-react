@@ -72,13 +72,12 @@ function processStopSearch(stop,card:Card,stops: StopsObject,routes:RoutesObject
     return match
 }
 
-async function getData(card:Card,stops: StopsObject,routes:RoutesObject):Promise<Card>{
+async function getData(card:Card,stops: StopsObject,routes:RoutesObject,address:string):Promise<Card>{
     console.log("filling card data with search",card,stops,routes)
     if(card.searchTerm == null || card.searchTerm == ''){
         console.log("empty search means home",card)
         return card
     }
-    let address = "https://" + process.env.ENV_ADDRESS + "/" + OBA.Config.searchUrl + "?q=" + card.searchTerm
     // let address = "http://localhost:8080" + "/" + OBA.Config.searchUrl + "?q=" + card.searchTerm
     console.log('requesting search results from ',address)
     await fetch(address)
@@ -131,15 +130,33 @@ const performNewSearch = (searchRef:String,currentCard:Card):boolean=>{
     return true
 }
 
+const updateWindowHistory = (term:string) :void =>{
+    let url = new URL(window.location.href);
+    url.searchParams.set('LineRef', term);
+    window.history.pushState({}, '', url);
+}
 
-export const updateCard = async (searchRef:String,stops: StopsObject,routes:RoutesObject):Promise<Card> =>{
+
+export const updateCard = async (searchRef:String,stops: StopsObject,routes:RoutesObject,address:string):Promise<Card> =>{
     console.log("received new search input:",searchRef)
     // searchRef = searchRef.replaceAll(" ","%2520")
-    return await getData(new Card(searchRef),stops,routes)
+    return await getData(new Card(searchRef),stops,routes,address)
 }
 
 export const getHomeCard = () :Card=>{
     return new Card("")
+}
+
+const getBaseAddress =()=>{
+    return "https://" + process.env.ENV_ADDRESS + "/"
+}
+
+const getSearchAddress=(searchTerm:string)=>{
+    return  getBaseAddress() + OBA.Config.searchUrl + "?q=" + searchTerm
+}
+
+const getRoutesAddress=()=>{
+    return getBaseAddress() + "/api/routes"
 }
 
 
@@ -157,25 +174,23 @@ export const useSearch = () =>{
         try {
             console.log("fetch search data called, generating new card",state,searchTerm)
             if (performNewSearch(searchTerm,state?.currentCard)) {
-                let url = new URL(window.location.href);
-                url.searchParams.set('LineRef', searchTerm);
-                window.history.pushState({}, '', url);
-                let currentCard
+                updateWindowHistory(searchTerm);
+                let currentCard;
                 if(searchTerm!=null|searchTerm!=""|searchTerm!="#"){
-                    currentCard = await updateCard(searchTerm, stops,routes)
+                    currentCard = await updateCard(searchTerm, stops,routes,getSearchAddress(searchTerm));
                 } else {
-                    currentCard = getHomeCard()
+                    currentCard = getHomeCard();
                 }
 
-                let cardStack = state.cardStack
-                cardStack.push(currentCard)
-                console.log("updating state with new card:", currentCard,stops,routes)
+                let cardStack = state.cardStack;
+                cardStack.push(currentCard);
+                console.log("updating state with new card:", currentCard,stops,routes);
                 setState((prevState) => ({
                     ...prevState,
                     currentCard: currentCard,
                     cardStack: cardStack,
                     renderCounter:prevState.renderCounter+1
-                }))
+                }));
             }
         }
         catch (error) {
@@ -186,19 +201,20 @@ export const useSearch = () =>{
 
     const generateInitialCard = async (setLoading)=>{
         try {
-            console.log("generating initial card")
+            console.log("generating initial card");
             const searchRef = queryString.parse(location.search).LineRef as string;
-            let currentCard = await getData(new Card(searchRef),stops,routes)
-            console.log("setting initial state data with base card",currentCard)
+            let currentCard = await getData(new Card(searchRef),stops,routes,getSearchAddress(searchRef));
+            // let currentCard = new Card(searchRef);
+            console.log("setting initial state data with base card",currentCard);
 
-            let cardStack = state.cardStack
-            cardStack.push(currentCard)
+            let cardStack = state.cardStack;
+            cardStack.push(currentCard);
             setState((prevState) => ({
                 ...prevState,
                 currentCard: currentCard,
                 cardStack: cardStack,
                 renderCounter:prevState.renderCounter+1
-            }))
+            }));
         } catch (error) {
             console.error('There was a problem with the fetch operation:', error);
         } finally {
@@ -210,29 +226,70 @@ export const useSearch = () =>{
 // which is what this has become
 
     const vehicleSearch = async (vehicleDatum : VehicleRtInterface)=> {
-        console.log("setting card to vehicle card",vehicleDatum)
+        console.log("setting card to vehicle card",vehicleDatum);
         //todo: should be current search term
-        let pastCard = state.currentCard
+        let pastCard = state.currentCard;
         let routeId = vehicleDatum.routeId.split("_")[1];
-        console.log("found routeId of target vehicle: ",routeId)
-        let currentCard = new Card(routeId)
-        let routeData = routes?.current
-        if(routeData){routeData=routeData[vehicleDatum.routeId]}
-        console.log("found routedata of target vehicle: ",routeData)
-        currentCard.setToVehicle(vehicleDatum.vehicleId,[routeData],new Set([vehicleDatum.routeId]))
-        let cardStack = state.cardStack
-        cardStack.push(currentCard)
-        console.log("updating state prev card -> new card: \n", pastCard,currentCard)
+        console.log("found routeId of target vehicle: ",routeId);
+        let currentCard = new Card(routeId);
+        let routeData = routes?.current;
+        if(routeData){routeData=routeData[vehicleDatum.routeId]};
+        console.log("found routedata of target vehicle: ",routeData);
+        currentCard.setToVehicle(vehicleDatum.vehicleId,[routeData],new Set([vehicleDatum.routeId]));
+        let cardStack = state.cardStack;
+        cardStack.push(currentCard);
+        console.log("updating state prev card -> new card: \n", pastCard,currentCard);
         // todo: condense all of these into a single method, copied and pasted too many times
         setState((prevState) => ({
             ...prevState,
             currentCard: currentCard,
             cardStack: cardStack,
             renderCounter:prevState.renderCounter+1
-        }))
+        }));
     }
 
-    return { search , generateInitialCard, vehicleSearch};
+    const allRoutesSearch = async () =>{
+        let searchTerm = "allRoutes";
+        let address = getRoutesAddress();
+        try {
+            console.log("all routes requested, generating new card",state);
+            if (state?.currentCard?.type !== CardType.AllRoutesCard) {
+                updateWindowHistory(searchTerm);
+                let currentCard = await fetch(address)
+                    .then((response) => response.json())
+                    .then((parsed) => {
+                        let currentCard = new Card(searchTerm);
+                        console.log("all routes results: ",parsed);
+                        let searchMatch = new SearchMatch(SearchMatch.matchTypes.AllRoutesMatch);
+                        searchMatch.routeMatches = parsed?.routes.map(route=>new RouteMatch(route));
+                        let routeIdList = new Set();
+                        // parsed?.routes.forEach(route=>routeIdList.add(route.id));
+                        currentCard.setToAllRoutes([searchMatch],routeIdList);
+                        console.log('completed processing all routes results: ',currentCard,stops,routes);
+                        return currentCard
+                    })
+                    .catch((error) => {
+                        console.error(error);
+                    });
+
+                let cardStack = state.cardStack;
+                cardStack.push(currentCard);
+                console.log("updating state with new card:", currentCard,stops,routes);
+                setState((prevState) => ({
+                    ...prevState,
+                    currentCard: currentCard,
+                    cardStack: cardStack,
+                    renderCounter:prevState.renderCounter+1
+                }));
+            }
+        }
+        catch (error) {
+            console.error('There was a problem with the fetch operation:', error);
+        } finally {
+        }
+    }
+
+    return { search, generateInitialCard, vehicleSearch, allRoutesSearch };
 }
 
 

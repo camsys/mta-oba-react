@@ -201,6 +201,7 @@ export enum MatchType {
     RouteMatch = "routeMatch",
     GeocodeMatch = "geocodeMatch",
     StopMatch = "stopMatch",
+    AllRoutesMatch = "allRoutesMatch"
 }
 
 export class SearchMatch {
@@ -231,10 +232,10 @@ export class RouteMatch extends SearchMatch implements RouteInterface{
 
     constructor(data: any) {
         super(MatchType.RouteMatch);
-        this.color = data.color;
-        this.routeId = data.routeId;
-        this.routeTitle = data.routeTitle;
-        this.description = data.description;
+        this.color = data?.color;
+        this.routeId = data?.id;
+        this.routeTitle = data?.shortName + " " + data?.longName;
+        this.description = data?.description;
         this.directions = [];
     }
 }
@@ -280,6 +281,7 @@ export enum CardType {
     VehicleCard = "vehicleCard",
     ErrorCard = "errorCard",
     HomeCard = "homeCard",
+    AllRoutesCard = "allRoutesCard"
 }
 
 export class Card {
@@ -323,6 +325,16 @@ export class Card {
         this.setType(CardType.VehicleCard);
         this.vehicleId = vehicleId;
         this.datumId = vehicleId;
+        this.searchMatches = searchMatches;
+        this.routeIdList = routeIdList;
+    }
+
+    setToAllRoutes(
+        searchMatches: SearchMatch[],
+        routeIdList: Set<string>
+    ): void {
+        this.setType(CardType.AllRoutesCard);
+        this.datumId = null;
         this.searchMatches = searchMatches;
         this.routeIdList = routeIdList;
     }

@@ -16,7 +16,7 @@ function MapStopComponent  ({stopDatum, mapStopMarkers, zIndexOverride}:
                                 {stopDatum:StopInterface,
                                 mapStopMarkers:React.MutableRefObject<Map<string,Marker>>,
                                 zIndexOverride:number}) : JSX.Element{
-    console.log('generating MapStopComponent: ', stopDatum,mapStopMarkers,zIndexOverride)
+    // console.log('generating MapStopComponent: ', stopDatum,mapStopMarkers,zIndexOverride)
 
 
     let {getHighlightedId} = useHighlight()

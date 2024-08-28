@@ -4,7 +4,7 @@ import {Marker, Popup} from "react-leaflet";
 import L from "leaflet";
 import bus from "../../img/icon/bus.svg";
 import busStroller from "../../img/icon/bus-stroller.svg";
-import {useSearch} from "../../js/updateState/SearchEffect.tsx";
+import {useSearch} from "../../js/updateState/SearchEffect.ts";
 import {VehicleRtInterface} from "../../js/updateState/DataModels";
 
 const COMPONENT_IDENTIFIER = "MapVehicleComponent"
@@ -16,7 +16,7 @@ function MapVehicleComponent  (
     {vehicleDatum,vehicleRefs}:{vehicleDatum:VehicleRtInterface,vehicleRefs:React.MutableRefObject<Map<string,Marker>>}) :JSX.Element{
 
     // let targetVehicleId = state.currentCard.vehicleId
-    console.log('generating mapVehicle: ',vehicleDatum.vehicleId,vehicleDatum)
+    // console.log('generating mapVehicle: ',vehicleDatum.vehicleId,vehicleDatum)
     let imgDegrees = vehicleDatum.bearing - vehicleDatum.bearing%5
     let scheduled = vehicleDatum.hasRealtime?"":"scheduled/"
     let vehicleImageUrl = "img/vehicle/"+scheduled+"vehicle-"+imgDegrees+".png"
@@ -56,7 +56,7 @@ function MapVehicleComponent  (
     let out = (<Marker {...markerOptions}
                        eventHandlers={{click : ()=>{selectVehicle(vehicleDatum)}}}
                        ref={r=>{
-                           console.log("ref for vehicle component",vehicleDatum,r);
+                           // console.log("ref for vehicle component",vehicleDatum,r);
                            typeof vehicleRefs!=='undefined'
                                ?vehicleRefs.current.set(vehicleDatum.vehicleId,r):null
                        }}

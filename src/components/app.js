@@ -9,7 +9,7 @@ import {
     VehicleStateContext,
     VehicleStateProvider
 } from "./util/VehicleStateComponent";
-import {useSearch} from "../js/updateState/SearchEffect.tsx";
+import {useSearch} from "../js/updateState/SearchEffect.ts";
 import {MapHighlightingStateProvider} from "./util/MapHighlightingStateComponent.tsx";
 import {siriGetVehiclesForRoutesEffect, siriGetVehiclesForVehicleViewEffect} from "../js/updateState/SiriEffects";
 import {siriGetVehiclesForStopViewEffect} from "../js/updateState/SiriStopEffects";
@@ -46,8 +46,8 @@ const VehicleLoading=()=>{
 
         getSiri()
         //todo: set interval back to 15s
-        const interval = setInterval(getSiri, 5*1000);
-        return () => clearInterval(interval);
+        // const interval = setInterval(getSiri, 5*1000);
+        // return () => clearInterval(interval);
     }, [state]);
 }
 

@@ -24,7 +24,7 @@ function cleanUpHostAddress(hostAddress) {
 
 module.exports = {
   mode: 'development',
-  entry: './src/index.js', // Entry point for the application
+  entry: './src/index.tsx', // Entry point for the application
   module: {
     rules: [
       {

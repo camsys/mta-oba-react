@@ -12,6 +12,7 @@ import VehicleCard from "../views/VehicleCard.tsx";
 import {StopCardWrapper} from "../views/StopCardWrapper.tsx";
 import {GeoCardWrapper} from "../views/GeoCardWrapper.tsx";
 import HomeCard from "../views/HomeCard.tsx";
+import {AllRoutesWrapper} from "Components/views/AllRoutesWrapper";
 
 function SideBar  () {
 
@@ -38,6 +39,10 @@ function SideBar  () {
         if(state.currentCard.type === CardType.GeocodeCard){
             OBA.Util.log("adding geo card")
             return <GeoCardWrapper/>
+        }
+        if(state.currentCard.type === CardType.AllRoutesCard){
+            console.log("adding allroutes card")
+            return <AllRoutesWrapper/>
         }
     }
 

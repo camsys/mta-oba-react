@@ -1,6 +1,5 @@
 import ReactDOM from 'react-dom';
 import React from 'react';
-import { useHistory, useLocation } from 'react-router';
 import { ReactSVG } from "react-svg";
 import './img/favicon.ico';
 import { createRoot } from 'react-dom/client';
