@@ -71,7 +71,7 @@ const VehicleCard = (routeMatch:RouteMatch,vehicleId:string) : JSX.Element=> {
     const [loading, setLoading] = useState(true);
     useEffect(() => {
         setLoading(true)
-    },[state])
+    },[state,vehicleState])
 
     let routeId;
     let vehicleDatum;
