@@ -164,6 +164,7 @@ export const useSearch = () =>{
     const { state, setState } = useContext(CardStateContext);
     const routes = useContext(RoutesContext) as RoutesObject
     const stops = useContext(StopsContext) as StopsObject
+    const allRoutesSearchTerm = "allRoutes";
 
 
     const search = async (searchTerm) =>{
@@ -171,6 +172,10 @@ export const useSearch = () =>{
             ? searchTerm.split("_").reduce((acc, part, nth) => nth !== 0 ? acc + part : acc, "")
                 .toUpperCase()
             : searchTerm.toUpperCase();
+        if(searchTerm===allRoutesSearchTerm){
+            await allRoutesSearch()
+            return
+        }
         try {
             console.log("fetch search data called, generating new card",state,searchTerm)
             if (performNewSearch(searchTerm,state?.currentCard)) {
@@ -203,6 +208,10 @@ export const useSearch = () =>{
         try {
             console.log("generating initial card");
             const searchRef = queryString.parse(location.search).LineRef as string;
+            if(searchRef===allRoutesSearchTerm){
+                await allRoutesSearch()
+                return
+            }
             let currentCard = await getData(new Card(searchRef),stops,routes,getSearchAddress(searchRef));
             // let currentCard = new Card(searchRef);
             console.log("setting initial state data with base card",currentCard);
@@ -249,7 +258,7 @@ export const useSearch = () =>{
     }
 
     const allRoutesSearch = async () =>{
-        let searchTerm = "allRoutes";
+        let searchTerm = allRoutesSearchTerm;
         let address = getRoutesAddress();
         try {
             console.log("all routes requested, generating new card",state);
