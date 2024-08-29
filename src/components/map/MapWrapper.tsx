@@ -3,7 +3,7 @@ import {OBA} from "../../js/oba";
 import {MapComponent} from './MapComponent';
 import ErrorBoundary from "../util/errorBoundary";
 import ReactLeafletGoogleLayer from "react-leaflet-google-layer";
-import RefreshComponent from "../views/refreshComponent";
+import RefreshComponent from "../views/RefreshComponent";
 
 
 
