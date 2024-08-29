@@ -54,7 +54,7 @@ function SideBar  () {
             <div className="sidebar-content">
                 <div className="content" id="app">
                     {renderCardInfo()}
-                    {state.currentCard.type === CardType.HomeCard ? null : <RefreshComponent/>}
+                    {state.currentCard.type === CardType.HomeCard ? null : <ul className="menu icon-menu middle-menu refresh-menu" role="menu"><li><RefreshComponent/></li></ul>}
                 </div>
                 <Footer />
             </div>

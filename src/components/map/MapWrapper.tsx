@@ -3,7 +3,7 @@ import {OBA} from "../../js/oba";
 import {MapComponent} from './MapComponent';
 import ErrorBoundary from "../util/errorBoundary";
 import ReactLeafletGoogleLayer from "react-leaflet-google-layer";
-
+import RefreshComponent from "../views/refreshComponent";
 
 
 
@@ -29,7 +29,7 @@ function getMapWrap  () : JSX.Element {
         <ErrorBoundary>
             <div id="map-wrap">
                 <div className="bottom-buttons" id="map-trigger-wrao">
-                    {/* refresh button goes here */}
+                    <RefreshComponent/>
                     <button id="map-toggle" className="button" aria-controls="map" aria-expanded={mapVisible} aria-pressed={mapVisible}
                             aria-label={ariaLabel} onClick={mapToggle}><span className="label"><span className="hide-label">Hide </span>Map</span>
                     </button>

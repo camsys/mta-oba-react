@@ -1,6 +1,7 @@
 import React, {useContext, useEffect, useState} from "react";
 import {VehicleStateContext} from "Components/util/VehicleStateComponent";
 
+
 export default function getRefreshComponent(){
 
     var time = new Date();
