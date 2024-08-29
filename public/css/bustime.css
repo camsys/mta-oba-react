@@ -2117,3 +2117,18 @@ button:hover, .button:hover {
   padding-top: 1rem;
   border-top: 1px solid #000;
 }
+
+.goog-te-gadget {
+  font-family: inherit;
+  font-size: 1em !important;
+  color: inherit;
+  white-space: normal !important;
+}
+.goog-te-gadget .goog-te-combo {
+  margin: 0;
+  font-family: inherit;
+  font-size: 1em !important;
+}
+.goog-te-gadget * {
+  white-space: normal !important;
+}

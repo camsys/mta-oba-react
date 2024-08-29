@@ -7,7 +7,7 @@ export const GoogleTranslateButton = () => {
                 pageLanguage: "en",
                 autoDisplay: false
             },
-            "google-translate-button"
+            "google-translate"
         );
     };
     useEffect(() => {
@@ -30,7 +30,7 @@ export const GoogleTranslateButton = () => {
                 <span className="label">Google Translate</span>
             </button>
             <div className="sub-menu collapse-content" id="google-translate-menu" style={{ maxHeight: '0px' }} role="menu">
-                <button id="google-translate-button"></button>
+                <div id="google-translate" tabIndex={-2}></div>
             </div>
         </React.Fragment>
     );
