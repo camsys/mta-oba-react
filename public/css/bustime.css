@@ -1435,7 +1435,7 @@ button:hover, .button:hover {
   }
 }
 
-.collapse-trigger {
+.collapse-trigger, .link-header {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -1444,21 +1444,21 @@ button:hover, .button:hover {
           justify-content: space-between;
   gap: 0.5em;
 }
-.collapse-trigger .label {
+.collapse-trigger .label, .link-header .label {
   -webkit-box-flex: 1;
       -ms-flex-positive: 1;
           flex-grow: 1;
 }
-.collapse-trigger::after {
+.collapse-trigger::after, .link-header::after {
   content: "";
   -webkit-transform: rotate(90deg);
           transform: rotate(90deg);
   -webkit-transform-origin: center;
           transform-origin: center;
-  -webkit-transition: -webkit-transform 0.25s ease-in-out;
-  transition: -webkit-transform 0.25s ease-in-out;
-  transition: transform 0.25s ease-in-out;
-  transition: transform 0.25s ease-in-out, -webkit-transform 0.25s ease-in-out;
+  -webkit-transition: left 0.25s ease-in-out, -webkit-transform 0.25s ease-in-out;
+  transition: left 0.25s ease-in-out, -webkit-transform 0.25s ease-in-out;
+  transition: transform 0.25s ease-in-out, left 0.25s ease-in-out;
+  transition: transform 0.25s ease-in-out, left 0.25s ease-in-out, -webkit-transform 0.25s ease-in-out;
   width: 1.125em;
   height: 1.125em;
   background-image: url(/img/icon/right-caret_black.svg);
@@ -1468,9 +1468,18 @@ button:hover, .button:hover {
   display: inline-block;
   margin-right: 0.25em;
 }
-.collapse-trigger.open::after {
+.collapse-trigger.open::after, .link-header.open::after {
   -webkit-transform: rotate(-90deg);
           transform: rotate(-90deg);
+}
+
+.link-header::after {
+  position: relative;
+  left: 0;
+  rotate: -90deg;
+}
+.link-header:hover::after, .link-header:focus::after {
+  left: 0.375em;
 }
 
 .collapsible .collapse-content {
@@ -1631,16 +1640,16 @@ button:hover, .button:hover {
 .card > .card-header .card-title {
   font-weight: bold;
 }
-.card .card-header.collapse-trigger {
+.card .card-header.collapse-trigger, .card .card-header.link-header {
   -webkit-transition: background-color 0.25s ease-in-out, color 0.25s ease-in-out;
   transition: background-color 0.25s ease-in-out, color 0.25s ease-in-out;
 }
-.card .card-header.collapse-trigger:focus {
+.card .card-header.collapse-trigger:focus, .card .card-header.link-header:focus {
   background-color: #000;
   color: #fff;
   outline: none;
 }
-.card .card-header.collapse-trigger:focus::after {
+.card .card-header.collapse-trigger:focus::after, .card .card-header.link-header:focus::after {
   background-image: url(/img/icon/right-caret_white.svg);
 }
 .card .card-details {

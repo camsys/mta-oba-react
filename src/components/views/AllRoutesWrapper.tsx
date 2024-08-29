@@ -17,12 +17,13 @@ export function AbreviatedRouteCard({ routeMatch}: RouteMatch): JSX.Element {
     return (
         <React.Fragment>
             <div className={`card route-card ${routeMatch.routeId}`} onClick={()=>search(routeMatch.routeId)}>
-                <div
-                    className="card-header"
+                <button
+                    className="card-header link-header"
                     style={{ borderColor: "#" + routeMatch.color }}
+                    tabIndex={0}
                 >
                     <h3 className="card-title">{OBA.Config.noWidows(routeMatch.routeTitle)}</h3>
-                </div>
+                </button>
             </div>
         </React.Fragment>
     );

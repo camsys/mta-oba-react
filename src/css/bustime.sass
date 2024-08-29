@@ -773,8 +773,18 @@ button, .button
 
 // shared object styles
 
-.collapse-trigger
+.collapse-trigger, .link-header
   +caret-toggle
+
+.link-header
+  &::after
+    position: relative
+    left: 0
+    rotate: (-90deg)
+  &:hover, &:focus
+    &::after
+      left: .375em
+      
 
 .collapsible
   .collapse-content
@@ -884,7 +894,7 @@ button, .button
     .card-title
       font-weight: bold
   .card-header
-    &.collapse-trigger
+    &.collapse-trigger, &.link-header
       transition: background-color .25s ease-in-out, color .25s ease-in-out
       &:focus
         background-color: $black
