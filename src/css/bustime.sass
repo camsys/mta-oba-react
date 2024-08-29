@@ -1249,14 +1249,38 @@ button, .button
 
 // google translate sub-menu
 
-.goog-te-gadget
-  font-family: inherit
-  font-size: 1em!important
-  color: inherit
-  white-space: normal!important
-  .goog-te-combo
-    margin: 0
+#google-translate
+  padding: $content-padding 0
+  .goog-te-gadget
     font-family: inherit
     font-size: 1em!important
-  *
+    line-height: 1
+    color: inherit
     white-space: normal!important
+    display: flex
+    flex-wrap: wrap
+    align-items: baseline
+    .goog-te-combo
+      margin: 0 0 $content-padding 0
+      font-family: inherit
+      font-size: 1em!important
+    >div
+      flex-grow: 1
+      flex-basis: 100%
+    >span
+      color: inherit
+      a
+        font-size: 1em
+        font-weight: normal
+        color: currentColor
+        padding: 0
+        margin: 0 0 0 .5em
+        display: inline-block
+        img
+          height: 1.2em
+          width: auto
+          position: relative
+          top: .12em
+        &:hover, &:focus
+          text-decoration: underline
+          color: $black
