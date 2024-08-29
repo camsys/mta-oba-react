@@ -205,16 +205,30 @@ export const useSearch = () =>{
     }
 
     const generateInitialCard = async (setLoading)=>{
+        let currentCard = new Card("")
+        console.log("setting initial state data home card",currentCard);
+
+        let cardStack = state.cardStack;
+        cardStack.push(currentCard);
+        setState((prevState) => ({
+            ...prevState,
+            currentCard: currentCard,
+            cardStack: cardStack,
+            renderCounter:prevState.renderCounter+1
+        }));
+        setLoading(false);
+
         try {
-            console.log("generating initial card");
             const searchRef = queryString.parse(location.search).LineRef as string;
+            if(!searchRef){return}
+            console.log("generating card based on starting query");
             if(searchRef===allRoutesSearchTerm){
                 await allRoutesSearch()
                 return
             }
             let currentCard = await getData(new Card(searchRef),stops,routes,getSearchAddress(searchRef));
             // let currentCard = new Card(searchRef);
-            console.log("setting initial state data with base card",currentCard);
+            console.log("setting card based on starting query",currentCard);
 
             let cardStack = state.cardStack;
             cardStack.push(currentCard);
@@ -226,8 +240,6 @@ export const useSearch = () =>{
             }));
         } catch (error) {
             console.error('There was a problem with the fetch operation:', error);
-        } finally {
-            setLoading(false);
         }
     }
 

@@ -65,7 +65,7 @@ function App  () {
 
     return (
         <ErrorBoundary>
-            <VehicleLoading/>
+
             <InitialCardGeneration setLoading={setLoading}/>
             {loading
                 ?
@@ -76,6 +76,7 @@ function App  () {
                 </div>
                 <MapWrapper/>
             </React.Fragment>)}
+            <VehicleLoading/>
         </ErrorBoundary>
     )
 }
