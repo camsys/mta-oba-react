@@ -7,7 +7,7 @@ export const GoogleTranslateButton = () => {
                 pageLanguage: "en",
                 autoDisplay: false
             },
-            "translate-menu-trigger"
+            "google-translate-button"
         );
     };
     useEffect(() => {
@@ -29,8 +29,8 @@ export const GoogleTranslateButton = () => {
                     </span>
                 <span className="label">Google Translate</span>
             </button>
-            <div className="sub-menu" id="google-translate-menu" style={{ maxHeight: '0px' }} role="menu">
-                <p>google translate stuff</p>
+            <div className="sub-menu collapse-content" id="google-translate-menu" style={{ maxHeight: '0px' }} role="menu">
+                <button id="google-translate-button"></button>
             </div>
         </React.Fragment>
     );
