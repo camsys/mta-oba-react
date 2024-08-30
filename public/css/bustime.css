@@ -494,6 +494,12 @@ button:hover, .button:hover {
 .svg-icon-wrap svg .white {
   fill: #fff;
 }
+.svg-icon-wrap svg .black {
+  fill: #000;
+}
+.svg-icon-wrap svg .black.always-black {
+  fill: #000 !important;
+}
 
 .visually-hidden {
   position: absolute;
