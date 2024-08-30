@@ -132,7 +132,7 @@ export function createVehicleRtInterface(mvj: any,updateTime:Date): VehicleRtInt
         longLat: [mvj.VehicleLocation.Latitude, mvj.VehicleLocation.Longitude],
         latLngLiteral: {lat:mvj.VehicleLocation.Latitude, lng:mvj.VehicleLocation.Longitude},
         destination: mvj.DestinationName,
-        hasRealtime: mvj.Monitored,
+        hasRealtime: mvj.Monitored && mvj.ProgressStatus!=="spooking",
         nextStop: mvj.MonitoredCall?.StopPointRef || null,
         vehicleArrivalData,
         strollerVehicle: mvj.MonitoredCall?.Extensions?.VehicleFeatures?.StrollerVehicle,
