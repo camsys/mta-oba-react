@@ -798,10 +798,8 @@ button, .button
 .refresh-button
   overflow: hidden
   text-overflow: ellipsis
-  display: none
+  display: flex
   font-weight: bold
-  &.show
-    display: flex
   .updated-at
     font-weight: normal
   .updated
@@ -810,11 +808,10 @@ button, .button
       border-color: inherit
       outline: $medium-border solid $mta-yellow
   .bottom-buttons &
-    &.show
-      display: block
-  +mq($four)
-    .updated
-      display: inline
+    display: block
+    +mq($four)
+      .updated
+        display: inline
 
 .cards
   padding-bottom: $content-padding

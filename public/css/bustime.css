@@ -1495,13 +1495,10 @@ button:hover, .button:hover {
 .refresh-button {
   overflow: hidden;
   text-overflow: ellipsis;
-  display: none;
-  font-weight: bold;
-}
-.refresh-button.show {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
+  font-weight: bold;
 }
 .refresh-button .updated-at {
   font-weight: normal;
@@ -1513,11 +1510,11 @@ button:hover, .button:hover {
   border-color: inherit;
   outline: 2px solid #f2a900;
 }
-.bottom-buttons .refresh-button.show {
+.bottom-buttons .refresh-button {
   display: block;
 }
 @media screen and (min-width: 400px) {
-  .refresh-button .updated {
+  .bottom-buttons .refresh-button .updated {
     display: inline;
   }
 }
