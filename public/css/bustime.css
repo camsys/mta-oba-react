@@ -1033,37 +1033,39 @@ button:hover, .button:hover {
   color: #fff;
   text-decoration: underline;
 }
-.no-map .header {
-  padding: 0;
-}
-.no-map .header .header-inner {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -ms-flex-wrap: nowrap;
-      flex-wrap: nowrap;
-  -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
-          justify-content: space-between;
-  -webkit-box-align: baseline;
-      -ms-flex-align: baseline;
-          align-items: baseline;
-  width: 100%;
-  max-width: 60em;
-  padding: 0.5em 1rem 1rem 1rem;
-  gap: 1rem;
-}
-.no-map .header #logo-link {
-  width: 100%;
-  max-width: calc(26em - 2rem);
-  margin: 0;
-}
-.no-map .header .menu {
-  gap: 1rem;
-  font-size: 1em;
-}
-.no-map .header .menu a.active {
-  font-weight: bold;
+@media screen and (min-width: 600px) {
+  .no-map .header {
+    padding: 0;
+  }
+  .no-map .header .header-inner {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: nowrap;
+        flex-wrap: nowrap;
+    -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+            justify-content: space-between;
+    -webkit-box-align: baseline;
+        -ms-flex-align: baseline;
+            align-items: baseline;
+    width: 100%;
+    max-width: 60em;
+    padding: 0.5em 1rem 1rem 1rem;
+    gap: 1rem;
+  }
+  .no-map .header #logo-link {
+    width: 100%;
+    max-width: calc(26em - 2rem);
+    margin: 0;
+  }
+  .no-map .header .menu {
+    gap: 1rem;
+    font-size: 1em;
+  }
+  .no-map .header .menu a.active {
+    font-weight: bold;
+  }
 }
 
 #sidebar {

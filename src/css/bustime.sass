@@ -520,25 +520,26 @@ button, .button
         color: $white
         text-decoration: underline
   .no-map &
-    padding: 0
-    .header-inner
-      display: flex
-      flex-wrap: nowrap
-      justify-content: space-between
-      align-items: baseline
-      width: 100%
-      max-width: $content-max-width
-      padding: $header-padding
-      gap: $content-padding
-    #logo-link
-      width: 100%
-      max-width: calc($sidebar-width - $content-padding*2)
-      margin: 0
-    .menu
-      gap: $content-padding
-      font-size: 1em
-      a.active
-        font-weight: bold
+    +mq($sidebar-switch)
+      padding: 0
+      .header-inner
+        display: flex
+        flex-wrap: nowrap
+        justify-content: space-between
+        align-items: baseline
+        width: 100%
+        max-width: $content-max-width
+        padding: $header-padding
+        gap: $content-padding
+      #logo-link
+        width: 100%
+        max-width: calc($sidebar-width - $content-padding*2)
+        margin: 0
+      .menu
+        gap: $content-padding
+        font-size: 1em
+        a.active
+          font-weight: bold
 
 #sidebar
   width: 100%
