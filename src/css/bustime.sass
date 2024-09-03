@@ -416,10 +416,12 @@ button, .button
         padding: .125em .5em
         border: 1px solid $white
       pre
-        white-space: pre-wrap
+        white-space: normal
         background-color: $ui-gray
         padding: .5em
+        overflow-x: scroll 
         code
+          white-space: pre
           padding: 0
           background: transparent
           border: none
@@ -470,6 +472,7 @@ button, .button
         flex-wrap: nowrap
         flex-direction: column
         gap: $content-padding
+        overflow: hidden
         .page-content
           flex-grow: 1
       #toc-toggle

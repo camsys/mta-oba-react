@@ -860,11 +860,13 @@ button:hover, .button:hover {
   border: 1px solid #fff;
 }
 .main-body.no-map .page-content pre {
-  white-space: pre-wrap;
+  white-space: normal;
   background-color: #f3f3f3;
   padding: 0.5em;
+  overflow-x: scroll;
 }
 .main-body.no-map .page-content pre code {
+  white-space: pre;
   padding: 0;
   background: transparent;
   border: none;
@@ -946,6 +948,7 @@ button:hover, .button:hover {
       -ms-flex-direction: column;
           flex-direction: column;
   gap: 1rem;
+  overflow: hidden;
 }
 .main-body.no-map .content-and-toc .content .page-content {
   -webkit-box-flex: 1;
