@@ -1,7 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
 
   // have to do clicks this way so they work on objects added after the page loads
-
   // collapse trigger buttons open and close (for icon rotation) and content reveal/toggle
   document.addEventListener('click', function(event) {
     // Check if the clicked element or any of its ancestors have the class 'collapse-trigger'
@@ -120,23 +119,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
   });
 
-
-
-
-
-  // all .close-popup-button buttons close their parent popup
-  // var popupCloseButtons = document.querySelectorAll('.close-popup-button');
-
-  // popupCloseButtons.forEach(function(button) {
-  //   button.addEventListener('click', function() {
-  //     var parent = this.closest('.map-popup');
-  //     if (parent) {
-  //       // add class to hide the popup
-  //       parent.classList.add('hidden');
-  //     }
-  //   });
-  // });
-
  // its possible that its better to build this into react so i dont have to go so roundabout to get there?
   const observer = new MutationObserver((mutationsList) => {
     for (const mutation of mutationsList) {
@@ -182,5 +164,60 @@ document.addEventListener('DOMContentLoaded', function() {
   // Start observing the document body for childList changes
   observer.observe(document.body, { childList: true, subtree: true });
 
+
+  var tocToggle = document.getElementById('toc-toggle');
+
+  // function to toggle tabbable elements in toc specifically
+  function toggleToc(toc, open) {
+    // adjust tabindex of all tabbable elements in toc
+    var tabbableElements = toc.querySelectorAll('a[tabindex], button[tabindex]');
+    tabbableElements.forEach(function(element) {
+      element.setAttribute('tabindex', open ? '0' : '-1');
+    });
+    // adjust aria attributes of toc-toggle and toc
+    tocToggle.setAttribute('aria-expanded', open);
+    tocToggle.setAttribute('aria-label', open ? 'Toggle Table of Contents (currently visible)' : 'Toggle Table of Contents (currently hidden)');
+    tocToggle.setAttribute('aria-pressed', open);
+    toc.setAttribute('aria-hidden', !open);
+  }
+
+  // toc-toggle open and close
+  
+  if (tocToggle) {
+
+    // click toggle button to open and close the table of contents
+    tocToggle.addEventListener('click', function() {
+      var toc = document.getElementById('toc');
+      if (toc) {
+        toc.classList.toggle('open');
+        toggleToc(toc, toc.classList.contains('open'));
+      }
+    });
+
+    // if screen is less than 600px
+    if (window.matchMedia('(max-width: 600px)').matches) {
+      toggleToc(toc, false);
+      tocToggle.setAttribute('aria-hidden', 'false');
+    }
+
+    // if screen is resized to less than 600px
+    window.addEventListener('resize', function() {
+      if (window.matchMedia('(max-width: 600px)').matches) {
+        // mobile toc
+        toggleToc(toc, false);
+        tocToggle.setAttribute('aria-hidden', 'false');
+      } else {
+        // desktop toc
+        toggleToc(toc, true);
+        tocToggle.setAttribute('aria-hidden', 'true');
+      }
+    });
+
+
+
+  }
+
+  
+  
 
 });

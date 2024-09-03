@@ -443,6 +443,13 @@ button:hover, .button:hover {
 .button.icon-button-left .icon {
   margin-right: 0.5em;
 }
+.button.icon-only {
+  padding: calc(1rem - 0.25em);
+}
+.button.icon-only .svg-icon-wrap {
+  width: 1.25em;
+  height: 1.25em;
+}
 
 .clear-button {
   border: none;
@@ -875,9 +882,12 @@ button:hover, .button:hover {
   -webkit-box-direction: reverse;
       -ms-flex-direction: row-reverse;
           flex-direction: row-reverse;
+  position: relative;
   gap: 1rem;
+  margin-right: 0;
 }
-.main-body.no-map .content-and-toc .toc {
+.main-body.no-map .content-and-toc #toc {
+  position: static;
   -ms-flex-preferred-size: 12em;
       flex-basis: 12em;
   -webkit-box-flex: 0;
@@ -885,39 +895,41 @@ button:hover, .button:hover {
           flex-grow: 0;
   -ms-flex-negative: 0;
       flex-shrink: 0;
+  opacity: 1;
+  z-index: 1;
 }
-.main-body.no-map .content-and-toc .toc .toc-header {
+.main-body.no-map .content-and-toc #toc .toc-header {
   font-size: 1em;
 }
-.main-body.no-map .content-and-toc .toc .toc-menu {
+.main-body.no-map .content-and-toc #toc .toc-menu {
   font-size: 0.875em;
 }
-.main-body.no-map .content-and-toc .toc a {
+.main-body.no-map .content-and-toc #toc a {
   text-decoration: none;
   color: #666;
   display: block;
   padding: 0.3125em 0;
 }
-.main-body.no-map .content-and-toc .toc a:hover {
+.main-body.no-map .content-and-toc #toc a:hover {
   text-decoration: underline;
   color: #000;
 }
-.main-body.no-map .content-and-toc .toc a.active {
+.main-body.no-map .content-and-toc #toc a.active {
   font-weight: bold;
 }
-.main-body.no-map .content-and-toc .toc ul {
+.main-body.no-map .content-and-toc #toc ul {
   list-style: none;
   margin: 0;
   padding: 0;
 }
-.main-body.no-map .content-and-toc .toc ul li {
+.main-body.no-map .content-and-toc #toc ul li {
   margin: 0;
   padding: 0;
 }
-.main-body.no-map .content-and-toc .toc ul ul {
+.main-body.no-map .content-and-toc #toc ul ul {
   margin: 0 0 0.0625em 0.5em;
 }
-.main-body.no-map .content-and-toc .toc ul ul a {
+.main-body.no-map .content-and-toc #toc ul ul a {
   padding: 0.25em 0;
 }
 .main-body.no-map .content-and-toc .content {
@@ -939,6 +951,83 @@ button:hover, .button:hover {
   -webkit-box-flex: 1;
       -ms-flex-positive: 1;
           flex-grow: 1;
+}
+.main-body.no-map .content-and-toc #toc-toggle {
+  display: none;
+  position: absolute;
+  top: 0;
+  right: -3.5em;
+  border-radius: 0;
+  border: none;
+  background: transparent;
+  color: #000;
+  width: 3.5em;
+  height: 3.5em;
+}
+.main-body.no-map .content-and-toc #toc-toggle img {
+  width: 1.5em;
+  height: 1.5em;
+  display: block;
+  margin: 0;
+  padding: 0;
+}
+.main-body.no-map .content-and-toc #toc-toggle:hover {
+  color: #0E61A9;
+  background-color: #fff;
+}
+.main-body.no-map .content-and-toc #toc-toggle:focus {
+  outline: none;
+  border: none;
+  border-radius: 0;
+  background-color: #000;
+  color: #fff;
+}
+@media screen and (max-width: 599px) {
+  .main-body.no-map .content-and-toc {
+    gap: 0;
+    margin-right: 3.5em;
+  }
+  .main-body.no-map .content-and-toc #toc-toggle {
+    display: block;
+  }
+  .main-body.no-map .content-and-toc #toc {
+    position: absolute;
+    right: 0;
+    top: 0;
+    opacity: 0;
+    max-width: 0;
+    overflow: hidden;
+    -webkit-transition: max-width 0.25s ease-in-out, padding 0.25s ease-in-out, border 0.25s ease-in-out, opacity 0.25s ease-in-out 0.25s, -webkit-box-shadow 0.25s ease-in-out;
+    transition: max-width 0.25s ease-in-out, padding 0.25s ease-in-out, border 0.25s ease-in-out, opacity 0.25s ease-in-out 0.25s, -webkit-box-shadow 0.25s ease-in-out;
+    transition: max-width 0.25s ease-in-out, padding 0.25s ease-in-out, border 0.25s ease-in-out, box-shadow 0.25s ease-in-out, opacity 0.25s ease-in-out 0.25s;
+    transition: max-width 0.25s ease-in-out, padding 0.25s ease-in-out, border 0.25s ease-in-out, box-shadow 0.25s ease-in-out, opacity 0.25s ease-in-out 0.25s, -webkit-box-shadow 0.25s ease-in-out;
+    background: #f3f3f3;
+    border: 1px solid #ddd;
+    border-right-width: 0;
+    border-left-width: 0;
+    padding: 1rem 0;
+    -webkit-box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 0);
+            box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 0);
+  }
+  .main-body.no-map .content-and-toc #toc .toc-header, .main-body.no-map .content-and-toc #toc .toc-menu {
+    width: 12em;
+  }
+  .main-body.no-map .content-and-toc #toc a {
+    color: #202025;
+  }
+  .main-body.no-map .content-and-toc #toc.open {
+    opacity: 1;
+    max-width: 100%;
+    -webkit-transition: max-width 0.25s ease-in-out, padding 0.25s ease-in-out, border 0.25s ease-in-out, opacity 0.25s ease-in-out, -webkit-box-shadow 0.25s ease-in-out;
+    transition: max-width 0.25s ease-in-out, padding 0.25s ease-in-out, border 0.25s ease-in-out, opacity 0.25s ease-in-out, -webkit-box-shadow 0.25s ease-in-out;
+    transition: max-width 0.25s ease-in-out, padding 0.25s ease-in-out, border 0.25s ease-in-out, box-shadow 0.25s ease-in-out, opacity 0.25s ease-in-out;
+    transition: max-width 0.25s ease-in-out, padding 0.25s ease-in-out, border 0.25s ease-in-out, box-shadow 0.25s ease-in-out, opacity 0.25s ease-in-out, -webkit-box-shadow 0.25s ease-in-out;
+    padding: 1rem;
+    border-right-width: 1px;
+    border-left-width: 1px;
+    -webkit-box-shadow: 0px 0px 12px 0px rgba(0, 0, 0, 0.1);
+            box-shadow: 0px 0px 12px 0px rgba(0, 0, 0, 0.1);
+  }
 }
 
 .header {

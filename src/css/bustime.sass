@@ -96,6 +96,11 @@ button, .button
     padding-left: #{$content-padding*.625}
     .icon
       margin-right: .5em
+  &.icon-only
+    padding: calc($content-padding - .25em)
+    .svg-icon-wrap
+      width: 1.25em
+      height: 1.25em
 
 .clear-button
   border: none
@@ -424,11 +429,16 @@ button, .button
       display: flex
       flex-wrap: nowrap
       flex-direction: row-reverse
+      position: relative
       gap: $content-padding
-      .toc
+      margin-right: 0
+      #toc
+        position: static
         flex-basis: 12em
         flex-grow: 0
         flex-shrink: 0
+        opacity: 1
+        z-index: 1
         .toc-header
           font-size: 1em
         .toc-menu
@@ -462,6 +472,64 @@ button, .button
         gap: $content-padding
         .page-content
           flex-grow: 1
+      #toc-toggle
+        display: none
+        position: absolute
+        top: 0
+        right: -#{$toc-toggle-size}
+        border-radius: 0
+        border: none
+        background: transparent
+        color: $black
+        width: $toc-toggle-size
+        height: $toc-toggle-size
+        img
+          width: 1.5em
+          height: 1.5em
+          display: block
+          margin: 0
+          padding: 0
+        &:hover
+          color: $mta-blue
+          background-color: $white
+        &:focus
+          outline: none
+          border: none
+          border-radius: 0
+          background-color: $black
+          color: $white
+      +mq-reverse($sidebar-switch)
+        gap: 0
+        margin-right: $toc-toggle-size
+        #toc-toggle
+          display: block
+        #toc
+          position: absolute
+          right: 0
+          top: 0
+          opacity: 0
+          max-width: 0
+          overflow: hidden
+          transition: max-width .25s ease-in-out, padding .25s ease-in-out, border .25s ease-in-out, box-shadow .25s ease-in-out, opacity .25s ease-in-out .25s
+          background: $ui-gray
+          border: 1px solid $border-gray
+          border-right-width: 0
+          border-left-width: 0
+          padding: $content-padding 0
+          box-shadow: 0px 0px 0px 0px rgba($black, 0)
+          .toc-header, .toc-menu
+            width: 12em
+          a
+            color: $black2
+          &.open
+            opacity: 1
+            max-width: 100%
+            transition: max-width .25s ease-in-out, padding .25s ease-in-out, border .25s ease-in-out, box-shadow .25s ease-in-out, opacity .25s ease-in-out
+            padding: $content-padding
+            border-right-width: 1px
+            border-left-width: 1px
+            +card-shadow
+
 .header
   background-color: $black2
   color: $white

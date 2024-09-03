@@ -33,27 +33,30 @@
     <div class="main-content">
       <h1 class="page-title">Developers</h1>
       <div class="content-and-toc">
-        <nav class="toc">
+        <button id="toc-toggle" class="button icon-only" aria-hidden="true" aria-expanded="true" aria-label="Toggle Table of Contents (currently visible)" aria-pressed="true">
+          <span class="svg-icon-wrap">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20"><path d="M19.056 19.252C18.554 19.711 17.913 19.94 17.131 19.94 16.164 19.94 15.404 19.63 14.85 19.01 14.297 18.387 14.02 17.532 14.02 16.447 14.02 15.273 14.335 14.368 14.964 13.733 15.512 13.179 16.208 12.902 17.054 12.902 18.185 12.902 19.012 13.273 19.535 14.015 19.824 14.432 19.979 14.85 20 15.27H18.595C18.504 14.947 18.387 14.704 18.244 14.54 17.989 14.248 17.61 14.102 17.108 14.102 16.597 14.102 16.194 14.309 15.9 14.722 15.605 15.133 15.457 15.715 15.457 16.469 15.457 17.223 15.612 17.789 15.922 18.166 16.235 18.54 16.632 18.727 17.113 18.727 17.605 18.727 17.981 18.566 18.239 18.244 18.382 18.07 18.501 17.81 18.595 17.464H19.986C19.865 18.197 19.555 18.792 19.056 19.252ZM9.548 19.94C8.588 19.94 7.853 19.679 7.345 19.156 6.664 18.514 6.324 17.59 6.324 16.383 6.324 15.151 6.664 14.227 7.345 13.609 7.853 13.086 8.588 12.825 9.548 12.825 10.509 12.825 11.244 13.086 11.752 13.609 12.43 14.227 12.769 15.151 12.769 16.383 12.769 17.59 12.43 18.514 11.752 19.156 11.244 19.679 10.509 19.94 9.548 19.94ZM10.876 18.134C11.201 17.724 11.364 17.14 11.364 16.383 11.364 15.629 11.2 15.046 10.871 14.636 10.546 14.222 10.105 14.015 9.548 14.015 8.992 14.015 8.548 14.221 8.217 14.631 7.885 15.042 7.719 15.626 7.719 16.383 7.719 17.14 7.885 17.724 8.217 18.134 8.548 18.545 8.992 18.75 9.548 18.75 10.105 18.75 10.547 18.545 10.876 18.134ZM5.446 13.03V14.221H3.435V19.753H2.021V14.221H0V13.03H5.446Z"/><rect width="20" height="2" rx="1"/><rect width="20" height="2" y="4" rx="1"/><rect width="20" height="2" y="8" rx="1"/></svg>
+          </span>
+        </button>
+        <nav id="toc" role="menu">
           <h2 class="toc-header">Table of Contents</h2>
           <ul class="menu toc-menu">
+            <li><a href="/developers/" tabindex="0" class="active">MTA Bus Time Developer&nbsp;Access</a></span></li>
+            <li><a href="/developers/gtfs-realtime" tabindex="0">GTFS-Realtime</a></li>
             <li>
-              <a href="/developers/" class="active">MTA Bus Time Developer&nbsp;Access</a></span>
-            </li>
-            <li><a href="/developers/gtfs-realtime">GTFS-Realtime</a></li>
-            <li>
-              <a href="/developers/siri/">The SIRI API</a>
+              <a href="/developers/siri/" tabindex="0">The SIRI API</a>
               <ul class="menu toc-sub-menu">
-                <li><a href="/developers/siri/change-log/">Change Log</a></li>
-                <li><a href="/developers/siri/vehicle-monitoring">Vehicle Monitoring</a></li>
-                <li><a href="/developers/siri/stop-monitoring">Stop Monitoring</a></li>
-                <li><a href="/developers/siri/monitored-vehicle-journey">Monitored Vehicle Journey</a></li>
-                <li><a href="/developers/siri/situation-exchange-delivery">Situation Exchange Delivery</a></li>
+                <li><a href="/developers/siri/change-log/" tabindex="0">Change Log</a></li>
+                <li><a href="/developers/siri/vehicle-monitoring" tabindex="0">Vehicle Monitoring</a></li>
+                <li><a href="/developers/siri/stop-monitoring" tabindex="0">Stop Monitoring</a></li>
+                <li><a href="/developers/siri/monitored-vehicle-journey" tabindex="0">Monitored Vehicle Journey</a></li>
+                <li><a href="/developers/siri/situation-exchange-delivery" tabindex="0">Situation Exchange Delivery</a></li>
               </ul>
             </li>
-           <li><a href="/developers/restful-api">OneBusAway "Discovery"&nbsp;API</a></li>
-           <li><a href="/developers/cancelled-trip-api-features">Cancelled Trip API&nbsp;Features</a></li>
-           <li><a href="/developers/archive-data">Archived Bus Time&nbsp;Data</a></li>
-           <li><a href="/developers/open-source">Improving the MTA Bus Time&nbsp;System</a>
+            <li><a href="/developers/restful-api" tabindex="0">OneBusAway "Discovery"&nbsp;API</a></li>
+            <li><a href="/developers/cancelled-trip-api-features" tabindex="0">Cancelled Trip API&nbsp;Features</a></li>
+            <li><a href="/developers/archive-data" tabindex="0">Archived Bus Time&nbsp;Data</a></li>
+            <li><a href="/developers/open-source" tabindex="0">Improving the MTA Bus Time&nbsp;System</a>
           </ul>
         </nav>
         <div class="content">
