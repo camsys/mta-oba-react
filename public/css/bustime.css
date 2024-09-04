@@ -340,10 +340,16 @@ a {
   color: #000;
   text-decoration: underline;
   display: inline-block;
+  word-break: break-all;
 }
 a:hover {
   color: #0E61A9;
   text-decoration: none;
+}
+
+strong, bold, b {
+  word-break: break-all;
+  font-weight: bold;
 }
 
 h1, h2, h3, h4, h5, h6 {
