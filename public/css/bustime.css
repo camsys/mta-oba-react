@@ -340,7 +340,6 @@ a {
   color: #000;
   text-decoration: underline;
   display: inline-block;
-  word-break: break-all;
 }
 a:hover {
   color: #0E61A9;
@@ -348,7 +347,6 @@ a:hover {
 }
 
 strong, bold, b {
-  word-break: break-all;
   font-weight: bold;
 }
 
@@ -879,6 +877,11 @@ button:hover, .button:hover {
 }
 .main-body.no-map .page-content:first-child {
   margin-top: 0;
+}
+@media screen and (max-width: 599px) {
+  .main-body.no-map .page-content a, .main-body.no-map .page-content strong, .main-body.no-map .page-content bold, .main-body.no-map .page-content b, .main-body.no-map .page-content span, .main-body.no-map .page-content code {
+    word-break: break-all;
+  }
 }
 .main-body.no-map .content-and-toc {
   display: -webkit-box;
