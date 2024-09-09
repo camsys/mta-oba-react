@@ -82,7 +82,9 @@ export const FavoritesMenu = () => {
             <span className="label">Favorites</span>
         </button>
         <ul className="sub-menu menu collapse-content" id="favorites-menu" style={{ maxHeight: '0px' }} role="menu">
-            {favoritesState.favorites.map((datum,index)=>{return <FavoriteItem datum={datum} key = {index}/>})}
+            {favoritesState.favorites.length == 0
+                ?<p>no favorites found</p>
+                :favoritesState.favorites.map((datum,index)=>{return <FavoriteItem datum={datum} key = {index}/>})}
         </ul>
     </li>)
 }
