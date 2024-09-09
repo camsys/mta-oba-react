@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import { OBA } from "../../js/oba";
 import { CardStateContext } from "../util/CardStateComponent";
-import ServiceAlertContainerComponent from "./ServiceAlertContainerComponent";
+import ServiceAlertContainerComponent, {ServiceAlertSvg, useServiceAlert} from "./ServiceAlertContainerComponent";
 import { useHighlight } from "../util/MapHighlightingStateComponent";
 import {
     RouteDirectionInterface,
@@ -155,10 +155,13 @@ export function CollapsableRouteCard({ routeMatch, oneOfMany}: {routeMatch:Route
 
     let routeId = routeMatch.routeId.split("_")[1];
     let serviceAlertIdentifier = routeMatch.routeId;
-
+    let {getServiceAlert} = useServiceAlert();
+    let hasServiceAlert = getServiceAlert(routeId,serviceAlertIdentifier)!==null;
     return (
         <React.Fragment>
-            <div className={`card route-card ${oneOfMany?"collapsible open":""} ${isFavorite(routeMatch)?"favorite":""}`}>
+            <div className={`card route-card
+             ${oneOfMany?"collapsible open":""}
+             ${isFavorite(routeMatch)?"favorite":""}`}>
                 <button
                     className="card-header collapse-trigger open"
                     style={{ borderColor: "#" + routeMatch.color }}
@@ -168,6 +171,7 @@ export function CollapsableRouteCard({ routeMatch, oneOfMany}: {routeMatch:Route
                     aria-label={`Toggle ${routeMatch.routeId.split("_")[1]} ${routeMatch.description} open/close`}
                 >
                     <span className="card-title label">{OBA.Config.noWidows(routeMatch.routeTitle)}</span>
+                    {hasServiceAlert?<ServiceAlertSvg/>:null}
                 </button>
                 <div className="card-content collapse-content">
                     <RouteCardContent routeMatch={routeMatch}/>

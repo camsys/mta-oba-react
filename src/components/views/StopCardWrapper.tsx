@@ -7,7 +7,7 @@ import {
     VehiclesApproachingStopsContext,
     VehicleStateContext
 } from "../util/VehicleStateComponent";
-import ServiceAlertContainerComponent from "./ServiceAlertContainerComponent";
+import ServiceAlertContainerComponent, {ServiceAlertSvg, useServiceAlert} from "./ServiceAlertContainerComponent";
 import VehicleComponent from "./VehicleComponent.tsx";
 import {OBA} from "../../js/oba";
 import {useHighlight} from "../util/MapHighlightingStateComponent.tsx";
@@ -40,11 +40,13 @@ const RouteDirection = (routeDirectionDatum:RouteMatchDirectionInterface,stopId:
     let lastUpdateTime = stopCardVehicleData!==null
         ? OBA.Util.ISO8601StringToDate(vehiclesApproachingStopsState[routeAndDir+updatedTimeIdentifier]).getTime()
         : null
+    let {getServiceAlert} = useServiceAlert();
+    let hasServiceAlert = getServiceAlert(routeId,serviceAlertIdentifier)!==null;
     console.log("StopCard RouteDirection stopCardVehicleData",stopCardVehicleData,lastUpdateTime)
     return (stopCardVehicleData === null? null :
         <div className="inner-card route-direction en-route collapsible open">
             <button
-                className="card-header collapse-trigger open"
+                className={`card-header collapse-trigger open`}
                 aria-haspopup="true"
                 aria-expanded="true"
                 aria-label={`Toggle ${routeDirectionDatum.routeId.split("_")[1]} to ${routeDirectionDatum.destination}`}
@@ -55,6 +57,7 @@ const RouteDirection = (routeDirectionDatum:RouteMatchDirectionInterface,stopId:
               <span className="label" style={{ borderColor: '#'+routeDirectionDatum.color}}>
                 <strong>{routeDirectionDatum.routeId.split("_")[1]}</strong> {routeDirectionDatum.destination}
               </span>
+                {hasServiceAlert?<ServiceAlertSvg/>:null}
             </button>
             <div className="card-content collapse-content">
                 <ul className="approaching-buses">
