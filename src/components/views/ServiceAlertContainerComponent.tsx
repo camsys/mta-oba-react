@@ -1,8 +1,15 @@
 import React, {useContext, useEffect, useState} from "react";
-import ServiceAlertComponent from "./ServiceAlertComponent"
-import {CardStateContext} from "../util/CardStateComponent";
-import queryString from "query-string";
 import {serviceAlertDataIdentifier, vehicleDataIdentifier, VehicleStateContext} from "../util/VehicleStateComponent";
+import {ServiceAlertInterface} from "../../js/updateState/DataModels";
+
+
+function ServiceAlertComponent  ({serviceAlertDatum}:ServiceAlertInterface) : JSX.Element {
+    console.log("service alert component contents generating ",serviceAlertDatum)
+    return(
+        <div className="card-content collapse-content">
+            {serviceAlertDatum[0].descriptionParts.map((part,itt)=> {return(<p key = {itt}>{part}</p>)})}
+        </div>)
+}
 
 function ServiceAlertContainerComponent  ({ routeId,serviceAlertIdentifier}:{ routeId : string ,serviceAlertIdentifier : string}) : JSX.Element {
     console.log("generating service alert component")
