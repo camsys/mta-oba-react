@@ -2,8 +2,7 @@ import React, {useContext, useEffect, useState} from "react";
 import {VehicleStateContext} from "Components/util/VehicleStateComponent";
 
 
-export default function getRefreshComponent(){
-
+export default function getRefreshComponent({extraClasses}){
     var time = new Date();
     time = time.toLocaleString('en-US', { hour: 'numeric',  minute: 'numeric', hour12: true , second:'numeric'});
     const {vehicleState}=useContext(VehicleStateContext)
@@ -15,7 +14,7 @@ export default function getRefreshComponent(){
         time = time.toLocaleString('en-US', { hour: 'numeric',  minute: 'numeric', hour12: true , second:'numeric'});
     },[vehicleState])
 
-    return(<button className="refresh-button" aria-label="Refresh the data" onClick={handleRefresh}>
+    return(<button className={`refresh-button ${extraClasses}`} aria-label="Refresh the data" onClick={handleRefresh}>
                 <span className="svg-icon-wrap" role="presentation" aria-hidden="true">
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none"
                        viewBox="0 0 20 20"><path className="blue"

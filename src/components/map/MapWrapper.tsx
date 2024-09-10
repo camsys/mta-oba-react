@@ -33,7 +33,7 @@ function getMapWrap  () : JSX.Element {
         <ErrorBoundary>
             <div id="map-wrap">
                 <div className="bottom-buttons" id="map-trigger-wrao">
-                    {state.currentCard.type === CardType.HomeCard ? null : <RefreshComponent/>}
+                    {state.currentCard.type === CardType.HomeCard ? null : <RefreshComponent extraClasses={" button"}/>}
                     <button id="map-toggle" className="button" aria-controls="map" aria-expanded={mapVisible} aria-pressed={mapVisible}
                             aria-label={ariaLabel} onClick={mapToggle}><span className="label"><span className="hide-label">Hide </span>Map</span>
                     </button>
