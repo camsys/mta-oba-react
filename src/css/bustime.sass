@@ -905,19 +905,19 @@ button, .button
   overflow: hidden
   text-overflow: ellipsis
   display: flex
+  gap: .5em
   font-weight: bold
   .updated-at
     font-weight: normal
   .updated
-    display: none
     &:focus
       border-color: inherit
       outline: $medium-border solid $mta-yellow
   .bottom-buttons &
-    display: block
-    +mq($four)
+    display: inline-flex
+    +mq-reverse($four)
       .updated
-        display: inline
+        display: none
 
 .cards
   padding-bottom: $content-padding

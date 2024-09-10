@@ -1644,24 +1644,24 @@ button:hover, .button:hover {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
+  gap: 0.5em;
   font-weight: bold;
 }
 .refresh-button .updated-at {
   font-weight: normal;
-}
-.refresh-button .updated {
-  display: none;
 }
 .refresh-button .updated:focus {
   border-color: inherit;
   outline: 2px solid #f2a900;
 }
 .bottom-buttons .refresh-button {
-  display: block;
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
 }
-@media screen and (min-width: 400px) {
+@media screen and (max-width: 399px) {
   .bottom-buttons .refresh-button .updated {
-    display: inline;
+    display: none;
   }
 }
 
