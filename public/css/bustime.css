@@ -690,6 +690,10 @@ button:hover, .button:hover {
   height: 1.3em;
   background-image: url(/img/icon/bus-stop.svg);
 }
+.icon-menu > li .sub-menu#favorites-menu .no-favorites {
+  padding: 1rem 0;
+  line-height: 1.4;
+}
 .icon-menu > li.open {
   background-color: #0E61A9;
 }
@@ -801,6 +805,11 @@ button:hover, .button:hover {
   font-size: 2em;
   margin: 0 0 0.5em 0;
 }
+@media screen and (max-width: 599px) {
+  .main-body.no-map h1 {
+    font-size: 1.5em;
+  }
+}
 .main-body.no-map h2 {
   font-size: 1.5em;
   margin: 0 0 0.5em 0;
@@ -811,12 +820,22 @@ button:hover, .button:hover {
 #app .main-body.no-map h2 {
   font-size: 1em;
 }
+@media screen and (max-width: 599px) {
+  .main-body.no-map h2 {
+    font-size: 1.25em;
+  }
+}
 .main-body.no-map h3 {
   font-size: 1.25em;
   margin: 0 0 0.5em 0;
 }
 .main-body.no-map h3:not(first-child) {
   margin-top: 1em;
+}
+@media screen and (max-width: 599px) {
+  .main-body.no-map h3 {
+    font-size: 1.125em;
+  }
 }
 .main-body.no-map h4:not(first-child) {
   margin-top: 1em;
@@ -879,6 +898,9 @@ button:hover, .button:hover {
   margin-top: 0;
 }
 @media screen and (max-width: 599px) {
+  .main-body.no-map .page-content {
+    font-size: 0.875em;
+  }
   .main-body.no-map .page-content a, .main-body.no-map .page-content strong, .main-body.no-map .page-content bold, .main-body.no-map .page-content b, .main-body.no-map .page-content span, .main-body.no-map .page-content code {
     word-break: break-all;
   }

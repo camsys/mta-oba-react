@@ -283,6 +283,9 @@ button, .button
             width: 1.3em
             height: 1.3em
             background-image: url(/img/icon/bus-stop.svg)
+        .no-favorites
+          padding: $content-padding 0
+          line-height: 1.4
     &.open
       background-color: $mta-blue
       >a, >button
@@ -370,6 +373,8 @@ button, .button
     h1
       font-size: 2em
       margin: 0 0 .5em 0
+      +mq-reverse($sidebar-switch)
+        font-size: 1.5em
     h2
       font-size: 1.5em
       margin: 0 0 .5em 0
@@ -377,12 +382,16 @@ button, .button
         margin-top: 1em
       #app &
         font-size: 1em
+      +mq-reverse($sidebar-switch)
+        font-size: 1.25em
 
     h3
       font-size: 1.25em
       margin: 0 0 .5em 0
       &:not(first-child)
         margin-top: 1em
+      +mq-reverse($sidebar-switch)
+        font-size: 1.125em
       
     h4
       &:not(first-child)
@@ -431,6 +440,7 @@ button, .button
       &:first-child
         margin-top: 0
       +mq-reverse($sidebar-switch)
+        font-size: .875em
         a, strong, bold, b, span, code
           word-break: break-all
     .content-and-toc
