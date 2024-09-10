@@ -1619,8 +1619,23 @@ button:hover, .button:hover {
   transition: max-height 0.5s ease-in-out, margin 0.25s ease-in-out, padding 0.25s ease-in-out;
   max-height: 0;
 }
+.collapsible .card-header .svc-alert-icon {
+  position: relative;
+  left: 0;
+  opacity: 1;
+  width: 1.125em;
+  height: 1.125em;
+  -webkit-transition: left 0.25s ease-in-out, opacity 0.25s ease-in-out, width 0.25s ease-in-out, position 0.25s ease-in-out;
+  transition: left 0.25s ease-in-out, opacity 0.25s ease-in-out, width 0.25s ease-in-out, position 0.25s ease-in-out;
+}
 .collapsible.open > .collapse-content {
   max-height: none;
+}
+.collapsible.open > .card-header .svc-alert-icon {
+  opacity: 0;
+  position: absolute;
+  left: -6em;
+  width: 0px;
 }
 
 .refresh-button {
@@ -1700,7 +1715,7 @@ button:hover, .button:hover {
 }
 .card-title .icon {
   width: auto;
-  height: 1.25em;
+  height: 1.125em;
 }
 
 .card, .inner-card {
@@ -1716,6 +1731,8 @@ button:hover, .button:hover {
           justify-content: space-between;
   text-align: left;
   line-height: 1.25;
+  position: relative;
+  overflow: hidden;
 }
 .card > .card-header .label, .inner-card > .card-header .label {
   -webkit-box-flex: 1;
@@ -1901,6 +1918,8 @@ button:hover, .button:hover {
 }
 .inner-card.route-direction.en-route > .card-header .label {
   display: inline-block;
+}
+.inner-card.route-direction.en-route > .card-header .card-title {
   border-left: 4px solid #0E61A9;
   padding-left: 0.5rem;
 }

@@ -170,8 +170,8 @@ export function CollapsableRouteCard({ routeMatch, oneOfMany}: {routeMatch:Route
                     aria-haspopup="true" aria-expanded="true"
                     aria-label={`Toggle ${routeMatch.routeId.split("_")[1]} ${routeMatch.description} open/close`}
                 >
-                    <span className="card-title label">{OBA.Config.noWidows(routeMatch.routeTitle)}</span>
                     {hasServiceAlert?<ServiceAlertSvg/>:null}
+                    <span className="card-title label">{OBA.Config.noWidows(routeMatch.routeTitle)}</span>
                 </button>
                 <div className="card-content collapse-content">
                     <RouteCardContent routeMatch={routeMatch}/>

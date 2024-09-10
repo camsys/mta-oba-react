@@ -883,9 +883,23 @@ button, .button
     overflow: hidden
     transition: max-height .5s ease-in-out, margin .25s ease-in-out, padding .25s ease-in-out
     max-height: 0
+  .card-header
+    .svc-alert-icon
+      position: relative
+      left: 0
+      opacity: 1
+      width: 1.125em
+      height: 1.125em
+      transition: left .25s ease-in-out, opacity .25s ease-in-out, width .25s ease-in-out, position .25s ease-in-out
   &.open
     >.collapse-content
       max-height: none
+    >.card-header
+      .svc-alert-icon
+        opacity: 0
+        position: absolute
+        left: -6em
+        width: 0px
 
 .refresh-button
   overflow: hidden
@@ -940,7 +954,7 @@ button, .button
   flex-wrap: nowrap
   .icon
     width: auto
-    height: 1.25em
+    height: 1.125em
 
 .card, .inner-card
   width: 100%
@@ -950,6 +964,8 @@ button, .button
     justify-content: space-between
     text-align: left
     line-height: 1.25
+    position: relative
+    overflow: hidden
     .label
       flex-grow: 1
   .card-details
@@ -1092,6 +1108,7 @@ button, .button
       >.card-header
         .label
           display: inline-block
+        .card-title
           border-left: $thick-border solid $mta-blue
           padding-left: $content-padding/2
        

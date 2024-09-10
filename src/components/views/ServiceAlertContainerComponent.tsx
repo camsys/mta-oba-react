@@ -41,7 +41,7 @@ export function useServiceAlert(){
 }
 
 export function ServiceAlertSvg(){
-    return(<span className="svg-icon-wrap" role="presentation" aria-hidden="true">
+    return(<span className="svg-icon-wrap svc-alert-icon" role="presentation" aria-hidden="true">
                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
                      xmlns="http://www.w3.org/2000/svg">
                 <path className="yellow" fillRule="evenodd" clipRule="evenodd"

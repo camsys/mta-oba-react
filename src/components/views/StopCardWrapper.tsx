@@ -54,10 +54,12 @@ const RouteDirection = (routeDirectionDatum:RouteMatchDirectionInterface,stopId:
                 onMouseLeave={() => highlightId(null)}
                 tabIndex={0}
             >
-              <span className="label" style={{ borderColor: '#'+routeDirectionDatum.color}}>
-                <strong>{routeDirectionDatum.routeId.split("_")[1]}</strong> {routeDirectionDatum.destination}
-              </span>
-                {hasServiceAlert?<ServiceAlertSvg/>:null}
+                <span className="card-title" style={{ borderColor: '#'+routeDirectionDatum.color}}>
+                    {hasServiceAlert?<ServiceAlertSvg/>:null}
+                    <span className="label">
+                        <strong>{routeDirectionDatum.routeId.split("_")[1]}</strong> {routeDirectionDatum.destination}
+                    </span>
+                </span>
             </button>
             <div className="card-content collapse-content">
                 <ul className="approaching-buses">
