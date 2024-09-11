@@ -221,6 +221,10 @@ export const useSearch = () =>{
         try {
             const searchRef = queryString.parse(location.search).LineRef as string;
             if(!searchRef){return}
+            if(searchRef===allRoutesSearchTerm){
+                allRoutesSearch();
+                return;
+            }
             console.log("generating card based on starting query");
             if(searchRef===allRoutesSearchTerm){
                 await allRoutesSearch()
