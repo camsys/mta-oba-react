@@ -104,7 +104,7 @@ const VehicleCard = (routeMatch:RouteMatch,vehicleId:string) : JSX.Element=> {
     }, [loading]);
     if(loading) {
         console.log("waiting on generating VehicleCard")
-        return(<ErrorBoundary><div>Loading...</div></ErrorBoundary>)}
+        return(<ErrorBoundary><div>Unable to load vehicle. Repeating attempt.</div></ErrorBoundary>)}
 
 
     console.log("generating VehicleCard ",routeId,vehicleDatum,vehicleState[routeId+updatedTimeIdentifier])
@@ -117,17 +117,25 @@ const VehicleCard = (routeMatch:RouteMatch,vehicleId:string) : JSX.Element=> {
                 <h3 className="card-title"
                     tabIndex={0}
                     onClick={() => search(routeMatch.routeId.split("_")[1])}>
-                    <img src={vehicleDatum.strollerVehicle?"/img/icon/bus-stroller.svg":"/img/icon/bus.svg"}
-                         alt={vehicleDatum.strollerVehicle?"bus and stroller icon":"bus icon"} className="icon" />
+                    {/*{console.log("adding vehicelcard icon")}*/}
+                    <img src={vehicleDatum && vehicleDatum.strollerVehicle?"/img/icon/bus-stroller.svg":"/img/icon/bus.svg"}
+                         alt={vehicleDatum && vehicleDatum.strollerVehicle?"bus and stroller icon":"bus icon"} className="icon" />
                     {OBA.Config.noWidows(routeMatch.routeTitle)}
                 </h3>
             </div>
             <div className="card-content">
-                <VehicleCardContentComponent {...{ routeMatch, vehicleDatum}}/>
+                {/*{console.log("adding vehicelcard content")}*/}
+                {vehicleDatum?<VehicleCardContentComponent routeMatch={routeMatch} vehicleDatum={vehicleDatum}/>:null}
                 <ServiceAlertContainerComponent {...{routeId,serviceAlertIdentifier}}/>
                 <ul className="menu icon-menu card-menu">
                     <li>
-                        <ViewSearchItem datumId={routeMatch.routeId} text={"Full Route"}/>
+                        {vehicleDatum?
+                            (<ViewSearchItem datumId={routeMatch.routeId} text={"Full Route"}/>)
+                            :
+                            (<ul className="card-details">
+                                <li>{`The vehicle {vehicleId} can't be found`}</li>
+                            </ul>)
+                        }
                     </li>
                 </ul>
             </div>
