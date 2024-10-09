@@ -32,10 +32,8 @@ export const VehicleCardContentComponent = ({routeMatch,vehicleDatum}
                                 <img src={meeples} alt={`vehicle is ~${Math.ceil((vehicleDatum.passengerCount / vehicleDatum.passengerCapacity) * 100)}% full`} title={`vehicle is ~${Math.ceil((vehicleDatum.passengerCount / vehicleDatum.passengerCapacity) * 100)}% full`} className="meeples-blank" />
                             </span>
                         </li>
-                    ) : (
-                        <li className="passengers">{`~${vehicleDatum.passengerCount} passengers`}</li>
-                    )
-                )}
+                    ) : null)}
+                <li className="passengers">{`~${vehicleDatum.passengerCount} passengers`}</li>
             </ul>
             <h4>Next Stops:</h4>
             <ul className="next-stops route-stops" style={{ color: '#'+routeMatch.color}}>

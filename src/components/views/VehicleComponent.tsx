@@ -29,9 +29,8 @@ function VehicleComponent({vehicleDatum,tabbable}:
                                 <img src={meeples} alt={`vehicle is ~${Math.ceil((vehicleDatum.passengerCount / vehicleDatum.passengerCapacity) * 100)}% full`} title={`vehicle is ~${Math.ceil((vehicleDatum.passengerCount / vehicleDatum.passengerCapacity) * 100)}% full`} className="meeples-blank" />
                             </span>
                         </span>
-                        :
-                        <span className="passengers">{`~${vehicleDatum.passengerCount} passengers`}</span>
-                    )}
+                        : null)}
+                <span>{`~${vehicleDatum.passengerCount} passengers`}</span>
             </span>
         </li>
     )
