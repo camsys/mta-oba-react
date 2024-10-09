@@ -41,11 +41,11 @@ const SearchBar = () => {
     console.log("Search",searchTerm)
     useEffect(() => {
         let newSearchTerm = state?.currentCard?.searchTerm
-        console.log("new Search",newSearchTerm,state,state?.currentCard,state?.currentCard?.searchTerm)
+        console.log("new Search",newSearchTerm,state,state?.currentCard,state?.currentCard?.searchTerm,searchTerm)
         if(newSearchTerm!==searchTerm){
             if(newSearchTerm===null || newSearchTerm==="" || typeof newSearchTerm ==="undefined"){
-                if(searchTerm!=="Search")
-                {setSearchTerm("Search")}
+                setSearchTerm("Search")
+                setValue("")
             }
             else {
                 setValue(newSearchTerm)
