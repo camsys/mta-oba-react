@@ -26,14 +26,16 @@ export const VehicleCardContentComponent = ({routeMatch,vehicleDatum}
                     {vehicleDatum?.strollerVehicle?<span className="stroller">Stroller storage available</span>:null}
                 </li>
                 {vehicleDatum.passengerCount != null && (
-                    vehicleDatum.passengerCapacity != null ? (
-                        <li className="passengers">
+                    vehicleDatum.passengerCapacity != null ?
+                        <span className="passengers">
                             <span className={'meeples meeples-'+`${Math.ceil((vehicleDatum.passengerCount / vehicleDatum.passengerCapacity) * 10)}`}>
                                 <img src={meeples} alt={`vehicle is ~${Math.ceil((vehicleDatum.passengerCount / vehicleDatum.passengerCapacity) * 100)}% full`} title={`vehicle is ~${Math.ceil((vehicleDatum.passengerCount / vehicleDatum.passengerCapacity) * 100)}% full`} className="meeples-blank" />
                             </span>
-                        </li>
-                    ) : null)}
-                <li className="passengers">{`~${vehicleDatum.passengerCount} passengers`}</li>
+                        </span>
+                        : null)}
+                {vehicleDatum.passengerCount != null
+                    ?(<span>{`~${vehicleDatum.passengerCount} passengers`}</span>)
+                    : null}
             </ul>
             <h4>Next Stops:</h4>
             <ul className="next-stops route-stops" style={{ color: '#'+routeMatch.color}}>

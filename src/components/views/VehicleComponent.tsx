@@ -30,7 +30,9 @@ function VehicleComponent({vehicleDatum,tabbable}:
                             </span>
                         </span>
                         : null)}
-                <span>{`~${vehicleDatum.passengerCount} passengers`}</span>
+                {vehicleDatum.passengerCount != null
+                    ?(<span>{`~${vehicleDatum.passengerCount} passengers`}</span>)
+                    : null}
             </span>
         </li>
     )
