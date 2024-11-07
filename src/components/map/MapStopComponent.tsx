@@ -8,6 +8,7 @@ import {useHighlight} from "../util/MapHighlightingStateComponent.tsx";
 import {useSearch} from "../../js/updateState/SearchEffect";
 import {CardType, StopInterface} from "../../js/updateState/DataModels";
 import {CardStateContext} from "../util/CardStateComponent";
+import log from 'loglevel';
 
 const COMPONENT_IDENTIFIER = "mapStopComponent"
 
@@ -16,7 +17,7 @@ function MapStopComponent  ({stopDatum, mapStopMarkers, zIndexOverride}:
                                 {stopDatum:StopInterface,
                                 mapStopMarkers:React.MutableRefObject<Map<string,Marker>>,
                                 zIndexOverride:number}) : JSX.Element{
-    // console.log('generating MapStopComponent: ', stopDatum,mapStopMarkers,zIndexOverride)
+    // log.info('generating MapStopComponent: ', stopDatum,mapStopMarkers,zIndexOverride)
 
 
     let {getHighlightedId} = useHighlight()
@@ -41,7 +42,7 @@ function MapStopComponent  ({stopDatum, mapStopMarkers, zIndexOverride}:
         popupAnchor: [0,0]
     })
 
-    // console.log(stopDatum.longLat)
+    // log.info(stopDatum.longLat)
     var markerOptions = {
         position: stopDatum.longLat,
         icon: icon,
@@ -54,7 +55,7 @@ function MapStopComponent  ({stopDatum, mapStopMarkers, zIndexOverride}:
         id: COMPONENT_IDENTIFIER+"_"+String(stopDatum.id),
         keyboard:false
     };
-    // console.log('generating MapStopComponent: ', stopDatum,markerOptions,mapStopMarkers,zIndexOverride)
+    // log.info('generating MapStopComponent: ', stopDatum,markerOptions,mapStopMarkers,zIndexOverride)
 
     const { state} = useContext(CardStateContext);
 
@@ -63,7 +64,7 @@ function MapStopComponent  ({stopDatum, mapStopMarkers, zIndexOverride}:
                 eventHandlers={{click : ()=>{search(stopDatum.id)}}}
                 ref={r=>
                 {
-                    // console.log("ref for stop component",stopDatum,r);
+                    // log.info("ref for stop component",stopDatum,r);
                     typeof mapStopMarkers!=='undefined'
                         ?mapStopMarkers.current.set(stopDatum.id,r):null
                 }}

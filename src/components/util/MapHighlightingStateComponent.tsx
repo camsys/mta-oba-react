@@ -1,4 +1,5 @@
 import React, {createContext, useContext, useState} from 'react';
+import log from 'loglevel';
 
 const MapHighlightingStateContext = createContext({});
 
@@ -17,7 +18,7 @@ const MapHighlightingStateProvider = ({children}) => {
 const useHighlight = () =>{
     const { mapHighlightingState, setHighlightingState } = useContext(MapHighlightingStateContext);
     const highlightId = (id:string) =>{
-        console.log("highlighting: ", id);
+        log.info("highlighting: ", id);
         if (mapHighlightingState.highlightedComponentId !== id) {
             setHighlightingState((prevState) => ({
                 highlightedComponentId: id,

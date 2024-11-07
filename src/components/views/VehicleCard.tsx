@@ -15,7 +15,7 @@ export const VehicleCardContentComponent = ({routeMatch,vehicleDatum}
                                                 :{routeMatch:RouteMatch,vehicleDatum:VehicleRtInterface})
                                                 : JSX.Element=>{
     const { search } = useSearch();
-    // console.log("generating vehicleCardContentComponent for ",vehicleDatum.vehicleId)
+    // log.info("generating vehicleCardContentComponent for ",vehicleDatum.vehicleId)
     let {highlightId} = useHighlight()
 
     return(
@@ -60,7 +60,7 @@ export const VehicleCardContentComponent = ({routeMatch,vehicleDatum}
 }
 
 const VehicleCard = (routeMatch:RouteMatch,vehicleId:string) : JSX.Element=> {
-    console.log("generating VehicleCard: ", routeMatch);
+    log.info("generating VehicleCard: ", routeMatch);
 
     let {highlightId} = useHighlight()
     const { search } = useSearch();
@@ -83,11 +83,11 @@ const VehicleCard = (routeMatch:RouteMatch,vehicleId:string) : JSX.Element=> {
 
     const checkLoading = () =>{
         if (routeMatch.type !== MatchType.RouteMatch) {
-            console.log("card is still loading so VehicleCard is still loading",loading)
+            log.info("card is still loading so VehicleCard is still loading",loading)
             return}
         routeId = routeMatch.routeId.split("_")[1];
         vehicleDatum = vehicleState[routeId+vehicleDataIdentifier].get(vehicleId)
-        console.log("is VehicleCard data still loading?",loading,vehicleDatum)
+        log.info("is VehicleCard data still loading?",loading,vehicleDatum)
         if(loading && vehicleDatum!==null && typeof vehicleDatum!=='undefined'){
             setLoading(false)
         }
@@ -95,7 +95,7 @@ const VehicleCard = (routeMatch:RouteMatch,vehicleId:string) : JSX.Element=> {
     checkLoading()
     useEffect(() => {
         if(loading){
-            console.log("vehicle not loaded yet, attempting VehicleCard reload")
+            log.info("vehicle not loaded yet, attempting VehicleCard reload")
             const interval = setInterval(()=>{
                 checkLoading();
                 (!loading)?clearInterval(interval):null}, 100);
@@ -103,11 +103,11 @@ const VehicleCard = (routeMatch:RouteMatch,vehicleId:string) : JSX.Element=> {
         }
     }, [loading]);
     if(loading) {
-        console.log("waiting on generating VehicleCard")
+        log.info("waiting on generating VehicleCard")
         return(<ErrorBoundary><div>Unable to load vehicle. Repeating attempt.</div></ErrorBoundary>)}
 
 
-    console.log("generating VehicleCard ",routeId,vehicleDatum,vehicleState[routeId+updatedTimeIdentifier])
+    log.info("generating VehicleCard ",routeId,vehicleDatum,vehicleState[routeId+updatedTimeIdentifier])
     let serviceAlertIdentifier = routeMatch.routeId
     return (
         <div className={`card vehicle-card ${routeMatch.routeId}`}>
@@ -117,14 +117,14 @@ const VehicleCard = (routeMatch:RouteMatch,vehicleId:string) : JSX.Element=> {
                 <h3 className="card-title"
                     tabIndex={0}
                     onClick={() => search(routeMatch.routeId.split("_")[1])}>
-                    {/*{console.log("adding vehicelcard icon")}*/}
+                    {/*{log.info("adding vehicelcard icon")}*/}
                     <img src={vehicleDatum && vehicleDatum.strollerVehicle?"/img/icon/bus-stroller.svg":"/img/icon/bus.svg"}
                          alt={vehicleDatum && vehicleDatum.strollerVehicle?"bus and stroller icon":"bus icon"} className="icon" />
                     {OBA.Config.noWidows(routeMatch.routeTitle)}
                 </h3>
             </div>
             <div className="card-content">
-                {/*{console.log("adding vehicelcard content")}*/}
+                {/*{log.info("adding vehicelcard content")}*/}
                 {vehicleDatum?<VehicleCardContentComponent routeMatch={routeMatch} vehicleDatum={vehicleDatum}/>:null}
                 <ServiceAlertContainerComponent {...{routeId,serviceAlertIdentifier}}/>
                 <ul className="menu icon-menu card-menu">
@@ -147,13 +147,13 @@ const VehicleCard = (routeMatch:RouteMatch,vehicleId:string) : JSX.Element=> {
 //This one breaks the pattern because vehicles are not searched elsewhere. sorry
 const getVehicleCardsWrapper = () : JSX.Element => {
         const { state} = useContext(CardStateContext);
-        console.log("adding vehicleCard info for match:", state.currentCard.searchMatches);
+        log.info("adding vehicleCard info for match:", state.currentCard.searchMatches);
 
         return (<React.Fragment>
             <h2 className="cards-header">Vehicle:</h2>
             <div className="cards">
                 {state.currentCard.searchMatches.map(route=>{
-                    console.log("vehicleCard",route)
+                    log.info("vehicleCard",route)
                     return VehicleCard(route,state.currentCard.vehicleId)})}
             </div>
         </React.Fragment>);

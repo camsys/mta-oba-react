@@ -1,25 +1,26 @@
 import React, { useEffect } from 'react';
+import log from 'loglevel';
 
 export const RunScriptAfterRender = (WrappedComponent, scriptSrc) => {
-    console.log("running RunScriptAfterRender",WrappedComponent,scriptSrc)
+    log.info("running RunScriptAfterRender",WrappedComponent,scriptSrc)
     return (props) => {
         useEffect(() => {
-            console.log("RunScriptAfterRender starting attempt to run script")
+            log.info("RunScriptAfterRender starting attempt to run script")
             const script = document.createElement('script');
             script.src = scriptSrc;
             script.async = true;
-            console.log("RunScriptAfterRender attempting to load script",script)
+            log.info("RunScriptAfterRender attempting to load script",script)
             script.onload = () => {
-                console.log(`RunScriptAfterRender script ${scriptSrc} loaded after render`,script);
+                log.info(`RunScriptAfterRender script ${scriptSrc} loaded after render`,script);
             };
             document.body.appendChild(script);
-            console.log("RunScriptAfterRender appended script to body",script)
+            log.info("RunScriptAfterRender appended script to body",script)
 
             // Cleanup script on unmount
             return () => {
-                console.log("RunScriptAfterRender removing script",script)
+                log.info("RunScriptAfterRender removing script",script)
                 document.body.removeChild(script);
-                console.log("RunScriptAfterRender removed script",script)
+                log.info("RunScriptAfterRender removed script",script)
             };
         });
 

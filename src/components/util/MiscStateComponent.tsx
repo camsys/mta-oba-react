@@ -7,6 +7,7 @@ import {
     isRouteInterface,
     isStopInterface
 } from "../../js/updateState/DataModelsUtils";
+import log from 'loglevel';
 
 const FavoritesCookieStateContext = createContext<{
     favoritesState:FavoritesCookie,
@@ -18,22 +19,22 @@ const FavoritesCookieStateProvider = ({children} : {children:ReactNode}):JSX.Ele
         let favorites = {favorites:[],favCount:0}
         const cookie = Cookies.get(favoritesIdentifier)
 
-        console.log("got favorites",cookie)
+        log.info("got favorites",cookie)
 
         if (cookie) {
             try {
                 let json = JSON.parse(cookie)
-                console.log("favorites json", json, json?.favorites, typeof favorites?.favorites)
+                log.info("favorites json", json, json?.favorites, typeof favorites?.favorites)
                 if (json?.favorites) {
                     json?.favorites.forEach((fav) => {
-                        console.log("received favorite", fav)
+                        log.info("received favorite", fav)
                         if (isStopInterface(fav) || isRouteInterface(fav)) {
                             favorites.favorites.push(fav)
                         }
                     })
                 }
             } catch (e){
-                console.log("cookies are broken.",cookie)
+                log.info("cookies are broken.",cookie)
                 setCookies(favorites)
             }
         }
@@ -46,7 +47,7 @@ const FavoritesCookieStateProvider = ({children} : {children:ReactNode}):JSX.Ele
 }
 
 const setCookies =(cookie:FavoritesCookie)=>{
-    console.log(cookie)
+    log.info(cookie)
     Cookies.set(favoritesIdentifier,JSON.stringify(cookie))
 }
 
@@ -68,9 +69,9 @@ const useFavorite = () =>{
         let newFavorites = {favorites:[]}
         newFavorites["favorites"] = favoritesState.favorites.filter(d=> getId(d) !== targetId)
         setCookies(newFavorites)
-        console.log("previous favorites state",favoritesState)
+        log.info("previous favorites state",favoritesState)
         setFavoritesState(newFavorites)
-        console.log("new favorites state",favoritesState)
+        log.info("new favorites state",favoritesState)
     }
 
 

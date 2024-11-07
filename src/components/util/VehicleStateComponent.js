@@ -2,6 +2,7 @@ import React, { createContext, useState } from 'react';
 
 const VehicleStateContext = createContext();
 const VehiclesApproachingStopsContext = createContext();
+import log from 'loglevel';
 
 
 //todo: should be broken out into two states based on features which change and do not change
@@ -10,7 +11,7 @@ const VehicleStateProvider = ({children}) => {
     const [vehicleState, setState] = useState({
         renderCounter:1
     });
-    console.log("initial state set: ",vehicleState)
+    log.info("initial state set: ",vehicleState)
 
     return (
         <VehicleStateContext.Provider value={{vehicleState, setState}}>
@@ -23,7 +24,7 @@ const VehiclesApproachingStopsProvider = ({children}) => {
     const [vehiclesApproachingStopsState, setVehiclesApproachingStopsState] = useState({
         renderCounter:1
     });
-    console.log("initial state set: ",vehiclesApproachingStopsState)
+    log.info("initial state set: ",vehiclesApproachingStopsState)
 
     return (
         <VehiclesApproachingStopsContext.Provider value={{vehiclesApproachingStopsState: vehiclesApproachingStopsState, setVehiclesApproachingStopsState}}>

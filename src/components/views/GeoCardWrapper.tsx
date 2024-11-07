@@ -3,11 +3,12 @@ import {CardStateContext} from "../util/CardStateComponent";
 import {CollapsableRouteCard, RouteCard} from "./RouteCard";
 import {CollapsableStopCard, StopCard} from "./StopCardWrapper.tsx";
 import {MatchType} from "../../js/updateState/DataModels";
+import log from 'loglevel';
 
 
 export function GeoCardWrapper  () :JSX.Element {
     const { state} = useContext(CardStateContext);
-    console.log("generating GeoCard:", state.currentCard.searchMatches);
+    log.info("generating GeoCard:", state.currentCard.searchMatches);
 
     let routes = state.currentCard.searchMatches.map(match=>{
         return match.routeMatches.map(routeMatch=>{
@@ -20,7 +21,7 @@ export function GeoCardWrapper  () :JSX.Element {
         })
     }).flat().filter(x=>x!==null&&typeof x!=='undefined')
 
-    console.log("geocard routes&stops",routes,stops)
+    log.info("geocard routes&stops",routes,stops)
 
     return (<React.Fragment>
         <h2 className={`cards-header`}>Routes:</h2>

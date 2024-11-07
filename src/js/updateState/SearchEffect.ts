@@ -11,11 +11,11 @@ import {
     CardType,
     StopInterface, RoutesObject, StopsObject, SearchMatch, MatchType, VehicleRtInterface
 } from "./DataModels";
-
+import log from 'loglevel';
 
 function processRouteSearch(route,card:Card,stops: StopsObject,routes:RoutesObject):RouteMatch {
     let match = new RouteMatch(route)
-    console.log("processing route search results",route,card,stops,routes)
+    log.info("processing route search results",route,card,stops,routes)
     if (route != null && route.hasOwnProperty("directions")) {
         match.color = route?.color
         match.routeId = route?.id
@@ -25,7 +25,7 @@ function processRouteSearch(route,card:Card,stops: StopsObject,routes:RoutesObje
         match.directions = []
         match.routeMatches = []
         match.routeMatches.push(match)
-        console.log("assigned basic search values to card",route,match)
+        log.info("assigned basic search values to card",route,match)
         for (let i = 0; i < route?.directions.length; i++) {
             let directionDatum = createRouteMatchDirectionInterface(route?.directions[i],match.routeId,match.color)
             directionDatum.mapStopComponentData.forEach(stop=>stops.current[stop.id]=stop)
@@ -38,7 +38,7 @@ function processRouteSearch(route,card:Card,stops: StopsObject,routes:RoutesObje
 
 function processGeocodeSearch(geocode,card:Card,stops: StopsObject,routes:RoutesObject):GeocodeMatch{
     let match = new GeocodeMatch(geocode)
-    console.log("processing geocode search results",geocode,card,match)
+    log.info("processing geocode search results",geocode,card,match)
     if (geocode != null && geocode.hasOwnProperty("latitude")) {
         geocode?.nearbyRoutes.forEach(searchResult=>{
             if(typeof searchResult?.stopDirection !== "undefined")
@@ -54,13 +54,13 @@ function processGeocodeSearch(geocode,card:Card,stops: StopsObject,routes:Routes
     // ... honestly this whole thing should be done async during the siri calls which means a minor
     // refactor. but we knew that was coming. given this is a rly fast api call though, probably can make it
     // done seperate for now. also will need to be done before the siri stop-monitoring calls
-    console.log("geocode data processed: ",match)
+    log.info("geocode data processed: ",match)
     return match
 }
 
 function processStopSearch(stop,card:Card,stops: StopsObject,routes:RoutesObject):StopMatch{
     let match = new StopMatch(stop)
-    console.log("processing stopMatch search results",stop,card,match)
+    log.info("processing stopMatch search results",stop,card,match)
     if (stop != null && stop.hasOwnProperty("latitude")) {
         card.stopIdList.add(stop.id)
         match.routeMatches = []
@@ -68,28 +68,28 @@ function processStopSearch(stop,card:Card,stops: StopsObject,routes:RoutesObject
             match.routeMatches.push(processRouteSearch(x,card,stops,routes))
         })
     }
-    console.log("stopMatch data processed: ",match)
+    log.info("stopMatch data processed: ",match)
     return match
 }
 
 async function getData(card:Card,stops: StopsObject,routes:RoutesObject,address:string):Promise<Card>{
-    console.log("filling card data with search",card,stops,routes)
+    log.info("filling card data with search",card,stops,routes)
     if(card.searchTerm == null || card.searchTerm == ''){
-        console.log("empty search means home",card)
+        log.info("empty search means home",card)
         return card
     }
     // let address = "http://localhost:8080" + "/" + OBA.Config.searchUrl + "?q=" + card.searchTerm
-    console.log('requesting search results from ',address)
+    log.info('requesting search results from ',address)
     await fetch(address)
         .then((response) => response.json())
         .then((parsed) => {
-            console.log("got back search results")
-            console.log("parsed: ",parsed)
+            log.info("got back search results")
+            log.info("parsed: ",parsed)
             let searchResults = parsed?.searchResults
-            console.log("search results found ",searchResults)
-            console.log("resultType = ", searchResults.resultType)
+            log.info("search results found ",searchResults)
+            log.info("resultType = ", searchResults.resultType)
             card.setSearchResultType(searchResults.resultType)
-            console.log(card)
+            log.info(card)
 
             if(searchResults.resultType=="StopResult"){
                 searchResults.matches.forEach(x=>{
@@ -110,12 +110,12 @@ async function getData(card:Card,stops: StopsObject,routes:RoutesObject,address:
                 let routeMatch = card.searchMatches[0] as RouteMatch
                 card.datumId=routeMatch.routeId
             }
-            console.log('completed search results: ',card,stops,routes)
+            log.info('completed search results: ',card,stops,routes)
         })
         .catch((error) => {
             console.error(error);
         });
-    console.log("got card data: ", card, typeof card, card==null,stops,routes)
+    log.info("got card data: ", card, typeof card, card==null,stops,routes)
     return card
 }
 
@@ -138,7 +138,7 @@ const updateWindowHistory = (term:string) :void =>{
 
 
 export const updateCard = async (searchRef:String,stops: StopsObject,routes:RoutesObject,address:string):Promise<Card> =>{
-    console.log("received new search input:",searchRef)
+    log.info("received new search input:",searchRef)
     // searchRef = searchRef.replaceAll(" ","%2520")
     return await getData(new Card(searchRef),stops,routes,address)
 }
@@ -177,7 +177,7 @@ export const useSearch = () =>{
             return
         }
         try {
-            console.log("fetch search data called, generating new card",state,searchTerm)
+            log.info("fetch search data called, generating new card",state,searchTerm)
             if (performNewSearch(searchTerm,state?.currentCard)) {
                 updateWindowHistory(searchTerm);
                 let currentCard;
@@ -189,7 +189,7 @@ export const useSearch = () =>{
 
                 let cardStack = state.cardStack;
                 cardStack.push(currentCard);
-                console.log("updating state with new card:", currentCard,stops,routes);
+                log.info("updating state with new card:", currentCard,stops,routes);
                 setState((prevState) => ({
                     ...prevState,
                     currentCard: currentCard,
@@ -206,7 +206,7 @@ export const useSearch = () =>{
 
     const generateInitialCard = async (setLoading)=>{
         let currentCard = new Card("")
-        console.log("setting initial state data home card",currentCard);
+        log.info("setting initial state data home card",currentCard);
 
         let cardStack = state.cardStack;
         cardStack.push(currentCard);
@@ -225,14 +225,14 @@ export const useSearch = () =>{
                 allRoutesSearch();
                 return;
             }
-            console.log("generating card based on starting query");
+            log.info("generating card based on starting query");
             if(searchRef===allRoutesSearchTerm){
                 await allRoutesSearch()
                 return
             }
             let currentCard = await getData(new Card(searchRef),stops,routes,getSearchAddress(searchRef));
             // let currentCard = new Card(searchRef);
-            console.log("setting card based on starting query",currentCard);
+            log.info("setting card based on starting query",currentCard);
 
             let cardStack = state.cardStack;
             cardStack.push(currentCard);
@@ -251,19 +251,19 @@ export const useSearch = () =>{
 // which is what this has become
 
     const vehicleSearch = async (vehicleDatum : VehicleRtInterface)=> {
-        console.log("setting card to vehicle card",vehicleDatum);
+        log.info("setting card to vehicle card",vehicleDatum);
         //todo: should be current search term
         let pastCard = state.currentCard;
         let routeId = vehicleDatum.routeId.split("_")[1];
-        console.log("found routeId of target vehicle: ",routeId);
+        log.info("found routeId of target vehicle: ",routeId);
         let currentCard = new Card(routeId);
         let routeData = routes?.current;
         if(routeData){routeData=routeData[vehicleDatum.routeId]};
-        console.log("found routedata of target vehicle: ",routeData);
+        log.info("found routedata of target vehicle: ",routeData);
         currentCard.setToVehicle(vehicleDatum.vehicleId,[routeData],new Set([vehicleDatum.routeId]));
         let cardStack = state.cardStack;
         cardStack.push(currentCard);
-        console.log("updating state prev card -> new card: \n", pastCard,currentCard);
+        log.info("updating state prev card -> new card: \n", pastCard,currentCard);
         // todo: condense all of these into a single method, copied and pasted too many times
         setState((prevState) => ({
             ...prevState,
@@ -277,20 +277,20 @@ export const useSearch = () =>{
         let searchTerm = allRoutesSearchTerm;
         let address = getRoutesAddress();
         try {
-            console.log("all routes requested, generating new card",state);
+            log.info("all routes requested, generating new card",state);
             if (state?.currentCard?.type !== CardType.AllRoutesCard) {
                 updateWindowHistory(searchTerm);
                 let currentCard = await fetch(address)
                     .then((response) => response.json())
                     .then((parsed) => {
                         let currentCard = new Card(searchTerm);
-                        console.log("all routes results: ",parsed);
+                        log.info("all routes results: ",parsed);
                         let searchMatch = new SearchMatch(SearchMatch.matchTypes.AllRoutesMatch);
                         searchMatch.routeMatches = parsed?.routes.map(route=>new RouteMatch(route));
                         let routeIdList = new Set();
                         // parsed?.routes.forEach(route=>routeIdList.add(route.id));
                         currentCard.setToAllRoutes([searchMatch],routeIdList);
-                        console.log('completed processing all routes results: ',currentCard,stops,routes);
+                        log.info('completed processing all routes results: ',currentCard,stops,routes);
                         return currentCard
                     })
                     .catch((error) => {
@@ -299,7 +299,7 @@ export const useSearch = () =>{
 
                 let cardStack = state.cardStack;
                 cardStack.push(currentCard);
-                console.log("updating state with new card:", currentCard,stops,routes);
+                log.info("updating state with new card:", currentCard,stops,routes);
                 setState((prevState) => ({
                     ...prevState,
                     currentCard: currentCard,

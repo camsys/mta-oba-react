@@ -4,9 +4,10 @@ import {Marker, Polyline, Popup} from "react-leaflet";
 import {useHighlight} from "../util/MapHighlightingStateComponent.tsx";
 import {CardStateContext} from "../util/CardStateComponent.tsx";
 import {RouteDirectionInterface} from "../../js/updateState/DataModels";
+import log from 'loglevel';
 
 function MapRouteComponent  ({mapRouteComponentDatum}:RouteDirectionInterface) :JSX.Element{
-    // console.log('generating mapRouteComponent: ', mapRouteComponentDatum)
+    // log.info('generating mapRouteComponent: ', mapRouteComponentDatum)
 
     let {getHighlightedId} = useHighlight()
     let highlightedId = getHighlightedId()

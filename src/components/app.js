@@ -16,11 +16,12 @@ import {siriGetVehiclesForStopViewEffect} from "../js/updateState/SiriStopEffect
 import {CardType} from "../js/updateState/DataModels";
 import MapWrapper from "./map/MapWrapper.tsx";
 import {FavoritesCookieStateProvider} from "Components/util/MiscStateComponent";
+import log from 'loglevel';
 
 
 
 const VehicleLoading=()=>{
-    console.log("vehicle loading initiated")
+    log.info("vehicle loading initiated")
     const { state} = useContext(CardStateContext)
     let {vehicleState, setState } = useContext(VehicleStateContext);
     let {vehiclesApproachingStopsState, setVehiclesApproachingStopsState } = useContext(VehiclesApproachingStopsContext);

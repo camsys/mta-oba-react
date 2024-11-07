@@ -6,10 +6,11 @@ import {CollapsableRouteCard, RouteCardContent} from "./RouteCard";
 import { OBA } from "../../js/oba";
 import {CollapsableStopCard} from "./StopCardWrapper";
 import {useSearch} from "../../js/updateState/SearchEffect";
+import log from 'loglevel';
 
 
 export function AbreviatedRouteCard({ routeMatch}: RouteMatch): JSX.Element {
-    console.log("generating allroutes card: ", routeMatch);
+    log.info("generating allroutes card: ", routeMatch);
     const {search} = useSearch()
     if (routeMatch.type !== MatchType.RouteMatch) {
         return null

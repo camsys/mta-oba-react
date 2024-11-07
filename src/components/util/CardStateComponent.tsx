@@ -9,6 +9,7 @@ import {
     StopInterface,
     StopsObject
 } from "../../js/updateState/DataModels";
+import log from 'loglevel';
 
 
 const CardStateContext = createContext<{
@@ -17,13 +18,13 @@ const CardStateContext = createContext<{
 } | undefined>(undefined);
 const CardStateProvider = ({ children }: { children: ReactNode }): JSX.Element => {
     let currentCard = getHomeCard()
-    console.log("setting initial state data with base card",currentCard)
+    log.info("setting initial state data with base card",currentCard)
     const [state, setState] = useState<CardStateObject>({
         currentCard: currentCard,
         cardStack: [currentCard],
         renderCounter:1
     });
-    console.log("initial state set: ",state)
+    log.info("initial state set: ",state)
 
     return (
         <CardStateContext.Provider value={{state, setState}}>

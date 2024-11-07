@@ -1,13 +1,14 @@
 import React, {useContext} from 'react';
 import {OBA} from "../../js/oba";
 import {useSearch} from "../../js/updateState/SearchEffect";
+import log from 'loglevel';
 
 
 function HomeCard  () : JSX.Element {
 
     OBA.Util.log("adding home card")
     const { search,allRoutesSearch } = useSearch();
-    console.log("functions for search",search,allRoutesSearch)
+    log.info("functions for search",search,allRoutesSearch)
     return (<div><h2>Try these example searches:</h2>
     <ul>
         <li>Route:

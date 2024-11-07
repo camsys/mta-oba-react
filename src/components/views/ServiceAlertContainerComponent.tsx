@@ -1,10 +1,11 @@
 import React, {useContext, useEffect, useState} from "react";
 import {serviceAlertDataIdentifier, vehicleDataIdentifier, VehicleStateContext} from "../util/VehicleStateComponent";
 import {ServiceAlertInterface} from "../../js/updateState/DataModels";
+import log from 'loglevel';
 
 
 function ServiceAlertComponent  ({serviceAlertDatum}:ServiceAlertInterface) : JSX.Element {
-    console.log("service alert component contents generating ",serviceAlertDatum)
+    log.info("service alert component contents generating ",serviceAlertDatum)
     return(
         <div className="card-content collapse-content">
             {serviceAlertDatum[0].descriptionParts.map((part,itt)=> {return(<p key = {itt}>{part}</p>)})}
@@ -12,7 +13,7 @@ function ServiceAlertComponent  ({serviceAlertDatum}:ServiceAlertInterface) : JS
 }
 
 export default function ServiceAlertContainerComponent  ({ routeId,serviceAlertIdentifier}:{ routeId : string ,serviceAlertIdentifier : string}) : JSX.Element {
-    console.log("generating service alert component")
+    log.info("generating service alert component")
     let {getServiceAlert} = useServiceAlert()
     let serviceAlertDatum = getServiceAlert(routeId,serviceAlertIdentifier)
     if(serviceAlertDatum===null||typeof serviceAlertDatum==="undefined"){return null}
@@ -28,11 +29,11 @@ export default function ServiceAlertContainerComponent  ({ routeId,serviceAlertI
 export function useServiceAlert(){
     const { vehicleState} = useContext(VehicleStateContext)
     function getServiceAlert(routeId : string ,serviceAlertIdentifier : string){
-        console.log("getting service alert data",vehicleState,routeId+serviceAlertDataIdentifier,serviceAlertIdentifier)
+        log.info("getting service alert data",vehicleState,routeId+serviceAlertDataIdentifier,serviceAlertIdentifier)
         let routeServiceAlerts = vehicleState[routeId+serviceAlertDataIdentifier]
         if(routeServiceAlerts===null||typeof routeServiceAlerts==="undefined"){return null}
         let serviceAlertDatum = vehicleState[routeId+serviceAlertDataIdentifier].get(serviceAlertIdentifier)
-        console.log("service alert datum found from state",serviceAlertDatum)
+        log.info("service alert datum found from state",serviceAlertDatum)
         if(typeof serviceAlertDatum==="undefined"){return null}
         return serviceAlertDatum
     }

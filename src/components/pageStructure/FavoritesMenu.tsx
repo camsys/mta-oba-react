@@ -4,6 +4,7 @@ import {RouteInterface, StopInterface} from "../../js/updateState/DataModels";
 import {FavoritesCookieStateContext, useFavorite} from "../util/MiscStateComponent";
 import {isRouteInterface, isStopInterface} from "../../js/updateState/DataModelsUtils";
 import {useSearch} from "../../js/updateState/SearchEffect";
+import log from 'loglevel';
 
 
 export const FavoriteItem = ({datum}) =>{
@@ -68,8 +69,8 @@ export const FavoritesMenu = () => {
 
 
     // let {jsonCookie} = useJsonCookie("favorites")
-    console.log("favorites cookie:")
-    console.log("favorites cookie:", favoritesState)
+    log.info("favorites cookie:")
+    log.info("favorites cookie:", favoritesState)
 
     return(<li className="parent collapsible">
         <button id="favorites-menu-trigger" className="sub-menu-trigger collapse-trigger" aria-haspopup="true" aria-expanded="false" aria-label="Toggle Favorites Menu">

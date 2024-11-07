@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {OBA} from "../../js/oba";
+import log from 'loglevel';
 
 class ErrorBoundary extends Component {
     constructor(props) {
@@ -14,7 +15,7 @@ class ErrorBoundary extends Component {
 
     componentDidCatch(error, errorInfo) {
         // You can also log the error to an error reporting service
-        console.log("ErrorBoundary caught an error", error, errorInfo);
+        log.info("ErrorBoundary caught an error", error, errorInfo);
     }
 
     render() {

@@ -13,13 +13,14 @@ import {StopCardWrapper} from "../views/StopCardWrapper.tsx";
 import {GeoCardWrapper} from "../views/GeoCardWrapper.tsx";
 import HomeCard from "../views/HomeCard.tsx";
 import {AllRoutesWrapper} from "Components/views/AllRoutesWrapper";
+import log from 'loglevel';
 
 function SideBar  () {
 
     const { state } = useContext(CardStateContext);
 
     function renderCardInfo  () {
-        console.log("setting card info based on currentCard type: ", state.currentCard)
+        log.info("setting card info based on currentCard type: ", state.currentCard)
         if(state.currentCard.type === CardType.RouteCard){
             OBA.Util.log("adding route card")
             return <RouteCardWrapper/>
@@ -41,7 +42,7 @@ function SideBar  () {
             return <GeoCardWrapper/>
         }
         if(state.currentCard.type === CardType.AllRoutesCard){
-            console.log("adding allroutes card")
+            log.info("adding allroutes card")
             return <AllRoutesWrapper/>
         }
     }

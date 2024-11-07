@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (collapseTrigger) {
         // Toggle the 'open' class
         collapseTrigger.classList.toggle('open');
-        // console.log('caretToggle clicked');
+        // log.info('caretToggle clicked');
 
         var parent = collapseTrigger.closest('.collapsible');
         var collapseContent = parent.querySelector('.collapse-content');
@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', function() {
             // if the card is open, close it, adjust the max height, and tabindex of inner elements
             if (parent.classList.contains('open')) {
 
-              // window.console.log('boop closing collapsible')
+              // window.log.info('boop closing collapsible')
 
               collapseContent.style.maxHeight = collapseContent.scrollHeight + 'px'; // Set maxHeight before collapsing
 
@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', function() {
             // if the card is closed, open it, adjust the max height, and tabindex of inner elements
             else {
 
-              // window.console.log('boop opening collapsible')
+              // window.log.info('boop opening collapsible')
 
               // Set maxHeight to actual height before expanding
               collapseContent.style.maxHeight = collapseContent.scrollHeight + 'px'; // Allow it to expand
@@ -103,9 +103,9 @@ document.addEventListener('DOMContentLoaded', function() {
       // map trigger closest parent with class 'map-wrap'
       var mapWrap = mapToggle.closest('#map-wrap');
       
-      window.console.log('boop');
-      window.console.log(mapToggle);
-      window.console.log(mapWrap);
+      window.log.info('boop');
+      window.log.info(mapToggle);
+      window.log.info(mapWrap);
 
       if(mapWrap.classList){
         mapWrap.classList.toggle('open');
@@ -133,7 +133,7 @@ document.addEventListener('DOMContentLoaded', function() {
           sidebarContent.addEventListener('scroll', {
             handleEvent(event) {
               scrollTop = event.target.scrollTop;
-              // window.console.log('boop ' + scrollTop);
+              // window.log.info('boop ' + scrollTop);
               // check if amount sidebarContent is overflowed is more than searchInstructionsHeight
               // this avoids a weird jittery scroll jiggle if the sidebarContent is just barely overflowing
               overFlowAmount = sidebarContent.scrollHeight - sidebarContent.clientHeight;

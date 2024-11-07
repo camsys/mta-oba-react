@@ -13,6 +13,7 @@ import {useSearch} from "../../js/updateState/SearchEffect"
 import VehicleComponent from "./VehicleComponent"
 import {useFavorite} from "../util/MiscStateComponent";
 import {ViewSearchItem} from "./MiscComponents";
+import log from 'loglevel';
 
 
 
@@ -56,7 +57,7 @@ export function RouteStopComponent
 
 
 export const RouteDirection = ({datum,color}: { datum: RouteDirectionInterface, color: string }): JSX.Element => {
-    console.log("generating RouteDirectionComponent:", datum)
+    log.info("generating RouteDirectionComponent:", datum)
     return (
         <div className="route-direction inner-card collapsible" key={datum.routeId+datum.directionId}>
             <button className="card-header collapse-trigger" aria-haspopup="true" aria-expanded="false" aria-label={"Toggle "+datum.routeId+" to " + datum.routeDestination +" Open / Closed"} tabIndex="0">
@@ -64,7 +65,7 @@ export const RouteDirection = ({datum,color}: { datum: RouteDirectionInterface, 
             </button>
             <div className="card-content collapse-content">
                 <ul className="route-stops" style={{ color: '#'+color}}>
-                    {console.log("preparing to get RouteStopComponents from: ", datum)}
+                    {log.info("preparing to get RouteStopComponents from: ", datum)}
                     {
                         datum.routeStopComponentsData.map(
                             (stopDatum,index) =>{
@@ -113,7 +114,7 @@ export function RouteCardContent({ routeMatch}: RouteMatch): JSX.Element  {
 
 
 export function RouteCard({ routeMatch}: RouteMatch): JSX.Element {
-    console.log("generating route card: ", routeMatch);
+    log.info("generating route card: ", routeMatch);
     if (routeMatch.type !== MatchType.RouteMatch) {
         return null
     }
@@ -145,7 +146,7 @@ export function RouteCard({ routeMatch}: RouteMatch): JSX.Element {
 
 
 export function CollapsableRouteCard({ routeMatch, oneOfMany}: {routeMatch:RouteMatch, oneOfMany:boolean}): JSX.Element {
-    console.log("generating route card: ", routeMatch);
+    log.info("generating route card: ", routeMatch);
     if (routeMatch.type !== MatchType.RouteMatch) {
         return null
     }
@@ -191,7 +192,7 @@ export function CollapsableRouteCard({ routeMatch, oneOfMany}: {routeMatch:Route
 
 export function RouteCardWrapper(): JSX.Element {
     const { state } = useContext(CardStateContext);
-    console.log("adding route cards for matches:", state.currentCard.searchMatches);
+    log.info("adding route cards for matches:", state.currentCard.searchMatches);
 
     return (
         <React.Fragment>

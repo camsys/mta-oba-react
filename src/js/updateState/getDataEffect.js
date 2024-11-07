@@ -1,6 +1,7 @@
 import React, {useContext, useEffect, useState} from "react";
 import {OBA} from "../oba";
 import {VehicleStateContext} from "../../components/util/VehicleStateComponent";
+import log from 'loglevel';
 
 const getDataEffect = (currentCard, targetAddress,
                        dataSpecifiersList) => {
@@ -68,10 +69,10 @@ const getDataEffect = (currentCard, targetAddress,
         fetch(targetAddress)
             .then((response) => response.json())
             .then((parsed) => {
-                console.log(dataSpecifiersList)
+                log.info(dataSpecifiersList)
                 dataSpecifiersList.forEach((dataSpecifiers)=>{
-                    console.log(dataSpecifiers)
-                    console.log(dataSpecifiers.keyword)
+                    log.info(dataSpecifiers)
+                    log.info(dataSpecifiers.keyword)
                     OBA.Util.log("reading "+dataSpecifiers.keyword+" from " + targetAddress)
                     updateState(extractData(parsed,dataSpecifiers))
                 })
