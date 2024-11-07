@@ -115,7 +115,7 @@ const RoutesAndStops = () :JSX.Element=>{
                 let stopId = datum.id;
                 (! mapStopComponents.current.has(stopId))
                     ? mapStopComponents.current.set(
-                        datum.id,<MapStopComponent stopDatum={datum} mapStopMarkers={mapStopMarkers}/>)
+                        datum.id,<MapStopComponent stopDatum={datum} mapStopMarkers={mapStopMarkers} key={datum.id}/>)
                     : null
                 mapStopComponentsToDisplay.set(datum.id,mapStopComponents.current.get(datum.id));
 
