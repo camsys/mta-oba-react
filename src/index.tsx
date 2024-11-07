@@ -4,11 +4,13 @@ import { ReactSVG } from "react-svg";
 import './img/favicon.ico';
 import { createRoot } from 'react-dom/client';
 import { OBA } from './js/oba';
+import log, {LogLevel} from 'loglevel';
 
 
 
-
-OBA.Util.log('OBA Util is live.');
+log.setLevel(process.env.LOGGINGLEVEL,true)
+log.setDefaultLevel(process.env.LOGGINGLEVEL)
+log.info('OBA Util is live.');
 
 
 
@@ -17,6 +19,9 @@ function GetApp () {
  return appComponent()
 }
 
+
+
+log.info("test message")
 var mapNode = document.getElementById('root');
 var root = createRoot(mapNode);
 root.render(<GetApp />);

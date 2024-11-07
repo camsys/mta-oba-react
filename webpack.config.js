@@ -14,7 +14,8 @@ const envPlugin = new webpack.DefinePlugin({
   'process.env.ENV_ADDRESS': JSON.stringify(cleanUpHostAddress(process.env.ENV_ADDRESS || 'app.qa.obanyc.com')),
   'process.env.VEHICLE_MONITORING_ENDPOINT': JSON.stringify(process.env.VEHICLE_MONITORING_ENDPOINT || 'api/siri/vehicle-monitoring.json?key=OBANYC'),
   'process.env.STOP_MONITORING_ENDPOINT': JSON.stringify(process.env.STOP_MONITORING_ENDPOINT || 'api/siri/stop-monitoring.json?key=OBANYC'),
-  'process.env.STOPS_ON_ROUTE_ENDPOINT': JSON.stringify(process.env.STOPS_ON_ROUTE_ENDPOINT || 'api/stops-on-route-for-direction?')
+  'process.env.STOPS_ON_ROUTE_ENDPOINT': JSON.stringify(process.env.STOPS_ON_ROUTE_ENDPOINT || 'api/stops-on-route-for-direction?'),
+  'process.env.LOGGINGLEVEL': JSON.stringify(process.env.LOGGINGLEVEL || 'info')
 });
 
 // Function to clean up host address
