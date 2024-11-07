@@ -61,7 +61,7 @@ function InitialCardGeneration ({setLoading}){
 }
 
 function App  () {
-    OBA.Util.log("adding app")
+    log.info("adding app")
     const [loading, setLoading] = useState(true);
 
     return (

@@ -1,9 +1,9 @@
 import React from 'react';
-import {OBA} from "../../js/oba";
+import log from 'loglevel';
 
 
 function getAboutCard  () {
-    OBA.Util.log("adding about card")
+    log.info("adding about card")
     return (<div class="wiki_content" id="content">
         <div id="text">
             <h2 id="HAbout" style="color: rgb(13, 81, 117);">

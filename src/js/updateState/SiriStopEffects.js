@@ -107,7 +107,7 @@ const fetchAndProcessStopMonitoring = async ([stopId,targetAddress]) =>{
     return fetch(targetAddress)
         .then((response) => response.json())
         .then((siri) => {
-            OBA.Util.log("reading serviceAlert & vehicle from " + targetAddress)
+            log.info("reading serviceAlert & vehicle from " + targetAddress)
             let processedData = extractData(stopId,siri)
             let update = processedData[1]
             if(update){
@@ -118,7 +118,7 @@ const fetchAndProcessStopMonitoring = async ([stopId,targetAddress]) =>{
             return null
         })
         .catch((error) => {
-            console.error(error);
+            log.error(error);
         });
 
 

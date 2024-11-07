@@ -1,4 +1,4 @@
-import {OBA} from "../../js/oba";
+import log from 'loglevel';
 import React, {useContext, useEffect} from "react";
 import {Marker, Popup, useMap} from "react-leaflet";
 import L from "leaflet";
@@ -8,7 +8,6 @@ import {useHighlight} from "../util/MapHighlightingStateComponent.tsx";
 import {useSearch} from "../../js/updateState/SearchEffect";
 import {CardType, StopInterface} from "../../js/updateState/DataModels";
 import {CardStateContext} from "../util/CardStateComponent";
-import log from 'loglevel';
 
 const COMPONENT_IDENTIFIER = "mapStopComponent"
 

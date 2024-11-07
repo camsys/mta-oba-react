@@ -41,9 +41,9 @@ function extractData (routeId,siri){
             }
             vehicles.push(vehicleDatum)
         };
-        OBA.Util.log('processed vehicles')
+        log.info('processed vehicles')
     } else {
-        OBA.Util.log('no '+keyword+' recieved. not processing '+keyword)
+        log.info('no '+keyword+' recieved. not processing '+keyword)
     }
 
     let serviceAlertActivity = siri?.Siri?.ServiceDelivery?.SituationExchangeDelivery
@@ -78,9 +78,9 @@ function extractData (routeId,siri){
             log.info("processing service alert: ",situationElement)
         };
         log.info("maps made via siri: ",[vehicleDataMap,serviceAlertDataMap,stopsToVehiclesMap])
-        OBA.Util.log('processed '+keyword)
+        log.info('processed '+keyword)
     } else {
-        OBA.Util.log('no '+keyword+' recieved. not processing '+keyword)
+        log.info('no '+keyword+' recieved. not processing '+keyword)
     }
     log.info("maps made via siri: ",[vehicleDataMap,serviceAlertDataMap,stopsToVehiclesMap])
     return [[routeId,vehicleDataMap,serviceAlertDataMap,stopsToVehiclesMap,lastCallTime],update]
@@ -103,7 +103,7 @@ const fetchAndProcessVehicleMonitoring = async ([routeId,targetAddress]) =>{
     return fetch(targetAddress)
         .then((response) => response.json())
         .then((siri) => {
-            OBA.Util.log("reading serviceAlert & vehicle from " + targetAddress)
+            log.info("reading serviceAlert & vehicle from " + targetAddress)
             let processedData = extractData(routeId,siri)
             let update = processedData[1]
             if(update){
@@ -114,7 +114,7 @@ const fetchAndProcessVehicleMonitoring = async ([routeId,targetAddress]) =>{
             return null
         })
         .catch((error) => {
-            console.error("error processing Siri data",error);
+            log.error("error processing Siri data",error);
         });
 
 
@@ -192,7 +192,7 @@ export const siriGetVehiclesForVehicleViewEffect = (routeIdList, vehicleId, vehi
     let targetAddresses = getTargetList(routeIdList)
 
     if(targetAddresses.length!==1){
-        console.error("a very odd situation has occured and should be reported in siriGetVehiclesForVehicleViewEffect",routeIdList,vehicleId,vehicleState,setState)
+        log.error("a very odd situation has occured and should be reported in siriGetVehiclesForVehicleViewEffect",routeIdList,vehicleId,vehicleState,setState)
     }
     targetAddresses = targetAddresses.concat(targetAddresses.map(adr=>{
         return [adr[0],adr[1]+`&VehicleRef=${vehicleId.split('_')[1]}&MaximumNumberOfCallsOnwards=50&VehicleMonitoringDetailLevel=calls`]}))

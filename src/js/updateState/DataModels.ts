@@ -356,7 +356,7 @@ export class Card {
                 break;
             default:
                 this.setType(CardType.ErrorCard);
-                console.error("Invalid search result type", searchResultType);
+                log.error("Invalid search result type", searchResultType);
         }
     }
 

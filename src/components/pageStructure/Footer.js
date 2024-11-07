@@ -3,10 +3,10 @@ import {OBA} from "../../js/oba";
 import ErrorBoundary from "../util/errorBoundary";
 import {FavoritesMenu} from "Components/pageStructure/FavoritesMenu";
 import {GoogleTranslateButton} from "Components/pageStructure/GoogleTranslate";
-
+import log from 'loglevel';
 
 function Footer  () {
-    OBA.Util.log("adding footer")
+    log.info("adding footer")
     return (
         <ErrorBoundary>
             <div className="footer" id="footer">

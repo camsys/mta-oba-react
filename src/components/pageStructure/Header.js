@@ -1,5 +1,5 @@
 import React, {useContext} from 'react';
-import {OBA} from "../../js/oba";
+import log from 'loglevel';
 import ErrorBoundary from "../util/errorBoundary";
 import bustimeLogo from '../../img/bustime-logo.png';
 import favicon from '../../img/favicon.ico';
@@ -8,7 +8,7 @@ import {useSearch} from "../../js/updateState/SearchEffect.ts";
 
 
 function Header  () {
-    OBA.Util.log("adding header")
+    log.info("adding header")
     const { search } = useSearch();
     return (
         <ErrorBoundary>

@@ -1,5 +1,5 @@
 import React from 'react';
-import {OBA} from "../../js/oba";
+import log from 'loglevel';
 import Cookies from 'js-cookie';
 
 //to use add import {setCookie, getCookie} from '../../components/util/appCookies'; and then call set or get cookie with values

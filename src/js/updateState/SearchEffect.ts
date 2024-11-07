@@ -113,7 +113,7 @@ async function getData(card:Card,stops: StopsObject,routes:RoutesObject,address:
             log.info('completed search results: ',card,stops,routes)
         })
         .catch((error) => {
-            console.error(error);
+            log.error(error);
         });
     log.info("got card data: ", card, typeof card, card==null,stops,routes)
     return card
@@ -199,7 +199,7 @@ export const useSearch = () =>{
             }
         }
         catch (error) {
-            console.error('There was a problem with the fetch operation:', error);
+            log.error('There was a problem with the fetch operation:', error);
         } finally {
         }
     }
@@ -243,7 +243,7 @@ export const useSearch = () =>{
                 renderCounter:prevState.renderCounter+1
             }));
         } catch (error) {
-            console.error('There was a problem with the fetch operation:', error);
+            log.error('There was a problem with the fetch operation:', error);
         }
     }
 
@@ -294,7 +294,7 @@ export const useSearch = () =>{
                         return currentCard
                     })
                     .catch((error) => {
-                        console.error(error);
+                        log.error(error);
                     });
 
                 let cardStack = state.cardStack;
@@ -309,7 +309,7 @@ export const useSearch = () =>{
             }
         }
         catch (error) {
-            console.error('There was a problem with the fetch operation:', error);
+            log.error('There was a problem with the fetch operation:', error);
         } finally {
         }
     }

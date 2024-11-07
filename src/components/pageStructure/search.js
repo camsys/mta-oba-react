@@ -1,5 +1,5 @@
 import React from 'react';
-import {OBA} from "../../js/oba";
+import log from 'loglevel';
 import ErrorBoundary from "../util/errorBoundary";
 import queryString from "query-string";
 import searchWhite from "../../img/icon/search_white.svg";
@@ -14,7 +14,7 @@ function getSearch  () {
         location.href = `?LineRef=${lineRef}`;
     };
 
-    OBA.Util.log("adding search")
+    log.info("adding search")
     return (
         <ErrorBoundary>
             <form id="search" method="get" role="search"

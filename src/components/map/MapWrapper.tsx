@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import {OBA} from "../../js/oba";
+import log from 'loglevel';
 import {MapComponent} from './MapComponent';
 import ErrorBoundary from "../util/errorBoundary";
 import ReactLeafletGoogleLayer from "react-leaflet-google-layer";
@@ -28,7 +28,7 @@ function getMapWrap  () : JSX.Element {
     const { state } = useContext(CardStateContext);
 
 
-    OBA.Util.log("adding map-wrapper")
+    log.info("adding map-wrapper")
     return(
         <ErrorBoundary>
             <div id="map-wrap">

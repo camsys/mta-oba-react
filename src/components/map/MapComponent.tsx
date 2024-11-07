@@ -3,6 +3,7 @@ import {LayerGroup, MapContainer, Marker, useMap, useMapEvents} from "react-leaf
 import React, {useContext, useEffect, useRef, useState} from "react";
 import queryString from "query-string";
 import {OBA} from "../../js/oba";
+import log from 'loglevel';
 import L, {LatLngBounds} from "leaflet";
 import bus from "../../img/icon/bus.svg";
 import {CardStateContext, RoutesContext, StopsContext} from "../util/CardStateComponent.tsx";
@@ -19,7 +20,6 @@ import {
     StopMatch
 } from "../../js/updateState/DataModels";
 import {useHighlight} from "Components/util/MapHighlightingStateComponent";
-import log from 'loglevel';
 
 
 
@@ -77,7 +77,7 @@ const MapVehicleElements = () :JSX.Element =>{
                         vehicleDatum.openPopup()
                     }
                 }
-            }catch(e){console.error("caught vehicle datum error when using vehicleObjsRefs.current.get")}
+            }catch(e){log.error("caught vehicle datum error when using vehicleObjsRefs.current.get")}
     },[state,vehicleState])
 
 
@@ -370,7 +370,7 @@ const CardChange = () =>{
 
 
 export const MapComponent = () :JSX.Element => {
-    OBA.Util.log("generating map")
+    log.info("generating map")
 
     let startingMapCenter = OBA.Config.defaultMapCenter;
     let startingZoom = 11;

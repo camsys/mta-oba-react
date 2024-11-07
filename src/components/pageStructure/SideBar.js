@@ -22,23 +22,23 @@ function SideBar  () {
     function renderCardInfo  () {
         log.info("setting card info based on currentCard type: ", state.currentCard)
         if(state.currentCard.type === CardType.RouteCard){
-            OBA.Util.log("adding route card")
+            log.info("adding route card")
             return <RouteCardWrapper/>
         }
         if(state.currentCard.type === CardType.HomeCard){
-            OBA.Util.log("adding home card")
+            log.info("adding home card")
             return <HomeCard/>
         }
         if(state.currentCard.type === CardType.VehicleCard){
-            OBA.Util.log("adding vehicle card")
+            log.info("adding vehicle card")
             return <VehicleCard/>
         }
         if(state.currentCard.type === CardType.StopCard){
-            OBA.Util.log("adding stop card")
+            log.info("adding stop card")
             return <StopCardWrapper/>
         }
         if(state.currentCard.type === CardType.GeocodeCard){
-            OBA.Util.log("adding geo card")
+            log.info("adding geo card")
             return <GeoCardWrapper/>
         }
         if(state.currentCard.type === CardType.AllRoutesCard){
@@ -47,7 +47,7 @@ function SideBar  () {
         }
     }
 
-    OBA.Util.log("adding sideBar")
+    log.info("adding sideBar")
     return (
         <ErrorBoundary>
             <Header />

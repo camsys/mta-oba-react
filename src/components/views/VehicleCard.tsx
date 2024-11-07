@@ -10,6 +10,7 @@ import meeples from "../../../public/img/meeples/meeples-blank.png";
 import {useEffect, useState} from "react";
 import ErrorBoundary from "../util/errorBoundary";
 import {ViewSearchItem} from "./MiscComponents";
+import log from 'loglevel'
 
 export const VehicleCardContentComponent = ({routeMatch,vehicleDatum}
                                                 :{routeMatch:RouteMatch,vehicleDatum:VehicleRtInterface})
