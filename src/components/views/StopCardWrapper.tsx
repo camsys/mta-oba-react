@@ -45,7 +45,7 @@ const RouteDirection = (routeDirectionDatum:RouteMatchDirectionInterface,stopId:
     let hasServiceAlert = getServiceAlert(routeId,serviceAlertIdentifier)!==null;
     log.info("StopCard RouteDirection stopCardVehicleData",stopCardVehicleData,lastUpdateTime)
     return (stopCardVehicleData === null? null :
-        <div className="inner-card route-direction en-route collapsible open">
+        <div className="inner-card route-direction en-route collapsible open" key={routeAndDir}>
             <button
                 className={`card-header collapse-trigger open`}
                 aria-haspopup="true"
@@ -65,7 +65,7 @@ const RouteDirection = (routeDirectionDatum:RouteMatchDirectionInterface,stopId:
             <div className="card-content collapse-content">
                 <ul className="approaching-buses">
                     {stopCardVehicleData.map((vehicleDatum,index)=>{
-                        if(index<3){return <VehicleComponent {...{vehicleDatum,lastUpdateTime}} tabbable={true}/>}})}
+                        if(index<3){return <VehicleComponent {...{vehicleDatum,lastUpdateTime}} tabbable={true} key={index}/>}})}
                 </ul>
                 <ServiceAlertContainerComponent {...{routeId,serviceAlertIdentifier}}/>
                 <ul className="menu icon-menu inner-card-menu">
