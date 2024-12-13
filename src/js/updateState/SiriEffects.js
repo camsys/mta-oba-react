@@ -109,7 +109,6 @@ const fetchAndProcessVehicleMonitoring = async ([routeId,targetAddress]) =>{
             if(update){
                 log.info("should update serviceAlert & vehicle state?",update)
                 return processedData[0]
-                log.info("new serviceAlert & vehicle state",vehicleState)
             }
             return null
         })
