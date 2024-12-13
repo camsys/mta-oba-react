@@ -107,11 +107,11 @@ const fetchAndProcessStopMonitoring = async ([stopId,targetAddress]) =>{
     return fetch(targetAddress)
         .then((response) => response.json())
         .then((siri) => {
-            log.info("reading serviceAlert & vehicle from " + targetAddress)
+            log.info("reading serviceAlert & vehicle for stop from " + targetAddress)
             let processedData = extractData(stopId,siri)
             let update = processedData[1]
             if(update){
-                log.info("should update serviceAlert & vehicle state?",update)
+                log.info("should update stop serviceAlert & vehicle state?",update)
                 return processedData[0]
             }
             return null
