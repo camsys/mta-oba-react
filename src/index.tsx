@@ -5,7 +5,7 @@ import './img/favicon.ico';
 import { createRoot } from 'react-dom/client';
 import { OBA } from './js/oba';
 import log, {LogLevel} from 'loglevel';
-
+import {AppRoot} from "./components/app";
 
 
 log.setLevel(process.env.LOGGINGLEVEL,true)
@@ -14,16 +14,9 @@ log.info('OBA Util is live.');
 
 
 
-import appComponent from "./components/app";
-function GetApp () {
- return appComponent()
-}
-
-
-
 log.info("test message")
 var mapNode = document.getElementById('root');
 var root = createRoot(mapNode);
-root.render(<GetApp />);
+root.render(<AppRoot />);
 
 

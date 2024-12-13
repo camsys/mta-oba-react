@@ -14,7 +14,7 @@ import {MapHighlightingStateProvider} from "./util/MapHighlightingStateComponent
 import {siriGetVehiclesForRoutesEffect, siriGetVehiclesForVehicleViewEffect} from "../js/updateState/SiriEffects";
 import {siriGetVehiclesForStopViewEffect} from "../js/updateState/SiriStopEffects";
 import {CardType} from "../js/updateState/DataModels";
-import MapWrapper from "./map/MapWrapper.tsx";
+import {MapWrapper} from "./map/MapWrapper.tsx";
 import {FavoritesCookieStateProvider} from "Components/util/MiscStateComponent";
 import log from 'loglevel';
 
@@ -47,8 +47,8 @@ const VehicleLoading=()=>{
 
         getSiri()
         //todo: set interval back to 15s
-        const interval = setInterval(getSiri, 5*1000);
-        return () => clearInterval(interval);
+        // const interval = setInterval(getSiri, 5*1000);
+        // return () => clearInterval(interval);
     }, [state]);
 }
 
@@ -60,7 +60,7 @@ function InitialCardGeneration ({setLoading}){
     }, []);
 }
 
-function App  () {
+function App  () : JSX.Element{
     log.info("adding app")
     const [loading, setLoading] = useState(true);
 
@@ -77,12 +77,12 @@ function App  () {
                 </div>
                 <MapWrapper/>
             </React.Fragment>)}
-            <VehicleLoading/>
+            {/*<VehicleLoading/>*/}
         </ErrorBoundary>
     )
 }
 
-const Root = () => {
+export function AppRoot () : JSX.Element{
     return (
         <ErrorBoundary>
             <SearchStateProviders>
@@ -99,5 +99,3 @@ const Root = () => {
         </ErrorBoundary>
     )
 }
-
-export default Root;

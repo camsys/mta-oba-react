@@ -46,7 +46,8 @@ export const VehicleCardContentComponent = ({routeMatch,vehicleDatum}
                         return(
                             <li
                             onMouseEnter={() => highlightId(vehicleArrival.stopId)}
-                            onMouseLeave={() => highlightId(null)}>
+                            onMouseLeave={() => highlightId(null)}
+                            key={vehicleArrival.stopId}>
                                 <a href="#" onClick={() => search(vehicleArrival.stopId)}>{vehicleArrival.stopName}</a>
                                 <span className="stop-details">
                                     {OBA.Util.getArrivalEstimateForISOString(vehicleArrival.ISOTime,vehicleDatum.lastUpdate)}
@@ -60,7 +61,7 @@ export const VehicleCardContentComponent = ({routeMatch,vehicleDatum}
     )
 }
 
-const VehicleCard = (routeMatch:RouteMatch,vehicleId:string) : JSX.Element=> {
+function VehicleCard ({routeMatch,vehicleId}: { routeMatch: RouteMatch, vehicleId: string}) : JSX.Element{
     log.info("generating VehicleCard: ", routeMatch);
 
     let {highlightId} = useHighlight()
@@ -154,8 +155,9 @@ const getVehicleCardsWrapper = () : JSX.Element => {
             <h2 className="cards-header">Vehicle:</h2>
             <div className="cards">
                 {state.currentCard.searchMatches.map(route=>{
-                    log.info("vehicleCard",route)
-                    return VehicleCard(route,state.currentCard.vehicleId)})}
+                    log.info("vehicleCard",route);
+                    return <VehicleCard routeMatch={route} vehicleId={state.currentCard.vehicleId} key={state.currentCard.vehicleId}/>
+                })}
             </div>
         </React.Fragment>);
 

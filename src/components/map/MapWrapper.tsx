@@ -12,7 +12,7 @@ import {Card, CardType} from "../../js/updateState/DataModels";
 
 
 
-function getMapWrap  () : JSX.Element {
+export function MapWrapper  () : JSX.Element {
 
 
     const [mapVisible,setMapVisible] = useState(false)
@@ -43,4 +43,3 @@ function getMapWrap  () : JSX.Element {
         </ErrorBoundary>
 )
 }
-export default getMapWrap;
