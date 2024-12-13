@@ -77,7 +77,7 @@ function App  () : JSX.Element{
                 </div>
                 <MapWrapper/>
             </React.Fragment>)}
-            {/*<VehicleLoading/>*/}
+            <VehicleLoading/>
         </ErrorBoundary>
     )
 }
