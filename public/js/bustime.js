@@ -103,9 +103,9 @@ document.addEventListener('DOMContentLoaded', function() {
       // map trigger closest parent with class 'map-wrap'
       var mapWrap = mapToggle.closest('#map-wrap');
       
-      window.log.info('boop');
-      window.log.info(mapToggle);
-      window.log.info(mapWrap);
+      // window.log.info('boop');
+      // window.log.info(mapToggle);
+      // window.log.info(mapWrap);
 
       if(mapWrap.classList){
         mapWrap.classList.toggle('open');
