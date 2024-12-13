@@ -246,7 +246,6 @@ const setMapLatLngAndZoom = (duration :number , lat : number, long :number,zoom:
     let zoomsMatch = zoom-.3<currentZoom && zoom+.3>currentZoom
     log.info("update map bounds and zoom?",latsMatch,longsMatch,zoomsMatch)
 
-    //todo: add a lil function so this is skipped if there's no meaningful change
     if(latsMatch&&longsMatch&&zoomsMatch){ return }
     log.info("updating map bounds and zoom. current: ",currentLat,currentLong,currentZoom,"new: ",lat,long,zoom, "matches",latsMatch,longsMatch,zoomsMatch)
     map.flyTo([lat, long], zoom, {
