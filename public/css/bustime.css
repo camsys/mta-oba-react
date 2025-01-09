@@ -2009,6 +2009,7 @@ button:hover, .button:hover {
   display: -webkit-inline-box;
   display: -ms-inline-flexbox;
   display: inline-flex;
+  color: #0E61A9;
 }
 .approaching-buses li .bus::before, .approaching-buses li .bus::after {
   content: "";
