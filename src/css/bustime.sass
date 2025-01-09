@@ -1213,7 +1213,7 @@ button, .button
   margin-top: .25em
   position: relative
   img
-    width: 6em
+    width: 2.25em
     height: 1em
     position: relative
     z-index: 0
@@ -1221,7 +1221,7 @@ button, .button
     content: ''
     position: absolute
     z-index: 1
-    width: 6em
+    width: 2.25em
     height: 1em
     top: 0
     left: 0
@@ -1231,7 +1231,9 @@ button, .button
   @for $i from 1 through 9
     &-#{$i}
       &::after
-        width: $i*10%
+        width: $i*25%
+  & + .passenger-count
+    margin-left: .5em
 
 .next-stops
   font-size: .875em
