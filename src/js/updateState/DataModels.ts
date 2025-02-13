@@ -1,5 +1,6 @@
 import {OBA} from "../oba";
 import {LatLngLiteral} from "leaflet";
+import log from 'loglevel';
 
 export class AgencyAndId {
     agency: string;
@@ -39,6 +40,11 @@ export interface VehicleArrivalInterface {
     ISOTime?: string;
 }
 
+export interface VehicleDepartureInterface {
+    ISOTime?: string;
+    isDepartureOnSchedule?: boolean;
+}
+
 export interface VehicleRtInterface {
     longLat: [number, number];
     latLngLiteral:LatLngLiteral;
@@ -46,6 +52,12 @@ export interface VehicleRtInterface {
     hasRealtime: boolean;
     nextStop: string | null;
     vehicleArrivalData: VehicleArrivalInterface[];
+    vehicleDepartureData: VehicleDepartureInterface;
+    departureTimeAsText: string;
+    layover: boolean;
+    prevTrip: boolean;
+    stalled: boolean;
+    spooking: boolean;
     strollerVehicle?: boolean;
     passengerCount?: number;
     passengerCapacity?: number;
@@ -111,6 +123,16 @@ export function createVehicleArrivalInterface(mc: any): VehicleArrivalInterface 
     };
 }
 
+export function createVehicleDepartureInterface(mvj: any,updateTime:Date): VehicleDepartureInterface {
+    let departureTimeAsDateTime = OBA.Util.ISO8601StringToDate(mvj.OriginAimedDepartureTime);
+    let isDepartureOnSchedule = departureTimeAsDateTime && departureTimeAsDateTime.getTime() >= updateTime;
+    if(isDepartureOnSchedule==null){isDepartureOnSchedule= false;}
+    return {
+        ISOTime: mvj.OriginAimedDepartureTime,
+        isDepartureOnSchedule: isDepartureOnSchedule
+    }
+}
+
 export function createVehicleRtInterface(mvj: any,updateTime:Date): VehicleRtInterface {
     const vehicleArrivalData = [];
 
@@ -127,6 +149,23 @@ export function createVehicleRtInterface(mvj: any,updateTime:Date): VehicleRtInt
         }
     }
 
+    let vehicleDepartureData = createVehicleDepartureInterface(mvj,updateTime);
+    let layover = false;
+    let prevTrip = false;
+    let stalled = false;
+    if(typeof mvj.ProgressStatus !== 'undefined'){
+        if(mvj.ProgressStatus.indexOf("layover") !== -1){
+            layover = true;
+        }
+        if(mvj.ProgressStatus.indexOf("prevTrip") !== -1){
+            prevTrip = true;
+        }
+        if(mvj.ProgressStatus.indexOf("stalled") !== -1){
+            stalled = true;
+        }
+    }
+
+
     return {
         lastUpdate: updateTime,
         longLat: [mvj.VehicleLocation.Latitude, mvj.VehicleLocation.Longitude],
@@ -135,9 +174,15 @@ export function createVehicleRtInterface(mvj: any,updateTime:Date): VehicleRtInt
         hasRealtime: mvj.Monitored && mvj.ProgressStatus!=="spooking",
         nextStop: mvj.MonitoredCall?.StopPointRef || null,
         vehicleArrivalData,
+        vehicleDepartureData,
         strollerVehicle: mvj.MonitoredCall?.Extensions?.VehicleFeatures?.StrollerVehicle,
         passengerCount: mvj.MonitoredCall?.Extensions?.Capacities?.EstimatedPassengerCount,
         passengerCapacity: mvj.MonitoredCall?.Extensions?.Capacities?.EstimatedPassengerCapacity,
+        layover: layover,
+        prevTrip: prevTrip,
+        stalled: stalled,
+        spooking: mvj.ProgressStatus=="spooking",
+        departureTimeAsText: mvj.OriginAimedDepartureTime,
         vehicleId: mvj.VehicleRef,
         bearing: mvj.Bearing,
         direction: mvj.DirectionRef,

@@ -41,7 +41,7 @@ function extractData (routeId,siri){
             }
             vehicles.push(vehicleDatum)
         };
-        log.info('processed vehicles')
+        log.info('processed vehicles' , stopsToVehiclesMap)
     } else {
         log.info('no '+keyword+' recieved. not processing '+keyword)
     }

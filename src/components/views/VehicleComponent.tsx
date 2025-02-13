@@ -10,7 +10,29 @@ function VehicleComponent({vehicleDatum,tabbable}:
     let {vehicleSearch} = useSearch()
 
     // log.info("generating VehicleComponent",vehicleDatum)
-    let hasArrivalData = typeof vehicleDatum?.vehicleArrivalData!=='undefined'
+    let hasArrivalData = typeof vehicleDatum?.vehicleArrivalData!=='undefined';
+    let departureInfo = "";
+    if(vehicleDatum.vehicleDepartureData.ISOTime !== undefined) {
+        departureInfo = vehicleDatum.layover
+            ?
+            vehicleDatum.vehicleDepartureData.isDepartureOnSchedule
+                ?
+                " (at terminal, scheduled to depart at " + OBA.Util.ISO8601StringToDate(vehicleDatum.departureTimeAsText).toLocaleTimeString() + ")"
+                :
+                " (at terminal)"
+            :
+            vehicleDatum.prevTrip
+                ?
+                " (+layover, scheduled to depart terminal at " + OBA.Util.ISO8601StringToDate(vehicleDatum.departureTimeAsText).toLocaleTimeString()
+                :
+                " (+ scheduled layover at terminal)"
+    }
+    else{
+        departureInfo = vehicleDatum.layover ? " (at terminal)" : ""
+    }
+    if (vehicleDatum.spooking) {
+        departureInfo = departureInfo + " (Estimated)"
+    }
     return(
         <li key={vehicleDatum.vehicleId}>
             <span className="bus-info">
@@ -19,6 +41,7 @@ function VehicleComponent({vehicleDatum,tabbable}:
                     {hasArrivalData?
                         vehicleDatum?.vehicleArrivalData?.[0].prettyDistance
                         :null}
+                    {departureInfo}
                 </span>
                 {vehicleDatum.passengerCount != null && (
                     vehicleDatum.passengerCapacity != null ?
