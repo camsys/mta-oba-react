@@ -59,6 +59,7 @@ export interface VehicleRtInterface {
     stalled: boolean;
     spooking: boolean;
     strollerVehicle?: boolean;
+    apcLevel?: number;
     passengerCount?: number;
     passengerCapacity?: number;
     vehicleId: string;
@@ -149,6 +150,20 @@ export function createVehicleRtInterface(mvj: any,updateTime:Date): VehicleRtInt
         }
     }
 
+    let apcLevel = null;
+    if(mvj?.MonitoredCall?.Extensions?.Capacities !=null){
+        log.info("apcLevel: capacity info " + mvj?.MonitoredCall?.Extensions?.Capacities?.EstimatedPassengerLoadFactor)
+        switch (mvj?.MonitoredCall?.Extensions?.Capacities?.EstimatedPassengerLoadFactor){
+            case "manySeatsAvailable": apcLevel = 1; break;
+            case "fewSeatsAvailable": apcLevel = 2; break;
+            case "standingRoomOnly": apcLevel = 3; break;
+            case "full": apcLevel = 4; break;
+            case null: apcLevel = -1; break;
+        }
+        console.log("apcLevel: " + apcLevel)
+
+    }
+
     let vehicleDepartureData = createVehicleDepartureInterface(mvj,updateTime);
     let layover = false;
     let prevTrip = false;
@@ -175,6 +190,7 @@ export function createVehicleRtInterface(mvj: any,updateTime:Date): VehicleRtInt
         nextStop: mvj.MonitoredCall?.StopPointRef || null,
         vehicleArrivalData,
         vehicleDepartureData,
+        apcLevel: apcLevel,
         strollerVehicle: mvj.MonitoredCall?.Extensions?.VehicleFeatures?.StrollerVehicle,
         passengerCount: mvj.MonitoredCall?.Extensions?.Capacities?.EstimatedPassengerCount,
         passengerCapacity: mvj.MonitoredCall?.Extensions?.Capacities?.EstimatedPassengerCapacity,

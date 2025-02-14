@@ -43,17 +43,25 @@ function VehicleComponent({vehicleDatum,tabbable}:
                         :null}
                     {departureInfo}
                 </span>
-                {vehicleDatum.passengerCount != null && (
-                    vehicleDatum.passengerCapacity != null ?
+                {vehicleDatum.passengerCount != null && vehicleDatum.passengerCapacity != null
+                    ?
                         <span className="passengers">
-                            <span className={'meeples meeples-'+`${Math.ceil((vehicleDatum.passengerCount / vehicleDatum.passengerCapacity) * 4)}`}>
-                                <img src={meeples} alt={`vehicle is ~${Math.ceil((vehicleDatum.passengerCount / vehicleDatum.passengerCapacity) * 100)}% full`} title={`vehicle is ~${Math.ceil((vehicleDatum.passengerCount / vehicleDatum.passengerCapacity) * 100)}% full`} className="meeples-blank" />
-                            </span>
+                            {
+                                vehicleDatum.apcLevel!=-1?
+                                    <span className={'meeples meeples-' + `${vehicleDatum?.apcLevel}`}>
+                                        <img src={meeples}
+                                             alt={`vehicle is ~${Math.ceil((vehicleDatum.passengerCount / vehicleDatum.passengerCapacity) * 100)}% full`}
+                                             title={`vehicle is ~${Math.ceil((vehicleDatum.passengerCount / vehicleDatum.passengerCapacity) * 100)}% full`}
+                                             className="meeples-blank"/>
+                                    </span>
+                                :null
+                            }
                             {vehicleDatum.passengerCount != null
                                 ?(<span class="passenger-count">{`~${vehicleDatum.passengerCount} passengers`}</span>)
                                 : null}
                         </span>
-                        : null)}
+                    :
+                        null}
             </span>
             <a href="#" tabIndex={tabbable?0:-1}
                onClick={()=>{vehicleSearch(vehicleDatum)}}
