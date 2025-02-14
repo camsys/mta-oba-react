@@ -27,6 +27,11 @@ function HomeCard  () : JSX.Element {
                 <li><a href="#" onClick={() => search('200884')}>200884</a></li>
             </ul>
         </li>
+        <li>
+            <ul className="links">
+                <li>or search "<a href="#" onClick={() => search('near me')}>near me</a>"</li>
+            </ul>
+        </li>
     </ul>
     <ul className="menu icon-menu" role="menu">
         <li>

@@ -152,6 +152,7 @@ const getBaseAddress =()=>{
 }
 
 const getSearchAddress=(searchTerm:string)=>{
+    log.info("searching for: " + getBaseAddress() + OBA.Config.searchUrl + "?q=" + searchTerm)
     return  getBaseAddress() + OBA.Config.searchUrl + "?q=" + searchTerm
 }
 
@@ -165,6 +166,7 @@ export const useSearch = () =>{
     const routes = useContext(RoutesContext) as RoutesObject
     const stops = useContext(StopsContext) as StopsObject
     const allRoutesSearchTerm = "allRoutes";
+    const nearbySearchTerms = new Set(["NEARBY","NEARBYROUTES","NEARBYSTOPS","NEARME", "NEAR ME"])
 
 
     const search = async (searchTerm) =>{
@@ -175,6 +177,19 @@ export const useSearch = () =>{
         if(searchTerm===allRoutesSearchTerm){
             await allRoutesSearch()
             return
+        }
+        if(nearbySearchTerms.has(searchTerm)){
+            log.info("searching for nearby stops and routes");
+            await navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    log.info("got location",position.coords.latitude,position.coords.longitude);
+                    searchTerm= position.coords.latitude + "," + position.coords.longitude;
+                    search(searchTerm);},
+                (error) => {
+                    log.info("error getting location",error)
+                    searchTerm = "could not find user location";
+                    return;
+                });
         }
         try {
             log.info("fetch search data called, generating new card",state,searchTerm)
@@ -219,17 +234,27 @@ export const useSearch = () =>{
         setLoading(false);
 
         try {
-            const searchRef = queryString.parse(location.search).LineRef as string;
+            let searchRef = queryString.parse(location.search).LineRef as string;
             if(!searchRef){return}
             if(searchRef===allRoutesSearchTerm){
                 allRoutesSearch();
                 return;
             }
-            log.info("generating card based on starting query");
-            if(searchRef===allRoutesSearchTerm){
-                await allRoutesSearch()
-                return
+            if(nearbySearchTerms.has(searchRef)){
+                log.info("searching for nearby stops and routes");
+                await navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        log.info("searching nearby: got location",position.coords.latitude,position.coords.longitude);
+                        searchRef= position.coords.latitude + "," + position.coords.longitude;
+                        search(searchRef);},
+                    (error) => {
+                        log.info("error getting location",error)
+                        searchRef = "could not find user location";
+                        return;
+                    });
+                searchRef = "";
             }
+            log.info("generating card based on starting query");
             let currentCard = await getData(new Card(searchRef),stops,routes,getSearchAddress(searchRef));
             // let currentCard = new Card(searchRef);
             log.info("setting card based on starting query",currentCard);
