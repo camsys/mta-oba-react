@@ -9,7 +9,7 @@ body
   font-family: Helvetica, Arial, sans-serif
   font-size: 16px
   width: 100vw
-  min-height: 100vh
+  min-height: 100dvh
   position: relative
   color: $black
   overflow-x: hidden
@@ -304,7 +304,7 @@ button, .button
               fill: $white
         .sub-menu
           padding: $content-padding/2 $content-padding
-          max-height: 200vh
+          max-height: 200dvh
           opacity: 1
           border-bottom: solid $mta-blue
           border-top: solid $mta-blue
@@ -369,7 +369,7 @@ button, .button
     width: 100vw
     position: relative
     flex-grow: 1
-    min-height: 100vh
+    min-height: 100dvh
     h1
       font-size: 2em
       margin: 0 0 .5em 0
@@ -639,7 +639,7 @@ button, .button
   flex-direction: column
   align-items: stretch
   align-content: stretch
-  height: calc(100vh - #{$button-height + 2rem})
+  height: calc(100dvh - #{$button-height + 2rem})
   #search
     padding: $content-padding
     background: $mta-blue
@@ -686,7 +686,7 @@ button, .button
       box-shadow: 0px 0px 0px 0px rgba($black, 0)
       transition: opacity .25s ease-in-out .125s, box-shadow .25s ease-in-out
       border: 1px solid $mta-blue
-      max-height: 50vh
+      max-height: 50dvh
       overflow-y: auto
       .react-autosuggest__suggestions-list
         list-style: none
@@ -778,14 +778,21 @@ button, .button
   width: 100vw
   background: $black2
   height: $bottom-buttons-height
-  padding: 0 $content-padding
+  padding: $content-padding
   display: flex
-  align-items: center
+  align-items: stretch
   justify-content: center
   gap: $content-padding
   transition: bottom .5s ease-out
   button
     border-color: transparent
+    padding-top: 0
+    padding-bottom: 0
+    display: inline-flex
+    align-items: center
+    justify-content: center
+    .svg-icon-wrap
+      flex-shrink: 0
     &#map-toggle
       flex-grow: 1
       +text-outline($white, .125em)
@@ -828,9 +835,9 @@ button, .button
   position: absolute
   z-index: 100
   width: 100vw
-  height: 100vh
+  height: 100dvh
   left: 0
-  top: calc(100vh - $bottom-buttons-height)
+  top: calc(100dvh - $bottom-buttons-height)
   transition: top .5s ease-in-out
   flex-grow: 1
   display: flex
@@ -853,7 +860,7 @@ button, .button
 
 #map
   width: 100vw
-  height: calc(100vh - $bottom-buttons-height)
+  height: calc(100dvh - $bottom-buttons-height)
   position: relative
   iframe
     position: relative
@@ -906,9 +913,14 @@ button, .button
 .refresh-button
   overflow: hidden
   text-overflow: ellipsis
-  display: flex
-  gap: .5em
+  // display: flex
+  // gap: .5em
   font-weight: bold
+  .label
+    display: flex
+    flex-grow: 1
+    gap: .5em
+    width: 100%
   .updated-at
     font-weight: normal
   .updated
@@ -919,6 +931,9 @@ button, .button
     display: inline-flex
     +mq-reverse($four)
       .updated
+        display: none
+    +mq-reverse(320px)
+      .updated-at
         display: none
 
 .cards

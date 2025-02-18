@@ -316,7 +316,7 @@ body {
   font-family: Helvetica, Arial, sans-serif;
   font-size: 16px;
   width: 100vw;
-  min-height: 100vh;
+  min-height: 100dvh;
   position: relative;
   color: #000;
   overflow-x: hidden;
@@ -719,7 +719,7 @@ button:hover, .button:hover {
 }
 .icon-menu > li.open > a .sub-menu, .icon-menu > li.open > button .sub-menu {
   padding: 0.5rem 1rem;
-  max-height: 200vh;
+  max-height: 200dvh;
   opacity: 1;
   border-bottom: solid #0E61A9;
   border-top: solid #0E61A9;
@@ -799,7 +799,7 @@ button:hover, .button:hover {
   -webkit-box-flex: 1;
       -ms-flex-positive: 1;
           flex-grow: 1;
-  min-height: 100vh;
+  min-height: 100dvh;
 }
 .main-body.no-map h1 {
   font-size: 2em;
@@ -1208,7 +1208,7 @@ button:hover, .button:hover {
           align-items: stretch;
   -ms-flex-line-pack: stretch;
       align-content: stretch;
-  height: calc(100vh - 5.125rem);
+  height: calc(100dvh - 5.125rem);
 }
 #sidebar #search {
   padding: 1rem;
@@ -1290,7 +1290,7 @@ button:hover, .button:hover {
   transition: opacity 0.25s ease-in-out 0.125s, box-shadow 0.25s ease-in-out;
   transition: opacity 0.25s ease-in-out 0.125s, box-shadow 0.25s ease-in-out, -webkit-box-shadow 0.25s ease-in-out;
   border: 1px solid #0E61A9;
-  max-height: 50vh;
+  max-height: 50dvh;
   overflow-y: auto;
 }
 #sidebar #search .react-autosuggest__suggestions-container .react-autosuggest__suggestions-list {
@@ -1430,13 +1430,13 @@ button:hover, .button:hover {
   width: 100vw;
   background: #202025;
   height: 5.125rem;
-  padding: 0 1rem;
+  padding: 1rem;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  -webkit-box-align: stretch;
+      -ms-flex-align: stretch;
+          align-items: stretch;
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
@@ -1446,6 +1446,21 @@ button:hover, .button:hover {
 }
 .bottom-buttons button {
   border-color: transparent;
+  padding-top: 0;
+  padding-bottom: 0;
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+.bottom-buttons button .svg-icon-wrap {
+  -ms-flex-negative: 0;
+      flex-shrink: 0;
 }
 .bottom-buttons button#map-toggle {
   -webkit-box-flex: 1;
@@ -1507,9 +1522,9 @@ button:hover, .button:hover {
   position: absolute;
   z-index: 100;
   width: 100vw;
-  height: 100vh;
+  height: 100dvh;
   left: 0;
-  top: calc(100vh - 5.125rem);
+  top: calc(100dvh - 5.125rem);
   -webkit-transition: top 0.5s ease-in-out;
   transition: top 0.5s ease-in-out;
   -ms-flex-positive: 1;
@@ -1552,7 +1567,7 @@ button:hover, .button:hover {
 
 #map {
   width: 100vw;
-  height: calc(100vh - 5.125rem);
+  height: calc(100dvh - 5.125rem);
   position: relative;
 }
 #map iframe {
@@ -1641,11 +1656,17 @@ button:hover, .button:hover {
 .refresh-button {
   overflow: hidden;
   text-overflow: ellipsis;
+  font-weight: bold;
+}
+.refresh-button .label {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
+  -webkit-box-flex: 1;
+      -ms-flex-positive: 1;
+          flex-grow: 1;
   gap: 0.5em;
-  font-weight: bold;
+  width: 100%;
 }
 .refresh-button .updated-at {
   font-weight: normal;
@@ -1661,6 +1682,11 @@ button:hover, .button:hover {
 }
 @media screen and (max-width: 399px) {
   .bottom-buttons .refresh-button .updated {
+    display: none;
+  }
+}
+@media screen and (max-width: 319px) {
+  .bottom-buttons .refresh-button .updated-at {
     display: none;
   }
 }
