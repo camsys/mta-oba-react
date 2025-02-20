@@ -17,7 +17,9 @@ function extractData (stopId,siri){
     let update= false;
     log.info("extractData for siri stop ",stopId,siri)
     let keyword = "serviceAlert & vehicle"
+    siri = siri?.siri
     let lastCallTime = siri?.Siri?.ServiceDelivery?.ResponseTimestamp
+    log.info("siri stop lastCallTime",lastCallTime)
     let [vehicleDataMap,serviceAlertDataMap,stopsToVehiclesMap,stopsToExtendedVehiclesMap] =
         [new Map(), new Map(),new Map(),new Map()]
 
@@ -196,13 +198,12 @@ const siriGetAndSetVehicles = (targetAddresses,vehicleState, setState, dataProce
 
 export const siriGetVehiclesForStopViewEffect = (routeIdList, stopIdList, vehicleState, setState ) => {
     let baseTargetAddress = "https://" + process.env.ENV_ADDRESS + "/" + process.env.STOP_MONITORING_ENDPOINT
+    // let baseTargetAddress = "https://" + process.env.ENV_ADDRESS + ""
     log.info("looking for Siri Data for stops!",stopIdList)
 
-    // let targetAddresses = getTargetList(routeIdList)
     let targetAddresses = []
     targetAddresses = [... stopIdList].map((stopId)=>{
-        return [stopId,baseTargetAddress+ "&MonitoringRef=" + stopId.replace("+","%2B")
-            + "&StopMonitoringDetailLevel=normal&MinimumStopVisitsPerLine=3"];
+        return [stopId,baseTargetAddress+ "&stopId=" + stopId.replace("+","%2B")];
     })
     log.info("siri stop data target addresses ", targetAddresses)
 
