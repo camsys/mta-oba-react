@@ -25,7 +25,7 @@ import {ViewSearchItem} from "./MiscComponents";
 import log from 'loglevel';
 
 
-const RouteDirection = (routeDirectionDatum:RouteMatchDirectionInterface,stopId:string) : JSX.Element=>{
+const RouteDirection = (routeDirectionDatum:RouteMatchDirectionInterface,stopId:string, startCollapsed:boolean) : JSX.Element=>{
     const {highlightId} = useHighlight();
     const { search } = useSearch();
     const {vehiclesApproachingStopsState} = useContext(VehiclesApproachingStopsContext)
@@ -45,7 +45,7 @@ const RouteDirection = (routeDirectionDatum:RouteMatchDirectionInterface,stopId:
     let hasServiceAlert = getServiceAlert(routeId,serviceAlertIdentifier)!==null;
     log.info("StopCard RouteDirection stopCardVehicleData",stopCardVehicleData,lastUpdateTime)
     return (stopCardVehicleData === null? null :
-        <div className="inner-card route-direction en-route collapsible open" key={routeAndDir}>
+        <div className={`inner-card route-direction en-route collapsible ${startCollapsed?"":"open"}`} key={routeAndDir}>
             <button
                 className={`card-header collapse-trigger open`}
                 aria-haspopup="true"
@@ -110,7 +110,7 @@ export function ZoomAndCenterOnStopButton():JSX.Element{
     )
 }
 
-export function StopCardContent({stopMatch}: StopMatch):JSX.Element{
+export function StopCardContent({stopMatch}: StopMatch,startCollapsed:boolean):JSX.Element{
     log.info("generating StopCardContent",stopMatch)
 
     return(
@@ -121,7 +121,7 @@ export function StopCardContent({stopMatch}: StopMatch):JSX.Element{
             <h4>Buses en-route:</h4>
             {stopMatch.routeMatches.map(
                 route=>route.directions.map(
-                    dir => RouteDirection(dir,stopMatch.id.split("_")[1])
+                    dir => RouteDirection(dir,stopMatch.id.split("_")[1],startCollapsed)
                 ))}
             <div className="text-note">
                 <p>
@@ -157,7 +157,7 @@ export function StopCard (match: SearchMatch) : JSX.Element {
                 </h3>
             </div>
             <div className="card-content">
-                <StopCardContent stopMatch={stopMatch}/>
+                <StopCardContent stopMatch={stopMatch} startCollapsed={false}/>
                 <ul className="menu icon-menu card-menu">
                     <li>
                         <StopCardFavoriteButton stopMatch={stopMatch}/>
@@ -180,8 +180,8 @@ function InnerCollapsableStopCard ({ match, oneOfMany}: {match:SearchMatch, oneO
 
     log.info("generating StopCard",stopMatch)
     return(
-    <div className={`card stop-card ${oneOfMany?"collapsible open":""} ${isFavorite(stopMatch)?"favorite":""}`}>
-        <button className="card-header collapse-trigger open"
+    <div className={`card stop-card ${oneOfMany?"collapsible closed":""} ${isFavorite(stopMatch)?"favorite":""}`}>
+        <button className="card-header collapse-trigger closed"
                 onMouseEnter={() => highlightId(stopMatch.id)}
                 onMouseLeave={() => highlightId(null)}
                 aria-haspopup="true" aria-expanded="true"
@@ -193,7 +193,7 @@ function InnerCollapsableStopCard ({ match, oneOfMany}: {match:SearchMatch, oneO
             </span>
         </button>
         <div className="card-content collapse-content">
-            <StopCardContent stopMatch={stopMatch}/>
+            <StopCardContent stopMatch={stopMatch} startCollapsed={true}/>
             <ul className="menu icon-menu card-menu">
                 <li>
                     <StopCardFavoriteButton stopMatch={stopMatch}/>
