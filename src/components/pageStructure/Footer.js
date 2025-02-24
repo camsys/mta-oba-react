@@ -4,14 +4,20 @@ import ErrorBoundary from "../util/errorBoundary";
 import {FavoritesMenu} from "Components/pageStructure/FavoritesMenu";
 import {GoogleTranslateButton} from "Components/pageStructure/GoogleTranslate";
 import log from 'loglevel';
+import {useSearch} from "../../js/updateState/SearchEffect";
+import bus from "../../img/icon/bus.svg";
 
 function Footer  () {
     log.info("adding footer")
+    const { search,allRoutesSearch } = useSearch();
     return (
         <ErrorBoundary>
             <div className="footer" id="footer">
                 <ul className="menu icon-menu" role="menu">
                     <FavoritesMenu/>
+                    <li className="parent collapsible">
+                        <a href="#" onClick={() => search('near me')}>Nearby Stops and Routes</a>
+                    </li>
                     <li className="parent collapsible">
                         <button id="mta-menu-trigger" className="sub-menu-trigger collapse-trigger" aria-haspopup="true" aria-expanded="false" aria-label="Toggle MTA Menu">
                                 <span className="svg-icon-wrap" role="presentation" aria-hidden="true">
