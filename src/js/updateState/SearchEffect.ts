@@ -175,11 +175,13 @@ export const useSearch = () =>{
                 .toUpperCase()
             : searchTerm.toUpperCase();
         if(searchTerm===allRoutesSearchTerm){
+            document.getElementById('search-input').blur();
             await allRoutesSearch()
             return
         }
         if(nearbySearchTerms.has(searchTerm)){
             log.info("searching for nearby stops and routes");
+            document.getElementById('search-input').blur();
             await navigator.geolocation.getCurrentPosition(
                 (position) => {
                     log.info("got location",position.coords.latitude,position.coords.longitude);
@@ -193,6 +195,7 @@ export const useSearch = () =>{
         }
         try {
             log.info("fetch search data called, generating new card",state,searchTerm)
+            document.getElementById('search-input').blur();
             if (performNewSearch(searchTerm,state?.currentCard)) {
                 updateWindowHistory(searchTerm);
                 let currentCard;

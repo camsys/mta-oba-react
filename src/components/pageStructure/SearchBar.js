@@ -31,8 +31,6 @@ const SearchBar = () => {
     const onSuggestionSelected = (event, { suggestion }) => {
         log.info('Selected suggestion:', suggestion);
         const lineRef = suggestion.value
-
-
         search(lineRef);
     };
 
@@ -56,6 +54,7 @@ const SearchBar = () => {
     log.info("Search",searchTerm)
     const inputProps = {
         placeholder: searchTerm,
+        id: "search-input",
         value,
         onChange: (event, { newValue }) => setValue(newValue),
     };
