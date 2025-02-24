@@ -120,8 +120,8 @@ function VehicleCard ({routeMatch,vehicleId}: { routeMatch: RouteMatch, vehicleI
                     tabIndex={0}
                     onClick={() => search(routeMatch.routeId.split("_")[1])}>
                     {/*{log.info("adding vehicelcard icon")}*/}
-                    <img src={vehicleDatum && vehicleDatum.strollerVehicle?"/img/icon/bus-stroller.svg":"/img/icon/bus.svg"}
-                         alt={vehicleDatum && vehicleDatum.strollerVehicle?"bus and stroller icon":"bus icon"} className="icon" />
+                    <img src={vehicleDatum && vehicleDatum?.strollerVehicle?"/img/icon/bus-stroller.svg":"/img/icon/bus.svg"}
+                         alt={vehicleDatum && vehicleDatum?.strollerVehicle?"bus and stroller icon":"bus icon"} className="icon" />
                     {OBA.Config.noWidows(routeMatch.routeTitle)}
                 </h3>
             </div>

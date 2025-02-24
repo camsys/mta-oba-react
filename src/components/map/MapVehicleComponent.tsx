@@ -64,7 +64,7 @@ function MapVehicleComponent  (
                        keyboard={false}
     >
         <Popup key={vehicleDatum.vehicleId+"_"+vehicleDatum.longLat} className="map-popup vehicle-popup">
-            <img src={vehicleDatum.strollerVehicle?busStroller:bus} alt="bus" className="icon"/>
+            <img src={vehicleDatum?.strollerVehicle?busStroller:bus} alt="bus" className="icon"/>
             <div className="popup-info">
                 <span className="route">{vehicleDatum.routeId.split("_")[1]} {vehicleDatum.destination}</span>
                 <span className="vehicle">Vehicle #{vehicleIdWithoutAgency}</span>
