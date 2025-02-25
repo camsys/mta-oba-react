@@ -204,7 +204,7 @@ export const useSearch = () =>{
                 } else {
                     currentCard = getHomeCard();
                 }
-
+                document.getElementById('search-input').blur();
                 let cardStack = state.cardStack;
                 cardStack.push(currentCard);
                 log.info("updating state with new card:", currentCard,stops,routes);
@@ -219,7 +219,9 @@ export const useSearch = () =>{
         catch (error) {
             log.error('There was a problem with the fetch operation:', error);
         } finally {
+            document.getElementById('search-input').blur();
         }
+        document.getElementById('search-input').blur();
     }
 
     const generateInitialCard = async (setLoading)=>{
