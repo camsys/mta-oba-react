@@ -559,7 +559,7 @@ button, .button
     width: 100%
     height: auto
     max-width: 100%
-    margin: 0 0 1.25em 0
+    margin: 0
     padding: 0
     position: relative
     &::after
@@ -576,6 +576,7 @@ button, .button
       display: inline-block
       width: 100%
       height: auto
+      max-width: $sidebar-width-narrow * .66
       margin: 0
       padding: 0
       opacity: 1
@@ -588,6 +589,8 @@ button, .button
       border: none
       &::after
         opacity: 1
+  nav
+    display: none
   .menu
     display: flex
     flex-wrap: nowrap
@@ -627,6 +630,13 @@ button, .button
         font-size: 1em
         a.active
           font-weight: bold
+  +mq($sidebar-switch)
+    #logo-link
+      margin: 0 0 1.25em 0
+      .logo
+        max-width: 100%
+    nav
+      display: block
 
 #sidebar
   width: 100%
@@ -1010,9 +1020,9 @@ button, .button
     +card-pad
     background-color: transparent
     border: 0px transparent
-    border-color: $mta-blue
     outline: 0px
     border-bottom: $thick-border solid
+    border-color: $mta-blue
     .card-title
       font-weight: bold
   .card-header
