@@ -426,6 +426,7 @@ button, .button {
   font-size: 1em;
   vertical-align: middle;
   text-decoration: none;
+  color: currentColor;
 }
 button:hover, .button:hover {
   cursor: pointer;
