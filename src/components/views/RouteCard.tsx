@@ -56,11 +56,11 @@ export function RouteStopComponent
 
 
 
-export const RouteDirection = ({datum,color}: { datum: RouteDirectionInterface, color: string }): JSX.Element => {
+export const RouteDirection = ({datum,color,collapsed}: { datum: RouteDirectionInterface, color: string ,collapsed:boolean}): JSX.Element => {
     log.info("generating RouteDirectionComponent:", datum)
     return (
         <div className="route-direction inner-card collapsible" key={datum.routeId+datum.directionId}>
-            <button className="card-header collapse-trigger" aria-haspopup="true" aria-expanded="false" aria-label={"Toggle "+datum.routeId+" to " + datum.routeDestination +" Open / Closed"} tabIndex="0">
+            <button className="card-header collapse-trigger" aria-haspopup="true" aria-expanded="false" aria-label={"Toggle "+datum.routeId+" to " + datum.routeDestination +" Open / Closed"} tabIndex={collapsed?-1:0}>
                 <span className="label">to <strong> {datum.routeDestination}</strong></span>
             </button>
             <div className="card-content collapse-content">
@@ -77,10 +77,10 @@ export const RouteDirection = ({datum,color}: { datum: RouteDirectionInterface, 
     )
 }
 
-export function RouteFavoriteButton({routeMatch}:RouteMatch):JSX.Element {
+export function RouteFavoriteButton({routeMatch,collapsed}:{RouteMatch,boolean}):JSX.Element {
     let {addFavorite,removeFavorite,isFavorite} = useFavorite();
     return (<React.Fragment>
-        <button className="favorite-toggle" tabIndex="0" aria-label='Toggle favorites status for this stop'
+        <button className="favorite-toggle" tabIndex={collapsed?-1:0} aria-label='Toggle favorites status for this route'
                 onClick={()=>{isFavorite(routeMatch)?removeFavorite(routeMatch):addFavorite(routeMatch)}}
         >
                         <span className="svg-icon-wrap add-icon" role="presentation" aria-hidden="true">
@@ -95,7 +95,7 @@ export function RouteFavoriteButton({routeMatch}:RouteMatch):JSX.Element {
     </React.Fragment>)
 }
 
-export function RouteCardContent({ routeMatch}: RouteMatch): JSX.Element  {
+export function RouteCardContent({ routeMatch, collapsed}: {RouteMatch,boolean}): JSX.Element  {
     let routeId = routeMatch.routeId.split("_")[1];
     let serviceAlertIdentifier = routeMatch.routeId;
 
@@ -104,11 +104,11 @@ export function RouteCardContent({ routeMatch}: RouteMatch): JSX.Element  {
             <ul className="card-details">
                 <li className="via">{routeMatch.description}</li>
             </ul>
-            <ServiceAlertContainerComponent {...{ routeId, serviceAlertIdentifier }} />
+            <ServiceAlertContainerComponent {...{ routeId, serviceAlertIdentifier, collapsed}} />
             {routeMatch.directions.map((dir, index) =>
                 (<RouteDirection
                     datum={dir.routeDirectionComponentData}
-                    color={routeMatch.color} key={index}/>))}
+                    color={routeMatch.color} key={index} collapsed={collapsed}/>))}
         </React.Fragment>)
 }
 
@@ -175,13 +175,13 @@ export function CollapsableRouteCard({ routeMatch, oneOfMany}: {routeMatch:Route
                     <span className="card-title label">{OBA.Config.noWidows(routeMatch.routeTitle)}</span>
                 </button>
                 <div className="card-content collapse-content">
-                    <RouteCardContent routeMatch={routeMatch}/>
+                    <RouteCardContent routeMatch={routeMatch} collapsed={true}/>
                     <ul className="menu icon-menu card-menu">
                         <li>
-                            <RouteFavoriteButton routeMatch={routeMatch}/>
+                            <RouteFavoriteButton routeMatch={routeMatch} collapsed={true}/>
                         </li>
                         <li>
-                            <ViewSearchItem datumId={routeMatch.routeId} text={"Route"}/>
+                            <ViewSearchItem datumId={routeMatch.routeId} text={"Route"} collapsed={true}/>
                         </li>
                     </ul>
                 </div>

@@ -12,13 +12,13 @@ function ServiceAlertComponent  ({serviceAlertDatum}:ServiceAlertInterface) : JS
         </div>)
 }
 
-export default function ServiceAlertContainerComponent  ({ routeId,serviceAlertIdentifier}:{ routeId : string ,serviceAlertIdentifier : string}) : JSX.Element {
+export default function ServiceAlertContainerComponent  ({ routeId,serviceAlertIdentifier, collapsed}:{ routeId : string ,serviceAlertIdentifier : string,collapsed:boolean}) : JSX.Element {
     log.info("generating service alert component")
     let {getServiceAlert} = useServiceAlert()
     let serviceAlertDatum = getServiceAlert(routeId,serviceAlertIdentifier)
     if(serviceAlertDatum===null||typeof serviceAlertDatum==="undefined"){return null}
     return (<div className="service-alert inner-card collapsible">
-        <button className="card-header collapse-trigger" aria-haspopup="true" aria-expanded="false" aria-label="Toggle Service Alert Open/Closed" tabIndex="0">
+        <button className="card-header collapse-trigger" aria-haspopup="true" aria-expanded="false" aria-label="Toggle Service Alert Open/Closed" tabIndex={collapsed?-1:0}>
             <ServiceAlertSvg/>
             <span className="label">Service Alert for {routeId}</span>
         </button>
