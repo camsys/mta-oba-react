@@ -1,5 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
 
+  // window.console.log('boop test');
+
   // have to do clicks this way so they work on objects added after the page loads
   // collapse trigger buttons open and close (for icon rotation) and content reveal/toggle
   document.addEventListener('click', function(event) {
@@ -114,6 +116,43 @@ document.addEventListener('DOMContentLoaded', function() {
         mapToggle.setAttribute('aria-label', mapWrap.classList.contains('open') ? 'Toggle Map Visibility (currently visible)' : 'Toggle Map Visibility (currently hidden)');
         mapToggle.setAttribute('aria-pressed', mapWrap.classList.contains('open'));
       }
+    }
+
+    // check if the clicked element or any of its ancestors have the class "cards-toggle"
+    var cardsToggle = event.target.closest('.cards-toggle');
+    if (cardsToggle) {
+      // window.console.log('boop' + cardsToggle);
+      // get data-target
+      var cardsToggleTarget = cardsToggle.getAttribute('data-target');
+      // window.console.log('boop ' + cardsToggleTarget);
+      // find .toggle-cards with class matching cardsToggleTarget
+      var toggleCardsTarget = document.querySelector('.toggle-cards.' + cardsToggleTarget);
+      // add class hide to all toggle-cards that are not toggleCardsTarget, remove class hide from toggleCardsTarget, adjust aria- attributes
+      var allToggleCards = document.querySelectorAll('.toggle-cards');
+      allToggleCards.forEach(function(element) {
+        if (element !== toggleCardsTarget) {
+          element.classList.add('hide');
+          element.setAttribute('aria-hidden', 'true');
+        } else {
+          element.classList.remove('hide');
+          element.setAttribute('aria-hidden', 'false');
+        }
+      });
+      // add class active to clicked cardsToggle, remove class active from all other cardsToggle, adjust aria- attributes
+      var allCardsToggle = document.querySelectorAll('.cards-toggle');
+      allCardsToggle.forEach(function(element) {
+        if (element !== cardsToggle) {
+          element.classList.remove('active');
+          element.setAttribute('aria-pressed', 'false');
+          element.setAttribute('aria-label', 'Show nearby ' + element.getAttribute('data-target') + ' (currently hidden)');
+          element.setAttribute('aria-expanded', 'false');
+        } else {
+          element.classList.add('active');
+          element.setAttribute('aria-pressed', 'true');
+          element.setAttribute('aria-label', 'Show nearby ' + element.getAttribute('data-target') + ' (currently visible)');
+          element.setAttribute('aria-expanded', 'true');
+        }
+      });
     }
 
 

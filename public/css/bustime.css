@@ -1717,6 +1717,9 @@ button:hover, .button:hover {
           flex-direction: column;
   gap: 1rem;
 }
+.cards.toggle-cards.hide {
+  display: none;
+}
 
 .cards-header {
   margin-bottom: 1rem;
@@ -1744,6 +1747,64 @@ button:hover, .button:hover {
   position: absolute;
   left: 0;
   top: 0;
+}
+
+.cards-header-toggle-group {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: nowrap;
+      flex-wrap: nowrap;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  margin-bottom: 1rem;
+}
+.cards-header-toggle-group .cards-header {
+  margin-bottom: 0;
+}
+
+.cards-header-toggle {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: nowrap;
+      flex-wrap: nowrap;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  gap: 1em;
+}
+.cards-header-toggle .cards-toggle {
+  position: relative;
+  padding: 0;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: #0E61A9;
+}
+.cards-header-toggle .cards-toggle:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: -0.5em;
+  -webkit-transform: translateY(-50%);
+          transform: translateY(-50%);
+  display: inline-block;
+  width: 1px;
+  height: 1em;
+  background-color: #000;
+}
+.cards-header-toggle .cards-toggle.active {
+  font-weight: bold;
+  cursor: default;
+}
+.cards-header-toggle .cards-toggle:focus {
+  color: #000;
+  text-decoration: underline;
+}
+.cards-header-toggle .cards-toggle:not(.active):hover {
+  text-decoration: underline;
 }
 
 .card-title {

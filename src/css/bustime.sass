@@ -951,6 +951,9 @@ button, .button
   display: flex
   flex-direction: column
   gap: $content-padding
+  &.toggle-cards
+    &.hide
+      display: none
 
 .cards-header
   margin-bottom: $content-padding
@@ -974,6 +977,50 @@ button, .button
       position: absolute
       left: 0
       top: 0
+
+.cards-header-toggle-group
+  display: flex
+  flex-wrap: nowrap
+  justify-content: space-between
+  margin-bottom: $content-padding
+  .cards-header
+    margin-bottom: 0
+  
+.cards-header-toggle
+  display: flex
+  flex-wrap: nowrap
+  list-style: none
+  margin: 0
+  padding: 0
+  gap: 1em
+  .cards-toggle
+    position: relative
+    padding: 0
+    border: none
+    outline: none
+    background: transparent
+    color: $mta-blue
+    &:not(:last-child)
+      &::after
+        content: ''
+        position: absolute
+        top: 50%
+        right: -.5em
+        transform: translateY(-50%)
+        display: inline-block
+        width: 1px
+        height: 1em
+        background-color: $black
+    &.active
+      font-weight: bold
+      cursor: default
+    &:focus
+      color: $black
+      text-decoration: underline
+    &:not(.active)
+      &:hover
+        text-decoration: underline
+
 
 .card-title
   display: flex
