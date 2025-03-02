@@ -35,59 +35,70 @@ const MapVehicleElements = () :JSX.Element =>{
     let routeIds = state.currentCard.routeIdList
     log.info("looking for vehicles from route ids: ",routeIds)
     let mapVehicleComponents = []
-    if(routeIds!=null){
-        [...routeIds].forEach(route=>{
-            log.info("looking for vehicles from route id: ",route)
-            log.info("vehicle state:", vehicleState)
-            let routeId = route.split("_")[1]
-            log.info("using abbreviated routeId ",routeId)
-            let vehicleDataForRoute = vehicleState[routeId+vehicleDataIdentifier]
-            if(vehicleDataForRoute!=null){
-                log.info(`processing vehicleDataForRoute`,vehicleDataForRoute)
-                log.info("vehicle object refs",vehicleObjsRefs.current)
-                vehicleDataForRoute.forEach(vehicleDatum=>{
-                    if(vehicleObjsRefs.current.has(vehicleDatum.vehicleId) && typeof vehicleObjsRefs.current.get(vehicleDatum.vehicleId)!==undefined){
-                        // update vehicle to be in new pos
-                        vehicleObjsRefs.current.get(vehicleDatum.vehicleId).setLatLng(vehicleDatum.longLat)
-                    }
-                    else{
-                        vehicleComponentsRef.current.set(vehicleDatum.vehicleId,
-                            <MapVehicleComponent {...{vehicleDatum,vehicleRefs: vehicleObjsRefs}} key={vehicleDatum.vehicleId}/>)
-                    }
-                    mapVehicleComponents.push(vehicleComponentsRef.current.get(vehicleDatum.vehicleId))
-                    // mapVehicleComponents.push(<MapVehicleComponent {...{vehicleDatum,vehicleRefs: vehicleObjsRefs}} key={vehicleDatum.vehicleId}/>)
-                });
-                //todo: remove vehicles that are no longer in the list
-                // vehicleObjsRefs.current.forEach((value, key) => {
-                //     if(!vehicleDataForRoute.some(vehicle=>vehicle.vehicleId===key)){
-                //         value.remove()
-                //         vehicleObjsRefs.current.delete(key)
-                //     }
-                // });
-                if (vehicleObjsRefs && typeof vehicleObjsRefs.current === "object"
-                    && typeof vehicleObjsRefs.current.get === 'function'
-                    && state.currentCard.type === CardType.VehicleCard)
-                {
-                    let vehicleId = state.currentCard.datumId;
-                    let vehicleDatum = vehicleObjsRefs.current.get(vehicleId)
-                    if (typeof vehicleDatum !== 'undefined'
-                        && vehicleDatum.getPopup()
-                        && showFocusVehicle==true
-                    ) {
-                        log.info("map vehicle component markers popup value is",
-                            vehicleDatum.getPopup(),
-                            state.currentCard.datumId)
-                        vehicleDatum.openPopup()
-                    }
-                } else{
-                    if(showFocusVehicle==false){
-                        showFocusVehicle.current=true
+    // todo: if this was done just right it probably wouldn't hit the try catch
+    try{
+        if(routeIds!=null){
+            [...routeIds].forEach(route=>{
+                log.info("looking for vehicles from route id: ",route)
+                log.info("vehicle state:", vehicleState)
+                let routeId = route.split("_")[1]
+                log.info("using abbreviated routeId ",routeId)
+                let vehicleDataForRoute = vehicleState[routeId+vehicleDataIdentifier]
+                if(vehicleDataForRoute!=null &&
+                    vehicleObjsRefs &&
+                    vehicleObjsRefs.current!=null && vehicleObjsRefs.current!=undefined
+                    && typeof vehicleObjsRefs.current === "object"
+                    && typeof vehicleObjsRefs.current.get === 'function'){
+                    log.info(`processing vehicleDataForRoute`,vehicleDataForRoute)
+                    log.info("vehicle object refs",vehicleObjsRefs.current)
+                    vehicleDataForRoute.forEach(vehicleDatum=>{
+                        if(vehicleObjsRefs.current.has(vehicleDatum.vehicleId) && typeof vehicleObjsRefs.current.get(vehicleDatum.vehicleId)!==undefined){
+                            // update vehicle to be in new pos
+                            vehicleObjsRefs.current.get(vehicleDatum.vehicleId).setLatLng(vehicleDatum.longLat)
+                        }
+                        else{
+                            vehicleComponentsRef.current.set(vehicleDatum.vehicleId,
+                                <MapVehicleComponent {...{vehicleDatum,vehicleRefs: vehicleObjsRefs}} key={vehicleDatum.vehicleId}/>)
+                        }
+                        mapVehicleComponents.push(vehicleComponentsRef.current.get(vehicleDatum.vehicleId))
+                        // mapVehicleComponents.push(<MapVehicleComponent {...{vehicleDatum,vehicleRefs: vehicleObjsRefs}} key={vehicleDatum.vehicleId}/>)
+                    });
+                    //todo: remove vehicles that are no longer in the list
+                    // vehicleObjsRefs.current.forEach((value, key) => {
+                    //     if(!vehicleDataForRoute.some(vehicle=>vehicle.vehicleId===key)){
+                    //         value.remove()
+                    //         vehicleObjsRefs.current.delete(key)
+                    //     }
+                    // });
+                    if (vehicleObjsRefs && typeof vehicleObjsRefs.current === "object"
+                        && typeof vehicleObjsRefs.current.get === 'function'
+                        && state.currentCard.type === CardType.VehicleCard)
+                    {
+                        let vehicleId = state.currentCard.datumId;
+                        let vehicleDatum = vehicleObjsRefs.current.get(vehicleId)
+                        if (typeof vehicleDatum !== 'undefined'
+                            && vehicleDatum.getPopup()
+                            && showFocusVehicle==true
+                        ) {
+                            log.info("map vehicle component markers popup value is",
+                                vehicleDatum.getPopup(),
+                                state.currentCard.datumId)
+                            vehicleDatum.openPopup()
+                        }
+                    } else{
+                        if(showFocusVehicle==false){
+                            showFocusVehicle.current=true
+                        }
                     }
                 }
-            }
-            log.info("map vehicle components", mapVehicleComponents)
-        })
+                log.info("map vehicle components", mapVehicleComponents)
+            })
+        }
     }
+    catch (e) {
+        log.error("error in vehicle element creation",e)
+    }
+
 
     // useEffect(() => {
     //     // log.info("updating vehicle markers ",state.currentCard,vehicleObjsRefs.current)
@@ -353,6 +364,12 @@ const HandleMapBoundsAndZoom = () : void=>{
         }
         else if(state.currentCard.type===CardType.StopCard) {
             [lat, long] = [searchMatch.latitude, searchMatch.longitude];
+            zoom = 16;
+        }
+        else if(state.currentCard.type===CardType.VehicleCard) {
+            console.log("vehicle card",state.currentCard)
+            let vehicleId = state.currentCard.vehicleId;
+            [lat, long] = state.currentCard.longlat;
             zoom = 16;
         }
     })

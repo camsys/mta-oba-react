@@ -290,7 +290,7 @@ export const useSearch = () =>{
         let routeData = routes?.current;
         if(routeData){routeData=routeData[vehicleDatum.routeId]};
         log.info("found routedata of target vehicle: ",routeData);
-        currentCard.setToVehicle(vehicleDatum.vehicleId,[routeData],new Set([vehicleDatum.routeId]));
+        currentCard.setToVehicle(vehicleDatum.vehicleId,[routeData],new Set([vehicleDatum.routeId]),vehicleDatum.longLat);
         let cardStack = state.cardStack;
         cardStack.push(currentCard);
         log.info("updating state prev card -> new card: \n", pastCard,currentCard);
