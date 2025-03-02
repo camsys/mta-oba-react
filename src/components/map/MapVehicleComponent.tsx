@@ -73,6 +73,9 @@ function MapVehicleComponent  (
             <div className="popup-info">
                 <span className="route">{vehicleDatum.routeId.split("_")[1]} {vehicleDatum.destination}</span>
                 <span className="vehicle">Vehicle #{vehicleIdWithoutAgency}</span>
+                <button className="view-full close-map" aria-label="view full vehicle details">
+                    View Vehicle Details
+                </button>
             </div>
         </Popup>
     </Marker>);

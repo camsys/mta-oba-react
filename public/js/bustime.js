@@ -153,6 +153,7 @@ document.addEventListener('DOMContentLoaded', function() {
           element.setAttribute('aria-expanded', 'true');
         }
       });
+
     }
 
 

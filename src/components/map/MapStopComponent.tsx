@@ -79,6 +79,9 @@ function MapStopComponent  ({stopDatum, mapStopMarkers, zIndexOverride}:
                 <div className="popup-info">
                     <span className="name">{stopDatum.name}</span>
                     <span className="stop-code">{"Stopcode "+stopDatum.id.split("_")[1]}</span>
+                    <button className="view-full close-map" aria-label="view full stop details">
+                        View Stop Details
+                    </button>
                 </div>
             </Popup>
         </Marker>);

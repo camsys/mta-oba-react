@@ -390,19 +390,39 @@ const ConditionallyDisplayStopComponents = (stopComponents) => {
 
 const MapEvents = () :boolean=> {
     log.info("generating map events")
-    // let map = useMap()
-    // useMapEvents({
-    //     click() {
-    //         log.info("running map click method")
-    //
-    //     },
-    //     zoomend() { // zoom event (when zoom animation ended)
-    //         // log.info("tryna use map")
-    //         // log.info("map used")
-    //         // const zoom = map.getZoom(); // get current Zoom of map
-    //
-    //     }
-    // });
+    let map = useMap()
+    useMapEvents({
+        popupopen(e) {
+            // log.info("boop popup opened")
+            const popupContent = e.popup.getElement();
+    
+            popupContent.addEventListener('click', function (event) {
+                if (event.target.matches('.close-map')) {
+                    // console.log('boop popup button clicked');
+                    var mapWrap = document.querySelector('#map-wrap');
+                    var mapToggle = document.querySelector('#map-toggle');
+                    if (mapWrap) {
+                    window.console.log('boop map close');
+                    mapWrap.classList.remove('open');
+                    mapToggle.setAttribute('aria-expanded', 'false');
+                    mapToggle.setAttribute('aria-label', 'Toggle Map Visibility (currently hidden)');
+                    mapToggle.setAttribute('aria-pressed', 'false');
+                    }
+                }
+            });
+        }
+        
+        // click() {
+        //     log.info("running map click method")
+    
+        // },
+        // zoomend() { // zoom event (when zoom animation ended)
+        //     // log.info("tryna use map")
+        //     // log.info("map used")
+        //     // const zoom = map.getZoom(); // get current Zoom of map
+    
+        // }
+    });
 
     return false;
 };

@@ -2289,9 +2289,9 @@ button:hover, .button:hover {
   display: flex;
   -ms-flex-wrap: nowrap;
       flex-wrap: nowrap;
+  gap: 0.25em;
   background-color: #fff;
   line-height: 1;
-  gap: 0.25em;
   padding: 1rem;
   margin: 0;
   position: relative;
@@ -2301,22 +2301,6 @@ button:hover, .button:hover {
 .map-popup .leaflet-popup-content > .icon, .leaflet-popup .leaflet-popup-content > .icon {
   height: 2.25em;
   width: auto;
-}
-.map-popup .leaflet-popup-content .popup-info, .leaflet-popup .leaflet-popup-content .popup-info {
-  display: -webkit-inline-box;
-  display: -ms-inline-flexbox;
-  display: inline-flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
-  gap: 0.25em;
-}
-.map-popup .leaflet-popup-content .popup-info .route, .map-popup .leaflet-popup-content .popup-info .name, .leaflet-popup .leaflet-popup-content .popup-info .route, .leaflet-popup .leaflet-popup-content .popup-info .name {
-  font-weight: bold;
-}
-.map-popup .leaflet-popup-content .popup-info .route, .map-popup .leaflet-popup-content .popup-info .name, .map-popup .leaflet-popup-content .popup-info .vehicle, .map-popup .leaflet-popup-content .popup-info .stop-code, .leaflet-popup .leaflet-popup-content .popup-info .route, .leaflet-popup .leaflet-popup-content .popup-info .name, .leaflet-popup .leaflet-popup-content .popup-info .vehicle, .leaflet-popup .leaflet-popup-content .popup-info .stop-code {
-  display: inline-block;
 }
 .map-popup .leaflet-popup-content::after, .leaflet-popup .leaflet-popup-content::after {
   content: "";
@@ -2373,6 +2357,38 @@ button:hover, .button:hover {
   border-radius: 50%;
   display: block;
   text-align: center;
+}
+.map-popup .popup-info, .leaflet-popup .popup-info {
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  gap: 0.25em;
+}
+.map-popup .popup-info .route, .map-popup .popup-info .name, .leaflet-popup .popup-info .route, .leaflet-popup .popup-info .name {
+  font-weight: bold;
+}
+.map-popup .popup-info .route, .map-popup .popup-info .name, .map-popup .popup-info .vehicle, .map-popup .popup-info .stop-code, .leaflet-popup .popup-info .route, .leaflet-popup .popup-info .name, .leaflet-popup .popup-info .vehicle, .leaflet-popup .popup-info .stop-code {
+  display: inline-block;
+}
+.map-popup .popup-info .view-full, .leaflet-popup .popup-info .view-full {
+  text-align: left;
+  font-size: 0.875em;
+  color: #0E61A9;
+  padding: 0.5em 0 0 0;
+  margin: 0.5em 0 0 0;
+  border: none;
+  outline: none;
+  border-top: 1px solid currentColor;
+  background: transparent;
+}
+@media screen and (min-width: 600px) {
+  .map-popup .popup-info .view-full, .leaflet-popup .popup-info .view-full {
+    display: none;
+  }
 }
 
 .text-note {

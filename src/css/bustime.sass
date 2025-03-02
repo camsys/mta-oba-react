@@ -1363,9 +1363,9 @@ button, .button
   .leaflet-popup-content
     display: flex
     flex-wrap: nowrap
+    gap: .25em
     background-color: $white
     line-height: 1
-    gap: .25em
     padding: $content-padding
     margin: 0
     position: relative
@@ -1375,15 +1375,6 @@ button, .button
     >.icon
       height: 2.25em
       width: auto
-    .popup-info
-      display: inline-flex
-      flex-direction: column
-      gap: .25em
-      .route, .name
-        font-weight: bold
-      .route, .name, .vehicle, .stop-code
-        display: inline-block
-        // white-space: nowrap
     &::after
       content: ''
       width: 0
@@ -1435,6 +1426,29 @@ button, .button
       border-radius: 50%
       display: block
       text-align: center
+  .popup-info
+    display: inline-flex
+    flex-direction: column
+    gap: .25em
+    .route, .name
+      font-weight: bold
+    .route, .name, .vehicle, .stop-code
+      display: inline-block
+      // white-space: nowrap
+    .view-full
+      text-align: left
+      font-size: .875em
+      color: $mta-blue
+      padding: .5em 0 0 0
+      margin: .5em 0 0 0
+      border: none
+      outline: none
+      border-top: 1px solid currentColor
+      background: transparent
+  +mq($sidebar-switch)
+    .popup-info
+      .view-full
+        display: none
 
 .text-note
   font-size: .875em
