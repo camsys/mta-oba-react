@@ -30,6 +30,7 @@ const MapVehicleElements = () :JSX.Element =>{
     const { vehicleState} = useContext(VehicleStateContext);
     const vehicleComponentsRef = useRef(new Map())
     const vehicleObjsRefs = useRef(new Map())
+    const showFocusVehicle = useRef(true)
 
     let routeIds = state.currentCard.routeIdList
     log.info("looking for vehicles from route ids: ",routeIds)
@@ -43,42 +44,84 @@ const MapVehicleElements = () :JSX.Element =>{
             let vehicleDataForRoute = vehicleState[routeId+vehicleDataIdentifier]
             if(vehicleDataForRoute!=null){
                 log.info(`processing vehicleDataForRoute`,vehicleDataForRoute)
+                log.info("vehicle object refs",vehicleObjsRefs.current)
                 vehicleDataForRoute.forEach(vehicleDatum=>{
-                    // if(vehicleObjsRefs.current.has(vehicleDatum.vehicleId) && typeof vehicleObjsRefs.current.get(vehicleDatum.vehicleId)!=="undefined"){
-                    //     // update vehicle to be in new pos
-                    //     vehicleObjsRefs.current.get(vehicleDatum.vehicleId).setLatLng(vehicleDatum.longLat)
-                    // }
-                    // else{
-                    //     vehicleComponentsRef.current.set(vehicleDatum.vehicleId,
-                    //         <MapVehicleComponent {...{vehicleDatum,vehicleRefs: vehicleObjsRefs}} key={vehicleDatum.vehicleId}/>)
-                    // }
-                    // mapVehicleComponents.push(vehicleComponentsRef.current.get(vehicleDatum.vehicleId))
-                    mapVehicleComponents.push(<MapVehicleComponent {...{vehicleDatum,vehicleRefs: vehicleObjsRefs}} key={vehicleDatum.vehicleId}/>)
+                    if(vehicleObjsRefs.current.has(vehicleDatum.vehicleId) && typeof vehicleObjsRefs.current.get(vehicleDatum.vehicleId)!==undefined){
+                        // update vehicle to be in new pos
+                        vehicleObjsRefs.current.get(vehicleDatum.vehicleId).setLatLng(vehicleDatum.longLat)
+                    }
+                    else{
+                        vehicleComponentsRef.current.set(vehicleDatum.vehicleId,
+                            <MapVehicleComponent {...{vehicleDatum,vehicleRefs: vehicleObjsRefs}} key={vehicleDatum.vehicleId}/>)
+                    }
+                    mapVehicleComponents.push(vehicleComponentsRef.current.get(vehicleDatum.vehicleId))
+                    // mapVehicleComponents.push(<MapVehicleComponent {...{vehicleDatum,vehicleRefs: vehicleObjsRefs}} key={vehicleDatum.vehicleId}/>)
                 });
-            }
-            log.info("map vehicle components", mapVehicleComponents)
-        })
-    }
-
-    useEffect(() => {
-        // log.info("updating vehicle markers ",state.currentCard,vehicleObjsRefs.current)
-            try {
+                //todo: remove vehicles that are no longer in the list
+                // vehicleObjsRefs.current.forEach((value, key) => {
+                //     if(!vehicleDataForRoute.some(vehicle=>vehicle.vehicleId===key)){
+                //         value.remove()
+                //         vehicleObjsRefs.current.delete(key)
+                //     }
+                // });
                 if (vehicleObjsRefs && typeof vehicleObjsRefs.current === "object"
                     && typeof vehicleObjsRefs.current.get === 'function'
-                    && state.currentCard.type === CardType.VehicleCard) {
+                    && state.currentCard.type === CardType.VehicleCard)
+                {
                     let vehicleId = state.currentCard.datumId;
                     let vehicleDatum = vehicleObjsRefs.current.get(vehicleId)
                     if (typeof vehicleDatum !== 'undefined'
-                        && vehicleDatum.getPopup()) {
-
+                        && vehicleDatum.getPopup()
+                        && showFocusVehicle==true
+                    ) {
                         log.info("map vehicle component markers popup value is",
                             vehicleDatum.getPopup(),
                             state.currentCard.datumId)
                         vehicleDatum.openPopup()
                     }
+                } else{
+                    if(showFocusVehicle==false){
+                        showFocusVehicle.current=true
+                    }
                 }
-            }catch(e){log.error("caught vehicle datum error when using vehicleObjsRefs.current.get")}
-    },[state,vehicleState])
+            }
+            log.info("map vehicle components", mapVehicleComponents)
+        })
+    }
+
+    // useEffect(() => {
+    //     // log.info("updating vehicle markers ",state.currentCard,vehicleObjsRefs.current)
+    //         try {
+    //             if (vehicleObjsRefs && typeof vehicleObjsRefs.current === "object"
+    //                 && typeof vehicleObjsRefs.current.get === 'function'
+    //                 && state.currentCard.type === CardType.VehicleCard) {
+    //                 let vehicleId = state.currentCard.datumId;
+    //                 let vehicleDatum = vehicleObjsRefs.current.get(vehicleId)
+    //                 if (typeof vehicleDatum !== 'undefined'
+    //                     && vehicleDatum.getPopup()
+    //                     && showFocusVehicle==true
+    //                 ) {
+    //
+    //                     // vehicleDatum.getPopup().on('remove', function() {
+    //                     //     console.log("map vehicle component popup removed")
+    //                     //     showFocusVehicle.current=false;
+    //                     // });
+    //                     // vehicleDatum.getPopup().on('add', function() {
+    //                     //     console.log("map vehicle component popup opened")
+    //                     //     showFocusVehicle.current=true;
+    //                     // });
+    //                     log.info("map vehicle component markers popup value is",
+    //                         vehicleDatum.getPopup(),
+    //                         state.currentCard.datumId)
+    //                     vehicleDatum.openPopup()
+    //                 }
+    //             } else{
+    //                 if(showFocusVehicle==false){
+    //                     showFocusVehicle.current=true
+    //                 }
+    //             }
+    //         }catch(e){log.error("caught vehicle datum error when using vehicleObjsRefs.current.get")}
+    // },[state,vehicleState])
 
 
     return (
