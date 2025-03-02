@@ -49,8 +49,8 @@ const MapVehicleElements = () :JSX.Element =>{
                     vehicleObjsRefs.current!=null && vehicleObjsRefs.current!=undefined
                     && typeof vehicleObjsRefs.current === "object"
                     && typeof vehicleObjsRefs.current.get === 'function'){
-                    log.info(`processing vehicleDataForRoute`,vehicleDataForRoute)
-                    log.info("vehicle object refs",vehicleObjsRefs.current)
+                    log.info(`MapVehicleElements: processing vehicleDataForRoute`,vehicleDataForRoute)
+                    log.info("MapVehicleElements: vehicle object refs",vehicleObjsRefs.current)
                     vehicleDataForRoute.forEach(vehicleDatum=>{
                         if(vehicleObjsRefs.current.has(vehicleDatum.vehicleId) && typeof vehicleObjsRefs.current.get(vehicleDatum.vehicleId)!==undefined){
                             // update vehicle to be in new pos
@@ -64,12 +64,11 @@ const MapVehicleElements = () :JSX.Element =>{
                         // mapVehicleComponents.push(<MapVehicleComponent {...{vehicleDatum,vehicleRefs: vehicleObjsRefs}} key={vehicleDatum.vehicleId}/>)
                     });
                     //todo: remove vehicles that are no longer in the list
-                    // vehicleObjsRefs.current.forEach((value, key) => {
-                    //     if(!vehicleDataForRoute.some(vehicle=>vehicle.vehicleId===key)){
-                    //         value.remove()
-                    //         vehicleObjsRefs.current.delete(key)
-                    //     }
-                    // });
+                    vehicleObjsRefs.current.forEach((value, key) => {
+                        if(!vehicleDataForRoute.has(key)){
+                            vehicleObjsRefs.current.delete(key)
+                        }
+                    });
                     if (vehicleObjsRefs && typeof vehicleObjsRefs.current === "object"
                         && typeof vehicleObjsRefs.current.get === 'function'
                         && state.currentCard.type === CardType.VehicleCard)
@@ -294,14 +293,16 @@ const setMapLatLngAndZoom = (duration :number , lat : number, long :number,zoom:
     log.info("setting map bounds:",duration,lat,long,zoom)
     if(lat===null|long===null|zoom===null){return}
     let map = useMap()
+    let mapWidth=map.getBounds().getEast()-map.getBounds().getWest();
+    let mapHeight=map.getBounds().getNorth()-map.getBounds().getSouth();
     let [currentLat, currentLong,currentZoom] = [map.getCenter().lat,map.getCenter().lng,map.getZoom()]
-    let latsMatch = currentLat+.1>lat && currentLat-.1<lat
-    let longsMatch = currentLong+.1>long && currentLong-.1<long
+    let latsMatch = currentLat+mapHeight/3>lat && currentLat-mapHeight/3<lat
+    let longsMatch = currentLong+mapWidth/3>long && currentLong-mapWidth/3<long
     let zoomsMatch = zoom-.3<currentZoom && zoom+.3>currentZoom
-    log.info("update map bounds and zoom?",latsMatch,longsMatch,zoomsMatch)
+    log.info("update map bounds and zoom? current: ",currentLat,currentLong,currentZoom,"new: ",lat,long,zoom, "matches",latsMatch,longsMatch,zoomsMatch)
 
     if(latsMatch&&longsMatch&&zoomsMatch){ return }
-    log.info("updating map bounds and zoom. current: ",currentLat,currentLong,currentZoom,"new: ",lat,long,zoom, "matches",latsMatch,longsMatch,zoomsMatch)
+    log.info("updating map bounds and zoom")
     map.flyTo([lat, long], zoom, {
         animate: true,
         duration: duration
@@ -367,10 +368,10 @@ const HandleMapBoundsAndZoom = () : void=>{
             zoom = 16;
         }
         else if(state.currentCard.type===CardType.VehicleCard) {
-            console.log("vehicle card",state.currentCard)
             let vehicleId = state.currentCard.vehicleId;
             [lat, long] = state.currentCard.longlat;
             zoom = 16;
+            console.log("vehicle card zoom requested",state.currentCard, lat, long, zoom)
         }
     })
     if(state.currentCard.type===CardType.HomeCard)
