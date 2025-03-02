@@ -63,7 +63,6 @@ const MapVehicleElements = () :JSX.Element =>{
                         mapVehicleComponents.push(vehicleComponentsRef.current.get(vehicleDatum.vehicleId))
                         // mapVehicleComponents.push(<MapVehicleComponent {...{vehicleDatum,vehicleRefs: vehicleObjsRefs}} key={vehicleDatum.vehicleId}/>)
                     });
-                    //todo: remove vehicles that are no longer in the list
                     vehicleObjsRefs.current.forEach((value, key) => {
                         if(!vehicleDataForRoute.has(key)){
                             vehicleObjsRefs.current.delete(key)
