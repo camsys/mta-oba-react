@@ -56,6 +56,11 @@ function MapStopComponent  ({stopDatum, mapStopMarkers, zIndexOverride}:
     };
     // log.info('generating MapStopComponent: ', stopDatum,markerOptions,mapStopMarkers,zIndexOverride)
 
+    let popupOptions = {
+        autoPan: false,
+        keepInView: false
+    }
+
     const { state} = useContext(CardStateContext);
 
     let out = (
@@ -69,7 +74,7 @@ function MapStopComponent  ({stopDatum, mapStopMarkers, zIndexOverride}:
                 }}
                 tabIndex={-1}
                 >
-            <Popup key={stopDatum.id} className="map-popup stop-popup" tabIndex={-1}>
+            <Popup key={stopDatum.id} className="map-popup stop-popup" tabIndex={-1} {...popupOptions}>
                 <img src={stopPopupIcon} alt="busstop icon" className="icon"/>
                 <div className="popup-info">
                     <span className="name">{stopDatum.name}</span>

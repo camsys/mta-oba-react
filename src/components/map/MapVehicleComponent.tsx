@@ -50,6 +50,11 @@ function MapVehicleComponent  (
         id: COMPONENT_IDENTIFIER+"_"+vehicleDatum.vehicleId
     };
 
+    let popupOptions = {
+        autoPan: false,
+        keepInView: false
+    }
+
 
     // log.info("mapVehicle key: ",markerOptions.key,vehicleDatum)
 
@@ -63,7 +68,7 @@ function MapVehicleComponent  (
                        }}
                        keyboard={false}
     >
-        <Popup key={vehicleDatum.vehicleId+"_"+vehicleDatum.longLat} className="map-popup vehicle-popup">
+        <Popup key={vehicleDatum.vehicleId+"_"+vehicleDatum.longLat} className="map-popup vehicle-popup" {... popupOptions}>
             <img src={vehicleDatum?.strollerVehicle?busStroller:bus} alt="bus" className="icon"/>
             <div className="popup-info">
                 <span className="route">{vehicleDatum.routeId.split("_")[1]} {vehicleDatum.destination}</span>
