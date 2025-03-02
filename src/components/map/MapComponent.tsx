@@ -97,42 +97,26 @@ const MapVehicleElements = () :JSX.Element =>{
         log.error("error in vehicle element creation",e)
     }
 
-
-    // useEffect(() => {
-    //     // log.info("updating vehicle markers ",state.currentCard,vehicleObjsRefs.current)
-    //         try {
-    //             if (vehicleObjsRefs && typeof vehicleObjsRefs.current === "object"
-    //                 && typeof vehicleObjsRefs.current.get === 'function'
-    //                 && state.currentCard.type === CardType.VehicleCard) {
-    //                 let vehicleId = state.currentCard.datumId;
-    //                 let vehicleDatum = vehicleObjsRefs.current.get(vehicleId)
-    //                 if (typeof vehicleDatum !== 'undefined'
-    //                     && vehicleDatum.getPopup()
-    //                     && showFocusVehicle==true
-    //                 ) {
-    //
-    //                     // vehicleDatum.getPopup().on('remove', function() {
-    //                     //     console.log("map vehicle component popup removed")
-    //                     //     showFocusVehicle.current=false;
-    //                     // });
-    //                     // vehicleDatum.getPopup().on('add', function() {
-    //                     //     console.log("map vehicle component popup opened")
-    //                     //     showFocusVehicle.current=true;
-    //                     // });
-    //                     log.info("map vehicle component markers popup value is",
-    //                         vehicleDatum.getPopup(),
-    //                         state.currentCard.datumId)
-    //                     vehicleDatum.openPopup()
-    //                 }
-    //             } else{
-    //                 if(showFocusVehicle==false){
-    //                     showFocusVehicle.current=true
-    //                 }
-    //             }
-    //         }catch(e){log.error("caught vehicle datum error when using vehicleObjsRefs.current.get")}
-    // },[state,vehicleState])
-
-
+    let map = useMap()
+    useMapEvents(
+        {
+            zoomend() {
+                try {
+                    if (vehicleObjsRefs && typeof vehicleObjsRefs.current === "object"
+                        && typeof vehicleObjsRefs.current.get === 'function'
+                        && state.currentCard.type === CardType.VehicleCard)
+                    {
+                        let vehicleId = state.currentCard.datumId;
+                        let vehicleObj = vehicleObjsRefs.current.get(vehicleId)
+                        vehicleObj.openPopup()
+                        log.info("map vehicle component markers popup value on zoomend is",vehicleObj)
+                        }
+                } catch (e) {
+                    log.error("error in vehicle element creation", e)
+                }
+            }
+        }
+    )
     return (
         <React.Fragment>
             {mapVehicleComponents}
