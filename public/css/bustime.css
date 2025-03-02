@@ -2384,6 +2384,7 @@ button:hover, .button:hover {
   outline: none;
   border-top: 1px solid currentColor;
   background: transparent;
+  white-space: nowrap;
 }
 @media screen and (min-width: 600px) {
   .map-popup .popup-info .view-full, .leaflet-popup .popup-info .view-full {
