@@ -2106,7 +2106,7 @@ button:hover, .button:hover {
   -ms-flex-wrap: nowrap;
       flex-wrap: nowrap;
   gap: 0.5em;
-  padding: 0.25em 0;
+  padding: 0.5em 0;
 }
 .approaching-buses li .bus {
   width: 4.5em;
