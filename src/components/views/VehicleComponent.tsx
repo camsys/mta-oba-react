@@ -57,7 +57,7 @@ function VehicleComponent({vehicleDatum,tabbable}:
                                 :null
                             }
                             {vehicleDatum.passengerCount != null
-                                ?(<span class="passenger-count">{`~${vehicleDatum.passengerCount} passengers`}</span>)
+                                ?(<span className="passenger-count">{`~${vehicleDatum.passengerCount} passengers`}</span>)
                                 : null}
                         </span>
                     :
