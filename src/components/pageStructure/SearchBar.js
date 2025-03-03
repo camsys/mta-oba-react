@@ -20,7 +20,9 @@ const SearchBar = () => {
 
     const onSuggestionsFetchRequested = async ({ value }) => {
         const suggestions = await getSuggestions(value);
-        setSuggestions(suggestions);
+        if(suggestions!=null){
+            setSuggestions(suggestions);
+        }
     };
 
     const onSuggestionsClearRequested = () => {
