@@ -180,8 +180,8 @@ function InnerCollapsableStopCard ({ match, oneOfMany}: {match:SearchMatch, oneO
 
     log.info("generating collapsable StopCard",stopMatch)
     return(
-    <div className={`card stop-card ${oneOfMany?"collapsible closed":""} ${isFavorite(stopMatch)?"favorite":""}`}>
-        <button className="card-header collapse-trigger closed"
+    <div className={`card stop-card ${oneOfMany?"collapsible":""} ${isFavorite(stopMatch)?"favorite":""}`}>
+        <button className="card-header collapse-trigger"
                 onMouseEnter={() => highlightId(stopMatch.id)}
                 onMouseLeave={() => highlightId(null)}
                 aria-haspopup="true" aria-expanded="true"
