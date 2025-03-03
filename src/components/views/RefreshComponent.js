@@ -1,14 +1,19 @@
 import React, {useContext, useEffect, useState} from "react";
 import {VehicleStateContext} from "Components/util/VehicleStateComponent";
+import log from "loglevel";
+import {CardStateContext} from "Components/util/CardStateComponent";
+import {useSiri} from "../../js/updateState/getSiri.tx";
 
 
 export default function getRefreshComponent({extraClasses}){
     var time = new Date();
     time = time.toLocaleString('en-US', { hour: 'numeric',  minute: 'numeric', hour12: true});
     const {vehicleState}=useContext(VehicleStateContext)
+    const { updateSiriEffect } = useSiri();
 
     const handleRefresh = () => {
-        window.location.reload();
+        log.info("vehicle loading initiated")
+        updateSiriEffect()
     }
     useEffect(()=>{
         time = time.toLocaleString('en-US', { hour: 'numeric',  minute: 'numeric', hour12: true , second:'numeric'});

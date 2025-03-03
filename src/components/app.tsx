@@ -17,37 +17,19 @@ import {CardType} from "../js/updateState/DataModels";
 import {MapWrapper} from "./map/MapWrapper.tsx";
 import {FavoritesCookieStateProvider} from "Components/util/MiscStateComponent";
 import log from 'loglevel';
+import {useSiri} from "../js/updateState/getSiri.tx";
 
 
 
 const VehicleLoading=()=>{
     log.info("vehicle loading initiated")
     const { state} = useContext(CardStateContext)
-    let {vehicleState, setState } = useContext(VehicleStateContext);
-    let {vehiclesApproachingStopsState, setVehiclesApproachingStopsState } = useContext(VehiclesApproachingStopsContext);
+    const { updateSiriEffect } = useSiri();
     useEffect(() => {
-        const getSiri = () =>{
-            if(state.currentCard.type === CardType.VehicleCard){
-                siriGetVehiclesForVehicleViewEffect(state.currentCard.routeIdList,state.currentCard.vehicleId,
-                    vehicleState,setState)
-            }
-            else{
-                siriGetVehiclesForRoutesEffect(state.currentCard.routeIdList,
-                    vehicleState,setState)
-                if(state.currentCard.type === CardType.StopCard){
-                    siriGetVehiclesForStopViewEffect(state.currentCard.routeIdList,state.currentCard.stopIdList,
-                        vehiclesApproachingStopsState,setVehiclesApproachingStopsState)
-                }
-                if(state.currentCard.type === CardType.GeocodeCard){
-                    siriGetVehiclesForStopViewEffect(state.currentCard.routeIdList,state.currentCard.stopIdList,
-                        vehiclesApproachingStopsState,setVehiclesApproachingStopsState)
-                }
-            }
-        }
 
-        getSiri()
+        updateSiriEffect()
         //todo: set interval back to 15s
-        const interval = setInterval(getSiri, 5*1000);
+        const interval = setInterval(updateSiriEffect, 5*1000);
         return () => clearInterval(interval);
     }, [state]);
 }
