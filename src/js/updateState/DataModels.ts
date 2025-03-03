@@ -294,7 +294,7 @@ export class RouteMatch extends SearchMatch implements RouteInterface{
     constructor(data: any) {
         super(MatchType.RouteMatch);
         this.color = data?.color;
-        this.routeId = data?.id;
+        this.routeId = data?.id.replace("+","-SBS");
         this.routeTitle = data?.shortName + " " + data?.longName;
         this.description = data?.description;
         this.directions = [];

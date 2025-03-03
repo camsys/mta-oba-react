@@ -18,7 +18,8 @@ function processRouteSearch(route,card:Card,stops: StopsObject,routes:RoutesObje
     log.info("processing route search results",route,card,stops,routes)
     if (route != null && route.hasOwnProperty("directions")) {
         match.color = route?.color
-        match.routeId = route?.id
+        match.routeId = route?.id.replace("+","-SBS")
+        log.info("assigned route id",route,match)
         card.routeIdList.add(match.routeId)
         match.routeTitle = route?.shortName + " " + route?.longName
         match.description = route?.description

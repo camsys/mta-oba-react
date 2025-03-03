@@ -182,7 +182,7 @@ const getTargetList = (routeIdList) =>{
     return [...routeIdList].map((routeId)=>{
         let operatorRef = routeId.split("_")[0].replace(" ","+");
         const lineRef = routeId.split("_")[1];
-        return [lineRef,baseTargetAddress+"&OperatorRef=" +operatorRef + "&LineRef"+"=" + routeId.replace("+","%2B")];
+        return [lineRef,baseTargetAddress+"&OperatorRef=" +operatorRef + "&LineRef"+"=" + routeId.replace("-SBS","%2B")];
     })
 }
 
