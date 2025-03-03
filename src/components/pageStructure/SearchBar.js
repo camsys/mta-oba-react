@@ -19,9 +19,13 @@ const SearchBar = () => {
     const [suggestions, setSuggestions] = useState([]);
 
     const onSuggestionsFetchRequested = async ({ value }) => {
-        const suggestions = await getSuggestions(value);
-        if(suggestions!=null){
-            setSuggestions(suggestions);
+        try{
+            const suggestions = await getSuggestions(value);
+            if(suggestions!=null){
+                setSuggestions(suggestions);
+            }
+        } catch (error) {
+            log.error('Error fetching suggestions:', error);
         }
     };
 
