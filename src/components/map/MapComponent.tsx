@@ -402,7 +402,7 @@ const MapEvents = () :boolean=> {
                     var mapWrap = document.querySelector('#map-wrap');
                     var mapToggle = document.querySelector('#map-toggle');
                     if (mapWrap) {
-                    window.console.log('boop map close');
+                    // window.console.log('boop map close');
                     mapWrap.classList.remove('open');
                     mapToggle.setAttribute('aria-expanded', 'false');
                     mapToggle.setAttribute('aria-label', 'Toggle Map Visibility (currently hidden)');

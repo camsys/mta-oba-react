@@ -72,6 +72,17 @@ function processStopSearch(stop,card:Card,stops: StopsObject,routes:RoutesObject
     return match
 }
 
+function scrollToSidebarTop(){
+    // window.console.log("boop scrolling to top")
+    // scroll #sidebar .sidebar-content to top, animate
+    let sidebar = document.getElementById("sidebar");
+    let sidebarContent = sidebar.querySelector(".sidebar-content");
+    sidebarContent.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+}
+
 async function getData(card:Card,stops: StopsObject,routes:RoutesObject,address:string):Promise<Card>{
     log.info("filling card data with search",card,stops,routes)
     if(card.searchTerm == null || card.searchTerm == ''){
@@ -176,12 +187,14 @@ export const useSearch = () =>{
             : searchTerm.toUpperCase();
         if(searchTerm===allRoutesSearchTerm){
             document.getElementById('search-input').blur();
+            scrollToSidebarTop();
             await allRoutesSearch()
             return
         }
         if(nearbySearchTerms.has(searchTerm)){
             log.info("searching for nearby stops and routes");
             document.getElementById('search-input').blur();
+            scrollToSidebarTop();
             await navigator.geolocation.getCurrentPosition(
                 (position) => {
                     log.info("got location",position.coords.latitude,position.coords.longitude);
@@ -196,6 +209,7 @@ export const useSearch = () =>{
         try {
             log.info("fetch search data called, generating new card",state,searchTerm)
             document.getElementById('search-input').blur();
+            scrollToSidebarTop();
             if (performNewSearch(searchTerm,state?.currentCard)) {
                 updateWindowHistory(searchTerm);
                 let currentCard;
@@ -205,6 +219,7 @@ export const useSearch = () =>{
                     currentCard = getHomeCard();
                 }
                 document.getElementById('search-input').blur();
+                scrollToSidebarTop();
                 let cardStack = state.cardStack;
                 cardStack.push(currentCard);
                 log.info("updating state with new card:", currentCard,stops,routes);
@@ -220,8 +235,10 @@ export const useSearch = () =>{
             log.error('There was a problem with the fetch operation:', error);
         } finally {
             document.getElementById('search-input').blur();
+            scrollToSidebarTop();
         }
         document.getElementById('search-input').blur();
+        scrollToSidebarTop();
     }
 
     const generateInitialCard = async (setLoading)=>{
@@ -301,6 +318,7 @@ export const useSearch = () =>{
             cardStack: cardStack,
             renderCounter:prevState.renderCounter+1
         }));
+        scrollToSidebarTop();
     }
 
     const allRoutesSearch = async () =>{
