@@ -762,6 +762,12 @@ button:hover, .button:hover {
 .icon-menu.inner-card-menu li button .svg-icon-wrap svg path, .icon-menu.sub-menu-menu li button .svg-icon-wrap svg path {
   fill: #666;
 }
+.icon-menu.inner-card-menu li button:focus-visible, .icon-menu.sub-menu-menu li button:focus-visible {
+  color: #fff;
+}
+.icon-menu.inner-card-menu li button:focus-visible .svg-icon-wrap svg path, .icon-menu.sub-menu-menu li button:focus-visible .svg-icon-wrap svg path {
+  fill: #fff;
+}
 .icon-menu.sub-menu-menu {
   font-size: 0.75em;
 }
