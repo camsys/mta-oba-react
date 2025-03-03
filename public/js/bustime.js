@@ -16,12 +16,7 @@ document.addEventListener('DOMContentLoaded', function() {
         var collapseContent = parent.querySelector('.collapse-content');
         if(collapseContent){
           var allInnerTabbableItems = collapseContent.querySelectorAll('a[tabindex], button[tabindex]');
-          // only the inner tabbable items that are children of a .collapse-content that is a direct child of parent
-          var openParentTabbableItems = Array.from(allInnerTabbableItems).filter(function(element) {
-            if (element.closest('.collapsible').classList.contains('open')) {
-              return element;
-            }
-          });
+          
           var allInnerCollapseTriggers = collapseContent.querySelectorAll('.collapse-trigger');
 
           if (parent && collapseContent) {
@@ -70,7 +65,10 @@ document.addEventListener('DOMContentLoaded', function() {
               }
               // else if parent has class 'card', set tabindex of all inner elements whose closest parent .collapsible has class .open to 0, and set tabindex of all inner collapse triggers to 0
               else if (parent.classList.contains('card')) {
-                openParentTabbableItems.forEach(function(element) {
+                // allInnerTabbableItems that are a child of .card-menu
+                var allInnerCardMenuItems = collapseContent.querySelectorAll('.card-menu a[tabindex], .card-menu button[tabindex]');
+                
+                allInnerCardMenuItems.forEach(function(element) {
                   element.setAttribute('tabindex', '0');
                 });
                 allInnerCollapseTriggers.forEach(function(element) {
