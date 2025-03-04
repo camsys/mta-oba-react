@@ -29,7 +29,7 @@ const VehicleLoading=()=>{
 
         updateSiriEffect()
         //todo: set interval back to 15s
-        const interval = setInterval(updateSiriEffect, 5*1000);
+        const interval = setInterval(updateSiriEffect, 15*1000);
         return () => clearInterval(interval);
     }, [state]);
 }
