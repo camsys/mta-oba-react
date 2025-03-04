@@ -31,7 +31,7 @@ export function MapWrapper  () : JSX.Element {
     log.info("adding map-wrapper")
     return(
         <ErrorBoundary>
-            <div id="map-wrap">
+            <div id="map-wrap" className={state.currentCard.type === CardType.HomeCard ? "home" : ""}>
                 <div className="bottom-buttons" id="map-trigger-wrao">
                     {state.currentCard.type === CardType.HomeCard ? null : <RefreshComponent extraClasses={" button"}/>}
                     <button id="map-toggle" className="button" aria-controls="map" aria-expanded={mapVisible} aria-pressed={mapVisible}

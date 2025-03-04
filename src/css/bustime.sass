@@ -657,6 +657,8 @@ button, .button
   align-items: stretch
   align-content: stretch
   height: calc(100dvh - #{$button-height + 2rem})
+  &.home
+    height: 100dvh
   #search
     padding: $content-padding
     background: $mta-blue
@@ -868,6 +870,12 @@ button, .button
     #map-toggle
       .hide-label
         display: inline
+  +mq-reverse($sidebar-switch)
+    &.home
+      top: 100dvh
+      z-index: -100
+      .bottom-buttons
+        display: none
   +mq($sidebar-switch)
     position: relative  
     top: 0

@@ -1232,6 +1232,9 @@ button:hover, .button:hover {
       align-content: stretch;
   height: calc(100dvh - 5.125rem);
 }
+#sidebar.home {
+  height: 100dvh;
+}
 #sidebar #search {
   padding: 1rem;
   background: #0E61A9;
@@ -1574,6 +1577,15 @@ button:hover, .button:hover {
 }
 #map-wrap.open #map-toggle .hide-label {
   display: inline;
+}
+@media screen and (max-width: 599px) {
+  #map-wrap.home {
+    top: 100dvh;
+    z-index: -100;
+  }
+  #map-wrap.home .bottom-buttons {
+    display: none;
+  }
 }
 @media screen and (min-width: 600px) {
   #map-wrap {

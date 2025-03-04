@@ -54,9 +54,7 @@ function App  () : JSX.Element{
                 ?
                 (<ErrorBoundary><div>Loading...</div></ErrorBoundary>)
                 :(<React.Fragment>
-                <div id="sidebar">
-                    <SideBar/>
-                </div>
+                <SideBar/>
                 <MapWrapper/>
             </React.Fragment>)}
             <VehicleLoading/>

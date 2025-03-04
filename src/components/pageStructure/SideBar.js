@@ -49,6 +49,7 @@ function SideBar  () {
 
     log.info("adding sideBar")
     return (
+        <div id="sidebar" className={state.currentCard.type === CardType.HomeCard ? "home" : ""}>
         <ErrorBoundary>
             <Header />
             <SearchBar />
@@ -60,6 +61,7 @@ function SideBar  () {
                 <Footer />
             </div>
         </ErrorBoundary>
+        </div>
     )
 }
 
