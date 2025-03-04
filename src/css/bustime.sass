@@ -657,6 +657,7 @@ button, .button
   align-items: stretch
   align-content: stretch
   height: calc(100dvh - #{$button-height + 2rem})
+  transition: height .5s ease-in-out
   &.home
     height: 100dvh
   #search
@@ -857,7 +858,7 @@ button, .button
   height: 100dvh
   left: 0
   top: calc(100dvh - $bottom-buttons-height)
-  transition: top .5s ease-in-out
+  transition: top .5s ease-in-out, height .5s ease-in-out
   flex-grow: 1
   display: flex
   flex-direction: column
@@ -873,9 +874,9 @@ button, .button
   +mq-reverse($sidebar-switch)
     &.home
       top: 100dvh
-      z-index: -100
       .bottom-buttons
-        display: none
+        >*
+          display: none
   +mq($sidebar-switch)
     position: relative  
     top: 0

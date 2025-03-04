@@ -1231,6 +1231,8 @@ button:hover, .button:hover {
   -ms-flex-line-pack: stretch;
       align-content: stretch;
   height: calc(100dvh - 5.125rem);
+  -webkit-transition: height 0.5s ease-in-out;
+  transition: height 0.5s ease-in-out;
 }
 #sidebar.home {
   height: 100dvh;
@@ -1550,8 +1552,8 @@ button:hover, .button:hover {
   height: 100dvh;
   left: 0;
   top: calc(100dvh - 5.125rem);
-  -webkit-transition: top 0.5s ease-in-out;
-  transition: top 0.5s ease-in-out;
+  -webkit-transition: top 0.5s ease-in-out, height 0.5s ease-in-out;
+  transition: top 0.5s ease-in-out, height 0.5s ease-in-out;
   -ms-flex-positive: 1;
       flex-grow: 1;
   display: -webkit-box;
@@ -1581,9 +1583,8 @@ button:hover, .button:hover {
 @media screen and (max-width: 599px) {
   #map-wrap.home {
     top: 100dvh;
-    z-index: -100;
   }
-  #map-wrap.home .bottom-buttons {
+  #map-wrap.home .bottom-buttons > * {
     display: none;
   }
 }
