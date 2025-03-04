@@ -14,13 +14,10 @@ const COMPONENT_IDENTIFIER = "MapVehicleComponent"
 
 
 function MapVehicleComponent  (
-    {vehicleDatum,vehicleRefs}:{vehicleDatum:VehicleRtInterface,vehicleRefs:React.MutableRefObject<Map<string,Marker>>}) :JSX.Element{
+    {vehicleDatum,vehicleRefs,vehicleIcon}:{vehicleDatum:VehicleRtInterface,vehicleRefs:React.MutableRefObject<Map<string,Marker>>,vehicleIcon:L.Icon}) :JSX.Element{
 
     // let targetVehicleId = state.currentCard.vehicleId
     // log.info('generating mapVehicle: ',vehicleDatum.vehicleId,vehicleDatum)
-    let imgDegrees = vehicleDatum.bearing - vehicleDatum.bearing%5
-    let scheduled = vehicleDatum.hasRealtime?"":"scheduled/"
-    let vehicleImageUrl = "img/vehicle/"+scheduled+"vehicle-"+imgDegrees+".png"
     let vehicleIdParts = vehicleDatum.vehicleId.split("_");
     let vehicleIdWithoutAgency = vehicleIdParts[1];
 
@@ -30,14 +27,6 @@ function MapVehicleComponent  (
         vehicleSearch(vehicleData)
     }
 
-    let icon = L.icon({
-        iconUrl: vehicleImageUrl,
-        className: "svg-icon",
-        iconSize: [51,51],
-        iconAnchor: [25,25],
-        popupAnchor: [0,0]
-    })
-
     let markerOptions = {
         zIndex: 3,
         title: "Vehicle " + vehicleIdWithoutAgency + ", " + vehicleDatum.routeId + " to " + vehicleDatum.destination,
@@ -46,7 +35,7 @@ function MapVehicleComponent  (
         // key:COMPONENT_IDENTIFIER+"_"+vehicleDatum.vehicleId,
         key:COMPONENT_IDENTIFIER+"_"+vehicleDatum.vehicleId + "_"+vehicleDatum.longLat,
         position:vehicleDatum.longLat,
-        icon: icon,
+        icon: vehicleIcon,
         id: COMPONENT_IDENTIFIER+"_"+vehicleDatum.vehicleId
     };
 

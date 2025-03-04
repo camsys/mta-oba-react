@@ -22,7 +22,19 @@ import {
 import {useHighlight} from "Components/util/MapHighlightingStateComponent";
 
 
-
+const createVehicleIcon = (vehicleDatum):L.Icon => {
+    let scheduled = vehicleDatum.hasRealtime?"":"scheduled/"
+    let imgDegrees = vehicleDatum.bearing - vehicleDatum.bearing%5
+    let vehicleImageUrl = "img/vehicle/"+scheduled+"vehicle-"+imgDegrees+".png"
+    let icon = L.icon({
+        iconUrl: vehicleImageUrl,
+        className: "svg-icon",
+        iconSize: [51,51],
+        iconAnchor: [25,25],
+        popupAnchor: [0,0]
+    })
+    return icon
+}
 
 
 const MapVehicleElements = () :JSX.Element =>{
@@ -52,13 +64,16 @@ const MapVehicleElements = () :JSX.Element =>{
                     log.info(`MapVehicleElements: processing vehicleDataForRoute`,vehicleDataForRoute)
                     log.info("MapVehicleElements: vehicle object refs",vehicleObjsRefs.current)
                     vehicleDataForRoute.forEach(vehicleDatum=>{
+                        let vehicleIcon = createVehicleIcon(vehicleDatum)
                         if(vehicleObjsRefs.current.has(vehicleDatum.vehicleId) && typeof vehicleObjsRefs.current.get(vehicleDatum.vehicleId)!==undefined){
                             // update vehicle to be in new pos
-                            vehicleObjsRefs.current.get(vehicleDatum.vehicleId).setLatLng(vehicleDatum.longLat)
+                            let vehicle = vehicleObjsRefs.current.get(vehicleDatum.vehicleId);
+                            vehicle.setLatLng(vehicleDatum.longLat)
+                            vehicle.setIcon(vehicleIcon)
                         }
                         else{
                             vehicleComponentsRef.current.set(vehicleDatum.vehicleId,
-                                <MapVehicleComponent {...{vehicleDatum,vehicleRefs: vehicleObjsRefs}} key={vehicleDatum.vehicleId}/>)
+                                <MapVehicleComponent {...{vehicleDatum,vehicleRefs: vehicleObjsRefs,vehicleIcon}} key={vehicleDatum.vehicleId}/>)
                         }
                         mapVehicleComponents.push(vehicleComponentsRef.current.get(vehicleDatum.vehicleId))
                         // mapVehicleComponents.push(<MapVehicleComponent {...{vehicleDatum,vehicleRefs: vehicleObjsRefs}} key={vehicleDatum.vehicleId}/>)
