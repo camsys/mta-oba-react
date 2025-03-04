@@ -17,7 +17,7 @@ import {
     RouteMatch,
     RouteMatchDirectionInterface,
     SearchMatch,
-    StopMatch
+    StopMatch, VehicleRtInterface
 } from "../../js/updateState/DataModels";
 import {RunScriptAfterRender,ScriptForAfterCollapsible} from "../util/RunScriptAfterRender"
 import {useFavorite} from "../util/MiscStateComponent";
@@ -27,7 +27,6 @@ import log from 'loglevel';
 
 const RouteDirection = (routeDirectionDatum:RouteMatchDirectionInterface,stopId:string, collapsed:boolean) : JSX.Element=>{
     const {highlightId} = useHighlight();
-    const { search } = useSearch();
     const {vehiclesApproachingStopsState} = useContext(VehiclesApproachingStopsContext)
     log.info("generating StopCard RouteDirection",routeDirectionDatum,vehiclesApproachingStopsState)
     let routeAndDir = routeDirectionDatum.routeId + "_"+routeDirectionDatum.directionId
@@ -44,13 +43,31 @@ const RouteDirection = (routeDirectionDatum:RouteMatchDirectionInterface,stopId:
     let {getServiceAlert} = useServiceAlert();
     let hasServiceAlert = getServiceAlert(routeId,serviceAlertIdentifier)!==null;
     log.info("StopCard RouteDirection stopCardVehicleData",stopCardVehicleData,lastUpdateTime)
-    return (stopCardVehicleData === null? null :
-        <div className={`inner-card route-direction en-route collapsible ${collapsed?"":"open"}`} key={routeAndDir}>
+
+
+    //todo: this sorting here should be done a single time in SiriStopEffects, but it's too messy of a function for a quick fix
+    // and slightly riskier before a release with a quick QA cycle. resolve after friends and family release
+
+    let vehicleDataByDestination = new Map<string,Array<VehicleRtInterface>>();
+    if(stopCardVehicleData!==null){
+        stopCardVehicleData.forEach((vehicleDatum:VehicleRtInterface)=>{
+            if(vehicleDataByDestination.has(vehicleDatum.destination)){
+                vehicleDataByDestination.get(vehicleDatum.destination).push(vehicleDatum)
+            }else{
+                vehicleDataByDestination.set(vehicleDatum.destination,[vehicleDatum])
+            }
+        })
+        console.log("vehicleDataByDestination",vehicleDataByDestination)
+    }
+
+
+    let vehicleComponents = Array.from(vehicleDataByDestination.entries()).map(([destination,vehicleData],index)=>{
+        return (<div className={`inner-card route-direction en-route collapsible ${collapsed?"":"open"}`} key={routeAndDir+destination}>
             <button
                 className={`card-header collapse-trigger ${collapsed?"":"open"}`}
                 aria-haspopup="true"
                 aria-expanded="true"
-                aria-label={`Toggle ${routeDirectionDatum.routeId.split("_")[1]} to ${routeDirectionDatum.destination}`}
+                aria-label={`Toggle ${routeDirectionDatum.routeId.split("_")[1]} to ${destination}`}
                 onMouseEnter={() => highlightId(routeDirectionDatum.routeId)}
                 onMouseLeave={() => highlightId(null)}
                 tabIndex={collapsed?-1:0}
@@ -58,13 +75,13 @@ const RouteDirection = (routeDirectionDatum:RouteMatchDirectionInterface,stopId:
                 <span className="card-title" style={{ borderColor: '#'+routeDirectionDatum.color}}>
                     {hasServiceAlert?<ServiceAlertSvg/>:null}
                     <span className="label">
-                        <strong>{routeDirectionDatum.routeId.split("_")[1]}</strong> {routeDirectionDatum.destination}
+                        <strong>{routeDirectionDatum.routeId.split("_")[1]}</strong> {destination}
                     </span>
                 </span>
             </button>
             <div className="card-content collapse-content">
                 <ul className="approaching-buses">
-                    {stopCardVehicleData.map((vehicleDatum,index)=>{
+                    {vehicleData.map((vehicleDatum,index)=>{
                         if(index<3){return <VehicleComponent {...{vehicleDatum,lastUpdateTime}} tabbable={!collapsed} key={index}/>}})}
                 </ul>
                 <ServiceAlertContainerComponent {...{routeId,serviceAlertIdentifier,collapsed}}/>
@@ -74,7 +91,14 @@ const RouteDirection = (routeDirectionDatum:RouteMatchDirectionInterface,stopId:
                     </li>
                 </ul>
             </div>
-        </div>
+        </div>)
+    })
+
+    return (stopCardVehicleData === null? null :
+        <React.Fragment>
+            {vehicleComponents}
+        </React.Fragment>
+
     )
 }
 
@@ -112,7 +136,6 @@ export function ZoomAndCenterOnStopButton():JSX.Element{
 
 export function StopCardContent({stopMatch,collapsed}: { StopMatch, boolean }):JSX.Element{
     log.info("generating StopCardContent",stopMatch, collapsed)
-
     return(
         <React.Fragment>
             <ul className="card-details">
