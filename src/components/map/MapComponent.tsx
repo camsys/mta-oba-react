@@ -369,6 +369,7 @@ const HandleMapBoundsAndZoom = () : void=>{
 const ConditionallyDisplayStopComponents = (stopComponents) => {
     let map = useMap()
     let [Zoom,setZoom] = useState(map.getZoom().valueOf())
+    const stopLayerRef = useRef(null)
 
     useMapEvents({
         click() {
@@ -376,16 +377,16 @@ const ConditionallyDisplayStopComponents = (stopComponents) => {
 
         },
         zoomend() { // zoom event (when zoom animation ended)
-            log.info("map zoom event end")
+            log.info("map zoom event end",Zoom,map.getZoom())
             setZoom(map.getZoom())
 
         }
     });
 
-    log.info("show stops? ",map.getZoom() >= 15.1)
-    // return(Zoom>15.1?<LayerGroup>stopComponents</LayerGroup>:<LayerGroup display={false}>stopComponents</LayerGroup>)
-    return(Zoom>15.1?stopComponents:<LayerGroup display={false}>stopComponents</LayerGroup>)
-    // return stopComponents
+    return(Zoom>15.1?stopComponents:null)
+
+    // log.info("show stops? ",map.getZoom() >= 15.1)
+    // return(Zoom>15.1?stopComponents:<LayerGroup display={false}>stopComponents</LayerGroup>)
 }
 
 const MapEvents = () :boolean=> {
