@@ -216,13 +216,13 @@ function InnerCollapsableStopCard ({ match, oneOfMany}: {match:SearchMatch, oneO
             </span>
         </button>
         <div className="card-content collapse-content">
-            <StopCardContent stopMatch={stopMatch} collapsed={true}/>
+            <StopCardContent stopMatch={stopMatch} collapsed={oneOfMany}/>
             <ul className="menu icon-menu card-menu">
                 <li>
-                    <StopCardFavoriteButton stopMatch={stopMatch} collapsed={true}/>
+                    <StopCardFavoriteButton stopMatch={stopMatch} collapsed={oneOfMany}/>
                 </li>
                 <li>
-                    <ViewSearchItem datumId={stopMatch.id} text={"Stop"} collapsed={true}/>
+                    <ViewSearchItem datumId={stopMatch.id} text={"Stop"} collapsed={oneOfMany}/>
                 </li>
             </ul>
         </div>

@@ -34,7 +34,7 @@ export function GeoCardWrapper  () :JSX.Element {
         <div className="cards geocards toggle-cards stops" aria-hidden="false">
             {
             stops.map((match,index) => {
-                return <CollapsableStopCard match={match} oneOfMany={routes.length>1} key={index}/>
+                return <CollapsableStopCard match={match} oneOfMany={stops.length>1} key={index}/>
             })
             }
         </div>
