@@ -65,11 +65,14 @@ const MapVehicleElements = () :JSX.Element =>{
                     log.info("MapVehicleElements: vehicle object refs",vehicleObjsRefs.current)
                     vehicleDataForRoute.forEach(vehicleDatum=>{
                         let vehicleIcon = createVehicleIcon(vehicleDatum)
-                        if(vehicleObjsRefs.current.has(vehicleDatum.vehicleId) && typeof vehicleObjsRefs.current.get(vehicleDatum.vehicleId)!==undefined){
+                        if(vehicleObjsRefs.current.has(vehicleDatum.vehicleId)
+                            && vehicleObjsRefs.current.get(vehicleDatum.vehicleId)!==null
+                            && typeof vehicleObjsRefs.current.get(vehicleDatum.vehicleId)!==undefined){
                             // update vehicle to be in new pos
                             let vehicle = vehicleObjsRefs.current.get(vehicleDatum.vehicleId);
                             vehicle.setLatLng(vehicleDatum.longLat)
                             vehicle.setIcon(vehicleIcon)
+                            console.trace("updated vehicle position",vehicleDatum.vehicleId,vehicleObjsRefs.current.get(vehicleDatum.vehicleId))
                         }
                         else{
                             vehicleComponentsRef.current.set(vehicleDatum.vehicleId,
