@@ -40,8 +40,8 @@ function MapVehicleComponent  (
     };
 
     let popupOptions = {
-        autoPan: false,
-        keepInView: false
+        // autoPan: false
+        // keepInView: false
     }
 
 

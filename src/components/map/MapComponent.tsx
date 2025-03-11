@@ -43,6 +43,7 @@ const MapVehicleElements = () :JSX.Element =>{
     const vehicleComponentsRef = useRef(new Map())
     const vehicleObjsRefs = useRef(new Map())
     const showFocusVehicle = useRef(true)
+    const lastCardWasNotVehicleView = useRef(state.currentCard.type !== CardType.VehicleCard)
 
     let routeIds = state.currentCard.routeIdList
     log.info("looking for vehicles from route ids: ",routeIds)
@@ -88,53 +89,63 @@ const MapVehicleElements = () :JSX.Element =>{
                     });
                     if (vehicleObjsRefs && typeof vehicleObjsRefs.current === "object"
                         && typeof vehicleObjsRefs.current.get === 'function'
-                        && state.currentCard.type === CardType.VehicleCard)
+                        && state.currentCard.type === CardType.VehicleCard
+                        && lastCardWasNotVehicleView.current === true
+                        && vehicleObjsRefs.current.get(state.currentCard.datumId)!=null
+                        && vehicleObjsRefs.current.get(state.currentCard.datumId)!=undefined)
                     {
+                        log.info("map vehicle component popup opening on load",
+                            state.currentCard.datumId,
+                            vehicleObjsRefs.current.get(state.currentCard.datumId))
                         let vehicleId = state.currentCard.datumId;
-                        let vehicleDatum = vehicleObjsRefs.current.get(vehicleId)
-                        if (typeof vehicleDatum !== 'undefined'
-                            && vehicleDatum.getPopup()
-                            && showFocusVehicle==true
-                        ) {
-                            log.info("map vehicle component markers popup value is",
-                                vehicleDatum.getPopup(),
-                                state.currentCard.datumId)
-                            vehicleDatum.openPopup()
-                        }
-                    } else{
-                        if(showFocusVehicle==false){
-                            showFocusVehicle.current=true
-                        }
+                        let vehicleObj = vehicleObjsRefs.current.get(vehicleId)
+                        vehicleObj.openPopup()
+                        log.info("map vehicle component popup opening on load is",vehicleObj)
+                        lastCardWasNotVehicleView.current = false
                     }
                 }
                 log.info("map vehicle components", mapVehicleComponents)
             })
+        }
+
+        let map = useMap()
+        useMapEvents(
+            {
+                zoomend() {
+                    try {
+                        if (vehicleObjsRefs && typeof vehicleObjsRefs.current === "object"
+                            && typeof vehicleObjsRefs.current.get === 'function'
+                            && state.currentCard.type === CardType.VehicleCard
+                            && lastCardWasNotVehicleView.current === true
+                            && vehicleObjsRefs.current.get(state.currentCard.datumId)!=null
+                            && vehicleObjsRefs.current.get(state.currentCard.datumId)!=undefined)
+                        {
+                            log.info("map vehicle component markers zoomend",
+                                state.currentCard.datumId,
+                                vehicleObjsRefs.current.get(state.currentCard.datumId))
+                            let vehicleId = state.currentCard.datumId;
+                            let vehicleObj = vehicleObjsRefs.current.get(vehicleId)
+                            vehicleObj.openPopup()
+                            lastCardWasNotVehicleView.current = false
+                            log.info("map vehicle component markers zoomend completed",vehicleObj)
+                        }
+                    } catch (e) {
+                        log.error("error in vehicle element creation", e)
+                    }
+                }
+            }
+        )
+
+        log.info("end of map vehicle elements creation, state, vehicleObjsRefs,lastCardWasNotVehicleView",state,vehicleObjsRefs.current,lastCardWasNotVehicleView)
+        if(state.currentCard.type !== CardType.VehicleCard){
+            lastCardWasNotVehicleView.current = true
         }
     }
     catch (e) {
         log.error("error in vehicle element creation",e)
     }
 
-    let map = useMap()
-    useMapEvents(
-        {
-            zoomend() {
-                try {
-                    if (vehicleObjsRefs && typeof vehicleObjsRefs.current === "object"
-                        && typeof vehicleObjsRefs.current.get === 'function'
-                        && state.currentCard.type === CardType.VehicleCard)
-                    {
-                        let vehicleId = state.currentCard.datumId;
-                        let vehicleObj = vehicleObjsRefs.current.get(vehicleId)
-                        vehicleObj.openPopup()
-                        log.info("map vehicle component markers popup value on zoomend is",vehicleObj)
-                        }
-                } catch (e) {
-                    log.error("error in vehicle element creation", e)
-                }
-            }
-        }
-    )
+
     return (
         <React.Fragment>
             {mapVehicleComponents}
