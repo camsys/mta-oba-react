@@ -179,6 +179,8 @@ export function createVehicleRtInterface(mvj: any,updateTime:Date): VehicleRtInt
             stalled = true;
         }
     }
+    let routeId = mvj.LineRef;
+    if(routeId!=null){routeId=routeId.replace("+","-SBS")}
 
 
     return {
@@ -202,7 +204,7 @@ export function createVehicleRtInterface(mvj: any,updateTime:Date): VehicleRtInt
         vehicleId: mvj.VehicleRef,
         bearing: mvj.Bearing,
         direction: mvj.DirectionRef,
-        routeId: mvj.LineRef
+        routeId: routeId
     };
 }
 

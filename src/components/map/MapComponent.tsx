@@ -72,7 +72,7 @@ const MapVehicleElements = () :JSX.Element =>{
                             let vehicle = vehicleObjsRefs.current.get(vehicleDatum.vehicleId);
                             vehicle.setLatLng(vehicleDatum.longLat)
                             vehicle.setIcon(vehicleIcon)
-                            console.trace("updated vehicle position",vehicleDatum.vehicleId,vehicleObjsRefs.current.get(vehicleDatum.vehicleId))
+                            log.trace("updated vehicle position",vehicleDatum.vehicleId,vehicleObjsRefs.current.get(vehicleDatum.vehicleId))
                         }
                         else{
                             vehicleComponentsRef.current.set(vehicleDatum.vehicleId,
