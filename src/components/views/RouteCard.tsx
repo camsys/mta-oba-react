@@ -163,6 +163,7 @@ export function CollapsableRouteCard({ routeMatch, oneOfMany}: {routeMatch:Route
             <div className={`card route-card
              ${oneOfMany?"collapsible":""}
              ${isFavorite(routeMatch)?"favorite":""}`}>
+                {oneOfMany?
                 <button
                     className="card-header collapse-trigger"
                     style={{ borderColor: "#" + routeMatch.color }}
@@ -174,6 +175,17 @@ export function CollapsableRouteCard({ routeMatch, oneOfMany}: {routeMatch:Route
                     {hasServiceAlert?<ServiceAlertSvg/>:null}
                     <span className="card-title label">{OBA.Config.noWidows(routeMatch.routeTitle)}</span>
                 </button>
+                :
+                <div
+                    className="card-header"
+                    style={{ borderColor: "#" + routeMatch.color }}
+                    onMouseEnter={() => highlightId(routeMatch.routeId)}
+                    onMouseLeave={() => highlightId(null)}
+                >
+                    <h3 className="card-title">{OBA.Config.noWidows(routeMatch.routeTitle)}</h3>
+                </div>
+            }
+
                 <div className="card-content collapse-content">
                     <RouteCardContent routeMatch={routeMatch} collapsed={true}/>
                     <ul className="menu icon-menu card-menu">

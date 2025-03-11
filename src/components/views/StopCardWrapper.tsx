@@ -204,17 +204,29 @@ function InnerCollapsableStopCard ({ match, oneOfMany}: {match:SearchMatch, oneO
     log.info("generating collapsable StopCard",stopMatch)
     return(
     <div className={`card stop-card ${oneOfMany?"collapsible":""} ${isFavorite(stopMatch)?"favorite":""}`}>
-        <button className="card-header collapse-trigger"
-                onMouseEnter={() => highlightId(stopMatch.id)}
-                onMouseLeave={() => highlightId(null)}
-                aria-haspopup="true" aria-expanded="true"
-                aria-label={`Toggle ${stopMatch.id.split("_")[1]} ${stopMatch.name} open/close`}
-        >
-            <span className="card-title label">
-                <img src={busStopIcon} alt="bus stop icon" className="icon" />
-                {stopMatch.name}
-            </span>
-        </button>
+        {oneOfMany
+            ?
+                <button className="card-header collapse-trigger"
+                          onMouseEnter={() => highlightId(stopMatch.id)}
+                          onMouseLeave={() => highlightId(null)}
+                          aria-haspopup="true" aria-expanded="true"
+                          aria-label={`Toggle ${stopMatch.id.split("_")[1]} ${stopMatch.name} open/close`}
+                >
+                    <span className="card-title label">
+                        <img src={busStopIcon} alt="bus stop icon" className="icon"/>
+                        {stopMatch.name}
+                    </span>
+                </button>
+            :
+            <div className="card-header"
+                 onMouseEnter={() => highlightId(stopMatch.id)}
+                 onMouseLeave={() => highlightId(null)}>
+                <h3 className="card-title">
+                    <img src={busStopIcon} alt="bus stop icon" className="icon"/>
+                    {stopMatch.name}
+                </h3>
+            </div>
+        }
         <div className="card-content collapse-content">
             <StopCardContent stopMatch={stopMatch} collapsed={oneOfMany}/>
             <ul className="menu icon-menu card-menu">
