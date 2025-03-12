@@ -33,8 +33,11 @@ function VehicleComponent({vehicleDatum,tabbable}:
     if (vehicleDatum.spooking) {
         departureInfo = departureInfo + " (Estimated)"
     }
-    return(
-        <li key={vehicleDatum.vehicleId}>
+
+    let out = null;
+
+    try {
+        out = (<li key={vehicleDatum.vehicleId}>
             <span className="bus-info">
                 <span className="approaching">
                     {OBA.Util.getArrivalEstimateForISOString(vehicleDatum?.vehicleArrivalData?.[0].ISOTime,vehicleDatum.lastUpdate)}
@@ -45,7 +48,7 @@ function VehicleComponent({vehicleDatum,tabbable}:
                 </span>
                 {vehicleDatum.passengerCount != null && vehicleDatum.passengerCapacity != null
                     ?
-                        <span className="passengers">
+                    <span className="passengers">
                             {
                                 vehicleDatum.apcLevel!=-1?
                                     <span className={'meeples meeples-' + `${vehicleDatum?.apcLevel}`}>
@@ -54,19 +57,24 @@ function VehicleComponent({vehicleDatum,tabbable}:
                                              title={`vehicle is ~${Math.ceil((vehicleDatum.passengerCount / vehicleDatum.passengerCapacity) * 100)}% full`}
                                              className="meeples-blank"/>
                                     </span>
-                                :null
+                                    :null
                             }
-                            {vehicleDatum.passengerCount != null
-                                ?(<span className="passenger-count">{`~${vehicleDatum.passengerCount} passengers`}</span>)
-                                : null}
+                        {vehicleDatum.passengerCount != null
+                            ?(<span className="passenger-count">{`~${vehicleDatum.passengerCount} passengers`}</span>)
+                            : null}
                         </span>
                     :
-                        null}
+                    null}
             </span>
             <a href="#" tabIndex={tabbable?0:-1}
                onClick={()=>{vehicleSearch(vehicleDatum)}}
                className={vehicleDatum?.strollerVehicle?"bus stroller-friendly":"bus"}>{vehicleDatum.vehicleId.split("_")[1]}</a>
-        </li>
+        </li>)
+    } catch (e) {
+        log.error("error in VehicleComponent", e)
+    }
+    return(
+        out
     )
 
 }

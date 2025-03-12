@@ -60,39 +60,45 @@ const RouteDirection = (routeDirectionDatum:RouteMatchDirectionInterface,stopId:
         console.log("vehicleDataByDestination",vehicleDataByDestination)
     }
 
+    let vehicleComponents = null;
 
-    let vehicleComponents = Array.from(vehicleDataByDestination.entries()).map(([destination,vehicleData],index)=>{
-        return (<div className={`inner-card route-direction en-route collapsible ${collapsed?"":"open"}`} key={routeAndDir+destination}>
-            <button
-                className={`card-header collapse-trigger ${collapsed?"":"open"}`}
-                aria-haspopup="true"
-                aria-expanded="true"
-                aria-label={`Toggle ${routeDirectionDatum.routeId.split("_")[1]} to ${destination}`}
-                onMouseEnter={() => highlightId(routeDirectionDatum.routeId)}
-                onMouseLeave={() => highlightId(null)}
-                tabIndex={collapsed?-1:0}
-            >
+    try{
+        vehicleComponents = Array.from(vehicleDataByDestination.entries()).map(([destination,vehicleData],index)=>{
+            return (<div className={`inner-card route-direction en-route collapsible ${collapsed?"":"open"}`} key={routeAndDir+destination}>
+                <button
+                    className={`card-header collapse-trigger ${collapsed?"":"open"}`}
+                    aria-haspopup="true"
+                    aria-expanded="true"
+                    aria-label={`Toggle ${routeDirectionDatum.routeId.split("_")[1]} to ${destination}`}
+                    onMouseEnter={() => highlightId(routeDirectionDatum.routeId)}
+                    onMouseLeave={() => highlightId(null)}
+                    tabIndex={collapsed?-1:0}
+                >
                 <span className="card-title" style={{ borderColor: '#'+routeDirectionDatum.color}}>
                     {hasServiceAlert?<ServiceAlertSvg/>:null}
                     <span className="label">
                         <strong>{routeDirectionDatum.routeId.split("_")[1]}</strong> {destination}
                     </span>
                 </span>
-            </button>
-            <div className="card-content collapse-content">
-                <ul className="approaching-buses">
-                    {vehicleData.map((vehicleDatum,index)=>{
-                        if(index<3){return <VehicleComponent {...{vehicleDatum,lastUpdateTime}} tabbable={!collapsed} key={index}/>}})}
-                </ul>
-                <ServiceAlertContainerComponent {...{routeId,serviceAlertIdentifier,collapsed}}/>
-                <ul className="menu icon-menu inner-card-menu">
-                    <li>
-                        <ViewSearchItem datumId={routeDirectionDatum.routeId} text={"Full Route"} collapsed={collapsed}/>
-                    </li>
-                </ul>
-            </div>
-        </div>)
-    })
+                </button>
+                <div className="card-content collapse-content">
+                    <ul className="approaching-buses">
+                        {vehicleData.map((vehicleDatum,index)=>{
+                            if(index<3){return <VehicleComponent {...{vehicleDatum,lastUpdateTime}} tabbable={!collapsed} key={index}/>}})}
+                    </ul>
+                    <ServiceAlertContainerComponent {...{routeId,serviceAlertIdentifier,collapsed}}/>
+                    <ul className="menu icon-menu inner-card-menu">
+                        <li>
+                            <ViewSearchItem datumId={routeDirectionDatum.routeId} text={"Full Route"} collapsed={collapsed}/>
+                        </li>
+                    </ul>
+                </div>
+            </div>)
+        })
+    } catch (e) {
+        console.error("Error generating vehicleComponents",e)
+    }
+
 
     return (stopCardVehicleData === null? null :
         <React.Fragment>

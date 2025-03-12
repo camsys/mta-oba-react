@@ -34,23 +34,33 @@ export function RouteStopComponent
 
     let uniqueId = stopDatum.name + "_" + stopDatum.id + "_"+index
 
+    let out = null;
+
+    try{
+        out = (
+            <li  className={hasVehicleChildren?"has-info":null}
+                 key={uniqueId}
+                 id={uniqueId}
+                 onMouseEnter={() => highlightId(stopDatum.id)}
+                 onMouseLeave={() => highlightId(null)}
+            >
+                <a href="#" onClick={() => search(stopDatum.id.split("_")[1])} tabIndex="-1">{stopDatum.name}</a>
+                {
+                    hasVehicleChildren ?
+                        <ul className="approaching-buses">
+                            {vehicleChildComponents.map((vehicleDatum, index)=>{
+                                return <VehicleComponent vehicleDatum={vehicleDatum} lastUpdateTime={null} key = {index}/>})}
+                        </ul>
+                        :null
+                }
+            </li>
+        )
+    } catch (e) {
+        log.error("error in RouteStopComponent: ", e)
+    }
+
     return (
-        <li  className={hasVehicleChildren?"has-info":null}
-             key={uniqueId}
-             id={uniqueId}
-             onMouseEnter={() => highlightId(stopDatum.id)}
-             onMouseLeave={() => highlightId(null)}
-        >
-            <a href="#" onClick={() => search(stopDatum.id.split("_")[1])} tabIndex="-1">{stopDatum.name}</a>
-            {
-                hasVehicleChildren ?
-                    <ul className="approaching-buses">
-                        {vehicleChildComponents.map((vehicleDatum, index)=>{
-                            return <VehicleComponent vehicleDatum={vehicleDatum} lastUpdateTime={null} key = {index}/>})}
-                    </ul>
-                    :null
-            }
-        </li>
+        out
     )
 }
 
