@@ -377,17 +377,17 @@ p {
   line-height: 1.4;
 }
 
-ul:not(.menu):not(.card-details):not(.route-stops):not(.approaching-buses):not([role=listbox]):not(.breadcrumb) {
+ul:not(.menu):not(.card-details):not(.route-stops):not(.approaching-buses):not([role=listbox]):not(.breadcrumb):not(.map-legend) {
   list-style: none;
   padding: 0;
   margin: 1em 0;
 }
-ul:not(.menu):not(.card-details):not(.route-stops):not(.approaching-buses):not([role=listbox]):not(.breadcrumb) > li {
+ul:not(.menu):not(.card-details):not(.route-stops):not(.approaching-buses):not([role=listbox]):not(.breadcrumb):not(.map-legend) > li {
   margin: 0 0 0.5em 0;
   padding: 0 0 0 0.75em;
   position: relative;
 }
-ul:not(.menu):not(.card-details):not(.route-stops):not(.approaching-buses):not([role=listbox]):not(.breadcrumb) > li::before {
+ul:not(.menu):not(.card-details):not(.route-stops):not(.approaching-buses):not([role=listbox]):not(.breadcrumb):not(.map-legend) > li::before {
   content: "■";
   display: inline-block;
   font-size: 0.375em;
@@ -395,21 +395,21 @@ ul:not(.menu):not(.card-details):not(.route-stops):not(.approaching-buses):not([
   left: 0;
   top: 0.875em;
 }
-ul:not(.menu):not(.card-details):not(.route-stops):not(.approaching-buses):not([role=listbox]):not(.breadcrumb) > li ul.links {
+ul:not(.menu):not(.card-details):not(.route-stops):not(.approaching-buses):not([role=listbox]):not(.breadcrumb):not(.map-legend) > li ul.links {
   display: -webkit-inline-box;
   display: -ms-inline-flexbox;
   display: inline-flex;
   gap: 0.75em;
   margin: 0 0 0 0.5em;
 }
-ul:not(.menu):not(.card-details):not(.route-stops):not(.approaching-buses):not([role=listbox]):not(.breadcrumb) > li ul.links li {
+ul:not(.menu):not(.card-details):not(.route-stops):not(.approaching-buses):not([role=listbox]):not(.breadcrumb):not(.map-legend) > li ul.links li {
   padding: 0;
   margin: 0;
 }
-ul:not(.menu):not(.card-details):not(.route-stops):not(.approaching-buses):not([role=listbox]):not(.breadcrumb) > li ul.links li::before {
+ul:not(.menu):not(.card-details):not(.route-stops):not(.approaching-buses):not([role=listbox]):not(.breadcrumb):not(.map-legend) > li ul.links li::before {
   content: none;
 }
-ul:not(.menu):not(.card-details):not(.route-stops):not(.approaching-buses):not([role=listbox]):not(.breadcrumb) > li ul.links li a::after {
+ul:not(.menu):not(.card-details):not(.route-stops):not(.approaching-buses):not([role=listbox]):not(.breadcrumb):not(.map-legend) > li ul.links li a::after {
   content: "";
   position: absolute;
   left: 0;
@@ -421,12 +421,12 @@ ul:not(.menu):not(.card-details):not(.route-stops):not(.approaching-buses):not([
   -webkit-transition: opacity 0.25s ease-in-out;
   transition: opacity 0.25s ease-in-out;
 }
-ul:not(.menu):not(.card-details):not(.route-stops):not(.approaching-buses):not([role=listbox]):not(.breadcrumb) > li ul.links li a:focus {
+ul:not(.menu):not(.card-details):not(.route-stops):not(.approaching-buses):not([role=listbox]):not(.breadcrumb):not(.map-legend) > li ul.links li a:focus {
   outline: none;
   border: none;
   text-decoration: none;
 }
-ul:not(.menu):not(.card-details):not(.route-stops):not(.approaching-buses):not([role=listbox]):not(.breadcrumb) > li ul.links li a:focus::after {
+ul:not(.menu):not(.card-details):not(.route-stops):not(.approaching-buses):not([role=listbox]):not(.breadcrumb):not(.map-legend) > li ul.links li a:focus::after {
   opacity: 1;
 }
 
@@ -1595,10 +1595,67 @@ button:hover, .button:hover {
       -ms-flex-positive: 0;
           flex-grow: 0;
 }
+#map-wrap .map-legend {
+  position: absolute;
+  top: 5.125rem;
+  right: 0;
+  z-index: 1;
+  background-color: rgba(255, 255, 255, 0.625);
+  list-style: none;
+  margin: 0;
+  padding: 0.5rem;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: nowrap;
+      flex-wrap: nowrap;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  gap: 1rem;
+  font-size: 0.75em;
+  line-height: 1;
+  -webkit-transition: background-color 0.25s ease-in-out;
+  transition: background-color 0.25s ease-in-out;
+}
+#map-wrap .map-legend li {
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  gap: 0.25rem;
+}
+#map-wrap .map-legend li::before {
+  content: "";
+  display: inline-block;
+  width: 2em;
+  height: 2em;
+  background-size: 51px 51px;
+  background-position: center;
+}
+#map-wrap .map-legend li.real-time::before {
+  background-image: url(/img/vehicle/vehicle-unknown.png);
+}
+#map-wrap .map-legend li.scheduled::before {
+  background-image: url(/img/vehicle/scheduled/vehicle-unknown.png);
+}
+#map-wrap .map-legend:hover {
+  background-color: white;
+}
 #map-wrap #map {
   -webkit-box-flex: 1;
       -ms-flex-positive: 1;
           flex-grow: 1;
+  position: relative;
+  z-index: 0;
 }
 #map-wrap.open {
   top: 0;
@@ -1625,6 +1682,9 @@ button:hover, .button:hover {
     z-index: 0;
   }
   .google-translate-active #map-wrap {
+    top: 0;
+  }
+  #map-wrap .map-legend {
     top: 0;
   }
 }

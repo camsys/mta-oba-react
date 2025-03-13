@@ -38,6 +38,10 @@ export function MapWrapper  () : JSX.Element {
                             aria-label={ariaLabel} onClick={mapToggle}><span className="label"><span className="hide-label">Hide </span>Map</span>
                     </button>
                 </div>
+                <ul className="map-legend">
+                    <li className="real-time">Real Time</li>
+                    <li className="scheduled">Estimated</li>
+                </ul>
                 <MapComponent/>
             </div>
         </ErrorBoundary>

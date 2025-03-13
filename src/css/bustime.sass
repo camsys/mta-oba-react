@@ -58,7 +58,7 @@ p
   line-height: 1.4
     
 ul
-  &:not(.menu):not(.card-details):not(.route-stops):not(.approaching-buses):not([role="listbox"]):not(.breadcrumb)
+  &:not(.menu):not(.card-details):not(.route-stops):not(.approaching-buses):not([role="listbox"]):not(.breadcrumb):not(.map-legend)
     list-style: none
     padding: 0
     margin: 1em 0
@@ -882,8 +882,47 @@ button, .button
     top: calc(100dvh - $bottom-buttons-height - $google-translate-bar-height)
   .bottom-buttons
     flex-grow: 0
+  .map-legend
+    position: absolute
+    top: $bottom-buttons-height
+    right: 0
+    z-index: 1
+    background-color: rgba($white, .625)
+    list-style: none
+    margin: 0
+    padding: $content-padding/2
+    display: flex
+    flex-wrap: nowrap
+    justify-content: center
+    align-items: center
+    gap: $content-padding
+    font-size: .75em
+    line-height: 1
+    transition: background-color .25s ease-in-out
+    li
+      display: inline-flex
+      align-items: center
+      justify-content: center
+      gap: $content-padding/4
+      &::before
+        content: ''
+        display: inline-block
+        width: 2em
+        height: 2em
+        background-size: 51px 51px
+        background-position: center
+      &.real-time
+        &::before
+          background-image: url(/img/vehicle/vehicle-unknown.png)
+      &.scheduled
+        &::before
+          background-image: url(/img/vehicle/scheduled/vehicle-unknown.png)
+    &:hover
+      background-color: rgba($white, 1)
   #map
     flex-grow: 1
+    position: relative
+    z-index: 0
   &.open
     top: 0
     #map-toggle
@@ -902,6 +941,8 @@ button, .button
     flex-grow: 1
     z-index: 0
     .google-translate-active &
+      top: 0
+    .map-legend
       top: 0
 
 #map
