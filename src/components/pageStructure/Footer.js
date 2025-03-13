@@ -48,6 +48,7 @@ function Footer  () {
                             <li><a href="//new.mta.info/about-us" tabIndex="-1"><span className="label">MTA Info</span></a></li>
                             <li><a href="//new.mta.info/doing-business-with-us" tabIndex="-1"><span className="label">Doing Business With Us</span></a></li>
                             <li><a href="//new.mta.info/transparency" tabIndex="-1"><span className="label">Transparency</span></a></li>
+                            <li><a href="//www.mta.info/privacy-policy" tabIndex="-1"><span className="label">Privacy Policy</span></a></li>
                         </ul>
                     </li>
                     <li className="parent collapsible">
