@@ -1,6 +1,31 @@
+function checkGoogleTranslate() {
+  const body = document.body;
+  
+  // Google Translate inserts an iframe when active
+  const translateIframe = document.querySelector('.goog-te-banner-frame, .goog-te-menu-frame');
+
+  if (translateIframe || document.documentElement.lang !== document.documentElement.getAttribute('original-lang')) {
+      body.classList.add('google-translate-active');
+  } else {
+      body.classList.remove('google-translate-active');
+  }
+}
+
 document.addEventListener('DOMContentLoaded', function() {
 
   // window.console.log('boop test');
+
+  // Store the original language of the page
+  document.documentElement.setAttribute('original-lang', document.documentElement.lang);
+  checkGoogleTranslate();
+
+  // ✅ Monitor changes in the `<html>` lang attribute (Google Translate modifies it)
+  const translateObserver = new MutationObserver(() => checkGoogleTranslate());
+  translateObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['lang'] });
+
+  // ✅ Monitor DOM changes in case Google injects elements
+  const domTranslateObserver = new MutationObserver(() => checkGoogleTranslate());
+  domTranslateObserver.observe(document.body, { childList: true, subtree: true });
 
   // have to do clicks this way so they work on objects added after the page loads
   // collapse trigger buttons open and close (for icon rotation) and content reveal/toggle

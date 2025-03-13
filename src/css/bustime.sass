@@ -5,14 +5,20 @@
 
 // basic html
 
-body
+body, html
   font-family: Helvetica, Arial, sans-serif
   font-size: 16px
   width: 100vw
-  min-height: 100dvh
+
+body
+  min-height: 100dvh!important
   position: relative
   color: $black
   overflow-x: hidden
+  &.google-translate-active
+    top: 0!important
+    padding-top: $google-translate-bar-height
+    min-height: calc(100dvh - $google-translate-bar-height)!important
   *
     box-sizing: border-box
   +mq($sidebar-switch)
@@ -555,7 +561,9 @@ button, .button
             border-right-width: 1px
             border-left-width: 1px
             +card-shadow
-
+  .google-translate-active &
+    top: $google-translate-bar-height
+    height: calc(100% - $google-translate-bar-height)
 .header
   background-color: $black2
   color: $white
@@ -660,6 +668,10 @@ button, .button
   transition: height .5s ease-in-out
   &.home
     height: 100dvh
+  .google-translate-active &
+    height: calc(100dvh - #{$button-height + 2rem} - $google-translate-bar-height)
+    &.home
+      height: calc(100dvh - $google-translate-bar-height)
   #search
     padding: $content-padding
     background: $mta-blue
@@ -764,6 +776,8 @@ button, .button
     box-shadow: .25em .25em .5em 0 rgba($black, 0.25)
     width: $sidebar-width-narrow
     height: auto
+    .google-translate-active &
+      height: auto
   +mq($nine)
     width: $sidebar-width
 
@@ -811,6 +825,7 @@ button, .button
     display: inline-flex
     align-items: center
     justify-content: center
+    min-height: $button-height
     .svg-icon-wrap
       flex-shrink: 0
     &#map-toggle
@@ -862,6 +877,9 @@ button, .button
   flex-grow: 1
   display: flex
   flex-direction: column
+  .google-translate-active &
+    height: calc(100dvh - $google-translate-bar-height) 
+    top: calc(100dvh - $bottom-buttons-height - $google-translate-bar-height)
   .bottom-buttons
     flex-grow: 0
   #map
@@ -883,6 +901,8 @@ button, .button
     width: auto
     flex-grow: 1
     z-index: 0
+    .google-translate-active &
+      top: 0
 
 #map
   width: 100vw
