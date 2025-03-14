@@ -26,14 +26,16 @@ export const VehicleCardContentComponent = ({routeMatch,vehicleDatum}
                     <span className="vehicle">{`Vehicle #${vehicleDatum.vehicleId.split("_")[1]}`}</span>
                     {vehicleDatum?.strollerVehicle?<span className="stroller">Stroller storage available</span>:null}
                 </li>
-                {vehicleDatum.passengerCount != null && (
-                    vehicleDatum.passengerCapacity != null ?
-                        <span className="passengers">
-                            <span className={'meeples meeples-'+`${Math.ceil((vehicleDatum.passengerCount / vehicleDatum.passengerCapacity) * 10)}`}>
-                                <img src={meeples} alt={`vehicle is ~${Math.ceil((vehicleDatum.passengerCount / vehicleDatum.passengerCapacity) * 100)}% full`} title={`vehicle is ~${Math.ceil((vehicleDatum.passengerCount / vehicleDatum.passengerCapacity) * 100)}% full`} className="meeples-blank" />
+                {(vehicleDatum.passengerCount != null && vehicleDatum.passengerCapacity != null && vehicleDatum.apcLevel!=-1)
+                    ? <span className="passengers">
+                            <span className={'meeples meeples-' + `${vehicleDatum?.apcLevel}`}>
+                                <img src={meeples}
+                                     alt={`vehicle is ~${Math.ceil((vehicleDatum.passengerCount / vehicleDatum.passengerCapacity) * 100)}% full`}
+                                     title={`vehicle is ~${Math.ceil((vehicleDatum.passengerCount / vehicleDatum.passengerCapacity) * 100)}% full`}
+                                     className="meeples-blank"/>
                             </span>
                         </span>
-                        : null)}
+                    : null}
                 {vehicleDatum.passengerCount != null
                     ?(<span>{`~${vehicleDatum.passengerCount} passengers`}</span>)
                     : null}
