@@ -10,6 +10,7 @@ import bus from "../../img/icon/bus.svg";
 function Footer  () {
     log.info("adding footer")
     const { search,allRoutesSearch } = useSearch();
+    let enableGoogleTranslate = false;
     return (
         <ErrorBoundary>
             <div className="footer" id="footer">
@@ -51,9 +52,9 @@ function Footer  () {
                             <li><a href="//www.mta.info/privacy-policy" tabIndex="-1"><span className="label">Privacy Policy</span></a></li>
                         </ul>
                     </li>
-                    <li className="parent collapsible">
+                    {enableGoogleTranslate ? <li className="parent collapsible">
                         <GoogleTranslateButton/>
-                    </li>
+                    </li> : null}
                 </ul>
             </div>
         </ErrorBoundary>
