@@ -26,19 +26,21 @@ export const VehicleCardContentComponent = ({routeMatch,vehicleDatum}
                     <span className="vehicle">{`Vehicle #${vehicleDatum.vehicleId.split("_")[1]}`}</span>
                     {vehicleDatum?.strollerVehicle?<span className="stroller">Stroller storage available</span>:null}
                 </li>
-                {(vehicleDatum.passengerCount != null && vehicleDatum.passengerCapacity != null && vehicleDatum.apcLevel!=-1)
-                    ? <span className="passengers">
+                {(vehicleDatum.passengerCount != null || (vehicleDatum.passengerCapacity != null && vehicleDatum.apcLevel != -1)) && (
+                    <li className="passengers">
+                        {(vehicleDatum.passengerCount != null && vehicleDatum.passengerCapacity != null && vehicleDatum.apcLevel != -1) && (
                             <span className={'meeples meeples-' + `${vehicleDatum?.apcLevel}`}>
                                 <img src={meeples}
                                      alt={`vehicle is ~${Math.ceil((vehicleDatum.passengerCount / vehicleDatum.passengerCapacity) * 100)}% full`}
                                      title={`vehicle is ~${Math.ceil((vehicleDatum.passengerCount / vehicleDatum.passengerCapacity) * 100)}% full`}
                                      className="meeples-blank"/>
                             </span>
-                        </span>
-                    : null}
-                {vehicleDatum.passengerCount != null
-                    ?(<span>{`~${vehicleDatum.passengerCount} passengers`}</span>)
-                    : null}
+                        )}
+                        {vehicleDatum.passengerCount != null && (
+                            <span className="passenger-count">{`~${vehicleDatum.passengerCount} passengers`}</span>
+                        )}
+                    </li>
+                )}
             </ul>
             <h4>Next Stops:</h4>
             <ul className="next-stops route-stops" style={{ color: '#'+routeMatch.color}}>

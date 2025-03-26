@@ -2269,6 +2269,16 @@ button:hover, .button:hover {
   margin: 0 0 0.5rem 0;
 }
 
+.passengers {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  gap: 0.5em;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
 .meeples {
   display: inline-block;
   line-height: 1;
@@ -2319,9 +2329,6 @@ button:hover, .button:hover {
 }
 .meeples-9::after {
   width: 225%;
-}
-.meeples + .passenger-count {
-  margin-left: 0.5em;
 }
 
 .next-stops {

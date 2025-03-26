@@ -944,6 +944,7 @@ button, .button
       top: 0
     .map-legend
       top: 0
+      
 
 #map
   width: 100vw
@@ -1357,6 +1358,11 @@ button, .button
   .en-route &
     margin: 0 0 $content-padding/2 0
 
+.passengers
+  display: flex
+  gap: .5em
+  align-items: center
+
 .meeples
   display: inline-block
   line-height: 1
@@ -1382,8 +1388,6 @@ button, .button
     &-#{$i}
       &::after
         width: $i*25%
-  & + .passenger-count
-    margin-left: .5em
 
 .next-stops
   font-size: .875em
