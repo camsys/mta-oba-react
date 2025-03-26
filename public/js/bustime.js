@@ -182,50 +182,60 @@ document.addEventListener('DOMContentLoaded', function() {
 
   });
 
- // its possible that its better to build this into react so i dont have to go so roundabout to get there?
-  const observer = new MutationObserver((mutationsList) => {
+  const searchInstructionObserver = new MutationObserver((mutationsList) => {
     for (const mutation of mutationsList) {
       if (mutation.type === 'childList') {
-
-        // search instructions scrolling
-
         const sidebarContent = document.querySelector('.sidebar-content');
         const searchInstructions = document.querySelector('.search-instructions');
-        var searchInstructionsHeight = '30'; // default height as defined in CSS 
-        if (sidebarContent && searchInstructions) {
-          sidebarContent.addEventListener('scroll', {
-            handleEvent(event) {
-              scrollTop = event.target.scrollTop;
-              // window.log.info('boop ' + scrollTop);
-              // check if amount sidebarContent is overflowed is more than searchInstructionsHeight
-              // this avoids a weird jittery scroll jiggle if the sidebarContent is just barely overflowing
-              overFlowAmount = sidebarContent.scrollHeight - sidebarContent.clientHeight;
-              if (overFlowAmount > searchInstructionsHeight) {
-                if (scrollTop <= searchInstructionsHeight) {
-                  // set height to difference between scrolltop and searchInstructionsHeight
-                  searchInstructions.style.height = (searchInstructionsHeight - scrollTop) + 'px';
-                } else if (scrollTop > searchInstructionsHeight) {
-                  searchInstructions.style.height = '0';
-                } else {
-                  searchInstructions.style.height = '';
-                }
+        const content = document.querySelector('.sidebar-content .content');
+        const footer = document.querySelector('.sidebar-content .footer');
+        const searchInstructionsHeight = 30;
+  
+        if (sidebarContent && searchInstructions && content && footer) {
+          // Scroll event
+          sidebarContent.addEventListener('scroll', () => {
+            const scrollTop = sidebarContent.scrollTop;
+            const overFlowAmount = sidebarContent.scrollHeight - sidebarContent.clientHeight;
+  
+            if (overFlowAmount > searchInstructionsHeight) {
+              if (scrollTop <= searchInstructionsHeight) {
+                searchInstructions.style.height = (searchInstructionsHeight - scrollTop) + 'px';
+              } else {
+                searchInstructions.style.height = '0';
               }
-            },
+            }
           });
-
-          // Stop observing once the elements are found
-          observer.disconnect(); 
+  
+          // ResizeObserver to watch the actual content inside the scrollable area
+          const handleResize = () => {
+            requestAnimationFrame(() => {
+              const overFlowAmount = sidebarContent.scrollHeight - sidebarContent.clientHeight;
+              const scrollTop = sidebarContent.scrollTop;
+          
+              if (overFlowAmount <= 0) {
+                searchInstructions.style.height = '';
+                sidebarContent.scrollTop = 0; // optional
+              }
+            });
+          };
+  
+          const resizeObserver = new ResizeObserver(handleResize);
+  
+          resizeObserver.observe(content);
+          resizeObserver.observe(footer);
+  
+          // Optionally trigger on load too
+          handleResize();
+  
+          searchInstructionObserver.disconnect();
           break;
         }
-
-        
-
       }
     }
   });
-
-  // Start observing the document body for childList changes
-  observer.observe(document.body, { childList: true, subtree: true });
+  
+  searchInstructionObserver.observe(document.body, { childList: true, subtree: true });
+  
 
 
   var tocToggle = document.getElementById('toc-toggle');
