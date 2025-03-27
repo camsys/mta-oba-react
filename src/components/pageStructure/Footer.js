@@ -10,7 +10,7 @@ import bus from "../../img/icon/bus.svg";
 function Footer  () {
     log.info("adding footer")
     const { search,allRoutesSearch } = useSearch();
-    let enableGoogleTranslate = false;
+    let enableGoogleTranslate = process.env.ENABLE_GOOGLE_TRANSLATE;
     return (
         <ErrorBoundary>
             <div className="footer" id="footer">
