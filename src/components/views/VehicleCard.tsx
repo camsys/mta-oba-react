@@ -2,7 +2,7 @@ import React, {useContext} from "react";
 import {CardStateContext} from "../util/CardStateComponent";
 import ServiceAlertContainerComponent from "./ServiceAlertContainerComponent";
 import {updatedTimeIdentifier, vehicleDataIdentifier, VehicleStateContext} from "../util/VehicleStateComponent";
-import {useSearch} from "../../js/updateState/NavigationEffect";
+import {useNavigation} from "../../js/updateState/NavigationEffect";
 import {OBA} from "../../js/oba";
 import {useHighlight} from "../util/MapHighlightingStateComponent.tsx";
 import {MatchType, RouteMatch, SearchMatch, VehicleRtInterface} from "../../js/updateState/DataModels";
@@ -15,7 +15,7 @@ import log from 'loglevel'
 export const VehicleCardContentComponent = ({routeMatch,vehicleDatum}
                                                 :{routeMatch:RouteMatch,vehicleDatum:VehicleRtInterface})
                                                 : JSX.Element=>{
-    const { search } = useSearch();
+    const { search } = useNavigation();
     // log.info("generating vehicleCardContentComponent for ",vehicleDatum.vehicleId)
     let {highlightId} = useHighlight()
 
@@ -69,7 +69,7 @@ function VehicleCard ({routeMatch,vehicleId}: { routeMatch: RouteMatch, vehicleI
     log.info("generating VehicleCard: ", routeMatch);
 
     let {highlightId} = useHighlight()
-    const { search } = useSearch();
+    const { search } = useNavigation();
     const { vehicleState} = useContext(VehicleStateContext)
     const {state} = useContext(CardStateContext)
 

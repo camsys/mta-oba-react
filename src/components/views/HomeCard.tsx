@@ -1,12 +1,12 @@
 import React, {useContext} from 'react';
 import log from 'loglevel';
-import {useSearch} from "../../js/updateState/NavigationEffect";
+import {useNavigation} from "../../js/updateState/NavigationEffect";
 
 
 function HomeCard  () : JSX.Element {
 
     log.info("adding home card")
-    const { search,allRoutesSearch } = useSearch();
+    const { search,allRoutesSearch } = useNavigation();
     log.info("functions for search",search,allRoutesSearch)
     return (<div><h2>Try these example searches:</h2>
     <ul>

@@ -13,6 +13,7 @@ import {
 } from "./DataModels";
 import log from 'loglevel';
 
+
 function processRouteSearch(route,card:Card,stops: StopsObject,routes:RoutesObject):RouteMatch {
     let match = new RouteMatch(route)
     log.info("processing route search results",route,card,stops,routes)
@@ -174,7 +175,9 @@ const getRoutesAddress=()=>{
 }
 
 
-export const useSearch = () =>{
+
+
+export const useNavigation = () =>{
     const { state, setState } = useContext(CardStateContext);
     const routes = useContext(RoutesContext) as RoutesObject
     const stops = useContext(StopsContext) as StopsObject

@@ -9,7 +9,7 @@ import {
     VehicleStateContext,
     VehicleStateProvider
 } from "./util/VehicleStateComponent";
-import {useSearch} from "../js/updateState/NavigationEffect.ts";
+import {useNavigation} from "../js/updateState/NavigationEffect.ts";
 import {MapHighlightingStateProvider} from "./util/MapHighlightingStateComponent.tsx";
 import {siriGetVehiclesForRoutesEffect, siriGetVehiclesForVehicleViewEffect} from "../js/updateState/SiriEffects";
 import {siriGetVehiclesForStopViewEffect} from "../js/updateState/SiriStopEffects";
@@ -35,7 +35,7 @@ const VehicleLoading=()=>{
 }
 
 function InitialCardGeneration ({setLoading}){
-    const { generateInitialCard } = useSearch();
+    const { generateInitialCard } = useNavigation();
 
     useEffect(() => {
         generateInitialCard(setLoading)

@@ -1,7 +1,7 @@
 import React, {useContext} from 'react';
 import busStopIcon from "../../img/icon/bus-stop.svg"
 import {CardStateContext} from "../util/CardStateComponent";
-import {useSearch} from "../../js/updateState/NavigationEffect";
+import {useNavigation} from "../../js/updateState/NavigationEffect";
 import {
     stopSortedFutureVehicleDataIdentifier, updatedTimeIdentifier,
     VehiclesApproachingStopsContext,
@@ -169,7 +169,7 @@ export function StopCard (match: SearchMatch) : JSX.Element {
         return <></>
     }
     let stopMatch = match as StopMatch
-    const {search} = useSearch();
+    const {search} = useNavigation();
     const {isFavorite} = useFavorite()
     const { highlightId } = useHighlight();
 
@@ -203,7 +203,7 @@ export const CollapsableStopCard = RunScriptAfterRender(InnerCollapsableStopCard
 function InnerCollapsableStopCard ({ match, oneOfMany}: {match:SearchMatch, oneOfMany:boolean}) : JSX.Element{
     if(match.type!==MatchType.StopMatch){return <></>}
     let stopMatch = match as StopMatch
-    const { search } = useSearch();
+    const { search } = useNavigation();
     const {isFavorite} = useFavorite()
     const { highlightId } = useHighlight();
 

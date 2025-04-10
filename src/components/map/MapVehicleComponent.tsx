@@ -4,7 +4,7 @@ import {Marker, Popup} from "react-leaflet";
 import L from "leaflet";
 import bus from "../../img/icon/bus.svg";
 import busStroller from "../../img/icon/bus-stroller.svg";
-import {useSearch} from "../../js/updateState/NavigationEffect.ts";
+import {useNavigation} from "../../js/updateState/NavigationEffect.ts";
 import {VehicleRtInterface} from "../../js/updateState/DataModels";
 import log from 'loglevel';
 
@@ -21,7 +21,7 @@ function MapVehicleComponent  (
     let vehicleIdParts = vehicleDatum.vehicleId.split("_");
     let vehicleIdWithoutAgency = vehicleIdParts[1];
 
-    let {vehicleSearch} = useSearch()
+    let {vehicleSearch} = useNavigation()
     const selectVehicle = (vehicleData) =>{
         log.info("clicked on " + vehicleData.vehicleId)
         vehicleSearch(vehicleData)

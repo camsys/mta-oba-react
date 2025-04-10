@@ -5,7 +5,7 @@ import L from "leaflet";
 import stopMapIcon from "../../img/icon/star_black.svg"
 import stopPopupIcon from "../../img/icon/bus-stop.svg"
 import {useHighlight} from "../util/MapHighlightingStateComponent.tsx";
-import {useSearch} from "../../js/updateState/NavigationEffect";
+import {useNavigation} from "../../js/updateState/NavigationEffect";
 import {CardType, StopInterface} from "../../js/updateState/DataModels";
 import {CardStateContext} from "../util/CardStateComponent";
 
@@ -31,7 +31,7 @@ function MapStopComponent  ({stopDatum, mapStopMarkers, zIndexOverride}:
     }
     let stopImageUrl = "img/stop/stop-" + (directionKey==null? "unknown":directionKey) + ".png"
     if(zIndexOverride){stopImageUrl = "img/stop/stop-" + (directionKey==null? "unknown":directionKey) + "-active.png"}
-    let {search} = useSearch()
+    let {search} = useNavigation()
 
     let icon = L.icon({
         iconUrl: stopImageUrl,

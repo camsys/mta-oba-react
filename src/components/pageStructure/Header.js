@@ -3,13 +3,13 @@ import log from 'loglevel';
 import ErrorBoundary from "../util/errorBoundary";
 import bustimeLogo from '../../img/bustime-logo.png';
 import favicon from '../../img/favicon.ico';
-import {useSearch} from "../../js/updateState/NavigationEffect.ts";
+import {useNavigation} from "../../js/updateState/NavigationEffect.ts";
 
 
 
 function Header  () {
     log.info("adding header")
-    const { search } = useSearch();
+    const { search } = useNavigation();
     return (
         <ErrorBoundary>
             <header className="header" id="header">

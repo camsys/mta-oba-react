@@ -1,13 +1,13 @@
 import React, {useContext} from "react";
 import {OBA} from "../../js/oba";
-import {useSearch} from "../../js/updateState/NavigationEffect";
+import {useNavigation} from "../../js/updateState/NavigationEffect";
 import {VehicleRtInterface} from "../../js/updateState/DataModels";
 import meeples from '../../../public/img/meeples/meeples-blank.png';
 import log from 'loglevel';
 
 function VehicleComponent({vehicleDatum,tabbable}:
                               { vehicleDatum :VehicleRtInterface, tabbable: number}):JSX.Element{
-    let {vehicleSearch} = useSearch()
+    let {vehicleSearch} = useNavigation()
 
     // log.info("generating VehicleComponent",vehicleDatum)
     let hasArrivalData = typeof vehicleDatum?.vehicleArrivalData!=='undefined';

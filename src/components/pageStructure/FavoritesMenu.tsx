@@ -3,13 +3,13 @@ import Cookies from "js-cookie";
 import {RouteInterface, StopInterface} from "../../js/updateState/DataModels";
 import {FavoritesCookieStateContext, useFavorite} from "../util/MiscStateComponent";
 import {isRouteInterface, isStopInterface} from "../../js/updateState/DataModelsUtils";
-import {useSearch} from "../../js/updateState/NavigationEffect";
+import {useNavigation} from "../../js/updateState/NavigationEffect";
 import log from 'loglevel';
 
 
 export const FavoriteItem = ({datum}) =>{
     let {removeFavorite} = useFavorite();
-    let {search} = useSearch()
+    let {search} = useNavigation()
 
 
     if(isRouteInterface(datum)){

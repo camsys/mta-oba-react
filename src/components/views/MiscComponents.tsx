@@ -1,8 +1,8 @@
 import React from "react";
-import {useSearch} from "../../js/updateState/NavigationEffect";
+import {useNavigation} from "../../js/updateState/NavigationEffect";
 
 export function ViewSearchItem({datumId,text,collapsed}: { string, string, boolean}){
-    const {search} = useSearch()
+    const {search} = useNavigation()
     return(
         <button className="view-full" tabIndex={collapsed?-1:0} aria-label={'view full '+text} onClick={() => search(datumId)}>
                             <span className="svg-icon-wrap">

@@ -5,13 +5,13 @@ import {useHighlight} from "../util/MapHighlightingStateComponent";
 import {CollapsableRouteCard, RouteCardContent} from "./RouteCard";
 import { OBA } from "../../js/oba";
 import {CollapsableStopCard} from "./StopCardWrapper";
-import {useSearch} from "../../js/updateState/NavigationEffect";
+import {useNavigation} from "../../js/updateState/NavigationEffect";
 import log from 'loglevel';
 
 
 export function AbreviatedRouteCard({ routeMatch}: RouteMatch): JSX.Element {
     log.info("generating allroutes card: ", routeMatch);
-    const {search} = useSearch()
+    const {search} = useNavigation()
     if (routeMatch.type !== MatchType.RouteMatch) {
         return null
     }

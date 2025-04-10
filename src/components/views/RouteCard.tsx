@@ -9,7 +9,7 @@ import {
     SearchMatch, StopInterface, RouteMatch
 } from "../../js/updateState/DataModels";
 import {stopSortedDataIdentifier, vehicleDataIdentifier, VehicleStateContext} from "../util/VehicleStateComponent";
-import {useSearch} from "../../js/updateState/NavigationEffect"
+import {useNavigation} from "../../js/updateState/NavigationEffect"
 import VehicleComponent from "./VehicleComponent"
 import {useFavorite} from "../util/MiscStateComponent";
 import {ViewSearchItem} from "./MiscComponents";
@@ -22,7 +22,7 @@ export function RouteStopComponent
 
     const { highlightId } = useHighlight();
     const {vehicleState} = useContext(VehicleStateContext)
-    const { search } = useSearch();
+    const { search } = useNavigation();
     routeId=routeId.split("_")[1]
 
     let vehicleChildComponents = vehicleState[routeId+stopSortedDataIdentifier]
