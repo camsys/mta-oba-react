@@ -74,7 +74,7 @@ function VehicleComponent({vehicleDatum,tabbable}:
             :
             vehicleDatum.prevTrip
                 ?
-                " (+layover, scheduled to depart terminal at " + OBA.Util.ISO8601StringToDate(vehicleDatum.departureTimeAsText).toLocaleTimeString()
+                " (+layover, scheduled to depart terminal at " + OBA.Util.ISO8601StringToDate(vehicleDatum.departureTimeAsText).toLocaleTimeString() + ")"
                 :
                 " (+ scheduled layover at terminal)"
     }
