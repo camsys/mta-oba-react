@@ -5,6 +5,57 @@ import {VehicleRtInterface} from "../../js/updateState/DataModels";
 import meeples from '../../../public/img/meeples/meeples-blank.png';
 import log from 'loglevel';
 
+
+function MeeplesComponentInner({vehicleDatum}: {VehicleRtInterface}):JSX.Element{
+    let percentFull = null;
+    let meeples = null;
+    if(vehicleDatum.apcLevel != -1 && vehicleDatum.apcLevel != null){meeples = vehicleDatum?.apcLevel;}
+    if(vehicleDatum.passengerCount != null
+        && vehicleDatum.passengerCapacity!=null
+        && vehicleDatum.passengerCapacity != 0){
+        percentFull = Math.ceil((vehicleDatum.passengerCount / vehicleDatum.passengerCapacity) * 100);
+    }
+    if(vehicleDatum.passengerCount==null){
+        return null
+    }
+    return(
+        <React.Fragment>
+            {(percentFull !==null && meeples!==null) && (
+                <span className={'meeples meeples-' + `${meeples}`}>
+                            <img src={meeples}
+                                 alt={`vehicle is ~${percentFull}% full`}
+                                 title={`vehicle is ~${percentFull}% full`}
+                                 className="meeples-blank"/>
+                        </span>
+            )}
+            <span className="passenger-count">{`~${vehicleDatum.passengerCount} passengers`}</span>
+        </React.Fragment>
+    )
+}
+
+export function MeeplesComponentSpan({vehicleDatum}: {VehicleRtInterface}):JSX.Element{
+    if(vehicleDatum.passengerCount==null){
+        return null
+    }
+    return(
+        <span className="passengers">
+            <MeeplesComponentInner vehicleDatum={vehicleDatum}/> </span>
+    )
+}
+
+export function MeeplesComponentLi({vehicleDatum}: {VehicleRtInterface}):JSX.Element{
+    if(vehicleDatum.passengerCount==null){
+        return null
+    }
+    return(
+        <li className="passengers">
+            <MeeplesComponentInner vehicleDatum={vehicleDatum}/> </li>
+    )
+}
+
+
+
+
 function VehicleComponent({vehicleDatum,tabbable}:
                               { vehicleDatum :VehicleRtInterface, tabbable: number}):JSX.Element{
     let {vehicleSearch} = useNavigation()
@@ -46,25 +97,7 @@ function VehicleComponent({vehicleDatum,tabbable}:
                         :null}
                     {departureInfo}
                 </span>
-                {vehicleDatum.passengerCount != null && vehicleDatum.passengerCapacity != null
-                    ?
-                    <span className="passengers">
-                            {
-                                vehicleDatum.apcLevel!=-1?
-                                    <span className={'meeples meeples-' + `${vehicleDatum?.apcLevel}`}>
-                                        <img src={meeples}
-                                             alt={`vehicle is ~${Math.ceil((vehicleDatum.passengerCount / vehicleDatum.passengerCapacity) * 100)}% full`}
-                                             title={`vehicle is ~${Math.ceil((vehicleDatum.passengerCount / vehicleDatum.passengerCapacity) * 100)}% full`}
-                                             className="meeples-blank"/>
-                                    </span>
-                                    :null
-                            }
-                        {vehicleDatum.passengerCount != null
-                            ?(<span className="passenger-count">{`~${vehicleDatum.passengerCount} passengers`}</span>)
-                            : null}
-                        </span>
-                    :
-                    null}
+                <MeeplesComponentSpan vehicleDatum={vehicleDatum}/>
             </span>
             <a href="#" tabIndex={tabbable?0:-1}
                onClick={()=>{vehicleSearch(vehicleDatum)}}

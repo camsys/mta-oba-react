@@ -2303,6 +2303,9 @@ button:hover, .button:hover {
   background-size: auto 100%;
   background-repeat: no-repeat;
 }
+.meeples-null::after {
+  width: 0%;
+}
 .meeples-1::after {
   width: 25%;
 }
