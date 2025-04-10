@@ -5,7 +5,7 @@ import {useHighlight} from "../util/MapHighlightingStateComponent";
 import {CollapsableRouteCard, RouteCardContent} from "./RouteCard";
 import { OBA } from "../../js/oba";
 import {CollapsableStopCard} from "./StopCardWrapper";
-import {useSearch} from "../../js/updateState/SearchEffect";
+import {useSearch} from "../../js/updateState/NavigationEffect";
 import log from 'loglevel';
 
 

@@ -9,7 +9,7 @@ import {
     SearchMatch, StopInterface, RouteMatch
 } from "../../js/updateState/DataModels";
 import {stopSortedDataIdentifier, vehicleDataIdentifier, VehicleStateContext} from "../util/VehicleStateComponent";
-import {useSearch} from "../../js/updateState/SearchEffect"
+import {useSearch} from "../../js/updateState/NavigationEffect"
 import VehicleComponent from "./VehicleComponent"
 import {useFavorite} from "../util/MiscStateComponent";
 import {ViewSearchItem} from "./MiscComponents";

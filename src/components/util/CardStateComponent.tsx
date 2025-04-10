@@ -1,6 +1,6 @@
 import React, {createContext, ReactNode, useRef, useState} from 'react';
 
-import {getHomeCard} from "../../js/updateState/SearchEffect";
+import {getHomeCard} from "../../js/updateState/NavigationEffect";
 import {
     Card,
     CardStateObject,

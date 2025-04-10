@@ -2,7 +2,7 @@ import React, {useContext} from "react";
 import {CardStateContext} from "../util/CardStateComponent";
 import ServiceAlertContainerComponent from "./ServiceAlertContainerComponent";
 import {updatedTimeIdentifier, vehicleDataIdentifier, VehicleStateContext} from "../util/VehicleStateComponent";
-import {useSearch} from "../../js/updateState/SearchEffect";
+import {useSearch} from "../../js/updateState/NavigationEffect";
 import {OBA} from "../../js/oba";
 import {useHighlight} from "../util/MapHighlightingStateComponent.tsx";
 import {MatchType, RouteMatch, SearchMatch, VehicleRtInterface} from "../../js/updateState/DataModels";

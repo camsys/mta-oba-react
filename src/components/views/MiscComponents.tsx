@@ -1,5 +1,5 @@
 import React from "react";
-import {useSearch} from "../../js/updateState/SearchEffect";
+import {useSearch} from "../../js/updateState/NavigationEffect";
 
 export function ViewSearchItem({datumId,text,collapsed}: { string, string, boolean}){
     const {search} = useSearch()

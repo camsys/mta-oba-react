@@ -1,6 +1,6 @@
 import React, {useContext} from 'react';
 import log from 'loglevel';
-import {useSearch} from "../../js/updateState/SearchEffect";
+import {useSearch} from "../../js/updateState/NavigationEffect";
 
 
 function HomeCard  () : JSX.Element {

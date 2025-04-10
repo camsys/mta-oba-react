@@ -1,7 +1,7 @@
 import React, {useContext, useEffect, useState} from 'react';
 import Autosuggest from 'react-autosuggest';
 import ErrorBoundary from "../util/errorBoundary";
-import {useSearch} from "../../js/updateState/SearchEffect.ts";
+import {useSearch} from "../../js/updateState/NavigationEffect.ts";
 import {CardStateContext} from "../util/CardStateComponent.tsx";
 import log from 'loglevel';
 

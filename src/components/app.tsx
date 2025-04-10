@@ -9,7 +9,7 @@ import {
     VehicleStateContext,
     VehicleStateProvider
 } from "./util/VehicleStateComponent";
-import {useSearch} from "../js/updateState/SearchEffect.ts";
+import {useSearch} from "../js/updateState/NavigationEffect.ts";
 import {MapHighlightingStateProvider} from "./util/MapHighlightingStateComponent.tsx";
 import {siriGetVehiclesForRoutesEffect, siriGetVehiclesForVehicleViewEffect} from "../js/updateState/SiriEffects";
 import {siriGetVehiclesForStopViewEffect} from "../js/updateState/SiriStopEffects";

@@ -166,6 +166,7 @@ const getBaseAddress =()=>{
 const getSearchAddress=(searchTerm:string)=>{
     log.info("searching for: " + getBaseAddress() + OBA.Config.searchUrl + "?q=" + searchTerm)
     return  getBaseAddress() + OBA.Config.searchUrl + "?q=" + searchTerm
+
 }
 
 const getRoutesAddress=()=>{

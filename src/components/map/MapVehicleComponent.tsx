@@ -4,7 +4,7 @@ import {Marker, Popup} from "react-leaflet";
 import L from "leaflet";
 import bus from "../../img/icon/bus.svg";
 import busStroller from "../../img/icon/bus-stroller.svg";
-import {useSearch} from "../../js/updateState/SearchEffect.ts";
+import {useSearch} from "../../js/updateState/NavigationEffect.ts";
 import {VehicleRtInterface} from "../../js/updateState/DataModels";
 import log from 'loglevel';
 

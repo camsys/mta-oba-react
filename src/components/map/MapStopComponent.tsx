@@ -5,7 +5,7 @@ import L from "leaflet";
 import stopMapIcon from "../../img/icon/star_black.svg"
 import stopPopupIcon from "../../img/icon/bus-stop.svg"
 import {useHighlight} from "../util/MapHighlightingStateComponent.tsx";
-import {useSearch} from "../../js/updateState/SearchEffect";
+import {useSearch} from "../../js/updateState/NavigationEffect";
 import {CardType, StopInterface} from "../../js/updateState/DataModels";
 import {CardStateContext} from "../util/CardStateComponent";
 

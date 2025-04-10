@@ -3,7 +3,7 @@ import Cookies from "js-cookie";
 import {RouteInterface, StopInterface} from "../../js/updateState/DataModels";
 import {FavoritesCookieStateContext, useFavorite} from "../util/MiscStateComponent";
 import {isRouteInterface, isStopInterface} from "../../js/updateState/DataModelsUtils";
-import {useSearch} from "../../js/updateState/SearchEffect";
+import {useSearch} from "../../js/updateState/NavigationEffect";
 import log from 'loglevel';
 
 

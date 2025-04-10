@@ -1,7 +1,7 @@
 import React, {useContext} from 'react';
 import busStopIcon from "../../img/icon/bus-stop.svg"
 import {CardStateContext} from "../util/CardStateComponent";
-import {useSearch} from "../../js/updateState/SearchEffect";
+import {useSearch} from "../../js/updateState/NavigationEffect";
 import {
     stopSortedFutureVehicleDataIdentifier, updatedTimeIdentifier,
     VehiclesApproachingStopsContext,

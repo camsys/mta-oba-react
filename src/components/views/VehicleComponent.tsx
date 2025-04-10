@@ -1,6 +1,6 @@
 import React, {useContext} from "react";
 import {OBA} from "../../js/oba";
-import {useSearch} from "../../js/updateState/SearchEffect";
+import {useSearch} from "../../js/updateState/NavigationEffect";
 import {VehicleRtInterface} from "../../js/updateState/DataModels";
 import meeples from '../../../public/img/meeples/meeples-blank.png';
 import log from 'loglevel';

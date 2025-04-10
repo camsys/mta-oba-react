@@ -4,7 +4,7 @@ import ErrorBoundary from "../util/errorBoundary";
 import {FavoritesMenu} from "Components/pageStructure/FavoritesMenu";
 import {GoogleTranslateButton} from "Components/pageStructure/GoogleTranslate";
 import log from 'loglevel';
-import {useSearch} from "../../js/updateState/SearchEffect";
+import {useSearch} from "../../js/updateState/NavigationEffect";
 import bus from "../../img/icon/bus.svg";
 
 function Footer  () {
