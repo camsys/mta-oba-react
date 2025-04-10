@@ -363,8 +363,9 @@ export class Card {
     vehicleId: string | null;
     type: CardType;
     longlat: [number, number] | null;
+    uuid:String;
 
-    constructor(searchTerm: string) {
+    constructor(searchTerm: string,uuid:String) {
         this.searchTerm = searchTerm;
         this.searchResultType = null;
         this.name = "homeCard";
@@ -375,6 +376,7 @@ export class Card {
         this.type = CardType.HomeCard; // Default or initial type if applicable
         this.datumId = null;
         this.longlat = null;
+        this.uuid= uuid;
     }
 
     setType(cardType: CardType): void {

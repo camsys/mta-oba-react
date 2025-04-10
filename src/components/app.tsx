@@ -45,6 +45,23 @@ function InitialCardGeneration ({setLoading}){
 function App  () : JSX.Element{
     log.info("adding app")
     const [loading, setLoading] = useState(true);
+    const { updateStateForPopStateEvent } = useNavigation();
+
+    useEffect(() => {
+        const handlePopState = (popStateEvent) => {
+            log.info("popstate event triggered",window.history.state,popStateEvent,popStateEvent.state)
+            updateStateForPopStateEvent(popStateEvent);
+        };
+
+        window.addEventListener('popstate', handlePopState);
+
+        return () => {
+            window.removeEventListener('popstate', handlePopState);
+        };
+        window.addEventListener('popstate', handlePopState);
+        return () => window.removeEventListener('popstate', handlePopState);
+    }, []);
+
 
     return (
         <ErrorBoundary>

@@ -22,7 +22,8 @@ const CardStateProvider = ({ children }: { children: ReactNode }): JSX.Element =
     const [state, setState] = useState<CardStateObject>({
         currentCard: currentCard,
         cardStack: [currentCard],
-        renderCounter:1
+        renderCounter:1,
+        historyIndex: 0
     });
     log.info("initial state set: ",state)
 

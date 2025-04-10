@@ -42,6 +42,7 @@
     "react-leaflet-google-layer": "^2.2.0",
     "react-router": "^6.23.1",
     "react-select": "^5.8.0",
-    "react-svg": "^16.1.33"
+    "react-svg": "^16.1.33",
+    "uuid": "^11.1.0"
   }
 }

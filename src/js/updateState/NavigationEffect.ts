@@ -12,6 +12,9 @@ import {
     StopInterface, RoutesObject, StopsObject, SearchMatch, MatchType, VehicleRtInterface
 } from "./DataModels";
 import log from 'loglevel';
+import {v4 as uuidv4} from 'uuid';
+
+
 
 
 function processRouteSearch(route,card:Card,stops: StopsObject,routes:RoutesObject):RouteMatch {
@@ -143,9 +146,10 @@ const performNewSearch = (searchRef:String,currentCard:Card):boolean=>{
     return true
 }
 
-const updateWindowHistory = (term:string) :void =>{
+const updateWindowHistory = (term:string,uuid:string) :void =>{
     let url = new URL(window.location.href);
     url.searchParams.set("search", term);
+    url.searchParams.set("uuid", uuid);
     window.history.pushState({}, '', url);
 }
 
@@ -153,11 +157,11 @@ const updateWindowHistory = (term:string) :void =>{
 export const updateCard = async (searchRef:String,stops: StopsObject,routes:RoutesObject,address:string):Promise<Card> =>{
     log.info("received new search input:",searchRef)
     // searchRef = searchRef.replaceAll(" ","%2520")
-    return await getData(new Card(searchRef),stops,routes,address)
+    return await getData(new Card(searchRef,uuidv4()),stops,routes,address)
 }
 
 export const getHomeCard = () :Card=>{
-    return new Card("")
+    return new Card("",uuidv4())
 }
 
 const getBaseAddress =()=>{
@@ -216,13 +220,14 @@ export const useNavigation = () =>{
             document.getElementById('search-input').blur();
             scrollToSidebarTop();
             if (performNewSearch(searchTerm,state?.currentCard)) {
-                updateWindowHistory(searchTerm);
+
                 let currentCard;
                 if(searchTerm!=null|searchTerm!=""|searchTerm!="#"){
                     currentCard = await updateCard(searchTerm, stops,routes,getSearchAddress(searchTerm));
                 } else {
                     currentCard = getHomeCard();
                 }
+                updateWindowHistory(searchTerm,currentCard.uuid);
                 document.getElementById('search-input').blur();
                 scrollToSidebarTop();
                 let cardStack = state.cardStack;
@@ -247,7 +252,7 @@ export const useNavigation = () =>{
     }
 
     const generateInitialCard = async (setLoading)=>{
-        let currentCard = new Card("")
+        let currentCard = new Card("",uuidv4())
         log.info("setting initial state data home card",currentCard);
 
         let cardStack = state.cardStack;
@@ -282,8 +287,8 @@ export const useNavigation = () =>{
                 searchRef = "";
             }
             log.info("generating card based on starting query");
-            let currentCard = await getData(new Card(searchRef),stops,routes,getSearchAddress(searchRef));
-            // let currentCard = new Card(searchRef);
+            let currentCard = await getData(new Card(searchRef,uuidv4()),stops,routes,getSearchAddress(searchRef));
+            // let currentCard = new Card(searchRef,uuidv4());
             log.info("setting card based on starting query",currentCard);
 
             let cardStack = state.cardStack;
@@ -308,7 +313,7 @@ export const useNavigation = () =>{
         let pastCard = state.currentCard;
         let routeId = vehicleDatum.routeId.split("_")[1];
         log.info("found routeId of target vehicle: ",routeId);
-        let currentCard = new Card(routeId);
+        let currentCard = new Card(routeId,uuidv4());
         let routeData = routes?.current;
         if(routeData){routeData=routeData[vehicleDatum.routeId]};
         log.info("found routedata of target vehicle: ",routeData);
@@ -332,11 +337,10 @@ export const useNavigation = () =>{
         try {
             log.info("all routes requested, generating new card",state);
             if (state?.currentCard?.type !== CardType.AllRoutesCard) {
-                updateWindowHistory(searchTerm);
                 let currentCard = await fetch(address)
                     .then((response) => response.json())
                     .then((parsed) => {
-                        let currentCard = new Card(searchTerm);
+                        let currentCard = new Card(searchTerm,uuidv4());
                         log.info("all routes results: ",parsed);
                         let searchMatch = new SearchMatch(SearchMatch.matchTypes.AllRoutesMatch);
                         searchMatch.routeMatches = parsed?.routes.map(route=>new RouteMatch(route));
@@ -349,7 +353,7 @@ export const useNavigation = () =>{
                     .catch((error) => {
                         log.error(error);
                     });
-
+                updateWindowHistory(searchTerm,currentCard.uuid);
                 let cardStack = state.cardStack;
                 cardStack.push(currentCard);
                 log.info("updating state with new card:", currentCard,stops,routes);
@@ -367,7 +371,83 @@ export const useNavigation = () =>{
         }
     }
 
-    return { search, generateInitialCard, vehicleSearch, allRoutesSearch };
+    // useEffect(() => {
+    //     const handlePopState = () => {
+    //         const url = new URL(window.location.href);
+    //         const lineRef = url.searchParams.get('LineRef');
+    //         if (lineRef) {
+    //             updateFromUrl(lineRef);
+    //         }
+    //     };
+    //
+    //     window.addEventListener('popstate', handlePopState);
+    //     return () => window.removeEventListener('popstate', handlePopState);
+    // }, []);
+
+    const updateStateForPopStateEvent = (popStateEvent: PopStateEvent) => {
+        let uuid = new URL(window.location.href).searchParams.get('uuid');
+        let currentCard = state?.currentCard;
+        let cardStack = state.cardStack;
+        for(let i=0; i<cardStack.length; i++){
+            if(cardStack[i].uuid===uuid){
+                currentCard = cardStack[i];
+            }
+        }
+        setState((prevState) => ({
+            ...prevState,
+            currentCard: currentCard,
+            renderCounter:prevState.renderCounter+1
+        }));
+    }
+
+    const goBack = () => {
+        let cardStack = state.cardStack;
+        let currentCard = state?.currentCard;
+        log.info("going back to previous card",cardStack, currentCard);
+        if(cardStack.length<2){
+            log.info("no previous card in stack");
+            return}
+        for(let i=cardStack.length-1; i>1; i--){
+            if(cardStack[i]===currentCard){
+                log.info("found previous card in stack",cardStack[i-1]);
+                currentCard = cardStack[i-1];
+                break;
+            }
+        }
+        window.history.back();
+        setState((prevState) => ({
+            ...prevState,
+            currentCard: currentCard,
+            renderCounter:prevState.renderCounter+1
+        }));
+    }
+
+    const goForward = () => {
+        let cardStack = state.cardStack;
+        let currentCard = state?.currentCard;
+        log.info("going forward to next card",cardStack, currentCard);
+        if(cardStack.length<2){
+            log.info("no next card in stack");
+            return}
+        if(cardStack[cardStack.length-1]===currentCard){
+            log.info("already at last card in stack");
+            return}
+        for(let i=cardStack.length-2; i>0; i--){
+            if(cardStack[i]===currentCard){
+                log.info("found next card in stack",cardStack[i+1]);
+                currentCard = cardStack[i+1];
+                break
+            }
+        }
+        window.history.forward();
+        setState((prevState) => ({
+            ...prevState,
+            currentCard: currentCard,
+            renderCounter:prevState.renderCounter+1
+        }));
+    }
+
+    return { search, generateInitialCard, vehicleSearch, allRoutesSearch, updateStateForPopStateEvent, goBack,goForward };
 }
 
 
