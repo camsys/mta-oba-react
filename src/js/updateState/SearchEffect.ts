@@ -144,7 +144,7 @@ const performNewSearch = (searchRef:String,currentCard:Card):boolean=>{
 
 const updateWindowHistory = (term:string) :void =>{
     let url = new URL(window.location.href);
-    url.searchParams.set('LineRef', term);
+    url.searchParams.set("search", term);
     window.history.pushState({}, '', url);
 }
 

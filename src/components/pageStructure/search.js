@@ -22,7 +22,7 @@ function getSearch  () {
                 <div className="search-field-wrap">
                     <label htmlFor="search-field" className="visually-hidden">Search</label>
                     <div id="search-field">
-                        <input type="text" name="LineRef" id="search-input" placeholder="Search" autoComplete="off" defaultValue={searchText}/>
+                        <input type="text" name="search" id="search-input" placeholder="Search" autoComplete="off" defaultValue={searchText}/>
                     </div>
                     <button type="button" aria-label="Submit Search" id="submit-search"
                             onClick={handleSearch}>
