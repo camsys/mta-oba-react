@@ -40,17 +40,25 @@ const SearchBar = () => {
         search(lineRef);
     };
 
+
+
     const { search } = useNavigation();
     const {state} = useContext(CardStateContext)
     const [searchTerm, setSearchTerm] = useState("Search");
     log.info("Search",searchTerm)
+
+    const clearSearch = (event) => {
+        setSearchTerm("Search")
+        setValue("")
+    }
+
+
     useEffect(() => {
         let newSearchTerm = state?.currentCard?.searchTerm
         log.info("new Search",newSearchTerm,state,state?.currentCard,state?.currentCard?.searchTerm,searchTerm)
         if(newSearchTerm!==searchTerm){
             if(newSearchTerm===null || newSearchTerm==="" || typeof newSearchTerm ==="undefined"){
-                setSearchTerm("Search")
-                setValue("")
+                clearSearch()
             }
             else {
                 setValue(newSearchTerm)
@@ -65,6 +73,8 @@ const SearchBar = () => {
         onChange: (event, { newValue }) => setValue(newValue),
     };
 
+
+
     return (
         <ErrorBoundary>
             <div id="search" onKeyDown={(event)=>{if(event.key=="Enter"){search(event.target?.value)}}}>
@@ -77,6 +87,7 @@ const SearchBar = () => {
                     renderSuggestion={(suggestion) => <div>{suggestion.label}</div>}
                     inputProps={inputProps}
                 />
+                <button type="button" aria-label="clear search button" id="clear-search" onClick={clearSearch}>X</button>
                 <div className="search-instructions">
                     <p>Enter an intersection, bus route or bus stop code.</p>
                 </div>
