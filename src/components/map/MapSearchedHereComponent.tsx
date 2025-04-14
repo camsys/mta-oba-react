@@ -1,12 +1,14 @@
 import React from "react";
 import L from "leaflet";
-import {Marker} from "react-leaflet";
+import {Marker, Popup} from "react-leaflet";
 import {v4 as uuidv4} from 'uuid'
 import log from 'loglevel';
 
 
 
-function MapSearchedHereComponent({latlon}: { latlon:[number, number] }): JSX.Element | null {
+function MapSearchedHereComponent({latlon, key,searchedHereMarkers}: { latlon:[number, number],
+    key:string,
+    searchedHereMarkers: React.MutableRefObject<Map<number, Marker>> }): JSX.Element | null {
     log.info('validating MapSearchedHereComponent vars: ', latlon)
     if(latlon == null || latlon == undefined){
         log.info('invalid latlon for MapSearchedHereComponent: ', latlon)
@@ -22,6 +24,11 @@ function MapSearchedHereComponent({latlon}: { latlon:[number, number] }): JSX.El
         popupAnchor: [0,0]
     })
 
+    let popupOptions = {
+        autoPan: false,
+        keepInView: false
+    }
+
 
     var markerOptions = {
         position: latlon,
@@ -29,12 +36,27 @@ function MapSearchedHereComponent({latlon}: { latlon:[number, number] }): JSX.El
         zIndexOffset: 700,
         title: "searched here icon",
         keyboard:false,
-        key: uuidv4()
+        key: key
     };
 
     log.info('generating MapSearchedHereComponent: ', latlon,markerOptions)
   return (
-      <Marker {...markerOptions}/>
+      <Marker {...markerOptions}
+          ref={r=>
+              {
+                  // log.info("ref for stop component",stopDatum,r);
+                  typeof searchedHereMarkers!=='undefined'
+                      ?searchedHereMarkers.current.set(1,r):null
+              }}
+              tabIndex={-1}
+      >
+      >
+          <Popup key={key} className="map-searched-location" tabIndex={-1} {...popupOptions}>
+              <div className="popup-info">
+                  <span className="searched-here-span">Searched Location</span>
+              </div>
+          </Popup>
+      </Marker>
   );
 }
 

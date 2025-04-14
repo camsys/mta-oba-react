@@ -157,11 +157,17 @@ const MapVehicleElements = () :JSX.Element =>{
 
 
 const loadPopup = (datumId,leafletRefObjs) :void=>{
-    if(leafletRefObjs && typeof leafletRefObjs.current.get(datumId)!=='undefined'
-        && leafletRefObjs.current.get(datumId)!==null
-        && leafletRefObjs.current.get(datumId).getPopup()){
-        leafletRefObjs.current.get(datumId).openPopup()
+    try{
+        if(leafletRefObjs && typeof leafletRefObjs.current.get(datumId)!=='undefined'
+            && leafletRefObjs.current.get(datumId)!==null
+            && leafletRefObjs.current.get(datumId).getPopup()
+            && leafletRefObjs.current.get(datumId).getPopup()!==undefined){
+            leafletRefObjs.current.get(datumId).openPopup()
+        }
+    } catch (e) {
+        log.error("error in loadPopup",e)
     }
+
 }
 
 
@@ -198,7 +204,8 @@ const RoutesAndStops = () :JSX.Element=>{
     let mapRouteComponents = new Map();
     const mapStopComponents = useRef(new Map());
     const mapStopMarkers = useRef(new Map()<string,Marker>);
-    let searchedHerePin = new Map();
+    const searchedHereMarkers = useRef(new Map()<number,Marker>);
+    let searchedHereComponents = useRef(new Map()<number,Marker>);
     let mapStopComponentsToDisplay = new Map();
     let stopsToNonConditionallyDisplay = new Map();
 
@@ -231,7 +238,8 @@ const RoutesAndStops = () :JSX.Element=>{
             })
             let latlon = [searchMatch.latitude,searchMatch.longitude]
             if(latlon !== null || latlon !== undefined){
-                searchedHerePin.set(1,<MapSearchedHereComponent latlon={latlon}/>);
+                let key = uuidv4()
+                searchedHereComponents.current.set(key,<MapSearchedHereComponent latlon={latlon} key = {key} searchedHereMarkers={searchedHereMarkers}/>);
             }
         }
         else if(state.currentCard.type===CardType.StopCard) {
@@ -254,6 +262,34 @@ const RoutesAndStops = () :JSX.Element=>{
         if( state.currentCard.type===CardType.StopCard) {
             loadPopup(state.currentCard.datumId,mapStopMarkers)
         }
+        // if(searchedHereMarkers && typeof searchedHereMarkers.current.get(1)!=='undefined'
+        //         && searchedHereMarkers.current.get(1)!==null
+        //         && searchedHereMarkers.current.get(1).getPopup()
+        //         && searchedHereMarkers.current.get(1).getPopup()!==undefined){
+        //     searchedHereMarkers.current.get(1).openPopup()
+        // }
+        // rewrite the searched markers but with copious logging
+        searchedHereMarkers.current.forEach((marker, key) => {
+            if(typeof marker!=='undefined'){
+                log.info("searchedHereMarkers current get(1) is defined")
+                log.info("searchedHereMarkers current get(1) is not null",searchedHereMarkers.current.get(1))
+                if(marker!==null){
+                    log.info("searchedHereMarkers current get(1) has a popup")
+                    if(marker.getPopup()){
+                        log.info("searchedHereMarkers current get(1) has a popup and is not undefined")
+                        if(marker.getPopup()!==undefined){
+                            if(marker.getPopup().isOpen()){
+                                log.info("searchedHereMarkers current get(1) has a popup and is already open")
+                            } else{
+                                log.info("searchedHereMarkers current get(1) has a popup and is not open")
+                                marker.openPopup()
+                            }
+                        }
+                    }
+                }
+            }
+        })
+
     }
     useEffect(() => {
         addStopPopup()
@@ -281,7 +317,7 @@ const RoutesAndStops = () :JSX.Element=>{
     log.info("map route components", Array.from(mapRouteComponents.values()).flat());
     log.info("map stop components", mapStopComponents.current);
     log.info("map stop component markers", mapStopMarkers.current);
-    log.info("map \"searched here\" pin marker", Array.from(searchedHerePin).flat());
+    log.info("map \"searched here\" pin marker", Array.from(searchedHereComponents.current).flat());
 
     return (
         <React.Fragment>
@@ -289,7 +325,7 @@ const RoutesAndStops = () :JSX.Element=>{
                     ref = {r=>{mapRouteElementsLayerGroupRef=r}}>
                 {Array.from(mapRouteComponents.values()).flat()}
             </LayerGroup>
-            {searchedHerePin}
+            {Array.from(searchedHereComponents.current).flat()}
             {ConditionallyDisplayStopComponents(Array.from(mapStopComponentsToDisplay.values()).flat())}
             {Array.from(stopsToNonConditionallyDisplay.values()).flat()}
             <LayerGroup>
@@ -435,9 +471,9 @@ const MapEvents = () :boolean=> {
     let map = useMap()
     useMapEvents({
         popupopen(e) {
-            // log.info("boop popup opened")
+
             const popupContent = e.popup.getElement();
-    
+            log.info("popup opened", popupContent);
             popupContent.addEventListener('click', function (event) {
                 if (event.target.matches('.close-map')) {
                     // console.log('boop popup button clicked');
@@ -452,6 +488,11 @@ const MapEvents = () :boolean=> {
                     }
                 }
             });
+        },
+
+        popupclose(e) {
+            const popupContent = e.popup.getElement();
+            log.info("popup closed", e);
         }
         
         // click() {
