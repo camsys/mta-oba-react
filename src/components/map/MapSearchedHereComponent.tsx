@@ -6,26 +6,18 @@ import log from 'loglevel';
 
 
 
-function MapSearchedHereComponent(latlon:[number,number]): JSX.Element | null {
+function MapSearchedHereComponent({latlon}: { latlon:[number, number] }): JSX.Element | null {
     log.info('validating MapSearchedHereComponent vars: ', latlon)
     if(latlon == null || latlon == undefined){
         log.info('invalid latlon for MapSearchedHereComponent: ', latlon)
         return null}
     log.info('starting to generate MapSearchedHereComponent: ', latlon)
 
-    // let icon = L.icon({
-    //     iconUrl: "img/search-location-map-pin.png",
-    //     className: "svg-icon",
-    //     iconSize: [100, 100],
-    //     iconAnchor: [13, 13],
-    //     popupAnchor: [0,0]
-    // })
-
 
     let icon = L.icon({
         iconUrl: "img/search-location-map-pin.png",
         className: "svg-icon",
-        iconSize: [150,150],
+        iconSize: [60,60],
         iconAnchor: [25,25],
         popupAnchor: [0,0]
     })

@@ -231,31 +231,7 @@ const RoutesAndStops = () :JSX.Element=>{
             })
             let latlon = [searchMatch.latitude,searchMatch.longitude]
             if(latlon !== null || latlon !== undefined){
-                log.info("adding searched here pin latlon",latlon)
-                log.info('validating MapSearchedHereComponent vars: ', latlon)
-                if(latlon == null || latlon == undefined){
-                    log.info('invalid latlon for MapSearchedHereComponent: ', latlon)
-                    return null}
-                log.info('starting to generate MapSearchedHereComponent: ', latlon)
-
-                let icon = L.icon({
-                    iconUrl: "img/search-location-map-pin.png",
-                    className: "svg-icon",
-                    iconSize: [70,70],
-                    iconAnchor: [25,25]
-                })
-
-                var markerOptions = {
-                    position: latlon,
-                    icon: icon,
-                    zIndexOffset: 700,
-                    title: "searched here icon",
-                    keyboard:false,
-                    key: uuidv4()
-                };
-
-                log.info('generating MapSearchedHereComponent: ', latlon,markerOptions)
-                searchedHerePin.set(1,<Marker {...markerOptions}/>);
+                searchedHerePin.set(1,<MapSearchedHereComponent latlon={latlon}/>);
             }
         }
         else if(state.currentCard.type===CardType.StopCard) {
