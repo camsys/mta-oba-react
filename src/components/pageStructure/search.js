@@ -6,12 +6,12 @@ import searchWhite from "../../img/icon/search_white.svg";
 
 function getSearch  () {
 
-    const search = queryString.parse(location.search).LineRef;
+    const search = queryString.parse(location.search).search;
     var searchText = search?search:null
 
     const handleSearch = () => {
-        const lineRef = document.getElementById('search-input').value;
-        location.href = `?LineRef=${lineRef}`;
+        const search = document.getElementById('search-input').value;
+        location.href = `?search=${search}`;
     };
 
     log.info("adding search")

@@ -266,7 +266,7 @@ export const useNavigation = () =>{
         setLoading(false);
 
         try {
-            let searchRef = queryString.parse(location.search).LineRef as string;
+            let searchRef = queryString.parse(location.search).search as string;
             if(!searchRef){return}
             if(searchRef===allRoutesSearchTerm){
                 allRoutesSearch();
