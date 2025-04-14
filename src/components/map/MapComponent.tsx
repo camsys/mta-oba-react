@@ -20,6 +20,8 @@ import {
     StopMatch
 } from "../../js/updateState/DataModels";
 import {useHighlight} from "Components/util/MapHighlightingStateComponent";
+import MapSearchedHereComponent from "./MapSearchedHereComponent";
+import {v4 as uuidv4} from "uuid";
 
 
 const createVehicleIcon = (vehicleDatum):L.Icon => {
@@ -196,6 +198,7 @@ const RoutesAndStops = () :JSX.Element=>{
     let mapRouteComponents = new Map();
     const mapStopComponents = useRef(new Map());
     const mapStopMarkers = useRef(new Map()<string,Marker>);
+    let searchedHerePin = new Map();
     let mapStopComponentsToDisplay = new Map();
     let stopsToNonConditionallyDisplay = new Map();
 
@@ -209,6 +212,7 @@ const RoutesAndStops = () :JSX.Element=>{
         if(state.currentCard.type===CardType.RouteCard){
             let route = searchMatch
             processRoute(route)
+
             // map.fitBounds(newBounds);
         }
         else if(state.currentCard.type===CardType.VehicleCard){
@@ -223,7 +227,36 @@ const RoutesAndStops = () :JSX.Element=>{
                     match.routeMatches.forEach(route => {
                         processRoute(route);
                     })
-                }})
+                }
+            })
+            let latlon = [searchMatch.latitude,searchMatch.longitude]
+            if(latlon !== null || latlon !== undefined){
+                log.info("adding searched here pin latlon",latlon)
+                log.info('validating MapSearchedHereComponent vars: ', latlon)
+                if(latlon == null || latlon == undefined){
+                    log.info('invalid latlon for MapSearchedHereComponent: ', latlon)
+                    return null}
+                log.info('starting to generate MapSearchedHereComponent: ', latlon)
+
+                let icon = L.icon({
+                    iconUrl: "img/search-location-map-pin.png",
+                    className: "svg-icon",
+                    iconSize: [70,70],
+                    iconAnchor: [25,25]
+                })
+
+                var markerOptions = {
+                    position: latlon,
+                    icon: icon,
+                    zIndexOffset: 700,
+                    title: "searched here icon",
+                    keyboard:false,
+                    key: uuidv4()
+                };
+
+                log.info('generating MapSearchedHereComponent: ', latlon,markerOptions)
+                searchedHerePin.set(1,<Marker {...markerOptions}/>);
+            }
         }
         else if(state.currentCard.type===CardType.StopCard) {
             searchMatch.routeMatches.forEach(route => {
@@ -269,9 +302,10 @@ const RoutesAndStops = () :JSX.Element=>{
     )
 
 
-    log.info("map route components", mapRouteComponents);
+    log.info("map route components", Array.from(mapRouteComponents.values()).flat());
     log.info("map stop components", mapStopComponents.current);
     log.info("map stop component markers", mapStopMarkers.current);
+    log.info("map \"searched here\" pin marker", Array.from(searchedHerePin).flat());
 
     return (
         <React.Fragment>
@@ -279,6 +313,7 @@ const RoutesAndStops = () :JSX.Element=>{
                     ref = {r=>{mapRouteElementsLayerGroupRef=r}}>
                 {Array.from(mapRouteComponents.values()).flat()}
             </LayerGroup>
+            {searchedHerePin}
             {ConditionallyDisplayStopComponents(Array.from(mapStopComponentsToDisplay.values()).flat())}
             {Array.from(stopsToNonConditionallyDisplay.values()).flat()}
             <LayerGroup>
