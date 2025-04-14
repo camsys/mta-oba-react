@@ -219,13 +219,16 @@ const RoutesAndStops = () :JSX.Element=>{
         if(state.currentCard.type===CardType.RouteCard){
             let route = searchMatch
             processRoute(route)
-
+            searchedHereComponents.current.clear();
+            searchedHereMarkers.current.clear();
             // map.fitBounds(newBounds);
         }
         else if(state.currentCard.type===CardType.VehicleCard){
             log.info("vehicle route works here");
             let route = searchMatch;
             processRoute(route);
+            searchedHereComponents.current.clear();
+            searchedHereMarkers.current.clear();
         }
         else if(state.currentCard.type===CardType.GeocodeCard) {
             searchMatch.routeMatches.forEach(match => {
@@ -239,7 +242,7 @@ const RoutesAndStops = () :JSX.Element=>{
             let latlon = [searchMatch.latitude,searchMatch.longitude]
             if(latlon !== null || latlon !== undefined){
                 let key = uuidv4()
-                searchedHereComponents.current.set(key,<MapSearchedHereComponent latlon={latlon} key = {key} searchedHereMarkers={searchedHereMarkers}/>);
+                searchedHereComponents.current.set(uuidv4(),<MapSearchedHereComponent latlon={latlon} key = {key} searchedHereMarkers={searchedHereMarkers}/>);
             }
         }
         else if(state.currentCard.type===CardType.StopCard) {
@@ -249,6 +252,8 @@ const RoutesAndStops = () :JSX.Element=>{
             let stopId =state.currentCard.datumId;
             stopsToNonConditionallyDisplay.set(stopId,mapStopComponents.current.get(stopId));
             mapStopComponentsToDisplay.delete(stopId)
+            searchedHereComponents.current.clear();
+            searchedHereMarkers.current.clear();
         }
     })
 
@@ -257,42 +262,21 @@ const RoutesAndStops = () :JSX.Element=>{
 
 
     log.info("map stop component markers opening popup outside of effect",mapStopMarkers.current)
-    const addStopPopup = () =>{
+    const addStablePopups = () =>{
         log.info("map stop component markers opening popup ",mapStopMarkers,mapStopMarkers.current)
         if( state.currentCard.type===CardType.StopCard) {
             loadPopup(state.currentCard.datumId,mapStopMarkers)
         }
-        // if(searchedHereMarkers && typeof searchedHereMarkers.current.get(1)!=='undefined'
-        //         && searchedHereMarkers.current.get(1)!==null
-        //         && searchedHereMarkers.current.get(1).getPopup()
-        //         && searchedHereMarkers.current.get(1).getPopup()!==undefined){
-        //     searchedHereMarkers.current.get(1).openPopup()
-        // }
-        // rewrite the searched markers but with copious logging
         searchedHereMarkers.current.forEach((marker, key) => {
-            if(typeof marker!=='undefined'){
-                log.info("searchedHereMarkers current get(1) is defined")
-                log.info("searchedHereMarkers current get(1) is not null",searchedHereMarkers.current.get(1))
-                if(marker!==null){
-                    log.info("searchedHereMarkers current get(1) has a popup")
-                    if(marker.getPopup()){
-                        log.info("searchedHereMarkers current get(1) has a popup and is not undefined")
-                        if(marker.getPopup()!==undefined){
-                            if(marker.getPopup().isOpen()){
-                                log.info("searchedHereMarkers current get(1) has a popup and is already open")
-                            } else{
-                                log.info("searchedHereMarkers current get(1) has a popup and is not open")
-                                marker.openPopup()
-                            }
-                        }
-                    }
-                }
+            if(marker && typeof marker!=='undefined' && marker!==null
+                && marker.getPopup() && marker!==undefined){
+                marker.openPopup()
             }
         })
 
     }
     useEffect(() => {
-        addStopPopup()
+        addStablePopups()
     },[state])
 
     let map = useMap()
@@ -305,7 +289,7 @@ const RoutesAndStops = () :JSX.Element=>{
                 }
             },
             zoomend() {
-                addStopPopup()
+                addStablePopups()
                 if(mapRouteElementsLayerGroupRef!==null) {
                     mapRouteElementsLayerGroupRef.addTo(map)
                 }
@@ -490,20 +474,17 @@ const MapEvents = () :boolean=> {
             });
         },
 
-        popupclose(e) {
-            const popupContent = e.popup.getElement();
-            log.info("popup closed", e);
-        }
+        // popupclose(e) {
+        //     const popupContent = e.popup.getElement();
+        //     log.info("popup closed", e);
+        // }
         
         // click() {
         //     log.info("running map click method")
     
         // },
         // zoomend() { // zoom event (when zoom animation ended)
-        //     // log.info("tryna use map")
-        //     // log.info("map used")
         //     // const zoom = map.getZoom(); // get current Zoom of map
-    
         // }
     });
 

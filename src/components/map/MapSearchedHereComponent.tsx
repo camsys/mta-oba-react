@@ -6,8 +6,7 @@ import log from 'loglevel';
 
 
 
-function MapSearchedHereComponent({latlon, key,searchedHereMarkers}: { latlon:[number, number],
-    key:string,
+function MapSearchedHereComponent({latlon, searchedHereMarkers}: { latlon:[number, number],
     searchedHereMarkers: React.MutableRefObject<Map<number, Marker>> }): JSX.Element | null {
     log.info('validating MapSearchedHereComponent vars: ', latlon)
     if(latlon == null || latlon == undefined){
@@ -36,7 +35,7 @@ function MapSearchedHereComponent({latlon, key,searchedHereMarkers}: { latlon:[n
         zIndexOffset: 700,
         title: "searched here icon",
         keyboard:false,
-        key: key
+        key: uuidv4()
     };
 
     log.info('generating MapSearchedHereComponent: ', latlon,markerOptions)
@@ -51,7 +50,7 @@ function MapSearchedHereComponent({latlon, key,searchedHereMarkers}: { latlon:[n
               tabIndex={-1}
       >
       >
-          <Popup key={key} className="map-searched-location" tabIndex={-1} {...popupOptions}>
+          <Popup key={uuidv4()} className="map-searched-location" tabIndex={-1} {...popupOptions}>
               <div className="popup-info">
                   <span className="searched-here-span">Searched Location</span>
               </div>
