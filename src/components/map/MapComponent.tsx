@@ -321,7 +321,8 @@ const setMapLatLngAndZoom = (duration :number , lat : number, long :number,zoom:
     let [currentLat, currentLong,currentZoom] = [map.getCenter().lat,map.getCenter().lng,map.getZoom()]
     let latsMatch = currentLat+mapHeight/3>lat && currentLat-mapHeight/3<lat
     let longsMatch = currentLong+mapWidth/3>long && currentLong-mapWidth/3<long
-    let zoomsMatch = zoom-.3<currentZoom && zoom+.3>currentZoom
+    let zoomsMatch =  zoom-.3<currentZoom
+    // let zoomsMatch = zoom-.3<currentZoom && zoom+.3>currentZoom
     log.info("update map bounds and zoom? current: ",currentLat,currentLong,currentZoom,"new: ",lat,long,zoom, "matches",latsMatch,longsMatch,zoomsMatch)
 
     if(latsMatch&&longsMatch&&zoomsMatch){ return }
