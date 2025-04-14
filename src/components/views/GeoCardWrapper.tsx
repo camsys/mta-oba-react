@@ -31,17 +31,17 @@ export function GeoCardWrapper  () :JSX.Element {
                 <button data-target="routes" className="cards-toggle" aria-pressed="false" aria-expanded="false" aria-label="Show nearby routes (currently hidden)">Routes</button>
             </div>
         </div>
-        <div className="cards geocards toggle-cards stops" aria-hidden="false">
-            {
-            stops.map((match,index) => {
-                return <CollapsableStopCard match={match} oneOfMany={stops.length>1} key={index}/>
-            })
-            }
-        </div>
         <div className="cards geocards toggle-cards routes hide" aria-hidden="true">
             {routes.map((routeMatch,index) => {
                 return <CollapsableRouteCard routeMatch={routeMatch} oneOfMany={routes.length > 1} key={index}/>
             })}
+        </div>
+        <div className="cards geocards toggle-cards stops" aria-hidden="false">
+            {
+                stops.map((match,index) => {
+                    return <CollapsableStopCard match={match} oneOfMany={stops.length>1} key={index}/>
+                })
+            }
         </div>
     </React.Fragment>);
 
