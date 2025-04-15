@@ -263,16 +263,21 @@ const RoutesAndStops = () :JSX.Element=>{
 
     log.info("map stop component markers opening popup outside of effect",mapStopMarkers.current)
     const addStablePopups = () =>{
-        log.info("map stop component markers opening popup ",mapStopMarkers,mapStopMarkers.current)
-        if( state.currentCard.type===CardType.StopCard) {
-            loadPopup(state.currentCard.datumId,mapStopMarkers)
-        }
-        searchedHereMarkers.current.forEach((marker, key) => {
-            if(marker && typeof marker!=='undefined' && marker!==null
-                && marker.getPopup() && marker!==undefined){
-                marker.openPopup()
+        try{
+            log.info("map stop component markers opening popup ",mapStopMarkers,mapStopMarkers.current)
+            if( state.currentCard.type===CardType.StopCard) {
+                loadPopup(state.currentCard.datumId,mapStopMarkers)
             }
-        })
+            searchedHereMarkers.current.forEach((marker, key) => {
+                if(marker && typeof marker!=='undefined' && marker!==null
+                    && marker.getPopup() && marker!==undefined){
+                    marker.openPopup()
+                }
+            })
+        } catch (e) {
+            log.error("error adding stable popups",e)
+        }
+
 
     }
     useEffect(() => {
