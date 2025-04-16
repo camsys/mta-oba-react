@@ -18,8 +18,8 @@ function MapSearchedHereComponent({latlon, searchedHereMarkers}: { latlon:[numbe
     let icon = L.icon({
         iconUrl: "img/search-location-map-pin.png",
         className: "svg-icon",
-        iconSize: [60,60],
-        iconAnchor: [25,25],
+        iconSize: [24,20],
+        iconAnchor: [12,10],
         popupAnchor: [0,0]
     })
 
