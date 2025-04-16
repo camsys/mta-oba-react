@@ -462,6 +462,7 @@ button:hover, .button:hover {
 .button.icon-only .svg-icon-wrap {
   width: 1.25em;
   height: 1.25em;
+  color: currentColor;
 }
 
 .clear-button {
@@ -1266,14 +1267,14 @@ button:hover, .button:hover {
   background-color: rgba(255, 255, 255, 0.1);
   border: 1px solid rgba(255, 255, 255, 0);
   outline: none;
-  padding: 0.625em 2em 0.625em 0.5em;
+  padding: 0.625em 2.25em 0.625em 2em;
   -webkit-transition: border 0.25s ease-in-out, background-color 0.25s ease-in-out, color 0.25s ease-in-out;
   transition: border 0.25s ease-in-out, background-color 0.25s ease-in-out, color 0.25s ease-in-out;
   font-weight: bold;
   color: #fff;
   background-image: url(/img/icon/search_white.svg);
   background-size: 1em auto;
-  background-position: right 0.5em center;
+  background-position: left 0.5em center;
   background-repeat: no-repeat;
   border-radius: 0.25em;
   -webkit-transition: border-radius 0.25s ease-in-out, background-color 0.25s ease-in-out;
@@ -1320,8 +1321,8 @@ button:hover, .button:hover {
 #sidebar #search .react-autosuggest__suggestions-container {
   position: absolute;
   background-color: #fff;
-  left: calc(1rem - 1px);
-  right: calc(1rem - 1px);
+  left: -1px;
+  right: -1px;
   z-index: 1000;
   border-top-right-radius: 0;
   border-bottom-right-radius: 0.25em;
@@ -1361,6 +1362,34 @@ button:hover, .button:hover {
   opacity: 1;
   -webkit-box-shadow: 0px 0px 12px 0px rgba(0, 0, 0, 0.25);
           box-shadow: 0px 0px 12px 0px rgba(0, 0, 0, 0.25);
+}
+#sidebar #search .search-box {
+  position: relative;
+}
+#sidebar #search .search-box #clear-search {
+  position: absolute;
+  overflow: hidden;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  height: 100%;
+  padding-right: 0.5em;
+  padding-left: 0.5em;
+  width: 2.25em;
+  z-index: 1001;
+  opacity: 1;
+  -webkit-transition: opacity 0.25s ease-in-out;
+  transition: opacity 0.25s ease-in-out;
+  color: #f3f3f3;
+}
+#sidebar #search .search-box #clear-search:disabled {
+  width: 0;
+  opacity: 0;
+  padding-right: 0;
+  padding-left: 0;
+}
+#sidebar #search .search-box.is-focused #clear-search {
+  color: #666;
 }
 #sidebar #search .search-instructions {
   padding: 0;
@@ -2302,9 +2331,6 @@ button:hover, .button:hover {
   background-image: url(/img/meeples/meeples-filled.png);
   background-size: auto 100%;
   background-repeat: no-repeat;
-}
-.meeples-null::after {
-  width: 0%;
 }
 .meeples-1::after {
   width: 25%;
