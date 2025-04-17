@@ -205,7 +205,7 @@ const RoutesAndStops = () :JSX.Element=>{
     const mapStopComponents = useRef(new Map());
     const mapStopMarkers = useRef(new Map()<string,Marker>);
     const searchedHereMarkers = useRef(new Map()<number,Marker>);
-    let searchedHereComponents = useRef(new Map()<number,Marker>);
+    const searchedHereComponents = useRef(new Map()<number,Marker>);
     let mapStopComponentsToDisplay = new Map();
     let stopsToNonConditionallyDisplay = new Map();
 
