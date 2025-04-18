@@ -6,8 +6,8 @@ import log from 'loglevel';
 
 
 
-function MapSearchedHereComponent({latlon, searchedHereMarkers}: { latlon:[number, number],
-    searchedHereMarkers: React.MutableRefObject<Map<number, Marker>> }): JSX.Element | null {
+function MapSearchedHereComponent({latlon, searchedHereMarker}: { latlon:[number, number],
+    searchedHereMarker: React.MutableRefObject<L.Marker|null> }): JSX.Element | null {
     log.info('validating MapSearchedHereComponent vars: ', latlon)
     if(latlon == null || latlon == undefined){
         log.info('invalid latlon for MapSearchedHereComponent: ', latlon)
@@ -44,12 +44,10 @@ function MapSearchedHereComponent({latlon, searchedHereMarkers}: { latlon:[numbe
           ref={r=>
               {
                   // log.info("ref for stop component",stopDatum,r);
-                  typeof searchedHereMarkers!=='undefined'
-                      ?searchedHereMarkers.current.set(1,r):null
+                  searchedHereMarker.current=r
               }}
               tabIndex={-1}
-      >
-      >
+        >
           <Popup key={uuidv4()} className="map-searched-location" tabIndex={-1} {...popupOptions}>
               <div className="popup-info">
                   <span className="searched-here-span">Searched Location</span>
