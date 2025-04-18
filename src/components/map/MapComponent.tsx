@@ -177,7 +177,7 @@ const loadPopup = (datumId,leafletRefObjs) :void=>{
 const RoutesAndStops = () :JSX.Element=>{
     log.info("generating RoutesAndStops")
 
-    const processRoute = (route : RouteMatch)=> {
+    const processRoutes = (route : RouteMatch)=> {
         log.info("processing route for map: ", route)
 
         route.directions.forEach(dir => {
@@ -185,6 +185,12 @@ const RoutesAndStops = () :JSX.Element=>{
                 // log.info("requesting new MapRouteComponent from: ", datum)
                 mapRouteComponents.set(datum.id,createRoutePolyline(datum))
             })
+        })
+    }
+    const processStops = (route : RouteMatch)=> {
+        log.info("processing route for map: ", route)
+
+        route.directions.forEach(dir => {
             dir.mapStopComponentData.forEach((datum:StopInterface) => {
                 let stopId = datum.id;
                 (! mapStopComponents.current.has(stopId))
@@ -205,6 +211,7 @@ const RoutesAndStops = () :JSX.Element=>{
     let mapRouteComponents = new Map()<string,L.polyline>;
     const mapStopComponents = useRef(new Map());
     const mapStopMarkers = useRef(new Map()<string,Marker>);
+    const lastUsedCard = useRef(state.currentCard);
     // const searchedHereMarker = useRef<L.Marker | null>(null);
     // let searchedHereComponent = useRef<React.ReactElement | null>(null);
     let mapStopComponentsToDisplay = new Map();
@@ -219,20 +226,20 @@ const RoutesAndStops = () :JSX.Element=>{
         log.info("adding routes for:",searchMatch)
         if(state.currentCard.type===CardType.RouteCard){
             let route = searchMatch
-            processRoute(route)
+            processStops(route)
                         // map.fitBounds(newBounds);
         }
         else if(state.currentCard.type===CardType.VehicleCard){
             log.info("vehicle route works here");
             let route = searchMatch;
-            processRoute(route);
+            processStops(route);
         }
         else if(state.currentCard.type===CardType.GeocodeCard) {
             searchMatch.routeMatches.forEach(match => {
-                if(match.type === MatchType.RouteMatch){processRoute(match);}
+                if(match.type === MatchType.RouteMatch){processStops(match);}
                 if(match.type === MatchType.StopMatch){
                     match.routeMatches.forEach(route => {
-                        processRoute(route);
+                        processStops(route);
                     })
                 }
             })
@@ -244,7 +251,7 @@ const RoutesAndStops = () :JSX.Element=>{
         }
         else if(state.currentCard.type===CardType.StopCard) {
             searchMatch.routeMatches.forEach(route => {
-                processRoute(route);
+                processStops(route);
             })
             let stopId =state.currentCard.datumId;
             stopsToNonConditionallyDisplay.set(stopId,mapStopComponents.current.get(stopId));
@@ -271,15 +278,64 @@ const RoutesAndStops = () :JSX.Element=>{
             log.error("error adding stable popups",e)
         }
     }
-    useEffect(() => {
-        addStablePopups();
+
+    const checkForAndHandleCardChange = () => {
+        if(lastUsedCard.current !== state.currentCard){
+            log.info("card changed, updating map route elements",lastUsedCard.current,state.currentCard)
+            mapRouteComponents.clear();
+            mapRouteElementsLayerGroupRef?.clearLayers();
+
+            // add card level data
+            // todo: break this out into a function
+            state.currentCard.searchMatches.forEach(searchMatch=>{
+                log.info("adding routes for:",searchMatch)
+                if(state.currentCard.type===CardType.RouteCard){
+                    let route = searchMatch
+                    processRoutes(route)
+                }
+                else if(state.currentCard.type===CardType.VehicleCard){
+                    log.info("vehicle route works here");
+                    let route = searchMatch;
+                    processRoutes(route);
+                }
+                else if(state.currentCard.type===CardType.GeocodeCard) {
+                    searchMatch.routeMatches.forEach(match => {
+                        if(match.type === MatchType.RouteMatch){processRoutes(match);}
+                        if(match.type === MatchType.StopMatch){
+                            match.routeMatches.forEach(route => {
+                                processRoutes(route);
+                            })
+                        }
+                    })
+                    let latlon = [searchMatch.latitude,searchMatch.longitude]
+                    if(latlon !== null || latlon !== undefined){
+                        let key = uuidv4()
+                        // searchedHereComponent.current = <MapSearchedHereComponent latlon={latlon} key = {key} searchedHereMarker={searchedHereMarker}/>;
+                    }
+                }
+                else if(state.currentCard.type===CardType.StopCard) {
+                    searchMatch.routeMatches.forEach(route => {
+                        processRoutes(route);
+                    })
+                    let stopId =state.currentCard.datumId;
+                    stopsToNonConditionallyDisplay.set(stopId,mapStopComponents.current.get(stopId));
+                    mapStopComponentsToDisplay.delete(stopId)
+                }
+            })
+        }
+
         mapRouteComponents.forEach((value, key) => {
             if (mapRouteComponents.get(key) !== null && mapRouteComponents.get(key) !== undefined) {
-                mapRouteComponents.get(key).addTo(map);
+                // mapRouteComponents.get(key).addTo(map);
                 // todo: switch from map to add to layer group
-                // mapRouteComponents.get(key).addTo(mapRouteElementsLayerGroupRef);
+                mapRouteComponents.get(key).addTo(mapRouteElementsLayerGroupRef);
             }
         });
+    }
+
+    useEffect(() => {
+        checkForAndHandleCardChange()
+        addStablePopups();
     },[state])
 
     let map = useMap()
@@ -292,6 +348,7 @@ const RoutesAndStops = () :JSX.Element=>{
                 }
             },
             zoomend() {
+                checkForAndHandleCardChange()
                 addStablePopups()
                 if(mapRouteElementsLayerGroupRef!==null) {
                     mapRouteElementsLayerGroupRef.addTo(map)
