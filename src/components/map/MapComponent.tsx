@@ -23,7 +23,9 @@ import {useHighlight} from "Components/util/MapHighlightingStateComponent";
 import MapSearchedHereComponent from "./MapSearchedHereComponent";
 import {v4 as uuidv4} from "uuid";
 import { createRoutePolyline } from "../../utils/RoutePolylineFactory";
+import { createStopMarker } from "../../utils/StopMarkerFactory.ts";
 console.log("createRoutePolyline:", createRoutePolyline);
+console.log("createStopMarker:", createStopMarker);
 
 const createVehicleIcon = (vehicleDatum):L.Icon => {
     let scheduled = vehicleDatum.hasRealtime?"":"scheduled/"
@@ -176,94 +178,51 @@ const loadPopup = (datumId,leafletRefObjs) :void=>{
 
 const RoutesAndStops = () :JSX.Element=>{
     log.info("generating RoutesAndStops")
+    const stops = useContext(StopsContext);
+    const routes = useContext(RoutesContext);
+    const { state} = useContext(CardStateContext);
 
-    const processRoutes = (route : RouteMatch)=> {
+    let mapRouteMarkers: Map<string, L.Polyline> = new Map();
+    const mapStopComponents = useRef(new Map());
+    const mapStopMarkers = useRef<Map<string, L.Polyline>>(new Map());
+    const lastUsedCard = useRef(state.currentCard);
+    // const searchedHereMarker = useRef<L.Marker | null>(null);
+    // let searchedHereComponent = useRef<React.ReactElement | null>(null);
+    let stopsToDisplay: Map<string, L.Polyline> = new Map();
+    let stopsToNonConditionallyDisplay: Map<string, L.Polyline> = new Map();
+    let routeLayer : L.LayerGroup = new L.LayerGroup();
+    let stopLayer : L.LayerGroup<L.Marker> = new L.LayerGroup();
+    let selectedStopLayer : L.LayerGroup = new L.LayerGroup();
+
+
+
+
+
+
+
+
+
+
+    const processRoute = (route : RouteMatch)=> {
         log.info("processing route for map: ", route)
 
         route.directions.forEach(dir => {
             dir.mapRouteComponentData.forEach((datum:MapRouteComponentInterface) => {
                 // log.info("requesting new MapRouteComponent from: ", datum)
-                mapRouteComponents.set(datum.id,createRoutePolyline(datum))
+                mapRouteMarkers.set(datum.id,createRoutePolyline(datum))
             })
         })
-    }
-    const processStops = (route : RouteMatch)=> {
-        log.info("processing route for map: ", route)
-
         route.directions.forEach(dir => {
             dir.mapStopComponentData.forEach((datum:StopInterface) => {
                 let stopId = datum.id;
-                (! mapStopComponents.current.has(stopId))
-                    ? mapStopComponents.current.set(
-                        datum.id,<MapStopComponent stopDatum={datum} mapStopMarkers={mapStopMarkers} key={datum.id}/>)
-                    : null
-                mapStopComponentsToDisplay.set(datum.id,mapStopComponents.current.get(datum.id));
-
+                let newStopMarker = createStopMarker(datum,0)
+                mapStopComponents.current.set(stopId, newStopMarker);
+                stopsToDisplay.set(stopId, newStopMarker);                
             })
         })
     }
 
 
-    const stops = useContext(StopsContext);
-    const routes = useContext(RoutesContext);
-    const { state} = useContext(CardStateContext);
-
-    let mapRouteComponents = new Map()<string,L.polyline>;
-    const mapStopComponents = useRef(new Map());
-    const mapStopMarkers = useRef(new Map()<string,Marker>);
-    const lastUsedCard = useRef(state.currentCard);
-    // const searchedHereMarker = useRef<L.Marker | null>(null);
-    // let searchedHereComponent = useRef<React.ReactElement | null>(null);
-    let mapStopComponentsToDisplay = new Map();
-    let stopsToNonConditionallyDisplay = new Map();
-
-
-    log.info("map route components before", mapRouteComponents);
-    log.info("map stop components before", mapStopComponents.current);
-    log.info("map stop component markers before", mapStopMarkers.current);
-
-    state.currentCard.searchMatches.forEach(searchMatch=>{
-        log.info("adding routes for:",searchMatch)
-        if(state.currentCard.type===CardType.RouteCard){
-            let route = searchMatch
-            processStops(route)
-                        // map.fitBounds(newBounds);
-        }
-        else if(state.currentCard.type===CardType.VehicleCard){
-            log.info("vehicle route works here");
-            let route = searchMatch;
-            processStops(route);
-        }
-        else if(state.currentCard.type===CardType.GeocodeCard) {
-            searchMatch.routeMatches.forEach(match => {
-                if(match.type === MatchType.RouteMatch){processStops(match);}
-                if(match.type === MatchType.StopMatch){
-                    match.routeMatches.forEach(route => {
-                        processStops(route);
-                    })
-                }
-            })
-            let latlon = [searchMatch.latitude,searchMatch.longitude]
-            if(latlon !== null || latlon !== undefined){
-                let key = uuidv4()
-                // searchedHereComponent.current = <MapSearchedHereComponent latlon={latlon} key = {key} searchedHereMarker={searchedHereMarker}/>;
-            }
-        }
-        else if(state.currentCard.type===CardType.StopCard) {
-            searchMatch.routeMatches.forEach(route => {
-                processStops(route);
-            })
-            let stopId =state.currentCard.datumId;
-            stopsToNonConditionallyDisplay.set(stopId,mapStopComponents.current.get(stopId));
-            mapStopComponentsToDisplay.delete(stopId)
-        }
-    })
-
-
-    let mapRouteElementsLayerGroupRef : L.LayerGroup|null = null
-
-
-    log.info("map stop component markers opening popup outside of effect",mapStopMarkers.current)
     const addStablePopups = () =>{
         try{
             log.info("map stop component markers opening popup ",mapStopMarkers,mapStopMarkers.current)
@@ -281,9 +240,20 @@ const RoutesAndStops = () :JSX.Element=>{
 
     const checkForAndHandleCardChange = () => {
         if(lastUsedCard.current !== state.currentCard){
-            log.info("card changed, updating map route elements",lastUsedCard.current,state.currentCard)
-            mapRouteComponents.clear();
-            mapRouteElementsLayerGroupRef?.clearLayers();
+            log.info("card changed, updating map",lastUsedCard.current,state.currentCard)
+            lastUsedCard.current = state.currentCard;
+
+            mapRouteMarkers.clear();
+            routeLayer.clearLayers();
+            stopsToDisplay.clear();
+            stopsToNonConditionallyDisplay.clear();
+            mapStopComponents.current.clear();
+            mapStopMarkers.current.clear();
+            stopLayer.clearLayers();
+            selectedStopLayer.clearLayers();
+
+            log.info("map route components", mapRouteMarkers);
+            log.info("route layer group ref",routeLayer,routeLayer.getLayers().length)
 
             // add card level data
             // todo: break this out into a function
@@ -291,19 +261,19 @@ const RoutesAndStops = () :JSX.Element=>{
                 log.info("adding routes for:",searchMatch)
                 if(state.currentCard.type===CardType.RouteCard){
                     let route = searchMatch
-                    processRoutes(route)
+                    processRoute(route)
                 }
                 else if(state.currentCard.type===CardType.VehicleCard){
                     log.info("vehicle route works here");
                     let route = searchMatch;
-                    processRoutes(route);
+                    processRoute(route);
                 }
                 else if(state.currentCard.type===CardType.GeocodeCard) {
                     searchMatch.routeMatches.forEach(match => {
-                        if(match.type === MatchType.RouteMatch){processRoutes(match);}
+                        if(match.type === MatchType.RouteMatch){processRoute(match);}
                         if(match.type === MatchType.StopMatch){
                             match.routeMatches.forEach(route => {
-                                processRoutes(route);
+                                processRoute(route);
                             })
                         }
                     })
@@ -315,65 +285,88 @@ const RoutesAndStops = () :JSX.Element=>{
                 }
                 else if(state.currentCard.type===CardType.StopCard) {
                     searchMatch.routeMatches.forEach(route => {
-                        processRoutes(route);
+                        processRoute(route);
                     })
                     let stopId =state.currentCard.datumId;
                     stopsToNonConditionallyDisplay.set(stopId,mapStopComponents.current.get(stopId));
-                    mapStopComponentsToDisplay.delete(stopId)
+                    mapStopComponents.current.get(stopId).setZIndexOffset(20);
+                    stopsToDisplay.delete(stopId)
                 }
             })
-        }
 
-        mapRouteComponents.forEach((value, key) => {
-            if (mapRouteComponents.get(key) !== null && mapRouteComponents.get(key) !== undefined) {
-                // mapRouteComponents.get(key).addTo(map);
-                // todo: switch from map to add to layer group
-                mapRouteComponents.get(key).addTo(mapRouteElementsLayerGroupRef);
-            }
-        });
+            mapRouteMarkers.forEach((value, key) => {
+                if (value !== null && value !== undefined) {
+                    value.addTo(routeLayer);
+                }
+            });
+            stopsToDisplay.forEach((value, key) => {
+                if (value !== null && value !== undefined) {
+                    value.addTo(stopLayer);
+                }
+            });
+            stopsToNonConditionallyDisplay.forEach((value, key) => {
+                if (value !== null && value !== undefined) {
+                    value.addTo(selectedStopLayer);
+                }
+            });
+        }
     }
 
+
+
+
+
+
+
+
+    log.info("map route components before", mapRouteMarkers);
+    log.info("map stop components before", mapStopComponents.current);
+    log.info("map stop component markers before", mapStopMarkers.current);
+    log.info("map stop component markers opening popup outside of effect",mapStopMarkers.current)
+    
+    let map = useMap()
     useEffect(() => {
+        routeLayer.addTo(map);
+        selectedStopLayer.addTo(map);
+
         checkForAndHandleCardChange()
         addStablePopups();
+        log.info("map route elements layer group ref",routeLayer,routeLayer.getLayers().length)
+        log.info("map stop elements layer group ref",stopLayer.getLayers().length)
     },[state])
 
-    let map = useMap()
+    const lastZoomWasBelowThreshold = useRef(map.getZoom());
     useMapEvents(
         {
             zoom() {
-                // log.info("zoomstart mapRouteElementsLayerGroupRef",mapRouteElementsLayerGroupRef)
-                if(mapRouteElementsLayerGroupRef!==null){
-                    mapRouteElementsLayerGroupRef.removeFrom(map)
+                if(routeLayer!==null){
+                    routeLayer.removeFrom(map)
                 }
+                checkForAndHandleCardChange()
+
             },
             zoomend() {
                 checkForAndHandleCardChange()
                 addStablePopups()
-                if(mapRouteElementsLayerGroupRef!==null) {
-                    mapRouteElementsLayerGroupRef.addTo(map)
+                if(routeLayer!==null) {
+                    routeLayer.addTo(map)
                 }
+                if (map.getZoom()<15.1) {
+                    stopLayer?.removeFrom(map);
+                } else {
+                    stopLayer?.addTo(map);
+                }
+    
+                log.info("map route elements layer group ref",routeLayer,routeLayer.getLayers().length)
+                log.info("map stop elements layer group ref",stopLayer.getLayers().length)
             }
         }
     )
 
 
-    log.info("map route components", Array.from(mapRouteComponents.values()).flat());
-    log.info("map stop components", mapStopComponents.current);
-    log.info("map stop component markers", mapStopMarkers.current);
-    // log.info("map \"searched here\" pin marker", searchedHereComponent.current);
 
     return (
         <React.Fragment>
-            <LayerGroup className={"MapRouteElements"}
-            ref = {r=>{mapRouteElementsLayerGroupRef=r}}>
-            </LayerGroup>
-            {/* {searchedHereComponent.current} */}
-            {ConditionallyDisplayStopComponents(Array.from(mapStopComponentsToDisplay.values()).flat())}
-            {Array.from(stopsToNonConditionallyDisplay.values()).flat()}
-            <LayerGroup>
-                <Highlighted/>
-            </LayerGroup>
         </React.Fragment>
     )
 }
@@ -484,24 +477,6 @@ const HandleMapBoundsAndZoom = () : void=>{
         }
 
     setMapLatLngAndZoom(duration,lat,long,zoom)
-}
-
-const ConditionallyDisplayStopComponents = (stopComponents) => {
-    let map = useMap()
-    let [Zoom,setZoom] = useState(map.getZoom().valueOf())
-    const stopLayerRef = useRef(null)
-
-    useMapEvents({
-        click() {
-            log.info("running map click method")
-
-        },
-        zoomend() { // zoom event (when zoom animation ended)
-            log.info("map zoom event end",Zoom,map.getZoom())
-            setZoom(map.getZoom())
-        }
-    });
-    return(Zoom>15.1?stopComponents:null)
 }
 
 const MapEvents = () :boolean=> {

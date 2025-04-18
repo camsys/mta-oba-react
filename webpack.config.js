@@ -59,5 +59,8 @@ module.exports = {
     allowedHosts: [
       process.env.ALLOWED_HOST_ADDRESS || 'localhost'
     ]
+  },
+  watchOptions: {
+    poll: 1000, // Check for changes every second
   }
 };
