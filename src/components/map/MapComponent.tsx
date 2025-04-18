@@ -24,8 +24,13 @@ import MapSearchedHereComponent from "./MapSearchedHereComponent";
 import {v4 as uuidv4} from "uuid";
 import { createRoutePolyline } from "../../utils/RoutePolylineFactory";
 import { createStopMarker } from "../../utils/StopMarkerFactory.ts";
+import { createSearchedHereMarker } from "../../utils/SearchedHereFactory.ts";
+
+
+
 console.log("createRoutePolyline:", createRoutePolyline);
 console.log("createStopMarker:", createStopMarker);
+console.log("createSearchedHereMarker:", createSearchedHereMarker);
 
 const createVehicleIcon = (vehicleDatum):L.Icon => {
     let scheduled = vehicleDatum.hasRealtime?"":"scheduled/"
@@ -192,7 +197,7 @@ const RoutesAndStops = () :JSX.Element=>{
     let stopsToNonConditionallyDisplay: Map<string, L.Polyline> = new Map();
     let routeLayer : L.LayerGroup = new L.LayerGroup();
     let stopLayer : L.LayerGroup<L.Marker> = new L.LayerGroup();
-    let selectedStopLayer : L.LayerGroup = new L.LayerGroup();
+    let selectedElementLayer : L.LayerGroup = new L.LayerGroup();
 
 
 
@@ -225,14 +230,12 @@ const RoutesAndStops = () :JSX.Element=>{
 
     const addStablePopups = () =>{
         try{
-            log.info("map stop component markers opening popup ",mapStopMarkers,mapStopMarkers.current)
-            if( state.currentCard.type===CardType.StopCard) {
-                loadPopup(state.currentCard.datumId,mapStopMarkers)
-            }
-            // log.info("searched here component opening popup",searchedHereComponent.current)
-            // if(searchedHereMarker.current!==null && searchedHereMarker.current!==undefined){
-            //     searchedHereMarker.current.openPopup()
-            // }
+            log.info("opening popups for selected elements")
+            selectedElementLayer.eachLayer((layer) => {
+                if(layer instanceof L.Marker) {
+                    layer.openPopup();
+                }
+            });
         } catch (e) {
             log.error("error adding stable popups",e)
         }
@@ -255,7 +258,7 @@ const RoutesAndStops = () :JSX.Element=>{
 
         routeLayer.clearLayers();
         stopLayer.clearLayers();
-        selectedStopLayer.clearLayers();
+        selectedElementLayer.clearLayers();
     }
 
     const checkForAndHandleCardChange = () => {
@@ -292,6 +295,8 @@ const RoutesAndStops = () :JSX.Element=>{
                     if(latlon !== null || latlon !== undefined){
                         let key = uuidv4()
                         // searchedHereComponent.current = <MapSearchedHereComponent latlon={latlon} key = {key} searchedHereMarker={searchedHereMarker}/>;
+                        let searchedHereMarker = createSearchedHereMarker(latlon)
+                        searchedHereMarker.addTo(selectedElementLayer)
                     }
                 }
                 else if(state.currentCard.type===CardType.StopCard) {
@@ -317,7 +322,8 @@ const RoutesAndStops = () :JSX.Element=>{
             });
             stopsToNonConditionallyDisplay.forEach((value, key) => {
                 if (value !== null && value !== undefined) {
-                    selectedStopLayer.addLayer(value);
+                    selectedElementLayer.addLayer(value);
+                    value.openPopup();
                 }
             });
         }
@@ -338,7 +344,7 @@ const RoutesAndStops = () :JSX.Element=>{
     let map = useMap()
     useEffect(() => {
         routeLayer.addTo(map);
-        selectedStopLayer.addTo(map);
+        selectedElementLayer.addTo(map);
 
         checkForAndHandleCardChange()
         addStablePopups();
