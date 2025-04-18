@@ -333,9 +333,6 @@ const RoutesAndStops = () :JSX.Element=>{
 
 
 
-
-
-
     log.info("map route components before", mapRouteMarkers);
     log.info("map stop components before", mapStopComponents.current);
     log.info("map stop component markers before", mapStopMarkers.current);
@@ -364,7 +361,6 @@ const RoutesAndStops = () :JSX.Element=>{
             },
             zoomend() {
                 checkForAndHandleCardChange()
-                addStablePopups()
                 if(routeLayer!==null) {
                     routeLayer.addTo(map)
                 }
