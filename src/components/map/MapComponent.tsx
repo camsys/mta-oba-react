@@ -22,7 +22,8 @@ import {
 import {useHighlight} from "Components/util/MapHighlightingStateComponent";
 import MapSearchedHereComponent from "./MapSearchedHereComponent";
 import {v4 as uuidv4} from "uuid";
-
+import { createRoutePolyline } from "../../utils/RoutePolylineFactory";
+console.log("createRoutePolyline:", createRoutePolyline);
 
 const createVehicleIcon = (vehicleDatum):L.Icon => {
     let scheduled = vehicleDatum.hasRealtime?"":"scheduled/"
@@ -182,7 +183,7 @@ const RoutesAndStops = () :JSX.Element=>{
         route.directions.forEach(dir => {
             dir.mapRouteComponentData.forEach((datum:MapRouteComponentInterface) => {
                 // log.info("requesting new MapRouteComponent from: ", datum)
-                mapRouteComponents.set(datum.id,<MapRouteComponent mapRouteComponentDatum ={datum} key={datum.id}/>)
+                mapRouteComponents.set(datum.id,createRoutePolyline(datum))
             })
             dir.mapStopComponentData.forEach((datum:StopInterface) => {
                 let stopId = datum.id;
@@ -201,11 +202,11 @@ const RoutesAndStops = () :JSX.Element=>{
     const routes = useContext(RoutesContext);
     const { state} = useContext(CardStateContext);
 
-    let mapRouteComponents = new Map();
+    let mapRouteComponents = new Map()<string,L.polyline>;
     const mapStopComponents = useRef(new Map());
     const mapStopMarkers = useRef(new Map()<string,Marker>);
-    const searchedHereMarker = useRef<L.Marker | null>(null);
-    let searchedHereComponent = useRef<React.ReactElement | null>(null);
+    // const searchedHereMarker = useRef<L.Marker | null>(null);
+    // let searchedHereComponent = useRef<React.ReactElement | null>(null);
     let mapStopComponentsToDisplay = new Map();
     let stopsToNonConditionallyDisplay = new Map();
 
@@ -238,7 +239,7 @@ const RoutesAndStops = () :JSX.Element=>{
             let latlon = [searchMatch.latitude,searchMatch.longitude]
             if(latlon !== null || latlon !== undefined){
                 let key = uuidv4()
-                searchedHereComponent.current = <MapSearchedHereComponent latlon={latlon} key = {key} searchedHereMarker={searchedHereMarker}/>;
+                // searchedHereComponent.current = <MapSearchedHereComponent latlon={latlon} key = {key} searchedHereMarker={searchedHereMarker}/>;
             }
         }
         else if(state.currentCard.type===CardType.StopCard) {
@@ -252,7 +253,7 @@ const RoutesAndStops = () :JSX.Element=>{
     })
 
 
-    let mapRouteElementsLayerGroupRef : L.LayerGroup = null
+    let mapRouteElementsLayerGroupRef : L.LayerGroup|null = null
 
 
     log.info("map stop component markers opening popup outside of effect",mapStopMarkers.current)
@@ -262,16 +263,23 @@ const RoutesAndStops = () :JSX.Element=>{
             if( state.currentCard.type===CardType.StopCard) {
                 loadPopup(state.currentCard.datumId,mapStopMarkers)
             }
-            log.info("searched here component opening popup",searchedHereComponent.current)
-            if(searchedHereMarker.current!==null && searchedHereMarker.current!==undefined){
-                searchedHereMarker.current.openPopup()
-            }
+            // log.info("searched here component opening popup",searchedHereComponent.current)
+            // if(searchedHereMarker.current!==null && searchedHereMarker.current!==undefined){
+            //     searchedHereMarker.current.openPopup()
+            // }
         } catch (e) {
             log.error("error adding stable popups",e)
         }
     }
     useEffect(() => {
-        addStablePopups()
+        addStablePopups();
+        mapRouteComponents.forEach((value, key) => {
+            if (mapRouteComponents.get(key) !== null && mapRouteComponents.get(key) !== undefined) {
+                mapRouteComponents.get(key).addTo(map);
+                // todo: switch from map to add to layer group
+                // mapRouteComponents.get(key).addTo(mapRouteElementsLayerGroupRef);
+            }
+        });
     },[state])
 
     let map = useMap()
@@ -284,10 +292,10 @@ const RoutesAndStops = () :JSX.Element=>{
                 }
             },
             zoomend() {
-                // addStablePopups()
-                // if(mapRouteElementsLayerGroupRef!==null) {
-                //     mapRouteElementsLayerGroupRef.addTo(map)
-                // }
+                addStablePopups()
+                if(mapRouteElementsLayerGroupRef!==null) {
+                    mapRouteElementsLayerGroupRef.addTo(map)
+                }
             }
         }
     )
@@ -296,15 +304,14 @@ const RoutesAndStops = () :JSX.Element=>{
     log.info("map route components", Array.from(mapRouteComponents.values()).flat());
     log.info("map stop components", mapStopComponents.current);
     log.info("map stop component markers", mapStopMarkers.current);
-    log.info("map \"searched here\" pin marker", searchedHereComponent.current);
+    // log.info("map \"searched here\" pin marker", searchedHereComponent.current);
 
     return (
         <React.Fragment>
             <LayerGroup className={"MapRouteElements"}
-                    ref = {r=>{mapRouteElementsLayerGroupRef=r}}>
-                {Array.from(mapRouteComponents.values()).flat()}
+            ref = {r=>{mapRouteElementsLayerGroupRef=r}}>
             </LayerGroup>
-            {searchedHereComponent.current}
+            {/* {searchedHereComponent.current} */}
             {ConditionallyDisplayStopComponents(Array.from(mapStopComponentsToDisplay.values()).flat())}
             {Array.from(stopsToNonConditionallyDisplay.values()).flat()}
             <LayerGroup>
@@ -435,14 +442,9 @@ const ConditionallyDisplayStopComponents = (stopComponents) => {
         zoomend() { // zoom event (when zoom animation ended)
             log.info("map zoom event end",Zoom,map.getZoom())
             setZoom(map.getZoom())
-
         }
     });
-
     return(Zoom>15.1?stopComponents:null)
-
-    // log.info("show stops? ",map.getZoom() >= 15.1)
-    // return(Zoom>15.1?stopComponents:<LayerGroup display={false}>stopComponents</LayerGroup>)
 }
 
 const MapEvents = () :boolean=> {
@@ -469,18 +471,10 @@ const MapEvents = () :boolean=> {
             });
         },
 
-        // popupclose(e) {
-        //     const popupContent = e.popup.getElement();
-        //     log.info("popup closed", e);
-        // }
+        // popupclose(e) {}
         
-        // click() {
-        //     log.info("running map click method")
-    
-        // },
-        // zoomend() { // zoom event (when zoom animation ended)
-        //     // const zoom = map.getZoom(); // get current Zoom of map
-        // }
+        // click() {},
+        // zoomend() {}
     });
 
     return false;
