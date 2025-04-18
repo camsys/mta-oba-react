@@ -238,22 +238,33 @@ const RoutesAndStops = () :JSX.Element=>{
         }
     }
 
+    const clearAllLayers = () => {
+        map.eachLayer((layer) => {
+            if(layer instanceof L.Polyline) {
+                layer.removeFrom(map);
+            }
+            else if (layer instanceof L.Marker) {
+                layer.removeFrom(map);
+            }
+        });
+        mapRouteMarkers.clear();
+        stopsToDisplay.clear();
+        stopsToNonConditionallyDisplay.clear();
+        mapStopComponents.current.clear();
+        mapStopMarkers.current.clear();
+
+        routeLayer.clearLayers();
+        stopLayer.clearLayers();
+        selectedStopLayer.clearLayers();
+    }
+
     const checkForAndHandleCardChange = () => {
         if(lastUsedCard.current !== state.currentCard){
             log.info("card changed, updating map",lastUsedCard.current,state.currentCard)
             lastUsedCard.current = state.currentCard;
 
-            mapRouteMarkers.clear();
-            routeLayer.clearLayers();
-            stopsToDisplay.clear();
-            stopsToNonConditionallyDisplay.clear();
-            mapStopComponents.current.clear();
-            mapStopMarkers.current.clear();
-            stopLayer.clearLayers();
-            selectedStopLayer.clearLayers();
 
-            log.info("map route components", mapRouteMarkers);
-            log.info("route layer group ref",routeLayer,routeLayer.getLayers().length)
+            clearAllLayers()
 
             // add card level data
             // todo: break this out into a function
@@ -296,17 +307,17 @@ const RoutesAndStops = () :JSX.Element=>{
 
             mapRouteMarkers.forEach((value, key) => {
                 if (value !== null && value !== undefined) {
-                    value.addTo(routeLayer);
+                    routeLayer.addLayer(value);
                 }
             });
             stopsToDisplay.forEach((value, key) => {
                 if (value !== null && value !== undefined) {
-                    value.addTo(stopLayer);
+                    stopLayer.addLayer(value);
                 }
             });
             stopsToNonConditionallyDisplay.forEach((value, key) => {
                 if (value !== null && value !== undefined) {
-                    value.addTo(selectedStopLayer);
+                    selectedStopLayer.addLayer(value);
                 }
             });
         }
