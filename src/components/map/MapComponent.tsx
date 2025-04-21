@@ -194,10 +194,12 @@ const RoutesAndStops = ()=>{
     // let searchedHereComponent = useRef<React.ReactElement | null>(null);
     let stopsToDisplay: Map<string, L.Polyline> = new Map();
     let stopsToNonConditionallyDisplay: Map<string, L.Polyline> = new Map();
-    let routeLayer : L.LayerGroup = new L.LayerGroup();
-    let stopLayer : L.LayerGroup<L.Marker> = new L.LayerGroup();
-    let selectedElementLayer : L.LayerGroup = new L.LayerGroup();
-
+    const routeLayer = useRef<L.LayerGroup<L.Polyline>>(new L.LayerGroup());
+    const stopLayer = useRef<L.LayerGroup<L.Marker>>(new L.LayerGroup());
+    const selectedElementLayer = useRef<L.LayerGroup<L.Marker>>(new L.LayerGroup());
+    routeLayer.current.id= "routeLayer";
+    stopLayer.current.id = "stopLayer";
+    selectedElementLayer.current.id = "selectedElementLayer";
 
 
 
@@ -230,7 +232,7 @@ const RoutesAndStops = ()=>{
     const addStablePopups = () =>{
         try{
             log.info("opening popups for selected elements")
-            selectedElementLayer.eachLayer((layer) => {
+            selectedElementLayer.current.eachLayer((layer) => {
                 if(layer instanceof L.Marker) {
                     layer.openPopup();
                 }
@@ -241,23 +243,38 @@ const RoutesAndStops = ()=>{
     }
 
     const clearAllLayers = () => {
-        map.eachLayer((layer) => {
-            if(layer instanceof L.Polyline) {
-                layer.removeFrom(map);
-            }
-            else if (layer instanceof L.Marker) {
+        log.info("clearing all layers from map", map);
+
+        let layers: L.Layer[] = [];
+        routeLayer.current.eachLayer((layer) => {
+            layers.push(layer); // Add the layer to the array for logging purposes
+            if (layer instanceof L.Polyline || layer instanceof L.Marker) {
                 layer.removeFrom(map);
             }
         });
+        stopLayer.current.eachLayer((layer) => {
+            layers.push(layer); // Add the layer to the array for logging purposes
+            if (layer instanceof L.Polyline || layer instanceof L.Marker) {
+                layer.removeFrom(map);
+            }
+        });
+        selectedElementLayer.current.eachLayer((layer) => {
+            layers.push(layer); // Add the layer to the array for logging purposes
+            if (layer instanceof L.Polyline || layer instanceof L.Marker) {
+                layer.removeFrom(map);
+            }
+        });
+        
+        log.info("cleared layers from map", layers);
         mapRouteMarkers.clear();
         stopsToDisplay.clear();
         stopsToNonConditionallyDisplay.clear();
         mapStopComponents.current.clear();
         mapStopMarkers.current.clear();
 
-        routeLayer.clearLayers();
-        stopLayer.clearLayers();
-        selectedElementLayer.clearLayers();
+        routeLayer.current.clearLayers();
+        stopLayer.current.clearLayers();
+        selectedElementLayer.current.clearLayers();
     }
 
     const checkForAndHandleCardChange = () => {
@@ -295,7 +312,7 @@ const RoutesAndStops = ()=>{
                         let key = uuidv4()
                         // searchedHereComponent.current = <MapSearchedHereComponent latlon={latlon} key = {key} searchedHereMarker={searchedHereMarker}/>;
                         let searchedHereMarker = createSearchedHereMarker(latlon)
-                        searchedHereMarker.addTo(selectedElementLayer)
+                        searchedHereMarker.addTo(selectedElementLayer.current)
                     }
                 }
                 else if(state.currentCard.type===CardType.StopCard) {
@@ -311,17 +328,17 @@ const RoutesAndStops = ()=>{
 
             mapRouteMarkers.forEach((value, key) => {
                 if (value !== null && value !== undefined) {
-                    routeLayer.addLayer(value);
+                    routeLayer.current.addLayer(value);
                 }
             });
             stopsToDisplay.forEach((value, key) => {
                 if (value !== null && value !== undefined) {
-                    stopLayer.addLayer(value);
+                    stopLayer.current.addLayer(value);
                 }
             });
             stopsToNonConditionallyDisplay.forEach((value, key) => {
                 if (value !== null && value !== undefined) {
-                    selectedElementLayer.addLayer(value);
+                    selectedElementLayer.current.addLayer(value);
                     value.openPopup();
                 }
             });
@@ -339,38 +356,38 @@ const RoutesAndStops = ()=>{
     
     let map = useMap()
     useEffect(() => {
-        routeLayer.addTo(map);
-        selectedElementLayer.addTo(map);
+        routeLayer.current.addTo(map);
+        selectedElementLayer.current.addTo(map);
 
         checkForAndHandleCardChange()
         addStablePopups();
-        log.info("map route elements layer group ref",routeLayer,routeLayer.getLayers().length)
-        log.info("map stop elements layer group ref",stopLayer.getLayers().length)
+        log.info("map route elements layer group ref",routeLayer,routeLayer.current.getLayers().length)
+        log.info("map stop elements layer group ref",stopLayer.current.getLayers().length)
     },[state])
 
     const lastZoomWasBelowThreshold = useRef(map.getZoom());
     useMapEvents(
         {
             zoom() {
-                if(routeLayer!==null){
-                    routeLayer.removeFrom(map)
+                if(routeLayer.current!==null){
+                    routeLayer.current.removeFrom(map)
                 }
                 checkForAndHandleCardChange()
 
             },
             zoomend() {
                 checkForAndHandleCardChange()
-                if(routeLayer!==null) {
-                    routeLayer.addTo(map)
+                if(routeLayer.current!==null) {
+                    routeLayer.current.addTo(map)
                 }
                 if (map.getZoom()<15.1) {
-                    stopLayer?.removeFrom(map);
+                    stopLayer.current?.removeFrom(map);
                 } else {
-                    stopLayer?.addTo(map);
+                    stopLayer.current?.addTo(map);
                 }
     
-                log.info("map route elements layer group ref",routeLayer,routeLayer.getLayers().length)
-                log.info("map stop elements layer group ref",stopLayer.getLayers().length)
+                log.info("map route elements layer group ref",routeLayer.current,routeLayer.current.getLayers().length)
+                log.info("map stop elements layer group ref",stopLayer.current.getLayers().length)
             }
         }
     )
