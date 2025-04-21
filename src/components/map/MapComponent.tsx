@@ -5,7 +5,7 @@ import queryString from "query-string";
 import {OBA} from "../../js/oba";
 import log from 'loglevel';
 import L, {LatLngBounds} from "leaflet";
-import bus from "../../img/icon/bus.svg";
+
 import {CardStateContext, RoutesContext, StopsContext} from "../util/CardStateComponent.tsx";
 import {vehicleDataIdentifier, VehicleStateContext} from "../util/VehicleStateComponent";
 import MapRouteComponent from "./MapRouteComponent";
@@ -25,12 +25,12 @@ import {v4 as uuidv4} from "uuid";
 import { createRoutePolyline } from "../../utils/RoutePolylineFactory";
 import { createStopMarker } from "../../utils/StopMarkerFactory.ts";
 import { createSearchedHereMarker } from "../../utils/SearchedHereFactory.ts";
-
-
+import { createVehicleMarker } from "../../utils/VehicleMarkerFactory.ts";
 
 console.log("createRoutePolyline:", createRoutePolyline);
 console.log("createStopMarker:", createStopMarker);
 console.log("createSearchedHereMarker:", createSearchedHereMarker);
+console.log("createVehicleMarker:", createVehicleMarker);
 
 const createVehicleIcon = (vehicleDatum):L.Icon => {
     let scheduled = vehicleDatum.hasRealtime?"":"scheduled/"
@@ -46,14 +46,15 @@ const createVehicleIcon = (vehicleDatum):L.Icon => {
     return icon
 }
 
-
-const MapVehicleElements = () :JSX.Element =>{
+// this method is seperated because vehicleState updates often. that said i don't want it to trigger a rerender
+const MapVehicleElements = () =>{
     const { state} = useContext(CardStateContext);
     const { vehicleState} = useContext(VehicleStateContext);
-    const vehicleComponentsRef = useRef(new Map())
     const vehicleObjsRefs = useRef(new Map())
     const showFocusVehicle = useRef(true)
     const lastCardWasNotVehicleView = useRef(state.currentCard.type !== CardType.VehicleCard)
+
+    const vehicleLayer = useRef<L.LayerGroup<L.Marker>>(new L.LayerGroup());
 
     let routeIds = state.currentCard.routeIdList
     log.info("looking for vehicles from route ids: ",routeIds)
@@ -62,14 +63,10 @@ const MapVehicleElements = () :JSX.Element =>{
     try{
         if(routeIds!=null){
             [...routeIds].forEach(route=>{
-                log.info("looking for vehicles from route id: ",route)
-                log.info("vehicle state:", vehicleState)
                 let routeId = route.split("_")[1]
-                log.info("using abbreviated routeId ",routeId)
                 let vehicleDataForRoute = vehicleState[routeId+vehicleDataIdentifier]
-                if(vehicleDataForRoute!=null &&
-                    vehicleObjsRefs &&
-                    vehicleObjsRefs.current!=null && vehicleObjsRefs.current!=undefined
+                log.info("key:",routeId+vehicleDataIdentifier,"vehicleState",vehicleState,"vehicleDataForRoute",vehicleDataForRoute)
+                if(vehicleDataForRoute!=null && vehicleObjsRefs.current!=undefined
                     && typeof vehicleObjsRefs.current === "object"
                     && typeof vehicleObjsRefs.current.get === 'function'){
                     log.info(`MapVehicleElements: processing vehicleDataForRoute`,vehicleDataForRoute)
@@ -83,13 +80,15 @@ const MapVehicleElements = () :JSX.Element =>{
                             let vehicle = vehicleObjsRefs.current.get(vehicleDatum.vehicleId);
                             vehicle.setLatLng(vehicleDatum.longLat)
                             vehicle.setIcon(vehicleIcon)
-                            log.trace("updated vehicle position",vehicleDatum.vehicleId,vehicleObjsRefs.current.get(vehicleDatum.vehicleId))
+                            log.info("updated vehicle position",vehicleDatum.vehicleId,vehicleObjsRefs.current.get(vehicleDatum.vehicleId))
                         }
                         else{
-                            vehicleComponentsRef.current.set(vehicleDatum.vehicleId,
-                                <MapVehicleComponent {...{vehicleDatum,vehicleRefs: vehicleObjsRefs,vehicleIcon}} key={vehicleDatum.vehicleId}/>)
+                            vehicleObjsRefs.current.set(vehicleDatum.vehicleId,
+                                createVehicleMarker(vehicleDatum))
+                            vehicleLayer.current.addLayer(vehicleObjsRefs.current.get(vehicleDatum.vehicleId))
+                            // vehicleComponentsRef.current.set(vehicleDatum.vehicleId,
+                            //     <MapVehicleComponent {...{vehicleDatum,vehicleRefs: vehicleObjsRefs,vehicleIcon}} key={vehicleDatum.vehicleId}/>)
                         }
-                        mapVehicleComponents.push(vehicleComponentsRef.current.get(vehicleDatum.vehicleId))
                         // mapVehicleComponents.push(<MapVehicleComponent {...{vehicleDatum,vehicleRefs: vehicleObjsRefs}} key={vehicleDatum.vehicleId}/>)
                     });
                     vehicleObjsRefs.current.forEach((value, key) => {
@@ -117,6 +116,13 @@ const MapVehicleElements = () :JSX.Element =>{
                 log.info("map vehicle components", mapVehicleComponents)
             })
         }
+
+        useEffect(() => {
+
+            vehicleLayer.current.addTo(map)
+            log.info("map vehicle elements layer group ref",vehicleLayer.current,vehicleLayer.current.getLayers().length)
+        }
+        , [state])
 
         let map = useMap()
         useMapEvents(
@@ -154,13 +160,6 @@ const MapVehicleElements = () :JSX.Element =>{
     catch (e) {
         log.error("error in vehicle element creation",e)
     }
-
-
-    return (
-        <React.Fragment>
-            {mapVehicleComponents}
-        </React.Fragment>
-    )
 }
 
 
@@ -181,7 +180,7 @@ const loadPopup = (datumId,leafletRefObjs) :void=>{
 
 
 
-const RoutesAndStops = () :JSX.Element=>{
+const RoutesAndStops = ()=>{
     log.info("generating RoutesAndStops")
     const stops = useContext(StopsContext);
     const routes = useContext(RoutesContext);
@@ -374,13 +373,6 @@ const RoutesAndStops = () :JSX.Element=>{
                 log.info("map stop elements layer group ref",stopLayer.getLayers().length)
             }
         }
-    )
-
-
-
-    return (
-        <React.Fragment>
-        </React.Fragment>
     )
 }
 
