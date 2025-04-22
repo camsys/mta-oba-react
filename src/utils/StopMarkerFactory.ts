@@ -36,9 +36,10 @@ export const createStopMarker = (
             <button class="view-full close-map" aria-label="view full stop details">
                 View Stop Details
             </button>
-        </div>
+        </div> 
     `;
     marker.bindPopup(popupContent, {
+        className: "map-popup stop-popup",
         autoPan: false,
         keepInView: false,
     });
