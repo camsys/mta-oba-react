@@ -337,6 +337,7 @@ const RoutesAndStops = () :JSX.Element=>{
 const Highlighted = () =>{
     let {getHighlightedId} = useHighlight()
     let highlightedId = getHighlightedId()
+    let {state} = useContext(CardStateContext);
 
     const stops = useContext(StopsContext)
     const routes = useContext(RoutesContext)
