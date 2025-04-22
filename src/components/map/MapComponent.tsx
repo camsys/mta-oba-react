@@ -17,7 +17,8 @@ import {
     MatchType,
     RouteMatch,
     StopInterface,
-    StopMatch
+    StopMatch,
+    VehicleRtInterface
 } from "../../js/updateState/DataModels";
 import {useHighlight} from "Components/util/MapHighlightingStateComponent";
 import MapSearchedHereComponent from "./MapSearchedHereComponent";
@@ -26,6 +27,7 @@ import { createRoutePolyline } from "../../utils/RoutePolylineFactory";
 import { createStopMarker } from "../../utils/StopMarkerFactory.ts";
 import { createSearchedHereMarker } from "../../utils/SearchedHereFactory.ts";
 import { createVehicleMarker } from "../../utils/VehicleMarkerFactory.ts";
+import {useNavigation} from "../../js/updateState/NavigationEffect.ts";
 
 console.log("createRoutePolyline:", createRoutePolyline);
 console.log("createStopMarker:", createStopMarker);
@@ -48,6 +50,13 @@ const createVehicleIcon = (vehicleDatum):L.Icon => {
 
 // this method is seperated because vehicleState updates often. that said i don't want it to trigger a rerender
 const MapVehicleElements = () =>{
+
+    let {vehicleSearch} = useNavigation()
+    const selectVehicle = (vehicleDatum :VehicleRtInterface) =>{
+        // log.info("clicked on " + vehicleDatum.vehicleId)
+        vehicleSearch(vehicleDatum)
+    }
+
     const { state} = useContext(CardStateContext);
     const { vehicleState} = useContext(VehicleStateContext);
     const vehicleObjsRefs = useRef(new Map())
@@ -84,7 +93,7 @@ const MapVehicleElements = () =>{
                         }
                         else{
                             vehicleObjsRefs.current.set(vehicleDatum.vehicleId,
-                                createVehicleMarker(vehicleDatum))
+                                createVehicleMarker(vehicleDatum,selectVehicle))
                             vehicleLayer.current.addLayer(vehicleObjsRefs.current.get(vehicleDatum.vehicleId))
                             // vehicleComponentsRef.current.set(vehicleDatum.vehicleId,
                             //     <MapVehicleComponent {...{vehicleDatum,vehicleRefs: vehicleObjsRefs,vehicleIcon}} key={vehicleDatum.vehicleId}/>)
@@ -189,8 +198,6 @@ const RoutesAndStops = ()=>{
     let mapRouteMarkers: Map<string, L.Polyline> = new Map();
     const mapStopComponents = useRef(new Map());
     const lastUsedCard = useRef(state.currentCard);
-    // const searchedHereMarker = useRef<L.Marker | null>(null);
-    // let searchedHereComponent = useRef<React.ReactElement | null>(null);
     let stopsToDisplay: Map<string, L.Polyline> = new Map();
     let stopsToNonConditionallyDisplay: Map<string, L.Polyline> = new Map();
     const routeLayer = useRef<L.LayerGroup<L.Polyline>>(new L.LayerGroup());
@@ -205,7 +212,10 @@ const RoutesAndStops = ()=>{
 
 
 
-
+    let {search} = useNavigation()
+    const selectStop = (stop:StopInterface) =>{
+        search(stop.id)
+    }
 
 
     const processRoute = (route : RouteMatch)=> {
@@ -220,7 +230,7 @@ const RoutesAndStops = ()=>{
         route.directions.forEach(dir => {
             dir.mapStopComponentData.forEach((datum:StopInterface) => {
                 let stopId = datum.id;
-                let newStopMarker = createStopMarker(datum,0)
+                let newStopMarker = createStopMarker(datum,selectStop,0)
                 mapStopComponents.current.set(stopId, newStopMarker);
                 stopsToDisplay.set(stopId, newStopMarker);                
             })

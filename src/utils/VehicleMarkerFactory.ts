@@ -6,7 +6,8 @@ import {useNavigation} from "../js/updateState/NavigationEffect.ts";
 
 export const createVehicleMarker = (
     vehicleDatum: VehicleRtInterface,
-    zIndexOverride: number = 3
+    selectVehicle: Function,
+    zIndexOverride: number = 3,
 ): L.Marker => {
     const vehicleIdParts = vehicleDatum.vehicleId.split("_");
     const vehicleIdWithoutAgency = vehicleIdParts[1];
@@ -21,12 +22,6 @@ export const createVehicleMarker = (
         iconAnchor: [25,25],
         popupAnchor: [0,0]
     })
-
-    let {vehicleSearch} = useNavigation()
-    const selectVehicle = (vehicleDatum) =>{
-        // log.info("clicked on " + vehicleDatum.vehicleId)
-        vehicleSearch(vehicleDatum)
-    }
 
     const markerOptions = {
         zIndexOffset: zIndexOverride,

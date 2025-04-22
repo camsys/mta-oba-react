@@ -1,8 +1,11 @@
 import L from "leaflet";
+import { StopMarker } from "./dataLayer";
+import {useNavigation} from "../js/updateState/NavigationEffect.ts";
 
 export const createStopMarker = (
     stopDatum,
-    zIndexOverride
+    selectStop: Function,
+    zIndexOverride: number=0,
 ) => {
     const directionKey = stopDatum?.stopDirection || "unknown";
     const stopImageUrl = `img/stop/stop-${directionKey}${zIndexOverride ? "-active" : ""}.png`;
@@ -15,12 +18,14 @@ export const createStopMarker = (
         popupAnchor: [0, 0],
     });
 
-    const marker = L.marker(stopDatum.longLat, {
+
+
+    const marker = new StopMarker(stopDatum.longLat, {
         icon,
         zIndexOffset: zIndexOverride || -10,
         title: stopDatum.name,
         keyboard: false,
-    });
+    },stopDatum);
 
     // Add popup
     const popupContent = `
@@ -36,6 +41,10 @@ export const createStopMarker = (
     marker.bindPopup(popupContent, {
         autoPan: false,
         keepInView: false,
+    });
+
+    marker.on("click", () => {
+        selectStop(stopDatum);
     });
 
     return marker;
