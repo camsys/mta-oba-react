@@ -69,8 +69,11 @@ export const MapVehicleElements = () =>{
     const vehicleLayer = useRef<L.LayerGroup<L.Marker>>(new L.LayerGroup());
     let map = useMap()
 
-    let routeIds = state.currentCard.routeIdList
-    log.info("looking for vehicles from route ids: ",routeIds)
+
+    let shortenedRouteIds = new Set(Array.from(state.currentCard.routeIdList).map(shortenRoute));
+
+
+    log.info("looking for vehicles from route ids: ",shortenedRouteIds)
 
 
     function shortenRoute(routeId: string) {
@@ -86,10 +89,13 @@ export const MapVehicleElements = () =>{
             let vehicle = vehicleMap.get(vehicleDatum.vehicleId);
             vehicle.setLatLng(vehicleDatum.longLat)
             vehicle.setIcon(createVehicleIcon(vehicleDatum))
-            vehicle.closePopup()
+            if(state.currentCard.type !== CardType.VehicleCard || vehicleDatum.vehicleId !== state.currentCard.datumId){
+                vehicle.closePopup()
+            }
             log.info("updated vehicle position",vehicleDatum.vehicleId,vehicleMap.get(vehicleDatum.vehicleId))
         }
         else {
+            log.info("adding vehicle to map",vehicleDatum.vehicleId,vehicleDatum)
             vehicleMap.set(vehicleDatum.vehicleId,
                 createVehicleMarker(vehicleDatum,selectVehicle))
             vehicleLayer.current.addLayer(vehicleMap.get(vehicleDatum.vehicleId))
@@ -111,8 +117,8 @@ export const MapVehicleElements = () =>{
     function openPopup(){
         if (state.currentCard.type === CardType.VehicleCard)
         {
-            state.currentCard.routeIdList.forEach(routeId => {
-                let vehicle = safeGetVehicle(shortenRoute(routeId), state.currentCard.datumId)
+            shortenedRouteIds.forEach(routeId => {
+                let vehicle = safeGetVehicle(routeId, state.currentCard.datumId)
                 if(vehicle){
                     log.info("open popup for vehicle",vehicle,vehicle.getLatLng())
                     vehicle?.openPopup()
@@ -123,10 +129,10 @@ export const MapVehicleElements = () =>{
 
     // todo: if this was done just right it probably wouldn't hit the try catch
     try{
-        if(routeIds!=null){
+        if(shortenedRouteIds!=null){
             vehicleObjsRefs.current.forEach((vehicleMap, routeId) => {
-                log.info("is routeId in vehicleMap", routeId, routeIds.has(routeId));
-                if (routeIds!==null && !routeIds.has(routeId)) {
+                log.info("is routeId in vehicleMap", routeId, shortenedRouteIds, shortenedRouteIds.has(routeId));
+                if (shortenedRouteIds!==null && !shortenedRouteIds.has(routeId)) {
                     vehicleMap.forEach((vehicle, vehicleId) => {
                         log.info("removing vehicle from map", vehicleId, vehicleMap.get(vehicleId));
                         vehicleLayer.current.removeLayer(vehicle);
@@ -135,21 +141,20 @@ export const MapVehicleElements = () =>{
                     vehicleObjsRefs.current.delete(routeId);
                 }
             });
-            [...routeIds].forEach(route=>{
-                let routeId = shortenRoute(route)
-                let vehicleDataForRoute = vehicleState[routeId+vehicleDataIdentifier]
-                log.info("key:",routeId+vehicleDataIdentifier,"vehicleState",vehicleState,"vehicleDataForRoute",vehicleDataForRoute)
+            [...shortenedRouteIds].forEach(shortenedRouteId=>{
+                let vehicleDataForRoute = vehicleState[shortenedRouteId+vehicleDataIdentifier]
+                log.info("key:",shortenedRouteId+vehicleDataIdentifier,"vehicleState",vehicleState,"vehicleDataForRoute",vehicleDataForRoute)
                 if(vehicleDataForRoute!=null && vehicleObjsRefs.current!=undefined
                     && typeof vehicleObjsRefs.current === "object"
                     && typeof vehicleObjsRefs.current.get === 'function'){
                     log.info(`MapVehicleElements: processing vehicleDataForRoute`,vehicleDataForRoute)
                     log.info("MapVehicleElements: vehicle object refs",vehicleObjsRefs.current)
                     vehicleDataForRoute.forEach(vehicleDatum=>{
-                        vehicleDataForRoute = vehicleObjsRefs.current.get(routeId)
+                        vehicleDataForRoute = vehicleObjsRefs.current.get(shortenedRouteId)
                         if(vehicleDataForRoute == null || vehicleDataForRoute == undefined){
-                            log.info("MapVehicleElements: creating new vehicle map for routeId",routeId)
+                            log.info("MapVehicleElements: creating new vehicle map for routeId",shortenedRouteId)
                             vehicleDataForRoute = new Map()
-                            vehicleObjsRefs.current.set(routeId, vehicleDataForRoute)
+                            vehicleObjsRefs.current.set(shortenedRouteId, vehicleDataForRoute)
                         }
                         handleVehicleForMap(vehicleDatum, vehicleDataForRoute)
                     });
@@ -160,7 +165,7 @@ export const MapVehicleElements = () =>{
         openPopup()
 
         useEffect(() => {
-            log.info("map vehicle elements routeIds",routeIds,vehicleObjsRefs.current)
+            log.info("map vehicle elements routeIds",shortenedRouteIds,vehicleObjsRefs.current)
             vehicleLayer.current.addTo(map)
             openPopup()
             log.info("map vehicle elements layer group ref",vehicleLayer.current,vehicleLayer.current.getLayers().length)
