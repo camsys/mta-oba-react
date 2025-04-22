@@ -1,62 +1,44 @@
-import React from "react";
 import L from "leaflet";
-import {Marker, Popup} from "react-leaflet";
-import {v4 as uuidv4} from 'uuid'
+import { v4 as uuidv4 } from 'uuid';
 import log from 'loglevel';
 
+export function createMapSearchedHereMarker( latlon :[number, number]): L.Marker | null {
+    log.info('validating createMapSearchedHereMarker vars: ', latlon);
+    if (latlon == null || latlon == undefined) {
+        log.info('invalid latlon for createMapSearchedHereMarker: ', latlon);
+        return null;
+    }
+    log.info('starting to generate createMapSearchedHereMarker: ', latlon);
 
-
-function MapSearchedHereComponent({latlon, searchedHereMarkers}: { latlon:[number, number],
-    searchedHereMarkers: React.MutableRefObject<Map<number, Marker>> }): JSX.Element | null {
-    log.info('validating MapSearchedHereComponent vars: ', latlon)
-    if(latlon == null || latlon == undefined){
-        log.info('invalid latlon for MapSearchedHereComponent: ', latlon)
-        return null}
-    log.info('starting to generate MapSearchedHereComponent: ', latlon)
-
-
-    let icon = L.icon({
+    const icon = L.icon({
         iconUrl: "img/search-location-map-pin.png",
         className: "svg-icon",
-        iconSize: [24,20],
-        iconAnchor: [12,10],
-        popupAnchor: [0,0]
-    })
+        iconSize: [24, 20],
+        iconAnchor: [12, 10],
+        popupAnchor: [0, 0]
+    });
 
-    let popupOptions = {
-        autoPan: false,
-        keepInView: false
-    }
+    const popupContent = `
+        <div class="popup-info">
+            <span class="searched-here-span">Searched Location</span>
+        </div>
+    `;
 
-
-    var markerOptions = {
-        position: latlon,
+    const marker = L.marker(latlon, {
         icon: icon,
         zIndexOffset: 700,
         title: "searched here icon",
-        keyboard:false,
-        key: uuidv4()
-    };
+        keyboard: false
+    });
 
-    log.info('generating MapSearchedHereComponent: ', latlon,markerOptions)
-  return (
-      <Marker {...markerOptions}
-          ref={r=>
-              {
-                  // log.info("ref for stop component",stopDatum,r);
-                  typeof searchedHereMarkers!=='undefined'
-                      ?searchedHereMarkers.current.set(1,r):null
-              }}
-              tabIndex={-1}
-      >
-      >
-          <Popup key={uuidv4()} className="map-searched-location" tabIndex={-1} {...popupOptions}>
-              <div className="popup-info">
-                  <span className="searched-here-span">Searched Location</span>
-              </div>
-          </Popup>
-      </Marker>
-  );
+    marker.bindPopup(popupContent, {
+        autoPan: false,
+        keepInView: false,
+        className: "map-searched-location"
+    });
+
+    log.info('generated createMapSearchedHereMarker: ', latlon, marker);
+    return marker;
 }
 
-export default MapSearchedHereComponent;
+export default createMapSearchedHereMarker;

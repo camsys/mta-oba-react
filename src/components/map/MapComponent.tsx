@@ -20,7 +20,7 @@ import {
     StopMatch
 } from "../../js/updateState/DataModels";
 import {useHighlight} from "Components/util/MapHighlightingStateComponent";
-import MapSearchedHereComponent from "./MapSearchedHereComponent";
+import {createMapSearchedHereMarker} from "./MapSearchedHereComponent";
 import {v4 as uuidv4} from "uuid";
 
 
@@ -170,7 +170,43 @@ const loadPopup = (datumId,leafletRefObjs) :void=>{
 
 }
 
+const SearchedHere = () :JSX.Element=>{
+    log.info("generating searched here")
+    const { state} = useContext(CardStateContext);
+    const searchedHereMarker = useRef<L.Marker|null>(null);
+    let map = useMap()
 
+
+    state.currentCard.searchMatches.forEach(searchMatch=>{
+        if(state.currentCard.type===CardType.GeocodeCard){
+            searchedHereMarker.current = createMapSearchedHereMarker([searchMatch.latitude,searchMatch.longitude])
+            log.info("searched here marker created", searchedHereMarker.current)
+        }       
+    })
+
+    if(searchedHereMarker.current){
+        searchedHereMarker.current.openPopup()
+    }
+    
+    useEffect(() => {
+        if(searchedHereMarker.current){
+            log.info("adding searched here marker to map", searchedHereMarker.current)
+            searchedHereMarker.current.addTo(map)
+            searchedHereMarker.current.openPopup()
+        }
+        else{
+            if(searchedHereMarker.current){
+                log.info("removing searched here marker from map", searchedHereMarker.current)
+                searchedHereMarker.current.removeFrom(map)
+            }
+        }
+    }, [state]);
+
+    return (
+        <React.Fragment>
+        </React.Fragment>
+    )
+}
 
 
 const RoutesAndStops = () :JSX.Element=>{
@@ -204,8 +240,6 @@ const RoutesAndStops = () :JSX.Element=>{
     let mapRouteComponents = new Map();
     const mapStopComponents = useRef(new Map());
     const mapStopMarkers = useRef(new Map()<string,Marker>);
-    const searchedHereMarkers = useRef(new Map()<number,Marker>);
-    const searchedHereComponents = useRef(new Map()<number,Marker>);
     let mapStopComponentsToDisplay = new Map();
     let stopsToNonConditionallyDisplay = new Map();
 
@@ -219,16 +253,12 @@ const RoutesAndStops = () :JSX.Element=>{
         if(state.currentCard.type===CardType.RouteCard){
             let route = searchMatch
             processRoute(route)
-            searchedHereComponents.current.clear();
-            searchedHereMarkers.current.clear();
             // map.fitBounds(newBounds);
         }
         else if(state.currentCard.type===CardType.VehicleCard){
             log.info("vehicle route works here");
             let route = searchMatch;
             processRoute(route);
-            searchedHereComponents.current.clear();
-            searchedHereMarkers.current.clear();
         }
         else if(state.currentCard.type===CardType.GeocodeCard) {
             searchMatch.routeMatches.forEach(match => {
@@ -239,11 +269,6 @@ const RoutesAndStops = () :JSX.Element=>{
                     })
                 }
             })
-            let latlon = [searchMatch.latitude,searchMatch.longitude]
-            if(latlon !== null || latlon !== undefined){
-                let key = uuidv4()
-                searchedHereComponents.current.set(uuidv4(),<MapSearchedHereComponent latlon={latlon} key = {key} searchedHereMarkers={searchedHereMarkers}/>);
-            }
         }
         else if(state.currentCard.type===CardType.StopCard) {
             searchMatch.routeMatches.forEach(route => {
@@ -252,8 +277,6 @@ const RoutesAndStops = () :JSX.Element=>{
             let stopId =state.currentCard.datumId;
             stopsToNonConditionallyDisplay.set(stopId,mapStopComponents.current.get(stopId));
             mapStopComponentsToDisplay.delete(stopId)
-            searchedHereComponents.current.clear();
-            searchedHereMarkers.current.clear();
         }
     })
 
@@ -268,12 +291,6 @@ const RoutesAndStops = () :JSX.Element=>{
             if( state.currentCard.type===CardType.StopCard) {
                 loadPopup(state.currentCard.datumId,mapStopMarkers)
             }
-            searchedHereMarkers.current.forEach((marker, key) => {
-                if(marker && typeof marker!=='undefined' && marker!==null
-                    && marker.getPopup() && marker!==undefined){
-                    marker.openPopup()
-                }
-            })
         } catch (e) {
             log.error("error adding stable popups",e)
         }
@@ -306,7 +323,6 @@ const RoutesAndStops = () :JSX.Element=>{
     log.info("map route components", Array.from(mapRouteComponents.values()).flat());
     log.info("map stop components", mapStopComponents.current);
     log.info("map stop component markers", mapStopMarkers.current);
-    log.info("map \"searched here\" pin marker", Array.from(searchedHereComponents.current).flat());
 
     return (
         <React.Fragment>
@@ -314,7 +330,6 @@ const RoutesAndStops = () :JSX.Element=>{
                     ref = {r=>{mapRouteElementsLayerGroupRef=r}}>
                 {Array.from(mapRouteComponents.values()).flat()}
             </LayerGroup>
-            {Array.from(searchedHereComponents.current).flat()}
             {ConditionallyDisplayStopComponents(Array.from(mapStopComponentsToDisplay.values()).flat())}
             {Array.from(stopsToNonConditionallyDisplay.values()).flat()}
             <LayerGroup>
@@ -526,6 +541,7 @@ export const MapComponent = () :JSX.Element => {
                 <RoutesAndStops/>
                 <MapVehicleElements/>
                 <HandleMapBoundsAndZoom />
+                <SearchedHere/>
                 {/*<HandleMapForVehiclesBoundsAndZoom/>*/}
             </MapContainer>
         </React.Fragment>
