@@ -188,7 +188,6 @@ const RoutesAndStops = ()=>{
 
     let mapRouteMarkers: Map<string, L.Polyline> = new Map();
     const mapStopComponents = useRef(new Map());
-    const mapStopMarkers = useRef<Map<string, L.Polyline>>(new Map());
     const lastUsedCard = useRef(state.currentCard);
     // const searchedHereMarker = useRef<L.Marker | null>(null);
     // let searchedHereComponent = useRef<React.ReactElement | null>(null);
@@ -270,7 +269,6 @@ const RoutesAndStops = ()=>{
         stopsToDisplay.clear();
         stopsToNonConditionallyDisplay.clear();
         mapStopComponents.current.clear();
-        mapStopMarkers.current.clear();
 
         routeLayer.current.clearLayers();
         stopLayer.current.clearLayers();
@@ -351,8 +349,6 @@ const RoutesAndStops = ()=>{
 
     log.info("map route components before", mapRouteMarkers);
     log.info("map stop components before", mapStopComponents.current);
-    log.info("map stop component markers before", mapStopMarkers.current);
-    log.info("map stop component markers opening popup outside of effect",mapStopMarkers.current)
     
     let map = useMap()
     useEffect(() => {
