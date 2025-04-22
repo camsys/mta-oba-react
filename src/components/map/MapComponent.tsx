@@ -173,32 +173,27 @@ const loadPopup = (datumId,leafletRefObjs) :void=>{
 const SearchedHere = () :JSX.Element=>{
     log.info("generating searched here")
     const { state} = useContext(CardStateContext);
-    const searchedHereMarker = useRef<L.Marker|null>(null);
+    const previousSearchedHereMarker = useRef<L.Marker|null>(null);
+    const currentSearchedHereMarker = useRef<L.Marker|null>(null);
     let map = useMap()
 
-
+    previousSearchedHereMarker.current = currentSearchedHereMarker.current
     state.currentCard.searchMatches.forEach(searchMatch=>{
         if(state.currentCard.type===CardType.GeocodeCard){
-            searchedHereMarker.current = createMapSearchedHereMarker([searchMatch.latitude,searchMatch.longitude])
-            log.info("searched here marker created", searchedHereMarker.current)
+            currentSearchedHereMarker.current = createMapSearchedHereMarker([searchMatch.latitude,searchMatch.longitude])
+            log.info("searched here marker created", currentSearchedHereMarker.current)
         }       
     })
 
-    if(searchedHereMarker.current){
-        searchedHereMarker.current.openPopup()
-    }
-    
     useEffect(() => {
-        if(searchedHereMarker.current){
-            log.info("adding searched here marker to map", searchedHereMarker.current)
-            searchedHereMarker.current.addTo(map)
-            searchedHereMarker.current.openPopup()
+        if(previousSearchedHereMarker.current){
+            log.info("removing previous searched here marker from map", currentSearchedHereMarker.current)
+            previousSearchedHereMarker.current.removeFrom(map)
         }
-        else{
-            if(searchedHereMarker.current){
-                log.info("removing searched here marker from map", searchedHereMarker.current)
-                searchedHereMarker.current.removeFrom(map)
-            }
+        if(currentSearchedHereMarker.current && state.currentCard.type===CardType.GeocodeCard){
+            log.info("adding searched here marker to map", currentSearchedHereMarker.current)
+            currentSearchedHereMarker.current.addTo(map)
+            currentSearchedHereMarker.current.openPopup()
         }
     }, [state]);
 
