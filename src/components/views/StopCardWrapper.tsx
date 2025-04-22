@@ -23,9 +23,11 @@ import {RunScriptAfterRender,ScriptForAfterCollapsible} from "../util/RunScriptA
 import {useFavorite} from "../util/MiscStateComponent";
 import {ViewSearchItem} from "./MiscComponents";
 import log from 'loglevel';
+import {v4 as uuidv4} from "uuid";
 
 
-const RouteDirection = (routeDirectionDatum:RouteMatchDirectionInterface,stopId:string, collapsed:boolean) : JSX.Element=>{
+const RouteDirection = ({routeDirectionDatum,stopId, collapsed}:
+    {routeDirectionDatum:RouteMatchDirectionInterface,stopId:string, collapsed:boolean}) : JSX.Element=>{
     const {highlightId} = useHighlight();
     const {vehiclesApproachingStopsState} = useContext(VehiclesApproachingStopsContext)
     log.info("generating StopCard RouteDirection",routeDirectionDatum,vehiclesApproachingStopsState)
@@ -150,7 +152,7 @@ export function StopCardContent({stopMatch,collapsed}: { StopMatch, boolean }):J
             <h4>Buses en-route:</h4>
             {stopMatch.routeMatches.map(
                 route=>route.directions.map(
-                    dir => RouteDirection(dir,stopMatch.id.split("_")[1],collapsed)
+                    dir => <RouteDirection key={uuidv4()} routeDirectionDatum={dir} stopId ={stopMatch.id.split("_")[1]} collapsed={collapsed}/>
                 ))}
             <div className="text-note">
                 <p>

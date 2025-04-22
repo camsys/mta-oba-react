@@ -91,11 +91,11 @@ function VehicleComponent({vehicleDatum,tabbable}:
         out = (<li key={vehicleDatum.vehicleId}>
             <span className="bus-info">
                 <span className="approaching">
-                    {OBA.Util.getArrivalEstimateForISOString(vehicleDatum?.vehicleArrivalData?.[0].ISOTime,vehicleDatum.lastUpdate)}
+                    <span>{OBA.Util.getArrivalEstimateForISOString(vehicleDatum?.vehicleArrivalData?.[0].ISOTime,vehicleDatum.lastUpdate)}</span>
                     {hasArrivalData?
                         vehicleDatum?.vehicleArrivalData?.[0].prettyDistance
                         :null}
-                    {departureInfo}
+                    <div>{departureInfo}</div>
                 </span>
                 <MeeplesComponentSpan vehicleDatum={vehicleDatum}/>
             </span>

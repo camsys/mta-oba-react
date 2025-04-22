@@ -514,34 +514,34 @@ const CardChange = () =>{
 
 
 export const MapComponent = () :JSX.Element => {
-    log.info("generating map")
+    // log.info("generating map")
 
-    let startingMapCenter = OBA.Config.defaultMapCenter;
-    let startingZoom = 11;
+    // let startingMapCenter = OBA.Config.defaultMapCenter;
+    // let startingZoom = 11;
 
-    return (
-        <React.Fragment>
-            <MapContainer
-                center={startingMapCenter}
-                zoom={startingZoom}
-                scrollWheelZoom={true}
-                tabIndex={-1}
-                id="map"
-            >
-                <ReactLeafletGoogleLayer
-                    apiKey='AIzaSyA-PBbsL_sXOTfo2KbkVx8XkEfcIe48xzw'
-                    type={'roadmap'}
-                    styles={OBA.Config.mutedTransitStylesArray}
-                />
-                <MapEvents />
-                <RoutesAndStops/>
-                <MapVehicleElements/>
-                <HandleMapBoundsAndZoom />
-                <SearchedHere/>
-                {/*<HandleMapForVehiclesBoundsAndZoom/>*/}
-            </MapContainer>
-        </React.Fragment>
-    );
+    // return (
+    //     <React.Fragment>
+    //         <MapContainer
+    //             center={startingMapCenter}
+    //             zoom={startingZoom}
+    //             scrollWheelZoom={true}
+    //             tabIndex={-1}
+    //             id="map"
+    //         >
+    //             <ReactLeafletGoogleLayer
+    //                 apiKey='AIzaSyA-PBbsL_sXOTfo2KbkVx8XkEfcIe48xzw'
+    //                 type={'roadmap'}
+    //                 styles={OBA.Config.mutedTransitStylesArray}
+    //             />
+    //             <MapEvents />
+    //             <RoutesAndStops/>
+    //             <MapVehicleElements/>
+    //             <HandleMapBoundsAndZoom />
+    //             <SearchedHere/>
+    //             {/*<HandleMapForVehiclesBoundsAndZoom/>*/}
+    //         </MapContainer>
+    //     </React.Fragment>
+    // );
 };
 
 // export default MapComponent;
