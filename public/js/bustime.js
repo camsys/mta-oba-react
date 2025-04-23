@@ -1,6 +1,6 @@
 function checkGoogleTranslate() {
   const body = document.body;
-  
+
   // Google Translate inserts an iframe when active
   const translateIframe = document.querySelector('.goog-te-banner-frame, .goog-te-menu-frame');
 
@@ -12,20 +12,25 @@ function checkGoogleTranslate() {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-
-  // window.console.log('boop test');
-
   // Store the original language of the page
   document.documentElement.setAttribute('original-lang', document.documentElement.lang);
   checkGoogleTranslate();
 
-  // ✅ Monitor changes in the `<html>` lang attribute (Google Translate modifies it)
+  // ✅ Monitor changes in the `<html>` lang attribute
   const translateObserver = new MutationObserver(() => checkGoogleTranslate());
   translateObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['lang'] });
 
-  // ✅ Monitor DOM changes in case Google injects elements
+  // ✅ Monitor DOM changes for Google Translate injected elements
   const domTranslateObserver = new MutationObserver(() => checkGoogleTranslate());
   domTranslateObserver.observe(document.body, { childList: true, subtree: true });
+
+  // Constants for animation
+  const BASE_DURATION = 200; // Base duration in ms
+  const HEIGHT_FACTOR = 0.5; // ms per pixel of height (adjust as needed)
+  const MIN_DURATION = 150; // Minimum transition duration in ms
+  const MAX_DURATION = 500; // Maximum transition duration in ms
+
+  // window.console.log('boop test');
 
   // have to do clicks this way so they work on objects added after the page loads
   // collapse trigger buttons open and close (for icon rotation) and content reveal/toggle
@@ -39,84 +44,51 @@ document.addEventListener('DOMContentLoaded', function() {
 
         var parent = collapseTrigger.closest('.collapsible');
         var collapseContent = parent.querySelector('.collapse-content');
-        if(collapseContent){
+        if (collapseContent) {
           var allInnerTabbableItems = collapseContent.querySelectorAll('a[tabindex], button[tabindex]');
-          
           var allInnerCollapseTriggers = collapseContent.querySelectorAll('.collapse-trigger');
 
-          if (parent && collapseContent) {
+          // Calculate appropriate transition duration based on content height
+          const contentHeight = collapseContent.scrollHeight;
+          let transitionDuration = BASE_DURATION + (contentHeight * HEIGHT_FACTOR);
+          transitionDuration = Math.max(MIN_DURATION, Math.min(transitionDuration, MAX_DURATION));
 
-            // if the card is open, close it, adjust the max height, and tabindex of inner elements
-            if (parent.classList.contains('open')) {
+          // Apply the calculated duration
+          collapseContent.style.transition = `max-height ${transitionDuration}ms ease`;
 
-              // window.log.info('boop closing collapsible')
+          // if the card is open, close it, adjust the max height, and tabindex of inner elements
+          if (parent.classList.contains('open')) {
+            // window.log.info('boop closing collapsible')
+            collapseContent.style.maxHeight = collapseContent.scrollHeight + 'px';
+            setTimeout(() => {
+              parent.classList.remove('open');
+              collapseContent.style.maxHeight = '0';
+            }, 10);
 
-              collapseContent.style.maxHeight = collapseContent.scrollHeight + 'px'; // Set maxHeight before collapsing
+            // set tabindex of all inner elements to -1
+            allInnerTabbableItems.forEach(el => el.setAttribute('tabindex', '-1'));
+          } else {
+            // window.log.info('boop opening collapsible')
+            collapseContent.style.maxHeight = collapseContent.scrollHeight + 'px';
+            setTimeout(() => parent.classList.add('open'), 10);
+            setTimeout(() => collapseContent.style.maxHeight = 'none', transitionDuration + 50);
 
-              setTimeout(() => {
-                parent.classList.remove('open');
-                collapseContent.style.maxHeight = '0'; // Collapse the content
-              }, 10); // Small delay to trigger transition
-
-              // set tabindex of all inner elements to -1
-              allInnerTabbableItems.forEach(function(element) {
-                element.setAttribute('tabindex', '-1');
-              });
-
+            // if parent has class 'inner-card', set tabindex of all inner elements to 0
+            if (parent.classList.contains('inner-card')) {
+              allInnerTabbableItems.forEach(el => el.setAttribute('tabindex', '0'));
+            } else if (parent.classList.contains('card')) {
+              // allInnerTabbableItems that are a child of .card-menu
+              var allInnerCardMenuItems = collapseContent.querySelectorAll('.card-menu a[tabindex], .card-menu button[tabindex]');
+              allInnerCardMenuItems.forEach(el => el.setAttribute('tabindex', '0'));
+              allInnerCollapseTriggers.forEach(el => el.setAttribute('tabindex', '0'));
+            } else {
+              allInnerTabbableItems.forEach(el => el.setAttribute('tabindex', '0'));
             }
-            // if the card is closed, open it, adjust the max height, and tabindex of inner elements
-            else {
-
-              // window.log.info('boop opening collapsible')
-
-              // Set maxHeight to actual height before expanding
-              collapseContent.style.maxHeight = collapseContent.scrollHeight + 'px'; // Allow it to expand
-
-              // Add class to parent to trigger transition
-              setTimeout(() => {
-                parent.classList.add('open');
-              }, 10); // Small delay to trigger transition
-
-              // Set maxHeight back to none after transition
-              setTimeout(() => {
-                collapseContent.style.maxHeight = 'none'; // Reset to none to allow further expansion
-              }, 500); // Timeout matches the transition duration
-
-              // if parent has class 'inner-card', set tabindex of all inner elements to 0
-              if (parent.classList.contains('inner-card')) {
-                allInnerTabbableItems.forEach(function(element) {
-                  element.setAttribute('tabindex', '0');
-                });
-              }
-              // else if parent has class 'card', set tabindex of all inner elements whose closest parent .collapsible has class .open to 0, and set tabindex of all inner collapse triggers to 0
-              else if (parent.classList.contains('card')) {
-                // allInnerTabbableItems that are a child of .card-menu
-                var allInnerCardMenuItems = collapseContent.querySelectorAll('.card-menu a[tabindex], .card-menu button[tabindex]');
-                
-                allInnerCardMenuItems.forEach(function(element) {
-                  element.setAttribute('tabindex', '0');
-                });
-                allInnerCollapseTriggers.forEach(function(element) {
-                  element.setAttribute('tabindex', '0');
-                });
-              }
-              // else, set tabindex of all inner elements to 0
-              else {
-                allInnerTabbableItems.forEach(function(element) {
-                  element.setAttribute('tabindex', '0');
-                });
-              }
-
-            }
-
-            // Update aria-expanded attribute
-
-            collapseTrigger.setAttribute('aria-expanded', parent.classList.contains('open'));
-
           }
+
+          // Update aria-expanded attribute
+          collapseTrigger.setAttribute('aria-expanded', parent.classList.contains('open'));
         }
-
-
     }
 
     // Check if the clicked element or any of its ancestrs have the id 'map-toggle'
@@ -124,15 +96,14 @@ document.addEventListener('DOMContentLoaded', function() {
     // map trigger open and close
     var mapToggle = event.target.closest('#map-toggle');
     if (mapToggle) {
-      
       // map trigger closest parent with class 'map-wrap'
       var mapWrap = mapToggle.closest('#map-wrap');
-      
+
       // window.log.info('boop');
       // window.log.info(mapToggle);
       // window.log.info(mapWrap);
 
-      if(mapWrap.classList){
+      if (mapWrap.classList) {
         mapWrap.classList.toggle('open');
 
         mapToggle.setAttribute('aria-expanded', mapWrap.classList.contains('open'));
@@ -176,73 +147,46 @@ document.addEventListener('DOMContentLoaded', function() {
           element.setAttribute('aria-expanded', 'true');
         }
       });
-
     }
-
-
   });
 
-  const searchInstructionObserver = new MutationObserver((mutationsList) => {
+  // search instructions scrolling
+  const observer = new MutationObserver((mutationsList) => {
     for (const mutation of mutationsList) {
       if (mutation.type === 'childList') {
         const sidebarContent = document.querySelector('.sidebar-content');
         const searchInstructions = document.querySelector('.search-instructions');
-        const content = document.querySelector('.sidebar-content .content');
-        const footer = document.querySelector('.sidebar-content .footer');
-        const searchInstructionsHeight = 30;
-  
-        if (sidebarContent && searchInstructions && content && footer) {
-          // Scroll event
-          sidebarContent.addEventListener('scroll', () => {
-            const scrollTop = sidebarContent.scrollTop;
-            const overFlowAmount = sidebarContent.scrollHeight - sidebarContent.clientHeight;
-  
-            if (overFlowAmount > searchInstructionsHeight) {
-              if (scrollTop <= searchInstructionsHeight) {
-                searchInstructions.style.height = (searchInstructionsHeight - scrollTop) + 'px';
-              } else {
-                searchInstructions.style.height = '0';
-              }
-            }
-          });
-  
-          // ResizeObserver to watch the actual content inside the scrollable area
-          const handleResize = () => {
-            requestAnimationFrame(() => {
+        const searchInstructionsHeight = 30; // default height as defined in CSS
+
+        if (sidebarContent && searchInstructions) {
+          sidebarContent.addEventListener('scroll', {
+            handleEvent(event) {
+              const scrollTop = event.target.scrollTop;
               const overFlowAmount = sidebarContent.scrollHeight - sidebarContent.clientHeight;
-              const scrollTop = sidebarContent.scrollTop;
-          
-              if (overFlowAmount <= 0) {
-                searchInstructions.style.height = '';
-                sidebarContent.scrollTop = 0; // optional
+
+              if (overFlowAmount > searchInstructionsHeight) {
+                if (scrollTop <= searchInstructionsHeight) {
+                  searchInstructions.style.height = (searchInstructionsHeight - scrollTop) + 'px';
+                } else {
+                  searchInstructions.style.height = '0';
+                }
               }
-            });
-          };
-  
-          const resizeObserver = new ResizeObserver(handleResize);
-  
-          resizeObserver.observe(content);
-          resizeObserver.observe(footer);
-  
-          // Optionally trigger on load too
-          handleResize();
-  
-          searchInstructionObserver.disconnect();
+            },
+          });
+
+          // Stop observing once the elements are found
+          observer.disconnect();
           break;
         }
       }
     }
   });
-  
-  searchInstructionObserver.observe(document.body, { childList: true, subtree: true });
-  
-
+  observer.observe(document.body, { childList: true, subtree: true });
 
   var tocToggle = document.getElementById('toc-toggle');
 
   // function to toggle tabbable elements in toc specifically
   function toggleToc(toc, open) {
-    // adjust tabindex of all tabbable elements in toc
     var tabbableElements = toc.querySelectorAll('a[tabindex], button[tabindex]');
     tabbableElements.forEach(function(element) {
       element.setAttribute('tabindex', open ? '0' : '-1');
@@ -255,9 +199,7 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   // toc-toggle open and close
-  
   if (tocToggle) {
-
     // click toggle button to open and close the table of contents
     tocToggle.addEventListener('click', function() {
       var toc = document.getElementById('toc');
@@ -285,12 +227,5 @@ document.addEventListener('DOMContentLoaded', function() {
         tocToggle.setAttribute('aria-hidden', 'true');
       }
     });
-
-
-
   }
-
-  
-  
-
 });

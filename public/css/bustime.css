@@ -1799,6 +1799,9 @@ button:hover, .button:hover {
 .collapsible.open > .collapse-content {
   max-height: none;
 }
+.collapsible.open .card-footer {
+  display: none;
+}
 .collapsible:not(.service-alert).open > .card-header .svc-alert-icon {
   opacity: 0;
   position: absolute;
