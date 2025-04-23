@@ -1228,7 +1228,7 @@ button, .button
       list-style: none
       display: flex
       flex-direction: column
-      gap: .25em
+      gap: .25rem
       li
         margin: 0
         border-left: $medium-border solid $mta-blue
@@ -1236,9 +1236,12 @@ button, .button
         white-space: nowrap
         overflow: hidden
         text-overflow: ellipsis
+        line-height: 1
         .svg-icon-wrap
           width: 1em
           height: 1em
+          margin-right: .25em
+          vertical-align: text-top
 
 .inner-card
   margin: 0

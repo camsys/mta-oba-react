@@ -2099,7 +2099,7 @@ button:hover, .button:hover {
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
           flex-direction: column;
-  gap: 0.25em;
+  gap: 0.25rem;
 }
 .card .card-footer .stop-routes li {
   margin: 0;
@@ -2108,10 +2108,13 @@ button:hover, .button:hover {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  line-height: 1;
 }
 .card .card-footer .stop-routes li .svg-icon-wrap {
   width: 1em;
   height: 1em;
+  margin-right: 0.25em;
+  vertical-align: text-top;
 }
 
 .inner-card {
