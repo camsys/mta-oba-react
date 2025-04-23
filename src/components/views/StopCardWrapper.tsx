@@ -246,6 +246,7 @@ function InnerCollapsableStopCard ({ match, oneOfMany}: {match:SearchMatch, oneO
                 </li>
             </ul>
         </div>
+        <div>this is where the routes need to go</div>
     </div>
     )
 }
