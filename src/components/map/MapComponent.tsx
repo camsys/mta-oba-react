@@ -357,7 +357,7 @@ const setMapLatLngAndZoom = (duration :number , lat : number, long :number,zoom:
     let [currentLat, currentLong,currentZoom] = [map.getCenter().lat,map.getCenter().lng,map.getZoom()]
     let latsMatch = currentLat+mapHeight/3>lat && currentLat-mapHeight/3<lat
     let longsMatch = currentLong+mapWidth/3>long && currentLong-mapWidth/3<long
-    let zoomsMatch =  zoom-.3<currentZoom
+    let zoomsMatch =  zoom-.3<currentZoom && currentZoom>16
     // let zoomsMatch = zoom-.3<currentZoom && zoom+.3>currentZoom
     log.info("update map bounds and zoom? current: ",currentLat,currentLong,currentZoom,"new: ",lat,long,zoom, "matches",latsMatch,longsMatch,zoomsMatch)
 
@@ -514,34 +514,34 @@ const CardChange = () =>{
 
 
 export const MapComponent = () :JSX.Element => {
-    // log.info("generating map")
+    log.info("generating map")
 
-    // let startingMapCenter = OBA.Config.defaultMapCenter;
-    // let startingZoom = 11;
+    let startingMapCenter = OBA.Config.defaultMapCenter;
+    let startingZoom = 11;
 
-    // return (
-    //     <React.Fragment>
-    //         <MapContainer
-    //             center={startingMapCenter}
-    //             zoom={startingZoom}
-    //             scrollWheelZoom={true}
-    //             tabIndex={-1}
-    //             id="map"
-    //         >
-    //             <ReactLeafletGoogleLayer
-    //                 apiKey='AIzaSyA-PBbsL_sXOTfo2KbkVx8XkEfcIe48xzw'
-    //                 type={'roadmap'}
-    //                 styles={OBA.Config.mutedTransitStylesArray}
-    //             />
-    //             <MapEvents />
-    //             <RoutesAndStops/>
-    //             <MapVehicleElements/>
-    //             <HandleMapBoundsAndZoom />
-    //             <SearchedHere/>
-    //             {/*<HandleMapForVehiclesBoundsAndZoom/>*/}
-    //         </MapContainer>
-    //     </React.Fragment>
-    // );
+    return (
+        <React.Fragment>
+            <MapContainer
+                center={startingMapCenter}
+                zoom={startingZoom}
+                scrollWheelZoom={true}
+                tabIndex={-1}
+                id="map"
+            >
+                <ReactLeafletGoogleLayer
+                    apiKey='AIzaSyA-PBbsL_sXOTfo2KbkVx8XkEfcIe48xzw'
+                    type={'roadmap'}
+                    styles={OBA.Config.mutedTransitStylesArray}
+                />
+                <MapEvents />
+                <RoutesAndStops/>
+                <MapVehicleElements/>
+                <HandleMapBoundsAndZoom />
+                <SearchedHere/>
+                {/*<HandleMapForVehiclesBoundsAndZoom/>*/}
+            </MapContainer>
+        </React.Fragment>
+    );
 };
 
 // export default MapComponent;
