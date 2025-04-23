@@ -47,10 +47,10 @@ const MiniStopDirection =({routeDirectionDatum,stopId,collapsed}:{routeDirection
     }
     
     return(
-    <div className='mini-stop-direction'>
-        <span className="label" color={routeDirectionDatum.color}>{routeId} </span>
-        <span>{routeDirectionDatum.destination}</span>
-    </div>)
+        <li style={{ borderColor: '#'+routeDirectionDatum.color}}>
+            {hasServiceAlert?<ServiceAlertSvg/>:null}
+            <strong>{routeId}</strong> <span>{routeDirectionDatum.destination}</span>
+        </li>)
 }
 
 
@@ -274,11 +274,13 @@ function InnerCollapsableStopCard ({ match, oneOfMany}: {match:SearchMatch, oneO
                 </li>
             </ul>
         </div>
-        <div>
-            {stopMatch.routeMatches.map(
-        route=>route.directions.map(
-            (dir) => {return (<MiniStopDirection key={uuidv4()} routeDirectionDatum={dir} stopId ={stopMatch.id.split("_")[1]} collapsed={oneOfMany}/>)}
-            ))}
+        <div className='card-footer'>
+            <ul className='stop-routes'>
+                {stopMatch.routeMatches.map(
+                    route=>route.directions.map(
+                    (dir) => {return (<MiniStopDirection key={uuidv4()} routeDirectionDatum={dir} stopId ={stopMatch.id.split("_")[1]} collapsed={oneOfMany}/>)}
+                ))}
+            </ul>
         </div>
     </div>
     )

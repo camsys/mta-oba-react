@@ -377,17 +377,17 @@ p {
   line-height: 1.4;
 }
 
-ul:not(.menu):not(.card-details):not(.route-stops):not(.approaching-buses):not([role=listbox]):not(.breadcrumb):not(.map-legend) {
+ul:not(.menu):not(.card-details):not(.route-stops):not(.approaching-buses):not([role=listbox]):not(.breadcrumb):not(.map-legend):not(.stop-routes) {
   list-style: none;
   padding: 0;
   margin: 1em 0;
 }
-ul:not(.menu):not(.card-details):not(.route-stops):not(.approaching-buses):not([role=listbox]):not(.breadcrumb):not(.map-legend) > li {
+ul:not(.menu):not(.card-details):not(.route-stops):not(.approaching-buses):not([role=listbox]):not(.breadcrumb):not(.map-legend):not(.stop-routes) > li {
   margin: 0 0 0.5em 0;
   padding: 0 0 0 0.75em;
   position: relative;
 }
-ul:not(.menu):not(.card-details):not(.route-stops):not(.approaching-buses):not([role=listbox]):not(.breadcrumb):not(.map-legend) > li::before {
+ul:not(.menu):not(.card-details):not(.route-stops):not(.approaching-buses):not([role=listbox]):not(.breadcrumb):not(.map-legend):not(.stop-routes) > li::before {
   content: "■";
   display: inline-block;
   font-size: 0.375em;
@@ -395,21 +395,21 @@ ul:not(.menu):not(.card-details):not(.route-stops):not(.approaching-buses):not([
   left: 0;
   top: 0.875em;
 }
-ul:not(.menu):not(.card-details):not(.route-stops):not(.approaching-buses):not([role=listbox]):not(.breadcrumb):not(.map-legend) > li ul.links {
+ul:not(.menu):not(.card-details):not(.route-stops):not(.approaching-buses):not([role=listbox]):not(.breadcrumb):not(.map-legend):not(.stop-routes) > li ul.links {
   display: -webkit-inline-box;
   display: -ms-inline-flexbox;
   display: inline-flex;
   gap: 0.75em;
   margin: 0 0 0 0.5em;
 }
-ul:not(.menu):not(.card-details):not(.route-stops):not(.approaching-buses):not([role=listbox]):not(.breadcrumb):not(.map-legend) > li ul.links li {
+ul:not(.menu):not(.card-details):not(.route-stops):not(.approaching-buses):not([role=listbox]):not(.breadcrumb):not(.map-legend):not(.stop-routes) > li ul.links li {
   padding: 0;
   margin: 0;
 }
-ul:not(.menu):not(.card-details):not(.route-stops):not(.approaching-buses):not([role=listbox]):not(.breadcrumb):not(.map-legend) > li ul.links li::before {
+ul:not(.menu):not(.card-details):not(.route-stops):not(.approaching-buses):not([role=listbox]):not(.breadcrumb):not(.map-legend):not(.stop-routes) > li ul.links li::before {
   content: none;
 }
-ul:not(.menu):not(.card-details):not(.route-stops):not(.approaching-buses):not([role=listbox]):not(.breadcrumb):not(.map-legend) > li ul.links li a::after {
+ul:not(.menu):not(.card-details):not(.route-stops):not(.approaching-buses):not([role=listbox]):not(.breadcrumb):not(.map-legend):not(.stop-routes) > li ul.links li a::after {
   content: "";
   position: absolute;
   left: 0;
@@ -421,12 +421,12 @@ ul:not(.menu):not(.card-details):not(.route-stops):not(.approaching-buses):not([
   -webkit-transition: opacity 0.25s ease-in-out;
   transition: opacity 0.25s ease-in-out;
 }
-ul:not(.menu):not(.card-details):not(.route-stops):not(.approaching-buses):not([role=listbox]):not(.breadcrumb):not(.map-legend) > li ul.links li a:focus {
+ul:not(.menu):not(.card-details):not(.route-stops):not(.approaching-buses):not([role=listbox]):not(.breadcrumb):not(.map-legend):not(.stop-routes) > li ul.links li a:focus {
   outline: none;
   border: none;
   text-decoration: none;
 }
-ul:not(.menu):not(.card-details):not(.route-stops):not(.approaching-buses):not([role=listbox]):not(.breadcrumb):not(.map-legend) > li ul.links li a:focus::after {
+ul:not(.menu):not(.card-details):not(.route-stops):not(.approaching-buses):not([role=listbox]):not(.breadcrumb):not(.map-legend):not(.stop-routes) > li ul.links li a:focus::after {
   opacity: 1;
 }
 
@@ -2080,6 +2080,36 @@ button:hover, .button:hover {
   opacity: 1;
   right: 0;
 }
+.card .card-footer {
+  background-color: #f3f3f3;
+  padding: 0.5rem;
+  font-size: 0.75em;
+}
+.card .card-footer .stop-routes {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  gap: 0.25em;
+}
+.card .card-footer .stop-routes li {
+  margin: 0;
+  border-left: 2px solid #0E61A9;
+  padding-left: 0.5em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.card .card-footer .stop-routes li .svg-icon-wrap {
+  width: 1em;
+  height: 1em;
+}
 
 .inner-card {
   margin: 0;
@@ -2331,9 +2361,6 @@ button:hover, .button:hover {
   background-image: url(/img/meeples/meeples-filled.png);
   background-size: auto 100%;
   background-repeat: no-repeat;
-}
-.meeples-blank::after {
-  width: 0%;
 }
 .meeples-1::after {
   width: 25%;

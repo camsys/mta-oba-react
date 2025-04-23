@@ -58,7 +58,7 @@ p
   line-height: 1.4
     
 ul
-  &:not(.menu):not(.card-details):not(.route-stops):not(.approaching-buses):not([role="listbox"]):not(.breadcrumb):not(.map-legend)
+  &:not(.menu):not(.card-details):not(.route-stops):not(.approaching-buses):not([role="listbox"]):not(.breadcrumb):not(.map-legend):not(.stop-routes)
     list-style: none
     padding: 0
     margin: 1em 0
@@ -1216,6 +1216,27 @@ button, .button
         transform: rotate(0deg)
         opacity: 1
         right: 0
+  .card-footer
+    background-color: $ui-gray
+    padding: $content-padding/2
+    font-size: .75em
+    .stop-routes
+      margin: 0
+      padding: 0
+      list-style: none
+      display: flex
+      flex-direction: column
+      gap: .25em
+      li
+        margin: 0
+        border-left: $medium-border solid $mta-blue
+        padding-left: .5em
+        white-space: nowrap
+        overflow: hidden
+        text-overflow: ellipsis
+        .svg-icon-wrap
+          width: 1em
+          height: 1em
 
 .inner-card
   margin: 0
