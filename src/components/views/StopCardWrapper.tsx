@@ -26,6 +26,34 @@ import log from 'loglevel';
 import {v4 as uuidv4} from "uuid";
 
 
+const MiniStopDirection =({routeDirectionDatum,stopId,collapsed}:{routeDirectionDatum:RouteMatchDirectionInterface,stopId:string, collapsed:boolean}) : JSX.Element=>{
+    let {getServiceAlert} = useServiceAlert();
+    const {vehiclesApproachingStopsState} = useContext(VehiclesApproachingStopsContext)
+    log.info("generating StopCard MiniStopDirection",routeDirectionDatum,vehiclesApproachingStopsState)
+    let routeAndDir = routeDirectionDatum.routeId + "_"+routeDirectionDatum.directionId
+    let routeId = routeDirectionDatum.routeId.split("_")[1];
+    let hasServiceAlert = getServiceAlert(routeId,routeAndDir)!==null;
+    if(!collapsed){
+        log.info("StopCard not collapsed, not showing MiniStopDirection")
+        return null
+    }
+    let stopsToVehicles = vehiclesApproachingStopsState[routeAndDir+stopSortedFutureVehicleDataIdentifier]
+    let stopCardVehicleData = typeof stopsToVehicles !== 'undefined' &&
+        stopsToVehicles.has("MTA_"+stopId)
+        ?stopsToVehicles.get("MTA_"+stopId):null
+    if(stopCardVehicleData === null){
+        log.info("StopCard no vehicle data, not showing MiniStopDirection")
+        return null
+    }
+    
+    return(
+    <div className='mini-stop-direction'>
+        <span className="label" color={routeDirectionDatum.color}>{routeId} </span>
+        <span>{routeDirectionDatum.destination}</span>
+    </div>)
+}
+
+
 const RouteDirection = ({routeDirectionDatum,stopId, collapsed}:
     {routeDirectionDatum:RouteMatchDirectionInterface,stopId:string, collapsed:boolean}) : JSX.Element=>{
     const {highlightId} = useHighlight();
@@ -246,7 +274,12 @@ function InnerCollapsableStopCard ({ match, oneOfMany}: {match:SearchMatch, oneO
                 </li>
             </ul>
         </div>
-        <div>this is where the routes need to go</div>
+        <div>
+            {stopMatch.routeMatches.map(
+        route=>route.directions.map(
+            (dir) => {return (<MiniStopDirection key={uuidv4()} routeDirectionDatum={dir} stopId ={stopMatch.id.split("_")[1]} collapsed={oneOfMany}/>)}
+            ))}
+        </div>
     </div>
     )
 }
