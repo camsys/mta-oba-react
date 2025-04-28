@@ -100,6 +100,12 @@ const RouteDirection = ({routeDirectionDatum,stopId, collapsed}:
 
     let vehicleComponents = null;
 
+    let tabbable = !collapsed
+
+    // OVERRIDING COLLAPSED STATE
+    collapsed = false;
+    console.log("StopCard RouteDirection is being prevented from collapsing")
+
     try{
         vehicleComponents = Array.from(vehicleDataByDestination.entries()).map(([destination,vehicleData],index)=>{
             return (<div className={`inner-card route-direction en-route collapsible ${collapsed?"":"open"}`} key={routeAndDir+destination}>
@@ -110,7 +116,7 @@ const RouteDirection = ({routeDirectionDatum,stopId, collapsed}:
                     aria-label={`Toggle ${routeDirectionDatum.routeId.split("_")[1]} to ${destination}`}
                     onMouseEnter={() => highlightId(routeDirectionDatum.routeId)}
                     onMouseLeave={() => highlightId(null)}
-                    tabIndex={collapsed?-1:0}
+                    tabIndex={tabbable?0:-1}
                 >
                 <span className="card-title" style={{ borderColor: '#'+routeDirectionDatum.color}}>
                     {hasServiceAlert?<ServiceAlertSvg/>:null}
@@ -122,7 +128,7 @@ const RouteDirection = ({routeDirectionDatum,stopId, collapsed}:
                 <div className="card-content collapse-content">
                     <ul className="approaching-buses">
                         {vehicleData.map((vehicleDatum,index)=>{
-                            if(index<3){return <VehicleComponent {...{vehicleDatum,lastUpdateTime}} tabbable={!collapsed} key={index}/>}})}
+                            if(index<3){return <VehicleComponent {...{vehicleDatum,lastUpdateTime}} tabbable={tabbable} key={index}/>}})}
                     </ul>
                     <ServiceAlertContainerComponent {...{routeId,serviceAlertIdentifier,collapsed}}/>
                     <ul className="menu icon-menu inner-card-menu">
@@ -180,7 +186,7 @@ export function ZoomAndCenterOnStopButton():JSX.Element{
     )
 }
 
-export function StopCardStopCodeDisplay({stopMatch}:{stopMatch:StopMatch}) : JSX.Element{
+function CardDetails({stopMatch}:{stopMatch:StopMatch}) : JSX.Element{
     const {isFavorite} = useFavorite()
     let jsx = (
         <ul className={"card-details" + (isFavorite(stopMatch)?" favorite":"")}>
@@ -193,7 +199,7 @@ export function StopCardContent({stopMatch,collapsed}: { StopMatch, boolean }):J
     log.info("generating StopCardContent",stopMatch, collapsed)
     return(
         <React.Fragment>
-            <StopCardStopCodeDisplay stopMatch={stopMatch}/>
+            <CardDetails stopMatch={stopMatch}/>
             <h4>Buses en-route:</h4>
             {stopMatch.routeMatches.map(
                 route=>route.directions.map(
@@ -273,8 +279,6 @@ export const CollapsableStopCard = RunScriptAfterRender(InnerCollapsableStopCard
 function InnerCollapsableStopCard ({ match, oneOfMany}: {match:SearchMatch, oneOfMany:boolean}) : JSX.Element{
     if(match.type!==MatchType.StopMatch){return <></>}
     let stopMatch = match as StopMatch
-    const { search } = useNavigation();
-    const {isFavorite} = useFavorite()
 
     log.info("generating collapsable StopCard",stopMatch)
     return(
