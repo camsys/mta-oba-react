@@ -27,16 +27,16 @@ export function GeoCardWrapper  () :JSX.Element {
         <div className="cards-header-toggle-group">
             <h2 className={`cards-header`}>Nearby:</h2>
             <div className="cards-header-toggle">
-                <button data-target="stops" className="cards-toggle active" aria-pressed="true" aria-expanded="true" aria-label="Show nearby stops (currently visible)">Stops</button>
-                <button data-target="routes" className="cards-toggle" aria-pressed="false" aria-expanded="false" aria-label="Show nearby routes (currently hidden)">Routes</button>
+                <button data-target="routes" className="cards-toggle active" aria-pressed="true" aria-expanded="true" aria-label="Show nearby routes (currently visible)">Routes</button>
+                <button data-target="stops" className="cards-toggle" aria-pressed="false" aria-expanded="false" aria-label="Show nearby stops (currently hidden)">Stops</button>
             </div>
         </div>
-        <div className="cards geocards toggle-cards routes hide" aria-hidden="true">
+        <div className="cards geocards toggle-cards routes" aria-hidden="false">
             {routes.map((routeMatch,index) => {
                 return <CollapsableRouteCard routeMatch={routeMatch} oneOfMany={routes.length > 1} key={index}/>
             })}
         </div>
-        <div className="cards geocards toggle-cards stops" aria-hidden="false">
+        <div className="cards geocards toggle-cards stops hide" aria-hidden="true">
             {
                 stops.map((match,index) => {
                     return <CollapsableStopCard match={match} oneOfMany={stops.length>1} key={index}/>
