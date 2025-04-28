@@ -451,12 +451,34 @@ button, .button
           padding: 0
           background: transparent
           border: none
+      .bustime-thumb
+        max-width: 50%
+        float: right
+        width: 24em
+        margin-left: $content-padding
+      .buttons
+        margin-top: $content-padding
+        display: flex
+        flex-wrap: wrap
+        gap: $content-padding
       &:first-child
         margin-top: 0
       +mq-reverse($sidebar-switch)
         font-size: .875em
         a, strong, bold, b, span, code
           word-break: break-all
+        .bustime-thumb
+          max-width: 100%
+          float: none
+          width: 100%
+          margin-left: 0
+          margin: $content-padding 0
+        .buttons
+          flex-direction: column
+          gap: $content-padding
+          align-items: stretch
+          .button
+            text-align: center
     .content-and-toc
       display: flex
       flex-wrap: nowrap
@@ -685,26 +707,34 @@ button, .button
         color: $white
         text-decoration: underline
   .no-map &
-    +mq($sidebar-switch)
-      padding: 0
-      .header-inner
-        display: flex
-        flex-wrap: nowrap
-        justify-content: space-between
-        align-items: baseline
-        width: 100%
-        max-width: $content-max-width
-        padding: $header-padding
-        gap: $content-padding
-      .logo-link
-        width: 100%
-        max-width: calc($sidebar-width - $content-padding*2)
-        margin: 0
-      .menu
-        gap: $content-padding
-        font-size: 1em
-        a.active
-          font-weight: bold
+    padding: 0
+    .beta
+      position: absolute
+      color: $mta-yellow
+      position: absolute
+      top: $content-padding/2
+    .header-inner
+      display: flex
+      flex-wrap: nowrap
+      justify-content: space-between
+      align-items: baseline
+      width: 100%
+      max-width: $content-max-width
+      padding: $content-padding
+      gap: $content-padding
+      position: relative
+    .logo-link
+      width: 100%
+      max-width: 19.375em
+      margin: 0
+    .mta-logo-link
+      top: .5em
+      flex-shrink: 0
+    .menu
+      gap: $content-padding
+      font-size: 1em
+      a.active
+        font-weight: bold
   +mq($sidebar-switch)
     .logo-link
       margin: 0 0 1.25em 0
@@ -714,6 +744,9 @@ button, .button
       width: 2.875em
     nav
       display: block
+    .no-map &
+      .beta
+        top: $content-padding
 
 #sidebar
   width: 100%
