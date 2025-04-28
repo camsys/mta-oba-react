@@ -204,6 +204,37 @@ export function StopCardContent({stopMatch,collapsed}: { StopMatch, boolean }):J
 }
 
 
+export function StopCardHeader({stopMatch, oneOfMany}: { stopMatch: StopMatch , oneOfMany:boolean}):JSX.Element{
+    log.info("generating StopCardHeader",stopMatch)
+    const { highlightId } = useHighlight();
+    let header = (oneOfMany
+        ?
+            <button className="card-header collapse-trigger"
+                      onMouseEnter={() => highlightId(stopMatch.id)}
+                      onMouseLeave={() => highlightId(null)}
+                      aria-haspopup="true" aria-expanded="true"
+                      aria-label={`Toggle ${stopMatch.id.split("_")[1]} ${stopMatch.name} open/close`}
+            >
+                <span className="card-title label">
+                    <img src={busStopIcon} alt="bus stop icon" className="icon"/>
+                    {stopMatch.name}
+                </span>
+            </button>
+        :
+        <div className="card-header"
+             onMouseEnter={() => highlightId(stopMatch.id)}
+             onMouseLeave={() => highlightId(null)}>
+            <h3 className="card-title">
+                <img src={busStopIcon} alt="bus stop icon" className="icon"/>
+                {stopMatch.name}
+            </h3>
+        </div>
+    )
+    return(
+        header
+    )
+}
+
 export function StopCard (match: SearchMatch) : JSX.Element {
     if (match.type !== MatchType.StopMatch) {
         return <></>
@@ -211,25 +242,17 @@ export function StopCard (match: SearchMatch) : JSX.Element {
     let stopMatch = match as StopMatch
     const {search} = useNavigation();
     const {isFavorite} = useFavorite()
-    const { highlightId } = useHighlight();
 
     log.info("generating StopCard", match)
     log.info("generating StopCard", stopMatch)
     return (
         <div className={`card stop-card ${isFavorite(stopMatch)?"favorite":""}`}>
-            <div className="card-header"
-                 onMouseEnter={() => highlightId(stopMatch.id)}
-                 onMouseLeave={() => highlightId(null)}>
-                <h3 className="card-title">
-                    <img src={busStopIcon} alt="bus stop icon" className="icon"/>
-                    {stopMatch.name}
-                </h3>
-            </div>
+            <StopCardHeader stopMatch={stopMatch} oneOfMany={false}/>
             <div className="card-content">
                 <StopCardContent stopMatch={stopMatch} collapsed={false}/>
                 <ul className="menu icon-menu card-menu">
                     <li>
-                        <StopCardFavoriteButton stopMatch={stopMatch} stopId={stopMatch.id}/>
+                        <StopCardFavoriteButton stopMatch={stopMatch}/>
                     </li>
                 </ul>
             </div>
@@ -245,34 +268,11 @@ function InnerCollapsableStopCard ({ match, oneOfMany}: {match:SearchMatch, oneO
     let stopMatch = match as StopMatch
     const { search } = useNavigation();
     const {isFavorite} = useFavorite()
-    const { highlightId } = useHighlight();
 
     log.info("generating collapsable StopCard",stopMatch)
     return(
     <div className={`card stop-card ${oneOfMany?"collapsible":""} ${isFavorite(stopMatch)?"favorite":""}`}>
-        {oneOfMany
-            ?
-                <button className="card-header collapse-trigger"
-                          onMouseEnter={() => highlightId(stopMatch.id)}
-                          onMouseLeave={() => highlightId(null)}
-                          aria-haspopup="true" aria-expanded="true"
-                          aria-label={`Toggle ${stopMatch.id.split("_")[1]} ${stopMatch.name} open/close`}
-                >
-                    <span className="card-title label">
-                        <img src={busStopIcon} alt="bus stop icon" className="icon"/>
-                        {stopMatch.name}
-                    </span>
-                </button>
-            :
-            <div className="card-header"
-                 onMouseEnter={() => highlightId(stopMatch.id)}
-                 onMouseLeave={() => highlightId(null)}>
-                <h3 className="card-title">
-                    <img src={busStopIcon} alt="bus stop icon" className="icon"/>
-                    {stopMatch.name}
-                </h3>
-            </div>
-        }
+        <StopCardHeader stopMatch={stopMatch} oneOfMany={oneOfMany}/>
         <div className="card-content collapse-content">
             <StopCardContent stopMatch={stopMatch} collapsed={oneOfMany}/>
             <ul className="menu icon-menu card-menu">
