@@ -207,7 +207,8 @@ export const useNavigation = () =>{
             await navigator.geolocation.getCurrentPosition(
                 (position) => {
                     log.info("got location",position.coords.latitude,position.coords.longitude);
-                    searchTerm= position.coords.latitude + "," + position.coords.longitude;
+                    let searchTerm = position.coords.latitude.toFixed(6) + "," + position.coords.longitude.toFixed(6);
+                    log.info("searching nearby: got location",searchTerm);
                     search(searchTerm);},
                 (error) => {
                     log.info("error getting location",error)
@@ -276,8 +277,9 @@ export const useNavigation = () =>{
                 log.info("searching for nearby stops and routes");
                 await navigator.geolocation.getCurrentPosition(
                     (position) => {
-                        log.info("searching nearby: got location",position.coords.latitude,position.coords.longitude);
-                        searchRef= position.coords.latitude + "," + position.coords.longitude;
+                        log.info("got location",position.coords.latitude,position.coords.longitude);
+                        let searchRef = position.coords.latitude.toFixed(6) + "," + position.coords.longitude.toFixed(6);
+                        log.info("searching nearby: got location",searchRef);
                         search(searchRef);},
                     (error) => {
                         log.info("error getting location",error)
