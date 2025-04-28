@@ -2068,16 +2068,16 @@ button:hover, .button:hover {
 .card > .card-content {
   padding: 0 0.5rem;
 }
-.card.favorite .favorite-toggle .add, .card.favorite .favorite-toggle .add-icon {
+.favoriteManager.favorite .favorite-toggle .add, .favoriteManager.favorite .favorite-toggle .add-icon {
   display: none;
 }
-.card.favorite .favorite-toggle .remove, .card.favorite .favorite-toggle .remove-icon {
+.favoriteManager.favorite .favorite-toggle .remove, .favoriteManager.favorite .favorite-toggle .remove-icon {
   display: inline-block !important;
 }
-.card.favorite .card-details {
+.favoriteManager.favorite .card-details {
   padding-right: 2em;
 }
-.card.favorite .card-details::after {
+.favoriteManager.favorite .card-details::after {
   -webkit-transform: rotate(0deg);
           transform: rotate(0deg);
   opacity: 1;

@@ -146,11 +146,7 @@ const RouteDirection = ({routeDirectionDatum,stopId, collapsed}:
     )
 }
 
-export function StopCardFavoriteIcon({stopMatch}:{stopMatch:StopMatch}) : JSX.Element{
-    const {isFavorite} = useFavorite()
-    let jsx = isFavorite(stopMatch)?<span className='favorite'></span>:<React.Fragment/>
-    return jsx
-}
+
 
 export function StopCardFavoriteButton({stopMatch,collapsed}:{stopMatch:StopMatch,collapsed:boolean}):JSX.Element{
     let {isFavorite,addFavorite,removeFavorite} = useFavorite();
@@ -184,13 +180,20 @@ export function ZoomAndCenterOnStopButton():JSX.Element{
     )
 }
 
+export function StopCardStopCodeDisplay({stopMatch}:{stopMatch:StopMatch}) : JSX.Element{
+    const {isFavorite} = useFavorite()
+    let jsx = (
+        <ul className={"card-details" + (isFavorite(stopMatch)?" favorite":"")}>
+            <li className="stopcode">Stopcode {stopMatch.id.split("_")[1]}</li>
+        </ul>)
+    return jsx
+}
+
 export function StopCardContent({stopMatch,collapsed}: { StopMatch, boolean }):JSX.Element{
     log.info("generating StopCardContent",stopMatch, collapsed)
     return(
         <React.Fragment>
-            <ul className="card-details">
-                <li className="stopcode">Stopcode {stopMatch.id.split("_")[1]}</li>
-            </ul>
+            <StopCardStopCodeDisplay stopMatch={stopMatch}/>
             <h4>Buses en-route:</h4>
             {stopMatch.routeMatches.map(
                 route=>route.directions.map(
@@ -251,7 +254,6 @@ export function StopCard (match: SearchMatch) : JSX.Element {
     log.info("generating StopCard", stopMatch)
     return (
         <div className={`card stop-card`}>
-            <StopCardFavoriteIcon stopMatch={stopMatch}/>
             <StopCardHeader stopMatch={stopMatch} oneOfMany={false}/>
             <div className="card-content">
                 <StopCardContent stopMatch={stopMatch} collapsed={false}/>
@@ -277,7 +279,6 @@ function InnerCollapsableStopCard ({ match, oneOfMany}: {match:SearchMatch, oneO
     log.info("generating collapsable StopCard",stopMatch)
     return(
     <div className={`card stop-card ${oneOfMany?"collapsible":""}`}>
-        <StopCardFavoriteIcon stopMatch={stopMatch}/>
         <StopCardHeader stopMatch={stopMatch} oneOfMany={oneOfMany}/>
         <div className="card-content collapse-content">
             <StopCardContent stopMatch={stopMatch} collapsed={oneOfMany}/>
