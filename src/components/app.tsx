@@ -58,8 +58,8 @@ function App  () : JSX.Element{
         return () => {
             window.removeEventListener('popstate', handlePopState);
         };
-        window.addEventListener('popstate', handlePopState);
-        return () => window.removeEventListener('popstate', handlePopState);
+        // window.addEventListener('popstate', handlePopState);
+        // return () => window.removeEventListener('popstate', handlePopState);
     }, []);
 
 

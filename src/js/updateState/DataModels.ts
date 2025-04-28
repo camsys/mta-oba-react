@@ -89,6 +89,7 @@ export interface RouteMatchDirectionInterface {
     color: string;
     directionId: string;
     destination: string;
+    routeAndDirection: string;
     mapRouteComponentData: MapRouteComponentInterface[];
     mapStopComponentData: StopInterface[];
     routeDirectionComponentData: RouteDirectionInterface;
@@ -252,6 +253,7 @@ export function createRouteMatchDirectionInterface(directionJson: any, routeId: 
         routeId,
         color,
         directionId: directionJson.directionId,
+        routeAndDirection: routeId + "_"+directionJson.directionId,
         destination: directionJson.destination,
         mapRouteComponentData,
         mapStopComponentData,

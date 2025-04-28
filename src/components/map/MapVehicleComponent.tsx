@@ -22,8 +22,9 @@ function MapVehicleComponent  (
     let vehicleIdWithoutAgency = vehicleIdParts[1];
 
     let {vehicleSearch} = useNavigation()
-    const selectVehicle = (vehicleData) =>{
+    const selectVehicle = (vehicleData:VehicleRtInterface) =>{
         log.info("clicked on " + vehicleData.vehicleId)
+        vehicleData.longLat = vehicleData.longLat
         vehicleSearch(vehicleData)
     }
 
@@ -49,7 +50,9 @@ function MapVehicleComponent  (
 
 
     let out = (<Marker {...markerOptions}
-                       eventHandlers={{click : ()=>{selectVehicle(vehicleDatum)}}}
+                       eventHandlers={{click : (event : L.LeafletMouseEvent)=>{
+                            vehicleDatum.longLat = [event.latlng.lat,event.latlng.lng];
+                            selectVehicle(vehicleDatum)}}}
                        ref={r=>{
                            // log.info("ref for vehicle component",vehicleDatum,r);
                            typeof vehicleRefs!=='undefined'
