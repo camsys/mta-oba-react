@@ -130,10 +130,10 @@ const RouteDirection = ({routeDirectionDatum,stopId, collapsed}:
                         {vehicleData.map((vehicleDatum,index)=>{
                             if(index<3){return <VehicleComponent {...{vehicleDatum,lastUpdateTime}} tabbable={tabbable} key={index}/>}})}
                     </ul>
-                    <ServiceAlertContainerComponent {...{routeId,serviceAlertIdentifier,collapsed}}/>
+                    <ServiceAlertContainerComponent {...{routeId,serviceAlertIdentifier}} collapsed={!tabbable}/>
                     <ul className="menu icon-menu inner-card-menu">
                         <li>
-                            <ViewSearchItem datumId={routeDirectionDatum.routeId} text={"Full Route"} collapsed={collapsed}/>
+                            <ViewSearchItem datumId={routeDirectionDatum.routeId} text={"Full Route"} collapsed={!tabbable}/>
                         </li>
                     </ul>
                 </div>
