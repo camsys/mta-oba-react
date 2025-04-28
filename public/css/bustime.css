@@ -2156,6 +2156,10 @@ button:hover, .button:hover {
 .card .card-details .stroller, .inner-card .card-details .stroller {
   color: #666;
 }
+.card .card-details + .card-menu, .inner-card .card-details + .card-menu {
+  border-bottom: 1px solid #0E61A9;
+  margin-bottom: 1rem;
+}
 
 .card {
   background-color: #fff;

@@ -29,6 +29,17 @@ export const VehicleCardContentComponent = ({routeMatch,vehicleDatum}
                 </li>
                 <MeeplesComponentLi vehicleDatum={vehicleDatum}/>
             </ul>
+            <ul className="menu icon-menu card-menu">
+                <li>
+                    {vehicleDatum?
+                        (<ViewSearchItem datumId={routeMatch.routeId} text={"Full Route"}/>)
+                        :
+                        (<ul className="card-details">
+                            <li>{`The vehicle {vehicleId} can't be found`}</li>
+                        </ul>)
+                    }
+                </li>
+            </ul>
             <h4>Next Stops:</h4>
             <ul className="next-stops route-stops" style={{ color: '#'+routeMatch.color}}>
                 {
@@ -120,17 +131,6 @@ function VehicleCard ({routeMatch,vehicleId}: { routeMatch: RouteMatch, vehicleI
                 {/*{log.info("adding vehicelcard content")}*/}
                 {vehicleDatum?<VehicleCardContentComponent routeMatch={routeMatch} vehicleDatum={vehicleDatum}/>:null}
                 <ServiceAlertContainerComponent {...{routeId,serviceAlertIdentifier}}/>
-                <ul className="menu icon-menu card-menu">
-                    <li>
-                        {vehicleDatum?
-                            (<ViewSearchItem datumId={routeMatch.routeId} text={"Full Route"}/>)
-                            :
-                            (<ul className="card-details">
-                                <li>{`The vehicle {vehicleId} can't be found`}</li>
-                            </ul>)
-                        }
-                    </li>
-                </ul>
             </div>
         </div>
     );
