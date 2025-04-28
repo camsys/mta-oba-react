@@ -26,17 +26,15 @@ import log from 'loglevel';
 import {v4 as uuidv4} from "uuid";
 
 
-const MiniStopDirection =({routeDirectionDatum,stopId,collapsed}:{routeDirectionDatum:RouteMatchDirectionInterface,stopId:string, collapsed:boolean}) : JSX.Element=>{
+
+
+const MiniStopDirectionList =({routeDirectionDatum,stopId}:{routeDirectionDatum:RouteMatchDirectionInterface,stopId:string}) : JSX.Element=>{
     let {getServiceAlert} = useServiceAlert();
     const {vehiclesApproachingStopsState} = useContext(VehiclesApproachingStopsContext)
     log.info("generating StopCard MiniStopDirection",routeDirectionDatum,vehiclesApproachingStopsState)
     let routeAndDir = routeDirectionDatum.routeId + "_"+routeDirectionDatum.directionId
     let routeId = routeDirectionDatum.routeId.split("_")[1];
     let hasServiceAlert = getServiceAlert(routeId,routeAndDir)!==null;
-    if(!collapsed){
-        log.info("StopCard not collapsed, not showing MiniStopDirection")
-        return null
-    }
     let stopsToVehicles = vehiclesApproachingStopsState[routeAndDir+stopSortedFutureVehicleDataIdentifier]
     let stopCardVehicleData = typeof stopsToVehicles !== 'undefined' &&
         stopsToVehicles.has("MTA_"+stopId)
@@ -52,6 +50,18 @@ const MiniStopDirection =({routeDirectionDatum,stopId,collapsed}:{routeDirection
             <strong>{routeId}</strong> <span>{routeDirectionDatum.destination}</span>
         </li>)
 }
+
+const MiniStopDirectionListContainer = ({routeMatches,stopId}:{routeMatches:[RouteMatch],stopId:string}) : JSX.Element=>{
+    return(
+        <ul className='stop-routes'>
+            {routeMatches.map(
+                route=>route.directions.map(
+                (dir) => {return (<MiniStopDirectionList key={uuidv4()} routeDirectionDatum={dir} stopId ={stopId.split("_")[1]}/>)}
+            ))}
+        </ul>
+    )
+}
+
 
 
 const RouteDirection = ({routeDirectionDatum,stopId, collapsed}:
@@ -219,7 +229,7 @@ export function StopCard (match: SearchMatch) : JSX.Element {
                 <StopCardContent stopMatch={stopMatch} collapsed={false}/>
                 <ul className="menu icon-menu card-menu">
                     <li>
-                        <StopCardFavoriteButton stopMatch={stopMatch}/>
+                        <StopCardFavoriteButton stopMatch={stopMatch} stopId={stopMatch.id}/>
                     </li>
                 </ul>
             </div>
@@ -275,12 +285,7 @@ function InnerCollapsableStopCard ({ match, oneOfMany}: {match:SearchMatch, oneO
             </ul>
         </div>
         <div className='card-footer'>
-            <ul className='stop-routes'>
-                {stopMatch.routeMatches.map(
-                    route=>route.directions.map(
-                    (dir) => {return (<MiniStopDirection key={uuidv4()} routeDirectionDatum={dir} stopId ={stopMatch.id.split("_")[1]} collapsed={oneOfMany}/>)}
-                ))}
-            </ul>
+            <MiniStopDirectionListContainer routeMatches={stopMatch.routeMatches} stopId={stopMatch.id}/>
         </div>
     </div>
     )
