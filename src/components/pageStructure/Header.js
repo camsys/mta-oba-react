@@ -1,7 +1,8 @@
 import React, {useContext} from 'react';
 import log from 'loglevel';
 import ErrorBoundary from "../util/errorBoundary";
-import bustimeLogo from '../../img/bustime-logo.png';
+import bustimeLogo from '../../img/bustime-logo.svg';
+import mtaLogo from '../../img/mta-logo.svg';
 import favicon from '../../img/favicon.ico';
 import {useNavigation} from "../../js/updateState/NavigationEffect.ts";
 
@@ -12,9 +13,16 @@ function Header  () {
     const { search } = useNavigation();
     return (
         <ErrorBoundary>
+            <div className="beta-bar">
+                <strong>BETA</strong>
+                <a href="/about-beta">Learn More and Provide Feedback</a>
+            </div>
             <header className="header" id="header">
-                <a href="#" onClick={() => search("")} aria-label="MTA Bus Time Home" id="logo-link">
-                    <img id="logo" style={{width: 100 + '%'}} src={bustimeLogo} alt="MTA Bus Time" className="logo" />
+                <a href="#" onClick={() => search("")} aria-label="MTA Bus Time Home" className="logo-link">
+                    <img src={bustimeLogo} alt="MTA Bus Time" className="logo" />
+                </a>
+                <a href="https://www.mta.info/" target="_blank" aria-label="MTA Home" className="mta-logo-link">
+                    <img src={mtaLogo} alt="MTA" className="mta-logo" />
                 </a>
                 <nav>
                     <ul className="menu">

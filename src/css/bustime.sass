@@ -565,12 +565,58 @@ button, .button
   .google-translate-active &
     top: $google-translate-bar-height
     height: calc(100% - $google-translate-bar-height)
+.beta-bar
+  background-color: $black3
+  color: $white
+  display: flex
+  align-items: stretch
+  justify-content: space-between
+  line-height: 1rem
+  strong
+    display: inline-flex
+    background-color: $mta-yellow
+    color: $black
+    padding: .5rem $content-padding
+    font-size: 1.125em
+    align-items: center
+    justify-content: center
+  a
+    font-size: .875em
+    color: currentColor
+    text-decoration: underline
+    display: inline-flex
+    align-items: center
+    gap: .5em
+    padding: .5rem $content-padding
+    background-color: transparent
+    transition: background-color .25s ease-in-out
+    &::after
+      content: ''
+      display: inline-block
+      width: 1em
+      height: 1em
+      background-size: auto 100%
+      background-repeat: no-repeat
+      background-position: center
+      background-image: url(/img/icon/right-caret_white.svg)
+      position: relative
+      left: 0
+      transition: left .25s ease-in-out
+    &:hover, &:focus
+      text-decoration: none
+      &::after
+        left: .125em
+    &:focus
+      background-color: $black
+      border: none
+      outline: none
+      
 .header
   background-color: $black2
   color: $white
   padding: $header-padding
   border-bottom: .25em solid $border-gray
-  #logo-link
+  .logo-link
     display: block
     width: 100%
     height: auto
@@ -637,7 +683,7 @@ button, .button
         max-width: $content-max-width
         padding: $header-padding
         gap: $content-padding
-      #logo-link
+      .logo-link
         width: 100%
         max-width: calc($sidebar-width - $content-padding*2)
         margin: 0
@@ -647,7 +693,7 @@ button, .button
         a.active
           font-weight: bold
   +mq($sidebar-switch)
-    #logo-link
+    .logo-link
       margin: 0 0 1.25em 0
       .logo
         max-width: 100%
