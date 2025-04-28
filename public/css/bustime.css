@@ -1097,6 +1097,7 @@ button:hover, .button:hover {
       -ms-flex-pack: justify;
           justify-content: space-between;
   line-height: 1rem;
+  border-bottom: 1px solid #000;
 }
 .beta-bar strong {
   display: -webkit-inline-box;
@@ -1160,6 +1161,25 @@ button:hover, .button:hover {
   color: #fff;
   padding: 0.5em 1rem 1rem 1rem;
   border-bottom: 0.25em solid #ddd;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: nowrap;
+      flex-wrap: nowrap;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: start;
+      -ms-flex-align: start;
+          align-items: flex-start;
+  gap: 1.75em;
+}
+.header .header-main {
+  -webkit-box-flex: 1;
+      -ms-flex-positive: 1;
+          flex-grow: 1;
+  -ms-flex-negative: 1;
+      flex-shrink: 1;
 }
 .header .logo-link {
   display: block;
@@ -1202,6 +1222,11 @@ button:hover, .button:hover {
 }
 .header .logo-link:focus::after {
   opacity: 1;
+}
+.header .mta-logo-link {
+  width: 1.875em;
+  position: relative;
+  top: 0.75em;
 }
 .header nav {
   display: none;
@@ -1291,6 +1316,9 @@ button:hover, .button:hover {
   }
   .header .logo-link .logo {
     max-width: 100%;
+  }
+  .header .mta-logo-link {
+    width: 2.875em;
   }
   .header nav {
     display: block;
@@ -2139,16 +2167,16 @@ button:hover, .button:hover {
 .card > .card-content {
   padding: 0 0.5rem;
 }
-.favoriteManager.favorite .favorite-toggle .add, .favoriteManager.favorite .favorite-toggle .add-icon {
+.card.favorite .favorite-toggle .add, .card.favorite .favorite-toggle .add-icon {
   display: none;
 }
-.favoriteManager.favorite .favorite-toggle .remove, .favoriteManager.favorite .favorite-toggle .remove-icon {
+.card.favorite .favorite-toggle .remove, .card.favorite .favorite-toggle .remove-icon {
   display: inline-block !important;
 }
-.favoriteManager.favorite .card-details {
+.card.favorite .card-details {
   padding-right: 2em;
 }
-.favoriteManager.favorite .card-details::after {
+.card.favorite .card-details::after {
   -webkit-transform: rotate(0deg);
           transform: rotate(0deg);
   opacity: 1;

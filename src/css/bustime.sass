@@ -572,6 +572,7 @@ button, .button
   align-items: stretch
   justify-content: space-between
   line-height: 1rem
+  border-bottom: 1px solid $black
   strong
     display: inline-flex
     background-color: $mta-yellow
@@ -616,6 +617,14 @@ button, .button
   color: $white
   padding: $header-padding
   border-bottom: .25em solid $border-gray
+  display: flex
+  flex-wrap: nowrap
+  justify-content: space-between
+  align-items: flex-start
+  gap: 1.75em
+  .header-main
+    flex-grow: 1
+    flex-shrink: 1
   .logo-link
     display: block
     width: 100%
@@ -651,6 +660,10 @@ button, .button
       border: none
       &::after
         opacity: 1
+  .mta-logo-link
+    width: 1.875em
+    position: relative
+    top: .75em
   nav
     display: none
   .menu
@@ -697,6 +710,8 @@ button, .button
       margin: 0 0 1.25em 0
       .logo
         max-width: 100%
+    .mta-logo-link
+      width: 2.875em
     nav
       display: block
 
