@@ -148,7 +148,7 @@ const performNewSearch = (searchRef:String,currentCard:Card):boolean=>{
 
 const updateWindowHistory = (term:string,uuid:string) :void =>{
     let url = new URL(window.location.href);
-    url.searchParams.set("search", term);
+    url.searchParams.set("searchTerm", term);
     url.searchParams.set("uuid", uuid);
     window.history.pushState({}, '', url);
 }
@@ -267,7 +267,7 @@ export const useNavigation = () =>{
         setLoading(false);
 
         try {
-            let searchRef = queryString.parse(location.search).search as string;
+            let searchRef = queryString.parse(location.search).searchTerm as string;
             if(!searchRef){return}
             if(searchRef===allRoutesSearchTerm){
                 allRoutesSearch();
@@ -322,7 +322,7 @@ export const useNavigation = () =>{
         currentCard.setToVehicle(vehicleDatum.vehicleId,[routeData],new Set([vehicleDatum.routeId]),vehicleDatum.longLat);
         let cardStack = state.cardStack;
         cardStack.push(currentCard);
-        log.info("updating state prev card -> new card: \n", pastCard,currentCard);
+        log.info("updating state prev card -> new vehicle card: \n", pastCard,currentCard);
         // todo: condense all of these into a single method, copied and pasted too many times
         setState((prevState) => ({
             ...prevState,
@@ -331,6 +331,7 @@ export const useNavigation = () =>{
             renderCounter:prevState.renderCounter+1
         }));
         scrollToSidebarTop();
+        log.info("vehicleSearch complete, new card: ",currentCard);
     }
 
     const allRoutesSearch = async () =>{
