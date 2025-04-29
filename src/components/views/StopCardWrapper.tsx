@@ -95,7 +95,7 @@ const RouteDirection = ({routeDirectionDatum,stopId, collapsed}:
                 vehicleDataByDestination.set(vehicleDatum.destination,[vehicleDatum])
             }
         })
-        console.log("vehicleDataByDestination",vehicleDataByDestination)
+        log.info("vehicleDataByDestination",vehicleDataByDestination)
     }
 
     let vehicleComponents = null;
@@ -104,7 +104,7 @@ const RouteDirection = ({routeDirectionDatum,stopId, collapsed}:
 
     // OVERRIDING COLLAPSED STATE
     collapsed = false;
-    console.log("StopCard RouteDirection is being prevented from collapsing")
+    log.info("StopCard RouteDirection is being prevented from collapsing")
 
     try{
         vehicleComponents = Array.from(vehicleDataByDestination.entries()).map(([destination,vehicleData],index)=>{

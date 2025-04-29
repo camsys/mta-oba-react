@@ -33,17 +33,4 @@ const useHighlight = () =>{
     return {highlightId,getHighlightedId}
 } 
 
-const useSetHighlight = () =>{
-    const {setHighlightingState } = useContext(MapHighlightingStateContext);
-    const highlightId = (id:string) =>{
-        log.info("highlighting: ", id);
-        setHighlightingState((prevState) => ({
-            highlightedComponentId: id,
-        }));
-    }
-
-    return {highlightId}
-}
-
-
-export { MapHighlightingStateProvider, MapHighlightingStateContext,useHighlight, useSetHighlight};
+export { MapHighlightingStateProvider, MapHighlightingStateContext,useHighlight };

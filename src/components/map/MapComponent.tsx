@@ -51,11 +51,11 @@ const MapVehicleElements = () :JSX.Element =>{
     log.info("looking for vehicles from route ids: ",routeIds)
     let mapVehicleComponents = []
     // todo: if this was done just right it probably wouldn't hit the try catch
+    log.info("vehicle state:", vehicleState)
     try{
         if(routeIds!=null){
             [...routeIds].forEach(route=>{
                 log.info("looking for vehicles from route id: ",route)
-                log.info("vehicle state:", vehicleState)
                 let routeId = route.split("_")[1]
                 log.info("using abbreviated routeId ",routeId)
                 let vehicleDataForRoute = vehicleState[routeId+vehicleDataIdentifier]

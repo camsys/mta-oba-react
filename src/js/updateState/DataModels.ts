@@ -161,7 +161,7 @@ export function createVehicleRtInterface(mvj: any,updateTime:Date): VehicleRtInt
             case "full": apcLevel = 4; break;
             case null: apcLevel = -1; break;
         }
-        console.log("apcLevel: " + apcLevel)
+        log.info("apcLevel: " + apcLevel)
 
     }
 
