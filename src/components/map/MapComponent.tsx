@@ -5,7 +5,7 @@ import queryString from "query-string";
 import {OBA} from "../../js/oba";
 import log from 'loglevel';
 import L, {LatLngBounds} from "leaflet";
-import bus from "../../img/icon/bus.svg";
+
 import {CardStateContext, RoutesContext, StopsContext} from "../util/CardStateComponent.tsx";
 import {vehicleDataIdentifier, VehicleStateContext} from "../util/VehicleStateComponent";
 import MapRouteComponent from "./MapRouteComponent";
@@ -17,14 +17,24 @@ import {
     MatchType,
     RouteMatch,
     StopInterface,
-    StopMatch
+    StopMatch,
+    VehicleRtInterface
 } from "../../js/updateState/DataModels";
 import {useHighlight} from "Components/util/MapHighlightingStateComponent";
 import {createMapSearchedHereMarker} from "./MapSearchedHereComponent";
 import {v4 as uuidv4} from "uuid";
 import {useLongPressSearch} from "../../js/handlers/LongPressSearchHandler";
 import {useNavigation} from "../../js/updateState/NavigationEffect.ts";
+import { createRoutePolyline } from "../../utils/RoutePolylineFactory";
+import { createStopMarker } from "../../utils/StopMarkerFactory.ts";
+import { createSearchedHereMarker } from "../../utils/SearchedHereFactory.ts";
+import { createVehicleMarker } from "../../utils/VehicleMarkerFactory.ts";
+import { MapVehicleElements } from "./MapVehcleElements.tsx";
 
+console.log("createRoutePolyline:", createRoutePolyline);
+console.log("createStopMarker:", createStopMarker);
+console.log("createSearchedHereMarker:", createSearchedHereMarker);
+console.log("createVehicleMarker:", createVehicleMarker);
 
 const createVehicleIcon = (vehicleDatum):L.Icon => {
     let scheduled = vehicleDatum.hasRealtime?"":"scheduled/"
@@ -38,123 +48,6 @@ const createVehicleIcon = (vehicleDatum):L.Icon => {
         popupAnchor: [0,0]
     })
     return icon
-}
-
-
-const MapVehicleElements = () :JSX.Element =>{
-    const { state} = useContext(CardStateContext);
-    const { vehicleState} = useContext(VehicleStateContext);
-    const vehicleComponentsRef = useRef(new Map())
-    const vehicleObjsRefs = useRef(new Map())
-    const showFocusVehicle = useRef(true)
-    const lastCardWasNotVehicleView = useRef(state.currentCard.type !== CardType.VehicleCard)
-
-    let routeIds = state.currentCard.routeIdList
-    log.info("looking for vehicles from route ids: ",routeIds)
-    let mapVehicleComponents = []
-    // todo: if this was done just right it probably wouldn't hit the try catch
-    log.info("vehicle state:", vehicleState)
-    try{
-        if(routeIds!=null){
-            [...routeIds].forEach(route=>{
-                log.info("looking for vehicles from route id: ",route)
-                let routeId = route.split("_")[1]
-                log.info("using abbreviated routeId ",routeId)
-                let vehicleDataForRoute = vehicleState[routeId+vehicleDataIdentifier]
-                if(vehicleDataForRoute!=null &&
-                    vehicleObjsRefs &&
-                    vehicleObjsRefs.current!=null && vehicleObjsRefs.current!=undefined
-                    && typeof vehicleObjsRefs.current === "object"
-                    && typeof vehicleObjsRefs.current.get === 'function'){
-                    log.info(`MapVehicleElements: processing vehicleDataForRoute`,vehicleDataForRoute)
-                    log.info("MapVehicleElements: vehicle object refs",vehicleObjsRefs.current)
-                    vehicleDataForRoute.forEach(vehicleDatum=>{
-                        let vehicleIcon = createVehicleIcon(vehicleDatum)
-                        if(vehicleObjsRefs.current.has(vehicleDatum.vehicleId)
-                            && vehicleObjsRefs.current.get(vehicleDatum.vehicleId)!==null
-                            && typeof vehicleObjsRefs.current.get(vehicleDatum.vehicleId)!==undefined){
-                            // update vehicle to be in new pos
-                            let vehicle = vehicleObjsRefs.current.get(vehicleDatum.vehicleId);
-                            vehicle.setLatLng(vehicleDatum.longLat)
-                            vehicle.setIcon(vehicleIcon)
-                            log.trace("updated vehicle position",vehicleDatum.vehicleId,vehicleObjsRefs.current.get(vehicleDatum.vehicleId))
-                        }
-                        else{
-                            vehicleComponentsRef.current.set(vehicleDatum.vehicleId,
-                                <MapVehicleComponent {...{vehicleDatum,vehicleRefs: vehicleObjsRefs,vehicleIcon}} key={vehicleDatum.vehicleId}/>)
-                        }
-                        mapVehicleComponents.push(vehicleComponentsRef.current.get(vehicleDatum.vehicleId))
-                        // mapVehicleComponents.push(<MapVehicleComponent {...{vehicleDatum,vehicleRefs: vehicleObjsRefs}} key={vehicleDatum.vehicleId}/>)
-                    });
-                    vehicleObjsRefs.current.forEach((value, key) => {
-                        if(!vehicleDataForRoute.has(key)){
-                            vehicleObjsRefs.current.delete(key)
-                        }
-                    });
-                    if (vehicleObjsRefs && typeof vehicleObjsRefs.current === "object"
-                        && typeof vehicleObjsRefs.current.get === 'function'
-                        && state.currentCard.type === CardType.VehicleCard
-                        && lastCardWasNotVehicleView.current === true
-                        && vehicleObjsRefs.current.get(state.currentCard.datumId)!=null
-                        && vehicleObjsRefs.current.get(state.currentCard.datumId)!=undefined)
-                    {
-                        log.info("map vehicle component popup opening on load",
-                            state.currentCard.datumId,
-                            vehicleObjsRefs.current.get(state.currentCard.datumId))
-                        let vehicleId = state.currentCard.datumId;
-                        let vehicleObj = vehicleObjsRefs.current.get(vehicleId)
-                        vehicleObj.openPopup()
-                        log.info("map vehicle component popup opening on load is",vehicleObj)
-                        lastCardWasNotVehicleView.current = false
-                    }
-                }
-                log.info("map vehicle components", mapVehicleComponents)
-            })
-        }
-
-        let map = useMap()
-        useMapEvents(
-            {
-                zoomend() {
-                    try {
-                        if (vehicleObjsRefs && typeof vehicleObjsRefs.current === "object"
-                            && typeof vehicleObjsRefs.current.get === 'function'
-                            && state.currentCard.type === CardType.VehicleCard
-                            && lastCardWasNotVehicleView.current === true
-                            && vehicleObjsRefs.current.get(state.currentCard.datumId)!=null
-                            && vehicleObjsRefs.current.get(state.currentCard.datumId)!=undefined)
-                        {
-                            log.info("map vehicle component markers zoomend",
-                                state.currentCard.datumId,
-                                vehicleObjsRefs.current.get(state.currentCard.datumId))
-                            let vehicleId = state.currentCard.datumId;
-                            let vehicleObj = vehicleObjsRefs.current.get(vehicleId)
-                            vehicleObj.openPopup()
-                            lastCardWasNotVehicleView.current = false
-                            log.info("map vehicle component markers zoomend completed",vehicleObj)
-                        }
-                    } catch (e) {
-                        log.error("error in vehicle element creation", e)
-                    }
-                }
-            }
-        )
-
-        log.info("end of map vehicle elements creation, state, vehicleObjsRefs,lastCardWasNotVehicleView",state,vehicleObjsRefs.current,lastCardWasNotVehicleView)
-        if(state.currentCard.type !== CardType.VehicleCard){
-            lastCardWasNotVehicleView.current = true
-        }
-    }
-    catch (e) {
-        log.error("error in vehicle element creation",e)
-    }
-
-
-    return (
-        <React.Fragment>
-            {mapVehicleComponents}
-        </React.Fragment>
-    )
 }
 
 
@@ -206,8 +99,33 @@ const SearchedHere = () :JSX.Element=>{
 }
 
 
-const RoutesAndStops = () :JSX.Element=>{
+const RoutesAndStops = ()=>{
     log.info("generating RoutesAndStops")
+    const stops = useContext(StopsContext);
+    const routes = useContext(RoutesContext);
+    const { state} = useContext(CardStateContext);
+
+    let mapRouteMarkers: Map<string, L.Polyline> = new Map();
+    const mapStopComponents = useRef(new Map());
+    const lastUsedCard = useRef(state.currentCard);
+    let stopsToDisplay: Map<string, L.Polyline> = new Map();
+    let stopsToNonConditionallyDisplay: Map<string, L.Polyline> = new Map();
+    const routeLayer = useRef<L.LayerGroup<L.Polyline>>(new L.LayerGroup());
+    const stopLayer = useRef<L.LayerGroup<L.Marker>>(new L.LayerGroup());
+    const selectedElementLayer = useRef<L.LayerGroup<L.Marker>>(new L.LayerGroup());
+    routeLayer.current.id= "routeLayer";
+    stopLayer.current.id = "stopLayer";
+    selectedElementLayer.current.id = "selectedElementLayer";
+    let {search} = useNavigation()
+    let map = useMap()
+
+
+
+    //methods
+
+    const selectStop = (stop:StopInterface) =>{
+        search(stop.id)
+    }
 
     const processRoute = (route : RouteMatch)=> {
         log.info("processing route for map: ", route)
@@ -215,124 +133,179 @@ const RoutesAndStops = () :JSX.Element=>{
         route.directions.forEach(dir => {
             dir.mapRouteComponentData.forEach((datum:MapRouteComponentInterface) => {
                 // log.info("requesting new MapRouteComponent from: ", datum)
-                mapRouteComponents.set(datum.id,<MapRouteComponent mapRouteComponentDatum ={datum} key={datum.id}/>)
+                mapRouteMarkers.set(datum.id,createRoutePolyline(datum))
             })
+        })
+        route.directions.forEach(dir => {
             dir.mapStopComponentData.forEach((datum:StopInterface) => {
                 let stopId = datum.id;
-                (! mapStopComponents.current.has(stopId))
-                    ? mapStopComponents.current.set(
-                        datum.id,<MapStopComponent stopDatum={datum} mapStopMarkers={mapStopMarkers} key={datum.id}/>)
-                    : null
-                mapStopComponentsToDisplay.set(datum.id,mapStopComponents.current.get(datum.id));
-
+                let newStopMarker = createStopMarker(datum,selectStop,0)
+                mapStopComponents.current.set(stopId, newStopMarker);
+                stopsToDisplay.set(stopId, newStopMarker);                
             })
         })
     }
 
-
-    const stops = useContext(StopsContext);
-    const routes = useContext(RoutesContext);
-    const { state} = useContext(CardStateContext);
-
-    let mapRouteComponents = new Map();
-    const mapStopComponents = useRef(new Map());
-    const mapStopMarkers = useRef(new Map()<string,Marker>);
-    let mapStopComponentsToDisplay = new Map();
-    let stopsToNonConditionallyDisplay = new Map();
-
-
-    log.info("map route components before", mapRouteComponents);
-    log.info("map stop components before", mapStopComponents.current);
-    log.info("map stop component markers before", mapStopMarkers.current);
-
-    state.currentCard.searchMatches.forEach(searchMatch=>{
-        log.info("adding routes for:",searchMatch)
-        if(state.currentCard.type===CardType.RouteCard){
-            let route = searchMatch
-            processRoute(route)
-            // map.fitBounds(newBounds);
-        }
-        else if(state.currentCard.type===CardType.VehicleCard){
-            log.info("vehicle route works here");
-            let route = searchMatch;
-            processRoute(route);
-        }
-        else if(state.currentCard.type===CardType.GeocodeCard) {
-            searchMatch.routeMatches.forEach(match => {
-                if(match.type === MatchType.RouteMatch){processRoute(match);}
-                if(match.type === MatchType.StopMatch){
-                    match.routeMatches.forEach(route => {
-                        processRoute(route);
-                    })
-                }
-            })
-        }
-        else if(state.currentCard.type===CardType.StopCard) {
-            searchMatch.routeMatches.forEach(route => {
-                processRoute(route);
-            })
-            let stopId =state.currentCard.datumId;
-            stopsToNonConditionallyDisplay.set(stopId,mapStopComponents.current.get(stopId));
-            mapStopComponentsToDisplay.delete(stopId)
-        }
-    })
-
-
-    let mapRouteElementsLayerGroupRef : L.LayerGroup = null
-
-
-    log.info("map stop component markers opening popup outside of effect",mapStopMarkers.current)
     const addStablePopups = () =>{
         try{
-            log.info("map stop component markers opening popup ",mapStopMarkers,mapStopMarkers.current)
-            if( state.currentCard.type===CardType.StopCard) {
-                loadPopup(state.currentCard.datumId,mapStopMarkers)
-            }
+            log.info("opening popups for selected elements")
+            selectedElementLayer.current.eachLayer((layer) => {
+                if(layer instanceof L.Marker) {
+                    layer.openPopup();
+                }
+            });
         } catch (e) {
             log.error("error adding stable popups",e)
         }
-
-
     }
+
+    const clearAllLayers = () => {
+        log.info("clearing all layers from map", map);
+
+        let layers: L.Layer[] = [];
+        routeLayer.current.eachLayer((layer) => {
+            layers.push(layer); // Add the layer to the array for logging purposes
+            if (layer instanceof L.Polyline || layer instanceof L.Marker) {
+                layer.removeFrom(map);
+            }
+        });
+        stopLayer.current.eachLayer((layer) => {
+            layers.push(layer); // Add the layer to the array for logging purposes
+            if (layer instanceof L.Polyline || layer instanceof L.Marker) {
+                layer.removeFrom(map);
+            }
+        });
+        selectedElementLayer.current.eachLayer((layer) => {
+            layers.push(layer); // Add the layer to the array for logging purposes
+            if (layer instanceof L.Polyline || layer instanceof L.Marker) {
+                layer.removeFrom(map);
+            }
+        });
+        
+        log.info("cleared layers from map", layers);
+        mapRouteMarkers.clear();
+        stopsToDisplay.clear();
+        stopsToNonConditionallyDisplay.clear();
+        mapStopComponents.current.clear();
+
+        routeLayer.current.clearLayers();
+        stopLayer.current.clearLayers();
+        selectedElementLayer.current.clearLayers();
+    }
+
+    const checkForAndHandleCardChange = () => {
+        if(lastUsedCard.current !== state.currentCard){
+            log.info("card changed, updating map",lastUsedCard.current,state.currentCard)
+            lastUsedCard.current = state.currentCard;
+
+
+            clearAllLayers()
+
+            // add card level data
+            // todo: break this out into a function
+            state.currentCard.searchMatches.forEach(searchMatch=>{
+                log.info("adding routes for:",searchMatch)
+                if(state.currentCard.type===CardType.RouteCard){
+                    let route = searchMatch
+                    processRoute(route)
+                }
+                else if(state.currentCard.type===CardType.VehicleCard){
+                    log.info("vehicle route works here");
+                    let route = searchMatch;
+                    processRoute(route);
+                }
+                else if(state.currentCard.type===CardType.GeocodeCard) {
+                    searchMatch.routeMatches.forEach(match => {
+                        if(match.type === MatchType.RouteMatch){processRoute(match);}
+                        if(match.type === MatchType.StopMatch){
+                            match.routeMatches.forEach(route => {
+                                processRoute(route);
+                            })
+                        }
+                    })
+                    let latlon = [searchMatch.latitude,searchMatch.longitude]
+                    if(latlon !== null || latlon !== undefined){
+                        let key = uuidv4()
+                        // searchedHereComponent.current = <MapSearchedHereComponent latlon={latlon} key = {key} searchedHereMarker={searchedHereMarker}/>;
+                        let searchedHereMarker = createSearchedHereMarker(latlon)
+                        searchedHereMarker.addTo(selectedElementLayer.current)
+                    }
+                }
+                else if(state.currentCard.type===CardType.StopCard) {
+                    searchMatch.routeMatches.forEach(route => {
+                        processRoute(route);
+                    })
+                    let stopId =state.currentCard.datumId;
+                    stopsToNonConditionallyDisplay.set(stopId,mapStopComponents.current.get(stopId));
+                    mapStopComponents.current.get(stopId).setZIndexOffset(20);
+                    stopsToDisplay.delete(stopId)
+                }
+            })
+
+            mapRouteMarkers.forEach((value, key) => {
+                if (value !== null && value !== undefined) {
+                    routeLayer.current.addLayer(value);
+                }
+            });
+            stopsToDisplay.forEach((value, key) => {
+                if (value !== null && value !== undefined) {
+                    stopLayer.current.addLayer(value);
+                }
+            });
+            stopsToNonConditionallyDisplay.forEach((value, key) => {
+                if (value !== null && value !== undefined) {
+                    selectedElementLayer.current.addLayer(value);
+                    value.openPopup();
+                }
+            });
+        }
+    }
+
+
+    
+
+
+
+    log.info("map route components before", mapRouteMarkers);
+    log.info("map stop components before", mapStopComponents.current);
+    
+    checkForAndHandleCardChange()
+
     useEffect(() => {
-        addStablePopups()
+        routeLayer.current.addTo(map);
+        selectedElementLayer.current.addTo(map);
+
+        checkForAndHandleCardChange()
+        addStablePopups();
+        log.info("map route elements layer group ref",routeLayer,routeLayer.current.getLayers().length)
+        log.info("map stop elements layer group ref",stopLayer.current.getLayers().length)
     },[state])
 
-    let map = useMap()
+    const lastZoomWasBelowThreshold = useRef(map.getZoom());
     useMapEvents(
         {
             zoom() {
-                // log.info("zoomstart mapRouteElementsLayerGroupRef",mapRouteElementsLayerGroupRef)
-                if(mapRouteElementsLayerGroupRef!==null){
-                    mapRouteElementsLayerGroupRef.removeFrom(map)
+                if(routeLayer.current!==null){
+                    routeLayer.current.removeFrom(map)
                 }
+                checkForAndHandleCardChange()
+
             },
             zoomend() {
-                addStablePopups()
-                if(mapRouteElementsLayerGroupRef!==null) {
-                    mapRouteElementsLayerGroupRef.addTo(map)
+                checkForAndHandleCardChange()
+                if(routeLayer.current!==null) {
+                    routeLayer.current.addTo(map)
                 }
+                if (map.getZoom()<15.1) {
+                    stopLayer.current?.removeFrom(map);
+                } else {
+                    stopLayer.current?.addTo(map);
+                }
+    
+                log.info("map route elements layer group ref",routeLayer.current,routeLayer.current.getLayers().length)
+                log.info("map stop elements layer group ref",stopLayer.current.getLayers().length)
             }
         }
-    )
-
-
-    log.info("map route components", Array.from(mapRouteComponents.values()).flat());
-    log.info("map stop components", mapStopComponents.current);
-    log.info("map stop component markers", mapStopMarkers.current);
-
-    return (
-        <React.Fragment>
-            <LayerGroup className={"MapRouteElements"}
-                    ref = {r=>{mapRouteElementsLayerGroupRef=r}}>
-                {Array.from(mapRouteComponents.values()).flat()}
-            </LayerGroup>
-            {ConditionallyDisplayStopComponents(Array.from(mapStopComponentsToDisplay.values()).flat())}
-            {Array.from(stopsToNonConditionallyDisplay.values()).flat()}
-            <LayerGroup>
-                <Highlighted/>
-            </LayerGroup>
-        </React.Fragment>
     )
 }
 
@@ -445,29 +418,6 @@ const HandleMapBoundsAndZoom = () : void=>{
     setMapLatLngAndZoom(duration,lat,long,zoom)
 }
 
-const ConditionallyDisplayStopComponents = (stopComponents) => {
-    let map = useMap()
-    let [Zoom,setZoom] = useState(map.getZoom().valueOf())
-    const stopLayerRef = useRef(null)
-
-    useMapEvents({
-        click() {
-            log.info("running map click method")
-
-        },
-        zoomend() { // zoom event (when zoom animation ended)
-            log.info("map zoom event end",Zoom,map.getZoom())
-            setZoom(map.getZoom())
-
-        }
-    });
-
-    return(Zoom>15.1?stopComponents:null)
-
-    // log.info("show stops? ",map.getZoom() >= 15.1)
-    // return(Zoom>15.1?stopComponents:<LayerGroup display={false}>stopComponents</LayerGroup>)
-}
-
 const MapEvents = () :boolean=> {
     log.info("generating map events")
     useMapEvents({
@@ -491,18 +441,10 @@ const MapEvents = () :boolean=> {
             });
         },
 
-        // popupclose(e) {
-        //     const popupContent = e.popup.getElement();
-        //     log.info("popup closed", e);
-        // }
+        // popupclose(e) {}
         
-        // click() {
-        //     log.info("running map click method")
-    
-        // },
-        // zoomend() { // zoom event (when zoom animation ended)
-        //     // const zoom = map.getZoom(); // get current Zoom of map
-        // }
+        // click() {},
+        // zoomend() {}
     });
 
     return false;
