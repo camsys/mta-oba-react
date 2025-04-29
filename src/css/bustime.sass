@@ -1601,7 +1601,7 @@ button, .button
       right: -1em
       border-radius: 50%
       z-index: -1
-  .leaflet-popup-content
+  .leaflet-popup-content, .popup-content
     display: flex
     flex-wrap: nowrap
     gap: .25em
@@ -1687,6 +1687,19 @@ button, .button
       border-top: 1px solid currentColor
       background: transparent
       white-space: nowrap
+  &.map-right-click-popup
+    .button
+      font-size: .875em
+    .popup-content
+      background-color: rgba($white,.8)
+      &::after
+        border-top-color: rgba($white,.8)
+    .search-here
+      background-image: url(/img/icon/search_blue.svg)
+      background-size: 1.125em auto
+      background-repeat: no-repeat
+      background-position: .4375em center
+      padding-left: 2em
   +mq($sidebar-switch)
     .popup-info
       .view-full
