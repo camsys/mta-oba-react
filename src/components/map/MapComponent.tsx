@@ -23,6 +23,7 @@ import {useHighlight} from "Components/util/MapHighlightingStateComponent";
 import {createMapSearchedHereMarker} from "./MapSearchedHereComponent";
 import {v4 as uuidv4} from "uuid";
 import {useLongPressSearch} from "../../js/handlers/LongPressSearchHandler";
+import {useNavigation} from "../../js/updateState/NavigationEffect.ts";
 
 
 const createVehicleIcon = (vehicleDatum):L.Icon => {
@@ -469,7 +470,6 @@ const ConditionallyDisplayStopComponents = (stopComponents) => {
 
 const MapEvents = () :boolean=> {
     log.info("generating map events")
-    let map = useMap()
     useMapEvents({
         popupopen(e) {
 
@@ -505,22 +505,70 @@ const MapEvents = () :boolean=> {
         // }
     });
 
-    useLongPressSearch({
-        onLongPress: (e) => {
-          const { latlng } = e;
-          console.log("Long press detected at:", latlng);
-          // Show your search popup/button
-        },
-        pressDelay: 600, // optional
-      });
-
     return false;
 };
 
 
-const CardChange = () =>{
+export function RightClickSearchButton() {
+    const map = useMap();
+    let {search} = useNavigation()
+    const [buttonPosition, setButtonPosition] = useState<{ x: number; y: number } | null>(null);
+    const [clickLatLng, setClickLatLng] = useState<L.LatLng | null>(null);
+  
+    const handleContextMenu = (e: LeafletMouseEvent) => {
+        e.originalEvent.preventDefault(); // prevent browser context menu
+        setButtonPosition(map.latLngToContainerPoint(e.latlng)); // screen coords
+        setClickLatLng(e.latlng);
+      };
 
-}
+    useEffect(() => {
+      if (!map) return;
+  
+      map.on("contextmenu", handleContextMenu);
+  
+      return () => {
+        map.off("contextmenu", handleContextMenu);
+      };
+    }, [map]);
+  
+    const handleSearchClick = () => {
+      if (clickLatLng) {
+        console.log("Right click detected at:", clickLatLng.lat + "," +clickLatLng.lng);
+        search(clickLatLng.lat + "," +clickLatLng.lng);
+        setButtonPosition(null); // Hide button after search
+      }
+    };
+
+    useLongPressSearch({
+        onLongPress: (e) => {
+          const { latlng } = e;
+          console.log("Long press detected at:", latlng);
+          handleContextMenu(e);
+        },
+        pressDelay: 600, // optional
+      });
+  
+    return (
+      <>
+        {buttonPosition && (
+          <button
+            style={{
+              position: "absolute",
+              top: buttonPosition.y,
+              left: buttonPosition.x,
+              transform: "translate(-50%, -100%)", // center above click
+              zIndex: 1000,
+              padding: "8px 12px",
+              fontSize: "14px",
+            }}
+            onClick={handleSearchClick}
+          >
+            Search Here
+          </button>
+        )}
+      </>
+    );
+  }
 
 
 export const MapComponent = () :JSX.Element => {
@@ -548,6 +596,7 @@ export const MapComponent = () :JSX.Element => {
                 <MapVehicleElements/>
                 <HandleMapBoundsAndZoom />
                 <SearchedHere/>
+                <RightClickSearchButton/>
                 {/*<HandleMapForVehiclesBoundsAndZoom/>*/}
             </MapContainer>
         </React.Fragment>
