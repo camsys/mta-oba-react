@@ -14,7 +14,7 @@ const COMPONENT_IDENTIFIER = "mapStopComponent"
 
 function MapStopComponent  ({stopDatum, mapStopMarkers, zIndexOverride}:
                                 {stopDatum:StopInterface,
-                                mapStopMarkers:React.MutableRefObject<Map<string,L.Marker>>,
+                                mapStopMarkers:React.MutableRefObject<Map<string,Marker>>,
                                 zIndexOverride:number}) : JSX.Element{
     // log.info('generating MapStopComponent: ', stopDatum,mapStopMarkers,zIndexOverride)
 

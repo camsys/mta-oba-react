@@ -44,8 +44,8 @@ export const createVehicleMarker = (
 
     // Add popup
     const popupContent = `
+        <img src="${vehicleDatum?.strollerVehicle ? busStroller : bus}" alt="bus" class="icon"/>
         <div class="popup-info">
-            <img src="${vehicleDatum?.strollerVehicle ? busStroller : bus}" alt="bus" class="icon"/>
             <span class="route">${vehicleDatum.routeId.split("_")[1]} ${vehicleDatum.destination}</span>
             <span class="vehicle">Vehicle #${vehicleIdWithoutAgency}</span>
             <button class="view-full close-map" aria-label="view full vehicle details">
