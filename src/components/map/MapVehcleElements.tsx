@@ -20,7 +20,6 @@ import {
     StopMatch,
     VehicleRtInterface
 } from "../../js/updateState/DataModels";
-import MapSearchedHereComponent from "./MapSearchedHereComponent";
 import {v4 as uuidv4} from "uuid";
 import { createRoutePolyline } from "../../utils/RoutePolylineFactory";
 import { createStopMarker } from "../../utils/StopMarkerFactory.ts";

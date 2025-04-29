@@ -21,7 +21,6 @@ import {
     VehicleRtInterface
 } from "../../js/updateState/DataModels";
 import {useHighlight} from "Components/util/MapHighlightingStateComponent";
-import {createMapSearchedHereMarker} from "./MapSearchedHereComponent";
 import {v4 as uuidv4} from "uuid";
 import {useLongPressSearch} from "../../js/handlers/LongPressSearchHandler";
 import {useNavigation} from "../../js/updateState/NavigationEffect.ts";
@@ -75,7 +74,7 @@ const SearchedHere = () :JSX.Element=>{
     previousSearchedHereMarker.current = currentSearchedHereMarker.current
     state.currentCard.searchMatches.forEach(searchMatch=>{
         if(state.currentCard.type===CardType.GeocodeCard){
-            currentSearchedHereMarker.current = createMapSearchedHereMarker([searchMatch.latitude,searchMatch.longitude])
+            currentSearchedHereMarker.current = createSearchedHereMarker([searchMatch.latitude,searchMatch.longitude])
             log.info("searched here marker created", currentSearchedHereMarker.current)
         }       
     })
