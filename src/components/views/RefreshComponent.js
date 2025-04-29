@@ -12,7 +12,7 @@ export default function getRefreshComponent({extraClasses}){
     const { updateSiriEffect } = useSiri();
 
     const handleRefresh = () => {
-        log.info("vehicle loading initiated")
+        log.info("refresh vehicle loading initiated")
         updateSiriEffect()
     }
     useEffect(()=>{

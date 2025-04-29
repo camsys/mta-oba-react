@@ -11,6 +11,7 @@ const handleCardChange = () => {
         // const query = queryString
         // log.info("query:")
         // log.info(query)
+        log.info("parsing location.search to generate card")
         let locationSearch = queryString.parse(location.search)
         log.info("query: location.search")
         log.info(locationSearch)

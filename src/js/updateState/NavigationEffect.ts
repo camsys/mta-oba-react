@@ -148,8 +148,9 @@ const performNewSearch = (searchRef:String,currentCard:Card):boolean=>{
 
 const updateWindowHistory = (term:string,uuid:string) :void =>{
     let url = new URL(window.location.href);
-    url.searchParams.set("searchTerm", term);
+    url.searchParams.set("THISISNOTANORMALREF", term);
     url.searchParams.set("uuid", uuid);
+    log.info("updating window history",url)
     window.history.pushState({}, '', url);
 }
 
@@ -161,6 +162,7 @@ export const updateCard = async (searchRef:String,stops: StopsObject,routes:Rout
 }
 
 export const getHomeCard = () :Card=>{
+    log.info("generating homecard")
     return new Card("",uuidv4())
 }
 
@@ -254,8 +256,7 @@ export const useNavigation = () =>{
 
     const generateInitialCard = async (setLoading)=>{
         let currentCard = new Card("",uuidv4())
-        log.info("setting initial state data home card",currentCard);
-
+        log.info("generating initial card",currentCard);
         let cardStack = state.cardStack;
         cardStack.push(currentCard);
         setState((prevState) => ({
@@ -267,7 +268,8 @@ export const useNavigation = () =>{
         setLoading(false);
 
         try {
-            let searchRef = queryString.parse(location.search).searchTerm as string;
+            log.info("parsing location.search for initial card data");
+            let searchRef = queryString.parse(location.search).THISISNOTANORMALREF as string;
             if(!searchRef){return}
             if(searchRef===allRoutesSearchTerm){
                 allRoutesSearch();
@@ -316,6 +318,7 @@ export const useNavigation = () =>{
         let routeId = vehicleDatum.routeId.split("_")[1];
         log.info("found routeId of target vehicle: ",routeId);
         let currentCard = new Card(routeId,uuidv4());
+        log.info("generated new card to become vehicle card",currentCard,vehicleDatum)
         let routeData = routes?.current;
         if(routeData){routeData=routeData[vehicleDatum.routeId]};
         log.info("found routedata of target vehicle: ",routeData);
@@ -343,6 +346,7 @@ export const useNavigation = () =>{
                 let currentCard = await fetch(address)
                     .then((response) => response.json())
                     .then((parsed) => {
+                        log.info("generating new card for all routes search")
                         let currentCard = new Card(searchTerm,uuidv4());
                         log.info("all routes results: ",parsed);
                         let searchMatch = new SearchMatch(SearchMatch.matchTypes.AllRoutesMatch);
@@ -388,6 +392,7 @@ export const useNavigation = () =>{
     // }, []);
 
     const updateStateForPopStateEvent = (popStateEvent: PopStateEvent) => {
+        log.info("navigation effect handling popstate event",window.history.state,popStateEvent,popStateEvent.state)
         let uuid = new URL(window.location.href).searchParams.get('uuid');
         let currentCard = state?.currentCard;
         let cardStack = state.cardStack;

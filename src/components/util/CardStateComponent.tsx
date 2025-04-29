@@ -18,7 +18,7 @@ const CardStateContext = createContext<{
 } | undefined>(undefined);
 const CardStateProvider = ({ children }: { children: ReactNode }): JSX.Element => {
     let currentCard = getHomeCard()
-    log.info("setting initial state data with base card",currentCard)
+    log.info("card generation request occured, setting base card",currentCard)
     const [state, setState] = useState<CardStateObject>({
         currentCard: currentCard,
         cardStack: [currentCard],

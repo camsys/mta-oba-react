@@ -22,7 +22,7 @@ import {useSiri} from "../js/updateState/getSiri.tx";
 
 
 const VehicleLoading=()=>{
-    log.info("vehicle loading initiated")
+    log.info("initiating new loading of Siri")
     const { state} = useContext(CardStateContext)
     const { updateSiriEffect } = useSiri();
     useEffect(() => {
@@ -30,15 +30,19 @@ const VehicleLoading=()=>{
         updateSiriEffect()
         //todo: set interval back to 15s
         const interval = setInterval(updateSiriEffect, 15*1000*1000);
+        log.info("interval set for vehicle loading",interval)
         return () => clearInterval(interval);
     }, [state]);
 }
 
 function InitialCardGeneration ({setLoading}){
     const { generateInitialCard } = useNavigation();
+    const { state} = useContext(CardStateContext)
 
     useEffect(() => {
-        generateInitialCard(setLoading)
+        if(state.renderCounter =1){
+            generateInitialCard(setLoading)
+        }
     }, []);
 }
 
@@ -75,6 +79,7 @@ function App  () : JSX.Element{
                 <MapWrapper/>
             </React.Fragment>)}
             <VehicleLoading/>
+            {log.info("app loaded")}
         </ErrorBoundary>
     )
 }
@@ -93,6 +98,7 @@ export function AppRoot () : JSX.Element{
                     </VehiclesApproachingStopsProvider>
                 </VehicleStateProvider>
             </SearchStateProviders>
+            {log.info("app root loaded")}
         </ErrorBoundary>
     )
 }

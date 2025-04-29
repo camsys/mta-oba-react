@@ -49,13 +49,13 @@ OBA.Config = {
         routeCard: {
             name : 'routeCard',
             identifier : null,
-            queryIdentifier: "search"
+            queryIdentifier: "THISISNOTANORMALREF"
         },
     },
 
     cardQueryIdentifiers : {
         homeCard: null,
-        routeCard: "search"
+        routeCard: "THISISNOTANORMALREF"
     },
 
     // This method is called by the JS found at configUrl (above) when the configuration has finished loading.

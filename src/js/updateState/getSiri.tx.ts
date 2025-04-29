@@ -11,7 +11,7 @@ import {siriGetVehiclesForStopViewEffect} from "./SiriStopEffects";
 
 
 export const useSiri = () => {
-    log.info("vehicle loading initiated")
+    log.info("siri vehicle loading initiated")
     const { state} = useContext(CardStateContext)
     let {vehicleState, setState } = useContext(VehicleStateContext);
     let {vehiclesApproachingStopsState, setVehiclesApproachingStopsState } = useContext(VehiclesApproachingStopsContext);
@@ -31,6 +31,7 @@ export const useSiri = () => {
                     vehiclesApproachingStopsState, setVehiclesApproachingStopsState)
             }
         }
+        log.info("siri call for vehicle loading completed")
     }
     return {updateSiriEffect}
 
