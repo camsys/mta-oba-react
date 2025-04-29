@@ -29,7 +29,7 @@ const VehicleLoading=()=>{
 
         updateSiriEffect()
         //todo: set interval back to 15s
-        const interval = setInterval(updateSiriEffect, 15*1000*1000);
+        const interval = setInterval(updateSiriEffect, 15*1000);
         log.info("interval set for vehicle loading",interval)
         return () => clearInterval(interval);
     }, [state]);
@@ -79,7 +79,6 @@ function App  () : JSX.Element{
                 <MapWrapper/>
             </React.Fragment>)}
             <VehicleLoading/>
-            {log.info("app loaded")}
         </ErrorBoundary>
     )
 }
