@@ -82,7 +82,7 @@ OBA.GoogleMapWrapper = function(mapNode) {
 	  var subwayControlWrapper = jQuery('<div id="subwayControl"></div>')
 	  								.appendTo(subwayControlContainer);
 	  
-	  var subwayControl = jQuery('<a href="#" title="Click to toggle subway lines">Show Subway</a>')
+	  var subwayControl = jQuery('<a href="javascript:void(0)" title="Click to toggle subway lines">Show Subway</a>')
 	  								.appendTo(subwayControlWrapper);
 	  
 	  subwayControl.click(function(e) { 
