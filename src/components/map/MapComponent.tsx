@@ -493,20 +493,19 @@ export function RightClickSearchButton() {
     return (
       <>
         {buttonPosition && (
-          <button
-            style={{
-              position: "absolute",
-              top: buttonPosition.y,
-              left: buttonPosition.x,
-              transform: "translate(-50%, -100%)", // center above click
-              zIndex: 1000,
-              padding: "8px 12px",
-              fontSize: "14px",
-            }}
-            onClick={handleSearchClick}
-          >
-            Search Here
-          </button>
+        <div className="map-right-click-popup map-popup" style={{
+            position: "absolute",
+            top: buttonPosition.y - 16,
+            left: buttonPosition.x,
+            transform: "translate(-50%, -100%)", // center above click
+            zIndex: 1000,
+          }}>
+          <div className="popup-content">
+            <button onClick={handleSearchClick} className="button search-here">
+                Search Here
+            </button>
+          </div>
+        </div>
         )}
       </>
     );

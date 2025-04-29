@@ -387,8 +387,6 @@ button, .button
     h1
       font-size: 2em
       margin: 0 0 .5em 0
-      +mq-reverse($sidebar-switch)
-        font-size: 1.5em
     h2
       font-size: 1.5em
       margin: 0 0 .5em 0
@@ -396,17 +394,11 @@ button, .button
         margin-top: 1em
       #app &
         font-size: 1em
-      +mq-reverse($sidebar-switch)
-        font-size: 1.25em
-
     h3
       font-size: 1.25em
       margin: 0 0 .5em 0
       &:not(first-child)
-        margin-top: 1em
-      +mq-reverse($sidebar-switch)
-        font-size: 1.125em
-      
+        margin-top: 1em      
     h4
       &:not(first-child)
         margin-top: 1em
@@ -451,6 +443,8 @@ button, .button
           padding: 0
           background: transparent
           border: none
+      img
+        border: 1px solid $border-gray
       .bustime-thumb
         max-width: 50%
         float: right
@@ -463,22 +457,6 @@ button, .button
         gap: $content-padding
       &:first-child
         margin-top: 0
-      +mq-reverse($sidebar-switch)
-        font-size: .875em
-        a, strong, bold, b, span, code
-          word-break: break-all
-        .bustime-thumb
-          max-width: 100%
-          float: none
-          width: 100%
-          margin-left: 0
-          margin: $content-padding 0
-        .buttons
-          flex-direction: column
-          gap: $content-padding
-          align-items: stretch
-          .button
-            text-align: center
     .content-and-toc
       display: flex
       flex-wrap: nowrap
@@ -553,7 +531,26 @@ button, .button
           border-radius: 0
           background-color: $black
           color: $white
-      +mq-reverse($sidebar-switch)
+    +mq-reverse($sidebar-switch) // no-map
+      .header
+        .header-inner
+          flex-wrap: wrap
+        nav
+          display: block
+          order: 3
+          width: 100%
+          font-size: .75em
+          ul
+            gap: .5em
+        .logo-link
+          max-width: 70%
+      h1
+        font-size: 1.5em
+      h2
+        font-size: 1.25em
+      h3
+        font-size: 1.125em
+      .content-and-toc
         gap: 0
         margin-right: $toc-toggle-size
         #toc-toggle
@@ -584,6 +581,22 @@ button, .button
             border-right-width: 1px
             border-left-width: 1px
             +card-shadow
+      .page-content
+        font-size: .875em
+        a, strong, bold, b, span, code
+          word-break: break-all
+        .bustime-thumb
+          max-width: 100%
+          float: none
+          width: 100%
+          margin-left: 0
+          margin: $content-padding 0
+        .buttons
+          flex-direction: column
+          gap: $content-padding
+          align-items: stretch
+          .button
+            text-align: center
   .google-translate-active &
     top: $google-translate-bar-height
     height: calc(100% - $google-translate-bar-height)
@@ -739,7 +752,7 @@ button, .button
     .logo-link
       margin: 0 0 1.25em 0
       .logo
-        max-width: 100%
+        // max-width: 100%
     .mta-logo-link
       width: 2.875em
     nav
@@ -1588,7 +1601,7 @@ button, .button
       right: -1em
       border-radius: 50%
       z-index: -1
-  .leaflet-popup-content
+  .leaflet-popup-content, .popup-content
     display: flex
     flex-wrap: nowrap
     gap: .25em
@@ -1674,6 +1687,19 @@ button, .button
       border-top: 1px solid currentColor
       background: transparent
       white-space: nowrap
+  &.map-right-click-popup
+    .button
+      font-size: .875em
+    .popup-content
+      background-color: rgba($white,.8)
+      &::after
+        border-top-color: rgba($white,.8)
+    .search-here
+      background-image: url(/img/icon/search_blue.svg)
+      background-size: 1.125em auto
+      background-repeat: no-repeat
+      background-position: .4375em center
+      padding-left: 2em
   +mq($sidebar-switch)
     .popup-info
       .view-full
