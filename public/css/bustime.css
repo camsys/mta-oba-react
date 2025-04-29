@@ -1959,6 +1959,8 @@ button:hover, .button:hover {
 .collapsible.open .card-footer {
   opacity: 0;
   max-height: 0;
+  padding-top: 0;
+  padding-bottom: 0;
 }
 .collapsible:not(.service-alert).open > .card-header .svc-alert-icon {
   opacity: 0;
@@ -2250,8 +2252,8 @@ button:hover, .button:hover {
   padding: 0.5rem;
   font-size: 0.75em;
   max-height: 100vh;
-  -webkit-transition: max-height 0.5s ease-in-out, opacity 0.25s ease-in-out;
-  transition: max-height 0.5s ease-in-out, opacity 0.25s ease-in-out;
+  -webkit-transition: max-height 0.25s ease-in-out, opacity 0.25s ease-in-out, padding 0.25s ease-in-out;
+  transition: max-height 0.25s ease-in-out, opacity 0.25s ease-in-out, padding 0.25s ease-in-out;
 }
 .card .card-footer .stop-routes {
   margin: 0;

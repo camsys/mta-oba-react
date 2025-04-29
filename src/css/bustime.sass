@@ -1124,6 +1124,8 @@ button, .button
     .card-footer
       opacity: 0
       max-height: 0
+      padding-top: 0
+      padding-bottom: 0
   &:not(.service-alert)
     &.open
       >.card-header
@@ -1334,7 +1336,7 @@ button, .button
     padding: $content-padding/2
     font-size: .75em
     max-height: 100vh
-    transition: max-height .5s ease-in-out, opacity .25s ease-in-out
+    transition: max-height .25s ease-in-out, opacity .25s ease-in-out, padding .25s ease-in-out
     .stop-routes
       margin: 0
       padding: 0
