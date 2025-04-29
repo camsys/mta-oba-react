@@ -27,8 +27,8 @@ document.addEventListener('DOMContentLoaded', function() {
   // Constants for animation
   const BASE_DURATION = 200; // Base duration in ms
   const HEIGHT_FACTOR = 0.5; // ms per pixel of height (adjust as needed)
-  const MIN_DURATION = 150; // Minimum transition duration in ms
-  const MAX_DURATION = 500; // Maximum transition duration in ms
+  const MIN_DURATION = 250; // Minimum transition duration in ms
+  const MAX_DURATION = 750; // Maximum transition duration in ms
 
   // window.console.log('boop test');
 
@@ -54,7 +54,7 @@ document.addEventListener('DOMContentLoaded', function() {
           transitionDuration = Math.max(MIN_DURATION, Math.min(transitionDuration, MAX_DURATION));
 
           // Apply the calculated duration
-          collapseContent.style.transition = `max-height ${transitionDuration}ms ease`;
+          collapseContent.style.transition = `max-height ${transitionDuration}ms ease-in-out`;
 
           // if the card is open, close it, adjust the max height, and tabindex of inner elements
           if (parent.classList.contains('open')) {
