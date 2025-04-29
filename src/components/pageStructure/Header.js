@@ -19,12 +19,12 @@ function Header  () {
             </div>
             <header className="header" id="header">
                 <div className="header-main">
-                    <a href="#" onClick={() => search("")} aria-label="MTA Bus Time Home" className="logo-link">
+                    <a href="#" onClick={(e) => {e.preventDefault(); search("")}} aria-label="MTA Bus Time Home" className="logo-link">
                         <img src={bustimeLogo} alt="MTA Bus Time" className="logo" />
                     </a>
                     <nav>
                         <ul className="menu">
-                            <li><a href="#" onClick={() => search("")}>Home</a></li>
+                            <li><a href="#" onClick={(e) => {e.preventDefault();search("")}}>Home</a></li>
                             <li><a href="/help/text">Text</a></li>
                             <li><a href="/about">About</a></li>
                             <li><a href="/contact">Contact</a></li>

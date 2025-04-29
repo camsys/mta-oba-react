@@ -12,19 +12,19 @@ function HomeCard  () : JSX.Element {
     <ul>
         <li>Route:
             <ul className="links">
-                <li><a href="#" onClick={() => search('B63')}>B63</a></li>
-                <li><a href="#" onClick={() => search( 'M5')}>M5</a></li>
-                <li><a href="#" onClick={() => search( 'Bx1')}>Bx1</a></li>
+                <li><a href="#" onClick={(e) => {e.preventDefault();search('B63')}}>B63</a></li>
+                <li><a href="#" onClick={(e) => {e.preventDefault();search( 'M5')}}>M5</a></li>
+                <li><a href="#" onClick={(e) => {e.preventDefault();search( 'Bx1')}}>Bx1</a></li>
             </ul>
         </li>
         <li>Intersection:
             <ul className="links">
-                <li><a href="#" onClick={() => search('Main st and Kissena Bl')}>Main st and Kissena Bl</a></li>
+                <li><a href="#" onClick={(e) => {e.preventDefault();search('Main st and Kissena Bl')}}>Main st and Kissena Bl</a></li>
             </ul>
         </li>
         <li>Stop Code:
             <ul className="links">
-                <li><a href="#" onClick={() => search('200884')}>200884</a></li>
+                <li><a href="#" onClick={(e) => {e.preventDefault();search('200884')}}>200884</a></li>
             </ul>
         </li>
     </ul>
