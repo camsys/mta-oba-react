@@ -22,6 +22,7 @@ import {
 import {useHighlight} from "Components/util/MapHighlightingStateComponent";
 import {createMapSearchedHereMarker} from "./MapSearchedHereComponent";
 import {v4 as uuidv4} from "uuid";
+import {useLongPressSearch} from "../../js/handlers/LongPressSearchHandler";
 
 
 const createVehicleIcon = (vehicleDatum):L.Icon => {
@@ -503,6 +504,15 @@ const MapEvents = () :boolean=> {
         //     // const zoom = map.getZoom(); // get current Zoom of map
         // }
     });
+
+    useLongPressSearch({
+        onLongPress: (e) => {
+          const { latlng } = e;
+          console.log("Long press detected at:", latlng);
+          // Show your search popup/button
+        },
+        pressDelay: 600, // optional
+      });
 
     return false;
 };
