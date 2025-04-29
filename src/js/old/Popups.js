@@ -328,7 +328,7 @@ OBA.Popups = (function() {
 		
 		// service alerts
 		if (routeName in alertData) {
-			html += ' <a id="alert-link||' + routeName + '" class="alert-link" href="javascript:void(0)">Service Alert for ' + activity.MonitoredVehicleJourney.PublishedLineName + '</a>';
+			html += ' <a id="alert-link||' + routeName + '" class="alert-link" href="#">Service Alert for ' + activity.MonitoredVehicleJourney.PublishedLineName + '</a>';
 		}
 		
 		html += Config.infoBubbleFooterFunction('route', activity.MonitoredVehicleJourney.PublishedLineName);
@@ -696,7 +696,7 @@ OBA.Popups = (function() {
 				html += '<li class="route">';
 				html += '<a href="#' + stopIdWithoutAgency + '%20' + mvj.PublishedLineName + '"><span class="route-name">' + mvj.PublishedLineName + "</span>&nbsp;&nbsp; " + mvj.DestinationName + '</a>';
 				if (mvj.LineRef in alertData) {
-					html += ' <a id="alert-link|' + stopIdWithoutAgency + '|' + mvj.LineRef + '|' + mvj.PublishedLineName + '" class="alert-link" href="javascript:void(0)">Alert</a>';
+					html += ' <a id="alert-link|' + stopIdWithoutAgency + '|' + mvj.LineRef + '|' + mvj.PublishedLineName + '" class="alert-link" href="#">Alert</a>';
 				}
 				html += '</li>';
 
@@ -870,7 +870,7 @@ OBA.Popups = (function() {
 				html += '<li class="route">';
 				html += '<a class="muted" href="#' + stopIdWithoutAgency + "%20" + d.shortName + '"><span class="route-name">' + d.shortName + "</span>&nbsp;&nbsp; " + d.destination + '</a>';
 				if (d.id in alertData) {
-					html += ' <a id="alert-link|' + stopIdWithoutAgency + '|' + d.id + '|' + d.shortName + '" class="alert-link" href="javascript:void(0)">Alert</a>';
+					html += ' <a id="alert-link|' + stopIdWithoutAgency + '|' + d.id + '|' + d.shortName + '" class="alert-link" href="#">Alert</a>';
 				}
 				html += '</li>';
 				
