@@ -821,11 +821,6 @@ button:hover, .button:hover {
   font-size: 2em;
   margin: 0 0 0.5em 0;
 }
-@media screen and (max-width: 599px) {
-  .main-body.no-map h1 {
-    font-size: 1.5em;
-  }
-}
 .main-body.no-map h2 {
   font-size: 1.5em;
   margin: 0 0 0.5em 0;
@@ -836,22 +831,12 @@ button:hover, .button:hover {
 #app .main-body.no-map h2 {
   font-size: 1em;
 }
-@media screen and (max-width: 599px) {
-  .main-body.no-map h2 {
-    font-size: 1.25em;
-  }
-}
 .main-body.no-map h3 {
   font-size: 1.25em;
   margin: 0 0 0.5em 0;
 }
 .main-body.no-map h3:not(first-child) {
   margin-top: 1em;
-}
-@media screen and (max-width: 599px) {
-  .main-body.no-map h3 {
-    font-size: 1.125em;
-  }
 }
 .main-body.no-map h4:not(first-child) {
   margin-top: 1em;
@@ -910,6 +895,9 @@ button:hover, .button:hover {
   background: transparent;
   border: none;
 }
+.main-body.no-map .page-content img {
+  border: 1px solid #ddd;
+}
 .main-body.no-map .page-content .bustime-thumb {
   max-width: 50%;
   float: right;
@@ -927,34 +915,6 @@ button:hover, .button:hover {
 }
 .main-body.no-map .page-content:first-child {
   margin-top: 0;
-}
-@media screen and (max-width: 599px) {
-  .main-body.no-map .page-content {
-    font-size: 0.875em;
-  }
-  .main-body.no-map .page-content a, .main-body.no-map .page-content strong, .main-body.no-map .page-content bold, .main-body.no-map .page-content b, .main-body.no-map .page-content span, .main-body.no-map .page-content code {
-    word-break: break-all;
-  }
-  .main-body.no-map .page-content .bustime-thumb {
-    max-width: 100%;
-    float: none;
-    width: 100%;
-    margin-left: 0;
-    margin: 1rem 0;
-  }
-  .main-body.no-map .page-content .buttons {
-    -webkit-box-orient: vertical;
-    -webkit-box-direction: normal;
-        -ms-flex-direction: column;
-            flex-direction: column;
-    gap: 1rem;
-    -webkit-box-align: stretch;
-        -ms-flex-align: stretch;
-            align-items: stretch;
-  }
-  .main-body.no-map .page-content .buttons .button {
-    text-align: center;
-  }
 }
 .main-body.no-map .content-and-toc {
   display: -webkit-box;
@@ -1068,6 +1028,33 @@ button:hover, .button:hover {
   color: #fff;
 }
 @media screen and (max-width: 599px) {
+  .main-body.no-map .header .header-inner {
+    -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
+  }
+  .main-body.no-map .header nav {
+    display: block;
+    -webkit-box-ordinal-group: 4;
+        -ms-flex-order: 3;
+            order: 3;
+    width: 100%;
+    font-size: 0.75em;
+  }
+  .main-body.no-map .header nav ul {
+    gap: 0.5em;
+  }
+  .main-body.no-map .header .logo-link {
+    max-width: 70%;
+  }
+  .main-body.no-map h1 {
+    font-size: 1.5em;
+  }
+  .main-body.no-map h2 {
+    font-size: 1.25em;
+  }
+  .main-body.no-map h3 {
+    font-size: 1.125em;
+  }
   .main-body.no-map .content-and-toc {
     gap: 0;
     margin-right: 3.5em;
@@ -1112,6 +1099,32 @@ button:hover, .button:hover {
     border-left-width: 1px;
     -webkit-box-shadow: 0px 0px 12px 0px rgba(0, 0, 0, 0.1);
             box-shadow: 0px 0px 12px 0px rgba(0, 0, 0, 0.1);
+  }
+  .main-body.no-map .page-content {
+    font-size: 0.875em;
+  }
+  .main-body.no-map .page-content a, .main-body.no-map .page-content strong, .main-body.no-map .page-content bold, .main-body.no-map .page-content b, .main-body.no-map .page-content span, .main-body.no-map .page-content code {
+    word-break: break-all;
+  }
+  .main-body.no-map .page-content .bustime-thumb {
+    max-width: 100%;
+    float: none;
+    width: 100%;
+    margin-left: 0;
+    margin: 1rem 0;
+  }
+  .main-body.no-map .page-content .buttons {
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    gap: 1rem;
+    -webkit-box-align: stretch;
+        -ms-flex-align: stretch;
+            align-items: stretch;
+  }
+  .main-body.no-map .page-content .buttons .button {
+    text-align: center;
   }
 }
 .google-translate-active .main-body {
@@ -1358,9 +1371,6 @@ button:hover, .button:hover {
 @media screen and (min-width: 600px) {
   .header .logo-link {
     margin: 0 0 1.25em 0;
-  }
-  .header .logo-link .logo {
-    max-width: 100%;
   }
   .header .mta-logo-link {
     width: 2.875em;
