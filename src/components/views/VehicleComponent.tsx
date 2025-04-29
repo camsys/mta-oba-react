@@ -8,8 +8,8 @@ import log from 'loglevel';
 
 function MeeplesComponentInner({vehicleDatum}: {VehicleRtInterface}):JSX.Element{
     let percentFull = null;
-    let meeples = null;
-    if(vehicleDatum.apcLevel != -1 && vehicleDatum.apcLevel != null){meeples = vehicleDatum?.apcLevel;}
+    let numberOfMeeples = null;
+    if(vehicleDatum.apcLevel != -1 && vehicleDatum.apcLevel != null){numberOfMeeples = vehicleDatum?.apcLevel;}
     if(vehicleDatum.passengerCount != null
         && vehicleDatum.passengerCapacity!=null
         && vehicleDatum.passengerCapacity != 0){
@@ -20,12 +20,12 @@ function MeeplesComponentInner({vehicleDatum}: {VehicleRtInterface}):JSX.Element
     }
     return(
         <React.Fragment>
-            {(percentFull !==null && meeples!==null) && (
-                <span className={'meeples meeples-' + `${meeples}`}>
+            {(percentFull !==null && numberOfMeeples!==null) && (
+                <span className={'meeples meeples-' + `${numberOfMeeples}`}>
                             <img src={meeples}
                                  alt={`vehicle is ~${percentFull}% full`}
                                  title={`vehicle is ~${percentFull}% full`}
-                                 className="meeples-blank"/>
+                                 className={`meeples-${numberOfMeeples}`}/>
                         </span>
             )}
             <span className="passenger-count">{`~${vehicleDatum.passengerCount} passengers`}</span>
