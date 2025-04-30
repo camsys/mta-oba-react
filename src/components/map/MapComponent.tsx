@@ -362,7 +362,7 @@ const Highlighted = () =>{
 
 }
 
-const setMapLatLngAndZoom = (lat : number, lon :number,zoom:number) :void =>{
+const setMapLatLngAndZoom = (lat : number, lon :number,zoom:number,override:boolean) :void =>{
     let duration = .85
     log.info("Assessing zoom. based on requested values:",lat,lon,zoom)
     if(lat===null|lon===null|zoom===null){return}
@@ -375,13 +375,17 @@ const setMapLatLngAndZoom = (lat : number, lon :number,zoom:number) :void =>{
     let lonsMatch = currentLong+mapWidth/3>lon && currentLong-mapWidth/3<lon
     let lonsOnScreen = currentLong+mapWidth>lon && currentLong-mapWidth<lon
     let zoomsMatch =  zoom-.3<currentZoom && zoom+.3>currentZoom
-    let zoomSeemsIntentional = zoom<16
+    let zoomSeemsIntentional = currentZoom>16
 
-    let performZoom = false
+    let performZoom = override
     
+    if(override){
+        log.info("Assessing zoom. override requested, performing zoom")
+    }
+
     if(zoomSeemsIntentional){
         log.info("Assessing zoom. zoom seems intentional, checking if new selection is on screen ",currentLat,currentLong,currentZoom,"new: ",lat,lon,zoom, "matches",lonsOnScreen,latsOnScreen)
-        if(lonsOnScreen && latsOnScreen){
+        if(!(lonsOnScreen && latsOnScreen)){
             performZoom = true
         }
     } else {
@@ -438,6 +442,7 @@ const HandleMapBoundsAndZoom = () : void=>{
     const { state} = useContext(CardStateContext);
     let [lat, long] = [null,null]
     let zoom = null
+    let override = false
 
 
     state.currentCard.searchMatches.forEach(searchMatch=>{
@@ -465,9 +470,10 @@ const HandleMapBoundsAndZoom = () : void=>{
         {
             [lat, long] = OBA.Config.defaultMapCenter;
             zoom = 11;
+            override = true;
         }
 
-    setMapLatLngAndZoom(lat,long,zoom)
+    setMapLatLngAndZoom(lat,long,zoom,override)
 }
 
 const MapEvents = () :boolean=> {
@@ -522,6 +528,14 @@ const MapEvents = () :boolean=> {
         
         map.options.closePopupOnClick = false;
     }, []);
+
+    useEffect(() => {
+        if (!map) return;
+      
+        map.whenReady(() => {
+            map.invalidateSize();
+        });
+      }, [map]);
 
     return false;
 };
