@@ -28,8 +28,8 @@ export const createVehicleMarker = (
         title: `Vehicle ${vehicleIdWithoutAgency}, ${vehicleDatum.routeId} to ${vehicleDatum.destination}`,
         vehicleId: vehicleDatum.vehicleId,
         routeId: vehicleDatum.routeId,
-        key: `VehicleMarker_${vehicleDatum.vehicleId}_${vehicleDatum.longLat}`,
-        position: vehicleDatum.longLat,
+        key: `VehicleMarker_${vehicleDatum.vehicleId}_${vehicleDatum.lat}_${vehicleDatum.lon}`,
+        position: [vehicleDatum.lat, vehicleDatum.lon],
         icon: icon,
         id: `VehicleMarker_${vehicleDatum.vehicleId}`,
         keyboard: false,
@@ -61,7 +61,7 @@ export const createVehicleMarker = (
     });
 
     marker.on("click", () => {
-        selectVehicle(vehicleDatum.routeId, vehicleDatum.vehicleId, [vehicleDatum.longLat[0], vehicleDatum.longLat[1]]);
+        selectVehicle(vehicleDatum.routeId, vehicleDatum.vehicleId, [vehicleDatum.lat, vehicleDatum.lon]);
     });
 
     return marker;

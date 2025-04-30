@@ -18,14 +18,12 @@ export const createStopMarker = (
         popupAnchor: [0, 0],
     });
 
-
-
-    const marker = new StopMarker(stopDatum.longLat, {
+    const marker = L.marker([stopDatum.longLat[0],stopDatum.longLat[1]], {
         icon,
         zIndexOffset: zIndexOverride || -10,
         title: stopDatum.name,
         keyboard: false,
-    },stopDatum);
+    });
 
     // Add popup
     const popupContent = `

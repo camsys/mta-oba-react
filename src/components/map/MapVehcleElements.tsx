@@ -10,7 +10,6 @@ import {CardStateContext, RoutesContext, StopsContext} from "../util/CardStateCo
 import {vehicleDataIdentifier, VehicleStateContext} from "../util/VehicleStateComponent";
 import MapRouteComponent from "./MapRouteComponent";
 import MapStopComponent from "./MapStopComponent";
-import MapVehicleComponent from "./MapVehicleComponent";
 import {
     CardType,
     MapRouteComponentInterface,
@@ -108,7 +107,7 @@ export const MapVehicleElements = () =>{
         let vehicle = vehicleMap.get(vehicleDatum.vehicleId);
         if (vehicle) {
             // update vehicle to be in new pos
-            vehicle.setLatLng(vehicleDatum.longLat)
+            vehicle.setLatLng([vehicleDatum.lat, vehicleDatum.lon]);
             vehicle.setIcon(createVehicleIcon(vehicleDatum))
             if(state.currentCard.type !== CardType.VehicleCard || vehicleDatum.vehicleId !== state.currentCard.datumId){
                 vehicle.closePopup()
@@ -171,13 +170,13 @@ export const MapVehicleElements = () =>{
                     && typeof vehicleObjsRefs.current.get === 'function'){
                     log.info(`MapVehicleElements: processing vehicleDataForRoute`,vehicleDataForRoute,vehicleObjsRefs.current)
                     vehicleDataForRoute.forEach(vehicleDatum=>{
-                        vehicleDataForRoute = vehicleObjsRefs.current.get(shortenedRouteId)
-                        if(vehicleDataForRoute == null || vehicleDataForRoute == undefined){
+                        let vehicleRefsForRoute = vehicleObjsRefs.current.get(shortenedRouteId)
+                        if(vehicleRefsForRoute == null || vehicleRefsForRoute == undefined){
                             log.info("MapVehicleElements: creating new vehicle map for routeId",shortenedRouteId)
-                            vehicleDataForRoute = new Map()
-                            vehicleObjsRefs.current.set(shortenedRouteId, vehicleDataForRoute)
+                            vehicleRefsForRoute = new Map()
+                            vehicleObjsRefs.current.set(shortenedRouteId, vehicleRefsForRoute)
                         }
-                        handleVehicleForMap(vehicleDatum, vehicleDataForRoute)
+                        handleVehicleForMap(vehicleDatum, vehicleRefsForRoute)
                     });
                 }
                 log.info("MapVehicleElements: vehicleObjsRefs",vehicleObjsRefs.current)
