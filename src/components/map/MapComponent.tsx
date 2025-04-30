@@ -505,77 +505,45 @@ const MapEvents = () :boolean=> {
 
 export function RightClickSearchButton() {
     const map = useMap();
-    let {search} = useNavigation()
-    const [buttonPosition, setButtonPosition] = useState<{ x: number; y: number } | null>(null);
-    const [clickLatLng, setClickLatLng] = useState<L.LatLng | null>(null);
+    const { search } = useNavigation();
+    const popupRef = useRef<Popup | null>(null);
   
     const handleContextMenu = (e: LeafletMouseEvent) => {
-        e.originalEvent.preventDefault(); // prevent browser context menu
-        setButtonPosition(map.latLngToContainerPoint(e.latlng)); // screen coords
-        setClickLatLng(e.latlng);
-      };
-
+      e.originalEvent.preventDefault();
+  
+      const latlng = e.latlng;
+  
+      const div = document.createElement("div");
+      div.className = "search-here-div"
+      div.innerHTML = `
+        <button class="button search-here">Search Here</button>
+      `;
+  
+      div.querySelector("button")?.addEventListener("click", () => {
+        search(latlng.lat.toFixed(6) + "," + latlng.lng.toFixed(6));
+        popupRef.current?.remove();
+      });
+  
+      // Clean up any existing popup
+      popupRef.current?.remove();
+  
+      const popup = L.popup()
+        .setLatLng(latlng)
+        .setContent(div)
+        .openOn(map);
+  
+      popupRef.current = popup;
+    };
+  
     useEffect(() => {
-      if (!map) return;
-  
       map.on("contextmenu", handleContextMenu);
-  
       return () => {
         map.off("contextmenu", handleContextMenu);
+        popupRef.current?.remove();
       };
     }, [map]);
   
-    const handleSearchClick = () => {
-      if (clickLatLng) {
-        console.log("Right click detected at:", clickLatLng.lat + "," +clickLatLng.lng);
-        search(clickLatLng.lat.toFixed(6) + "," +clickLatLng.lng.toFixed(6));
-        setButtonPosition(null); // Hide button after search
-      }
-    };
-
-    useLongPressSearch({
-        onLongPress: (e) => {
-          const { latlng } = e;
-          console.log("Long press detected at:", latlng);
-          handleContextMenu(e);
-        },
-        pressDelay: 600, // optional
-      });
-  
-    return (
-      <>
-        {buttonPosition && (
-            <div
-                className="map-right-click-popup map-popup"
-                style={{
-                position: "absolute",
-                top: buttonPosition.y - 16,
-                left: buttonPosition.x,
-                transform: "translate(-50%, -100%)",
-                zIndex: 1000,
-                }}
-            >
-                <div className="popup-content" style={{ position: "relative", padding: "0.5em 1em" }}>
-                <a
-                    onClick={() => {
-                    setButtonPosition(null);
-                    setClickLatLng(null);
-                    }}
-                    className= {"leaflet-popup-close-button"}
-                    aria-label="Close"
-                >
-                    <span aria-hidden={true}>×</span>
-                </a>
-
-                <button onClick={handleSearchClick} className="button search-here">
-                    Search Here
-                </button>
-                </div>
-            </div>
-            )}
-
-      </>
-    );
+    return null;
   }
 
 
