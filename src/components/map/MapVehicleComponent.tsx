@@ -25,7 +25,7 @@ function MapVehicleComponent  (
     const selectVehicle = (vehicleData:VehicleRtInterface) =>{
         log.info("clicked on " + vehicleData.vehicleId)
         vehicleData.longLat = vehicleData.longLat
-        vehicleSearch(vehicleData)
+        vehicleSearch(vehicleData.routeId, vehicleData.vehicleId, vehicleData.longLat)
     }
 
     let markerOptions = {

@@ -38,9 +38,9 @@ console.log("createVehicleMarker:", createVehicleMarker);
 export const MapVehicleElements = () =>{
 
     let {vehicleSearch} = useNavigation()
-    const selectVehicle = (vehicleDatum :VehicleRtInterface) =>{
+    const selectVehicle = (routeId:string,vehicleId:string,lonlat:[number,number]) =>{
         // log.info("clicked on " + vehicleDatum.vehicleId)
-        vehicleSearch(vehicleDatum)
+        vehicleSearch(routeId,vehicleId,lonlat)
     }
 
     const cardStateContext = useContext(CardStateContext);

@@ -61,7 +61,7 @@ export const createVehicleMarker = (
     });
 
     marker.on("click", () => {
-        selectVehicle(vehicleDatum);
+        selectVehicle(vehicleDatum.routeId, vehicleDatum.vehicleId, [vehicleDatum.longLat[0], vehicleDatum.longLat[1]]);
     });
 
     return marker;

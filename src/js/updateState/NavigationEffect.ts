@@ -311,11 +311,7 @@ export const useNavigation = () =>{
     //this function doesn't belong in "SearchEffect" but it does belong with card handling functions
 // which is what this has become
 
-    const vehicleSearch = async (vehicleDatum : VehicleRtInterface)=> {
-        let routeId = vehicleDatum.routeId;
-        let vehicleId = vehicleDatum.vehicleId;
-        let lonlat = vehicleDatum.longLat;
-
+    const vehicleSearch = async (routeId:string,vehicleId:string,lonlat:[number,number])=> {
         log.info("setting card to vehicle card",routeId,vehicleId,lonlat);
         //todo: should be current search term
         let pastCard = state.currentCard;
