@@ -15,7 +15,7 @@ const envPlugin = new webpack.DefinePlugin({
   'process.env.VEHICLE_MONITORING_ENDPOINT': JSON.stringify(process.env.VEHICLE_MONITORING_ENDPOINT || 'api/siri/vehicle-monitoring.json?key=OBANYC'),
   'process.env.STOP_MONITORING_ENDPOINT': JSON.stringify(process.env.STOP_MONITORING_ENDPOINT || '/api/stop-for-id?key=OBANYC'),
   'process.env.STOPS_ON_ROUTE_ENDPOINT': JSON.stringify(process.env.STOPS_ON_ROUTE_ENDPOINT || 'api/stops-on-route-for-direction?'),
-  'process.env.LOGGINGLEVEL': JSON.stringify(process.env.LOGGINGLEVEL || 'error'),
+  'process.env.LOGGINGLEVEL': JSON.stringify(process.env.LOGGINGLEVEL || 'info'),
   'process.env.ENABLE_GOOGLE_TRANSLATE': JSON.stringify(process.env.ENABLE_GOOGLE_TRANSLATE || true)
 });
 

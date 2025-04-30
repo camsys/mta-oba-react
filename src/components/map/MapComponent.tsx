@@ -312,14 +312,51 @@ const Highlighted = () =>{
     let {getHighlightedId} = useHighlight()
     let highlightedId = getHighlightedId()
     let {state} = useContext(CardStateContext);
+    let highlightedComponents = useRef(new Map());
 
     const stops = useContext(StopsContext)
     const routes = useContext(RoutesContext)
+    const map = useMap()
 
-    let stopDatum = stops.current[highlightedId]
-    if(stopDatum!==null && typeof stopDatum !=='undefined'){
-        return <MapStopComponent stopDatum={stopDatum} zIndexOverride={20}/>
+    log.info("highlight component loaded",highlightedId,routes.current,stops.current)
+
+
+
+    useEffect(() => {
+        log.info("clearing previous highlighted components from map",highlightedComponents.current)
+        highlightedComponents.current.forEach((value, key) => {
+            if (value !== null && value !== undefined) {
+                value.removeFrom(map);
+            }
+        });
+        highlightedComponents.current.clear();
+        log.info("cleared previous highlighted components from map",highlightedComponents.current)
+
+
+        log.info("generating highlighted component",highlightedId,routes.current,stops.current)
+
+        let stopDatum = stops.current[highlightedId]
+        if(stopDatum!==null && typeof stopDatum !=='undefined'){
+            highlightedComponents.current.set(stopDatum.id,createStopMarker(stopDatum,()=>{},20))
+        }
+        let routeDatum = routes.current[highlightedId]
+        if(routeDatum!==null && typeof routeDatum !=='undefined'){
+            routeDatum.directions.forEach(dir => {
+                dir.mapRouteComponentData.forEach((datum:MapRouteComponentInterface) => {
+                    highlightedComponents.current.set(datum.id,createRoutePolyline(datum,true))
+                })
+            })
+        }
+
+        log.info("adding highlighted components to map",highlightedComponents.current)
+        highlightedComponents.current.forEach((value, key) => {
+            if (value !== null && value !== undefined) {
+                value.addTo(map);
+            }
+        });
     }
+    , [state,highlightedId])
+
 }
 
 const setMapLatLngAndZoom = (duration :number , lat : number, long :number,zoom:number) :void =>{
@@ -475,7 +512,7 @@ export function RightClickSearchButton() {
     const handleSearchClick = () => {
       if (clickLatLng) {
         console.log("Right click detected at:", clickLatLng.lat + "," +clickLatLng.lng);
-        search(clickLatLng.lat + "," +clickLatLng.lng);
+        search(clickLatLng.lat.toFixed(6) + "," +clickLatLng.lng.toFixed(6));
         setButtonPosition(null); // Hide button after search
       }
     };
@@ -533,6 +570,7 @@ export const MapComponent = () :JSX.Element => {
                 />
                 <MapEvents />
                 <RoutesAndStops/>
+                <Highlighted/>
                 <MapVehicleElements/>
                 <HandleMapBoundsAndZoom />
                 <SearchedHere/>
