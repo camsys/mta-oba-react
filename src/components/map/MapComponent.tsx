@@ -596,6 +596,8 @@ export function RightClickSearchButton() {
 
         popupRef.current = popup;
     };
+
+    useLongPressSearch({onLongPress : handleContextMenu});
   
     useEffect(() => {
       map.on("contextmenu", handleContextMenu);
@@ -606,7 +608,7 @@ export function RightClickSearchButton() {
     }, [map]);
 
     useMapEvents({
-        click() {
+        mousedown() {
             popupRef.current?.remove();
         }
     });
