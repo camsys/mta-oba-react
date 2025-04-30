@@ -524,10 +524,9 @@ const MapEvents = () :boolean=> {
                     }
                 } 
             });
-
-            const contentEl = e.popup.getContent();
-            const isSearchHere = contentEl instanceof HTMLElement && contentEl.classList.contains("search-here-div");
-            log.info("popup opened", e.popup,"is search here popup", isSearchHere,contentEl);
+            
+            const isSearchHere = popupContent.classList.contains("search-here-popup");
+            log.info("popup opened", e.popup,"is search here popup", isSearchHere);
             if(!isSearchHere){
                 openPopups.current.forEach((popup) => {
                     if (popup !== e.popup) {
@@ -573,13 +572,11 @@ export function RightClickSearchButton() {
 
         const latlng = e.latlng;
 
-        const div = document.createElement("div");
-        div.className = "search-here-div"
-        div.innerHTML = `
-        <button class="button search-here">Search Here</button>
-        `;
+        const searchHereButton = document.createElement("button");
+        searchHereButton.className = "button search-here"
+        searchHereButton.innerText = "Search Here";
 
-        div.querySelector("button")?.addEventListener("click", () => {
+        searchHereButton.addEventListener("click", () => {
         search(latlng.lat.toFixed(6) + "," + latlng.lng.toFixed(6));
         popupRef.current?.remove();
         });
@@ -587,9 +584,9 @@ export function RightClickSearchButton() {
         // Clean up any existing popup
         popupRef.current?.remove();
 
-        const popup = L.popup({closeButton: false})
+        const popup = L.popup({closeButton: false, className: "search-here-popup no-close-button-popup"})
         .setLatLng(latlng)
-        .setContent(div)
+        .setContent(searchHereButton)
         .openOn(map);
         
 

@@ -1103,7 +1103,6 @@ button, .button
   &:hover, &:focus
     &::after
       left: .375em
-      
 
 .collapsible
   .collapse-content
@@ -1570,11 +1569,12 @@ button, .button
   font-size: 1em!important
   
 .map-popup, .leaflet-popup
-  background-color: rgba(0,0,0,.25)
-  padding: $content-padding*.25
+  background-color: transparent
+  padding: 0
   opacity: 1
   transition: opacity .25s ease-in-out
   margin-bottom: 1.625em!important
+  border: $content-padding*.25 solid rgba(0,0,0,.25)
   &.vehicle-popup
     margin-bottom: 2em!important
   &::after
@@ -1585,7 +1585,7 @@ button, .button
     border-right: .875em solid transparent
     border-top: .875em solid rgba(0, 0, 0, .25)
     position: absolute
-    bottom: -.875em
+    bottom: -1.125em
     left: 50%
     transform: translateX(-50%)
   .leaflet-popup-content-wrapper
@@ -1641,8 +1641,8 @@ button, .button
     margin: 0
     position: absolute
     z-index: 2
-    top: -.75em!important
-    right: -.75em!important
+    top: -1em!important
+    right: -1em!important
     border-radius: 50%
     line-height: 0
     border: none
@@ -1692,19 +1692,28 @@ button, .button
       border-top: 1px solid currentColor
       background: transparent
       white-space: nowrap
-  &.map-right-click-popup
+  &.search-here-popup
+    .leaflet-popup-content, .popup-content
+      padding: $content-padding/2
     .button
       font-size: .875em
-    .popup-content
-      background-color: rgba($white,.8)
-      &::after
-        border-top-color: rgba($white,.8)
+    .leaflet-popup-content
+      background: linear-gradient(to top, $white 0%, rgba($white,.8) 10%, rgba($white,.5) 100%)
     .search-here
       background-image: url(/img/icon/search_blue.svg)
       background-size: 1.125em auto
       background-repeat: no-repeat
       background-position: .4375em center
+      padding: $content-padding*.875
+      margin: 0
       padding-left: 2em
+  &.no-close-button-popup
+    a.leaflet-popup-close-button
+      display: none
+  .leaflet-popup-content-wrapper
+    &::before
+      content: none
+
   +mq($sidebar-switch)
     .popup-info
       .view-full
