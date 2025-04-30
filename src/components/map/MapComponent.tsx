@@ -360,6 +360,28 @@ const Highlighted = () =>{
     }
     , [state,highlightedId])
 
+
+    useMapEvents(
+        {
+            zoom() {
+                highlightedComponents.current.forEach((value, key) => {
+                    if (value !== null && value !== undefined) {
+                        value.removeFrom(map);
+                    }
+                });
+            },
+            zoomend() {
+                highlightedComponents.current.forEach((value, key) => {
+                    if (value !== null && value !== undefined) {
+                        value.addTo(map);
+                    }
+                }
+                );
+            }
+        }
+    )
+        
+
 }
 
 const setMapLatLngAndZoom = (lat : number, lon :number,zoom:number,override:boolean) :void =>{
