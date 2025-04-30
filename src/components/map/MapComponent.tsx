@@ -690,7 +690,6 @@ export const MapComponent = () :JSX.Element => {
                 <HandleMapBoundsAndZoom />
                 <SearchedHere/>
                 <RightClickSearchButton/>
-                {/*<HandleMapForVehiclesBoundsAndZoom/>*/}
             </MapContainer>
         </React.Fragment>
     );
