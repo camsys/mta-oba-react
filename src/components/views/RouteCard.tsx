@@ -45,7 +45,7 @@ export function RouteStopComponent
                  onMouseEnter={() => highlightId(stopDatum.id)}
                  onMouseLeave={() => highlightId(null)}
             >
-                <a href="#" onClick={(e) => {e.preventDefault();search(stopDatum.id.split("_")[1])}} tabIndex="-1">{stopDatum.name}</a>
+                <a href="#" onClick={(e) => {e.preventDefault();highlightId(null);search(stopDatum.id.split("_")[1])}} tabIndex="-1">{stopDatum.name}</a>
                 {
                     hasVehicleChildren ?
                         <ul className="approaching-buses">
