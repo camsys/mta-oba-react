@@ -148,7 +148,7 @@ const performNewSearch = (searchRef:String,currentCard:Card):boolean=>{
 
 const updateWindowHistory = (term:string,uuid:string) :void =>{
     let url = new URL(window.location.href);
-    url.searchParams.set("THISISNOTANORMALREF", term);
+    url.searchParams.set("search", term);
     url.searchParams.set("uuid", uuid);
     log.info("updating window history",url)
     window.history.pushState({}, '', url);
@@ -269,7 +269,7 @@ export const useNavigation = () =>{
 
         try {
             log.info("parsing location.search for initial card data");
-            let searchRef = queryString.parse(location.search).THISISNOTANORMALREF as string;
+            let searchRef = queryString.parse(location.search).search as string;
             if(!searchRef){return}
             if(searchRef===allRoutesSearchTerm){
                 allRoutesSearch();
