@@ -57,6 +57,7 @@ export const createVehicleMarker = (
         className: "map-popup vehicle-popup",
         autoPan: false,
         keepInView: false,
+        autoClose: false
     });
 
     marker.on("click", () => {

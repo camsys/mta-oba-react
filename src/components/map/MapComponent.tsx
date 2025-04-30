@@ -472,8 +472,13 @@ const HandleMapBoundsAndZoom = () : void=>{
 
 const MapEvents = () :boolean=> {
     log.info("generating map events")
+    const openPopups = useRef<L.Popup[]>([]);
+
+
+
     useMapEvents({
         popupopen(e) {
+            log.info("popup opened", e.popup);
 
             const popupContent = e.popup.getElement();
             log.info("popup opened", popupContent);
@@ -489,8 +494,20 @@ const MapEvents = () :boolean=> {
                     mapToggle.setAttribute('aria-label', 'Toggle Map Visibility (currently hidden)');
                     mapToggle.setAttribute('aria-pressed', 'false');
                     }
-                }
+                } 
             });
+
+            const contentEl = e.popup.getContent();
+            const isSearchHere = contentEl instanceof HTMLElement && contentEl.classList.contains("search-here-div");
+            log.info("popup opened", e.popup,"is search here popup", isSearchHere,contentEl);
+            if(!isSearchHere){
+                openPopups.current.forEach((popup) => {
+                    if (popup !== e.popup) {
+                        popup.close();
+                    }
+                });
+            } 
+            openPopups.current.push(e.popup);
         }
 
         // popupclose(e) {}
@@ -538,6 +555,10 @@ export function RightClickSearchButton() {
         .setLatLng(latlng)
         .setContent(div)
         .openOn(map);
+
+        popup._customId = "search here popup"
+
+        
   
       popupRef.current = popup;
     };

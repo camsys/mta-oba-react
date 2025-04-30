@@ -29,6 +29,7 @@ export const createSearchedHereMarker = (
     marker.bindPopup(popupContent, {
         autoPan: false,
         keepInView: false,
+        autoClose: false,
     });
 
     return marker;

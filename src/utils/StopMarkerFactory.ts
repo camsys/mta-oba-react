@@ -42,6 +42,7 @@ export const createStopMarker = (
         className: "map-popup stop-popup",
         autoPan: false,
         keepInView: false,
+        autoClose: false
     });
 
     marker.on("click", () => {

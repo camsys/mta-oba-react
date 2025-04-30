@@ -58,7 +58,8 @@ function MapStopComponent  ({stopDatum, mapStopMarkers, zIndexOverride}:
 
     let popupOptions = {
         autoPan: false,
-        keepInView: false
+        keepInView: false,
+        autoClose: false
     }
 
     const { state} = useContext(CardStateContext);
