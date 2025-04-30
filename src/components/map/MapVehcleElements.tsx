@@ -32,19 +32,7 @@ console.log("createStopMarker:", createStopMarker);
 console.log("createSearchedHereMarker:", createSearchedHereMarker);
 console.log("createVehicleMarker:", createVehicleMarker);
 
-const createVehicleIcon = (vehicleDatum):L.Icon => {
-    let scheduled = vehicleDatum.hasRealtime?"":"scheduled/"
-    let imgDegrees = vehicleDatum.bearing - vehicleDatum.bearing%5
-    let vehicleImageUrl = "img/vehicle/"+scheduled+"vehicle-"+imgDegrees+".png"
-    let icon = L.icon({
-        iconUrl: vehicleImageUrl,
-        className: "svg-icon",
-        iconSize: [51,51],
-        iconAnchor: [25,25],
-        popupAnchor: [0,0]
-    })
-    return icon
-}
+
 
 // this method is seperated because vehicleState updates often. that said i don't want it to trigger a rerender
 export const MapVehicleElements = () =>{
@@ -64,6 +52,7 @@ export const MapVehicleElements = () =>{
     const vehicleObjsRefs = useRef<Map<string, Map<string, L.Marker>>>(new Map());
     const showFocusVehicle = useRef(true)
     const lastCardWasNotVehicleView = useRef(state.currentCard.type !== CardType.VehicleCard)
+    const iconCache = useRef<Map<string, L.Icon>>(new Map());
 
     const vehicleLayer = useRef<L.LayerGroup<L.Marker>>(new L.LayerGroup());
     let map = useMap()
@@ -73,6 +62,39 @@ export const MapVehicleElements = () =>{
 
 
     log.info("looking for vehicles from route ids: ",shortenedRouteIds)
+
+    const createVehicleIcon = (vehicleDatum):L.Icon => {
+        let scheduled = vehicleDatum.hasRealtime?"":"scheduled/"
+        let imgDegrees = vehicleDatum.bearing - vehicleDatum.bearing%5
+        let vehicleImageUrl = "img/vehicle/"+scheduled+"vehicle-"+imgDegrees+".png"
+        if(iconCache.current.has(vehicleImageUrl)){
+            return iconCache.current.get(vehicleImageUrl) as L.Icon
+        }
+        let icon = L.icon({
+            iconUrl: vehicleImageUrl,
+            className: "svg-icon",
+            iconSize: [51,51],
+            iconAnchor: [25,25],
+            popupAnchor: [0,0]
+        })
+        iconCache.current.set(vehicleImageUrl, icon)
+        return icon
+    }
+
+    function getRidOfThisVehicle(marker: L.Marker) {
+        if (!marker) return;
+      
+        marker.off(); // removes all event handlers
+        marker.unbindPopup(); // unbinds popup
+        const popup = marker.getPopup();
+        popup?.removeFrom(map);
+        popup?.remove();
+      
+        if (map.hasLayer(marker)) marker.removeFrom(map);
+        vehicleLayer.current.removeLayer(marker);
+        marker.remove();
+      }
+      
 
 
     function shortenRoute(routeId: string) {
@@ -135,8 +157,7 @@ export const MapVehicleElements = () =>{
                 if (shortenedRouteIds!==null && !shortenedRouteIds.has(routeId)) {
                     vehicleMap.forEach((vehicle, vehicleId) => {
                         log.info("removing vehicle from map", vehicleId, vehicleMap.get(vehicleId));
-                        vehicleLayer.current.removeLayer(vehicle);
-                        vehicle.removeFrom(map);
+                        getRidOfThisVehicle(vehicle)
                     });
                     vehicleObjsRefs.current.delete(routeId);
                 }
@@ -176,6 +197,17 @@ export const MapVehicleElements = () =>{
         vehicleLayer.current.addTo(map)
         openPopup()
         log.info("map vehicle elements layer group ref",vehicleLayer.current,vehicleLayer.current.getLayers().length)
+
+        return () => {
+            log.info("removing vehicle layer from map")
+            // remove all vehicle markers from map
+            vehicleLayer.current.getLayers().forEach((vehicle) => {
+                getRidOfThisVehicle(vehicle)
+            })
+            vehicleLayer.current.removeFrom(map)
+            vehicleLayer.current.clearLayers()
+            vehicleObjsRefs.current.clear()
+        }
     }
     , [state])
 

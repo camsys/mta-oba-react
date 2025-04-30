@@ -18,6 +18,74 @@ import log from 'loglevel';
 
 
 
+
+function analyzeStateWithMemory(obj, seen = new WeakSet()) {
+    let arrays = 0;
+    let objects = 0;
+    let totalKeys = 0;
+    let totalSize = 0; // in bytes
+  
+    function roughSizeOf(value) {
+      switch (typeof value) {
+        case "string":
+          return value.length * 2;
+        case "number":
+        case "boolean":
+          return 8;
+        case "object":
+          return 0; // Handled in walk
+        default:
+          return 0;
+      }
+    }
+  
+    function walk(value) {
+      if (value === null || typeof value !== "object") {
+        totalSize += roughSizeOf(value);
+        return;
+      }
+  
+      if (seen.has(value)) return;
+      seen.add(value);
+  
+      if (Array.isArray(value)) {
+        arrays++;
+        totalSize += 64 + value.length * 8;
+        value.forEach(walk);
+      } else {
+        if (value instanceof Map) {
+          totalSize += 64 + value.size * 16;
+          for (const [k, v] of value.entries()) {
+            walk(k);
+            walk(v);
+          }
+          return;
+        }
+  
+        objects++;
+        const keys = Object.keys(value);
+        totalKeys += keys.length;
+        totalSize += 64 + keys.length * 16;
+        keys.forEach(k => {
+          totalSize += roughSizeOf(k);
+          walk(value[k]);
+        });
+      }
+    }
+  
+    walk(obj);
+  
+    return {
+      totalArrays: arrays,
+      totalObjects: objects,
+      totalKeys,
+      estimatedSizeBytes: totalSize,
+      estimatedSizeMB: (totalSize / 1024 / 1024).toFixed(2) + " MB"
+    };
+  }
+  
+
+
 export function RouteStopComponent
 ({stopDatum, routeId, index}:{stopDatum:StopInterface,routeId:string,index:string}):JSX.Element{
 
@@ -25,6 +93,9 @@ export function RouteStopComponent
     const {vehicleState} = useContext(VehicleStateContext)
     const { search } = useNavigation();
     routeId=routeId.split("_")[1]
+
+
+    log.info("vehicle state size and such assessed",analyzeStateWithMemory(vehicleState))
 
     let vehicleChildComponents = vehicleState[routeId+stopSortedDataIdentifier]
     let hasVehicleChildren = vehicleChildComponents!==null && typeof vehicleChildComponents!=="undefined"

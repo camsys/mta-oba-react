@@ -4,7 +4,7 @@ import React, {useContext, useEffect, useRef, useState} from "react";
 import queryString from "query-string";
 import {OBA} from "../../js/oba";
 import log from 'loglevel';
-import L, {LatLngBounds} from "leaflet";
+import L, {LatLngBounds, layerGroup} from "leaflet";
 
 import {CardStateContext, RoutesContext, StopsContext} from "../util/CardStateComponent.tsx";
 import {vehicleDataIdentifier, VehicleStateContext} from "../util/VehicleStateComponent";
@@ -89,6 +89,12 @@ const SearchedHere = () :JSX.Element=>{
             currentSearchedHereMarker.current.addTo(map)
             currentSearchedHereMarker.current.openPopup()
         }
+        return () => {
+            if(currentSearchedHereMarker.current){
+                log.info("removing searched here marker from map", currentSearchedHereMarker.current)
+                currentSearchedHereMarker.current.removeFrom(map)
+            }
+        }
     }, [state]);
 
     return (
@@ -158,6 +164,20 @@ const RoutesAndStops = ()=>{
         }
     }
 
+    function getRidOfThisMarker(marker: L.Marker,layerGroup: L.LayerGroup<L.Marker>) {
+        if (!marker) return;
+        
+        marker.off(); // removes all event handlers
+        marker.unbindPopup(); // unbinds popup
+        const popup = marker.getPopup();
+        popup?.removeFrom(map);
+        popup?.remove();
+        
+        if (map.hasLayer(marker)) marker.removeFrom(map);
+        layerGroup.current.removeLayer(marker);
+        marker.remove();
+    }
+
     const clearAllLayers = () => {
         log.info("clearing all layers from map", map);
 
@@ -171,13 +191,13 @@ const RoutesAndStops = ()=>{
         stopLayer.current.eachLayer((layer) => {
             layers.push(layer); // Add the layer to the array for logging purposes
             if (layer instanceof L.Polyline || layer instanceof L.Marker) {
-                layer.removeFrom(map);
+                getRidOfThisMarker(layer,stopLayer);
             }
         });
         selectedElementLayer.current.eachLayer((layer) => {
             layers.push(layer); // Add the layer to the array for logging purposes
             if (layer instanceof L.Polyline || layer instanceof L.Marker) {
-                layer.removeFrom(map);
+                getRidOfThisMarker(layer,selectedElementLayer);
             }
         });
         
@@ -278,6 +298,12 @@ const RoutesAndStops = ()=>{
         addStablePopups();
         log.info("map route elements layer group ref",routeLayer,routeLayer.current.getLayers().length)
         log.info("map stop elements layer group ref",stopLayer.current.getLayers().length)
+        return () => {
+            clearAllLayers()
+            routeLayer.current.removeFrom(map);
+            selectedElementLayer.current.removeFrom(map);
+            stopLayer.current.removeFrom(map);
+        }
     },[state])
 
     const lastZoomWasBelowThreshold = useRef(map.getZoom());
@@ -357,6 +383,16 @@ const Highlighted = () =>{
                 value.addTo(map);
             }
         });
+
+        return () => {
+            log.info("removing highlighted components from map",highlightedComponents.current)
+            highlightedComponents.current.forEach((value, key) => {
+                if (value !== null && value !== undefined) {
+                    value.removeFrom(map);
+                }
+            });
+            highlightedComponents.current.clear();
+        }
     }
     , [state,highlightedId])
 
