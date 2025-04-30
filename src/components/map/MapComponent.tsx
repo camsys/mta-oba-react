@@ -10,7 +10,6 @@ import {CardStateContext, RoutesContext, StopsContext} from "../util/CardStateCo
 import {vehicleDataIdentifier, VehicleStateContext} from "../util/VehicleStateComponent";
 import MapRouteComponent from "./MapRouteComponent";
 import MapStopComponent from "./MapStopComponent";
-import MapVehicleComponent from "./MapVehicleComponent";
 import {
     CardType,
     MapRouteComponentInterface,
@@ -299,10 +298,10 @@ const RoutesAndStops = ()=>{
         log.info("map route elements layer group ref",routeLayer,routeLayer.current.getLayers().length)
         log.info("map stop elements layer group ref",stopLayer.current.getLayers().length)
         return () => {
-            clearAllLayers()
-            routeLayer.current.removeFrom(map);
-            selectedElementLayer.current.removeFrom(map);
-            stopLayer.current.removeFrom(map);
+            log.info("end of routes and stops effect, removing route layer from map")
+            // routeLayer.current.removeFrom(map);
+            // selectedElementLayer.current.removeFrom(map);
+            // stopLayer.current.removeFrom(map);
         }
     },[state])
 
@@ -537,6 +536,7 @@ const HandleMapBoundsAndZoom = () : void=>{
 const MapEvents = () :boolean=> {
     log.info("generating map events")
     const openPopups = useRef<L.Popup[]>([]);
+    const { state} = useContext(CardStateContext);
 
 
 
@@ -594,6 +594,15 @@ const MapEvents = () :boolean=> {
             map.invalidateSize();
         });
       }, [map]);
+
+    useEffect(() => {
+        return () => {
+            openPopups.current.forEach((popup) => {
+                popup.remove();
+            });
+            openPopups.current = [];
+        };
+    }, [state]);
 
     return false;
 };
