@@ -606,6 +606,12 @@ export function RightClickSearchButton() {
         popupRef.current?.remove();
       };
     }, [map]);
+
+    useMapEvents({
+        click() {
+            popupRef.current?.remove();
+        }
+    });
   
     return null;
   }
