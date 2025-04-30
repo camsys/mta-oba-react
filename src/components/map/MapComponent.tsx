@@ -593,20 +593,32 @@ export function RightClickSearchButton() {
 
         popupRef.current = popup;
     };
+
+    useLongPressSearch({onLongPress : handleContextMenu});
   
     useEffect(() => {
-      map.on("contextmenu", handleContextMenu);
-      return () => {
-        map.off("contextmenu", handleContextMenu);
-        popupRef.current?.remove();
-      };
+        const events: Partial<LeafletEventHandlerFnMap> = {
+            mousedown: closePopup,
+            touchstart: closePopup,
+        };
+        map.on(events);
+        map.on("contextmenu", handleContextMenu);
+
+        return () => {
+            map.off(events);
+            map.off("contextmenu", handleContextMenu);
+            popupRef.current?.remove();
+        };
     }, [map]);
 
-    useMapEvents({
-        click() {
-            popupRef.current?.remove();
-        }
-    });
+    const closePopup = () => {
+        popupRef.current?.remove();
+    }
+
+    const events: Partial<LeafletEventHandlerFnMap> = {
+        mousedown: closePopup,
+        touchstart: closePopup,
+    };
   
     return null;
   }
