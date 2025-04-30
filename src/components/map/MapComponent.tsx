@@ -569,34 +569,32 @@ export function RightClickSearchButton() {
     const popupRef = useRef<Popup | null>(null);
   
     const handleContextMenu = (e: LeafletMouseEvent) => {
-      e.originalEvent.preventDefault();
-  
-      const latlng = e.latlng;
-  
-      const div = document.createElement("div");
-      div.className = "search-here-div"
-      div.innerHTML = `
+        e.originalEvent.preventDefault();
+
+        const latlng = e.latlng;
+
+        const div = document.createElement("div");
+        div.className = "search-here-div"
+        div.innerHTML = `
         <button class="button search-here">Search Here</button>
-      `;
-  
-      div.querySelector("button")?.addEventListener("click", () => {
+        `;
+
+        div.querySelector("button")?.addEventListener("click", () => {
         search(latlng.lat.toFixed(6) + "," + latlng.lng.toFixed(6));
         popupRef.current?.remove();
-      });
-  
-      // Clean up any existing popup
-      popupRef.current?.remove();
-  
-      const popup = L.popup()
+        });
+
+        // Clean up any existing popup
+        popupRef.current?.remove();
+
+        const popup = L.popup({closeButton: false})
         .setLatLng(latlng)
         .setContent(div)
         .openOn(map);
-
-        popup._customId = "search here popup"
-
         
-  
-      popupRef.current = popup;
+
+
+        popupRef.current = popup;
     };
   
     useEffect(() => {
