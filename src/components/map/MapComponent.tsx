@@ -303,6 +303,9 @@ const RoutesAndStops = ()=>{
     
                 log.info("map route elements layer group ref",routeLayer.current,routeLayer.current.getLayers().length)
                 log.info("map stop elements layer group ref",stopLayer.current.getLayers().length)
+                let mapWidth=map.getBounds().getEast()-map.getBounds().getWest();
+                let mapHeight=map.getBounds().getNorth()-map.getBounds().getSouth();
+                log.info("map width and height",mapWidth,mapHeight)
             }
         }
     )
@@ -359,25 +362,39 @@ const Highlighted = () =>{
 
 }
 
-const setMapLatLngAndZoom = (duration :number , lat : number, long :number,zoom:number) :void =>{
-    log.info("setting map bounds:",duration,lat,long,zoom)
-    if(lat===null|long===null|zoom===null){return}
+const setMapLatLngAndZoom = (lat : number, lon :number,zoom:number) :void =>{
+    let duration = .85
+    log.info("Assessing zoom. based on requested values:",lat,lon,zoom)
+    if(lat===null|lon===null|zoom===null){return}
     let map = useMap()
     let mapWidth=map.getBounds().getEast()-map.getBounds().getWest();
     let mapHeight=map.getBounds().getNorth()-map.getBounds().getSouth();
     let [currentLat, currentLong,currentZoom] = [map.getCenter().lat,map.getCenter().lng,map.getZoom()]
     let latsMatch = currentLat+mapHeight/3>lat && currentLat-mapHeight/3<lat
-    let longsMatch = currentLong+mapWidth/3>long && currentLong-mapWidth/3<long
-    let zoomsMatch =  zoom-.3<currentZoom && currentZoom>16
-    // let zoomsMatch = zoom-.3<currentZoom && zoom+.3>currentZoom
-    log.info("update map bounds and zoom? current: ",currentLat,currentLong,currentZoom,"new: ",lat,long,zoom, "matches",latsMatch,longsMatch,zoomsMatch)
+    let latsOnScreen = currentLat+mapHeight>lat && currentLat-mapHeight<lat
+    let lonsMatch = currentLong+mapWidth/3>lon && currentLong-mapWidth/3<lon
+    let lonsOnScreen = currentLong+mapWidth>lon && currentLong-mapWidth<lon
+    let zoomsMatch =  zoom-.3<currentZoom && zoom+.3>currentZoom
+    let zoomSeemsIntentional = zoom<16
 
-    if(latsMatch&&longsMatch&&zoomsMatch){ return }
-    log.info("updating map bounds and zoom")
-    map.flyTo([lat, long], zoom, {
-        animate: true,
-        duration: duration
-    });
+    let performZoom = false
+    
+    if(zoomSeemsIntentional){
+        log.info("Assessing zoom. zoom seems intentional, checking if new selection is on screen ",currentLat,currentLong,currentZoom,"new: ",lat,lon,zoom, "matches",lonsOnScreen,latsOnScreen)
+        if(lonsOnScreen && latsOnScreen){
+            performZoom = true
+        }
+    } else {
+        log.info("Assessing zoom. update map bounds and zoom? current: ",currentLat,currentLong,currentZoom,"new: ",lat,lon,zoom, "matches",latsMatch,lonsMatch,zoomsMatch)
+        if(!(latsMatch&&lonsMatch&&zoomsMatch)){ performZoom = true }
+    }
+    if(performZoom){
+        log.info("Assessing zoom. updating map bounds and zoom")
+        map.flyTo([lat, lon], zoom, {
+            animate: true,
+            duration: duration
+        });
+    }
 }
 
 const setMapBounds = (bounds: LatLngBounds):void =>{
@@ -419,7 +436,6 @@ const getBoundsForRoute = (route:RouteMatch)=> {
 
 const HandleMapBoundsAndZoom = () : void=>{
     const { state} = useContext(CardStateContext);
-    let duration = .85
     let [lat, long] = [null,null]
     let zoom = null
 
@@ -451,7 +467,7 @@ const HandleMapBoundsAndZoom = () : void=>{
             zoom = 11;
         }
 
-    setMapLatLngAndZoom(duration,lat,long,zoom)
+    setMapLatLngAndZoom(lat,long,zoom)
 }
 
 const MapEvents = () :boolean=> {
@@ -529,20 +545,35 @@ export function RightClickSearchButton() {
     return (
       <>
         {buttonPosition && (
-        <div className="map-right-click-popup map-popup" style={{
-            position: "absolute",
-            top: buttonPosition.y - 16,
-            left: buttonPosition.x,
-            transform: "translate(-50%, -100%)", // center above click
-            zIndex: 1000,
-          }}>
-          <div className="popup-content">
-            <button onClick={handleSearchClick} className="button search-here">
-                Search Here
-            </button>
-          </div>
-        </div>
-        )}
+            <div
+                className="map-right-click-popup map-popup"
+                style={{
+                position: "absolute",
+                top: buttonPosition.y - 16,
+                left: buttonPosition.x,
+                transform: "translate(-50%, -100%)",
+                zIndex: 1000,
+                }}
+            >
+                <div className="popup-content" style={{ position: "relative", padding: "0.5em 1em" }}>
+                <a
+                    onClick={() => {
+                    setButtonPosition(null);
+                    setClickLatLng(null);
+                    }}
+                    className= {"leaflet-popup-close-button"}
+                    aria-label="Close"
+                >
+                    <span aria-hidden={true}>×</span>
+                </a>
+
+                <button onClick={handleSearchClick} className="button search-here">
+                    Search Here
+                </button>
+                </div>
+            </div>
+            )}
+
       </>
     );
   }
