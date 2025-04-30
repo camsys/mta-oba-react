@@ -491,13 +491,20 @@ const MapEvents = () :boolean=> {
                     }
                 }
             });
-        },
+        }
 
         // popupclose(e) {}
         
         // click() {},
         // zoomend() {}
     });
+
+    let map = useMap()
+    useEffect(() => {
+        log.info("map loaded")
+        
+        map.options.closePopupOnClick = false;
+    }, []);
 
     return false;
 };
