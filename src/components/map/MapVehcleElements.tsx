@@ -26,10 +26,10 @@ import { createSearchedHereMarker } from "../../utils/SearchedHereFactory.ts";
 import { createVehicleMarker } from "../../utils/VehicleMarkerFactory.ts";
 import {useNavigation} from "../../js/updateState/NavigationEffect.ts";
 
-console.log("createRoutePolyline:", createRoutePolyline);
-console.log("createStopMarker:", createStopMarker);
-console.log("createSearchedHereMarker:", createSearchedHereMarker);
-console.log("createVehicleMarker:", createVehicleMarker);
+log.info("createRoutePolyline:", createRoutePolyline);
+log.info("createStopMarker:", createStopMarker);
+log.info("createSearchedHereMarker:", createSearchedHereMarker);
+log.info("createVehicleMarker:", createVehicleMarker);
 
 
 

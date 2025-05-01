@@ -78,7 +78,7 @@ function processStopSearch(stop,card:Card,stops: StopsObject,routes:RoutesObject
 }
 
 function scrollToSidebarTop(){
-    // window.console.log("boop scrolling to top")
+    // log.info("boop scrolling to top")
     // scroll #sidebar .sidebar-content to top, animate
     let sidebar = document.getElementById("sidebar");
     let sidebarContent = sidebar.querySelector(".sidebar-content");

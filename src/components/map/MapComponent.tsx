@@ -29,10 +29,10 @@ import { createSearchedHereMarker } from "../../utils/SearchedHereFactory.ts";
 import { createVehicleMarker } from "../../utils/VehicleMarkerFactory.ts";
 import { MapVehicleElements } from "./MapVehcleElements.tsx";
 
-console.log("createRoutePolyline:", createRoutePolyline);
-console.log("createStopMarker:", createStopMarker);
-console.log("createSearchedHereMarker:", createSearchedHereMarker);
-console.log("createVehicleMarker:", createVehicleMarker);
+log.info("createRoutePolyline:", createRoutePolyline);
+log.info("createStopMarker:", createStopMarker);
+log.info("createSearchedHereMarker:", createSearchedHereMarker);
+log.info("createVehicleMarker:", createVehicleMarker);
 
 const createVehicleIcon = (vehicleDatum):L.Icon => {
     let scheduled = vehicleDatum.hasRealtime?"":"scheduled/"
@@ -520,7 +520,7 @@ const HandleMapBoundsAndZoom = () : void=>{
             let vehicleId = state.currentCard.vehicleId;
             [lat, long] = state.currentCard.longlat;
             zoom = 16;
-            console.log("vehicle card zoom requested",state.currentCard, lat, long, zoom)
+            log.info("vehicle card zoom requested",state.currentCard, lat, long, zoom)
         }
     })
     if(state.currentCard.type===CardType.HomeCard)
@@ -548,11 +548,11 @@ const MapEvents = () :boolean=> {
             log.info("popup opened", popupContent);
             popupContent.addEventListener('click', function (event) {
                 if (event.target.matches('.close-map')) {
-                    // console.log('boop popup button clicked');
+                    // log.info('boop popup button clicked');
                     var mapWrap = document.querySelector('#map-wrap');
                     var mapToggle = document.querySelector('#map-toggle');
                     if (mapWrap) {
-                    // window.console.log('boop map close');
+                    // log.info('boop map close');
                     mapWrap.classList.remove('open');
                     mapToggle.setAttribute('aria-expanded', 'false');
                     mapToggle.setAttribute('aria-label', 'Toggle Map Visibility (currently hidden)');
@@ -560,10 +560,9 @@ const MapEvents = () :boolean=> {
                     }
                 } 
             });
-
-            const contentEl = e.popup.getContent();
-            const isSearchHere = contentEl instanceof HTMLElement && contentEl.classList.contains("search-here-div");
-            log.info("popup opened", e.popup,"is search here popup", isSearchHere,contentEl);
+            
+            const isSearchHere = popupContent.classList.contains("search-here-popup");
+            log.info("popup opened", e.popup,"is search here popup", isSearchHere);
             if(!isSearchHere){
                 openPopups.current.forEach((popup) => {
                     if (popup !== e.popup) {
@@ -618,13 +617,11 @@ export function RightClickSearchButton() {
 
         const latlng = e.latlng;
 
-        const div = document.createElement("div");
-        div.className = "search-here-div"
-        div.innerHTML = `
-        <button class="button search-here">Search Here</button>
-        `;
+        const searchHereButton = document.createElement("button");
+        searchHereButton.className = "button search-here"
+        searchHereButton.innerText = "Search Here";
 
-        div.querySelector("button")?.addEventListener("click", () => {
+        searchHereButton.addEventListener("click", () => {
         search(latlng.lat.toFixed(6) + "," + latlng.lng.toFixed(6));
         popupRef.current?.remove();
         });
@@ -632,9 +629,9 @@ export function RightClickSearchButton() {
         // Clean up any existing popup
         popupRef.current?.remove();
 
-        const popup = L.popup({closeButton: false})
+        const popup = L.popup({closeButton: false, className: "search-here-popup no-close-button-popup"})
         .setLatLng(latlng)
-        .setContent(div)
+        .setContent(searchHereButton)
         .openOn(map);
         
 
