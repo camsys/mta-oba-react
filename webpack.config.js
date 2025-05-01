@@ -1,6 +1,8 @@
 const HtmlWebPackPlugin = require("html-webpack-plugin");
 const webpack = require("webpack");
 const path = require("path");
+const CopyPlugin = require("copy-webpack-plugin");
+const isProd = process.env.NODE_ENV === 'production';
 
 // HTML Webpack Plugin for generating HTML file with script tags
 const htmlPlugin = new HtmlWebPackPlugin({
@@ -19,6 +21,13 @@ const envPlugin = new webpack.DefinePlugin({
   'process.env.ENABLE_GOOGLE_TRANSLATE': JSON.stringify(process.env.ENABLE_GOOGLE_TRANSLATE || true)
 });
 
+// Copy Plugin to copy static assets
+const copyPlugin = new CopyPlugin({
+  patterns: [
+    { from: "public", to: "." }
+  ]
+})
+ 
 // Function to clean up host address
 function cleanUpHostAddress(hostAddress) {
   return hostAddress.trimEnd().replace(/\/$/, '');
@@ -54,11 +63,16 @@ module.exports = {
       Assets: path.resolve(__dirname, 'src/assets/')
     }
   },
-  plugins: [htmlPlugin, envPlugin],
+  plugins: [htmlPlugin, envPlugin,copyPlugin],
   devServer: {
     allowedHosts: [
       process.env.ALLOWED_HOST_ADDRESS || 'localhost'
     ]
+  },
+  output: {
+    path: path.resolve(__dirname, 'dist'),
+    filename: 'bundle.[contenthash].js',
+    publicPath: isProd ? './' : '/',
   },
   watchOptions: {
     poll: 1000, // Check for changes every second
