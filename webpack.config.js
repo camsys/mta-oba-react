@@ -3,6 +3,7 @@ const webpack = require("webpack");
 const path = require("path");
 const CopyPlugin = require("copy-webpack-plugin");
 const isProd = process.env.NODE_ENV === 'production';
+const loggingLevel = isProd ?  'error' : 'info';
 
 // HTML Webpack Plugin for generating HTML file with script tags
 const htmlPlugin = new HtmlWebPackPlugin({
@@ -17,7 +18,7 @@ const envPlugin = new webpack.DefinePlugin({
   'process.env.VEHICLE_MONITORING_ENDPOINT': JSON.stringify(process.env.VEHICLE_MONITORING_ENDPOINT || 'api/siri/vehicle-monitoring.json?key=OBANYC'),
   'process.env.STOP_MONITORING_ENDPOINT': JSON.stringify(process.env.STOP_MONITORING_ENDPOINT || '/api/stop-for-id?key=OBANYC'),
   'process.env.STOPS_ON_ROUTE_ENDPOINT': JSON.stringify(process.env.STOPS_ON_ROUTE_ENDPOINT || 'api/stops-on-route-for-direction?'),
-  'process.env.LOGGINGLEVEL': JSON.stringify(process.env.LOGGINGLEVEL || 'info'),
+  'process.env.LOGGINGLEVEL': JSON.stringify(process.env.LOGGINGLEVEL || loggingLevel),
   'process.env.ENABLE_GOOGLE_TRANSLATE': JSON.stringify(process.env.ENABLE_GOOGLE_TRANSLATE || true)
 });
 
