@@ -4,7 +4,7 @@ export const createRoutePolyline = (
     routeData,
     isHighlighted = false
 ) => {
-    console.log("RoutePolylineFactory loaded");
+    log.info("RoutePolylineFactory loaded");
     const polylineOptions = {
         positions: routeData.points,
         color: `#${routeData.color}`,

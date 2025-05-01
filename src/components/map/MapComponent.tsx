@@ -30,10 +30,10 @@ import { createSearchedHereMarker } from "../../utils/SearchedHereFactory.ts";
 import { createVehicleMarker } from "../../utils/VehicleMarkerFactory.ts";
 import { MapVehicleElements } from "./MapVehcleElements.tsx";
 
-console.log("createRoutePolyline:", createRoutePolyline);
-console.log("createStopMarker:", createStopMarker);
-console.log("createSearchedHereMarker:", createSearchedHereMarker);
-console.log("createVehicleMarker:", createVehicleMarker);
+log.info("createRoutePolyline:", createRoutePolyline);
+log.info("createStopMarker:", createStopMarker);
+log.info("createSearchedHereMarker:", createSearchedHereMarker);
+log.info("createVehicleMarker:", createVehicleMarker);
 
 const createVehicleIcon = (vehicleDatum):L.Icon => {
     let scheduled = vehicleDatum.hasRealtime?"":"scheduled/"
@@ -485,7 +485,7 @@ const HandleMapBoundsAndZoom = () : void=>{
             let vehicleId = state.currentCard.vehicleId;
             [lat, long] = state.currentCard.longlat;
             zoom = 16;
-            console.log("vehicle card zoom requested",state.currentCard, lat, long, zoom)
+            log.info("vehicle card zoom requested",state.currentCard, lat, long, zoom)
         }
     })
     if(state.currentCard.type===CardType.HomeCard)
@@ -512,11 +512,11 @@ const MapEvents = () :boolean=> {
             log.info("popup opened", popupContent);
             popupContent.addEventListener('click', function (event) {
                 if (event.target.matches('.close-map')) {
-                    // console.log('boop popup button clicked');
+                    // log.info('boop popup button clicked');
                     var mapWrap = document.querySelector('#map-wrap');
                     var mapToggle = document.querySelector('#map-toggle');
                     if (mapWrap) {
-                    // window.console.log('boop map close');
+                    // log.info('boop map close');
                     mapWrap.classList.remove('open');
                     mapToggle.setAttribute('aria-expanded', 'false');
                     mapToggle.setAttribute('aria-label', 'Toggle Map Visibility (currently hidden)');
