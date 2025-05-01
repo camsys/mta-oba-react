@@ -5,10 +5,9 @@
   "main": "index.tsx",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "NODE_ENV=development webpack serve --config webpack.config.js",
-    "build": "NODE_ENV=production webpack --mode production --config webpack.config.js",
-    "start:clean": "npx madge --circular src; rm -rf dist .webpack-cache .tsbuildinfo; webpack serve --config webpack.config.js",
-    "serve": "npx serve dist"
+    "start": "webpack serve --config webpack.config.js",
+    "build": "webpack --mode production --config webpack.config.js",
+    "start:clean": "npx madge --circular src; rm -rf dist .webpack-cache .tsbuildinfo; webpack serve --config webpack.config.js"
   },
   "keywords": [],
   "author": "",
@@ -46,8 +45,6 @@
     "react-router": "^6.23.1",
     "react-select": "^5.8.0",
     "react-svg": "^16.1.33",
-    "uuid": "^11.1.0",
-    "copy-webpack-plugin": "^13.0.0",
-    "cross-env": "^7.0.3"
+    "uuid": "^11.1.0"
   }
 }

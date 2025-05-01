@@ -27,10 +27,10 @@ import { createSearchedHereMarker } from "../../utils/SearchedHereFactory.ts";
 import { createVehicleMarker } from "../../utils/VehicleMarkerFactory.ts";
 import {useNavigation} from "../../js/updateState/NavigationEffect.ts";
 
-log.info("createRoutePolyline:", createRoutePolyline);
-log.info("createStopMarker:", createStopMarker);
-log.info("createSearchedHereMarker:", createSearchedHereMarker);
-log.info("createVehicleMarker:", createVehicleMarker);
+console.log("createRoutePolyline:", createRoutePolyline);
+console.log("createStopMarker:", createStopMarker);
+console.log("createSearchedHereMarker:", createSearchedHereMarker);
+console.log("createVehicleMarker:", createVehicleMarker);
 
 const createVehicleIcon = (vehicleDatum):L.Icon => {
     let scheduled = vehicleDatum.hasRealtime?"":"scheduled/"
@@ -50,9 +50,9 @@ const createVehicleIcon = (vehicleDatum):L.Icon => {
 export const MapVehicleElements = () =>{
 
     let {vehicleSearch} = useNavigation()
-    const selectVehicle = (routeId:string,vehicleId:string,lonlat:[number,number]) =>{
+    const selectVehicle = (vehicleDatum :VehicleRtInterface) =>{
         // log.info("clicked on " + vehicleDatum.vehicleId)
-        vehicleSearch(routeId,vehicleId,lonlat)
+        vehicleSearch(vehicleDatum)
     }
 
     const cardStateContext = useContext(CardStateContext);
@@ -86,8 +86,7 @@ export const MapVehicleElements = () =>{
         let vehicle = vehicleMap.get(vehicleDatum.vehicleId);
         if (vehicle) {
             // update vehicle to be in new pos
-            log.trace("updating vehicle position",vehicleDatum,vehicleMap.get(vehicleDatum.vehicleId))
-            vehicle.setLatLng([vehicleDatum.lat, vehicleDatum.lon])
+            vehicle.setLatLng(vehicleDatum.longLat)
             vehicle.setIcon(createVehicleIcon(vehicleDatum))
             if(state.currentCard.type !== CardType.VehicleCard || vehicleDatum.vehicleId !== state.currentCard.datumId){
                 vehicle.closePopup()

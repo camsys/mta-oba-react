@@ -311,18 +311,18 @@ export const useNavigation = () =>{
     //this function doesn't belong in "SearchEffect" but it does belong with card handling functions
 // which is what this has become
 
-    const vehicleSearch = async (routeId:string,vehicleId:string,lonlat:[number,number])=> {
-        log.info("setting card to vehicle card",routeId,vehicleId,lonlat);
+    const vehicleSearch = async (vehicleDatum : VehicleRtInterface)=> {
+        log.info("setting card to vehicle card",vehicleDatum);
         //todo: should be current search term
         let pastCard = state.currentCard;
-        let halvedRouteId = routeId.split("_")[1];
-        log.info("found routeId of target vehicle: ",halvedRouteId);
-        let currentCard = new Card(halvedRouteId,uuidv4());
-        log.info("generated new card to become vehicle card",currentCard,routeId,vehicleId,lonlat);
+        let routeId = vehicleDatum.routeId.split("_")[1];
+        log.info("found routeId of target vehicle: ",routeId);
+        let currentCard = new Card(routeId,uuidv4());
+        log.info("generated new card to become vehicle card",currentCard,vehicleDatum)
         let routeData = routes?.current;
-        if(routeData){routeData=routeData[routeId]};
+        if(routeData){routeData=routeData[vehicleDatum.routeId]};
         log.info("found routedata of target vehicle: ",routeData);
-        currentCard.setToVehicle(vehicleId,[routeData],new Set([routeId]),lonlat);
+        currentCard.setToVehicle(vehicleDatum.vehicleId,[routeData],new Set([vehicleDatum.routeId]),vehicleDatum.longLat);
         let cardStack = state.cardStack;
         cardStack.push(currentCard);
         log.info("updating state prev card -> new vehicle card: \n", pastCard,currentCard);
