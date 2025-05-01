@@ -46,8 +46,8 @@ export interface VehicleDepartureInterface {
 }
 
 export interface VehicleRtInterface {
-    longLat: [number, number];
-    latLngLiteral:LatLngLiteral;
+    lon: number;
+    lat: number;
     destination: string;
     hasRealtime: boolean;
     nextStop: string | null;
@@ -186,8 +186,8 @@ export function createVehicleRtInterface(mvj: any,updateTime:Date): VehicleRtInt
 
     return {
         lastUpdate: updateTime,
-        longLat: [mvj.VehicleLocation.Latitude, mvj.VehicleLocation.Longitude],
-        latLngLiteral: {lat:mvj.VehicleLocation.Latitude, lng:mvj.VehicleLocation.Longitude},
+        lon: mvj.VehicleLocation.Longitude,
+        lat: mvj.VehicleLocation.Latitude,
         destination: mvj.DestinationName,
         hasRealtime: mvj.Monitored && mvj.ProgressStatus!=="spooking",
         nextStop: mvj.MonitoredCall?.StopPointRef || null,

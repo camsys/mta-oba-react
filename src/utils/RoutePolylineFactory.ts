@@ -1,4 +1,5 @@
 import L from "leaflet";
+import log from "loglevel";
 
 export const createRoutePolyline = (
     routeData,

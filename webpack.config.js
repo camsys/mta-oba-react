@@ -1,6 +1,7 @@
 const HtmlWebPackPlugin = require("html-webpack-plugin");
 const webpack = require("webpack");
 const path = require("path");
+const CopyPlugin = require("copy-webpack-plugin");
 
 // HTML Webpack Plugin for generating HTML file with script tags
 const htmlPlugin = new HtmlWebPackPlugin({
@@ -15,9 +16,17 @@ const envPlugin = new webpack.DefinePlugin({
   'process.env.VEHICLE_MONITORING_ENDPOINT': JSON.stringify(process.env.VEHICLE_MONITORING_ENDPOINT || 'api/siri/vehicle-monitoring.json?key=OBANYC'),
   'process.env.STOP_MONITORING_ENDPOINT': JSON.stringify(process.env.STOP_MONITORING_ENDPOINT || '/api/stop-for-id?key=OBANYC'),
   'process.env.STOPS_ON_ROUTE_ENDPOINT': JSON.stringify(process.env.STOPS_ON_ROUTE_ENDPOINT || 'api/stops-on-route-for-direction?'),
-  'process.env.LOGGINGLEVEL': JSON.stringify(process.env.LOGGINGLEVEL || 'info'),
+  'process.env.LOGGINGLEVEL': JSON.stringify(process.env.LOGGINGLEVEL || 'error'),
   'process.env.ENABLE_GOOGLE_TRANSLATE': JSON.stringify(process.env.ENABLE_GOOGLE_TRANSLATE || true)
 });
+const isProd = process.env.NODE_ENV === 'production';
+
+const copyPlugin = new CopyPlugin({
+  patterns: [
+    { from: "public", to: "." }
+  ]
+})
+
 
 // Function to clean up host address
 function cleanUpHostAddress(hostAddress) {
@@ -54,12 +63,19 @@ module.exports = {
       Assets: path.resolve(__dirname, 'src/assets/')
     }
   },
-  plugins: [htmlPlugin, envPlugin],
+  plugins: [htmlPlugin, envPlugin,copyPlugin],
   devServer: {
     allowedHosts: [
       process.env.ALLOWED_HOST_ADDRESS || 'localhost'
     ]
   },
+  output: {
+    path: path.resolve(__dirname, 'dist'),
+    filename: 'bundle.[contenthash].js',
+    publicPath: isProd ? './' : '/',
+  },
+  
+  
   watchOptions: {
     poll: 1000, // Check for changes every second
   }
