@@ -96,7 +96,7 @@ function extractData (stopId,siri){
 function updateVehiclesState(updates,setState){
 
     let stateFunc = (prevState) => {
-        let newState = {...prevState}
+        let newState = {}
         newState.renderCounter = prevState.renderCounter + 1
         Object.entries(updates).forEach(([key, val]) => {newState[key]=val})
         return newState
