@@ -2759,6 +2759,9 @@ button:hover, .button:hover {
   margin: 0;
   padding-left: 2em;
 }
+.map-popup.search-here-popup .search-here:focus, .map-popup.search-here-popup .search-here:focus-visible, .leaflet-popup.search-here-popup .search-here:focus, .leaflet-popup.search-here-popup .search-here:focus-visible {
+  background-image: url(/img/icon/search_white.svg);
+}
 .map-popup.no-close-button-popup a.leaflet-popup-close-button, .leaflet-popup.no-close-button-popup a.leaflet-popup-close-button {
   display: none;
 }
