@@ -119,6 +119,13 @@ const RoutesAndStops = ()=>{
     let map = useMap()
 
 
+    const popupOptions = useRef<L.PopupOptions>({
+        className: "map-popup vehicle-popup",
+        autoPan: false,
+        keepInView: false,
+        autoClose: false
+    })
+
 
     //methods
 
@@ -138,7 +145,7 @@ const RoutesAndStops = ()=>{
         route.directions.forEach(dir => {
             dir.mapStopComponentData.forEach((datum:StopInterface) => {
                 let stopId = datum.id;
-                let newStopMarker = createStopMarker(datum,selectStop,0)
+                let newStopMarker = createStopMarker(datum,selectStop,popupOptions.current,0)
                 mapStopComponents.current.set(stopId, newStopMarker);
                 stopsToDisplay.set(stopId, newStopMarker);                
             })
@@ -321,6 +328,14 @@ const Highlighted = () =>{
     const routes = useContext(RoutesContext)
     const map = useMap()
 
+    
+    const popupOptions = useRef<L.PopupOptions>({
+        className: "map-popup vehicle-popup",
+        autoPan: false,
+        keepInView: false,
+        autoClose: false
+    })
+
     log.info("highlight component loaded",highlightedId,routes.current,stops.current)
 
 
@@ -340,7 +355,7 @@ const Highlighted = () =>{
 
         let stopDatum = stops.current[highlightedId]
         if(stopDatum!==null && typeof stopDatum !=='undefined'){
-            highlightedComponents.current.set(stopDatum.id,createStopMarker(stopDatum,()=>{},20))
+            highlightedComponents.current.set(stopDatum.id,createStopMarker(stopDatum,()=>{},popupOptions.current,20))
         }
         let routeDatum = routes.current[highlightedId]
         if(routeDatum!==null && typeof routeDatum !=='undefined'){
