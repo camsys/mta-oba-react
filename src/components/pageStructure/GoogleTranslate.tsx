@@ -63,7 +63,7 @@ export const GoogleTranslateButton = () => {
                 <span className="label">Google Translate</span>
             </button>
 
-            <div className="sub-menu collapse-content" id="google-translate-menu" role="menu">
+            <div className="sub-menu collapse-content" id="google-translate-menu" role="menu" style={{ maxHeight: '0px' }}>
                 <div id="google-translate" tabIndex={-1}>
                 {showWarning && (
                     <div className="google-translate-warning">
