@@ -52,7 +52,12 @@ export const MapVehicleElements = () =>{
     let shortenedRouteIds = new Set(Array.from(state.currentCard.routeIdList).map(shortenRoute));
     log.info("looking for vehicles from route ids: ",shortenedRouteIds)
 
-
+    const popupOptions = {
+        className: "map-popup vehicle-popup",
+        autoPan: false,
+        keepInView: false,
+        autoClose: false
+    }
 
     const selectVehicle = (routeId:string,vehicleId:string,latlon:[number,number]) =>{
         // log.info("clicked on " + vehicleDatum.vehicleId)
@@ -87,17 +92,19 @@ export const MapVehicleElements = () =>{
         // check if in map, if not add it, if so update it
         let vehicle = vehicleMap.get(vehicleDatum.vehicleId);
         if (vehicle) {
-            // update vehicle to be in new pos
-            vehicle.setLatLng(vehicleDatum.longLat)
-            vehicle.setIcon(createVehicleIcon(vehicleDatum))
-            if(state.currentCard.type !== CardType.VehicleCard || vehicleDatum.vehicleId !== state.currentCard.datumId){
-                vehicle.closePopup()
+            if(vehicleDatum.longLat[0] !=vehicle.getLatLng().lat, vehicleDatum.longLat[1] != vehicle.getLatLng().lng){
+                // update vehicle to be in new pos
+                vehicle.setLatLng(vehicleDatum.longLat)
+                vehicle.setIcon(createVehicleIcon(vehicleDatum))
+                if(state.currentCard.type !== CardType.VehicleCard || vehicleDatum.vehicleId !== state.currentCard.datumId){
+                    vehicle.closePopup()
+                }
+                log.info("updated vehicle position",vehicleDatum.vehicleId,vehicleMap.get(vehicleDatum.vehicleId))
             }
-            log.info("updated vehicle position",vehicleDatum.vehicleId,vehicleMap.get(vehicleDatum.vehicleId))
         }
         else {
             log.info("adding vehicle to map",vehicleDatum.vehicleId,vehicleDatum)
-            vehicle = createVehicleMarker(vehicleDatum,createVehicleIcon(vehicleDatum))
+            vehicle = createVehicleMarker(vehicleDatum,createVehicleIcon(vehicleDatum),popupOptions)
             vehicle.on("click", (e:L.LeafletMouseEvent) => {
                 selectVehicle(vehicleDatum.routeId, vehicleDatum.vehicleId, [e.latlng.lat, e.latlng.lng]);
             });
