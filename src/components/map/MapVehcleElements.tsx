@@ -155,13 +155,13 @@ export const MapVehicleElements = () =>{
                     && typeof vehicleObjsRefs.current.get === 'function'){
                     log.info(`MapVehicleElements: processing vehicleDataForRoute`,vehicleDataForRoute,vehicleObjsRefs.current)
                     vehicleDataForRoute.forEach(vehicleDatum=>{
-                        vehicleDataForRoute = vehicleObjsRefs.current.get(shortenedRouteId)
-                        if(vehicleDataForRoute == null || vehicleDataForRoute == undefined){
+                        let vehicleRefForRoute = vehicleObjsRefs.current.get(shortenedRouteId)
+                        if(vehicleRefForRoute == null || vehicleRefForRoute == undefined){
                             log.info("MapVehicleElements: creating new vehicle map for routeId",shortenedRouteId)
-                            vehicleDataForRoute = new Map()
-                            vehicleObjsRefs.current.set(shortenedRouteId, vehicleDataForRoute)
+                            vehicleRefForRoute = new Map()
+                            vehicleObjsRefs.current.set(shortenedRouteId, vehicleRefForRoute)
                         }
-                        handleVehicleForMap(vehicleDatum, vehicleDataForRoute)
+                        handleVehicleForMap(vehicleDatum, vehicleRefForRoute)
                     });
                 }
                 log.info("MapVehicleElements: vehicleObjsRefs",vehicleObjsRefs.current)
