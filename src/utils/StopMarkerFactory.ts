@@ -5,6 +5,7 @@ import {useNavigation} from "../js/updateState/NavigationEffect.ts";
 export const createStopMarker = (
     stopDatum,
     selectStop: Function,
+    popupOptions: L.PopupOptions,
     zIndexOverride: number=0,
 ) => {
     const directionKey = stopDatum?.stopDirection || "unknown";
@@ -38,12 +39,7 @@ export const createStopMarker = (
             </button>
         </div> 
     `;
-    marker.bindPopup(popupContent, {
-        className: "map-popup stop-popup",
-        autoPan: false,
-        keepInView: false,
-        autoClose: false
-    });
+    marker.bindPopup(popupContent, popupOptions);
 
     marker.on("click", () => {
         selectStop(stopDatum);

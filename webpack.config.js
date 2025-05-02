@@ -4,6 +4,7 @@ const path = require("path");
 const CopyPlugin = require("copy-webpack-plugin");
 const isProd = process.env.NODE_ENV === 'production';
 const loggingLevel = isProd ?  'error' : 'info';
+const siri_request_freq = isProd ? 30 : 15; // seconds
 
 // HTML Webpack Plugin for generating HTML file with script tags
 const htmlPlugin = new HtmlWebPackPlugin({
@@ -19,7 +20,8 @@ const envPlugin = new webpack.DefinePlugin({
   'process.env.STOP_MONITORING_ENDPOINT': JSON.stringify(process.env.STOP_MONITORING_ENDPOINT || '/api/stop-for-id?key=OBANYC'),
   'process.env.STOPS_ON_ROUTE_ENDPOINT': JSON.stringify(process.env.STOPS_ON_ROUTE_ENDPOINT || 'api/stops-on-route-for-direction?'),
   'process.env.LOGGINGLEVEL': JSON.stringify(process.env.LOGGINGLEVEL || loggingLevel),
-  'process.env.ENABLE_GOOGLE_TRANSLATE': JSON.stringify(process.env.ENABLE_GOOGLE_TRANSLATE || true)
+  'process.env.ENABLE_GOOGLE_TRANSLATE': JSON.stringify(process.env.ENABLE_GOOGLE_TRANSLATE || true),
+  'process.env.SIRI_REQUEST_FREQ': JSON.stringify(process.env.SIRI_REQUEST_FREQ || siri_request_freq)
 });
 
 // Copy Plugin to copy static assets
