@@ -25,11 +25,11 @@ const VehicleLoading=()=>{
     log.info("initiating new loading of Siri")
     const { state} = useContext(CardStateContext)
     const { updateSiriEffect } = useSiri();
+    let siri_freq = process.env.SIRI_REQUEST_FREQ as number;
     useEffect(() => {
-
         updateSiriEffect()
         //todo: set interval back to 15s
-        const interval = setInterval(updateSiriEffect, 15*1000);
+        const interval = setInterval(updateSiriEffect, siri_freq*1000);
         log.info("interval set for vehicle loading",interval)
         return () => clearInterval(interval);
     }, [state]);
