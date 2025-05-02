@@ -448,6 +448,7 @@ button:hover, .button:hover {
   color: #0E61A9;
   background-color: #fff;
   border: 2px solid currentColor;
+  outline: none;
   line-height: 1;
 }
 .button.icon-button-left {
@@ -463,6 +464,11 @@ button:hover, .button:hover {
   width: 1.25em;
   height: 1.25em;
   color: currentColor;
+}
+.button:focus, .button:focus-visible {
+  color: #fff;
+  border: 2px solid #f2a900;
+  background-color: #000;
 }
 
 .clear-button {
@@ -548,7 +554,7 @@ button:hover, .button:hover {
 .icon-menu li a {
   text-decoration: none;
 }
-.icon-menu li a, .icon-menu li button {
+.icon-menu li a, .icon-menu li button:not(.button) {
   color: currentColor;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -568,14 +574,14 @@ button:hover, .button:hover {
   outline: none;
   background: transparent;
 }
-.icon-menu li a .label, .icon-menu li button .label {
+.icon-menu li a .label, .icon-menu li button:not(.button) .label {
   -webkit-box-flex: 1;
       -ms-flex-positive: 1;
           flex-grow: 1;
   text-align: left;
   line-height: 1.25;
 }
-.icon-menu li a::after, .icon-menu li button::after {
+.icon-menu li a::after, .icon-menu li button:not(.button)::after {
   background-image: url(/img/icon/right-caret_blue.svg);
 }
 .icon-menu > li {
@@ -2821,28 +2827,4 @@ button:hover, .button:hover {
 #google-translate .goog-te-gadget > span a:hover, #google-translate .goog-te-gadget > span a:focus {
   text-decoration: underline;
   color: #000;
-}
-.google-warning-modal {
-  position: fixed;
-  top: 0; left: 0;
-  width: 100vw; height: 100vh;
-  background: rgba(0,0,0,0.4);
-  display: flex; align-items: center; justify-content: center;
-  z-index: 1000;
-}
-
-.modal-content {
-  background: white;
-  padding: 1.5rem;
-  border-radius: 12px;
-  width: 90%;
-  max-width: 500px;
-  box-shadow: 0 0 20px rgba(0,0,0,0.3);
-}
-
-.modal-buttons {
-  display: flex;
-  justify-content: flex-end;
-  gap: 1rem;
-  margin-top: 1rem;
 }

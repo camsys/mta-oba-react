@@ -26,23 +26,23 @@ export const GoogleTranslateButton = () => {
         if (!scriptLoaded) {
             setShowWarning(true);
         } else {
-            toggleMenu();
+            // toggleMenu();
         }
     };
 
-    const toggleMenu = () => {
-        const menu = document.getElementById("google-translate-menu");
-        if (menu) {
-            const isOpen = menu.style.maxHeight !== '0px';
-            menu.style.maxHeight = isOpen ? '0px' : '200px';
-        }
-    };
+    // const toggleMenu = () => {
+    //     const menu = document.getElementById("google-translate-menu");
+    //     if (menu) {
+    //         const isOpen = menu.style.maxHeight !== '0px';
+    //         menu.style.maxHeight = isOpen ? '0px' : '200px';
+    //     }
+    // };
 
     const acceptRisk = () => {
         loadGoogleTranslate();
         setShowWarning(false);
         // auto-open menu after loading
-        setTimeout(() => toggleMenu(), 500);
+        // setTimeout(() => toggleMenu(), 500);
     };
 
     return (
@@ -63,34 +63,18 @@ export const GoogleTranslateButton = () => {
                 <span className="label">Google Translate</span>
             </button>
 
-            <div className="sub-menu collapse-content" id="google-translate-menu" style={{ maxHeight: '0px' }} role="menu">
-                <div id="google-translate" tabIndex={-2}></div>
-            </div>
-
-            {showWarning && (
-                <div className="google-warning-modal">
-                    <div className="modal-content">
-                    <h2>Warning: Enabling This Feature May Slow Your Browser</h2>
-                    <p>
-                        Google Translate can translate this page into another language.
-                    </p>
-                    <p>
-                        However, even if no translation is selected, enabling it may gradually increase memory usage or reduce performance over time.
-                    </p>
-                    <p>
-                        If the page becomes slow or unresponsive, closing and reopening the page will return it to normal.
-                    </p>
-                    <p>
-                        Click “Continue” to enable Google Translate.
-                    </p>
-
-                        <div className="modal-buttons">
-                            <button onClick={acceptRisk}>Continue</button>
-                            <button onClick={() => setShowWarning(false)}>Cancel</button>
-                        </div>
+            <div className="sub-menu collapse-content" id="google-translate-menu" role="menu">
+                <div id="google-translate" tabIndex={-1}>
+                {showWarning && (
+                    <div className="google-translate-warning">
+                        <p><strong>Warning: Enabling This Feature May Slow Your Browser</strong></p>
+                        <p>Google Translate can translate this page into another language. Even if no translation is selected, enabling it may gradually increase memory usage or reduce performance.</p>
+                        <p>If the page becomes slow or unresponsive, reloading it will restore normal performance.</p>
+                        <button onClick={acceptRisk} aria-label='Enable Google Translate and Continue' className='button' tabIndex={-1}>Continue and Enable Google Translate</button>
                     </div>
+                )}
                 </div>
-            )}
+            </div>
         </>
     );
 };

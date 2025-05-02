@@ -101,6 +101,7 @@ button, .button
   color: $mta-blue
   background-color: $white
   border: $medium-border solid currentColor
+  outline: none
   line-height: 1
   &.icon-button-left
     padding-left: #{$content-padding*.625}
@@ -112,6 +113,10 @@ button, .button
       width: 1.25em
       height: 1.25em
       color: currentColor
+  &:focus, &:focus-visible
+    color: $white
+    border: $medium-border solid $mta-yellow
+    background-color: $black
 
 .clear-button
   border: none
@@ -185,7 +190,7 @@ button, .button
     // position: relative
     a
       text-decoration: none
-    a, button
+    a, button:not(.button)
       color: currentColor
       display: flex
       width: 100%
