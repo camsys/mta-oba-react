@@ -6,6 +6,7 @@ import {VehicleRtInterface} from "../js/updateState/DataModels";
 export const createVehicleMarker = (
     vehicleDatum: VehicleRtInterface,
     icon: L.Icon,
+    popupOptions: L.PopupOptions,
     zIndexOverride: number = 3,
 ): L.Marker => {
     const vehicleIdParts = vehicleDatum.vehicleId.split("_");
@@ -29,12 +30,7 @@ export const createVehicleMarker = (
             </button>
         </div>
     `;
-    marker.bindPopup(popupContent, {
-        className: "map-popup vehicle-popup",
-        autoPan: false,
-        keepInView: false,
-        autoClose: false
-    });
+    marker.bindPopup(popupContent, popupOptions);
 
     return marker;
 };

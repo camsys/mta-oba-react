@@ -70,20 +70,19 @@ export const GoogleTranslateButton = () => {
             {showWarning && (
                 <div className="google-warning-modal">
                     <div className="modal-content">
-                    <h2>Warning: Enabling This Feature May Slow Your Browser</h2>
-                    <p>
-                        Google Translate can translate this page into another language.
-                    </p>
-                    <p>
-                        However, even if no translation is selected, enabling it may gradually increase memory usage or reduce performance over time.
-                    </p>
-                    <p>
-                        If the page becomes slow or unresponsive, closing and reopening the page will return it to normal.
-                    </p>
-                    <p>
-                        Click “Continue” to enable Google Translate.
-                    </p>
-
+                        <h2>Warning: Enabling This Feature May Slow Your Browser</h2>
+                        <p>
+                            Google Translate can translate this page into another language.
+                        </p>
+                        <p>
+                            However, even if no translation is selected, enabling it may gradually increase memory usage or reduce performance over time.
+                        </p>
+                        <p>
+                            If the page becomes slow or unresponsive, closing and reopening the page will return it to normal.
+                        </p>
+                        <p>
+                            Click “Continue” to enable Google Translate.
+                        </p>
                         <div className="modal-buttons">
                             <button onClick={acceptRisk}>Continue</button>
                             <button onClick={() => setShowWarning(false)}>Cancel</button>

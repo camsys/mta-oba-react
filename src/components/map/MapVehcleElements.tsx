@@ -52,12 +52,12 @@ export const MapVehicleElements = () =>{
     let shortenedRouteIds = new Set(Array.from(state.currentCard.routeIdList).map(shortenRoute));
     log.info("looking for vehicles from route ids: ",shortenedRouteIds)
 
-    const popupOptions = {
+    const popupOptions = useRef<L.PopupOptions>({
         className: "map-popup vehicle-popup",
         autoPan: false,
         keepInView: false,
         autoClose: false
-    }
+    })
 
     const selectVehicle = (routeId:string,vehicleId:string,latlon:[number,number]) =>{
         // log.info("clicked on " + vehicleDatum.vehicleId)
@@ -104,7 +104,7 @@ export const MapVehicleElements = () =>{
         }
         else {
             log.info("adding vehicle to map",vehicleDatum.vehicleId,vehicleDatum)
-            vehicle = createVehicleMarker(vehicleDatum,createVehicleIcon(vehicleDatum),popupOptions)
+            vehicle = createVehicleMarker(vehicleDatum,createVehicleIcon(vehicleDatum),popupOptions.current)
             vehicle.on("click", (e:L.LeafletMouseEvent) => {
                 selectVehicle(vehicleDatum.routeId, vehicleDatum.vehicleId, [e.latlng.lat, e.latlng.lng]);
             });
