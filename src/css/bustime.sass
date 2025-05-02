@@ -1321,20 +1321,19 @@ button, .button
       opacity: 0
       transition: opacity .5s ease-in-out, right .25s ease-in-out, transform .25s ease-in-out
       transform: rotate(180deg)
-  >.card-content
-    +card-pad-sides
-  &.favorite
-    .favorite-toggle
-      .add, .add-icon
-        display: none
-      .remove, .remove-icon
-        display: inline-block!important
-    .card-details
+    &.favorite
       padding-right: 2em
+      .favorite-toggle
+        .add, .add-icon
+          display: none
+        .remove, .remove-icon
+          display: inline-block!important
       &::after
         transform: rotate(0deg)
         opacity: 1
         right: 0
+  >.card-content
+    +card-pad-sides
   .card-footer
     background-color: $ui-gray
     padding: $content-padding/2
