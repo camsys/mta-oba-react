@@ -126,6 +126,24 @@ const RoutesAndStops = ()=>{
         autoClose: false
     })
 
+    const iconCache = useRef<Map<string, L.Icon>>(new Map());
+    const createStopIcon = (stopDatum):L.Icon => {
+        const directionKey = stopDatum?.stopDirection || "unknown";
+        const stopImageUrl = `img/stop/stop-${directionKey}.png`;
+        if(iconCache.current.has(stopImageUrl)){
+            return iconCache.current.get(stopImageUrl) as L.Icon
+        }
+        const icon = L.icon({
+            iconUrl: stopImageUrl,
+            className: "svg-icon",
+            iconSize: [27, 27],
+            iconAnchor: [13, 13],
+            popupAnchor: [0, 0],
+        });
+        iconCache.current.set(stopImageUrl, icon)
+        return icon
+    }
+
 
     //methods
 
@@ -145,7 +163,7 @@ const RoutesAndStops = ()=>{
         route.directions.forEach(dir => {
             dir.mapStopComponentData.forEach((datum:StopInterface) => {
                 let stopId = datum.id;
-                let newStopMarker = createStopMarker(datum,selectStop,popupOptions.current,0)
+                let newStopMarker = createStopMarker(datum,selectStop,popupOptions.current,createStopIcon(datum),0)
                 mapStopComponents.current.set(stopId, newStopMarker);
                 stopsToDisplay.set(stopId, newStopMarker);                
             })
@@ -336,6 +354,25 @@ const Highlighted = () =>{
         autoClose: false
     })
 
+    const iconCache = useRef<Map<string, L.Icon>>(new Map());
+    const createStopIcon = (stopDatum):L.Icon => {
+        const directionKey = stopDatum?.stopDirection || "unknown";
+        let zIndexOverride = 20;
+        const stopImageUrl = `img/stop/stop-${directionKey}-active.png`;
+        if(iconCache.current.has(stopImageUrl)){
+            return iconCache.current.get(stopImageUrl) as L.Icon
+        }
+        const icon = L.icon({
+            iconUrl: stopImageUrl,
+            className: "svg-icon",
+            iconSize: [40, 40],
+            iconAnchor: [20, 20],
+            popupAnchor: [0, 0],
+        });
+        iconCache.current.set(stopImageUrl, icon)
+        return icon
+    }
+
     log.info("highlight component loaded",highlightedId,routes.current,stops.current)
 
 
@@ -355,7 +392,7 @@ const Highlighted = () =>{
 
         let stopDatum = stops.current[highlightedId]
         if(stopDatum!==null && typeof stopDatum !=='undefined'){
-            highlightedComponents.current.set(stopDatum.id,createStopMarker(stopDatum,()=>{},popupOptions.current,20))
+            highlightedComponents.current.set(stopDatum.id,createStopMarker(stopDatum,()=>{},popupOptions.current,createStopIcon(stopDatum),20))
         }
         let routeDatum = routes.current[highlightedId]
         if(routeDatum!==null && typeof routeDatum !=='undefined'){

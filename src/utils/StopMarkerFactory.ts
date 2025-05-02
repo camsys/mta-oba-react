@@ -6,20 +6,9 @@ export const createStopMarker = (
     stopDatum,
     selectStop: Function,
     popupOptions: L.PopupOptions,
+    icon: L.Icon,
     zIndexOverride: number=0,
 ) => {
-    const directionKey = stopDatum?.stopDirection || "unknown";
-    const stopImageUrl = `img/stop/stop-${directionKey}${zIndexOverride ? "-active" : ""}.png`;
-
-    const icon = L.icon({
-        iconUrl: stopImageUrl,
-        className: "svg-icon",
-        iconSize: zIndexOverride ? [40, 40] : [27, 27],
-        iconAnchor: zIndexOverride ? [20, 20] : [13, 13],
-        popupAnchor: [0, 0],
-    });
-
-
 
     const marker = new StopMarker(stopDatum.longLat, {
         icon,
