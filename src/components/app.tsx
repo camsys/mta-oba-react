@@ -46,32 +46,25 @@ function InitialCardGeneration ({setLoading}){
     }, []);
 }
 
-function H1Info():JSX.Element{
+function TitleAndH1():JSX.Element{
     const { state } = useContext(CardStateContext);
-    let h1Status;
+    let TitleAndH1 = "MTA Bustime BETA - ";
     let cardType = state.currentCard.type;
     if(cardType === CardType.HomeCard){
-        h1Status = "Home";
+        TitleAndH1 += "Home";
     }
-    if(cardType === CardType.VehicleCard){
-        h1Status = "Vehicle: ";
+    else{
+        TitleAndH1 += state.currentCard.searchTerm;
     }
-    if(cardType === CardType.RouteCard){
-        h1Status = "Route: ";
-    }
-    if(cardType === CardType.StopCard){
-        h1Status = "Stop: ";
-    }
-    if(cardType === CardType.GeocodeCard){
-        h1Status = "Location: ";
-    }
-    h1Status += state.currentCard.searchTerm;
+    
 
-    log.info("h1Status",h1Status,state.currentCard)
-    log.info("h1Status",h1Status)
+    log.trace("Title and H1 are set to:     ",TitleAndH1,state.currentCard)
+    log.info("Title and H1 are set to:     ",TitleAndH1)
+
+    document.title = TitleAndH1;
 
     return (
-        <h1 className="visually-hidden">MTA Bus Time BETA - ${h1Status}</h1>
+        <h1 className="visually-hidden">${TitleAndH1}</h1>
     )
 }
 
@@ -103,7 +96,7 @@ function App  () : JSX.Element{
                 ?
                 (<ErrorBoundary><div>Loading...</div></ErrorBoundary>)
                 :(<React.Fragment>
-                <H1Info/>
+                <TitleAndH1/>
                 <SideBar/>
                 <MapWrapper/>
             </React.Fragment>)}
