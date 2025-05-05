@@ -46,6 +46,35 @@ function InitialCardGeneration ({setLoading}){
     }, []);
 }
 
+function H1Info():JSX.Element{
+    const { state } = useContext(CardStateContext);
+    let h1Status;
+    let cardType = state.currentCard.type;
+    if(cardType === CardType.HomeCard){
+        h1Status = "Home";
+    }
+    if(cardType === CardType.VehicleCard){
+        h1Status = "Vehicle: ";
+    }
+    if(cardType === CardType.RouteCard){
+        h1Status = "Route: ";
+    }
+    if(cardType === CardType.StopCard){
+        h1Status = "Stop: ";
+    }
+    if(cardType === CardType.GeocodeCard){
+        h1Status = "Location: ";
+    }
+    h1Status += state.currentCard.searchTerm;
+
+    log.info("h1Status",h1Status,state.currentCard)
+    log.info("h1Status",h1Status)
+
+    return (
+        <h1 className="visually-hidden">MTA Bus Time BETA - ${h1Status}</h1>
+    )
+}
+
 function App  () : JSX.Element{
     log.info("adding app")
     const [loading, setLoading] = useState(true);
@@ -69,12 +98,12 @@ function App  () : JSX.Element{
 
     return (
         <ErrorBoundary>
-
             <InitialCardGeneration setLoading={setLoading}/>
             {loading
                 ?
                 (<ErrorBoundary><div>Loading...</div></ErrorBoundary>)
                 :(<React.Fragment>
+                <H1Info/>
                 <SideBar/>
                 <MapWrapper/>
             </React.Fragment>)}
