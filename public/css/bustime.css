@@ -465,7 +465,7 @@ button:hover, .button:hover {
   height: 1.25em;
   color: currentColor;
 }
-.button:focus, .button:focus-visible {
+.button:not(#map-toggle):not(.refresh-button):focus, .button:not(#map-toggle):not(.refresh-button):focus-visible {
   color: #fff;
   border: 2px solid #f2a900;
   background-color: #000;
@@ -1235,16 +1235,12 @@ button:hover, .button:hover {
   -ms-flex-negative: 1;
       flex-shrink: 1;
 }
-.header .logo-link {
-  display: block;
-  width: 100%;
-  height: auto;
-  max-width: 100%;
+.header .logo-link, .header .mta-logo-link {
   margin: 0;
   padding: 0;
   position: relative;
 }
-.header .logo-link::after {
+.header .logo-link::after, .header .mta-logo-link::after {
   opacity: 0;
   -webkit-transition: opacity 0.25s ease-in-out;
   transition: opacity 0.25s ease-in-out;
@@ -1256,6 +1252,22 @@ button:hover, .button:hover {
   background-color: #f2a900;
   height: 4px;
 }
+.header .logo-link:hover .logo, .header .logo-link:hover .mta-logo, .header .mta-logo-link:hover .logo, .header .mta-logo-link:hover .mta-logo {
+  opacity: 0.75;
+}
+.header .logo-link:focus, .header .mta-logo-link:focus {
+  outline: none;
+  border: none;
+}
+.header .logo-link:focus::after, .header .mta-logo-link:focus::after {
+  opacity: 1;
+}
+.header .logo-link {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+}
 .header .logo-link .logo {
   display: inline-block;
   width: 100%;
@@ -1266,16 +1278,6 @@ button:hover, .button:hover {
   opacity: 1;
   -webkit-transition: opacity 0.25s ease-in-out;
   transition: opacity 0.25s ease-in-out;
-}
-.header .logo-link:hover .logo {
-  opacity: 0.75;
-}
-.header .logo-link:focus {
-  outline: none;
-  border: none;
-}
-.header .logo-link:focus::after {
-  opacity: 1;
 }
 .header .mta-logo-link {
   width: 1.875em;
