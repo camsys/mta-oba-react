@@ -225,10 +225,9 @@ export const useNavigation = () =>{
         }
         try {
             log.info("fetch search data called, generating new card",state,searchTerm)
-            document.getElementById('search-input').blur();
-            scrollToSidebarTop();
             if (performNewSearch(searchTerm,state?.currentCard)) {
-
+                document.getElementById('search-input').blur();
+                scrollToSidebarTop();
                 let currentCard;
                 if(searchTerm!=null|searchTerm!=""|searchTerm!="#"){
                     currentCard = await updateCard(searchTerm, stops,routes,getSearchAddress(searchTerm));
@@ -322,7 +321,7 @@ export const useNavigation = () =>{
         let pastCard = state.currentCard;
         let shortenedRouteId = routeId.split("_")[1];
         log.info("found routeId of target vehicle: ",shortenedRouteId);
-        let currentCard = new Card(shortenedRouteId,uuidv4());
+        let currentCard = new Card(shortenedRouteId + vehicleDelimiter + vehicleId,uuidv4());
         log.info("generated new card to become vehicle card",currentCard,routeId,vehicleId);
         let routeData = routes?.current;
         if(routeData){routeData=routeData[routeId]};
@@ -339,6 +338,7 @@ export const useNavigation = () =>{
             renderCounter:prevState.renderCounter+1
         }));
         scrollToSidebarTop();
+        updateWindowHistory(currentCard.searchTerm,currentCard.uuid);
         log.info("vehicleSearch complete, new card: ",currentCard);
     }
 
