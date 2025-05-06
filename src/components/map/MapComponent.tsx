@@ -21,7 +21,6 @@ import {
     VehicleRtInterface
 } from "../../js/updateState/DataModels";
 import {useHighlight} from "Components/util/MapHighlightingStateComponent";
-import {v4 as uuidv4} from "uuid";
 import {useLongPressSearch} from "../../js/handlers/LongPressSearchHandler";
 import {useNavigation} from "../../js/updateState/NavigationEffect.ts";
 import { createRoutePolyline } from "../../utils/RoutePolylineFactory";
@@ -249,7 +248,6 @@ const RoutesAndStops = ()=>{
                     })
                     let latlon = [searchMatch.latitude,searchMatch.longitude]
                     if(latlon !== null || latlon !== undefined){
-                        let key = uuidv4()
                         // searchedHereComponent.current = <MapSearchedHereComponent latlon={latlon} key = {key} searchedHereMarker={searchedHereMarker}/>;
                         let searchedHereMarker = createSearchedHereMarker(latlon)
                         searchedHereMarker.addTo(selectedElementLayer.current)
