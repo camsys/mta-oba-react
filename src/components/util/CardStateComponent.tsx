@@ -25,7 +25,7 @@ const CardStateProvider = ({ children }: { children: ReactNode }): JSX.Element =
         renderCounter:1,
         historyIndex: 0
     });
-    log.info("initial state set: ",state)
+    log.info("initial state card set: ",state)
 
     return (
         <CardStateContext.Provider value={{state, setState}}>

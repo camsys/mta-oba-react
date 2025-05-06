@@ -15,7 +15,16 @@ import log from 'loglevel';
 import {v4 as uuidv4} from 'uuid';
 
 
-const vehicleDelimiter = ":"
+function getSessionUuid(card:Card|null):string{
+    log.info("getting session uuid",card)
+    let sessionUuid;
+    if(card == null || card == undefined || card?.sessionUuid == null || card?.sessionUuid == undefined){
+        sessionUuid = uuidv4();
+    } else {sessionUuid = card?.sessionUuid;}
+    log.info("session uuid is ",sessionUuid)
+    return sessionUuid
+
+}
 
 function processRouteSearch(route,card:Card,stops: StopsObject,routes:RoutesObject):RouteMatch {
     let match = new RouteMatch(route)
@@ -90,7 +99,6 @@ function scrollToSidebarTop(){
 
 async function getData(card:Card,stops: StopsObject,routes:RoutesObject,address:string):Promise<Card>{
     log.info("filling card data with search",card,stops,routes)
-    let vehicleOverride = false;
     if(card.searchTerm == null || card.searchTerm == ''){
         log.info("empty search means home",card)
         return card
@@ -132,12 +140,16 @@ async function getData(card:Card,stops: StopsObject,routes:RoutesObject,address:
         .catch((error) => {
             log.error(error);
         });
-    log.info("got card data: ", card, card.type, card.searchMatches, card==null,stops,routes)
+    log.info("got card data: ", card, typeof card, card==null,stops,routes)
     return card
 }
 
 const performNewSearch = (searchRef:String,currentCard:Card):boolean=>{
-    if(currentCard?.searchTerm === searchRef){
+    if(currentCard.type === CardType.VehicleCard){
+        // this only works because vehicle searches are handled elsewhere
+        return true
+    }
+    else if(currentCard?.searchTerm === searchRef){
         return false
     }
     return true
@@ -152,15 +164,15 @@ const updateWindowHistory = (term:string,uuid:string) :void =>{
 }
 
 
-export const updateCard = async (searchRef:String,stops: StopsObject,routes:RoutesObject,address:string):Promise<Card> =>{
+export const updateCard = async (searchRef:String,stops: StopsObject,routes:RoutesObject,address:string,sessionUuid:string):Promise<Card> =>{
     log.info("received new search input:",searchRef)
     // searchRef = searchRef.replaceAll(" ","%2520")
-    return await getData(new Card(searchRef,uuidv4()),stops,routes,address)
+    return await getData(new Card(searchRef,uuidv4(),sessionUuid),stops,routes,address)
 }
 
-export const getHomeCard = () :Card=>{
+export const getHomeCard = (card:Card|null) :Card=>{
     log.info("generating homecard")
-    return new Card("",uuidv4())
+    return new Card("",uuidv4(),getSessionUuid(card))
 }
 
 const getBaseAddress =()=>{
@@ -215,24 +227,17 @@ export const useNavigation = () =>{
                     return;
                 });
         }
-        if(searchTerm.includes(vehicleDelimiter)){
-            log.info("searching for vehicle",searchTerm)
-            let searchParts = searchTerm.split(vehicleDelimiter);
-            let routeId = searchParts[0];
-            let vehicleId = searchParts[1];
-            vehicleSearch(routeId,vehicleId);
-            return;
-        }
         try {
             log.info("fetch search data called, generating new card",state,searchTerm)
+            document.getElementById('search-input').blur();
+            scrollToSidebarTop();
             if (performNewSearch(searchTerm,state?.currentCard)) {
-                document.getElementById('search-input').blur();
-                scrollToSidebarTop();
+
                 let currentCard;
                 if(searchTerm!=null|searchTerm!=""|searchTerm!="#"){
-                    currentCard = await updateCard(searchTerm, stops,routes,getSearchAddress(searchTerm));
+                    currentCard = await updateCard(searchTerm, stops,routes,getSearchAddress(searchTerm),getSessionUuid(state?.currentCard));
                 } else {
-                    currentCard = getHomeCard();
+                    currentCard = getHomeCard(state?.currentCard);
                 }
                 updateWindowHistory(searchTerm,currentCard.uuid);
                 document.getElementById('search-input').blur();
@@ -259,7 +264,7 @@ export const useNavigation = () =>{
     }
 
     const generateInitialCard = async (setLoading)=>{
-        let currentCard = new Card("",uuidv4())
+        let currentCard = new Card("",uuidv4(),getSessionUuid(state?.currentCard));
         log.info("generating initial card",currentCard);
         let cardStack = state.cardStack;
         cardStack.push(currentCard);
@@ -294,17 +299,8 @@ export const useNavigation = () =>{
                     });
                 searchRef = "";
             }
-            let searchAddress =  getSearchAddress(searchRef)
-            if(searchRef.includes(vehicleDelimiter)){
-                searchAddress = getSearchAddress(searchRef.split(vehicleDelimiter)[0]);
-            }
             log.info("generating card based on starting query");
-            let currentCard = await getData(new Card(searchRef,uuidv4()),stops,routes,searchAddress);
-            if(searchRef.includes(vehicleDelimiter)){
-                log.info("setting card to vehicle card",searchRef.split(vehicleDelimiter)[1],currentCard.searchMatches,new Set([currentCard.searchMatches[0].routeId]),currentCard)
-                currentCard.setToVehicle(searchRef.split(vehicleDelimiter)[1],currentCard.searchMatches,new Set([currentCard.searchMatches[0].routeId]))
-                log.info("setting card to vehicle card",searchRef.split(vehicleDelimiter)[1],currentCard.searchMatches,new Set([searchRef.split(vehicleDelimiter)[0]]),currentCard);
-            }
+            currentCard = await getData(new Card(searchRef,uuidv4(),getSessionUuid(currentCard)),stops,routes,getSearchAddress(searchRef));
             // let currentCard = new Card(searchRef,uuidv4());
             log.info("setting card based on starting query",currentCard);
 
@@ -324,18 +320,18 @@ export const useNavigation = () =>{
     //this function doesn't belong in "SearchEffect" but it does belong with card handling functions
 // which is what this has become
 
-    const vehicleSearch = async (routeId: string, vehicleId: string) => {
-        log.info("setting card to vehicle card",routeId,vehicleId);
+    const vehicleSearch = async (routeId:string,vehicleId:string,lonlat:[number,number])=> {
+        log.info("setting card to vehicle card",routeId,vehicleId,lonlat);
         //todo: should be current search term
         let pastCard = state.currentCard;
         let shortenedRouteId = routeId.split("_")[1];
         log.info("found routeId of target vehicle: ",shortenedRouteId);
-        let currentCard = new Card(shortenedRouteId + vehicleDelimiter + vehicleId,uuidv4());
-        log.info("generated new card to become vehicle card",currentCard,routeId,vehicleId);
+        let currentCard = new Card(shortenedRouteId,uuidv4(),getSessionUuid(pastCard));
+        log.info("generated new card to become vehicle card",currentCard,routeId,vehicleId,lonlat);
         let routeData = routes?.current;
         if(routeData){routeData=routeData[routeId]};
         log.info("found routedata of target vehicle: ",routeData);
-        currentCard.setToVehicle(vehicleId,[routeData],new Set([routeId]));
+        currentCard.setToVehicle(vehicleId,[routeData],new Set([routeId]),lonlat);
         let cardStack = state.cardStack;
         cardStack.push(currentCard);
         log.info("updating state prev card -> new vehicle card: \n", pastCard,currentCard);
@@ -347,7 +343,6 @@ export const useNavigation = () =>{
             renderCounter:prevState.renderCounter+1
         }));
         scrollToSidebarTop();
-        updateWindowHistory(currentCard.searchTerm,currentCard.uuid);
         log.info("vehicleSearch complete, new card: ",currentCard);
     }
 
@@ -361,7 +356,7 @@ export const useNavigation = () =>{
                     .then((response) => response.json())
                     .then((parsed) => {
                         log.info("generating new card for all routes search")
-                        let currentCard = new Card(searchTerm,uuidv4());
+                        let currentCard = new Card(searchTerm,uuidv4(),getSessionUuid(state?.currentCard));
                         log.info("all routes results: ",parsed);
                         let searchMatch = new SearchMatch(SearchMatch.matchTypes.AllRoutesMatch);
                         searchMatch.routeMatches = parsed?.routes.map(route=>new RouteMatch(route));

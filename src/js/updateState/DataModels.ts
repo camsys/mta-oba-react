@@ -365,8 +365,9 @@ export class Card {
     vehicleId: string | null;
     type: CardType;
     uuid:String;
+    sessionUuid:String;
 
-    constructor(searchTerm: string,uuid:String) {
+    constructor(searchTerm: string,uuid:String, sessionUuid:String) {
         this.searchTerm = searchTerm;
         this.searchResultType = null;
         this.name = "homeCard";
@@ -377,6 +378,7 @@ export class Card {
         this.type = CardType.HomeCard; // Default or initial type if applicable
         this.datumId = null;
         this.uuid= uuid;
+        this.sessionUuid = sessionUuid;
     }
 
     setType(cardType: CardType): void {
@@ -400,12 +402,13 @@ export class Card {
 
     setToAllRoutes(
         searchMatches: SearchMatch[],
-        routeIdList: Set<string>
+        routeIdList: Set<string>,
+        sessionUuid:String
     ): void {
         this.setType(CardType.AllRoutesCard);
-        this.datumId = null;
         this.searchMatches = searchMatches;
         this.routeIdList = routeIdList;
+        this.sessionUuid = sessionUuid;
     }
 
     setSearchResultType(searchResultType: string | null): void {
