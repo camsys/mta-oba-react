@@ -186,7 +186,9 @@ const getTargetList = (routeIdList) =>{
     })
 }
 
-export const siriGetVehiclesForVehicleViewEffect = (routeIdList, vehicleId, vehicleState, setState ) => {
+export const siriGetVehiclesForVehicleViewEffect = (currentCard, vehicleState, setState ) => {
+    let routeIdList = currentCard.routeIdList
+    let vehicleId = currentCard.vehicleId
     log.info("looking for Siri Data for vehicle!",routeIdList,vehicleId)
     let targetAddresses = getTargetList(routeIdList)
 
@@ -199,7 +201,8 @@ export const siriGetVehiclesForVehicleViewEffect = (routeIdList, vehicleId, vehi
     return siriGetAndSetVehiclesForVehicleMonitoring(targetAddresses,vehicleState,setState)
 }
 
-export const siriGetVehiclesForRoutesEffect = (routeIdList,vehicleState, setState ) => {
+export const siriGetVehiclesForRoutesEffect = (currentCard,vehicleState, setState ) => {
+    let routeIdList = currentCard.routeIdList
     log.info("looking for Siri Data!",routeIdList)
     let targetAddresses = getTargetList(routeIdList)
     return siriGetAndSetVehiclesForVehicleMonitoring(targetAddresses,vehicleState,setState)

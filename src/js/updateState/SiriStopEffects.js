@@ -196,7 +196,8 @@ const siriGetAndSetVehicles = (targetAddresses,vehicleState, setState, dataProce
 }
 
 
-export const siriGetVehiclesForStopViewEffect = (routeIdList, stopIdList, vehicleState, setState ) => {
+export const siriGetVehiclesForStopViewEffect = (currentCard, vehicleState, setState ) => {
+    let stopIdList =  currentCard.stopIdList
     let baseTargetAddress = "https://" + process.env.ENV_ADDRESS + "/" + process.env.STOP_MONITORING_ENDPOINT
     // let baseTargetAddress = "https://" + process.env.ENV_ADDRESS + ""
     log.info("looking for Siri Data for stops!",stopIdList)

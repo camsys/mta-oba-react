@@ -17,18 +17,14 @@ export const useSiri = () => {
     let {vehiclesApproachingStopsState, setVehiclesApproachingStopsState } = useContext(VehiclesApproachingStopsContext);
     const updateSiriEffect = () => {
         if (state.currentCard.type === CardType.VehicleCard) {
-            siriGetVehiclesForVehicleViewEffect(state.currentCard.routeIdList, state.currentCard.vehicleId,
-                vehicleState, setState)
+            siriGetVehiclesForVehicleViewEffect(state.currentCard, vehicleState, setState)
         } else {
-            siriGetVehiclesForRoutesEffect(state.currentCard.routeIdList,
-                vehicleState, setState)
+            siriGetVehiclesForRoutesEffect(state.currentCard, vehicleState, setState)
             if (state.currentCard.type === CardType.StopCard) {
-                siriGetVehiclesForStopViewEffect(state.currentCard.routeIdList, state.currentCard.stopIdList,
-                    vehiclesApproachingStopsState, setVehiclesApproachingStopsState)
+                siriGetVehiclesForStopViewEffect(state.currentCard, vehiclesApproachingStopsState, setVehiclesApproachingStopsState)
             }
             if (state.currentCard.type === CardType.GeocodeCard) {
-                siriGetVehiclesForStopViewEffect(state.currentCard.routeIdList, state.currentCard.stopIdList,
-                    vehiclesApproachingStopsState, setVehiclesApproachingStopsState)
+                siriGetVehiclesForStopViewEffect(state.currentCard, vehiclesApproachingStopsState, setVehiclesApproachingStopsState)
             }
         }
         log.info("siri call for vehicle loading completed")
