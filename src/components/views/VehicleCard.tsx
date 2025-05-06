@@ -78,7 +78,7 @@ function VehicleCard ({routeMatch,vehicleId}: { routeMatch: RouteMatch, vehicleI
     },[state,vehicleState])
 
     let routeId;
-    let vehicleDatum;
+    let vehicleDatum = null;
 
 
 
@@ -90,7 +90,10 @@ function VehicleCard ({routeMatch,vehicleId}: { routeMatch: RouteMatch, vehicleI
             log.info("card is still loading so VehicleCard is still loading",loading)
             return}
         routeId = routeMatch.routeId.split("_")[1];
-        vehicleDatum = vehicleState[routeId+vehicleDataIdentifier].get(vehicleId)
+        let vehicleData = vehicleState[routeId+vehicleDataIdentifier]
+        if(!(vehicleData===null || typeof vehicleData==='undefined')){
+            vehicleDatum = vehicleData.get(vehicleId)
+        }
         log.info("is VehicleCard data still loading?",loading,vehicleDatum)
         if(loading && vehicleDatum!==null && typeof vehicleDatum!=='undefined'){
             setLoading(false)
