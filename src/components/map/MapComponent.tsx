@@ -7,7 +7,7 @@ import log from 'loglevel';
 import L, {LatLngBounds} from "leaflet";
 
 import {CardStateContext, RoutesContext, StopsContext} from "../util/CardStateComponent.tsx";
-import {vehicleDataIdentifier, VehicleStateContext} from "../util/VehicleStateComponent";
+import {vehicleDataIdentifier, shortenRoute, VehicleStateContext} from "../util/VehicleStateComponent";
 import MapRouteComponent from "./MapRouteComponent";
 import MapStopComponent from "./MapStopComponent";
 import MapVehicleComponent from "./MapVehicleComponent";
@@ -434,11 +434,10 @@ const Highlighted = () =>{
 
 }
 
-const setMapLatLngAndZoom = (lat : number, lon :number,zoom:number,override:boolean) :void =>{
+const setMapLatLngAndZoom = (map: L.Map, lat : number, lon :number,zoom:number,override:boolean) :void =>{
     let duration = .85
     log.info("Assessing zoom. based on requested values:",lat,lon,zoom)
     if(lat===null|lon===null|zoom===null){return}
-    let map = useMap()
     let mapWidth=map.getBounds().getEast()-map.getBounds().getWest();
     let mapHeight=map.getBounds().getNorth()-map.getBounds().getSouth();
     let [currentLat, currentLong,currentZoom] = [map.getCenter().lat,map.getCenter().lng,map.getZoom()]
@@ -473,23 +472,8 @@ const setMapLatLngAndZoom = (lat : number, lon :number,zoom:number,override:bool
     }
 }
 
-const setMapBounds = (bounds: LatLngBounds):void =>{
-    let map = useMap()
+const setMapBounds = (map: L.Map, bounds: LatLngBounds):void =>{
     map.flyToBounds(bounds)
-}
-
-const HandleMapForVehiclesBoundsAndZoom = () :void=>{
-    // todo: later have it just confirm it's in the bounding box
-    const { vehicleState} = useContext(VehicleStateContext);
-    const { state} = useContext(CardStateContext);
-    if(state.currentCard.type!==CardType.VehicleCard){
-        return
-    }
-    let duration = .85
-    let zoom = 16;
-    let [lat, long] = vehicleState[state.currentCard.routeIdList.values().next().value.split("_")[1]
-    +vehicleDataIdentifier].get(state.currentCard.vehicleId).longLat;
-    setMapLatLngAndZoom(duration,lat,long,zoom)
 }
 
 const getBoundsForRoute = (route:RouteMatch)=> {
@@ -512,40 +496,56 @@ const getBoundsForRoute = (route:RouteMatch)=> {
 
 const HandleMapBoundsAndZoom = () : void=>{
     const { state} = useContext(CardStateContext);
-    let [lat, long] = [null,null]
-    let zoom = null
-    let override = false
+    const { vehicleState} = useContext(VehicleStateContext);
+    const map = useMap()
 
+    useEffect(() => {
+        let [lat, long] = [null,null]
+        let zoom = null
+        let override = false
 
-    state.currentCard.searchMatches.forEach(searchMatch=>{
-        if(state.currentCard.type===CardType.RouteCard){
-            setMapBounds(getBoundsForRoute(searchMatch))
-            return
-        }
-        else if(state.currentCard.type===CardType.GeocodeCard) {
-            [lat, long] = [searchMatch.latitude,searchMatch.longitude];
-            zoom = 16;
+        
+        state.currentCard.searchMatches.forEach(searchMatch=>{
+            if(state.currentCard.type===CardType.RouteCard){
+                setMapBounds(map,getBoundsForRoute(searchMatch))
+                return
+            }
+            else if(state.currentCard.type===CardType.GeocodeCard) {
+                [lat, long] = [searchMatch.latitude,searchMatch.longitude];
+                zoom = 16;
 
-        }
-        else if(state.currentCard.type===CardType.StopCard) {
-            [lat, long] = [searchMatch.latitude, searchMatch.longitude];
-            zoom = 16;
-        }
-        else if(state.currentCard.type===CardType.VehicleCard) {
-            let vehicleId = state.currentCard.vehicleId;
-            [lat, long] = state.currentCard.longlat;
-            zoom = 16;
-            log.info("vehicle card zoom requested",state.currentCard, lat, long, zoom)
-        }
-    })
-    if(state.currentCard.type===CardType.HomeCard)
-        {
-            [lat, long] = OBA.Config.defaultMapCenter;
-            zoom = 11;
-            override = true;
-        }
+            }
+            else if(state.currentCard.type===CardType.StopCard) {
+                [lat, long] = [searchMatch.latitude, searchMatch.longitude];
+                zoom = 16;
+            }
+            else if(state.currentCard.type===CardType.VehicleCard) {
+                let vehicleId = state.currentCard.vehicleId;
+                let routeId = shortenRoute(state.currentCard.routeIdList.values().next().value);
+                log.info("zooming for vehicle card",vehicleId,routeId+vehicleDataIdentifier,vehicleState)
+                if(!vehicleState[routeId+vehicleDataIdentifier]){
+                    log.info("vehicle state not found for routeId",vehicleState,routeId+vehicleDataIdentifier)
+                    return
+                }
+                if(!vehicleState[routeId+vehicleDataIdentifier].get(vehicleId)){
+                    log.info("vehicle not found in vehicle state, returning",vehicleState[routeId+vehicleDataIdentifier],vehicleId)
+                    return
+                }
+                [lat, long] = vehicleState[routeId+vehicleDataIdentifier].get(vehicleId).longLat;
+                console.log("vehicle lat long",lat,long)
+                // [lat, long] = state.currentCard.longlat;
+                zoom = 16;
+            }
+        })
+        if(state.currentCard.type===CardType.HomeCard)
+            {
+                [lat, long] = OBA.Config.defaultMapCenter;
+                zoom = 11;
+                override = true;
+            }
 
-    setMapLatLngAndZoom(lat,long,zoom,override)
+        setMapLatLngAndZoom(map,lat,long,zoom,override)
+    }, [state.currentCard])
 }
 
 const MapEvents = () :boolean=> {

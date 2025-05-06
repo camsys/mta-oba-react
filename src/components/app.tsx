@@ -28,7 +28,6 @@ const VehicleLoading=()=>{
     let siri_freq = process.env.SIRI_REQUEST_FREQ as number;
     useEffect(() => {
         updateSiriEffect()
-        //todo: set interval back to 15s
         const interval = setInterval(updateSiriEffect, siri_freq*1000);
         log.info("interval set for vehicle loading",interval)
         return () => clearInterval(interval);

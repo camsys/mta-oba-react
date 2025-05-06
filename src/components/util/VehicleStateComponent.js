@@ -33,6 +33,13 @@ const VehiclesApproachingStopsProvider = ({children}) => {
     );
 };
 
+
+const shortenRoute = (routeId) => {
+    let routeIdParts = routeId.split("_");
+    let routeIdWithoutAgency = routeIdParts[1];
+    return routeIdWithoutAgency;
+}
+
 const vehicleDataIdentifier = "_vehicleData"
 const serviceAlertDataIdentifier = "_serviceAlertData"
 const updatedTimeIdentifier = "_updatedAt"
@@ -47,4 +54,5 @@ export { VehicleStateProvider,
     updatedTimeIdentifier,
     serviceAlertDataIdentifier,
     stopSortedDataIdentifier,
-    stopSortedFutureVehicleDataIdentifier};
+    stopSortedFutureVehicleDataIdentifier,
+    shortenRoute};
