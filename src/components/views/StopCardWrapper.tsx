@@ -41,12 +41,33 @@ const MiniStopDirectionList =({routeDirectionDatum,stopId, }:{routeDirectionDatu
         log.info("StopCard no vehicle data, not showing MiniStopDirection")
         return null
     }
+
+
+    let vehicleDataByDestination = new Map<string,Array<VehicleRtInterface>>();
+    if(stopCardVehicleData!==null){
+        stopCardVehicleData.forEach((vehicleDatum:VehicleRtInterface)=>{
+            if(vehicleDataByDestination.has(vehicleDatum.destination)){
+                vehicleDataByDestination.get(vehicleDatum.destination).push(vehicleDatum)
+            }else{
+                vehicleDataByDestination.set(vehicleDatum.destination,[vehicleDatum])
+            }
+        })
+        log.info("vehicleDataByDestination",vehicleDataByDestination)
+    }
     
     return(
-        <li style={{ borderColor: '#'+routeDirectionDatum.color}}>
-            {hasServiceAlert?<ServiceAlertSvg/>:null}
-            <strong>{routeId}</strong> <span>{routeDirectionDatum.destination}</span>
-        </li>)
+        <React.Fragment>
+            {Array.from(vehicleDataByDestination.entries()).map(
+                ([destination,vehicleData],index)=>{
+                    return (
+                        <li style={{ borderColor: '#'+routeDirectionDatum.color}}>
+                            {hasServiceAlert?<ServiceAlertSvg/>:null}
+                        <strong>{routeId}</strong> <span>{destination}</span>
+                    </li>)
+                }
+            )}
+        </React.Fragment>
+    )
 }
 
 const MiniStopDirectionListContainer = ({routeMatches,stopId}:{routeMatches:[RouteMatch],stopId:string}) : JSX.Element=>{
