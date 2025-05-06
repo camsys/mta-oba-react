@@ -13,6 +13,7 @@ import {
 } from "./DataModels";
 import log from 'loglevel';
 import {v4 as uuidv4} from 'uuid';
+import {getSearchTermAdditions} from "./keyWordsAndSupportUtils.ts"
 
 
 function getSessionUuid(card:Card|null):string{
@@ -179,9 +180,9 @@ const getBaseAddress =()=>{
     return "https://" + process.env.ENV_ADDRESS + "/"
 }
 
-const getSearchAddress=(searchTerm:string)=>{
-    log.info("searching for: " + getBaseAddress() + OBA.Config.searchUrl + "?q=" + searchTerm)
-    return  getBaseAddress() + OBA.Config.searchUrl + "?q=" + searchTerm
+const getSearchAddress=(searchTerm:string, card: Card)=>{
+    log.info("searching for: " + getBaseAddress() + OBA.Config.searchUrl + "?q=" + searchTerm + getSearchTermAdditions(card))
+    return  getBaseAddress() + OBA.Config.searchUrl + "?q=" + searchTerm + getSearchTermAdditions(card)
 
 }
 
@@ -235,7 +236,7 @@ export const useNavigation = () =>{
 
                 let currentCard;
                 if(searchTerm!=null|searchTerm!=""|searchTerm!="#"){
-                    currentCard = await updateCard(searchTerm, stops,routes,getSearchAddress(searchTerm),getSessionUuid(state?.currentCard));
+                    currentCard = await updateCard(searchTerm, stops,routes,getSearchAddress(searchTerm,state?.currentCard),getSessionUuid(state?.currentCard));
                 } else {
                     currentCard = getHomeCard(state?.currentCard);
                 }
@@ -300,7 +301,7 @@ export const useNavigation = () =>{
                 searchRef = "";
             }
             log.info("generating card based on starting query");
-            currentCard = await getData(new Card(searchRef,uuidv4(),getSessionUuid(currentCard)),stops,routes,getSearchAddress(searchRef));
+            currentCard = await getData(new Card(searchRef,uuidv4(),getSessionUuid(currentCard)),stops,routes,getSearchAddress(searchRef,currentCard));
             // let currentCard = new Card(searchRef,uuidv4());
             log.info("setting card based on starting query",currentCard);
 
