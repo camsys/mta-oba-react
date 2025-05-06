@@ -402,13 +402,11 @@ export class Card {
 
     setToAllRoutes(
         searchMatches: SearchMatch[],
-        routeIdList: Set<string>,
-        sessionUuid:String
+        routeIdList: Set<string>
     ): void {
         this.setType(CardType.AllRoutesCard);
         this.searchMatches = searchMatches;
         this.routeIdList = routeIdList;
-        this.sessionUuid = sessionUuid;
     }
 
     setSearchResultType(searchResultType: string | null): void {
