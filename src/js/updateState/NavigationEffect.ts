@@ -15,7 +15,7 @@ import log from 'loglevel';
 import {v4 as uuidv4} from 'uuid';
 
 
-
+const vehicleDelimiter = ":"
 
 function processRouteSearch(route,card:Card,stops: StopsObject,routes:RoutesObject):RouteMatch {
     let match = new RouteMatch(route)
@@ -90,6 +90,7 @@ function scrollToSidebarTop(){
 
 async function getData(card:Card,stops: StopsObject,routes:RoutesObject,address:string):Promise<Card>{
     log.info("filling card data with search",card,stops,routes)
+    let vehicleOverride = false;
     if(card.searchTerm == null || card.searchTerm == ''){
         log.info("empty search means home",card)
         return card
@@ -131,7 +132,7 @@ async function getData(card:Card,stops: StopsObject,routes:RoutesObject,address:
         .catch((error) => {
             log.error(error);
         });
-    log.info("got card data: ", card, typeof card, card==null,stops,routes)
+    log.info("got card data: ", card, card.type, card.searchMatches, card==null,stops,routes)
     return card
 }
 
@@ -185,7 +186,6 @@ export const useNavigation = () =>{
     const stops = useContext(StopsContext) as StopsObject
     const allRoutesSearchTerm = "allRoutes";
     const nearbySearchTerms = new Set(["NEARBY","NEARBYROUTES","NEARBYSTOPS","NEARME", "NEAR ME"])
-    const vehicleDelimiter = ":"
 
 
     const search = async (searchTerm) =>{
@@ -294,8 +294,17 @@ export const useNavigation = () =>{
                     });
                 searchRef = "";
             }
+            let searchAddress =  getSearchAddress(searchRef)
+            if(searchRef.includes(vehicleDelimiter)){
+                searchAddress = getSearchAddress(searchRef.split(vehicleDelimiter)[0]);
+            }
             log.info("generating card based on starting query");
-            let currentCard = await getData(new Card(searchRef,uuidv4()),stops,routes,getSearchAddress(searchRef));
+            let currentCard = await getData(new Card(searchRef,uuidv4()),stops,routes,searchAddress);
+            if(searchRef.includes(vehicleDelimiter)){
+                log.info("setting card to vehicle card",searchRef.split(vehicleDelimiter)[1],currentCard.searchMatches,new Set([currentCard.searchMatches[0].routeId]),currentCard)
+                currentCard.setToVehicle(searchRef.split(vehicleDelimiter)[1],currentCard.searchMatches,new Set([currentCard.searchMatches[0].routeId]))
+                log.info("setting card to vehicle card",searchRef.split(vehicleDelimiter)[1],currentCard.searchMatches,new Set([searchRef.split(vehicleDelimiter)[0]]),currentCard);
+            }
             // let currentCard = new Card(searchRef,uuidv4());
             log.info("setting card based on starting query",currentCard);
 

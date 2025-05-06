@@ -394,6 +394,8 @@ export class Card {
         this.datumId = vehicleId;
         this.searchMatches = searchMatches;
         this.routeIdList = routeIdList;
+        this.searchResultType = null;
+        console.log("setToVehicle",this)
     }
 
     setToAllRoutes(

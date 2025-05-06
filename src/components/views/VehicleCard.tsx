@@ -17,7 +17,7 @@ export const VehicleCardContentComponent = ({routeMatch,vehicleDatum}
                                                 :{routeMatch:RouteMatch,vehicleDatum:VehicleRtInterface})
                                                 : JSX.Element=>{
     const { search } = useNavigation();
-    log.info("generating vehicleCardContentComponent for ",vehicleDatum.vehicleId)
+    // log.info("generating vehicleCardContentComponent for ",vehicleDatum.vehicleId)
     let {highlightId} = useHighlight()
 
     return(
