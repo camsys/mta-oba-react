@@ -498,26 +498,39 @@ const HandleMapBoundsAndZoom = () : void=>{
     const { state} = useContext(CardStateContext);
     const { vehicleState} = useContext(VehicleStateContext);
     const map = useMap()
+    const firstNonHomeZoomCompleted = useRef(false)
 
-    useEffect(() => {
+    const doZoom = ()=>{
         let [lat, long] = [null,null]
         let zoom = null
         let override = false
 
-        
+        log.info("card type is",state.currentCard.type)
         state.currentCard.searchMatches.forEach(searchMatch=>{
             if(state.currentCard.type===CardType.RouteCard){
+                log.info("zooming for route card",searchMatch)
                 setMapBounds(map,getBoundsForRoute(searchMatch))
+                if(!firstNonHomeZoomCompleted.current){
+                    firstNonHomeZoomCompleted.current = true
+                }
                 return
             }
             else if(state.currentCard.type===CardType.GeocodeCard) {
                 [lat, long] = [searchMatch.latitude,searchMatch.longitude];
                 zoom = 16;
+                if(!firstNonHomeZoomCompleted.current){
+                    log.info("first zoom completed")
+                    firstNonHomeZoomCompleted.current = true
+                }
 
             }
             else if(state.currentCard.type===CardType.StopCard) {
                 [lat, long] = [searchMatch.latitude, searchMatch.longitude];
                 zoom = 16;
+                if(!firstNonHomeZoomCompleted.current){
+                    log.info("first zoom completed")
+                    firstNonHomeZoomCompleted.current = true
+                }
             }
             else if(state.currentCard.type===CardType.VehicleCard) {
                 let vehicleId = state.currentCard.vehicleId;
@@ -545,7 +558,20 @@ const HandleMapBoundsAndZoom = () : void=>{
             }
 
         setMapLatLngAndZoom(map,lat,long,zoom,override)
+    }
+    
+
+    useEffect(() => {
+        doZoom()
     }, [state.currentCard])
+
+
+    useEffect(() => {
+        if(!firstNonHomeZoomCompleted.current){
+            log.info("first zoom not completed, doing zoom")
+            doZoom()
+        }
+    }, [vehicleState])
 }
 
 const MapEvents = () :boolean=> {
