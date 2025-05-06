@@ -20,7 +20,6 @@ import {
     StopMatch,
     VehicleRtInterface
 } from "../../js/updateState/DataModels";
-import {v4 as uuidv4} from "uuid";
 import { createRoutePolyline } from "../../utils/RoutePolylineFactory";
 import { createStopMarker } from "../../utils/StopMarkerFactory.ts";
 import { createSearchedHereMarker } from "../../utils/SearchedHereFactory.ts";
@@ -61,7 +60,7 @@ export const MapVehicleElements = () =>{
 
     const selectVehicle = (routeId:string,vehicleId:string,latlon:[number,number]) =>{
         // log.info("clicked on " + vehicleDatum.vehicleId)
-        vehicleSearch(routeId,vehicleId,latlon)
+        vehicleSearch(routeId,vehicleId)
     }
 
     const createVehicleIcon = (vehicleDatum):L.Icon => {

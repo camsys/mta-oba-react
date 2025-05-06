@@ -185,6 +185,7 @@ export const useNavigation = () =>{
     const stops = useContext(StopsContext) as StopsObject
     const allRoutesSearchTerm = "allRoutes";
     const nearbySearchTerms = new Set(["NEARBY","NEARBYROUTES","NEARBYSTOPS","NEARME", "NEAR ME"])
+    const vehicleDelimiter = ":"
 
 
     const search = async (searchTerm) =>{
@@ -213,6 +214,14 @@ export const useNavigation = () =>{
                     searchTerm = "could not find user location";
                     return;
                 });
+        }
+        if(searchTerm.includes(vehicleDelimiter)){
+            log.info("searching for vehicle",searchTerm)
+            let searchParts = searchTerm.split(vehicleDelimiter);
+            let routeId = searchParts[0];
+            let vehicleId = searchParts[1];
+            vehicleSearch(routeId,vehicleId);
+            return;
         }
         try {
             log.info("fetch search data called, generating new card",state,searchTerm)
@@ -307,18 +316,18 @@ export const useNavigation = () =>{
     //this function doesn't belong in "SearchEffect" but it does belong with card handling functions
 // which is what this has become
 
-    const vehicleSearch = async (routeId:string,vehicleId:string,lonlat:[number,number])=> {
-        log.info("setting card to vehicle card",routeId,vehicleId,lonlat);
+    const vehicleSearch = async (routeId: string, vehicleId: string) => {
+        log.info("setting card to vehicle card",routeId,vehicleId);
         //todo: should be current search term
         let pastCard = state.currentCard;
         let shortenedRouteId = routeId.split("_")[1];
         log.info("found routeId of target vehicle: ",shortenedRouteId);
         let currentCard = new Card(shortenedRouteId,uuidv4());
-        log.info("generated new card to become vehicle card",currentCard,routeId,vehicleId,lonlat);
+        log.info("generated new card to become vehicle card",currentCard,routeId,vehicleId);
         let routeData = routes?.current;
         if(routeData){routeData=routeData[routeId]};
         log.info("found routedata of target vehicle: ",routeData);
-        currentCard.setToVehicle(vehicleId,[routeData],new Set([routeId]),lonlat);
+        currentCard.setToVehicle(vehicleId,[routeData],new Set([routeId]));
         let cardStack = state.cardStack;
         cardStack.push(currentCard);
         log.info("updating state prev card -> new vehicle card: \n", pastCard,currentCard);
