@@ -80,6 +80,7 @@ export interface MapRouteComponentInterface {
 export interface RouteDirectionInterface {
     routeId: string;
     directionId: string;
+    hasUpcomingService: boolean;
     routeDestination: string;
     routeStopComponentsData: StopInterface[];
 }
@@ -218,11 +219,12 @@ export function createMapRouteComponentInterface(routeId: string, componentId: s
     };
 }
 
-export function createRouteDirectionComponentInterface(routeId: string, directionId: string, routeDestination: string, stops: StopInterface[]): RouteDirectionInterface {
+export function createRouteDirectionComponentInterface(routeId: string, directionId: string, hasUpcomingService:boolean, routeDestination: string, stops: StopInterface[]): RouteDirectionInterface {
     const routeStopComponentsData = stops.map(stop => createStopInterface(stop));
     return {
         routeId,
         directionId,
+        hasUpcomingService,
         routeDestination,
         routeStopComponentsData
     };
@@ -233,9 +235,12 @@ export function createRouteMatchDirectionInterface(directionJson: any, routeId: 
     const mapStopComponentData = [];
     const stops = directionJson?.stops || [];
 
+    console.log("createRouteMatchDirectionInterface", directionJson, routeId, color);
+
     const routeDirectionComponentData = createRouteDirectionComponentInterface(
         routeId,
         directionJson.directionId,
+        directionJson.hasUpcomingScheduledService,
         directionJson.destination,
         stops
     );
