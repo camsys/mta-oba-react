@@ -5,7 +5,7 @@ import {
 } from "../../components/util/VehicleStateComponent";
 import {OBA} from "../oba";
 import log from 'loglevel';
-
+import {getSearchTermAdditions} from "./keyWordsAndSupportUtils.ts"
 
 
 
@@ -204,7 +204,7 @@ export const siriGetVehiclesForStopViewEffect = (currentCard, vehicleState, setS
 
     let targetAddresses = []
     targetAddresses = [... stopIdList].map((stopId)=>{
-        return [stopId,baseTargetAddress+ "&stopId=" + stopId.replace("+","%2B")];
+        return [stopId,baseTargetAddress+ "&stopId=" + stopId.replace("+","%2B")+getSearchTermAdditions(currentCard)];
     })
     log.info("siri stop data target addresses ", targetAddresses)
 

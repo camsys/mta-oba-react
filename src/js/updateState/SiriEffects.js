@@ -8,6 +8,7 @@ import {
 import {OBA} from "../oba";
 import {createServiceAlertInterface, createVehicleRtInterface} from "./DataModels";
 import log from 'loglevel';
+import {getSearchTermAdditions} from "./keyWordsAndSupportUtils.ts"
 
 
 
@@ -176,13 +177,13 @@ const siriGetAndSetVehicles = (targetAddresses,vehicleState, setState, dataProce
     }).catch((x) => log.info("siri call issue!", x))
 }
 
-const getTargetList = (routeIdList) =>{
+const getTargetList = (routeIdList, currentCard) =>{
     let baseTargetAddress = "https://" + process.env.ENV_ADDRESS + "/" + process.env.VEHICLE_MONITORING_ENDPOINT
 
     return [...routeIdList].map((routeId)=>{
         let operatorRef = routeId.split("_")[0].replace(" ","+");
         const lineRef = routeId.split("_")[1];
-        return [lineRef,baseTargetAddress+"&OperatorRef=" +operatorRef + "&LineRef"+"=" + routeId.replace("-SBS","%2B")];
+        return [lineRef,baseTargetAddress+"&OperatorRef=" +operatorRef + "&LineRef"+"=" + routeId.replace("-SBS","%2B") +getSearchTermAdditions(currentCard)];
     })
 }
 
@@ -190,7 +191,7 @@ export const siriGetVehiclesForVehicleViewEffect = (currentCard, vehicleState, s
     let routeIdList = currentCard.routeIdList
     let vehicleId = currentCard.vehicleId
     log.info("looking for Siri Data for vehicle!",routeIdList,vehicleId)
-    let targetAddresses = getTargetList(routeIdList)
+    let targetAddresses = getTargetList(routeIdList,currentCard)
 
     if(targetAddresses.length!==1){
         log.error("a very odd situation has occured and should be reported in siriGetVehiclesForVehicleViewEffect",routeIdList,vehicleId,vehicleState,setState)
@@ -204,6 +205,6 @@ export const siriGetVehiclesForVehicleViewEffect = (currentCard, vehicleState, s
 export const siriGetVehiclesForRoutesEffect = (currentCard,vehicleState, setState ) => {
     let routeIdList = currentCard.routeIdList
     log.info("looking for Siri Data!",routeIdList)
-    let targetAddresses = getTargetList(routeIdList)
+    let targetAddresses = getTargetList(routeIdList, currentCard)
     return siriGetAndSetVehiclesForVehicleMonitoring(targetAddresses,vehicleState,setState)
 };
