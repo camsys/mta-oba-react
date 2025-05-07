@@ -61,7 +61,7 @@ function TitleAndH1():JSX.Element{
     document.title = TitleAndH1;
 
     return (
-        <h1 className="visually-hidden">${TitleAndH1}</h1>
+        <h1 className="visually-hidden">{TitleAndH1}</h1>
     )
 }
 
