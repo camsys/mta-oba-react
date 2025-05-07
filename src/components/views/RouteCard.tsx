@@ -73,7 +73,7 @@ export const RouteDirection = ({datum,color,collapsed}: { datum: RouteDirectionI
         <div className="route-direction inner-card collapsible" key={datum.routeId+datum.directionId}>
             <button className="card-header collapse-trigger" aria-haspopup="true" aria-expanded="false" aria-label={"Toggle "+datum.routeId+" to " + datum.routeDestination +" Open / Closed"} tabIndex={collapsed?-1:0}>
                 <span className="label">to <strong> {datum.routeDestination}</strong>
-                    {datum.hasUpcomingService?null:<><br/><span className="no-scheduled-service">No scheduled service at this time.</span></>}
+                    {datum.hasUpcomingService?null:<><br/><em className="no-scheduled-service">No scheduled service at this time.</em></>}
                 </span>
             </button>
             

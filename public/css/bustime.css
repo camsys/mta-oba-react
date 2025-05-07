@@ -2150,6 +2150,10 @@ button:hover, .button:hover {
       -ms-flex-positive: 1;
           flex-grow: 1;
 }
+.card > .card-header .no-scheduled-service, .inner-card > .card-header .no-scheduled-service {
+  display: inline-block;
+  margin-top: 0.25em;
+}
 .card .card-details, .inner-card .card-details {
   list-style: none;
   display: -webkit-box;
@@ -2832,10 +2836,4 @@ button:hover, .button:hover {
 #google-translate .goog-te-gadget > span a:hover, #google-translate .goog-te-gadget > span a:focus {
   text-decoration: underline;
   color: #000;
-}
-
-.no-scheduled-service {
-  font-size: 0.925em;
-  font-style: italic;
-  padding-left: 0.15em;
 }
