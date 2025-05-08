@@ -64,21 +64,19 @@ const loadPopup = (datumId,leafletRefObjs) :void=>{
 }
 
 const SearchedHere = () :JSX.Element=>{
-    log.info("generating searched here")
     const { state} = useContext(CardStateContext);
     const previousSearchedHereMarker = useRef<L.Marker|null>(null);
     const currentSearchedHereMarker = useRef<L.Marker|null>(null);
     let map = useMap()
-
-    previousSearchedHereMarker.current = currentSearchedHereMarker.current
-    state.currentCard.searchMatches.forEach(searchMatch=>{
-        if(state.currentCard.type===CardType.GeocodeCard){
-            currentSearchedHereMarker.current = createSearchedHereMarker([searchMatch.latitude,searchMatch.longitude])
-            log.info("searched here marker created", currentSearchedHereMarker.current)
-        }       
-    })
-
     useEffect(() => {
+        log.info("generating searched here")
+        previousSearchedHereMarker.current = currentSearchedHereMarker.current
+        state.currentCard.searchMatches.forEach(searchMatch=>{
+            if(state.currentCard.type===CardType.GeocodeCard){
+                currentSearchedHereMarker.current = createSearchedHereMarker([searchMatch.latitude,searchMatch.longitude])
+                log.info("searched here marker created", currentSearchedHereMarker.current)
+            }       
+        })
         if(previousSearchedHereMarker.current){
             log.info("removing previous searched here marker from map", currentSearchedHereMarker.current)
             previousSearchedHereMarker.current.removeFrom(map)
