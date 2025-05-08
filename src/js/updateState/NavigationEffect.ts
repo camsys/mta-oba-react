@@ -182,8 +182,9 @@ const getBaseAddress =()=>{
 }
 
 const getSearchAddress=(searchTerm:string, card: Card)=>{
-    log.info("searching for: " + getBaseAddress() + OBA.Config.searchUrl + "?q=" + searchTerm + getSearchTermAdditions(card))
-    return  getBaseAddress() + OBA.Config.searchUrl + "?q=" + searchTerm + getSearchTermAdditions(card)
+    let out = getBaseAddress() + OBA.Config.searchUrl + "?q=" + searchTerm + getSearchTermAdditions(card)
+    log.info("generating search address for: " + out)
+    return  out
 
 }
 
@@ -309,21 +310,24 @@ export const useNavigation = () =>{
                     });
                 searchRef = "";
             }
-            let searchAddress =  getSearchAddress(searchRef)
+            let searchAddress =  getSearchAddress(searchRef,currentCard);
             if(searchRef.includes(vehicleDelimiter)){
-                searchAddress = getSearchAddress(searchRef.split(vehicleDelimiter)[0]);
+                searchAddress = getSearchAddress(searchRef.split(vehicleDelimiter)[0],currentCard);
             }
-            log.info("generating card based on starting query");
-            let currentCard = await getData(new Card(searchRef,uuidv4()),stops,routes,searchAddress);
-            if(searchRef.includes(vehicleDelimiter)){
-                log.info("setting card to vehicle card",searchRef.split(vehicleDelimiter)[1],currentCard.searchMatches,new Set([currentCard.searchMatches[0].routeId]),currentCard)
-                currentCard.setToVehicle(searchRef.split(vehicleDelimiter)[1],currentCard.searchMatches,new Set([currentCard.searchMatches[0].routeId]))
-                log.info("setting card to vehicle card",searchRef.split(vehicleDelimiter)[1],currentCard.searchMatches,new Set([searchRef.split(vehicleDelimiter)[0]]),currentCard);
-            }
-            currentCard = await getData(new Card(searchRef,uuidv4(),getSessionUuid(currentCard)),stops,routes,getSearchAddress(searchRef,currentCard));
+            log.info("generating card based on starting query and search url", searchRef, searchAddress);
+            currentCard = await getData(new Card(searchRef,uuidv4(),getSessionUuid(currentCard)),stops,routes,searchAddress);
             // let currentCard = new Card(searchRef,uuidv4());
-            log.info("setting card based on starting query",currentCard);
 
+            if(searchRef.includes(vehicleDelimiter)){
+                if(searchRef.includes(vehicleDelimiter)){
+                    log.info("searching for vehicle",searchRef)
+                    let searchParts = searchRef.split(vehicleDelimiter);
+                    let routeId = searchParts[0];
+                    let vehicleId = searchParts[1];
+                    currentCard.setToVehicle(vehicleId,currentCard.searchMatches,currentCard.routeIdList);
+                }
+            }
+            log.info("setting card based on starting query",currentCard);
             let cardStack = state.cardStack;
             cardStack.push(currentCard);
             setState((prevState) => ({
