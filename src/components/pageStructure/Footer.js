@@ -38,16 +38,10 @@ function Footer  () {
                         <ul className="sub-menu menu collapse-content" id="mta-menu" style={{ maxHeight: '0px' }} role="menu">
                             <li><a href="//new.mta.info" tabIndex="-1"><span className="label">MTA Home</span></a></li>
                             <li><a href="//new.mta.info/agency/new-york-city-transit" tabIndex="-1"><span className="label">NYC Subways and Buses</span></a></li>
-                            <li><a href="//new.mta.info/agency/long-island-rail-road" tabIndex="-1"><span className="label">Long Island Rail Road</span></a></li>
-                            <li><a href="//new.mta.info/agency/metro-north-railroad" tabIndex="-1"><span className="label">Metro-North Railroad</span></a></li>
-                            <li><a href="//new.mta.info/agency/bridges-and-tunnels" tabIndex="-1"><span className="label">Bridges and Tunnels</span></a></li>
-                            <li><a href="//new.mta.info/agency/construction-and-development" tabIndex="-1"><span className="label">MTA Capital Program</span></a></li>
                             <li><a href="//new.mta.info/schedules" tabIndex="-1"><span className="label">Schedules</span></a></li>
                             <li><a href="//new.mta.info/fares" tabIndex="-1"><span className="label">Fares &amp; Tolls</span></a></li>
                             <li><a href="//new.mta.info/maps" tabIndex="-1"><span className="label">Maps</span></a></li>
                             <li><a href="//new.mta.info/alerts" tabIndex="-1"><span className="label">Planned Service Changes</span></a></li>
-                            <li><a href="//new.mta.info/about-us" tabIndex="-1"><span className="label">MTA Info</span></a></li>
-                            <li><a href="//new.mta.info/doing-business-with-us" tabIndex="-1"><span className="label">Doing Business With Us</span></a></li>
                             <li><a href="//new.mta.info/transparency" tabIndex="-1"><span className="label">Transparency</span></a></li>
                             <li><a href="//www.mta.info/privacy-policy" tabIndex="-1"><span className="label">Privacy Policy</span></a></li>
                         </ul>
