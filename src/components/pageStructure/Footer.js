@@ -42,7 +42,6 @@ function Footer  () {
                             <li><a href="//new.mta.info/fares" tabIndex="-1"><span className="label">Fares &amp; Tolls</span></a></li>
                             <li><a href="//new.mta.info/maps" tabIndex="-1"><span className="label">Maps</span></a></li>
                             <li><a href="//new.mta.info/alerts" tabIndex="-1"><span className="label">Planned Service Changes</span></a></li>
-                            <li><a href="//new.mta.info/transparency" tabIndex="-1"><span className="label">Transparency</span></a></li>
                             <li><a href="//www.mta.info/privacy-policy" tabIndex="-1"><span className="label">Privacy Policy</span></a></li>
                         </ul>
                     </li>
