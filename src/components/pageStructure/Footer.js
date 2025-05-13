@@ -36,13 +36,13 @@ function Footer  () {
                             <span className="label">Menu</span>
                         </button>
                         <ul className="sub-menu menu collapse-content" id="mta-menu" style={{ maxHeight: '0px' }} role="menu">
-                            <li><a href="//new.mta.info" tabIndex="-1"><span className="label">MTA Home</span></a></li>
-                            <li><a href="//new.mta.info/agency/new-york-city-transit" tabIndex="-1"><span className="label">NYC Subways and Buses</span></a></li>
-                            <li><a href="//new.mta.info/schedules" tabIndex="-1"><span className="label">Schedules</span></a></li>
-                            <li><a href="//new.mta.info/fares" tabIndex="-1"><span className="label">Fares &amp; Tolls</span></a></li>
-                            <li><a href="//new.mta.info/maps" tabIndex="-1"><span className="label">Maps</span></a></li>
-                            <li><a href="//new.mta.info/alerts" tabIndex="-1"><span className="label">Planned Service Changes</span></a></li>
-                            <li><a href="//www.mta.info/privacy-policy" tabIndex="-1"><span className="label">Privacy Policy</span></a></li>
+                            <li><a href="//mta.info" tabIndex="-1" target="_blank"><span className="label">MTA Home</span></a></li>
+                            <li><a href="//mta.info/agency/new-york-city-transit" tabIndex="-1" target="_blank"><span className="label">NYC Subways and Buses</span></a></li>
+                            <li><a href="//mta.info/schedules" tabIndex="-1" target="_blank"><span className="label">Schedules</span></a></li>
+                            <li><a href="//mta.info/fares" tabIndex="-1" target="_blank"><span className="label">Fares &amp; Tolls</span></a></li>
+                            <li><a href="//mta.info/maps" tabIndex="-1" target="_blank"><span className="label">Maps</span></a></li>
+                            <li><a href="//mta.info/alerts" tabIndex="-1" target="_blank"><span className="label">Planned Service Changes</span></a></li>
+                            <li><a href="//mta.info/privacy-policy" tabIndex="-1" target="_blank"><span className="label">Privacy Policy</span></a></li>
                         </ul>
                     </li>
                     {enableGoogleTranslate ? <li className="parent collapsible">
