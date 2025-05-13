@@ -5,6 +5,7 @@ const CopyPlugin = require("copy-webpack-plugin");
 const isProd = process.env.NODE_ENV === 'production';
 const loggingLevel = isProd ?  'error' : 'info';
 const siri_request_freq = isProd ? 30 : 15; // seconds
+const defaultAPIKey = 'OBANYCUI'
 
 // HTML Webpack Plugin for generating HTML file with script tags
 const htmlPlugin = new HtmlWebPackPlugin({
@@ -15,9 +16,10 @@ const htmlPlugin = new HtmlWebPackPlugin({
 // Environment variables setup using DefinePlugin
 const envPlugin = new webpack.DefinePlugin({
   'process.env.ALLOWED_HOST_ADDRESS': JSON.stringify(process.env.ALLOWED_HOST_ADDRESS || 'localhost'),
+  'process.env.API_KEY': JSON.stringify(process.env.API_KEY || defaultAPIKey),
   'process.env.ENV_ADDRESS': JSON.stringify(cleanUpHostAddress(process.env.ENV_ADDRESS || 'app.qa.obanyc.com')),
-  'process.env.VEHICLE_MONITORING_ENDPOINT': JSON.stringify(process.env.VEHICLE_MONITORING_ENDPOINT || 'api/siri/vehicle-monitoring.json?key=OBANYC'),
-  'process.env.STOP_MONITORING_ENDPOINT': JSON.stringify(process.env.STOP_MONITORING_ENDPOINT || '/api/stop-for-id?key=OBANYC'),
+  'process.env.VEHICLE_MONITORING_ENDPOINT': JSON.stringify(process.env.VEHICLE_MONITORING_ENDPOINT || `api/siri/vehicle-monitoring.json?key=${process.env.API_KEY || defaultAPIKey}`),
+  'process.env.STOP_MONITORING_ENDPOINT': JSON.stringify(process.env.STOP_MONITORING_ENDPOINT || `/api/stop-for-id?key=${process.env.API_KEY || defaultAPIKey}`),
   'process.env.STOPS_ON_ROUTE_ENDPOINT': JSON.stringify(process.env.STOPS_ON_ROUTE_ENDPOINT || 'api/stops-on-route-for-direction?'),
   'process.env.LOGGINGLEVEL': JSON.stringify(process.env.LOGGINGLEVEL || loggingLevel),
   'process.env.ENABLE_GOOGLE_TRANSLATE': JSON.stringify(process.env.ENABLE_GOOGLE_TRANSLATE || true),
