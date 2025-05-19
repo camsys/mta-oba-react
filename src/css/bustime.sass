@@ -546,8 +546,8 @@ button, .button
           order: 3
           width: 100%
           font-size: .75em
-          ul
-            gap: .5em
+          // ul
+          //   gap: .5em
         .logo-link
           max-width: 70%
       h1
@@ -711,7 +711,8 @@ button, .button
   .menu
     display: flex
     flex-wrap: nowrap
-    justify-content: space-between
+    justify-content: flex-start
+    gap: $content-padding
     font-size: .75em
     line-height: 1
     list-style: none
@@ -751,10 +752,17 @@ button, .button
       top: .5em
       flex-shrink: 0
     .menu
-      gap: $content-padding
+      // gap: $content-padding
+      justify-content: space-between
+      gap: 0
       font-size: 1em
       a.active
         font-weight: bold
+  +mq($three)
+    .no-map &
+      .menu
+        justify-content: flex-start
+        gap: $content-padding
   +mq($sidebar-switch)
     .logo-link
       margin: 0 0 1.25em 0
