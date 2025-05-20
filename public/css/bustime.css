@@ -1107,7 +1107,10 @@ button:hover, .button:hover {
     font-size: 0.875em;
   }
   .main-body.no-map .page-content a, .main-body.no-map .page-content strong, .main-body.no-map .page-content bold, .main-body.no-map .page-content b, .main-body.no-map .page-content span, .main-body.no-map .page-content code {
-    word-break: break-all;
+    word-break: break-word;
+  }
+  .main-body.no-map .page-content .button {
+    line-height: 1.2;
   }
   .main-body.no-map .page-content .bustime-thumb {
     max-width: 100%;
