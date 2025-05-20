@@ -26,9 +26,9 @@ const VehicleLoading=()=>{
     let siri_freq = process.env.SIRI_REQUEST_FREQ as number;
     useEffect(() => {
         updateSiriEffect()
-        const interval = setInterval(updateSiriEffect, siri_freq*1000);
-        log.info("interval set for vehicle loading",interval)
-        return () => clearInterval(interval);
+        // const interval = setInterval(updateSiriEffect, siri_freq*1000);
+        // log.info("interval set for vehicle loading",interval)
+        // return () => clearInterval(interval);
     }, [state]);
 }
 
