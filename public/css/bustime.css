@@ -2846,3 +2846,8 @@ button:hover, .button:hover {
   text-decoration: underline;
   color: #000;
 }
+
+#goog-gt-tt {
+  margin: 0px !important;
+  max-width: 80dvw !important;
+}
