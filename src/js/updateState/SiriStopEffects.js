@@ -132,7 +132,9 @@ const mergeSiri = (dataObjsList) =>{
                 if(routeInfoIdentifier.includes(updatedTimeIdentifier)){
                     combinedRoutes[routeInfoIdentifier] = routeObj
                 }
-                else if(combinedRoutes[routeInfoIdentifier] !==null && typeof combinedRoutes[routeInfoIdentifier] !=='undefined'){
+                else if(combinedRoutes[routeInfoIdentifier] !==null && combinedRoutes[routeInfoIdentifier] !==undefined
+                    && routeObj !==null && routeObj !==undefined && typeof routeObj === "object"
+                ){
                     routeObj.forEach((siriData, siriIdentifier) => {
                         combinedRoutes[routeInfoIdentifier].set(siriIdentifier, siriData)}
                     )}
@@ -150,18 +152,21 @@ const siriGetAndSetVehicles = (targetAddresses,vehicleState, setState, dataProce
     let getData = async () => {
         log.info("siri stop seeks promises from ", targetAddresses)
         let returnedPromises = await Promise.all(targetAddresses.map(adr => dataProcessFunction(adr)))
-        log.info("siri stop promises awaited ", returnedPromises)
+        log.info("siri stop promises recieved ", returnedPromises)
         let dataObjsList = returnedPromises.filter(
-            (result) => result !== null && typeof result !== "undefined")
-            .map(
+            (result) => result !== null && typeof result !== "undefined" && result!==undefined)
+        log.info("siri stop promises filtered",dataObjsList)
+        dataObjsList = dataObjsList.map(
                 ([stopId, vehicleDataList, serviceAlertDataList, stopsToVehicles,stopsToExtendedVehiclesMap, lastCallTime]) => {
-
-                    // turn them into a list by route
-                    // then get them into <state route&keyword-> <map stopIden -> vehicles>>
-                    // not sure we'll stick with this, but it's fast and dirty because it needs to happen
-                    // before backend support for timing
-                    // todo: pls fix w/ proper backend support
-                    let dataObj = {}
+                 log.info("siri stop data found: ", vehicleDataList, serviceAlertDataList, stopsToVehicles,stopsToExtendedVehiclesMap)
+                // turn them into a list by route
+                // then get them into <state route&keyword-> <map stopIden -> vehicles>>
+                // not sure we'll stick with this, but it's fast and dirty because it needs to happen
+                // before backend support for timing
+                // todo: pls fix w/ proper backend support
+                let dataObj = {}
+                if(stopsToExtendedVehiclesMap.get(stopId) !== null &&  stopsToExtendedVehiclesMap.get(stopId) !== undefined){
+                    log.info("siri stop data found: ", stopsToExtendedVehiclesMap.get(stopId))
                     Object.entries(stopsToExtendedVehiclesMap.get(stopId)).forEach(
                         ([key,siriObj]) => {
                             let routeAndDir = siriObj.routeId +"_"+siriObj.direction
@@ -177,8 +182,9 @@ const siriGetAndSetVehicles = (targetAddresses,vehicleState, setState, dataProce
                         }
                     )
                     dataObj[stopId + stopSortedFutureVehicleDataIdentifier] = stopsToExtendedVehiclesMap
-                    return dataObj
-                })
+                }
+                return dataObj
+            })
         if (dataObjsList.length === 0) {
             return null
         }
