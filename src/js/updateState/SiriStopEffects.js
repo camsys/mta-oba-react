@@ -60,7 +60,7 @@ function extractData (stopId,siri){
         log.info("siri stop service alerts found:", serviceAlertActivity)
         for (let i = 0; i < serviceAlertActivity.length; i++) {
             let situationElement = serviceAlertActivity[i]
-            log.info("siri stop processing service alert:", situationElement)
+            // log.info("siri stop processing service alert:", situationElement)
             let effects = situationElement.Affects.VehicleJourneys.AffectedVehicleJourney
             log.info(effects)
             const routesWithServiceAlerts = {}

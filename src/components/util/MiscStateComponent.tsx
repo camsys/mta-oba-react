@@ -48,7 +48,7 @@ const FavoritesCookieStateProvider = ({children} : {children:ReactNode}):JSX.Ele
 
 const setCookies =(cookie:FavoritesCookie)=>{
     log.info(cookie)
-    Cookies.set(favoritesIdentifier,JSON.stringify(cookie))
+    Cookies.set(favoritesIdentifier,JSON.stringify(cookie),{ expires: 365*5 })
 }
 
 const isValidFavorite =(datum) =>{
