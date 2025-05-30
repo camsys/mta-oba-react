@@ -782,7 +782,7 @@ button, .button
   width: 100%
   // background-color: $ui-gray
   background-color: $mta-blue
-  // overflow: hidden 
+  overflow-y: scroll
   position: relative 
   z-index: 1
   display: inline-flex
@@ -802,6 +802,7 @@ button, .button
     background: $mta-blue
     color: $white
     position: relative
+    transition: top 0.25s ease-out
     input
       font-size: 1em
       background-color: rgba($white, .1)
@@ -893,6 +894,7 @@ button, .button
       color: $white
       overflow: hidden
       height: 30px
+      max-height: 30px
       transition: max-height .25s ease-in-out
       display: flex
       flex-direction: column
@@ -904,8 +906,8 @@ button, .button
         max-height: 0
   .sidebar-content
     flex: 1 0 0
-    overflow-x: hidden
-    overflow-y: auto
+    // overflow-x: hidden
+    // overflow-y: auto
     display: inline-flex
     flex-direction: column
     align-items: stretch
@@ -921,10 +923,24 @@ button, .button
       padding-top: 0
       position: relative 
       top: -1px
+  +mq-reverse($sidebar-switch)
+    #search
+      &.scrolled
+        position: sticky
+        top: -200px
+        z-index: 100
+        .search-instructions
+          max-height: 0px
+      &.sticky
+        top: 0
   +mq($sidebar-switch)
     box-shadow: .25em .25em .5em 0 rgba($black, 0.25)
     width: $sidebar-width-narrow
     height: auto
+    overflow-y: auto
+    .sidebar-content
+      overflow-x: hidden
+      overflow-y: auto
     .google-translate-active &
       height: auto
   +mq($nine)

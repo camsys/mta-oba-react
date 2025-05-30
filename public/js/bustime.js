@@ -196,7 +196,7 @@ document.addEventListener('DOMContentLoaded', function() {
           sidebarContent.addEventListener('scroll', () => {
             const scrollTop = sidebarContent.scrollTop;
             const overFlowAmount = sidebarContent.scrollHeight - sidebarContent.clientHeight;
-  
+            // window.console.log('sidebar content is scrolling');
             if (overFlowAmount > searchInstructionsHeight) {
               if (scrollTop <= searchInstructionsHeight) {
                 searchInstructions.style.height = (searchInstructionsHeight - scrollTop) + 'px';
@@ -228,6 +228,69 @@ document.addEventListener('DOMContentLoaded', function() {
           handleResize();
   
           searchInstructionObserver.disconnect();
+
+          // headroom style search for mobile
+          const sidebar = document.getElementById('sidebar');
+          const search = document.getElementById('search');
+          let lastScrollTop = sidebar.scrollTop;
+          let isSticky = false;
+          let upwardScrollAccumulated = 0;
+          let userScrolledFarEnoughDown = false;
+
+          const STICKY_TRIGGER_DISTANCE = 20;
+
+          sidebar.addEventListener('scroll', () => {
+            const currentScrollTop = sidebar.scrollTop;
+            const searchTop = search.offsetTop;
+            const searchHeight = search.offsetHeight;
+            const searchBottom = searchTop + searchHeight;
+            const scrollDelta = lastScrollTop - currentScrollTop;
+
+            // Top of scroll — reset all
+            if (currentScrollTop <= 0) {
+              search.classList.remove('sticky', 'scrolled');
+              isSticky = false;
+              upwardScrollAccumulated = 0;
+              userScrolledFarEnoughDown = false;
+            } else {
+              // Mark when user has scrolled far enough down past search
+              if (currentScrollTop >= searchBottom + searchHeight) {
+                userScrolledFarEnoughDown = true;
+              }
+
+              // Add .scrolled if search is out of view
+              if (currentScrollTop >= searchBottom) {
+                search.classList.add('scrolled');
+              }
+
+              if (scrollDelta > 0) {
+                // Scrolling up — accumulate
+                upwardScrollAccumulated += scrollDelta;
+
+                if (
+                  userScrolledFarEnoughDown &&
+                  upwardScrollAccumulated >= STICKY_TRIGGER_DISTANCE &&
+                  !isSticky
+                ) {
+                  search.classList.add('sticky');
+                  isSticky = true;
+                }
+              } else if (scrollDelta < 0) {
+                // Scrolling down — reset sticky logic
+                upwardScrollAccumulated = 0;
+
+                if (isSticky) {
+                  search.classList.remove('sticky');
+                  isSticky = false;
+                }
+              }
+            }
+
+            lastScrollTop = currentScrollTop;
+          });
+
+          // end headroom style search for mobile
+
           break;
         }
       }

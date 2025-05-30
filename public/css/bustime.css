@@ -1406,6 +1406,7 @@ button:hover, .button:hover {
 #sidebar {
   width: 100%;
   background-color: #0E61A9;
+  overflow-y: scroll;
   position: relative;
   z-index: 1;
   display: -webkit-inline-box;
@@ -1438,6 +1439,8 @@ button:hover, .button:hover {
   background: #0E61A9;
   color: #fff;
   position: relative;
+  -webkit-transition: top 0.25s ease-out;
+  transition: top 0.25s ease-out;
 }
 #sidebar #search input {
   font-size: 1em;
@@ -1574,6 +1577,7 @@ button:hover, .button:hover {
   color: #fff;
   overflow: hidden;
   height: 30px;
+  max-height: 30px;
   -webkit-transition: max-height 0.25s ease-in-out;
   transition: max-height 0.25s ease-in-out;
   display: -webkit-box;
@@ -1598,8 +1602,6 @@ button:hover, .button:hover {
   -webkit-box-flex: 1;
       -ms-flex: 1 0 0px;
           flex: 1 0 0;
-  overflow-x: hidden;
-  overflow-y: auto;
   display: -webkit-inline-box;
   display: -ms-inline-flexbox;
   display: inline-flex;
@@ -1630,12 +1632,30 @@ button:hover, .button:hover {
   position: relative;
   top: -1px;
 }
+@media screen and (max-width: 599px) {
+  #sidebar #search.scrolled {
+    position: sticky;
+    top: -200px;
+    z-index: 100;
+  }
+  #sidebar #search.scrolled .search-instructions {
+    max-height: 0px;
+  }
+  #sidebar #search.sticky {
+    top: 0;
+  }
+}
 @media screen and (min-width: 600px) {
   #sidebar {
     -webkit-box-shadow: 0.25em 0.25em 0.5em 0 rgba(0, 0, 0, 0.25);
             box-shadow: 0.25em 0.25em 0.5em 0 rgba(0, 0, 0, 0.25);
     width: 22em;
     height: auto;
+    overflow-y: auto;
+  }
+  #sidebar .sidebar-content {
+    overflow-x: hidden;
+    overflow-y: auto;
   }
   .google-translate-active #sidebar {
     height: auto;
