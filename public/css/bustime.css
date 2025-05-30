@@ -467,7 +467,7 @@ button:hover, .button:hover {
 }
 .button:not(#map-toggle):not(.refresh-button):focus, .button:not(#map-toggle):not(.refresh-button):focus-visible {
   color: #fff;
-  border: 2px solid #f2a900;
+  outline: 2px solid #f2a900;
   background-color: #000;
 }
 
@@ -1498,6 +1498,9 @@ button:hover, .button:hover {
   position: relative;
   z-index: 1001;
 }
+#sidebar #search .react-autosuggest__container--open + #clear-search:hover {
+  border-bottom-right-radius: 0;
+}
 #sidebar #search .react-autosuggest__suggestions-container {
   position: absolute;
   background-color: #fff;
@@ -1553,14 +1556,15 @@ button:hover, .button:hover {
   right: 0;
   bottom: 0;
   height: 100%;
-  padding-right: 0.5em;
-  padding-left: 0.5em;
+  padding: 0 0.5em;
   width: 2.25em;
   z-index: 1001;
   opacity: 1;
   -webkit-transition: opacity 0.25s ease-in-out;
   transition: opacity 0.25s ease-in-out;
   color: #f3f3f3;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
 }
 #sidebar #search .search-box #clear-search:disabled {
   width: 0;
@@ -1568,8 +1572,18 @@ button:hover, .button:hover {
   padding-right: 0;
   padding-left: 0;
 }
+#sidebar #search .search-box #clear-search:hover {
+  color: #f2a900;
+  background: #000;
+}
+#sidebar #search .search-box #clear-search:focus {
+  outline: 1px solid #f2a900;
+}
 #sidebar #search .search-box.is-focused #clear-search {
   color: #666;
+}
+#sidebar #search .search-box.is-focused #clear-search:hover {
+  color: #f2a900;
 }
 #sidebar #search .search-instructions {
   padding: 0;
