@@ -16,7 +16,7 @@ import {MapWrapper} from "./map/MapWrapper.tsx";
 import {FavoritesCookieStateProvider} from "Components/util/MiscStateComponent";
 import log from 'loglevel';
 import {useSiri} from "../js/updateState/getSiri.tx";
-import { clickHandler, keypressHandler } from '../js/updateState/handleTracking.ts';
+import { clickHandler, keypressHandler, postClickLog } from '../js/updateState/handleTracking.ts';
 
 
 
@@ -93,6 +93,15 @@ function App  () : JSX.Element{
             document.removeEventListener("click", clickHandler, true);
             document.removeEventListener("keypress", keypressHandler, true);
         };
+    }, []);
+
+    useEffect(() => {
+        postClickLog();
+        const interval = setInterval(postClickLog, 30*1000);
+        log.info("interval set posting",interval)
+        return () => {
+            clearInterval(interval);
+            postClickLog();};
     }, []);
 
     return (

@@ -49,8 +49,7 @@ const trackingHandler = (target:HTMLElement) => {
         }
         el = el.parentElement;
     }
-    context.push(Date.now().toString());
-    let clickLocation = formatContext(context)
+    let clickLocation = Date.now().toString() + ","+ formatContext(context)
     log.info("click context:", clickLocation);
     logClick(clickLocation)
     log.info("getClickLog:", getClickLog());
@@ -115,7 +114,25 @@ function drainClickLogAsSearchField(url:string) {
     let maxChars = 2000-url.length-250;
     if(maxChars>1000) maxChars = 1000;
     const events = drainClickLog(maxChars);
-    return STORAGE_KEY+"=" + events.join(",");
+    return STORAGE_KEY+"=" + events.join("|");
 }
 
-export {trackingHandler,logClick, getClickLog, drainClickLogAsSearchField, clickHandler, keypressHandler};
+const postClickLog = async ()=>{
+  try {
+    log.info("Posting click log to analytics endpoint");
+    let events = drainClickLog(10000)
+    log.info("Posting click log events:", events);
+    await fetch("http://localhost:8081/analytics", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(events)
+    });
+  }
+  catch (error) {
+    log.error("Error posting click log:", error);
+  }
+};
+
+export {trackingHandler,logClick, getClickLog, postClickLog, drainClickLogAsSearchField, clickHandler, keypressHandler};

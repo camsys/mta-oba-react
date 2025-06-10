@@ -1,6 +1,5 @@
 import { Card } from "./DataModels";
 import log from "loglevel";
-import { drainClickLogAsSearchField } from "./handleTracking";
 
 export function getSearchTermAdditions(currentCard:Card){
     log.info("getSearchTermAdditions called, currentCard: ", currentCard);
@@ -10,5 +9,5 @@ export function getSearchTermAdditions(currentCard:Card){
     }
     let url = "&newUI=true&sessionId=" + currentCard.sessionUuid
 
-    return url +drainClickLogAsSearchField(url);
+    return url;
 }
