@@ -16,6 +16,7 @@ import {MapWrapper} from "./map/MapWrapper.tsx";
 import {FavoritesCookieStateProvider} from "Components/util/MiscStateComponent";
 import log from 'loglevel';
 import {useSiri} from "../js/updateState/getSiri.tx";
+import { clickHandler, keypressHandler } from '../js/updateState/handleTracking.ts';
 
 
 
@@ -85,6 +86,14 @@ function App  () : JSX.Element{
         // return () => window.removeEventListener('popstate', handlePopState);
     }, []);
 
+    useEffect(() => {     
+        document.addEventListener("click", clickHandler, true);
+        document.addEventListener("keypress", keypressHandler, true);
+        return () => {
+            document.removeEventListener("click", clickHandler, true);
+            document.removeEventListener("keypress", keypressHandler, true);
+        };
+    }, []);
 
     return (
         <ErrorBoundary>

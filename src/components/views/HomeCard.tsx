@@ -8,7 +8,7 @@ function HomeCard  () : JSX.Element {
     log.info("adding home card")
     const { search,allRoutesSearch } = useNavigation();
     log.info("functions for search",search,allRoutesSearch)
-    return (<div><h2>Try these example searches:</h2>
+    return (<div className="example-searches"><h2>Try these example searches:</h2>
     <ul>
         <li>Route:
             <ul className="links">
