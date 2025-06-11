@@ -235,7 +235,7 @@ export function createRouteMatchDirectionInterface(directionJson: any, routeId: 
     const mapStopComponentData = [];
     const stops = directionJson?.stops || [];
 
-    console.log("createRouteMatchDirectionInterface", directionJson, routeId, color);
+    log.info("createRouteMatchDirectionInterface", directionJson, routeId, color);
 
     const routeDirectionComponentData = createRouteDirectionComponentInterface(
         routeId,
@@ -402,7 +402,7 @@ export class Card {
         this.searchMatches = searchMatches;
         this.routeIdList = routeIdList;
         this.searchResultType = null;
-        console.log("setToVehicle",this)
+        log.info("setToVehicle",this)
     }
 
     setToAllRoutes(

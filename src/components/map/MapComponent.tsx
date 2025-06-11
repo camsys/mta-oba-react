@@ -543,7 +543,7 @@ const HandleMapBoundsAndZoom = () : void=>{
                     return
                 }
                 [lat, long] = vehicleState[routeId+vehicleDataIdentifier].get(vehicleId).longLat;
-                console.log("vehicle lat long",lat,long)
+                log.info("vehicle lat long",lat,long)
                 // [lat, long] = state.currentCard.longlat;
                 zoom = 16;
             }

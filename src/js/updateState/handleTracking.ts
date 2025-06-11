@@ -50,7 +50,7 @@ const clickHandler = (e: MouseEvent) => {
   };
 
 const trackingHandler = (target:HTMLElement) => {
-  console.log("trackingHandler called with target:", target);
+  log.info("trackingHandler called with target:", target);
   const context:string[] = []
   let el: HTMLElement | null = target;
   if(el?.innerText && el.innerText.length < 45 && el.innerText.length > 0) {
