@@ -142,7 +142,7 @@ const postClickLog = async ()=>{
     log.info("Posting click log to analytics endpoint");
     let events = drainClickLog(10000)
     log.info("Posting click log events:", events);
-    await fetch("http://"+process.env.TRACKING_HOST_ADDRESS+":8081/analytics", {
+    await fetch("https://"+process.env.TRACKING_HOST_ADDRESS+":8081/analytics", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
