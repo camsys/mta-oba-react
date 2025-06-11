@@ -11,6 +11,13 @@ const allowedOriginRegexes = [
 ];
 
 
+process.on('uncaughtException', (err) => {
+  console.error('Uncaught exception:', err);
+});
+process.on('unhandledRejection', (err) => {
+  console.error('Unhandled promise rejection:', err);
+});
+
 const app = express();
 
 app.use(cors({

@@ -23,7 +23,8 @@ const envPlugin = new webpack.DefinePlugin({
   'process.env.STOPS_ON_ROUTE_ENDPOINT': JSON.stringify(process.env.STOPS_ON_ROUTE_ENDPOINT || 'api/stops-on-route-for-direction?'),
   'process.env.LOGGINGLEVEL': JSON.stringify(process.env.LOGGINGLEVEL || loggingLevel),
   'process.env.ENABLE_GOOGLE_TRANSLATE': JSON.stringify(process.env.ENABLE_GOOGLE_TRANSLATE || true),
-  'process.env.SIRI_REQUEST_FREQ': JSON.stringify(process.env.SIRI_REQUEST_FREQ || siri_request_freq)
+  'process.env.SIRI_REQUEST_FREQ': JSON.stringify(process.env.SIRI_REQUEST_FREQ || siri_request_freq),
+  'process.env.TRACKING_HOST_ADDRESS': JSON.stringify(process.env.ENV_ADDRESS || 'localhost'),
 });
 
 // Copy Plugin to copy static assets
