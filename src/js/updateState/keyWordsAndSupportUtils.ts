@@ -7,7 +7,7 @@ export function getSearchTermAdditions(currentCard:Card){
         log.error("getSearchTermAdditions called with null or undefined currentCard");
         return "";
     }
-    let url = "&newUI=true&sessionId=" + currentCard.sessionUuid
+    let url = "&key="+process.env.API_KEY+"&newUI=true&sessionId=" + currentCard.sessionUuid
 
     return url;
 }

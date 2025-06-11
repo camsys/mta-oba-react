@@ -183,7 +183,7 @@ const getTargetList = (routeIdList, currentCard) =>{
     return [...routeIdList].map((routeId)=>{
         let operatorRef = routeId.split("_")[0].replace(" ","+");
         const lineRef = routeId.split("_")[1];
-        return [lineRef,baseTargetAddress+"&OperatorRef=" +operatorRef + "&LineRef"+"=" + routeId.replace("-SBS","%2B") +getSearchTermAdditions(currentCard)];
+        return [lineRef,baseTargetAddress+"OperatorRef=" +operatorRef + "&LineRef"+"=" + routeId.replace("-SBS","%2B") +getSearchTermAdditions(currentCard)];
     })
 }
 
