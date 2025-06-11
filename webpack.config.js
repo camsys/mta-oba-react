@@ -6,6 +6,9 @@ const isProd = process.env.NODE_ENV === 'production';
 const loggingLevel = isProd ?  'error' : 'info';
 const siri_request_freq = isProd ? 30 : 15; // seconds
 const defaultAPIKey = 'OBANYCUI'
+const tracking_host_address = process.env.ALLOWED_HOST_ADDRESS ? 
+  "https://" + process.env.ALLOWED_HOST_ADDRESS :
+  'http://localhost:8081'
 
 // HTML Webpack Plugin for generating HTML file with script tags
 const htmlPlugin = new HtmlWebPackPlugin({
@@ -15,6 +18,7 @@ const htmlPlugin = new HtmlWebPackPlugin({
 
 // Environment variables setup using DefinePlugin
 const envPlugin = new webpack.DefinePlugin({
+  'process.env.TRACKING_HOST_ADDRESS': JSON.stringify(process.env.TRACKING_HOST_ADDRESS || tracking_host_address),
   'process.env.ALLOWED_HOST_ADDRESS': JSON.stringify(process.env.ALLOWED_HOST_ADDRESS || 'localhost'),
   'process.env.API_KEY': JSON.stringify(process.env.API_KEY || defaultAPIKey),
   'process.env.ENV_ADDRESS': JSON.stringify(cleanUpHostAddress(process.env.ENV_ADDRESS || 'app.qa.obanyc.com')),
@@ -23,8 +27,7 @@ const envPlugin = new webpack.DefinePlugin({
   'process.env.STOPS_ON_ROUTE_ENDPOINT': JSON.stringify(process.env.STOPS_ON_ROUTE_ENDPOINT || 'api/stops-on-route-for-direction?'),
   'process.env.LOGGINGLEVEL': JSON.stringify(process.env.LOGGINGLEVEL || loggingLevel),
   'process.env.ENABLE_GOOGLE_TRANSLATE': JSON.stringify(process.env.ENABLE_GOOGLE_TRANSLATE || true),
-  'process.env.SIRI_REQUEST_FREQ': JSON.stringify(process.env.SIRI_REQUEST_FREQ || siri_request_freq),
-  'process.env.TRACKING_HOST_ADDRESS': JSON.stringify(process.env.ENV_ADDRESS || 'localhost'),
+  'process.env.SIRI_REQUEST_FREQ': JSON.stringify(process.env.SIRI_REQUEST_FREQ || siri_request_freq)
 });
 
 // Copy Plugin to copy static assets
