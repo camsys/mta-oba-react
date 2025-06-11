@@ -2,4 +2,5 @@
 .htpasswd
 node_modules/
 
+logs/
 .idea/

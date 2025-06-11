@@ -88,10 +88,10 @@ function App  () : JSX.Element{
 
     useEffect(() => {     
         document.addEventListener("click", clickHandler, true);
-        document.addEventListener("keypress", keypressHandler, true);
+        // document.addEventListener("keypress", keypressHandler, true);
         return () => {
             document.removeEventListener("click", clickHandler, true);
-            document.removeEventListener("keypress", keypressHandler, true);
+            // document.removeEventListener("keypress", keypressHandler, true);
         };
     }, []);
 

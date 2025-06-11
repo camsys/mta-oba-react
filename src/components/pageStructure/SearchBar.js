@@ -4,6 +4,7 @@ import ErrorBoundary from "../util/errorBoundary";
 import {useNavigation} from "../../js/updateState/NavigationEffect.ts";
 import {CardStateContext} from "../util/CardStateComponent.tsx";
 import log from 'loglevel';
+import { trackingHandler } from '../../js/updateState/handleTracking.ts';
 
 // Function to fetch suggestions from an external API
 const getSuggestions = async (value) => {

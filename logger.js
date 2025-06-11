@@ -1,6 +1,8 @@
 // logger.js
 const express = require('express');
 const cors = require('cors');
+const fs = require('fs');
+const path = require('path');
 
 const allowedOrigins = ['http://localhost:8080'];
 const allowedOriginRegexes = [
@@ -27,10 +29,51 @@ app.use(cors({
 
 app.use(express.json());
 
+
+function getTimestampFilename() {
+  const now = new Date();
+  const minute = now.toISOString().slice(0, 16).replace(/[:]/g, '-'); // YYYY-MM-DDTHH-MM
+  const [_, nanos] = process.hrtime();
+  const micros = String(Math.floor(nanos / 1000)).padStart(6, '0');
+  return `analytics-${minute}-Z-${micros}.log`;
+}
+
+let currentStream = null;
+let currentMinute = null;
+
+function rotateLogFile() {
+  const now = new Date();
+  const minuteKey = now.toISOString().slice(0, 16); // up to minute
+  if (currentMinute !== minuteKey) {
+    currentMinute = minuteKey;
+    const filename = getTimestampFilename();
+    const filepath = path.join('/var','log', 'ui', filename);
+    newStream = fs.createWriteStream(filepath, { flags: 'a' });
+    if (currentStream) currentStream.end();
+    currentStream = newStream;
+    console.log('Rotated log file to:', filename);
+  }
+}
+
 app.post('/analytics', (req, res) => {
-  console.log('Analytics hit:', req.body);
-  res.status(204).end();
+  try {
+    const bodyString = JSON.stringify(req.body);
+    if (bodyString.length > 20000) {
+      return res.status(413).send('Payload too large');
+    }
+
+    rotateLogFile();  // ensure stream is up to date
+
+    const logEntry = `${new Date().toISOString()} ${bodyString}\n`;
+    currentStream.write(logEntry);
+
+    res.status(204).end();
+  } catch (err) {
+    console.error('Error:', err);
+    res.status(500).send('Server error');
+  }
 });
+
 
 app.listen(8081, () => {
   console.log('Analytics logger running on port 8081');

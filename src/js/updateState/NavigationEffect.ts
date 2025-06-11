@@ -14,18 +14,19 @@ import {
 import log from 'loglevel';
 import {v4 as uuidv4} from 'uuid';
 import {getSearchTermAdditions} from "./keyWordsAndSupportUtils.ts"
+import { getSessionUuid } from "./handleTracking.ts";
 
 const vehicleDelimiter = ":"
-function getSessionUuid(card:Card|null):string{
-    log.info("getting session uuid",card)
-    let sessionUuid;
-    if(card == null || card == undefined || card?.sessionUuid == null || card?.sessionUuid == undefined){
-        sessionUuid = uuidv4();
-    } else {sessionUuid = card?.sessionUuid;}
-    log.info("session uuid is ",sessionUuid)
-    return sessionUuid
+// function getSessionUuid(card:Card|null):string{
+//     log.info("getting session uuid",card)
+//     let sessionUuid;
+//     if(card == null || card == undefined || card?.sessionUuid == null || card?.sessionUuid == undefined){
+//         sessionUuid = uuidv4();
+//     } else {sessionUuid = card?.sessionUuid;}
+//     log.info("session uuid is ",sessionUuid)
+//     return sessionUuid
 
-}
+// }
 
 function processRouteSearch(route,card:Card,stops: StopsObject,routes:RoutesObject):RouteMatch {
     let match = new RouteMatch(route)

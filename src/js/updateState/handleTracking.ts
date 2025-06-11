@@ -1,4 +1,5 @@
 import log from 'loglevel';
+import {v4 as uuidv4} from 'uuid';
 
 const STORAGE_KEY = "__click_log";
 const MAX_EVENTS = 200;
@@ -19,6 +20,22 @@ const useTitleInsteadOfInnerText = new Set([
 ]);
 
 
+const getSessionUuid = () => {
+  log.info("Retrieving session UUID");
+  let sessionUuid = sessionStorage.getItem("uuid") 
+  if(!sessionUuid) {
+    log.info("No session UUID found in sessionStorage, checking URL parameters");
+    sessionUuid = new URLSearchParams(window.location.search).get("uuid");
+    sessionStorage.setItem("uuid", sessionUuid);
+  }
+  if (!sessionUuid) {
+    sessionUuid = uuidv4();
+    log.info("No session UUID found, generating new one:", sessionUuid);
+    sessionStorage.setItem("uuid", sessionUuid);
+  }
+  return sessionUuid;
+}
+
 const clickHandler = (e: MouseEvent) => {
     const target = e.target as HTMLElement;
     trackingHandler(target);
@@ -33,26 +50,29 @@ const clickHandler = (e: MouseEvent) => {
   };
 
 const trackingHandler = (target:HTMLElement) => {
-    const context:string[] = []
-    let el: HTMLElement | null = target;
-    if(el?.innerText && el.innerText.length < 45 && el.innerText.length > 0) {
-        context.push(el.innerText)
-    }
-    if(el.hasAttribute("alt")){
-        context.push(el.title);
-    }
-    while (el && el !== document.body) {
-        for (const className of el.classList) {
-            if (allowedClasses.has(className)) {
-                context.push(className);
-            }
-        }
-        el = el.parentElement;
-    }
-    let clickLocation = Date.now().toString() + ","+ formatContext(context)
-    log.info("click context:", clickLocation);
-    logClick(clickLocation)
-    log.info("getClickLog:", getClickLog());
+  console.log("trackingHandler called with target:", target);
+  const context:string[] = []
+  let el: HTMLElement | null = target;
+  if(el?.innerText && el.innerText.length < 45 && el.innerText.length > 0) {
+      context.push(el.innerText)
+  } else if(el.hasAttribute("alt")){
+      context.push(el.title);
+  } else {
+    log.warn("tracking cannot work with element:", el);
+    context.push(el.getAttribute("value")||"")
+  }
+  while (el && el !== document.body) {
+      for (const className of el.classList) {
+          if (allowedClasses.has(className)) {
+              context.push(className);
+          }
+      }
+      el = el.parentElement;
+  }
+  let clickLocation = Date.now().toString() + ","+ getSessionUuid() + ","+ formatContext(context)
+  log.info("tracking click context:", clickLocation);
+  logClick(clickLocation)
+  log.info("tracking getClickLog:", getClickLog());
 };
 
 function formatContext (context: string[]): string {
@@ -63,7 +83,7 @@ function formatContext (context: string[]): string {
             .replace(/_+/g,"_")
 
         return out || `part-${index}`;
-    }).join("*-*");
+    }).join("-");
 }
 
 function logClick(clickLog:string) {
@@ -135,4 +155,4 @@ const postClickLog = async ()=>{
   }
 };
 
-export {trackingHandler,logClick, getClickLog, postClickLog, drainClickLogAsSearchField, clickHandler, keypressHandler};
+export {trackingHandler,logClick, getClickLog, postClickLog, drainClickLogAsSearchField, clickHandler, keypressHandler,getSessionUuid};
