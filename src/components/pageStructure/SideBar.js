@@ -13,6 +13,7 @@ import {StopCardWrapper} from "../views/StopCardWrapper.tsx";
 import {GeoCardWrapper} from "../views/GeoCardWrapper.tsx";
 import HomeCard from "../views/HomeCard.tsx";
 import {AllRoutesWrapper} from "Components/views/AllRoutesWrapper";
+import {ErrorCard} from "../views/ErrorCard.tsx";
 import log from 'loglevel';
 
 function SideBar  () {
@@ -44,6 +45,10 @@ function SideBar  () {
         if(state.currentCard.type === CardType.AllRoutesCard){
             log.info("adding allroutes card")
             return <AllRoutesWrapper/>
+        }
+        if(state.currentCard.type === CardType.ErrorCard){
+            log.info("adding error card")
+            return <ErrorCard/>
         }
     }
 

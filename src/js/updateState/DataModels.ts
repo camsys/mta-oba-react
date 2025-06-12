@@ -405,7 +405,10 @@ export class Card {
         log.info("setToVehicle",this)
     }
 
-    setToException(){
+    setToError(searchTerm: string|null) {
+        if(searchTerm){
+            searchTerm = searchTerm
+        }
         this.setType(CardType.ErrorCard);
     }
 

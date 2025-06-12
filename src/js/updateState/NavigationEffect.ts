@@ -327,6 +327,9 @@ export const useNavigation = () =>{
                 let vehicleId = searchParts[1];
                 currentCard.setToVehicle(vehicleId,currentCard.searchMatches,currentCard.routeIdList);
             }
+            if(currentCard.routeIdList.size===0){
+                currentCard.setToError(null);
+            }
             log.info("setting card based on starting query",currentCard);
             let cardStack = state.cardStack;
             cardStack.push(currentCard);
@@ -355,13 +358,12 @@ export const useNavigation = () =>{
         let routeData = routes?.current;
         if(routeData){routeData=routeData[routeId]}
         if(routeData){
-            log.info("found routedata of target vehicle: ",routeData);
+            log.info("found routedata of target vehicle: ",routeId, routeData,routes);
+            currentCard.setToVehicle(vehicleId,[routeData],new Set([routeId]));
         } else {
-            log.error("there's no route data for this vehicle search, routes object is empty or undefined",routes);
+            log.error("there's no route data for this vehicle search, routes object is empty or undefined",routeId,routes);
+            currentCard.setToError(routeId+vehicleDelimiter+vehicleId)
         }
-
-        
-        currentCard.setToVehicle(vehicleId,[routeData],new Set([routeId]));
         let cardStack = state.cardStack;
         cardStack.push(currentCard);
         log.info("updating state prev card -> new vehicle card: \n", pastCard,currentCard);
