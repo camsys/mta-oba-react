@@ -150,21 +150,22 @@ const RoutesAndStops = ()=>{
 
     const processRoute = (route : RouteMatch)=> {
         log.info("processing route for map: ", route)
-
-        route.directions.forEach(dir => {
-            dir.mapRouteComponentData.forEach((datum:MapRouteComponentInterface) => {
-                // log.info("requesting new MapRouteComponent from: ", datum)
-                mapRouteMarkers.set(datum.id,createRoutePolyline(datum))
+        if(route){
+            route.directions.forEach(dir => {
+                dir.mapRouteComponentData.forEach((datum:MapRouteComponentInterface) => {
+                    // log.info("requesting new MapRouteComponent from: ", datum)
+                    mapRouteMarkers.set(datum.id,createRoutePolyline(datum))
+                })
             })
-        })
-        route.directions.forEach(dir => {
-            dir.mapStopComponentData.forEach((datum:StopInterface) => {
-                let stopId = datum.id;
-                let newStopMarker = createStopMarker(datum,selectStop,popupOptions.current,createStopIcon(datum),0)
-                mapStopComponents.current.set(stopId, newStopMarker);
-                stopsToDisplay.set(stopId, newStopMarker);                
+            route.directions.forEach(dir => {
+                dir.mapStopComponentData.forEach((datum:StopInterface) => {
+                    let stopId = datum.id;
+                    let newStopMarker = createStopMarker(datum,selectStop,popupOptions.current,createStopIcon(datum),0)
+                    mapStopComponents.current.set(stopId, newStopMarker);
+                    stopsToDisplay.set(stopId, newStopMarker);                
+                })
             })
-        })
+        }
     }
 
     const addStablePopups = () =>{

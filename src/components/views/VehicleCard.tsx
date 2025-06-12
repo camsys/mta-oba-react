@@ -31,7 +31,7 @@ export const VehicleCardContentComponent = ({routeMatch,vehicleDatum}
             </ul>
             <ul className="menu icon-menu card-menu">
                 <li>
-                    {vehicleDatum?
+                    {(routeMatch && vehicleDatum)?
                         (<ViewSearchItem datumId={routeMatch.routeId} text={"Full Route"}/>)
                         :
                         (<ul className="card-details">
@@ -86,6 +86,10 @@ function VehicleCard ({routeMatch,vehicleId}: { routeMatch: RouteMatch, vehicleI
     // if vehicle datum is null, check every half second and then load
 
     const checkLoading = () =>{
+        if(routeMatch===null || routeMatch===undefined){
+            log.info("routeMatch is null or undefined, VehicleCard is still loading",loading)
+            return;
+        }
         if (routeMatch.type !== MatchType.RouteMatch) {
             log.info("card is still loading so VehicleCard is still loading",loading)
             return}

@@ -319,7 +319,7 @@ export const useNavigation = () =>{
             currentCard = await getData(new Card(searchRef,uuidv4(),getSessionUuid(currentCard)),stops,routes,searchAddress);
             // let currentCard = new Card(searchRef,uuidv4());
 
-            if(searchRef.includes(vehicleDelimiter)){
+            if(currentCard.routeIdList.size > 0){
                 if(searchRef.includes(vehicleDelimiter)){
                     log.info("searching for vehicle",searchRef)
                     let searchParts = searchRef.split(vehicleDelimiter);
@@ -354,8 +354,14 @@ export const useNavigation = () =>{
         let currentCard = new Card(shortenedRouteId + vehicleDelimiter + vehicleId,uuidv4(),getSessionUuid(pastCard));
         log.info("generated new card to become vehicle card",currentCard,routeId,vehicleId);
         let routeData = routes?.current;
-        if(routeData){routeData=routeData[routeId]};
-        log.info("found routedata of target vehicle: ",routeData);
+        if(routeData){routeData=routeData[routeId]}
+        if(routeData){
+            log.info("found routedata of target vehicle: ",routeData);
+        } else {
+            log.error("there's no route data for this vehicle search, routes object is empty or undefined",routes);
+        }
+
+        
         currentCard.setToVehicle(vehicleId,[routeData],new Set([routeId]));
         let cardStack = state.cardStack;
         cardStack.push(currentCard);
