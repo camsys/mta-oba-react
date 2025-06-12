@@ -62,6 +62,16 @@ const SearchBar = () => {
     useEffect(() => {
         let newSearchTerm = state?.currentCard?.searchTerm
         log.info("new Search",newSearchTerm,state,state?.currentCard,state?.currentCard?.searchTerm,searchTerm)
+        let parts = newSearchTerm.split(':');
+        log.info("search term changed");
+        if(parts[1]&&parts[1].length>0 
+            && 
+            (parts[1].substring(0,9)==="MTA NYCT_" ||
+            parts[1].substring(0,6)==='MTABC_')
+        ){
+            log.info("abbreviating search term",newSearchTerm,parts[0])
+            newSearchTerm = parts[0]
+        }
         if(newSearchTerm!==searchTerm){
             if(newSearchTerm===null || newSearchTerm==="" || typeof newSearchTerm ==="undefined"){
                 clearSearch()
