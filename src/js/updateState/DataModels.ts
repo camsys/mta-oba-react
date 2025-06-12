@@ -405,6 +405,10 @@ export class Card {
         log.info("setToVehicle",this)
     }
 
+    setToException(){
+        this.setType(CardType.ErrorCard);
+    }
+
     setToAllRoutes(
         searchMatches: SearchMatch[],
         routeIdList: Set<string>

@@ -319,14 +319,13 @@ export const useNavigation = () =>{
             currentCard = await getData(new Card(searchRef,uuidv4(),getSessionUuid(currentCard)),stops,routes,searchAddress);
             // let currentCard = new Card(searchRef,uuidv4());
 
-            if(currentCard.routeIdList.size > 0){
-                if(searchRef.includes(vehicleDelimiter)){
-                    log.info("searching for vehicle",searchRef)
-                    let searchParts = searchRef.split(vehicleDelimiter);
-                    let routeId = searchParts[0];
-                    let vehicleId = searchParts[1];
-                    currentCard.setToVehicle(vehicleId,currentCard.searchMatches,currentCard.routeIdList);
-                }
+
+            if(searchRef.includes(vehicleDelimiter)){
+                log.info("searching for vehicle",searchRef)
+                let searchParts = searchRef.split(vehicleDelimiter);
+                let routeId = searchParts[0];
+                let vehicleId = searchParts[1];
+                currentCard.setToVehicle(vehicleId,currentCard.searchMatches,currentCard.routeIdList);
             }
             log.info("setting card based on starting query",currentCard);
             let cardStack = state.cardStack;

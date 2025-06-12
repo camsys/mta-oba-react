@@ -153,7 +153,7 @@ const getVehicleCardsWrapper = () : JSX.Element => {
             <h2 className="cards-header">Vehicle:</h2>
             <div className="cards">
                 {state.currentCard.searchMatches.map(route=>{
-                    log.info("vehicleCard",route);
+                    log.info("vehicleCard route is",route);
                     return <VehicleCard routeMatch={route} vehicleId={state.currentCard.vehicleId} key={state.currentCard.vehicleId}/>
                 })}
             </div>
