@@ -28,6 +28,7 @@ import { createStopMarker } from "../../utils/StopMarkerFactory.ts";
 import { createSearchedHereMarker } from "../../utils/SearchedHereFactory.ts";
 import { createVehicleMarker } from "../../utils/VehicleMarkerFactory.ts";
 import { MapVehicleElements } from "./MapVehcleElements.tsx";
+import { stat } from "fs";
 
 log.info("createRoutePolyline:", createRoutePolyline);
 log.info("createStopMarker:", createStopMarker);
@@ -475,9 +476,11 @@ const setMapBounds = (map: L.Map, bounds: LatLngBounds):void =>{
     map.flyToBounds(bounds)
 }
 
-const getBoundsForRoute = (route:RouteMatch)=> {
+const getBoundsForRoute = (routes:RouteMatch[])=> {
     let collectedPoints = []
-    route.directions.forEach(dir=> {
+    let routeDirections = routes.map(route => route.directions).flat();
+    log.info("getting bounds for route",routes,routeDirections)
+    routeDirections.forEach(dir=> {
         dir.mapRouteComponentData.forEach(routeDir=>{
             if (typeof routeDir.points !== 'undefined') {
                 let coordinates = routeDir.points;
@@ -505,50 +508,53 @@ const HandleMapBoundsAndZoom = () : void=>{
         let override = false
 
         log.info("card type is",state.currentCard.type)
-        state.currentCard.searchMatches.forEach(searchMatch=>{
-            if(state.currentCard.type===CardType.RouteCard){
-                log.info("zooming for route card",searchMatch)
-                setMapBounds(map,getBoundsForRoute(searchMatch))
-                if(!firstNonHomeZoomCompleted.current){
-                    firstNonHomeZoomCompleted.current = true
-                }
-                return
+    
+        if(state.currentCard.type===CardType.RouteCard){
+            log.info("zooming for route card",state.currentCard.searchMatches)
+            setMapBounds(map,getBoundsForRoute(state.currentCard.searchMatches))
+            if(!firstNonHomeZoomCompleted.current){
+                firstNonHomeZoomCompleted.current = true
             }
-            else if(state.currentCard.type===CardType.GeocodeCard) {
+            return
+        }
+        else if(state.currentCard.type===CardType.GeocodeCard) {
+            state.currentCard.searchMatches.forEach(searchMatch=>{
                 [lat, long] = [searchMatch.latitude,searchMatch.longitude];
                 zoom = 16;
                 if(!firstNonHomeZoomCompleted.current){
                     log.info("first zoom completed")
                     firstNonHomeZoomCompleted.current = true
                 }
+            })
 
-            }
-            else if(state.currentCard.type===CardType.StopCard) {
+        }
+        else if(state.currentCard.type===CardType.StopCard) {
+            state.currentCard.searchMatches.forEach(searchMatch=>{
                 [lat, long] = [searchMatch.latitude, searchMatch.longitude];
                 zoom = 16;
                 if(!firstNonHomeZoomCompleted.current){
                     log.info("first zoom completed")
                     firstNonHomeZoomCompleted.current = true
                 }
+            })
+        }
+        else if(state.currentCard.type===CardType.VehicleCard) {
+            let vehicleId = state.currentCard.vehicleId;
+            let routeId = shortenRoute(state.currentCard.routeIdList.values().next().value);
+            log.info("zooming for vehicle card",vehicleId,routeId+vehicleDataIdentifier,vehicleState)
+            if(!vehicleState[routeId+vehicleDataIdentifier]){
+                log.info("vehicle state not found for routeId",vehicleState,routeId+vehicleDataIdentifier)
+                return
             }
-            else if(state.currentCard.type===CardType.VehicleCard) {
-                let vehicleId = state.currentCard.vehicleId;
-                let routeId = shortenRoute(state.currentCard.routeIdList.values().next().value);
-                log.info("zooming for vehicle card",vehicleId,routeId+vehicleDataIdentifier,vehicleState)
-                if(!vehicleState[routeId+vehicleDataIdentifier]){
-                    log.info("vehicle state not found for routeId",vehicleState,routeId+vehicleDataIdentifier)
-                    return
-                }
-                if(!vehicleState[routeId+vehicleDataIdentifier].get(vehicleId)){
-                    log.info("vehicle not found in vehicle state, returning",vehicleState[routeId+vehicleDataIdentifier],vehicleId)
-                    return
-                }
-                [lat, long] = vehicleState[routeId+vehicleDataIdentifier].get(vehicleId).longLat;
-                log.info("vehicle lat long",lat,long)
-                // [lat, long] = state.currentCard.longlat;
-                zoom = 16;
+            if(!vehicleState[routeId+vehicleDataIdentifier].get(vehicleId)){
+                log.info("vehicle not found in vehicle state, returning",vehicleState[routeId+vehicleDataIdentifier],vehicleId)
+                return
             }
-        })
+            [lat, long] = vehicleState[routeId+vehicleDataIdentifier].get(vehicleId).longLat;
+            log.info("vehicle lat long",lat,long)
+            // [lat, long] = state.currentCard.longlat;
+            zoom = 16;
+        }
         if(state.currentCard.type===CardType.HomeCard)
             {
                 [lat, long] = OBA.Config.defaultMapCenter;
