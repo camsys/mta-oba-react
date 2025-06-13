@@ -2076,19 +2076,19 @@ button:hover, .button:hover {
   display: none;
 }
 
-.cards-header {
+.cards-header, .error-header {
   margin-bottom: 1rem;
 }
-.cards-header a.back-link {
+.cards-header a.back-link, .error-header a.back-link {
   text-decoration: none;
   color: #0E61A9;
   padding-left: 1.625em;
   position: relative;
 }
-.cards-header a.back-link:hover, .cards-header a.back-link:focus {
+.cards-header a.back-link:hover, .cards-header a.back-link:focus, .error-header a.back-link:hover, .error-header a.back-link:focus {
   text-decoration: underline;
 }
-.cards-header a.back-link::before {
+.cards-header a.back-link::before, .error-header a.back-link::before {
   content: "";
   display: inline-block;
   width: 1.125em;

@@ -329,8 +329,8 @@ button, .button
           content: ''
           position: absolute
           top: -1px
-          right: -#{$content-padding/2}
-          left: -#{$content-padding/2}
+          right: calc($content-padding/-2)
+          left: calc($content-padding/-2)
           background-color: $ui-gray
           height: 1px
       .sub-menu
@@ -1212,7 +1212,7 @@ button, .button
     &.hide
       display: none
 
-.cards-header
+.cards-header, .error-header
   margin-bottom: $content-padding
   a.back-link
     text-decoration: none
