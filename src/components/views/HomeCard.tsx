@@ -27,6 +27,11 @@ function HomeCard  () : JSX.Element {
                 <li><a href="#" onClick={(e) => {e.preventDefault();search('200884')}}>200884</a></li>
             </ul>
         </li>
+        <li>Or:
+            <ul className="links">
+                <li><a href="#" onClick={(e) => {e.preventDefault();search('shuttles')}}>shuttles</a></li>
+            </ul>
+        </li>
     </ul>
     <ul className="menu icon-menu" role="menu">
         <li>
