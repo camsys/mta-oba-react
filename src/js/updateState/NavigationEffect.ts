@@ -123,9 +123,11 @@ async function getData(card:Card,stops: StopsObject,routes:RoutesObject,address:
                 searchResults.matches.forEach(x=>{
                     card.searchMatches.push(processStopSearch(x,card,stops,routes))
                 })
-                searchResults.suggestions.forEach(x=>{
-                    card.searchMatches.push(processStopSearch(x,card,stops,routes))
-                })
+                if(card.searchMatches.length===0){
+                    searchResults.suggestions.forEach(x=>{
+                        card.searchMatches.push(processStopSearch(x,card,stops,routes))
+                    })
+                }
                 let stopMatch = card.searchMatches[0] as StopMatch
                 card.datumId=stopMatch.id
             }
@@ -133,19 +135,22 @@ async function getData(card:Card,stops: StopsObject,routes:RoutesObject,address:
                 searchResults.matches.forEach(x=>{
                     card.searchMatches.push(processGeocodeSearch(x,card,stops,routes))
                 })
-                searchResults.suggestions.forEach(x=>{
-                    card.searchMatches.push(processGeocodeSearch(x,card,stops,routes))
-                })
+                if(card.searchMatches.length===0){
+                    searchResults.suggestions.forEach(x=>{
+                        card.searchMatches.push(processStopSearch(x,card,stops,routes))
+                    })
+                }
             }
             if(searchResults.resultType=="RouteResult"){
                 searchResults.matches.forEach(x=>{
                     log.info("processing route search result",x,card,stops,routes)
                     card.searchMatches.push(processRouteSearch(x,card,stops,routes))
                 })
-                searchResults.suggestions.forEach(x=>{
+                if(card.searchMatches.length===0){
+                    searchResults.suggestions.forEach(x=>{
                     log.info("processing route suggestion result",x,card,stops,routes)
                     card.searchMatches.push(processRouteSearch(x,card,stops,routes))
-                })
+                })}
                 let routeMatch = card.searchMatches[0] as RouteMatch
                 card.datumId=routeMatch.routeId
             }
