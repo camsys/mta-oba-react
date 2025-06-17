@@ -2,13 +2,27 @@ import React, {useContext, useEffect, useState} from "react";
 import {serviceAlertDataIdentifier, vehicleDataIdentifier, VehicleStateContext} from "../util/VehicleStateComponent";
 import {ServiceAlertInterface} from "../../js/updateState/DataModels";
 import log from 'loglevel';
+import DOMPurify from 'dompurify';
 
 
 function ServiceAlertComponent  ({serviceAlertDatum}:ServiceAlertInterface) : JSX.Element {
     log.info("service alert component contents generating ",serviceAlertDatum)
     return(
         <div className="card-content collapse-content">
-            {serviceAlertDatum[0].descriptionParts.map((part,itt)=> {return(<p key = {itt}>{part}</p>)})}
+            {serviceAlertDatum[0].descriptionParts.map((part,itt)=> {
+
+
+                // part = DOMPurify.sanitize(part, {
+                //     ALLOWED_TAGS: ['b', 'strong', 'p', 'a'],
+                //     ALLOWED_ATTR: ['href'],
+                //     ALLOW_DATA_ATTR: false,
+                // });
+                try{
+                    return(<p key = {itt} dangerouslySetInnerHTML={{__html: part}}></p>)
+                }catch(e){
+                    log.error("Error rendering service alert component", e)
+                }
+            })}
         </div>)
 }
 
