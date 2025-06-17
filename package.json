@@ -1,6 +1,6 @@
 {
   "name": "mta-oba-react",
-  "version": "0.5.12-SNAPSHOT",
+  "version": "0.5.13-SNAPSHOT",
   "description": "",
   "main": "index.tsx",
   "scripts": {
