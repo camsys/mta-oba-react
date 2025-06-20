@@ -216,70 +216,74 @@ const RoutesAndStops = ()=>{
         selectedElementLayer.current.clearLayers();
     }
 
+    const handleCardChange =() =>{
+        log.info("card changed, updating map",lastUsedCard.current,state.currentCard)
+        lastUsedCard.current = state.currentCard;
+
+
+        clearAllLayers()
+
+        // add card level data
+        // todo: break this out into a function
+        state.currentCard.searchMatches.forEach(searchMatch=>{
+            log.info("adding routes for:",searchMatch)
+            if(state.currentCard.type===CardType.RouteCard){
+                let route = searchMatch
+                processRoute(route)
+            }
+            else if(state.currentCard.type===CardType.VehicleCard){
+                log.info("vehicle route works here");
+                let route = searchMatch;
+                processRoute(route);
+            }
+            else if(state.currentCard.type===CardType.GeocodeCard) {
+                searchMatch.routeMatches.forEach(match => {
+                    if(match.type === MatchType.RouteMatch){processRoute(match);}
+                    if(match.type === MatchType.StopMatch){
+                        match.routeMatches.forEach(route => {
+                            processRoute(route);
+                        })
+                    }
+                })
+                let latlon = [searchMatch.latitude,searchMatch.longitude]
+                if(latlon !== null || latlon !== undefined){
+                    // searchedHereComponent.current = <MapSearchedHereComponent latlon={latlon} key = {key} searchedHereMarker={searchedHereMarker}/>;
+                    let searchedHereMarker = createSearchedHereMarker(latlon)
+                    searchedHereMarker.addTo(selectedElementLayer.current)
+                }
+            }
+            else if(state.currentCard.type===CardType.StopCard) {
+                searchMatch.routeMatches.forEach(route => {
+                    processRoute(route);
+                })
+                let stopId =state.currentCard.datumId;
+                stopsToNonConditionallyDisplay.set(stopId,mapStopComponents.current.get(stopId));
+                mapStopComponents.current.get(stopId).setZIndexOffset(20);
+                stopsToDisplay.delete(stopId)
+            }
+        })
+
+        mapRouteMarkers.forEach((value, key) => {
+            if (value !== null && value !== undefined) {
+                routeLayer.current.addLayer(value);
+            }
+        });
+        stopsToDisplay.forEach((value, key) => {
+            if (value !== null && value !== undefined) {
+                stopLayer.current.addLayer(value);
+            }
+        });
+        stopsToNonConditionallyDisplay.forEach((value, key) => {
+            if (value !== null && value !== undefined) {
+                selectedElementLayer.current.addLayer(value);
+                value.openPopup();
+            }
+        });
+    }
+
     const checkForAndHandleCardChange = () => {
         if(lastUsedCard.current !== state.currentCard){
-            log.info("card changed, updating map",lastUsedCard.current,state.currentCard)
-            lastUsedCard.current = state.currentCard;
-
-
-            clearAllLayers()
-
-            // add card level data
-            // todo: break this out into a function
-            state.currentCard.searchMatches.forEach(searchMatch=>{
-                log.info("adding routes for:",searchMatch)
-                if(state.currentCard.type===CardType.RouteCard){
-                    let route = searchMatch
-                    processRoute(route)
-                }
-                else if(state.currentCard.type===CardType.VehicleCard){
-                    log.info("vehicle route works here");
-                    let route = searchMatch;
-                    processRoute(route);
-                }
-                else if(state.currentCard.type===CardType.GeocodeCard) {
-                    searchMatch.routeMatches.forEach(match => {
-                        if(match.type === MatchType.RouteMatch){processRoute(match);}
-                        if(match.type === MatchType.StopMatch){
-                            match.routeMatches.forEach(route => {
-                                processRoute(route);
-                            })
-                        }
-                    })
-                    let latlon = [searchMatch.latitude,searchMatch.longitude]
-                    if(latlon !== null || latlon !== undefined){
-                        // searchedHereComponent.current = <MapSearchedHereComponent latlon={latlon} key = {key} searchedHereMarker={searchedHereMarker}/>;
-                        let searchedHereMarker = createSearchedHereMarker(latlon)
-                        searchedHereMarker.addTo(selectedElementLayer.current)
-                    }
-                }
-                else if(state.currentCard.type===CardType.StopCard) {
-                    searchMatch.routeMatches.forEach(route => {
-                        processRoute(route);
-                    })
-                    let stopId =state.currentCard.datumId;
-                    stopsToNonConditionallyDisplay.set(stopId,mapStopComponents.current.get(stopId));
-                    mapStopComponents.current.get(stopId).setZIndexOffset(20);
-                    stopsToDisplay.delete(stopId)
-                }
-            })
-
-            mapRouteMarkers.forEach((value, key) => {
-                if (value !== null && value !== undefined) {
-                    routeLayer.current.addLayer(value);
-                }
-            });
-            stopsToDisplay.forEach((value, key) => {
-                if (value !== null && value !== undefined) {
-                    stopLayer.current.addLayer(value);
-                }
-            });
-            stopsToNonConditionallyDisplay.forEach((value, key) => {
-                if (value !== null && value !== undefined) {
-                    selectedElementLayer.current.addLayer(value);
-                    value.openPopup();
-                }
-            });
+            handleCardChange();
         }
     }
 
@@ -294,14 +298,15 @@ const RoutesAndStops = ()=>{
     checkForAndHandleCardChange()
 
     useEffect(() => {
+        log.info("map render counter changed, updating map layers",state.renderCounter)
         routeLayer.current.addTo(map);
         selectedElementLayer.current.addTo(map);
 
-        checkForAndHandleCardChange()
+        handleCardChange()
         addStablePopups();
         log.info("map route elements layer group ref",routeLayer,routeLayer.current.getLayers().length)
         log.info("map stop elements layer group ref",stopLayer.current.getLayers().length)
-    },[state])
+    },[state.renderCounter])
 
     const lastZoomWasBelowThreshold = useRef(map.getZoom());
     useMapEvents(
@@ -408,7 +413,18 @@ const Highlighted = () =>{
             }
         });
     }
-    , [state,highlightedId])
+    , [highlightedId])
+
+    useEffect(() => {
+        log.info("state updated, clearing previous highlighted components from map",highlightedComponents.current)
+        highlightedComponents.current.forEach((value, key) => {
+            if (value !== null && value !== undefined) {
+                value.removeFrom(map);
+            }
+        });
+        highlightedComponents.current.clear();
+        log.info("state updated, cleared previous highlighted components from map",highlightedComponents.current)
+    }, [state.renderCounter])
 
 
     useMapEvents(
@@ -518,6 +534,7 @@ const HandleMapBoundsAndZoom = () : void=>{
             return
         }
         else if(state.currentCard.type===CardType.GeocodeCard) {
+            log.info("assessing zooming for geocode card",state.currentCard.searchMatches)
             state.currentCard.searchMatches.forEach(searchMatch=>{
                 [lat, long] = [searchMatch.latitude,searchMatch.longitude];
                 zoom = 16;
@@ -565,18 +582,19 @@ const HandleMapBoundsAndZoom = () : void=>{
         setMapLatLngAndZoom(map,lat,long,zoom,override)
     }
     
-
     useEffect(() => {
+        log.info("handling map bounds and zoom for card",state.currentCard)
         doZoom()
-    }, [state.currentCard])
+    }, [state.renderCounter])
 
 
     useEffect(() => {
         if(!firstNonHomeZoomCompleted.current){
-            log.info("first zoom not completed, doing zoom")
+            log.info("first zoom not completed, doing zoom, vehicle state",vehicleState)
             doZoom()
         }
     }, [vehicleState])
+    log.info("map bounds and zoom handler loaded",state.currentCard,vehicleState)
 }
 
 const MapEvents = () :boolean=> {
