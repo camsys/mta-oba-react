@@ -70,7 +70,7 @@ const SearchedHere = () :JSX.Element=>{
     const currentSearchedHereMarker = useRef<L.Marker|null>(null);
     let map = useMap()
     useEffect(() => {
-        log.info("generating searched here")
+        log.info("generating searched here marker")
         previousSearchedHereMarker.current = currentSearchedHereMarker.current
         state.currentCard.searchMatches.forEach(searchMatch=>{
             if(state.currentCard.type===CardType.GeocodeCard){
@@ -87,6 +87,7 @@ const SearchedHere = () :JSX.Element=>{
             currentSearchedHereMarker.current.addTo(map)
             currentSearchedHereMarker.current.openPopup()
         }
+        log.info("completed generating searched here marker")
     }, [state]);
 
     return (

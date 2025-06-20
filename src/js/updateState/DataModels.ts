@@ -409,6 +409,7 @@ export class Card {
     }
 
     setToError(searchTerm: string|null) {
+        log.info("setToError", searchTerm);
         if(searchTerm){
             searchTerm = searchTerm
         }

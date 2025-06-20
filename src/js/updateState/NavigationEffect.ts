@@ -203,7 +203,6 @@ const getBaseAddress =()=>{
 }
 
 const getSearchAddress=(searchTerm:string, card: Card)=>{
-    log.info("temp flag + vars ",searchTerm, card)
     let out = getBaseAddress() + OBA.Config.searchUrl + "?q=" + searchTerm + getSearchTermAdditions(card)
     log.info("generating search address for: " + out)
     return  out
@@ -226,6 +225,7 @@ export const useNavigation = () =>{
 
 
     const search = async (searchTerm) =>{
+        log.info("searching for: ",searchTerm, state);
         searchTerm = searchTerm.split("_").length > 1
             ? searchTerm.split("_").reduce((acc, part, nth) => nth !== 0 ? acc + part : acc, "")
                 .toUpperCase()
@@ -353,6 +353,7 @@ export const useNavigation = () =>{
                     });
                 searchRef = "";
             }
+            log.info("generating new search address",searchRef);
             let searchAddress =  getSearchAddress(searchRef,currentCard);
             if(searchRef.includes(vehicleDelimiter)){
                 searchAddress = getSearchAddress(searchRef.split(vehicleDelimiter)[0],currentCard);
