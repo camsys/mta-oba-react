@@ -203,6 +203,7 @@ const getBaseAddress =()=>{
 }
 
 const getSearchAddress=(searchTerm:string, card: Card)=>{
+    log.info("temp flag + vars ",searchTerm, card)
     let out = getBaseAddress() + OBA.Config.searchUrl + "?q=" + searchTerm + getSearchTermAdditions(card)
     log.info("generating search address for: " + out)
     return  out
@@ -314,11 +315,16 @@ export const useNavigation = () =>{
         try {
             log.info("parsing location.search for initial card data");
             let searchRef = queryString.parse(location.search).search as string;
-            if(!searchRef){return}
+            if(!searchRef){
+                log.info("no search term found in location.search, stopping here", queryString);
+                return
+            }
             if(searchRef===allRoutesSearchTerm){
+                log.info("searching for all routes");
                 allRoutesSearch();
                 return;
             }
+
             if(nearbySearchTerms.has(searchRef)){
                 log.info("searching for nearby stops and routes");
                 await navigator.geolocation.getCurrentPosition(
@@ -338,9 +344,15 @@ export const useNavigation = () =>{
             if(searchRef.includes(vehicleDelimiter)){
                 searchAddress = getSearchAddress(searchRef.split(vehicleDelimiter)[0],currentCard);
             }
-            THIDLFKSJWFOEIhj
-            log.info("generating card based on starting query and search url", searchRef, searchAddress);
-            currentCard = await getData(new Card(searchRef,uuidv4(),getSessionUuid(currentCard)),stops,routes,searchAddress);
+            log.info("generated card based on query and search url", searchRef, searchAddress);
+            currentCard = new Card(searchRef,uuidv4(),getSessionUuid(currentCard));
+            setState((prevState) => ({
+                ...prevState,
+                currentCard: currentCard,
+                cardStack: cardStack,
+                renderCounter:prevState.renderCounter+1
+            }));
+            currentCard = await getData(currentCard,stops,routes,searchAddress);
             // let currentCard = new Card(searchRef,uuidv4());
 
 
@@ -355,14 +367,8 @@ export const useNavigation = () =>{
                 currentCard.setToError(null);
             }
             log.info("setting card based on starting query",currentCard);
-            let cardStack = state.cardStack;
             cardStack.push(currentCard);
-            setState((prevState) => ({
-                ...prevState,
-                currentCard: currentCard,
-                cardStack: cardStack,
-                renderCounter:prevState.renderCounter+1
-            }));
+            setState((prevState) => ({...prevState,renderCounter:prevState.renderCounter+1}));
         } catch (error) {
             log.error('There was a problem with the fetch operation:', error);
         }
@@ -409,11 +415,17 @@ export const useNavigation = () =>{
         try {
             log.info("all routes requested, generating new card",state);
             if (state?.currentCard?.type !== CardType.AllRoutesCard) {
-                let currentCard = await fetch(address)
+                let currentCard = new Card(searchTerm,uuidv4(),getSessionUuid(state?.currentCard));
+                setState((prevState) => ({
+                    ...prevState,
+                    currentCard: currentCard,
+                    cardStack: cardStack,
+                    renderCounter:prevState.renderCounter+1
+                }));
+                await fetch(address)
                     .then((response) => response.json())
                     .then((parsed) => {
                         log.info("generating new card for all routes search")
-                        let currentCard = new Card(searchTerm,uuidv4(),getSessionUuid(state?.currentCard));
                         log.info("all routes results: ",parsed);
                         let searchMatch = new SearchMatch(SearchMatch.matchTypes.AllRoutesMatch);
                         searchMatch.routeMatches = parsed?.routes.map(route=>new RouteMatch(route));
@@ -430,12 +442,7 @@ export const useNavigation = () =>{
                 let cardStack = state.cardStack;
                 cardStack.push(currentCard);
                 log.info("updating state with new card:", currentCard,stops,routes);
-                setState((prevState) => ({
-                    ...prevState,
-                    currentCard: currentCard,
-                    cardStack: cardStack,
-                    renderCounter:prevState.renderCounter+1
-                }));
+            setState((prevState) => ({...prevState,renderCounter:prevState.renderCounter+1}));
             }
         }
         catch (error) {
