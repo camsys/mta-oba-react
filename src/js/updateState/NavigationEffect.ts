@@ -267,26 +267,39 @@ export const useNavigation = () =>{
             if (performNewSearch(searchTerm,state?.currentCard)) {
                 log.info("search term is new, generating new card",searchTerm,state?.currentCard);
                 let currentCard;
+                document.getElementById('search-input').blur();
+                scrollToSidebarTop();
                 if(searchTerm==null||searchTerm==""||searchTerm=="#"|| !(searchTerm) || !(searchTerm.trim())){
                     currentCard = getHomeCard(state?.currentCard);
                     log.info("search term was empty, generating home card",currentCard);
+                    let cardStack = state.cardStack;
+                    cardStack.push(currentCard);
+                    log.info("updating state with new card:", currentCard,stops,routes);
+                    setState((prevState) => ({
+                        ...prevState,
+                        currentCard: currentCard,
+                        cardStack: cardStack,
+                        renderCounter:prevState.renderCounter+1
+                    }));
                 }
                 else{
                     log.info("search term is not empty, generating new card",searchTerm);
-                    currentCard = await updateCard(searchTerm, stops,routes,getSearchAddress(searchTerm,state?.currentCard),getSessionUuid(state?.currentCard));
+                    let card = new Card(searchTerm,uuidv4(),getSessionUuid(state?.currentCard));
+                    card.setType(CardType.LoadingCard);
+
+                    let cardStack = state.cardStack;
+                    cardStack.push(currentCard);
+                    setState((prevState) => ({
+                        ...prevState,
+                        currentCard: card,
+                        cardStack: cardStack,
+                        renderCounter:prevState.renderCounter+1
+                    }));
+
+                    currentCard = await getData(card,stops,routes,getSearchAddress(searchTerm,state?.currentCard))
+                    setState((prevState) => ({...prevState,renderCounter:prevState.renderCounter+1}));
                 } 
                 updateWindowHistory(searchTerm,currentCard.uuid);
-                document.getElementById('search-input').blur();
-                scrollToSidebarTop();
-                let cardStack = state.cardStack;
-                cardStack.push(currentCard);
-                log.info("updating state with new card:", currentCard,stops,routes);
-                setState((prevState) => ({
-                    ...prevState,
-                    currentCard: currentCard,
-                    cardStack: cardStack,
-                    renderCounter:prevState.renderCounter+1
-                }));
             }
         }
         catch (error) {
