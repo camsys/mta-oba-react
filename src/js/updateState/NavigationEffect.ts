@@ -429,6 +429,8 @@ export const useNavigation = () =>{
             log.info("all routes requested, generating new card",state);
             if (state?.currentCard?.type !== CardType.AllRoutesCard) {
                 let currentCard = new Card(searchTerm,uuidv4(),getSessionUuid(state?.currentCard));
+                let cardStack = state.cardStack;
+                cardStack.push(currentCard);
                 setState((prevState) => ({
                     ...prevState,
                     currentCard: currentCard,
@@ -452,8 +454,6 @@ export const useNavigation = () =>{
                         log.error(error);
                     });
                 updateWindowHistory(searchTerm,currentCard.uuid);
-                let cardStack = state.cardStack;
-                cardStack.push(currentCard);
                 log.info("updating state with new card:", currentCard,stops,routes);
             setState((prevState) => ({...prevState,renderCounter:prevState.renderCounter+1}));
             }
