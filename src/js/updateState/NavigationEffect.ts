@@ -284,19 +284,19 @@ export const useNavigation = () =>{
                 }
                 else{
                     log.info("search term is not empty, generating new card",searchTerm);
-                    let card = new Card(searchTerm,uuidv4(),getSessionUuid(state?.currentCard));
-                    card.setType(CardType.LoadingCard);
+                    currentCard = new Card(searchTerm,uuidv4(),getSessionUuid(state?.currentCard));
+                    currentCard.setType(CardType.LoadingCard);
 
                     let cardStack = state.cardStack;
                     cardStack.push(currentCard);
                     setState((prevState) => ({
                         ...prevState,
-                        currentCard: card,
+                        currentCard: currentCard,
                         cardStack: cardStack,
                         renderCounter:prevState.renderCounter+1
                     }));
 
-                    currentCard = await getData(card,stops,routes,getSearchAddress(searchTerm,state?.currentCard))
+                    currentCard = await getData(currentCard,stops,routes,getSearchAddress(searchTerm,state?.currentCard))
                     setState((prevState) => ({...prevState,renderCounter:prevState.renderCounter+1}));
                 } 
                 updateWindowHistory(searchTerm,currentCard.uuid);
