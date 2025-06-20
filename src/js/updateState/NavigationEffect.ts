@@ -107,7 +107,7 @@ async function getData(card:Card,stops: StopsObject,routes:RoutesObject,address:
         return card
     }
     // let address = "http://localhost:8080" + "/" + OBA.Config.searchUrl + "?q=" + card.searchTerm
-    log.info('requesting search results from ',address)
+    log.info('requesting search results from ',address,card)
     await fetch(address)
         .then((response) => response.json())
         .then((parsed) => {
@@ -186,12 +186,16 @@ const updateWindowHistory = (term:string,uuid:string) :void =>{
 export const updateCard = async (searchRef:String,stops: StopsObject,routes:RoutesObject,address:string,sessionUuid:string):Promise<Card> =>{
     log.info("received new search input:",searchRef)
     // searchRef = searchRef.replaceAll(" ","%2520")
-    return await getData(new Card(searchRef,uuidv4(),sessionUuid),stops,routes,address)
+    let card = new Card(searchRef,uuidv4(),sessionUuid);
+    card.setType(CardType.LoadingCard);
+    return await getData(card,stops,routes,address)
 }
 
 export const getHomeCard = (card:Card|null) :Card=>{
     log.info("generating homecard")
-    return new Card("",uuidv4(),getSessionUuid(card))
+    let newCard = new Card("",uuidv4(),getSessionUuid(card))
+    newCard.setType(CardType.HomeCard);
+    return newCard
 }
 
 const getBaseAddress =()=>{
@@ -260,13 +264,16 @@ export const useNavigation = () =>{
             document.getElementById('search-input').blur();
             scrollToSidebarTop();
             if (performNewSearch(searchTerm,state?.currentCard)) {
-
+                log.info("search term is new, generating new card",searchTerm,state?.currentCard);
                 let currentCard;
-                if(searchTerm!=null|searchTerm!=""|searchTerm!="#"){
-                    currentCard = await updateCard(searchTerm, stops,routes,getSearchAddress(searchTerm,state?.currentCard),getSessionUuid(state?.currentCard));
-                } else {
+                if(searchTerm==null||searchTerm==""||searchTerm=="#"|| !(searchTerm) || !(searchTerm.trim())){
                     currentCard = getHomeCard(state?.currentCard);
+                    log.info("search term was empty, generating home card",currentCard);
                 }
+                else{
+                    log.info("search term is not empty, generating new card",searchTerm);
+                    currentCard = await updateCard(searchTerm, stops,routes,getSearchAddress(searchTerm,state?.currentCard),getSessionUuid(state?.currentCard));
+                } 
                 updateWindowHistory(searchTerm,currentCard.uuid);
                 document.getElementById('search-input').blur();
                 scrollToSidebarTop();
@@ -292,7 +299,7 @@ export const useNavigation = () =>{
     }
 
     const generateInitialCard = async (setLoading)=>{
-        let currentCard = new Card("",uuidv4(),getSessionUuid(state?.currentCard));
+        let currentCard = getHomeCard(new Card("",uuidv4(),getSessionUuid(state?.currentCard)));
         log.info("generating initial card",currentCard);
         let cardStack = state.cardStack;
         cardStack.push(currentCard);
@@ -331,6 +338,7 @@ export const useNavigation = () =>{
             if(searchRef.includes(vehicleDelimiter)){
                 searchAddress = getSearchAddress(searchRef.split(vehicleDelimiter)[0],currentCard);
             }
+            THIDLFKSJWFOEIhj
             log.info("generating card based on starting query and search url", searchRef, searchAddress);
             currentCard = await getData(new Card(searchRef,uuidv4(),getSessionUuid(currentCard)),stops,routes,searchAddress);
             // let currentCard = new Card(searchRef,uuidv4());

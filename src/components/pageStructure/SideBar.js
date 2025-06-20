@@ -15,6 +15,7 @@ import HomeCard from "../views/HomeCard.tsx";
 import {AllRoutesWrapper} from "Components/views/AllRoutesWrapper";
 import {ErrorCard} from "../views/ErrorCard.tsx";
 import log from 'loglevel';
+import { LoadingCard } from '../views/LoadingCard.tsx';
 
 function SideBar  () {
 
@@ -22,13 +23,21 @@ function SideBar  () {
 
     function renderCardInfo  () {
         log.info("setting card info based on currentCard type: ", state.currentCard)
-        if(state.currentCard.type === CardType.RouteCard){
-            log.info("adding route card")
-            return <RouteCardWrapper/>
-        }
         if(state.currentCard.type === CardType.HomeCard){
             log.info("adding home card")
             return <HomeCard/>
+        }
+        if(state.currentCard.type === CardType.ErrorCard){
+            log.info("adding error card")
+            return <ErrorCard/>
+        }
+        if((!(state.currentCard.routeIdList) || state.currentCard.routeIdList.length <1) || state.currentCard.type === CardType.LoadingCard){
+            log.info("adding loading card")
+            return <LoadingCard/>
+        }
+        if(state.currentCard.type === CardType.RouteCard){
+            log.info("adding route card")
+            return <RouteCardWrapper/>
         }
         if(state.currentCard.type === CardType.VehicleCard){
             log.info("adding vehicle card")
@@ -46,10 +55,7 @@ function SideBar  () {
             log.info("adding allroutes card")
             return <AllRoutesWrapper/>
         }
-        if(state.currentCard.type === CardType.ErrorCard){
-            log.info("adding error card")
-            return <ErrorCard/>
-        }
+
     }
 
     log.info("adding sideBar")

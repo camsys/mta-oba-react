@@ -351,13 +351,15 @@ export enum CardType {
     VehicleCard = "vehicleCard",
     ErrorCard = "errorCard",
     HomeCard = "homeCard",
-    AllRoutesCard = "allRoutesCard"
+    AllRoutesCard = "allRoutesCard",
+    LoadingCard = "loadingCard"
 }
 
 export class Card {
     static ROUTECARDIDENTIFIER = "RouteResult";
     static GEOCARDIDENTIFIER = "GeocodeResult";
     static STOPCARDIDENTIFIER = "StopResult";
+    static LOADCARDIDENTIFIER = "LoadingResult";
     static cardTypes = CardType;
 
     searchTerm: string;
@@ -375,12 +377,12 @@ export class Card {
     constructor(searchTerm: string,uuid:String, sessionUuid:String) {
         this.searchTerm = searchTerm;
         this.searchResultType = null;
-        this.name = "homeCard";
+        this.name = "loadingCard";
         this.searchMatches = [];
         this.routeIdList = new Set();
         this.stopIdList = new Set();
         this.vehicleId = null;
-        this.type = CardType.HomeCard; // Default or initial type if applicable
+        this.type = CardType.LoadingCard; // Default or initial type if applicable
         this.datumId = null;
         this.uuid= uuid;
         this.sessionUuid = sessionUuid;
@@ -389,6 +391,7 @@ export class Card {
     setType(cardType: CardType): void {
         this.type = cardType;
         this.name = this.type;
+        log.info("setType", this.type, this.name);
     }
 
     setToVehicle(
@@ -424,6 +427,9 @@ export class Card {
     setSearchResultType(searchResultType: string | null): void {
         this.searchResultType = searchResultType;
         switch (searchResultType) {
+            case Card.LOADCARDIDENTIFIER:
+                this.setType(CardType.LoadingCard);
+                break;
             case Card.ROUTECARDIDENTIFIER:
                 this.setType(CardType.RouteCard);
                 break;
