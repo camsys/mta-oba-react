@@ -3,7 +3,7 @@ const webpack = require("webpack");
 const path = require("path");
 const CopyPlugin = require("copy-webpack-plugin");
 const isProd = process.env.NODE_ENV === 'production';
-const loggingLevel = isProd ?  'error' : 'info';
+const loggingLevel = isProd ?  'silent' : 'info';
 const siri_request_freq = isProd ? 30 : 15; // seconds
 const defaultAPIKey = 'OBANYCUI'
 const tracking_host_address = process.env.ALLOWED_HOST_ADDRESS ? 
