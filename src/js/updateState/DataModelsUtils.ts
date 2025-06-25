@@ -17,7 +17,7 @@ export const isRouteInterface = (obj: any): obj is RouteInterface =>
     typeof obj?.color === "string" &&
     typeof obj?.routeId === "string" &&
     typeof obj?.routeTitle === "string" &&
-    typeof obj?.description === "string";
+    (typeof obj?.description === "string" || obj?.description === undefined || obj?.description === null);
 
 export const extractRouteInterface = (obj: any): RouteInterface | null => {
     if (isRouteInterface(obj)) {

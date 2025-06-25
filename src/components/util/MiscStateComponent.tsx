@@ -76,7 +76,9 @@ const useFavorite = () =>{
 
 
     const addFavorite = (datum:StopInterface | RouteInterface)=>{
+        log.info("add favorite requested",datum)
         if(!isValidFavorite(datum)){return}
+        log.info("adding favorite",datum)
         datum = isRouteInterface(datum)? extractRouteInterface(datum):extractStopInterface(datum)
         let newFavorites = {favorites: favoritesState.favorites}
         if(newFavorites.favorites.some(f=>(getId(datum)===getId(f)))){return}

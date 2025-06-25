@@ -38,6 +38,9 @@ function processRouteSearch(route,card:Card,stops: StopsObject,routes:RoutesObje
         card.routeIdList.add(match.routeId)
         match.routeTitle = route?.shortName + " " + route?.longName
         match.description = route?.description
+        if(match.description == null || match.description == undefined){
+            match.description = "\u00A0"
+        }
         match.directions = []
         match.routeMatches = []
         match.routeMatches.push(match)
