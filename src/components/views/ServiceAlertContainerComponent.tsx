@@ -9,20 +9,20 @@ function ServiceAlertComponent  ({serviceAlertDatum}:ServiceAlertInterface) : JS
     log.info("service alert component contents generating ",serviceAlertDatum)
     return(
         <div className="card-content collapse-content">
-            {serviceAlertDatum[0].descriptionParts.map((part,itt)=> {
+            {serviceAlertDatum.map(alert=>alert.descriptionParts.map((part,itt)=> {
 
 
-                // part = DOMPurify.sanitize(part, {
-                //     ALLOWED_TAGS: ['b', 'strong', 'p', 'a'],
-                //     ALLOWED_ATTR: ['href'],
-                //     ALLOW_DATA_ATTR: false,
-                // });
+                part = DOMPurify.sanitize(part, {
+                    ALLOWED_TAGS: ['b', 'strong', 'p', 'a'],
+                    ALLOWED_ATTR: ['href'],
+                    ALLOW_DATA_ATTR: false,
+                });
                 try{
                     return(<p key = {itt} dangerouslySetInnerHTML={{__html: part}}></p>)
                 }catch(e){
                     log.error("Error rendering service alert component", e)
                 }
-            })}
+            }))}
         </div>)
 }
 
