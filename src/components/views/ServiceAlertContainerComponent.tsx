@@ -7,11 +7,20 @@ import DOMPurify from 'dompurify';
 
 function ServiceAlertComponent  ({serviceAlertDatum}:ServiceAlertInterface) : JSX.Element {
     log.info("service alert component contents generating ",serviceAlertDatum)
+    let alerts = []
+    serviceAlertDatum.forEach((alert) => {
+        if(alert.descriptionParts && alert.descriptionParts.length>0){
+            alert.descriptionParts.forEach((part) => {
+                if(part && part.length>0){
+                    alerts.push(part)
+                }
+            })
+        }
+    })
+    alerts = [...new Set(alerts)].sort();
     return(
         <div className="card-content collapse-content">
-            {serviceAlertDatum.map(alert=>alert.descriptionParts.map((part,itt)=> {
-
-
+            {alerts.map((part,itt) => {
                 part = DOMPurify.sanitize(part, {
                     ALLOWED_TAGS: ['b', 'strong', 'p', 'a'],
                     ALLOWED_ATTR: ['href'],
@@ -22,7 +31,7 @@ function ServiceAlertComponent  ({serviceAlertDatum}:ServiceAlertInterface) : JS
                 }catch(e){
                     log.error("Error rendering service alert component", e)
                 }
-            }))}
+            })}
         </div>)
 }
 
