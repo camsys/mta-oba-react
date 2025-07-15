@@ -17,7 +17,7 @@ function ServiceAlertComponent  ({serviceAlertDatum}:ServiceAlertInterface) : JS
             })
         }
     })
-    alerts = [...new Set(alerts)].sort();
+    alerts = [...new Set(alerts)];
     return(
         <div className="card-content collapse-content">
             {alerts.map((part,itt) => {
