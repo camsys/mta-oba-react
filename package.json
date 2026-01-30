@@ -9,11 +9,19 @@
     "start": "NODE_ENV=development webpack serve --config webpack.config.js",
     "start:clean": "npx madge --circular src; rm -rf dist .webpack-cache .tsbuildinfo; webpack serve --config webpack.config.js",
     "serve": "npx serve -l 8080 dist",
-    "acceptTracking": "node logger.js"
+    "acceptTracking": "node logger.js",
+    "build-css": "sass src/css:public/css && postcss public/css/*.css --use autoprefixer --no-map -d public/css/",
+    "watch-sass": "sass --watch src/css:public/css",
+    "watch-prefix": "onchange \"public/css/*.css\" -- postcss {{changed}} --use autoprefixer --no-map -d public/css/",
+    "dev-css": "concurrently \"npm run watch-sass\" \"npm run watch-prefix\"",
+    "dev-all": "concurrently \"npm run start\" \"npm run dev-css\""
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "browserslist": [
+    "last 2 versions"
+  ],
   "devDependencies": {
     "@babel/core": "^7.23.9",
     "@babel/plugin-proposal-class-properties": "^7.18.6",
@@ -23,10 +31,12 @@
     "@types/react-dom": "^18.3.0",
     "babel-loader": "^9.1.3",
     "babel-preset-react": "^6.24.1",
+    "concurrently": "^9.2.1",
     "css-loader": "^6.10.0",
     "file-loader": "^6.2.0",
     "html-webpack-plugin": "^5.6.0",
     "react-router-dom": "^6.24.1",
+    "sass": "^1.97.3",
     "style-loader": "^3.3.4",
     "svg-inline-loader": "^0.8.2",
     "typescript": "^5.5.4",

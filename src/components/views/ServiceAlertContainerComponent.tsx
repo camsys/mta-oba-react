@@ -5,6 +5,7 @@ import log from 'loglevel';
 import DOMPurify from 'dompurify';
 
 
+
 function ServiceAlertComponent  ({serviceAlertDatum}:ServiceAlertInterface) : JSX.Element {
     log.info("service alert component contents generating ",serviceAlertDatum)
     let alerts = []
