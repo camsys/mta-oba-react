@@ -61,7 +61,23 @@ module.exports = {
       {
         test: /\.(png|jpe?g|gif|svg|ico)$/i,
         loader: "file-loader"
-      }
+      },
+      {
+        test: /\.s[ac]ss$/i,
+        use: [
+          "style-loader",
+          "css-loader",
+          {
+            loader: "postcss-loader", // This handles the prefixing
+            options: {
+              postcssOptions: {
+                plugins: ["autoprefixer"],
+              },
+            },
+          },
+          "sass-loader", // Compiles Sass to CSS
+        ],
+      },
     ]
   },
   resolve: {
