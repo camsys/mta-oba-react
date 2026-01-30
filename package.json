@@ -11,7 +11,7 @@
     "serve": "npx serve -l 8080 dist",
     "acceptTracking": "node logger.js",
     "styles": "sass --watch src/css:public/css",
-    "build-css": "sass src/css:temp/style.css && postcss temp/style.css -o public/css/bustime.css"
+    "build-css": "sass src/css:public/css"
   },
   "keywords": [],
   "author": "",

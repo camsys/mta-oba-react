@@ -22,7 +22,7 @@ const SearchBar = () => {
 
     const { search } = useNavigation();
     const {state} = useContext(CardStateContext)
-    const [searchTerm, setSearchTerm] = useState("Search");
+    const [searchTerm, setSearchTerm] = useState("Route, intersection, or stop code");
     log.info("Search",searchTerm)
 
     const onSuggestionsFetchRequested = async ({ value }) => {
@@ -49,7 +49,7 @@ const SearchBar = () => {
 
 
     const clearSearch = (event) => {
-        setSearchTerm("Search")
+        setSearchTerm("Route, intersection, or stop code")
         setValue("")
     }
 
@@ -127,9 +127,6 @@ const SearchBar = () => {
                             </svg>
                         </span>
                     </button>
-                </div>
-                <div className="search-instructions">
-                    <p>Enter an intersection, bus route or bus stop code.</p>
                 </div>
             </div>
         </ErrorBoundary>

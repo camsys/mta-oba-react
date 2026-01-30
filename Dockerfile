@@ -19,5 +19,8 @@ EXPOSE 8080
 #Install react
 RUN npm install react react-dom
 
+#Build the CSS files from SASS/SCSS source.
+RUN npm run build-css
+
 #Generate the production build of the React application.
 ENTRYPOINT npm run start
