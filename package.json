@@ -10,7 +10,11 @@
     "start:clean": "npx madge --circular src; rm -rf dist .webpack-cache .tsbuildinfo; webpack serve --config webpack.config.js",
     "serve": "npx serve -l 8080 dist",
     "acceptTracking": "node logger.js",
-    "build-css": "sass src/css:public/css && postcss public/css/*.css --use autoprefixer --no-map -d public/css/"
+    "build-css": "sass src/css:public/css && postcss public/css/*.css --use autoprefixer --no-map -d public/css/",
+    "watch-sass": "sass --watch src/css:public/css",
+    "watch-prefix": "onchange \"public/css/*.css\" -- postcss {{changed}} --use autoprefixer --no-map -d public/css/",
+    "dev-css": "concurrently \"npm run watch-sass\" \"npm run watch-prefix\"",
+    "dev-all": "concurrently \"npm run start\" \"npm run dev-css\""
   },
   "keywords": [],
   "author": "",
