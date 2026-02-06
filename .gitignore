@@ -4,6 +4,7 @@ node_modules/
 
 logs/
 .idea/
+tmp/
 
 
 public/css/
