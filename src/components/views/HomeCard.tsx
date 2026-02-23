@@ -1,6 +1,7 @@
 import React, {useContext} from 'react';
 import log from 'loglevel';
 import {useNavigation} from "../../js/updateState/NavigationEffect";
+import { FavoritesButton,NearMeButton } from '../shared/buttons';
 
 
 function HomeCard  () : JSX.Element {
@@ -8,43 +9,48 @@ function HomeCard  () : JSX.Element {
     log.info("adding home card")
     const { search,allRoutesSearch } = useNavigation();
     log.info("functions for search",search,allRoutesSearch)
-    return (<div className="example-searches"><h2>Try these example searches:</h2>
-    <ul>
-        <li>Route:
-            <ul className="links">
-                <li><a href="#" onClick={(e) => {e.preventDefault();search('B63')}}>B63</a></li>
-                <li><a href="#" onClick={(e) => {e.preventDefault();search( 'M5')}}>M5</a></li>
-                <li><a href="#" onClick={(e) => {e.preventDefault();search( 'Bx1')}}>Bx1</a></li>
-            </ul>
-        </li>
-        <li>Intersection:
-            <ul className="links">
-                <li><a href="#" onClick={(e) => {e.preventDefault();search('Main st and Kissena Bl')}}>Main st and Kissena Bl</a></li>
-            </ul>
-        </li>
-        <li>Stop Code:
-            <ul className="links">
-                <li><a href="#" onClick={(e) => {e.preventDefault();search('200884')}}>200884</a></li>
-            </ul>
-        </li>
-        <li>Or:
-            <ul className="links">
-                <li><a href="#" onClick={(e) => {e.preventDefault();search('shuttles')}}>shuttles</a></li>
-            </ul>
-        </li>
-    </ul>
-    <ul className="menu icon-menu" role="menu">
-        <li>
-            <a href="#" onClick={(e)=>{e.preventDefault();allRoutesSearch()}}>
-                    <span className="svg-icon-wrap" role="presentation" aria-hidden="true">
-                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="none">
-                        <path className="blue" d="M0 3.333a2.083 2.083 0 1 0 4.167 0 2.083 2.083 0 0 0-4.167 0ZM7.083 4.167h12.084a.833.833 0 0 0 0-1.667H7.083a.833.833 0 0 0 0 1.667ZM0 10a2.083 2.083 0 1 0 4.167 0A2.083 2.083 0 0 0 0 10ZM19.167 9.167H7.083a.833.833 0 0 0 0 1.666h12.084a.834.834 0 0 0 0-1.666ZM0 16.667a2.083 2.083 0 1 0 4.167 0 2.083 2.083 0 0 0-4.167 0ZM19.167 15.833H7.083a.833.833 0 1 0 0 1.667h12.084a.833.833 0 0 0 0-1.667Z"/>
-                      </svg>
-                    </span>
-                <span className="label">Available Routes</span>
-            </a>
-        </li>
-    </ul></div>);
+    return (<div>
+        <div className="example-searches"><h2>Try these example searches:</h2>
+        <ul>
+            <li>Route:
+                <ul className="links">
+                    <li><a href="#" onClick={(e) => {e.preventDefault();search('B63')}}>B63</a></li>
+                    <li><a href="#" onClick={(e) => {e.preventDefault();search( 'M5')}}>M5</a></li>
+                    <li><a href="#" onClick={(e) => {e.preventDefault();search( 'Bx1')}}>Bx1</a></li>
+                </ul>
+            </li>
+            <li>Intersection:
+                <ul className="links">
+                    <li><a href="#" onClick={(e) => {e.preventDefault();search('Main st and Kissena Bl')}}>Main st and Kissena Bl</a></li>
+                </ul>
+            </li>
+            <li>Stop Code:
+                <ul className="links">
+                    <li><a href="#" onClick={(e) => {e.preventDefault();search('200884')}}>200884</a></li>
+                </ul>
+            </li>
+            <li>Or:
+                <ul className="links">
+                    <li><a href="#" onClick={(e) => {e.preventDefault();search('shuttles')}}>shuttles</a></li>
+                </ul>
+            </li>
+        </ul>
+        <ul><NearMeButton /></ul>
+        <ul><FavoritesButton /></ul>
+        <ul className="menu icon-menu" role="menu">
+            <li>
+                <a href="#" onClick={(e)=>{e.preventDefault();allRoutesSearch()}}>
+                        <span className="svg-icon-wrap" role="presentation" aria-hidden="true">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="none">
+                            <path className="blue" d="M0 3.333a2.083 2.083 0 1 0 4.167 0 2.083 2.083 0 0 0-4.167 0ZM7.083 4.167h12.084a.833.833 0 0 0 0-1.667H7.083a.833.833 0 0 0 0 1.667ZM0 10a2.083 2.083 0 1 0 4.167 0A2.083 2.083 0 0 0 0 10ZM19.167 9.167H7.083a.833.833 0 0 0 0 1.666h12.084a.834.834 0 0 0 0-1.666ZM0 16.667a2.083 2.083 0 1 0 4.167 0 2.083 2.083 0 0 0-4.167 0ZM19.167 15.833H7.083a.833.833 0 1 0 0 1.667h12.084a.833.833 0 0 0 0-1.667Z"/>
+                        </svg>
+                        </span>
+                    <span className="label">Available Routes</span>
+                </a>
+            </li>
+        </ul></div>
+         
+                </div>);
 }
 
 export default HomeCard;

@@ -10,11 +10,6 @@ const tracking_host_address = process.env.ALLOWED_HOST_ADDRESS ?
   "https://" + process.env.ALLOWED_HOST_ADDRESS :
   'http://localhost:8081'
 
-// HTML Webpack Plugin for generating HTML file with script tags
-const htmlPlugin = new HtmlWebPackPlugin({
-  template: "./src/index.html",
-  filename: "./index.html"
-});
 
 // Environment variables setup using DefinePlugin
 const envPlugin = new webpack.DefinePlugin({
@@ -30,49 +25,54 @@ const envPlugin = new webpack.DefinePlugin({
   'process.env.SIRI_REQUEST_FREQ': JSON.stringify(process.env.SIRI_REQUEST_FREQ || siri_request_freq)
 });
 
-// Copy Plugin to copy static assets
-const copyPlugin = new CopyPlugin({
-  patterns: [
-    { from: "public", to: "." }
-  ]
-})
- 
-// Function to clean up host address
 function cleanUpHostAddress(hostAddress) {
   return hostAddress.trimEnd().replace(/\/$/, '');
 }
 
+
 module.exports = {
   mode: 'development',
-  entry: './src/index.tsx', // Entry point for the application
-  module: {
+  entry: './src/index.tsx', 
+  module: { 
     rules: [
+      {
+        test: /\.css$/,
+        use: ["style-loader", "css-loader", "postcss-loader"]
+      },
       {
         test: /\.(js|jsx|ts|tsx)$/, // Regex to include both JS and TS files
         exclude: /node_modules/,
         use: {
           loader: "babel-loader"
         }
-      },
-      {
-        test: /\.css$/,
-        use: ["style-loader", "css-loader"]
-      },
+      }, 
       {
         test: /\.(png|jpe?g|gif|svg|ico)$/i,
         loader: "file-loader"
-      },
+      }
     ]
   },
   resolve: {
-    extensions: ['.js', '.jsx', '.ts', '.tsx'], // Resolve these extensions
+    extensions: ['.js', '.jsx', '.ts', '.tsx', '.css'],
     alias: {
       Components: path.resolve(__dirname, 'src/components/'),
       Utils: path.resolve(__dirname, 'src/utils/'),
-      Assets: path.resolve(__dirname, 'src/assets/')
+      Assets: path.resolve(__dirname, 'src/img/'),
+      JS: path.resolve(__dirname, 'src/js/'),
+      Style: path.resolve(__dirname, 'src/css/')
     }
   },
-  plugins: [htmlPlugin, envPlugin,copyPlugin],
+  plugins: [
+    new HtmlWebPackPlugin({
+      template: "./src/index.html",
+      filename: "./index.html"
+    }), 
+    envPlugin,
+    new CopyPlugin({
+      patterns: [
+        { from: "public", to: "." }
+      ]
+    })],
   devServer: {
     allowedHosts: [
       process.env.ALLOWED_HOST_ADDRESS || 'localhost'
@@ -84,6 +84,6 @@ module.exports = {
     publicPath: isProd ? './' : '/',
   },
   watchOptions: {
-    poll: 1000, // Check for changes every second
+    poll: 1000,
   }
 };

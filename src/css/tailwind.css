@@ -1,0 +1,28 @@
+/*! tailwindcss v4.1.18 | MIT License | https://tailwindcss.com */
+@import "tailwindcss";
+
+
+@import "tailwindcss";
+
+@theme {
+  /* Grays/Blacks */
+  --color-black2: #1f2026;
+  --color-black3: #2f3139;
+  --color-black4: #36373c;
+  --color-black5: #4a4a4a;
+
+  /* MTA Blues */
+  --color-mta-dark-blue: #0e61a9;
+  --color-mta-dark-blue2: #0f61a9;
+  --color-mta-blue: #2b60a4;
+  --color-mta-blue2: #3b9dfd;
+  --color-mta-light-blue: #577bb8;
+
+  /* MTA Accents */
+  --color-mta-yellow: #f2a900;
+  --color-mta-green: #46a739;
+
+  /* Others */
+  --color-shuttle-gray: #737384;
+  --color-alert-red: #ec1c24;
+}
