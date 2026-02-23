@@ -35,8 +35,7 @@ function HomeCard  () : JSX.Element {
                 </ul>
             </li>
         </ul>
-        <ul><NearMeButton /></ul>
-        <ul><FavoritesButton /></ul>
+
         <ul className="menu icon-menu" role="menu">
             <li>
                 <a href="#" onClick={(e)=>{e.preventDefault();allRoutesSearch()}}>

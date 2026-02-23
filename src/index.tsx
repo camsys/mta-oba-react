@@ -20,6 +20,5 @@ var mapNode = document.getElementById('root');
 var root = createRoot(mapNode);
 root.render(<AppRoot />);
 
-// root.render(<React.Fragment><div className="h-32 w-32 bg-red-500 rounded-full border-8 border-black shadow-2xl">  </div> <AppRoot /></React.Fragment>);
 
 
