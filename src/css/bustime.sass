@@ -1,7 +1,7 @@
 // IMPORTS
 
-@import normalize
-@import helpers
+@use "normalize" as *
+@use "helpers" as *
 
 // basic html
 
@@ -208,7 +208,7 @@ button, .button
         text-align: left
         line-height: 1.25
       &::after
-        background-image: url(/img/icon/right-caret_blue.svg)
+        background-image: url(../img/icon/right-caret_blue.svg)
   >li
     position: relative
     background-color: transparent
@@ -233,7 +233,7 @@ button, .button
           .yellow
             fill: $mta-yellow
         &::after
-          background-image: url(/img/icon/right-caret_white.svg)
+          background-image: url(../img/icon/right-caret_white.svg)
         &:hover
           color: $white
           text-decoration: underline
@@ -296,7 +296,7 @@ button, .button
           &::before
             width: 1.3em
             height: 1.3em
-            background-image: url(/img/icon/bus-stop.svg)
+            background-image: url(../img/icon/bus-stop.svg)
         .no-favorites
           padding: $content-padding 0
           line-height: 1.4
@@ -308,7 +308,7 @@ button, .button
         z-index: 1
         border-bottom: $thick-border solid $mta-yellow
         &::after
-          background-image: url(/img/icon/right-caret_white.svg)
+          background-image: url(../img/icon/right-caret_white.svg)
         .svg-icon-wrap
           svg
             transition: fill .125s ease-in-out
@@ -317,13 +317,13 @@ button, .button
             .blue
               fill: $white
         .sub-menu
-          padding: $content-padding/2 $content-padding
+          padding: calc($content-padding / 2) $content-padding
           max-height: 200dvh
           opacity: 1
           border-bottom: solid $mta-blue
           border-top: solid $mta-blue
-          border-bottom-width: $content-padding/2
-          border-top-width: $content-padding/2
+          border-bottom-width: calc($content-padding / 2)
+          border-top-width: calc($content-padding / 2)
       & + li.open
         &::before
           content: ''
@@ -642,7 +642,7 @@ button, .button
       background-size: auto 100%
       background-repeat: no-repeat
       background-position: center
-      background-image: url(/img/icon/right-caret_white.svg)
+      background-image: url(../img/icon/right-caret_white.svg)
       position: relative
       left: 0
       transition: left .25s ease-in-out
@@ -735,7 +735,7 @@ button, .button
       position: absolute
       color: $mta-yellow
       position: absolute
-      top: $content-padding/2
+      top: calc($content-padding / 2)
     .header-inner
       display: flex
       flex-wrap: nowrap
@@ -812,7 +812,7 @@ button, .button
       transition: border .25s ease-in-out, background-color .25s ease-in-out, color .25s ease-in-out
       font-weight: bold
       color: $white
-      background-image: url(/img/icon/search_white.svg)
+      background-image: url(../img/icon/search_white.svg)
       background-size: 1em auto
       background-position: left .5em center
       background-repeat: no-repeat
@@ -959,7 +959,7 @@ button, .button
 .breadcrumb
   list-style: none
   padding: 0
-  margin: 0 0 $content-padding/4 0
+  margin: 0 0 calc($content-padding / 4) 0
   display: flex
   gap: .25em
   line-height: 1
@@ -979,7 +979,7 @@ button, .button
       background-size: auto 100%
       background-repeat: no-repeat
       background-position: center
-      background-image: url(/img/icon/right-caret_black.svg)
+      background-image: url(../img/icon/right-caret_black.svg)
       margin-left: .25em
 
 
@@ -1014,7 +1014,7 @@ button, .button
         display: block
         width: 100%
         height: 100%
-        background-image: url(/img/blank-map-bg.png)
+        background-image: url(../img/blank-map-bg.png)
         background-size: $sidebar-switch auto
         background-position: center
         top: 0
@@ -1065,7 +1065,7 @@ button, .button
     background-color: rgba($white, .625)
     list-style: none
     margin: 0
-    padding: $content-padding/2
+    padding: calc($content-padding / 2)
     display: flex
     flex-wrap: nowrap
     justify-content: center
@@ -1078,7 +1078,7 @@ button, .button
       display: inline-flex
       align-items: center
       justify-content: center
-      gap: $content-padding/4
+      gap: calc($content-padding / 4)
       &::before
         content: ''
         display: inline-block
@@ -1088,10 +1088,10 @@ button, .button
         background-position: center
       &.real-time
         &::before
-          background-image: url(/img/vehicle/vehicle-unknown.png)
+          background-image: url(../img/vehicle/vehicle-unknown.png)
       &.scheduled
         &::before
-          background-image: url(/img/vehicle/scheduled/vehicle-unknown.png)
+          background-image: url(../img/vehicle/scheduled/vehicle-unknown.png)
     &:hover
       background-color: rgba($white, 1)
   #map
@@ -1229,7 +1229,7 @@ button, .button
       background-size: auto 100%
       background-repeat: no-repeat
       background-position: center
-      background-image: url(/img/icon/right-caret_blue.svg)
+      background-image: url(../img/icon/right-caret_blue.svg)
       transform: rotate(180deg)
       position: absolute
       left: 0
@@ -1343,7 +1343,7 @@ button, .button
         color: $white
         outline: none
         &::after
-          background-image: url(/img/icon/right-caret_white.svg)
+          background-image: url(../img/icon/right-caret_white.svg)
   .card-details
     position: relative
     transition: padding .25s ease-in-out
@@ -1355,7 +1355,7 @@ button, .button
       background-size: auto 100%
       background-repeat: no-repeat
       background-position: center
-      background-image: url(/img/icon/star_blue-yellow.svg)
+      background-image: url(../img/icon/star_blue-yellow.svg)
       position: absolute
       top: $content-padding - .125rem
       right: -2rem
@@ -1377,7 +1377,7 @@ button, .button
     +card-pad-sides
   .card-footer
     background-color: $ui-gray
-    padding: $content-padding/2
+    padding: calc($content-padding / 2)
     font-size: .75em
     max-height: 100vh
     transition: max-height .25s ease-in-out, opacity .25s ease-in-out, padding .25s ease-in-out
@@ -1421,7 +1421,7 @@ button, .button
     .card-header
       &.collapse-trigger
         &:focus
-          padding-left: $content-padding/2
+          padding-left: calc($content-padding / 2)
   &.service-alert
     // +rounded
     background-color: $ui-gray
@@ -1447,9 +1447,9 @@ button, .button
       .card-header
         border-bottom: $thick-border solid $mta-yellow
     &:last-child
-      margin-bottom: $content-padding/2
+      margin-bottom: calc($content-padding / 2)
     & + .inner-card-menu, & + .card-menu
-      margin-top: $content-padding/2
+      margin-top: calc($content-padding / 2)
   &.route-direction
     position: relative
     >.card-content
@@ -1472,11 +1472,11 @@ button, .button
           display: inline-block
         .card-title
           border-left: $thick-border solid $mta-blue
-          padding-left: $content-padding/2
+          padding-left: calc($content-padding / 2)
        
 .route-stops
   list-style: none
-  margin: $content-padding/2 0 0 0
+  margin: calc($content-padding / 2) 0 0 0
   padding: 0
   >li
     padding: 0 0 1em 1.5em
@@ -1547,14 +1547,14 @@ button, .button
         background-repeat: no-repeat
         background-position: center
         margin-right: .25em
-        background-image: url(/img/icon/bus.svg)
+        background-image: url(../img/icon/bus.svg)
         vertical-align: top
         transform: translateY(2px)
         order: -2
       &::after
         content: none
         order: -1
-        background-image: url(/img/icon/stroller.svg)
+        background-image: url(../img/icon/stroller.svg)
       &.stroller-friendly
         &::after
           content: ''
@@ -1566,7 +1566,7 @@ button, .button
     color: $black3
     font-weight: bold
   .en-route &
-    margin: 0 0 $content-padding/2 0
+    margin: 0 0 calc($content-padding / 2) 0
 
 .passengers
   display: flex
@@ -1591,7 +1591,7 @@ button, .button
     height: 1em
     top: 0
     left: 0
-    background-image: url(/img/meeples/meeples-filled.png)
+    background-image: url(../img/meeples/meeples-filled.png)
     background-size: auto 100%
     background-repeat: no-repeat
   @for $i from 1 through 9
@@ -1706,7 +1706,7 @@ button, .button
       bottom: 0
     &::after
       content: ''
-      background-image: url(/img/icon/close-circle.svg)
+      background-image: url(../img/icon/close-circle.svg)
       background-size: 100% 100%
       position: absolute
       z-index: 3
@@ -1739,13 +1739,13 @@ button, .button
       white-space: nowrap
   &.search-here-popup
     .leaflet-popup-content, .popup-content
-      padding: $content-padding/2
+      padding: calc($content-padding / 2)
     .button
       font-size: .875em
     .leaflet-popup-content
       background: linear-gradient(to top, $white 0%, rgba($white,.8) 10%, rgba($white,.5) 100%)
     .search-here
-      background-image: url(/img/icon/search_blue.svg)
+      background-image: url(../img/icon/search_blue.svg)
       background-size: 1.125em auto
       background-repeat: no-repeat
       background-position: .4375em center
@@ -1753,7 +1753,7 @@ button, .button
       margin: 0
       padding-left: 2em
       &:focus, &:focus-visible
-        background-image: url(/img/icon/search_white.svg)
+        background-image: url(../img/icon/search_white.svg)
   &.no-close-button-popup
     a.leaflet-popup-close-button
       display: none

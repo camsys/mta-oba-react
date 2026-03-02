@@ -6,6 +6,7 @@ import { createRoot } from 'react-dom/client';
 import { OBA } from './js/oba';
 import log, {LogLevel} from 'loglevel';
 import {AppRoot} from "./components/app";
+import "./css/bustime.sass";
 import './css/tailwind.css';
 
 

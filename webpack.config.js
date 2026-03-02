@@ -36,8 +36,19 @@ module.exports = {
   module: { 
     rules: [
       {
-        test: /\.css$/,
-        use: ["style-loader", "css-loader", "postcss-loader"]
+        test: /\.(css|sass|scss)$/,
+        use: [
+          "style-loader", 
+          "css-loader", 
+          "postcss-loader", 
+          {
+            loader: "sass-loader",
+            options: {
+              sassOptions: {
+                indentedSyntax: true
+              }
+            }
+          }]
       },
       {
         test: /\.(js|jsx|ts|tsx)$/, // Regex to include both JS and TS files
@@ -53,7 +64,7 @@ module.exports = {
     ]
   },
   resolve: {
-    extensions: ['.js', '.jsx', '.ts', '.tsx', '.css'],
+    extensions: ['.js', '.jsx', '.ts', '.tsx', '.css', '.sass', '.scss'],
     alias: {
       Components: path.resolve(__dirname, 'src/components/'),
       Utils: path.resolve(__dirname, 'src/utils/'),
