@@ -24,6 +24,9 @@ function Header  () {
                     </a>
                     
                 </div>
+
+                <div class="w-px h-3/4 bg-mta-black-4"></div>
+
                 <a className="" href="https://www.mta.info/" target="_blank" aria-label="MTA Home" className="mta-logo-link">
                     <img className="" src={mtaLogo} alt="MTA" className="mta-logo" />
                 </a>
