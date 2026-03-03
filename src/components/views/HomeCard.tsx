@@ -10,16 +10,12 @@ function HomeCard  () : JSX.Element {
     const { search,allRoutesSearch } = useNavigation();
     log.info("functions for search",search,allRoutesSearch)
     return (<div>
-        <div className="example-searches">
-        <ul className=' [&_li]:p-0 [&_li]:py-3 [&_li]:my-0 [&_li]:before:content-none'>
-            <li ><NearMeButton/></li>
-            <li><AllRoutesButton/></li>
-            <li><FavoritesButton/></li>
-            <li><ShuttleButton/></li>
-        </ul>
-</div>
-         
-                </div>);
+<ul className='[&_li]:p-0 [&_li]:py-3 [&_li:first-child]:pt-[8px] [&_li]:my-0 [&_li]:before:content-none'>
+    <li><NearMeButton/></li>
+    <li><AllRoutesButton/></li>
+    <li><ShuttleButton/></li>
+</ul>
+</div>);
 }
 
 export default HomeCard;
