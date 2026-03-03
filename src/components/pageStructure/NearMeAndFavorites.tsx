@@ -1,7 +1,6 @@
-import React, {useContext} from 'react';
+import React from 'react';
 import log from 'loglevel';
-import {useNavigation} from "../../js/updateState/NavigationEffect";
-import { FavoritesButton,NearMeButton,ShuttleButton,AllRoutesButton } from '../shared/buttons';
+import { FavoritesButton,NearMeButton } from '../shared/buttons';
 
 
 function NearMeAndFavoritesComponent  () : JSX.Element {
