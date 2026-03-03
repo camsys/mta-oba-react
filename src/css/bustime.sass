@@ -663,7 +663,7 @@
     display: flex
     flex-wrap: nowrap
     justify-content: space-between
-    align-items: flex-start
+    align-items: flex-end
     gap: 1.75em
     .header-main
       flex-grow: 1
@@ -672,16 +672,16 @@
       margin: 0
       padding: 0
       position: relative
-      &::after
-        opacity: 0
-        transition: opacity .25s ease-in-out
-        content: ''
-        position: absolute
-        right: 0
-        bottom: -#{$thick-border}
-        left: 0
-        background-color: $mta-yellow
-        height: $thick-border
+      //&::after
+        //opacity: 0
+        //transition: opacity .25s ease-in-out
+        //content: ''
+        //position: absolute
+        //right: 0
+        //bottom: -#{$thick-border}
+        //left: 0
+        //background-color: $mta-yellow
+        //height: $thick-border
       &:hover
         .logo, .mta-logo
           opacity: .75
@@ -707,7 +707,7 @@
     .mta-logo-link
       width: 1.875em
       position: relative
-      top: .75em
+      //top: .75em
     nav
       display: none
     .menu
@@ -751,7 +751,7 @@
         max-width: 19.375em
         margin: 0
       .mta-logo-link
-        top: .5em
+        //top: .5em
         flex-shrink: 0
       .menu
         // gap: $content-padding
@@ -765,13 +765,15 @@
         .menu
           justify-content: flex-start
           gap: $content-padding
+      .logo-link
+        //margin: 0 0 .5em 0
     +mq($sidebar-switch)
       .logo-link
-        margin: 0 0 1.25em 0
+        //margin: 0 0 .5em 0
         .logo
           // max-width: 100%
       .mta-logo-link
-        width: 2.875em
+        width: 2em
       nav
         display: block
       .no-map &

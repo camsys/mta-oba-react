@@ -17,14 +17,15 @@ function Header  () {
                 <strong>BETA</strong>
                 <a href="/about-beta">Learn More and Provide Feedback</a>
             </div>
-            <header className="header" id="header">
-                <div className="header-main">
+            <header className="header pb-5 bl-" id="header">
+                <div className="header-main text-[1.20em] ">
                     <a href="#" onClick={(e) => {e.preventDefault(); search("")}} aria-label="MTA Bus Time Home" className="logo-link">
                         <img src={bustimeLogo} alt="MTA Bus Time" className="logo" />
                     </a>
+                    
                 </div>
-                <a href="https://www.mta.info/" target="_blank" aria-label="MTA Home" className="mta-logo-link">
-                    <img src={mtaLogo} alt="MTA" className="mta-logo" />
+                <a className="" href="https://www.mta.info/" target="_blank" aria-label="MTA Home" className="mta-logo-link">
+                    <img className="" src={mtaLogo} alt="MTA" className="mta-logo" />
                 </a>
             </header>
         </ErrorBoundary>
