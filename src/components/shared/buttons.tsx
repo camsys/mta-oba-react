@@ -1,5 +1,4 @@
 import React, {useContext} from 'react';
-import {InternalLink} from "./common";
 import {ChangeViewButton} from "./common";
 import allRoutesIcon from "../../img/icon/all_routes.svg"
 import {useNavigation} from "../../js/updateState/NavigationEffect";
@@ -21,17 +20,11 @@ const FavoritesButton = () => {
   
   )
     return (
-    <InternalLink 
-      className="w-full" 
-      noUnderline={true}
-      redirectFunction={() => {}}
-    >
     <ChangeViewButton 
       text="Favorites" 
       className="w-full bg-mta-green text-white" 
       iconElement={iconElement}
     />
-    </InternalLink>
   )
 }
 
@@ -50,17 +43,12 @@ const NearMeButton = () => {
     </React.Fragment>
   )
   return (
-    <InternalLink 
-      className="w-full" 
-      noUnderline={true}
-      redirectFunction={() => {search('near me')}}
-    >
     <ChangeViewButton 
       text="Routes & Stops Near Me" 
       className="w-full bg-mta-blue text-white " 
       iconElement={iconElement}
+      onClick={()=>{search('near me')}}
     />
-    </InternalLink>
   )
 }
 
@@ -76,17 +64,12 @@ const AllRoutesButton = () => {
   </React.Fragment>
 )
   return (
-    <InternalLink 
-      className="w-full" 
-      noUnderline={true}
-      redirectFunction={() => {allRoutesSearch()}}
-    >
     <ChangeViewButton 
       text="All Routes Available" 
       className="w-full bg-mta-blue text-white" 
       iconElement={iconElement}
+      onClick={() => {allRoutesSearch()}}
     />
-    </InternalLink>
   )
 }
 
@@ -95,17 +78,12 @@ const ShuttleButton = () => {
   const { search } = useNavigation();
   const iconElement = <path d="M10.7461 0C15.0981 0 17.8771 0.763238 19.1367 1.44336C19.9234 1.86828 20.4534 2.60141 20.5811 3.43066L21.4014 10.3779C21.4618 10.771 21.4932 11.1673 21.4932 11.5645V20.46C21.4932 20.6453 21.3293 20.7959 21.127 20.7959H19.7773V22.6162C19.7773 23.3805 19.1024 24 18.2695 24H18.2559C17.423 24 16.748 23.3801 16.748 22.6162V20.7959H4.74609V22.6162C4.74609 23.3805 4.07014 24 3.2373 24H3.22363C2.39091 23.9999 1.71582 23.38 1.71582 22.6162V20.7959H0.366211C0.163849 20.7959 0 20.6453 0 20.46V11.5645C0 11.1678 0.0303906 10.771 0.0908203 10.3779L0.911133 3.43066C1.03874 2.60143 1.56879 1.86829 2.35547 1.44336C3.615 0.763219 6.39396 2.0297e-05 10.7461 0ZM10.374 2.45996C8.39569 2.45998 6.8961 2.92462 5.875 3.85352C4.85396 4.78237 4.34286 5.94865 4.34277 7.35254C4.34277 8.89124 4.87126 10.0228 5.92773 10.7461C6.55175 11.1787 7.67959 11.5795 9.31055 11.9482L10.9697 12.3203C11.9409 12.533 12.6536 12.7773 13.1074 13.0537C13.5612 13.3373 13.788 13.7383 13.7881 14.2559C13.7881 15.1422 13.3308 15.749 12.416 16.0752C11.934 16.2452 11.3067 16.33 10.5342 16.3301C9.2436 16.3301 8.33164 16.0076 7.7998 15.3623C7.50912 15.0077 7.31411 14.472 7.21484 13.7559H4.08789C4.08789 15.3867 4.67286 16.6704 5.84277 17.6064C7.01277 18.5353 8.61899 19 10.6611 19C12.6608 19 14.2068 18.5281 15.2988 17.585C16.3978 16.6348 16.9472 15.4439 16.9473 14.0117C16.9473 12.6148 16.4799 11.547 15.5439 10.8096C14.9412 10.3345 14.0474 9.95551 12.8633 9.67188L10.1611 9.02246C9.11894 8.77431 8.4382 8.55837 8.11914 8.37402C7.62285 8.09752 7.37508 7.6792 7.375 7.11914C7.375 6.50931 7.62642 6.03373 8.12988 5.69336C8.63326 5.3531 9.30681 5.18267 10.1504 5.18262C10.909 5.18262 11.5442 5.31387 12.0547 5.57617C12.8205 5.97327 13.2323 6.6438 13.2891 7.58691H16.4375C16.3808 5.92052 15.7667 4.6515 14.5967 3.7793C13.4337 2.9 12.0262 2.45996 10.374 2.45996Z" fill="white"/>
   return (
-    <InternalLink 
-      className="w-full" 
-      noUnderline={true}
-      redirectFunction={() => {search('shuttles')}}
-    >
     <ChangeViewButton 
       text="Shuttle Buses" 
       className="w-full bg-shuttle-gray text-white" 
       iconElement={iconElement}
+      onClick={() => search('shuttles')}
     />
-    </InternalLink>
   )
 }
 
