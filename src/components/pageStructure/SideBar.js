@@ -16,10 +16,15 @@ import {AllRoutesWrapper} from "Components/views/AllRoutesWrapper";
 import {ErrorCard} from "../views/ErrorCard.tsx";
 import log from 'loglevel';
 import { LoadingCard } from '../views/LoadingCard.tsx';
+import NearMeAndFavorites  from '../pageStructure/NearMeAndFavorites.tsx';
 
 function SideBar  () {
 
     const { state } = useContext(CardStateContext);
+
+    function decorateWithNearMeAndFavorites (card) {
+        return (<React.Fragment><NearMeAndFavorites/>{card}</React.Fragment>);
+    }
 
     function renderCardInfo  () {
         log.info("setting card info based on currentCard type: ", state.currentCard)
@@ -29,31 +34,31 @@ function SideBar  () {
         }
         if(state.currentCard.type === CardType.ErrorCard){
             log.info("adding error card")
-            return <ErrorCard/>
+            return decorateWithNearMeAndFavorites(<ErrorCard/>)
         }
         if((!(state.currentCard.routeIdList) || state.currentCard.routeIdList.length <1) || state.currentCard.type === CardType.LoadingCard){
             log.info("adding loading card")
-            return <LoadingCard/>
+            return decorateWithNearMeAndFavorites(<LoadingCard/>)
         }
         if(state.currentCard.type === CardType.RouteCard){
             log.info("adding route card")
-            return <RouteCardWrapper/>
+            return decorateWithNearMeAndFavorites(<RouteCardWrapper/>)
         }
         if(state.currentCard.type === CardType.VehicleCard){
             log.info("adding vehicle card")
-            return <VehicleCard/>
+            return decorateWithNearMeAndFavorites(<VehicleCard/>)
         }
         if(state.currentCard.type === CardType.StopCard){
             log.info("adding stop card")
-            return <StopCardWrapper/>
+            return decorateWithNearMeAndFavorites(<StopCardWrapper/>)
         }
         if(state.currentCard.type === CardType.GeocodeCard){
             log.info("adding geo card")
-            return <GeoCardWrapper/>
+            return decorateWithNearMeAndFavorites(<GeoCardWrapper/>)
         }
         if(state.currentCard.type === CardType.AllRoutesCard){
             log.info("adding allroutes card")
-            return <AllRoutesWrapper/>
+            return decorateWithNearMeAndFavorites(<AllRoutesWrapper/>)
         }
 
     }
