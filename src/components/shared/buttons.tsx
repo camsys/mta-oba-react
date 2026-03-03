@@ -1,6 +1,5 @@
-import React, {useContext} from 'react';
+import React from 'react';
 import {ChangeViewButton} from "./common";
-import allRoutesIcon from "../../img/icon/all_routes.svg"
 import {useNavigation} from "../../js/updateState/NavigationEffect";
 
 // '../../../public/img/meeples/meeples-blank.png';
