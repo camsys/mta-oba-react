@@ -9,15 +9,24 @@ import bus from "../../img/icon/bus.svg";
 
 function Footer  () {
     log.info("adding footer")
-    const { search,allRoutesSearch } = useNavigation();
     let enableGoogleTranslate = process.env.ENABLE_GOOGLE_TRANSLATE;
     return (
         <ErrorBoundary>
             <ul className="menu ml-6 my-3" role="menu">
                 <FavoritesMenu/>
             </ul>
-            <div className="footer bg-mta-black-3" id="footer">
-            
+            <div className="footer text-white bg-mta-black-2" id="footer">
+                <h2 className='text-[1.25em] my-2 font-bold'>MTA Bus Time</h2>
+                <nav>
+                    <ul className="menu my-1 text-[1em] fornt-bold">
+                        <li><a href="#" onClick={(e) => {e.preventDefault();search("")}}>MTA Homepage</a></li>
+                        <li><a href="/help/sms-search">Mobile Text Messages</a></li>
+                        <li><a href="/about">About Bus Time</a></li>
+                        <li><a href="/contact">Contact Us</a></li>
+                        <li><a href="/developers">Developers</a></li>
+                        <li><a href="/help">Help</a></li>
+                    </ul>
+                </nav>
             </div>
         </ErrorBoundary>
     )
