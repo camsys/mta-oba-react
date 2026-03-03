@@ -16,7 +16,6 @@ log.info('OBA Util is live.');
 
 
 
-log.info("test message")
 var mapNode = document.getElementById('root');
 var root = createRoot(mapNode);
 root.render(<AppRoot />);
