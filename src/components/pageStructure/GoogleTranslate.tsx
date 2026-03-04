@@ -1,7 +1,33 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
-export const GoogleTranslateButton = () => {
-    const [showWarning, setShowWarning] = useState(false);
+
+const GoogleTranslateLoadButton = ({ handleClick }) => {
+    return (
+        <button
+                id="translate-menu-trigger"
+                onClick={handleClick}
+                className="py-3 bg-[#e8e8e8] w-[100%] text-[#3B9DFD]"
+                aria-haspopup="true"
+                aria-expanded="false"
+                aria-label="Toggle Google Translate Menu"
+            >
+                <span className="svg-icon-wrap" role="presentation" aria-hidden="true">
+                    <svg className="fill-none"width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="9.96826" cy="9.96826" r="9.31569" stroke="#3B9DFD" stroke-width="1.30514"/>
+                        <path d="M9.96729 0.652344C11.0878 0.652344 12.2522 1.50975 13.1743 3.22852C14.0818 4.92013 14.6636 7.30224 14.6636 9.96875C14.6635 12.6351 14.0818 15.0165 13.1743 16.708C12.2522 18.4268 11.0878 19.2842 9.96729 19.2842C8.8469 19.2839 7.68325 18.4265 6.76123 16.708C5.85377 15.0165 5.27204 12.6351 5.27197 9.96875C5.27197 7.30222 5.85371 4.92014 6.76123 3.22852C7.68325 1.50998 8.8469 0.652574 9.96729 0.652344Z" stroke="#3B9DFD" stroke-width="1.30514"/>
+                        <path d="M18.9252 7.50287L1.26712 7.50287" stroke="#3B9DFD" stroke-width="1.30514"/>
+                        <line x1="9.90602" y1="19.3052" x2="9.90602" y2="0.905695" stroke="#3B9DFD" stroke-width="1.30514"/>
+                        <path d="M18.573 13.1398L1.17937 13.1398" stroke="#3B9DFD" stroke-width="1.30514"/>
+                    </svg>
+                </span>
+                <span className="px-1 label text-sm font-semibold">TRANSLATE</span>
+
+                
+            </button>
+    )
+}
+
+const GoogleTranslateMenu = () => {
     const [scriptLoaded, setScriptLoaded] = useState(false);
 
     const loadGoogleTranslate = () => {
@@ -14,67 +40,53 @@ export const GoogleTranslateButton = () => {
             );
         };
 
-        const addScript = document.createElement("script");
+        let addScript = document.createElement("script");
         addScript.src = "//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit";
         document.body.appendChild(addScript);
+
         window.googleTranslateElementInit = googleTranslateElementInit;
 
         setScriptLoaded(true);
     };
 
-    const handleClick = () => {
-        if (!scriptLoaded) {
-            setShowWarning(true);
-        } else {
-            // toggleMenu();
-        }
-    };
-
-    // const toggleMenu = () => {
-    //     const menu = document.getElementById("google-translate-menu");
-    //     if (menu) {
-    //         const isOpen = menu.style.maxHeight !== '0px';
-    //         menu.style.maxHeight = isOpen ? '0px' : '200px';
-    //     }
-    // };
-
     const acceptRisk = () => {
         loadGoogleTranslate();
-        setShowWarning(false);
-        // auto-open menu after loading
-        // setTimeout(() => toggleMenu(), 500);
     };
 
+    useEffect(() => {
+            acceptRisk();
+        }, []);
+    return (<div className="py-3 bg-[#e8e8e8] w-[100%] flex-none" id="google-translate"></div>);
+}
+
+
+export const GoogleTranslateButton = () => {
+    const [showWarning, setShowWarning] = useState(true);
+
+
+    const handleClick = () => {
+        setShowWarning(false);
+    };
     return (
         <>
-            <button
-                id="translate-menu-trigger"
-                onClick={handleClick}
-                className="sub-menu-trigger collapse-trigger"
-                aria-haspopup="true"
-                aria-expanded="false"
-                aria-label="Toggle Google Translate Menu"
-            >
-                <span className="svg-icon-wrap" role="presentation" aria-hidden="true">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                            <path className="blue" fillRule="evenodd" d="M10 0C6.434 0 3.313 1.955 1.606 4.875l3.27 2.616a5.91 5.91 0 0 1 9.127-2.036l2.815-2.989C15.188.93 12.901 0 10 0Zm0 20c2.585 0 4.682-.738 6.26-1.985l-3.437-2.687.023-.03A5.909 5.909 0 0 1 4.9 12.556l-3.314 2.535C3.29 18.03 6.42 20 10 20Zm7.27-2.927c1.65-1.81 2.503-4.31 2.503-7.073 0-.62-.043-1.228-.13-1.818H10v3.636h5.85a5.917 5.917 0 0 1-1.83 2.714l3.25 2.54ZM4.319 10c0 .41.042.807.12 1.192l-3.463 2.65A10.17 10.17 0 0 1 .227 10c0-1.373.271-2.682.76-3.874l3.438 2.75A5.95 5.95 0 0 0 4.318 10Z" clipRule="evenodd"/>
-                        </svg>
-                </span>
-                <span className="label">Google Translate</span>
-            </button>
-
-            <div className="sub-menu collapse-content" id="google-translate-menu" role="menu" style={{ maxHeight: '0px' }}>
-                <div id="google-translate" tabIndex={-1}>
-                {showWarning && (
-                    <div className="google-translate-warning">
-                        <p><strong>Warning: Enabling This Feature May Slow Your Browser</strong></p>
-                        <p>Google Translate can translate this page into another language. Even if no translation is selected, enabling it may gradually increase memory usage or reduce performance.</p>
-                        <p>If the page becomes slow or unresponsive, reloading it will restore normal performance.</p>
-                        <button onClick={acceptRisk} aria-label='Enable Google Translate and Continue' className='button' tabIndex={-1}>Continue and Enable Google Translate</button>
-                    </div>
-                )}
-                </div>
-            </div>
+            {showWarning ? 
+                <GoogleTranslateLoadButton handleClick={handleClick}/> :
+                <GoogleTranslateMenu />}
+            
         </>
     );
 };
+
+
+            // <div className="sub-menu collapse-content" id="google-translate-menu" role="menu" style={{ maxHeight: '0px' }}>
+            //     <div id="google-translate" tabIndex={-1}>
+            //     {showWarning && (
+            //         <div className="google-translate-warning">
+            //             <p><strong>Warning: Enabling This Feature May Slow Your Browser</strong></p>
+            //             <p>Google Translate can translate this page into another language. Even if no translation is selected, enabling it may gradually increase memory usage or reduce performance.</p>
+            //             <p>If the page becomes slow or unresponsive, reloading it will restore normal performance.</p>
+            //             <button onClick={acceptRisk} aria-label='Enable Google Translate and Continue' className='button' tabIndex={-1}>Continue and Enable Google Translate</button>
+            //         </div>
+            //     )}
+            //     </div>
+            // </div>
