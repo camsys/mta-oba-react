@@ -17,21 +17,16 @@ function Header  () {
                 <strong>BETA</strong>
                 <a href="/about-beta">Learn More and Provide Feedback</a>
             </div>
-            <header className="header" id="header">
-                <div className="header-main">
+            <header className="header pb-5" id="header">
+                <div className="header-main text-[1.20em] ">
                     <a href="#" onClick={(e) => {e.preventDefault(); search("")}} aria-label="MTA Bus Time Home" className="logo-link">
                         <img src={bustimeLogo} alt="MTA Bus Time" className="logo" />
                     </a>
-                    <nav>
-                        <ul className="menu">
-                            <li><a href="#" onClick={(e) => {e.preventDefault();search("")}}>Home</a></li>
-                            <li><a href="/about">About</a></li>
-                            <li><a href="/contact">Contact</a></li>
-                            <li><a href="/developers">Developers</a></li>
-                            <li><a href="/help">Help</a></li>
-                        </ul>
-                    </nav>
+                    
                 </div>
+
+                <div className="w-px h-3/4 bg-mta-black-4"></div>
+
                 <a href="https://www.mta.info/" target="_blank" aria-label="MTA Home" className="mta-logo-link">
                     <img src={mtaLogo} alt="MTA" className="mta-logo" />
                 </a>
