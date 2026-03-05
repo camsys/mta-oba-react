@@ -20,7 +20,7 @@ function Footer  () {
                 <h2 className='text-[1.35em] my-4 pt-[3px] font-bold'>MTA Bus Time</h2>
                 <nav>
                     <ul className="menu my-1 text-[1em] font-[575]">
-                        <li><a href="#" onClick={(e) => {e.preventDefault();search("")}}>MTA Homepage</a></li>
+                        <li><a href="//mta.info">MTA Homepage</a></li>
                         <li><a href="/about">Mobile Text Messages</a></li>
                         <li><a href="/about">About Bus Time</a></li>
                         <li><a href="/contact">Contact Us</a></li>

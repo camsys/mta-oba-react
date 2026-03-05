@@ -12,7 +12,7 @@ const GoogleTranslateLoadButton = ({ handleClick }) => {
                 aria-label="Toggle Google Translate Menu"
             >
                 <span className="svg-icon-wrap" role="presentation" aria-hidden="true">
-                    <svg className="fill-none"width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <svg className="fill-none" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <circle cx="9.96826" cy="9.96826" r="9.31569" stroke="#3B9DFD" stroke-width="1.30514"/>
                         <path d="M9.96729 0.652344C11.0878 0.652344 12.2522 1.50975 13.1743 3.22852C14.0818 4.92013 14.6636 7.30224 14.6636 9.96875C14.6635 12.6351 14.0818 15.0165 13.1743 16.708C12.2522 18.4268 11.0878 19.2842 9.96729 19.2842C8.8469 19.2839 7.68325 18.4265 6.76123 16.708C5.85377 15.0165 5.27204 12.6351 5.27197 9.96875C5.27197 7.30222 5.85371 4.92014 6.76123 3.22852C7.68325 1.50998 8.8469 0.652574 9.96729 0.652344Z" stroke="#3B9DFD" stroke-width="1.30514"/>
                         <path d="M18.9252 7.50287L1.26712 7.50287" stroke="#3B9DFD" stroke-width="1.30514"/>
@@ -56,7 +56,7 @@ const GoogleTranslateMenu = () => {
     useEffect(() => {
             acceptRisk();
         }, []);
-    return (<div className="py-3 bg-[#e8e8e8] w-[100%] flex-none" id="google-translate"></div>);
+    return (<div className="py-3 bg-[#e8e8e8] w-[100%]" id="google-translate"></div>);
 }
 
 
