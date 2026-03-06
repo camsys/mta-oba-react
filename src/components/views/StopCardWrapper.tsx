@@ -221,7 +221,7 @@ export function StopCardContent({stopMatch,collapsed}: { StopMatch, boolean }):J
     return(
         <React.Fragment>
             <CardDetails stopMatch={stopMatch}/>
-            <h4>Buses en-route:</h4>
+            <h4 className="mb-1">Buses en-route:</h4>
             {stopMatch.routeMatches.map(
                 route=>route.directions.map(
                     dir => <RouteDirection key={uuidv4()} routeDirectionDatum={dir} stopId ={stopMatch.id.split("_")[1]} collapsed={collapsed}/>

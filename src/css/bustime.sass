@@ -9,6 +9,8 @@
     font-family: Helvetica, Arial, sans-serif
     font-size: 16px
     width: 100vw
+    +mq($four-and-a-half)
+      font-size: 16px
 
   body
     min-height: 100dvh!important
@@ -39,7 +41,7 @@
 
   h1, h2, h3, h4, h5, h6
     font-weight: bold
-    font-size: 1em
+    font-size: 1rem
     margin: 0
     padding: 0
     // a
@@ -48,12 +50,12 @@
       
   h4
     .card &, .inner-card &
-      font-size: .875em
+      font-size: .875rem
       font-weight: bold
-      margin: 0 0 .75em 0
+      margin: 0 0 .75rem 0
 
   p
-    margin: 0 0 1em 0
+    margin: 0 0 1rem 0
     padding: 0
     line-height: 1.4
       
@@ -61,22 +63,22 @@
     &:not(.menu):not(.card-details):not(.route-stops):not(.approaching-buses):not([role="listbox"]):not(.breadcrumb):not(.map-legend):not(.stop-routes)
       list-style: none
       padding: 0
-      margin: 1em 0
+      margin: 1rem 0
       >li
-        margin: 0 0 .5em 0
-        padding: 0 0 0 .75em
+        margin: 0 0 .5rem 0
+        padding: 0 0 0 .75rem
         position: relative
         &::before
           content: "■"
           display: inline-block
-          font-size: .375em
+          font-size: .375rem
           position: absolute
           left: 0
-          top: .875em
+          top: .875rem
         ul.links
           display: inline-flex
-          gap: .75em
-          margin: 0 0 0 .5em
+          gap: .75rem
+          margin: 0 0 0 .5rem
           li
             padding: 0
             margin: 0
@@ -86,7 +88,7 @@
               +yellow-bottom-focus-dark
 
   button, .button
-    font-size: 1em
+    font-size: 1rem
     vertical-align: middle
     text-decoration: none
     color: currentColor
@@ -106,12 +108,12 @@
     &.icon-button-left
       padding-left: #{$content-padding*.625}
       .icon
-        margin-right: .5em
+        margin-right: .5rem
     &.icon-only
-      padding: calc($content-padding - .25em)
+      padding: calc($content-padding - .25rem)
       .svg-icon-wrap
-        width: 1.25em
-        height: 1.25em
+        width: 1.25rem
+        height: 1.25rem
         color: currentColor
     &:not(#map-toggle):not(.refresh-button)
       &:focus, &:focus-visible
@@ -129,7 +131,7 @@
       display: none!important
 
   .small-link
-    font-size: .75em
+    font-size: .75rem
     text-decoration: underline!important
     color: $black3!important
     padding: 0px!important
@@ -139,8 +141,8 @@
       font-weight: bold!important
 
   .svg-icon-wrap
-    width: 1.125em
-    height: 1.125em
+    width: 1.125rem
+    height: 1.125rem
     display: inline-block
     vertical-align: middle
     margin: 0
@@ -184,7 +186,7 @@
     border-top: 1px solid $mta-blue
     li
       // display: flex
-      // gap: .5em
+      // gap: .5rem
       margin: 0
       padding: 0
       border-bottom: 1px solid $mta-blue
@@ -195,10 +197,10 @@
         color: currentColor
         display: flex
         width: 100%
-        padding: 1em .25em 1em .5em
-        gap: .5em
+        padding: 1rem .25rem 1rem .5rem
+        gap: .5rem
         flex-grow: 1
-        align-items: center
+        align-itrems: center
         transition: color .25s ease-in-out, background-color .25s ease-in-out, padding-left .25s ease-in-out
         border: none
         outline: none
@@ -224,7 +226,7 @@
         &:focus
           background-color: $black
           color: $white
-          padding-left: .5em
+          padding-left: .5rem
           .svg-icon-wrap
             svg, path
               fill: $white
@@ -249,7 +251,7 @@
         background-color: $white
         transition: max-height .5s ease-in-out, margin .25s ease-in-out
         list-style: none
-        margin: 0 .5em
+        margin: 0 .5rem
         padding: 0 $content-padding
         border-bottom-width: 0
         li
@@ -265,11 +267,11 @@
                 text-decoration: underline
                 color: $black2
               &::after
-                left: .25em
+                left: .25rem
             &:focus
               background-color: $black
               color: $white
-              padding-left: .5em
+              padding-left: .5rem
               .label
                 color: $white
               .svg-icon-wrap
@@ -283,19 +285,19 @@
             border-bottom: none
         &#favorites-menu
           .label
-            font-size: .875em
+            font-size: .875rem
           .remove-favorite
             margin-bottom: $content-padding
           .favorite-route
             .label
               border-left: $thick-border solid
-              padding-left: .5em
+              padding-left: .5rem
           .favorite-stop
             +icon-before
-            gap:  .25em
+            gap:  .25rem
             &::before
-              width: 1.3em
-              height: 1.3em
+              width: 1.3rem
+              height: 1.3rem
               background-image: url(../img/icon/bus-stop.svg)
           .no-favorites
             padding: $content-padding 0
@@ -334,12 +336,12 @@
             background-color: $ui-gray
             height: 1px
         .sub-menu
-          margin: .5em
+          margin: .5rem
     &.refresh-menu
       +mq-reverse($sidebar-switch)
         display: none
     .card &
-      font-size: .875em
+      font-size: .875rem
       li
         &:last-child
           border-bottom: none
@@ -360,11 +362,11 @@
                 path
                   fill: $white
     &.sub-menu-menu
-      font-size: .75em
+      font-size: .75rem
       li
         button, a
-          padding-right: .25em
-          padding-left: .5em
+          padding-right: .25rem
+          padding-left: .5rem
 
   //
     
@@ -381,7 +383,7 @@
     overflow: hidden
     display: flex
     flex-wrap: nowrap
-    align-items: stretch
+    align-itrems: stretch
     &.no-map
       flex-direction: column
       background-color: $ui-gray
@@ -391,31 +393,31 @@
       flex-grow: 1
       min-height: 100dvh
       h1
-        font-size: 2em
-        margin: 0 0 .5em 0
+        font-size: 2rem
+        margin: 0 0 .5rem 0
       h2
-        font-size: 1.5em
-        margin: 0 0 .5em 0
+        font-size: 1.5rem
+        margin: 0 0 .5rem 0
         &:not(:first-child)
-          margin-top: 1em
+          margin-top: 1rem
         #app &
-          font-size: 1em
+          font-size: 1rem
       h3
-        font-size: 1.25em
-        margin: 0 0 .5em 0
+        font-size: 1.25rem
+        margin: 0 0 .5rem 0
         &:not(first-child)
-          margin-top: 1em      
+          margin-top: 1rem      
       h4
         &:not(first-child)
-          margin-top: 1em
+          margin-top: 1rem
       table
         text-align: left
         vertical-align: middle
         border-spacing: 1px
         background: $border-gray
-        margin: 0 0 1em 0
+        margin: 0 0 1rem 0
         td, th
-          padding: .5em
+          padding: .5rem
           background: $white
       .main-content
         padding: $content-padding
@@ -431,18 +433,18 @@
             font-weight: bold
         ul, ol
           padding: 0px
-          margin-left: 1em!important
+          margin-left: 1rem!important
           ul, ol
-            margin: 1em 0
+            margin: 1rem 0
         code
-          font-size: .875em
+          font-size: .875rem
           background-color: $ui-gray
-          padding: .125em .5em
+          padding: .125rem .5rem
           border: 1px solid $white
         pre
           white-space: normal
           background-color: $ui-gray
-          padding: .5em
+          padding: .5rem
           overflow-x: scroll 
           code
             white-space: pre
@@ -454,7 +456,7 @@
         .bustime-thumb
           max-width: 50%
           float: right
-          width: 24em
+          width: 24rem
           margin-left: $content-padding
         .buttons
           margin-top: $content-padding
@@ -472,20 +474,20 @@
         margin-right: 0
         #toc
           position: static
-          flex-basis: 12em
+          flex-basis: 12rem
           flex-grow: 0
           flex-shrink: 0
           opacity: 1
           z-index: 1
           .toc-header
-            font-size: 1em
+            font-size: 1rem
           .toc-menu
-            font-size: .875em
+            font-size: .875rem
           a
             text-decoration: none
             color: $dark-gray
             display: block
-            padding: .3125em 0
+            padding: .3125rem 0
             &:hover
               text-decoration: underline
               color: $black
@@ -499,9 +501,9 @@
               margin: 0
               padding: 0
             ul
-              margin: 0 0 .0625em .5em
+              margin: 0 0 .0625rem .5rem
               a
-                padding: .25em 0
+                padding: .25rem 0
         .content
           flex-grow: 1
           display: flex
@@ -523,8 +525,8 @@
           width: $toc-toggle-size
           height: $toc-toggle-size
           img
-            width: 1.5em
-            height: 1.5em
+            width: 1.5rem
+            height: 1.5rem
             display: block
             margin: 0
             padding: 0
@@ -545,17 +547,17 @@
             display: block
             order: 3
             width: 100%
-            font-size: .75em
+            font-size: .75rem
             // ul
-            //   gap: .5em
+            //   gap: .5rem
           .logo-link
             max-width: 70%
         h1
-          font-size: 1.5em
+          font-size: 1.5rem
         h2
-          font-size: 1.25em
+          font-size: 1.25rem
         h3
-          font-size: 1.125em
+          font-size: 1.125rem
         .content-and-toc
           gap: 0
           margin-right: $toc-toggle-size
@@ -576,7 +578,7 @@
             padding: $content-padding 0
             box-shadow: 0px 0px 0px 0px rgba($black, 0)
             .toc-header, .toc-menu
-              width: 12em
+              width: 12rem
             a
               color: $black2
             &.open
@@ -588,7 +590,7 @@
               border-left-width: 1px
               +card-shadow
         .page-content
-          font-size: .875em
+          font-size: .875rem
           a, strong, bold, b, span, code
             word-break: break-word
           .button
@@ -602,7 +604,7 @@
           .buttons
             flex-direction: column
             gap: $content-padding
-            align-items: stretch
+            align-itrems: stretch
             .button
               text-align: center
     .google-translate-active &
@@ -612,7 +614,7 @@
     background-color: $black3
     color: $white
     display: flex
-    align-items: stretch
+    align-itrems: stretch
     justify-content: space-between
     line-height: 1rem
     border-bottom: 1px solid $black
@@ -621,24 +623,24 @@
       background-color: $mta-yellow
       color: $black
       padding: .5rem $content-padding
-      font-size: 1.125em
-      align-items: center
+      font-size: 1.125rem
+      align-itrems: center
       justify-content: center
     a
-      font-size: .875em
+      font-size: .875rem
       color: currentColor
       text-decoration: underline
       display: inline-flex
-      align-items: center
-      gap: .5em
+      align-itrems: center
+      gap: .5rem
       padding: .5rem $content-padding
       background-color: transparent
       transition: background-color .25s ease-in-out
       &::after
         content: ''
         display: inline-block
-        width: 1em
-        height: 1em
+        width: 1rem
+        height: 1rem
         background-size: auto 100%
         background-repeat: no-repeat
         background-position: center
@@ -649,7 +651,7 @@
       &:hover, &:focus
         text-decoration: none
         &::after
-          left: .125em
+          left: .125rem
       &:focus
         background-color: $black
         border: none
@@ -659,12 +661,12 @@
     background-color: $black2
     color: $white
     padding: $header-padding
-    //border-bottom: .25em solid $border-gray
+    //border-bottom: .25rem solid $border-gray
     display: flex
     flex-wrap: nowrap
     justify-content: space-between
-    align-items: flex-end
-    gap: 1.75em
+    align-itrems: flex-end
+    gap: 1.75rem
     .header-main
       flex-grow: 1
       flex-shrink: 1
@@ -705,9 +707,9 @@
         opacity: 1
         transition: opacity .25s ease-in-out
     .mta-logo-link
-      width: 1.875em
+      width: 1.875rem
       position: relative
-      //top: .75em
+      //top: .75rem
     nav
       display: none
     .menu
@@ -715,7 +717,7 @@
       flex-wrap: nowrap
       justify-content: flex-start
       gap: $content-padding
-      font-size: .75em
+      font-size: .75rem
       line-height: 1
       list-style: none
       padding: 0
@@ -740,7 +742,7 @@
         display: flex
         flex-wrap: nowrap
         justify-content: space-between
-        align-items: baseline
+        align-itrems: baseline
         width: 100%
         max-width: $content-max-width
         padding: $content-padding
@@ -748,16 +750,16 @@
         position: relative
       .logo-link
         width: 100%
-        max-width: 19.375em
+        max-width: 19.375rem
         margin: 0
       .mta-logo-link
-        //top: .5em
+        //top: .5rem
         flex-shrink: 0
       .menu
         // gap: $content-padding
         justify-content: space-between
         gap: 0
-        font-size: 1em
+        font-size: 1rem
         a.active
           font-weight: bold
     +mq($three)
@@ -766,14 +768,14 @@
           justify-content: flex-start
           gap: $content-padding
       .logo-link
-        //margin: 0 0 .5em 0
+        //margin: 0 0 .5rem 0
     +mq($sidebar-switch)
       .logo-link
-        //margin: 0 0 .5em 0
+        //margin: 0 0 .5rem 0
         .logo
           // max-width: 100%
       .mta-logo-link
-        width: 2em
+        width: 2rem
       nav
         display: block
       .no-map &
@@ -789,7 +791,7 @@
     z-index: 1
     display: inline-flex
     flex-direction: column
-    align-items: stretch
+    align-itrems: stretch
     align-content: stretch
     height: calc(100dvh - #{$button-height + 2rem})
     transition: height .5s ease-in-out
@@ -806,18 +808,18 @@
       position: relative
       transition: top 0.25s ease-out
       input
-        font-size: 1em
+        font-size: 1.125rem
         background-color: rgba($white, .1)
         border: 1px solid rgba($white, 0)
         outline: none
-        padding: .625em 2.25em .625em 2.25em
+        padding: .2rem 2.25rem .15rem 2.25rem
         margin: 2px
         transition: border .25s ease-in-out, background-color .25s ease-in-out, color .25s ease-in-out
         font-weight: bold
         color: $white
         background-image: url("../img/icon/search_white.svg")
-        background-size: 1em auto
-        background-position: left .5em center
+        background-size: 1rem auto
+        background-position: left .5rem center
         background-repeat: no-repeat
         +rounded
         transition: border-radius .25s ease-in-out, background-color .25s ease-in-out
@@ -857,7 +859,7 @@
           margin: 0
           padding: 0
           .react-autosuggest__suggestion
-            padding: .375em .5em
+            padding: .375rem .5rem
             background-color: transparent
             color: currentColor
             transition: background-color .25s ease-in-out, color .25s ease-in-out
@@ -878,8 +880,8 @@
           right: 0
           bottom: 0
           height: 100%
-          padding: 0 .5em
-          width: 2.25em
+          padding: 0 .5rem
+          width: 2.25rem
           z-index: 1001
           opacity: 1
           transition: opacity .25s ease-in-out
@@ -913,7 +915,7 @@
         flex-direction: column
         justify-content: flex-end
         p
-          font-size: .75em
+          font-size: .75rem
           margin: 0
         &.hidden
           max-height: 0
@@ -923,7 +925,7 @@
       // overflow-y: auto
       display: inline-flex
       flex-direction: column
-      align-items: stretch
+      align-itrems: stretch
       justify-content: space-between
       background-color: $ui-gray
       overscroll-behavior: none
@@ -947,7 +949,7 @@
         &.sticky
           top: 0
     +mq($sidebar-switch)
-      box-shadow: .25em .25em .5em 0 rgba($black, 0.25)
+      box-shadow: .25rem .25rem .5rem 0 rgba($black, 0.25)
       width: $sidebar-width-narrow
       height: auto
       overflow-y: auto
@@ -964,26 +966,26 @@
     padding: 0
     margin: 0 0 calc($content-padding / 4) 0
     display: flex
-    gap: .25em
+    gap: .25rem
     line-height: 1
     li
       display: inline-block
       position: relative
       a
         text-decoration: none
-        font-size: .875em
+        font-size: .875rem
         &:hover
           text-decoration: underline
       &::after
         content: ''
         display: inline-block
-        width: .625em
-        height: .625em
+        width: .625rem
+        height: .625rem
         background-size: auto 100%
         background-repeat: no-repeat
         background-position: center
         background-image: url(../img/icon/right-caret_black.svg)
-        margin-left: .25em
+        margin-left: .25rem
 
 
   .bottom-buttons
@@ -992,7 +994,7 @@
     height: $bottom-buttons-height
     padding: $content-padding
     display: flex
-    align-items: stretch
+    align-itrems: stretch
     justify-content: center
     gap: $content-padding
     transition: bottom .5s ease-out
@@ -1001,14 +1003,14 @@
       padding-top: 0
       padding-bottom: 0
       display: inline-flex
-      align-items: center
+      align-itrems: center
       justify-content: center
       min-height: $button-height
       .svg-icon-wrap
         flex-shrink: 0
       &#map-toggle
         flex-grow: 1
-        +text-outline($white, .125em)
+        +text-outline($white, .125rem)
         position: relative
         background-color: $ui-gray
         &::after
@@ -1031,7 +1033,7 @@
         .hide-label
           display: none
         &:hover
-          +text-outline($white, .0625em)
+          +text-outline($white, .0625rem)
           &::after
             opacity: .25
       &.refresh-button
@@ -1072,21 +1074,21 @@
       display: flex
       flex-wrap: nowrap
       justify-content: center
-      align-items: center
+      align-itrems: center
       gap: $content-padding
-      font-size: .75em
+      font-size: .75rem
       line-height: 1
       transition: background-color .25s ease-in-out
       li
         display: inline-flex
-        align-items: center
+        align-itrems: center
         justify-content: center
         gap: calc($content-padding / 4)
         &::before
           content: ''
           display: inline-block
-          width: 2em
-          height: 2em
+          width: 2rem
+          height: 2rem
           background-size: 51px 51px
           background-position: center
         &.real-time
@@ -1148,7 +1150,7 @@
       rotate: (-90deg)
     &:hover, &:focus
       &::after
-        left: .375em
+        left: .375rem
 
   .collapsible
     .collapse-content
@@ -1160,8 +1162,8 @@
         position: relative
         left: 0
         opacity: 1
-        width: 1.125em
-        height: 1.125em
+        width: 1.125rem
+        height: 1.125rem
         transition: opacity .25s ease-in-out, width .25s ease-in-out, position .25s ease-in-out
     &.open
       >.collapse-content
@@ -1177,19 +1179,19 @@
           .svc-alert-icon
             opacity: 0
             position: absolute
-            left: -6em
+            left: -6rem
             width: 0px
 
   .refresh-button
     overflow: hidden
     text-overflow: ellipsis
     // display: flex
-    // gap: .5em
+    // gap: .5rem
     font-weight: bold
     .label
       display: flex
       flex-grow: 1
-      gap: .5em
+      gap: .5rem
       width: 100%
     .updated-at
       font-weight: normal
@@ -1220,15 +1222,15 @@
     a.back-link
       text-decoration: none
       color: $mta-blue
-      padding-left: 1.625em
+      padding-left: 1.625rem
       position: relative
       &:hover, &:focus
         text-decoration: underline
       &::before
         content: ''
         display: inline-block
-        width: 1.125em
-        height: 1.125em
+        width: 1.125rem
+        height: 1.125rem
         background-size: auto 100%
         background-repeat: no-repeat
         background-position: center
@@ -1252,7 +1254,7 @@
     list-style: none
     margin: 0
     padding: 0
-    gap: 1em
+    gap: 1rem
     .cards-toggle
       position: relative
       padding: 0
@@ -1265,11 +1267,11 @@
           content: ''
           position: absolute
           top: 50%
-          right: -.5em
+          right: -.5rem
           transform: translateY(-50%)
           display: inline-block
           width: 1px
-          height: 1em
+          height: 1rem
           background-color: $black
       &.active
         font-weight: bold
@@ -1284,11 +1286,11 @@
 
   .card-title
     display: flex
-    gap: .5em
+    gap: .5rem
     flex-wrap: nowrap
     .icon
       width: auto
-      height: 1.125em
+      height: 1.125rem
 
   .card, .inner-card
     width: 100%
@@ -1304,19 +1306,19 @@
         flex-grow: 1
       .no-scheduled-service
         display: inline-block
-        margin-top: .25em
+        margin-top: .25rem
     .card-details
       list-style: none
       display: flex
       flex-direction: column
-      gap: .5em
+      gap: .5rem
       margin: 0
       padding: $content-padding 0
       .vehicle-info
         display: flex
         flex-wrap: wrap
         justify-content: space-between
-        gap: .5em
+        gap: .5rem
       .stroller
         color: $dark-gray
       & + .card-menu
@@ -1336,6 +1338,7 @@
       outline: 0px
       border-bottom: $thick-border solid
       border-color: $mta-blue
+      font-size:1.115rem
       .card-title
         font-weight: bold
     .card-header
@@ -1366,7 +1369,7 @@
         transition: opacity .5s ease-in-out, right .25s ease-in-out, transform .25s ease-in-out
         transform: rotate(180deg)
       &.favorite
-        padding-right: 2em
+        padding-right: 2rem
         .favorite-toggle
           .add, .add-icon
             display: none
@@ -1381,7 +1384,7 @@
     .card-footer
       background-color: $ui-gray
       padding: calc($content-padding / 2)
-      font-size: .75em
+      font-size: .75rem
       max-height: 100vh
       transition: max-height .25s ease-in-out, opacity .25s ease-in-out, padding .25s ease-in-out
       .stop-routes
@@ -1394,24 +1397,24 @@
         li
           margin: 0
           border-left: $medium-border solid $mta-blue
-          padding-left: .5em
+          padding-left: .5rem
           white-space: nowrap
           overflow: hidden
           text-overflow: ellipsis
           line-height: 1
           .svg-icon-wrap
-            width: 1em
-            height: 1em
-            margin-right: .25em
+            width: 1rem
+            height: 1rem
+            margin-right: .25rem
             vertical-align: text-top
 
   .inner-card
     margin: 0
-    font-size: .875em
+    font-size: .875rem
     border: none
     background: transparent
     .inner-card
-      font-size: 1em
+      font-size: 1rem
     .card-header
       +card-pad
       border: none
@@ -1455,6 +1458,7 @@
         margin-top: calc($content-padding / 2)
     &.route-direction
       position: relative
+      font-size: 1rem
       >.card-content
         padding-right: 0
         padding-left: 0
@@ -1482,18 +1486,18 @@
     margin: calc($content-padding / 2) 0 0 0
     padding: 0
     >li
-      padding: 0 0 1em 1.5em
+      padding: 0 0 1rem 1.5rem
       position: relative
       &::before
         content: ''
         display: inline-block
-        width: .5em
-        height: .5em
+        width: .66rem
+        height: .66rem
         background-color: currentColor
         border-radius: 50%
         position: absolute
-        left: 0
-        top: .25em
+        left: .02rem
+        top: .25rem
         transform: translateY(-1px)
         border: 2px solid $black
         z-index: 2
@@ -1504,8 +1508,8 @@
         background-color: $black
         height: 100%
         position: absolute
-        left: .25em
-        top: .25em
+        left: .25rem
+        top: .25rem
         transform: translateX(1px)
         z-index: 1
       &:last-child
@@ -1515,10 +1519,11 @@
         font-weight: bold
     a
       text-decoration: none
+      color:#000000
       &:hover, &:focus
         text-decoration: underline  
     .approaching-buses
-      margin: .25em 0 0 0
+      margin: .25rem 0 0 0
     
   .approaching-buses
     list-style: none
@@ -1533,10 +1538,10 @@
     li
       display: flex
       flex-wrap: nowrap
-      gap: .5em
-      padding: .5em 0
+      gap: .5rem
+      padding: .5rem 0
       .bus
-        width: 4.5em
+        width: 4.5rem
         flex-grow: 0
         flex-shrink: 0
         display: inline-flex
@@ -1544,14 +1549,14 @@
         &::before, &::after
           content: ''
           display: inline-block
-          width: .875em
-          height: .875em
+          width: .875rem
+          height: .875rem
           background-size: auto 100%
           background-repeat: no-repeat
           background-position: center
-          margin-right: .25em
+          margin-right: .25rem
+          margin-top: .125rem
           background-image: url(../img/icon/bus.svg)
-          vertical-align: top
           transform: translateY(2px)
           order: -2
         &::after
@@ -1573,25 +1578,25 @@
 
   .passengers
     display: flex
-    gap: .5em
-    align-items: center
+    gap: .5rem
+    align-itrems: center
 
   .meeples
     display: inline-block
     line-height: 1
-    margin-top: .25em
+    margin-top: .25rem
     position: relative
     img
-      width: 2.25em
-      height: 1em
+      width: 2.25rem
+      height: 1rem
       position: relative
       z-index: 0
     &::after
       content: ''
       position: absolute
       z-index: 1
-      width: 2.25em
-      height: 1em
+      width: 2.25rem
+      height: 1rem
       top: 0
       left: 0
       background-image: url(../img/meeples/meeples-filled.png)
@@ -1603,7 +1608,7 @@
           width: $i*25%
 
   .next-stops
-    font-size: .875em
+    font-size: .875rem
     li
       display: flex
       flex-direction: column
@@ -1614,26 +1619,26 @@
 
   // clearing leaflet styles
   .leaflet-container
-    font-size: 1em!important
+    font-size: 1rem!important
     
   .map-popup, .leaflet-popup
     background-color: transparent
     padding: 0
     opacity: 1
     transition: opacity .25s ease-in-out
-    margin-bottom: 1.625em!important
+    margin-bottom: 1.625rem!important
     border: $content-padding*.25 solid rgba(0,0,0,.25)
     &.vehicle-popup
-      margin-bottom: 2em!important
+      margin-bottom: 2rem!important
     &::after
       content: ''
       width: 0
       height: 0
-      border-left: .875em solid transparent
-      border-right: .875em solid transparent
-      border-top: .875em solid rgba(0, 0, 0, .25)
+      border-left: .875rem solid transparent
+      border-right: .875rem solid transparent
+      border-top: .875rem solid rgba(0, 0, 0, .25)
       position: absolute
-      bottom: -1.125em
+      bottom: -1.125rem
       left: 50%
       transform: translateX(-50%)
     .leaflet-popup-content-wrapper
@@ -1646,51 +1651,51 @@
       //shadow for close button
       &::before
         content: ''
-        width: 2.25em
-        height: 2.25em
+        width: 2.25rem
+        height: 2.25rem
         background-color: rgba($black, .25)
         position: absolute
-        top: -1em
-        right: -1em
+        top: -1rem
+        right: -1rem
         border-radius: 50%
         z-index: -1
     .leaflet-popup-content, .popup-content
       display: flex
       flex-wrap: nowrap
-      gap: .25em
+      gap: .25rem
       background-color: $white
       line-height: 1
       padding: $content-padding
       margin: 0
       position: relative
       z-index: 2
-      font-size: 1em
+      font-size: 1rem
       // width: auto!important
       >.icon
-        height: 2.25em
+        height: 2.25rem
         width: auto
       &::after
         content: ''
         width: 0
         height: 0
-        border-left: .75em solid transparent
-        border-right: .75em solid transparent
-        border-top: .75em solid $white
+        border-left: .75rem solid transparent
+        border-right: .75rem solid transparent
+        border-top: .75rem solid $white
         position: absolute
-        bottom: -.75em
+        bottom: -.75rem
         left: 50%
         transform: translateX(-50%)
     .leaflet-popup-tip
       display: none
     a.leaflet-popup-close-button
-      width: 1.75em!important  
-      height: 1.75em!important
+      width: 1.75rem!important  
+      height: 1.75rem!important
       padding: 0!important
       margin: 0
       position: absolute
       z-index: 2
-      top: -1em!important
-      right: -1em!important
+      top: -1rem!important
+      right: -1rem!important
       border-radius: 50%
       line-height: 0
       border: none
@@ -1723,7 +1728,7 @@
     .popup-info
       display: inline-flex
       flex-direction: column
-      gap: .25em
+      gap: .25rem
       .route, .name
         font-weight: bold
       .route, .name, .vehicle, .stop-code
@@ -1731,10 +1736,10 @@
         // white-space: nowrap
       .view-full
         text-align: left
-        font-size: .875em
+        font-size: .875rem
         color: $mta-blue
-        padding: .5em 0 0 0
-        margin: .5em 0 0 0
+        padding: .5rem 0 0 0
+        margin: .5rem 0 0 0
         border: none
         outline: none
         border-top: 1px solid currentColor
@@ -1744,17 +1749,17 @@
       .leaflet-popup-content, .popup-content
         padding: calc($content-padding / 2)
       .button
-        font-size: .875em
+        font-size: .875rem
       .leaflet-popup-content
         background: linear-gradient(to top, $white 0%, rgba($white,.8) 10%, rgba($white,.5) 100%)
       .search-here
         background-image: url(../img/icon/search_blue.svg)
-        background-size: 1.125em auto
+        background-size: 1.125rem auto
         background-repeat: no-repeat
-        background-position: .4375em center
+        background-position: .4375rem center
         padding: $content-padding*.875
         margin: 0
-        padding-left: 2em
+        padding-left: 2rem
         &:focus, &:focus-visible
           background-image: url(../img/icon/search_white.svg)
     &.no-close-button-popup
@@ -1770,7 +1775,7 @@
           display: none
 
   .text-note
-    font-size: .875em
+    font-size: .875rem
     padding-top: $content-padding
     border-top: 1px solid $black
 
@@ -1780,18 +1785,18 @@
     padding: $content-padding 0
     .goog-te-gadget
       font-family: inherit
-      font-size: .75em!important
+      font-size: .75rem!important
       line-height: 1
       color: inherit
       white-space: normal!important
       display: flex
       flex-wrap: wrap
-      align-items: baseline
+      align-itrems: baseline
       .goog-te-combo
         margin: 0 0 $content-padding 0
         font-family: inherit
         background-color: $white
-        font-size: 1.333333em!important
+        font-size: 1.333333rem!important
       >div
         flex-grow: 1
         max-width: 217.5px
@@ -1800,17 +1805,17 @@
         color: inherit
         flex-grow: .5
         a
-          font-size: 1em
+          font-size: 1rem
           font-weight: normal
           color: currentColor
           padding: 0
-          margin: 0 0 0 .5em
+          margin: 0 0 0 .5rem
           display: inline-block
           img
-            height: 1.2em
+            height: 1.2rem
             width: auto
             position: relative
-            top: .12em
+            top: .12rem
             display: inline-block
           &:hover, &:focus
             text-decoration: underline
