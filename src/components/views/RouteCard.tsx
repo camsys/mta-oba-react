@@ -39,7 +39,7 @@ export function RouteStopComponent
 
     try{
         out = (
-            <li  className={'pb-[.65rem] ' + (hasVehicleChildren ? "has-info" : "")}
+            <li  className={'pb-2 ' + (hasVehicleChildren ? "has-info" : "")}
                  key={uniqueId}
                  id={uniqueId}
                  onMouseEnter={() => highlightId(stopDatum.id)}
@@ -70,7 +70,7 @@ export function RouteStopComponent
 export const RouteDirection = ({datum,color,collapsed}: { datum: RouteDirectionInterface, color: string ,collapsed:boolean}): JSX.Element => {
     log.info("generating RouteDirectionComponent:", datum)
     return (
-        <div className="route-direction inner-card collapsible text-[1.15rem]" key={datum.routeId+datum.directionId}>
+        <div className="route-direction inner-card collapsible" key={datum.routeId+datum.directionId}>
             <button className="card-header collapse-trigger" aria-haspopup="true" aria-expanded="false" aria-label={"Toggle "+datum.routeId+" to " + datum.routeDestination +" Open / Closed"} tabIndex={collapsed?-1:0}>
                 <span className="label">to <strong> {datum.routeDestination}</strong>
                     {datum.hasUpcomingService?null:<><br/><em className="no-scheduled-service">No scheduled service at this time.</em></>}

@@ -96,7 +96,7 @@ function VehicleComponent({vehicleDatum,tabbable}:
     let out = null;
 
     try {
-        out = (<li className="pb-3 pl-1 pt-0 text-base" key={vehicleDatum.vehicleId}>
+        out = (<li className="pb-1 pl-2 pt-0 text-base" key={vehicleDatum.vehicleId}>
             <span className="bus-info">
                 <span className="approaching">
                     <span>{OBA.Util.getArrivalEstimateForISOString(vehicleDatum?.vehicleArrivalData?.[0].ISOTime,vehicleDatum.lastUpdate)}</span>

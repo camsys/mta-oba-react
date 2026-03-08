@@ -1313,7 +1313,8 @@
       flex-direction: column
       gap: .5rem
       margin: 0
-      padding: $content-padding 0
+      padding: calc($content-padding/2) calc($content-padding/4)
+      font-size: 1rem
       .vehicle-info
         display: flex
         flex-wrap: wrap
@@ -1523,7 +1524,7 @@
       &:hover, &:focus
         text-decoration: underline  
     .approaching-buses
-      margin: .25rem 0 0 0
+      margin: .125rem 0 0 0
     
   .approaching-buses
     list-style: none
