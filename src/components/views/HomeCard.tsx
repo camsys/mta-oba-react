@@ -10,7 +10,7 @@ function HomeCard  () : JSX.Element {
     const { search,allRoutesSearch } = useNavigation();
     log.info("functions for search",search,allRoutesSearch)
     return (<div>
-<ul className='[&_li]:p-0 [&_li]:py-3 [&_li:first-child]:pt-[8px] [&_li]:my-0 [&_li]:before:content-none'>
+<ul className='[&_li]:p-0 [&_li]:py-3 [&_li:first-child]:pt-[.4rem] [&_li]:my-0 [&_li]:before:content-none'>
     <li><NearMeButton/></li>
     <li><AllRoutesButton/></li>
     <li><ShuttleButton/></li>

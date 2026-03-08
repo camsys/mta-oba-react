@@ -39,7 +39,7 @@ export function RouteStopComponent
 
     try{
         out = (
-            <li  className={hasVehicleChildren?"has-info":null}
+            <li  className={'pb-2 ' + (hasVehicleChildren ? "has-info" : "")}
                  key={uniqueId}
                  id={uniqueId}
                  onMouseEnter={() => highlightId(stopDatum.id)}

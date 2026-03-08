@@ -98,7 +98,7 @@ const SearchBar = () => {
 
     return (
         <ErrorBoundary>
-            <div id="search" onKeyDown={(event) => {
+            <div id="search" className="py-2" onKeyDown={(event) => {
                 if (event.key === "Enter") {
                     search(event.target?.value);
                 }

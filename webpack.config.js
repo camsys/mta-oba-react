@@ -16,7 +16,7 @@ const envPlugin = new webpack.DefinePlugin({
   'process.env.TRACKING_HOST_ADDRESS': JSON.stringify(process.env.TRACKING_HOST_ADDRESS || tracking_host_address),
   'process.env.ALLOWED_HOST_ADDRESS': JSON.stringify(process.env.ALLOWED_HOST_ADDRESS || 'localhost'),
   'process.env.API_KEY': JSON.stringify(process.env.API_KEY || defaultAPIKey),
-  'process.env.ENV_ADDRESS': JSON.stringify(cleanUpHostAddress(process.env.ENV_ADDRESS || 'app.qa.obanyc.com')),
+  'process.env.ENV_ADDRESS': JSON.stringify(cleanUpHostAddress(process.env.ENV_ADDRESS || 'app.dev.obanyc.com')),
   'process.env.VEHICLE_MONITORING_ENDPOINT': JSON.stringify(process.env.VEHICLE_MONITORING_ENDPOINT || `api/siri/vehicle-monitoring.json?`),
   'process.env.STOP_MONITORING_ENDPOINT': JSON.stringify(process.env.STOP_MONITORING_ENDPOINT || `/api/stop-for-id?`),
   'process.env.STOPS_ON_ROUTE_ENDPOINT': JSON.stringify(process.env.STOPS_ON_ROUTE_ENDPOINT || 'api/stops-on-route-for-direction?'),
