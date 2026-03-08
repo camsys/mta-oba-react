@@ -1,7 +1,5 @@
 import React, {useContext} from 'react';
 
-// make this into a seperate args interface
-
 interface ChangeViewButtonProps {
   text: string;
   color?: string;

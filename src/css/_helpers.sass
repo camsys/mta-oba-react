@@ -10,10 +10,13 @@ $ui-gray: #f3f3f3
 $border-gray: #ddd
 $dark-gray: #666
 
-$mta-blue: #0E61A9
-$mta-yellow: #f2a900 // only meets ada contrast guidelines on black, black2, or black3 for text, with the addition of mta-blue for graphics or large text only
-$mta-yellow-ada: #B88100 // meets ada contrast guidelines against ui-gray or white
-$mta-dark-blue: #002d72
+$original-mta-blue: #0E61A9
+$original-mta-yellow: #f2a900 // only meets ada contrast guidelines on black, black2, or black3 for text, with the addition of original-mta-blue for graphics or large text only
+$original-mta-yellow-ada: #B88100 // meets ada contrast guidelines against ui-gray or white
+$original-mta-dark-blue: #002d72
+
+
+$color-mta-light-blue-2: #e0f2fe;
 
 
 // measurements
@@ -120,7 +123,7 @@ $sidebar-switch: $six
 =text-outline($color: $white, $width: 1px)
   text-shadow: -#{$width} -#{$width} 0 $color, $width -#{$width} 0 $color, -#{$width} $width 0 $color, $width $width 0 $color
 
-=focus-pseudo-underline($color:$mta-blue)
+=focus-pseudo-underline($color:$original-mta-blue)
   &::after
     content: ''
     position: absolute
@@ -139,11 +142,11 @@ $sidebar-switch: $six
       opacity: 1
   
 =yellow-bottom-focus
-  +focus-pseudo-underline($mta-yellow)
+  +focus-pseudo-underline($original-mta-yellow)
   
 
 =yellow-bottom-focus-dark
-  +focus-pseudo-underline($mta-yellow-ada)
+  +focus-pseudo-underline($original-mta-yellow-ada)
 
 =card-shadow
   box-shadow: 0px 0px 12px 0px rgba($black, 0.10)

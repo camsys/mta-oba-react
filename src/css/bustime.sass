@@ -33,7 +33,7 @@
     text-decoration: underline
     display: inline-block
     &:hover
-      color: $mta-blue
+      color: $original-mta-blue
       text-decoration: none
 
   strong, bold, b
@@ -100,7 +100,7 @@
     font-weight: bold
     padding: $content-padding
     +rounded
-    color: $mta-blue
+    color: $original-mta-blue
     background-color: $white
     border: $medium-border solid currentColor
     outline: none
@@ -118,7 +118,7 @@
     &:not(#map-toggle):not(.refresh-button)
       &:focus, &:focus-visible
         color: $white
-        outline: $medium-border solid $mta-yellow
+        outline: $medium-border solid $original-mta-yellow
         background-color: $black
 
   .clear-button
@@ -156,9 +156,9 @@
       margin: 0
       padding: 0
       .blue
-        fill: $mta-blue
+        fill: $original-mta-blue
       .yellow
-        fill: $mta-yellow
+        fill: $original-mta-yellow
       .white
         fill: $white
       .black
@@ -182,14 +182,14 @@
     list-style: none
     padding: 0
     margin: 0
-    color: $mta-blue
-    border-top: 1px solid $mta-blue
+    color: $original-mta-blue
+    border-top: 1px solid $original-mta-blue
     li
       // display: flex
       // gap: .5rem
       margin: 0
       padding: 0
-      border-bottom: 1px solid $mta-blue
+      border-bottom: 1px solid $original-mta-blue
       // position: relative
       a
         text-decoration: none
@@ -233,7 +233,7 @@
             .blue
               fill: $white
             .yellow
-              fill: $mta-yellow
+              fill: $original-mta-yellow
           &::after
             background-image: url(../img/icon/right-caret_white.svg)
           &:hover
@@ -280,7 +280,7 @@
                 .blue
                   fill: $white
                 .yellow
-                  fill: $mta-yellow
+                  fill: $original-mta-yellow
           &:last-child
             border-bottom: none
         &#favorites-menu
@@ -303,12 +303,12 @@
             padding: $content-padding 0
             line-height: 1.4
       &.open
-        background-color: $mta-blue
+        background-color: $original-mta-blue
         >a, >button
           color: $white
           position: relative
           z-index: 1
-          border-bottom: $thick-border solid $mta-yellow
+          border-bottom: $thick-border solid $original-mta-yellow
           &::after
             background-image: url(../img/icon/right-caret_white.svg)
           .svg-icon-wrap
@@ -322,8 +322,8 @@
             padding: calc($content-padding / 2) $content-padding
             max-height: 200dvh
             opacity: 1
-            border-bottom: solid $mta-blue
-            border-top: solid $mta-blue
+            border-bottom: solid $original-mta-blue
+            border-top: solid $original-mta-blue
             border-bottom-width: calc($content-padding / 2)
             border-top-width: calc($content-padding / 2)
         & + li.open
@@ -531,7 +531,7 @@
             margin: 0
             padding: 0
           &:hover
-            color: $mta-blue
+            color: $original-mta-blue
             background-color: $white
           &:focus
             outline: none
@@ -620,7 +620,7 @@
     border-bottom: 1px solid $black
     strong
       display: inline-flex
-      background-color: $mta-yellow
+      background-color: $original-mta-yellow
       color: $black
       padding: .5rem $content-padding
       font-size: 1.125rem
@@ -682,7 +682,7 @@
         //right: 0
         //bottom: -#{$thick-border}
         //left: 0
-        //background-color: $mta-yellow
+        //background-color: $original-mta-yellow
         //height: $thick-border
       &:hover
         .logo, .mta-logo
@@ -735,7 +735,7 @@
       padding: 0
       .beta
         position: absolute
-        color: $mta-yellow
+        color: $original-mta-yellow
         position: absolute
         top: calc($content-padding / 2)
       .header-inner
@@ -785,7 +785,7 @@
   #sidebar
     width: 100%
     // background-color: $ui-gray
-    background-color: $mta-blue
+    background-color: $original-mta-blue
     overflow-y: scroll
     position: relative 
     z-index: 1
@@ -803,7 +803,7 @@
         height: calc(100dvh - $google-translate-bar-height)
     #search
       padding: $content-padding
-      background: $mta-blue
+      background: $original-mta-blue
       color: $white
       position: relative
       transition: top 0.25s ease-out
@@ -850,7 +850,7 @@
         opacity: 0
         box-shadow: 0px 0px 0px 0px rgba($black, 0)
         transition: opacity .25s ease-in-out .125s, box-shadow .25s ease-in-out
-        border: 1px solid $mta-blue
+        border: 1px solid $original-mta-blue
         max-height: 50dvh
         overflow-y: auto
         .react-autosuggest__suggestions-list
@@ -894,18 +894,18 @@
             padding-right: 0
             padding-left: 0
           &:hover
-            color: $mta-yellow
+            color: $original-mta-yellow
             background: $black
           &:focus
-            outline: 1px solid $mta-yellow
+            outline: 1px solid $original-mta-yellow
         &.is-focused
           #clear-search
             color: $dark-gray
             &:hover
-              color: $mta-yellow
+              color: $original-mta-yellow
       .search-instructions 
         padding: 0
-        background: $mta-blue
+        background: $original-mta-blue
         color: $white
         overflow: hidden
         height: 30px
@@ -1041,7 +1041,7 @@
         white-space: nowrap
       &:focus
         border-color: inherit
-        outline: $medium-border solid $mta-yellow
+        outline: $medium-border solid $original-mta-yellow
     +mq($sidebar-switch)
       display: none
 
@@ -1198,7 +1198,7 @@
     .updated
       &:focus
         border-color: inherit
-        outline: $medium-border solid $mta-yellow
+        outline: $medium-border solid $original-mta-yellow
     .bottom-buttons &
       display: inline-flex
       +mq-reverse($four)
@@ -1221,7 +1221,7 @@
     margin-bottom: $content-padding
     a.back-link
       text-decoration: none
-      color: $mta-blue
+      color: $original-mta-blue
       padding-left: 1.625rem
       position: relative
       &:hover, &:focus
@@ -1261,7 +1261,7 @@
       border: none
       outline: none
       background: transparent
-      color: $mta-blue
+      color: $original-mta-blue
       &:not(:last-child)
         &::after
           content: ''
@@ -1323,7 +1323,7 @@
       .stroller
         color: $dark-gray
       & + .card-menu
-        border-bottom: 1px solid $mta-blue
+        border-bottom: 1px solid $original-mta-blue
         margin-bottom: $content-padding
 
 
@@ -1338,7 +1338,7 @@
       border: 0px transparent
       outline: 0px
       border-bottom: $thick-border solid
-      border-color: $mta-blue
+      border-color: $original-mta-blue
       font-size:1.115rem
       .card-title
         font-weight: bold
@@ -1346,8 +1346,8 @@
       &.collapse-trigger, &.link-header
         transition: background-color .25s ease-in-out, color .25s ease-in-out
         &:focus
-          background-color: $black
-          color: $white
+          background-color: $color-mta-light-blue-2
+          color: $black
           outline: none
           &::after
             background-image: url(../img/icon/right-caret_white.svg)
@@ -1397,7 +1397,7 @@
         gap: .25rem
         li
           margin: 0
-          border-left: $medium-border solid $mta-blue
+          border-left: $medium-border solid $original-mta-blue
           padding-left: .5rem
           white-space: nowrap
           overflow: hidden
@@ -1422,7 +1422,7 @@
       background: transparent
     &:not(.service-alert)
       >.card-header
-        padding-left: 0
+        //padding-left: 0
         &:not(.collapse-trigger)
           padding-right: 0
       .card-header
@@ -1436,7 +1436,7 @@
       .card-header
         font-weight: bold
         border: 1px solid $border-gray
-        border-bottom: 0px solid $mta-yellow
+        border-bottom: 0px solid $original-mta-yellow
         transition: border-bottom .25s ease-in-out
         &:focus
           border-top-color: $black
@@ -1452,7 +1452,7 @@
             
       &.open
         .card-header
-          border-bottom: $thick-border solid $mta-yellow
+          border-bottom: $thick-border solid $original-mta-yellow
       &:last-child
         margin-bottom: calc($content-padding / 2)
       & + .inner-card-menu, & + .card-menu
@@ -1479,7 +1479,7 @@
           .label
             display: inline-block
           .card-title
-            border-left: $thick-border solid $mta-blue
+            border-left: $thick-border solid $original-mta-blue
             padding-left: calc($content-padding / 2)
         
   .route-stops
@@ -1546,7 +1546,7 @@
         flex-grow: 0
         flex-shrink: 0
         display: inline-flex
-        color: $mta-blue
+        color: $original-mta-blue
         &::before, &::after
           content: ''
           display: inline-block
@@ -1580,7 +1580,7 @@
   .passengers
     display: flex
     gap: .5rem
-    align-itrems: center
+    align-items: center
 
   .meeples
     display: inline-block
@@ -1738,7 +1738,7 @@
       .view-full
         text-align: left
         font-size: .875rem
-        color: $mta-blue
+        color: $original-mta-blue
         padding: .5rem 0 0 0
         margin: .5rem 0 0 0
         border: none
