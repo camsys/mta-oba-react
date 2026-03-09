@@ -38,7 +38,7 @@ export function MeeplesComponentSpan({vehicleDatum}: {VehicleRtInterface}):JSX.E
         return null
     }
     return(
-        <span className="passengers">
+        <span className="passengers ml-[.33rem]">
             <MeeplesComponentInner vehicleDatum={vehicleDatum}/> </span>
     )
 }
@@ -62,40 +62,48 @@ function VehicleComponent({vehicleDatum,tabbable}:
 
     // log.info("generating VehicleComponent",vehicleDatum)
     let hasArrivalData = typeof vehicleDatum?.vehicleArrivalData!=='undefined';
-    let departureInfo = "";
+    let departureInfo = null;
     if(vehicleDatum.vehicleDepartureData.ISOTime !== undefined) {
         departureInfo = vehicleDatum.layover
             ?
             vehicleDatum.vehicleDepartureData.isDepartureOnSchedule
                 ?
-                " (at terminal, scheduled to depart at " + OBA.Util.ISO8601StringToDate(vehicleDatum.departureTimeAsText).toLocaleTimeString() + ")"
+                (<React.Fragment>
+                    <span>(at terminal, scheduled to depart at </span>
+                    <span className="font-bold">{OBA.Util.ISO8601StringToDate(vehicleDatum.departureTimeAsText).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })}</span>
+                    <span>)</span>
+                </React.Fragment>)
                 :
-                " (at terminal)"
+                (<span>(at terminal)</span>)
             :
             vehicleDatum.prevTrip
                 ?
-                " (+layover, scheduled to depart terminal at " + OBA.Util.ISO8601StringToDate(vehicleDatum.departureTimeAsText).toLocaleTimeString() + ")"
+                (<React.Fragment>
+                    <span>(+layover, scheduled to depart terminal at </span>
+                    <span className="font-bold">{OBA.Util.ISO8601StringToDate(vehicleDatum.departureTimeAsText).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })}</span>
+                    <span>)</span>
+                </React.Fragment>)
                 :
-                " (+ scheduled layover at terminal)"
+                (<span>(+ scheduled layover at terminal)</span>)
     }
     else{
-        departureInfo = vehicleDatum.layover ? " (at terminal)" : ""
+        departureInfo = vehicleDatum.layover ? (<span>(at terminal)</span>) : null;
     }
     if (vehicleDatum.spooking) {
-        departureInfo = departureInfo + " (Estimated)"
+        departureInfo = departureInfo ? (<>{departureInfo} <span>(Estimated)</span></>) : (<span>(Estimated)</span>);
     }
 
     let out = null;
 
     try {
-        out = (<li key={vehicleDatum.vehicleId}>
+        out = (<li className="pb-1 pl-2 pt-0 text-base" key={vehicleDatum.vehicleId}>
             <span className="bus-info">
                 <span className="approaching">
                     <span>{OBA.Util.getArrivalEstimateForISOString(vehicleDatum?.vehicleArrivalData?.[0].ISOTime,vehicleDatum.lastUpdate)}</span>
                     {hasArrivalData?
                         vehicleDatum?.vehicleArrivalData?.[0].prettyDistance
                         :null}
-                    <div>{departureInfo}</div>
+                    <div className="m-0 p-0 ml-[.33rem] leading-[1.125rem] font-normal">{departureInfo}</div>
                 </span>
                 <MeeplesComponentSpan vehicleDatum={vehicleDatum}/>
             </span>
