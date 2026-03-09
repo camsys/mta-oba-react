@@ -1,6 +1,7 @@
 import React from 'react';
 import {ChangeViewButton, ChangeViewButtonProps} from "./common";
 import {useNavigation} from "../../js/updateState/NavigationEffect";
+import {cn} from "../util/coreUtils";
 
 
 // outline of turning these buttons into decorators of the ChangeViewButton, which would be more reusable and composable. 
@@ -50,7 +51,8 @@ const shuttleIconElement = <path d="M10.7461 0C15.0981 0 17.8771 0.763238 19.136
 
 
 
-const FavoritesButton = (props: Omit<ChangeViewButtonProps, 'text'>) => {
+
+const FavoritesButton = (props  : ChangeViewButtonProps) => {
   const { favoritesSearch } = useNavigation();
   return (
   <ChangeViewButton
@@ -58,8 +60,8 @@ const FavoritesButton = (props: Omit<ChangeViewButtonProps, 'text'>) => {
     iconElement={favoritesIconElement}
     text="Favorites"
     onClick={()=>favoritesSearch()}
-    className={`${props.className ?? ""}w-full bg-mta-green text-white `}
-    textClassName={props.textClassName ?? ""}
+    className={cn("bg-mta-green", props.className)}
+    textClassName={cn("", props.textClassName)}
   />
 )
 }
@@ -67,41 +69,45 @@ const FavoritesButton = (props: Omit<ChangeViewButtonProps, 'text'>) => {
 
 
 
-const NearMeButton = (props: Omit<ChangeViewButtonProps, 'text'>, text: string|null) => {
+const NearMeButton = (props: ChangeViewButtonProps) => {
   const { search } = useNavigation();
   return (
     <ChangeViewButton 
       {...props}
-      text={text ? "Routes & Stops Near Me" : ""}
+      text={props.text ? props.text : "Routes & Stops Near Me"}
       iconElement={vehicleIconElement}
       onClick={() => search('near me')}
-      className={`w-full bg-mta-blue text-white ${props.className ?? ""}`}
-      textClassName={props.textClassName ?? ""}
+      className={cn("bg-mta-blue", props.className)}
+      textClassName={cn("", props.textClassName)}
     />
   )
 }
 
-const AllRoutesButton = () => {
+const AllRoutesButton = (props: ChangeViewButtonProps) => {
   const {allRoutesSearch } = useNavigation();
   return (
     <ChangeViewButton 
+      {...props}
       text="All Routes Available" 
-      className="w-full bg-mta-blue text-white" 
+      className={cn("bg-mta-blue", props.className)}
       iconElement={listIconElement}
       onClick={() => {allRoutesSearch()}}
+      textClassName={cn("", props.textClassName)}
     />
   )
 }
 
 
-const ShuttleButton = () => {
+const ShuttleButton = (props: ChangeViewButtonProps) => {
   const { search } = useNavigation();
   return (
     <ChangeViewButton 
+      {...props}
       text="Shuttle Buses" 
-      className="w-full bg-shuttle-gray text-white" 
+      className={cn("bg-shuttle-gray", props.className)}
       iconElement={shuttleIconElement}
       onClick={() => search('shuttles')}
+      textClassName={cn("", props.textClassName)}
     />
   )
 }

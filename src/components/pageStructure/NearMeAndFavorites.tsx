@@ -5,10 +5,17 @@ import { FavoritesButton,NearMeButton } from '../shared/buttons';
 
 function NearMeAndFavoritesComponent  () : JSX.Element {
 
+    const nearMeText = (
+        <>
+            <span className='hidden min-[420px]:inline min-[600px]:hidden min-[900px]:inline'>Routes & Stops </span>
+            <span className=''>Near Me</span>
+        </>
+    )
+
     log.info("adding NearMeAndFavorites")
-    return (<div className="py-3 px-2 grid grid-cols-3 gap-1">
-        <FavoritesButton className='truncate' textClassName='text-base'/>
-        <NearMeButton className='col-span-2 truncate' textClassName='text-base' text="Near Me"/>
+    return (<div className="py-3 px-2 flex gap-2">
+        <FavoritesButton className='py-[.66rem] basis-[0] grow-[1]' iconClassName='w-5 h-5' textClassName='text-base truncate'/>
+        <NearMeButton className='py-[.66rem] basis-[0] grow-[2]' iconClassName='w-5 h-5' textClassName='text-base truncate' text={nearMeText}/>
         </div>);
 }
 
