@@ -13,6 +13,7 @@ import {StopCardWrapper} from "../views/StopCardWrapper.tsx";
 import {GeoCardWrapper} from "../views/GeoCardWrapper.tsx";
 import HomeCard from "../views/HomeCard.tsx";
 import {AllRoutesWrapper} from "Components/views/AllRoutesWrapper";
+import {FavoritesWrapper} from "Components/views/FavoritesCard";
 import {ErrorCard} from "../views/ErrorCard.tsx";
 import log from 'loglevel';
 import { LoadingCard } from '../views/LoadingCard.tsx';
@@ -59,6 +60,10 @@ function SideBar  () {
         if(state.currentCard.type === CardType.AllRoutesCard){
             log.info("adding allroutes card")
             return decorateWithNearMeAndFavorites(<AllRoutesWrapper/>)
+        }
+        if(state.currentCard.type === CardType.FavoritesCard){
+            log.info("adding favorites card")
+            return decorateWithNearMeAndFavorites(<FavoritesWrapper/>)
         }
 
     }

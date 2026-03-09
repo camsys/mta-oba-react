@@ -352,7 +352,8 @@ export enum CardType {
     ErrorCard = "errorCard",
     HomeCard = "homeCard",
     AllRoutesCard = "allRoutesCard",
-    LoadingCard = "loadingCard"
+    LoadingCard = "loadingCard",
+    FavoritesCard = "favoritesCard"
 }
 
 export class Card {
@@ -360,6 +361,7 @@ export class Card {
     static GEOCARDIDENTIFIER = "GeocodeResult";
     static STOPCARDIDENTIFIER = "StopResult";
     static LOADCARDIDENTIFIER = "LoadingResult";
+    static FAVORITESCARDIDENTIFIER = "FavoritesResult";
     static cardTypes = CardType;
 
     searchTerm: string;
@@ -414,6 +416,15 @@ export class Card {
             searchTerm = searchTerm
         }
         this.setType(CardType.ErrorCard);
+    }
+
+    setToFavorites(
+        searchMatches: SearchMatch[],
+        routeIdList: Set<string>
+    ): void {
+        this.setType(CardType.FavoritesCard);
+        this.searchMatches = searchMatches;
+        this.routeIdList = routeIdList;
     }
 
     setToAllRoutes(

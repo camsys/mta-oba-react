@@ -225,6 +225,7 @@ export const useNavigation = () =>{
     const routes = useContext(RoutesContext) as RoutesObject
     const stops = useContext(StopsContext) as StopsObject
     const allRoutesSearchTerm = "allRoutes";
+    const favoritesSearchTerm = "favorites";
     const nearbySearchTerms = new Set(["NEARBY","NEARBYROUTES","NEARBYSTOPS","NEARME", "NEAR ME"])
 
 
@@ -238,6 +239,12 @@ export const useNavigation = () =>{
             document.getElementById('search-input').blur();
             scrollToSidebarTop();
             await allRoutesSearch()
+            return
+        }
+        if(searchTerm===favoritesSearchTerm){
+            document.getElementById('search-input').blur();
+            scrollToSidebarTop();
+            await favoritesSearch()
             return
         }
         if(nearbySearchTerms.has(searchTerm)){
@@ -343,6 +350,12 @@ export const useNavigation = () =>{
                 return;
             }
 
+            if(searchRef===favoritesSearchTerm){
+                log.info("searching for favorites");
+                favoritesSearch();
+                return;
+            }
+
             if(nearbySearchTerms.has(searchRef)){
                 log.info("searching for nearby stops and routes");
                 await navigator.geolocation.getCurrentPosition(
@@ -359,7 +372,7 @@ export const useNavigation = () =>{
                 searchRef = "";
                 // return;
             }
-            log.info("generating new search address",searchRef);
+            log.info("generating new search address:",searchRef);
             let searchAddress =  getSearchAddress(searchRef,currentCard);
             if(searchRef.includes(vehicleDelimiter)){
                 searchAddress = getSearchAddress(searchRef.split(vehicleDelimiter)[0],currentCard);
@@ -429,6 +442,32 @@ export const useNavigation = () =>{
         log.info("vehicleSearch complete, new card: ",currentCard);
     }
 
+    const favoritesSearch = async () =>{
+        log.info("searching for favorites")
+        let searchTerm = "favorites";
+        try {
+            log.info("favorites requested, generating new card",state);
+            if (state?.currentCard?.type !== CardType.FavoritesCard) {
+                let currentCard = new Card(searchTerm,uuidv4(),getSessionUuid(state?.currentCard));
+                currentCard.setToFavorites([],new Set());
+                let cardStack = state.cardStack;
+                cardStack.push(currentCard);
+                setState((prevState) => ({
+                    ...prevState,
+                    currentCard: currentCard,
+                    cardStack: cardStack,
+                    renderCounter:prevState.renderCounter+1
+                }));
+                updateWindowHistory(searchTerm,currentCard.uuid);
+                log.info("updating state with new card:", currentCard,stops,routes);
+            }
+        }
+        catch (error) {
+            log.error('There was a problem with the fetch operation:', error);
+        } finally {
+        }
+    }
+
     const allRoutesSearch = async () =>{
         let searchTerm = allRoutesSearchTerm;
         let address = getRoutesAddress();
@@ -462,7 +501,7 @@ export const useNavigation = () =>{
                     });
                 updateWindowHistory(searchTerm,currentCard.uuid);
                 log.info("updating state with new card:", currentCard,stops,routes);
-            setState((prevState) => ({...prevState,renderCounter:prevState.renderCounter+1}));
+                setState((prevState) => ({...prevState,renderCounter:prevState.renderCounter+1}));
             }
         }
         catch (error) {
@@ -548,7 +587,9 @@ export const useNavigation = () =>{
         }));
     }
 
-    return { search, generateInitialCard, vehicleSearch, allRoutesSearch, updateStateForPopStateEvent, goBack,goForward };
+    return { search, generateInitialCard, 
+        vehicleSearch, allRoutesSearch, favoritesSearch, 
+        updateStateForPopStateEvent, goBack,goForward };
 }
 
 

@@ -14,6 +14,7 @@ function HomeCard  () : JSX.Element {
     <li><NearMeButton/></li>
     <li><AllRoutesButton/></li>
     <li><ShuttleButton/></li>
+    <li><FavoritesButton/></li>
 </ul>
 </div>);
 }
