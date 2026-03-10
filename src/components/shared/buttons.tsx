@@ -2,7 +2,7 @@ import React from 'react';
 import {ChangeViewButton, ChangeViewButtonProps} from "./common";
 import {useNavigation} from "../../js/updateState/NavigationEffect";
 import {cn} from "../util/coreUtils";
-import {FavoritesIconElement, VehicleIconElement, ListIconElement, ShuttleIconElement} from "./icons";
+import {StarFilledIcon, VehicleIcon, ListIcon, ShuttleIcon} from "./icons";
 
 
 // outline of turning these buttons into decorators of the ChangeViewButton, which would be more reusable and composable. 
@@ -18,7 +18,7 @@ const FavoritesButton = (props  : ChangeViewButtonProps) => {
   return (
   <ChangeViewButton
     {...props}
-    iconElement={<FavoritesIconElement fill="white" className={cn("", props.iconClassName)} />}
+    iconElement={<StarFilledIcon fill="white" className={cn("", props.iconClassName)} />}
     text="Favorites"
     onClick={()=>favoritesSearch()}
     className={cn("bg-mta-green", props.className)}
@@ -36,7 +36,7 @@ const NearMeButton = (props: ChangeViewButtonProps) => {
     <ChangeViewButton 
       {...props}
       text={props.text ? props.text : "Routes & Stops Near Me"}
-      iconElement={<VehicleIconElement fill="white" className={cn("", props.iconClassName)} />}
+      iconElement={<VehicleIcon fill="white" className={cn("", props.iconClassName)} />}
       onClick={() => search('near me')}
       className={cn("bg-mta-blue", props.className)}
       textClassName={cn("", props.textClassName)}
@@ -51,7 +51,7 @@ const AllRoutesButton = (props: ChangeViewButtonProps) => {
       {...props}
       text="All Routes Available" 
       className={cn("bg-mta-blue", props.className)}
-      iconElement={<ListIconElement fill="white" className={cn("", props.iconClassName)} />}
+      iconElement={<ListIcon fill="white" className={cn("", props.iconClassName)} />}
       onClick={() => {allRoutesSearch()}}
       textClassName={cn("", props.textClassName)}
     />
@@ -66,7 +66,7 @@ const ShuttleButton = (props: ChangeViewButtonProps) => {
       {...props}
       text="Shuttle Buses" 
       className={cn("bg-shuttle-gray", props.className)}
-      iconElement={<ShuttleIconElement fill="white" className={cn("", props.iconClassName)} />}
+      iconElement={<ShuttleIcon fill="white" className={cn("", props.iconClassName)} />}
       onClick={() => search('shuttles')}
       textClassName={cn("", props.textClassName)}
     />
