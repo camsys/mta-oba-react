@@ -17,7 +17,7 @@ import {ViewSearchItem} from "./MiscComponents";
 import log from 'loglevel';
 import { RouteFavoriteButton} from "./AddToFavoriteButtons";
 import {cn} from "../util/coreUtils";
-
+import {BusStopIcon, StarBorderIcon, VehicleIcon} from "../shared/icons";
 
 export function RouteStopComponent
 ({stopDatum, routeId, index}:{stopDatum:StopInterface,routeId:string,index:string}):JSX.Element{
@@ -119,14 +119,20 @@ export function RouteCardHeader({ routeMatch}: RouteMatch): JSX.Element{
     const { highlightId } = useHighlight();
     const {isFavorite} = useFavorite()
 
+    let favorited = isFavorite(routeMatch)
+
     return(<>
         <div
-            className={cn("card-header", { favorite: isFavorite(routeMatch) })}
+            className={cn("card-header", { favorite: favorited })}
             style={{ borderColor: "#" + routeMatch.color }}
             onMouseEnter={() => highlightId(routeMatch.routeId)}
             onMouseLeave={() => highlightId(null)}
         >
-            <h3 className="card-title">{OBA.Config.noWidows(routeMatch.routeTitle)}</h3>
+            <h3 className="card-title">
+                <VehicleIcon className={cn("icon w-5 h-5 mb-1", { "hidden": favorited } )}/>
+                <StarBorderIcon className={cn("icon w-5 h-5 mb-1", { "hidden": !favorited } )}/>
+                {OBA.Config.noWidows(routeMatch.routeTitle)}
+            </h3>
         </div>
     </>)
 

@@ -7,7 +7,7 @@ import {useNavigation} from "../../js/updateState/NavigationEffect";
 import { OBA } from "../../js/oba";
 import log from 'loglevel';
 import stopPopupIcon from "../../img/icon/bus-stop.svg"
-import {StarBorderIcon} from "../shared/icons";
+import {StarBorderIcon, BusStopIcon} from "../shared/icons";
 
 
 
@@ -26,12 +26,12 @@ export const FavoriteItem = ({datum}) =>{
                     style={{ borderColor: "#" + routeMatch.color }}
                     tabIndex={0}
                 >
-                    <h3 className="card-title">
-                        <StarBorderIcon className="icon w-5 h-5"/>
+                    <h3 className="card-title flex items-center">
+                        <StarBorderIcon className="icon w-5 h-5 mb-1"/>
                         {OBA.Config.noWidows(routeMatch.routeTitle)}
                     </h3>
                 </button>
-            </div>
+            </div>  
         </React.Fragment>)
     }
     if(isStopInterface(datum)){
@@ -42,9 +42,9 @@ export const FavoriteItem = ({datum}) =>{
                     className="card-header link-header border-color-mta-dark-blue"
                     tabIndex={0}
                 >
-                    <h3 className="card-title">
-                        <StarBorderIcon className="icon w-5 h-5 "/>
-                        <img src={stopPopupIcon} alt="busstop icon" className="icon"/>
+                    <h3 className="card-title flex items-center">
+                        <StarBorderIcon className="icon w-5 h-5 mb-1"/>
+                        <BusStopIcon className="icon w-5 h-5 mb-1"/>
                         {OBA.Config.noWidows(stopDatum.name)}</h3>
                 </button>
             </div>
