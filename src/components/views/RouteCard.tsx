@@ -93,9 +93,8 @@ export const RouteDirection = ({datum,color,collapsed}: { datum: RouteDirectionI
 }
 
 function CardDetails({routeMatch}:{routeMatch:RouteMatch}) : JSX.Element{
-    const {isFavorite} = useFavorite()
     let jsx = (
-        <ul className={"card-details" + (isFavorite(routeMatch)?" favorite":"")}>
+        <ul className={"card-details"}>
             <li className="via">{routeMatch.description}</li>
         </ul>)
     return jsx
@@ -116,6 +115,23 @@ export function RouteCardContent({ routeMatch, collapsed}: {RouteMatch,boolean})
         </React.Fragment>)
 }
 
+export function RouteCardHeader({ routeMatch}: RouteMatch): JSX.Element{
+    const { highlightId } = useHighlight();
+    const {isFavorite} = useFavorite()
+
+    return(<>
+        <div
+            className={cn("card-header", { favorite: isFavorite(routeMatch) })}
+            style={{ borderColor: "#" + routeMatch.color }}
+            onMouseEnter={() => highlightId(routeMatch.routeId)}
+            onMouseLeave={() => highlightId(null)}
+        >
+            <h3 className="card-title">{OBA.Config.noWidows(routeMatch.routeTitle)}</h3>
+        </div>
+    </>)
+
+}
+
 
 export function RouteCard({ routeMatch}: RouteMatch): JSX.Element {
     log.info("generating route card: ", routeMatch);
@@ -126,14 +142,7 @@ export function RouteCard({ routeMatch}: RouteMatch): JSX.Element {
     return (
         <React.Fragment>
             <div className={`card route-card ${routeMatch.routeId}}`}>
-                <div
-                    className="card-header"
-                    style={{ borderColor: "#" + routeMatch.color }}
-                    onMouseEnter={() => highlightId(routeMatch.routeId)}
-                    onMouseLeave={() => highlightId(null)}
-                >
-                    <h3 className="card-title">{OBA.Config.noWidows(routeMatch.routeTitle)}</h3>
-                </div>
+                <RouteCardHeader routeMatch={routeMatch}/>
                 <div className="card-content">
                     <RouteCardContent routeMatch={routeMatch}/>
                     

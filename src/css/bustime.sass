@@ -1351,35 +1351,35 @@
           outline: none
           &::after
             background-image: url(../img/icon/right-caret_white.svg)
-    .card-details
-      position: relative
-      transition: padding .25s ease-in-out
-      &::after
-        content: ''
-        display: block
-        width: 1.25rem
-        height: 1.25rem
-        background-size: auto 100%
-        background-repeat: no-repeat
-        background-position: center
-        background-image: url(../img/icon/star_blue-yellow.svg)
-        position: absolute
-        top: $content-padding - .125rem
-        right: -2rem
-        opacity: 0
-        transition: opacity .5s ease-in-out, right .25s ease-in-out, transform .25s ease-in-out
-        transform: rotate(180deg)
-      &.favorite
-        padding-right: 2rem
-        .favorite-toggle
-          .add, .add-icon
-            display: none
-          .remove, .remove-icon
-            display: inline-block!important
-        &::after
-          transform: rotate(0deg)
-          opacity: 1
-          right: 0
+    // .card-header
+    //   position: relative
+    //   transition: padding .25s ease-in-out
+    //   &::after
+    //     content: ''
+    //     display: block
+    //     width: 1.25rem
+    //     height: 1.25rem
+    //     background-size: auto 100%
+    //     background-repeat: no-repeat
+    //     background-position: center
+    //     background-image: url(../img/icon/star_blue-yellow.svg)
+    //     position: absolute
+    //     top: $content-padding - .125rem
+    //     right: -2rem
+    //     opacity: 0
+    //     transition: opacity .5s ease-in-out, right .25s ease-in-out, transform .25s ease-in-out
+    //     transform: rotate(180deg)
+    //   &.favorite
+    //     padding-right: 4rem
+    //     .favorite-toggle
+    //       .add, .add-icon
+    //         display: none
+    //       .remove, .remove-icon
+    //         display: inline-block!important
+    //     &::after
+    //       transform: rotate(0deg)
+    //       opacity: 1
+    //       right: 1rem
     >.card-content
       +card-pad-sides
     .card-footer

@@ -33,8 +33,7 @@ const ChangeViewButton = ({
       type = "button"
       onClick={onClick}
     >
-      {iconElement && (<svg className={cn('flex-shrink-0 w-[1.85rem] h-[1.6rem]', iconClassName)} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">{iconElement}</svg>
-    )}
+      {iconElement}
       <span className={cn("text-lg",textClassName)}>
         {text}
       </span>
