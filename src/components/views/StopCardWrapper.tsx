@@ -306,16 +306,16 @@ function InnerCollapsableStopCard ({ match, oneOfMany}: {match:SearchMatch, oneO
     return(
     <div className={`card stop-card ${oneOfMany?"collapsible":""}`}>
         <StopCardHeader stopMatch={stopMatch} oneOfMany={oneOfMany}/>
-        <div className="card-content collapse-content">
-            <StopCardContent stopMatch={stopMatch} collapsed={oneOfMany}/>
-            <ul className="menu icon-menu card-menu">
-                <li>
-                    <StopCardFavoriteButton stopMatch={stopMatch} collapsed={oneOfMany}/>
-                </li>
-                <li>
-                    <ViewSearchItem datumId={stopMatch.id} text={"Stop"} collapsed={oneOfMany}/>
-                </li>
-            </ul>
+        <div className="collapse-content">
+            <div className="card-content px-2">
+                <StopCardContent stopMatch={stopMatch} collapsed={oneOfMany}/>
+                <ul className="menu icon-menu card-menu">
+                    <li>
+                        <ViewSearchItem datumId={stopMatch.id} text={"Stop"} collapsed={oneOfMany}/>
+                    </li>
+                </ul>
+            </div>
+            <StopFavoriteButton className="w-full" item={stopMatch} collapsed={oneOfMany}/>
         </div>
         <div className='card-footer'>
             <MiniStopDirectionListContainer routeMatches={stopMatch.routeMatches} stopId={stopMatch.id} collapsed={oneOfMany}/>

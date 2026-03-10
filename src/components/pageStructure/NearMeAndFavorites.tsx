@@ -13,9 +13,9 @@ function NearMeAndFavoritesComponent  () : JSX.Element {
     )
 
     log.info("adding NearMeAndFavorites")
-    return (<div className="py-3 px-2 flex gap-2">
-        <FavoritesButton className='py-[.66rem] basis-[0] grow-[1]' iconClassName='w-5 h-5' textClassName='text-base truncate'/>
-        <NearMeButton className='py-[.66rem] basis-[0] grow-[2]' iconClassName='w-5 h-5' textClassName='text-base truncate' text={nearMeText}/>
+    return (<div className="py-3 px-2 flex justify-center gap-4">
+        <FavoritesButton className='py-[.66rem] basis-[0] ' iconClassName='w-5 h-5' textClassName='text-base truncate'/>
+        <NearMeButton className='py-[.66rem] basis-[0] ' iconClassName='w-5 h-5' textClassName='text-base truncate' text="Nearby Buses"/>
         </div>);
 }
 

@@ -10,45 +10,58 @@ import {cn} from "../util/coreUtils";
 import {FavoritesCookieStateContext, useFavorite} from "../util/MiscStateComponent";
 
 
-export function StopFavoriteButton({item,collapsed}:{item: RouteMatch | StopMatch, collapsed: boolean}):JSX.Element {
-    return <FavoriteButton keyword="Stop" item={item} collapsed={collapsed} />
+export interface SemiPrivateAddToFavoriteButtonProps {
+    item: RouteMatch | StopMatch,
+    collapsed: boolean,
+    keyword?: string,
+    className?: string
 }
 
-export function RouteFavoriteButton({item,collapsed}:{item: RouteMatch | StopMatch, collapsed: boolean}):JSX.Element {
-    return <FavoriteButton keyword="Route" item={item} collapsed={collapsed} />
+export type AddToFavoriteButtonProps = Omit<SemiPrivateAddToFavoriteButtonProps, 'keyword'>
+
+
+
+
+export function StopFavoriteButton(props: AddToFavoriteButtonProps):JSX.Element {
+    return <FavoriteButton keyword="Stop" item={props.item} collapsed={props.collapsed} className={props.className} />
 }
 
-export function FavoriteButton({keyword,item,collapsed}:{keyword: string, item: RouteMatch | StopMatch, collapsed: boolean}):JSX.Element {
+export function RouteFavoriteButton(props: AddToFavoriteButtonProps):JSX.Element {
+    return <FavoriteButton keyword="Route" item={props.item} collapsed={props.collapsed} className={props.className} />
+}
+
+export function FavoriteButton(props: SemiPrivateAddToFavoriteButtonProps):JSX.Element {
     let {addFavorite,removeFavorite,isFavorite} = useFavorite();
 
-    const favorited = isFavorite(item)
+    const favorited = isFavorite(props.item)
 
     return (
     <React.Fragment>
         <button className=
             {
                 cn(
-                    "favorite-toggle  font-bold no-underline border-2", 
+                    "flex w-full items-center text-base py-4 pl-2 pr-1 gap-2 favorite-toggle  font-bold no-underline border-2", 
                     {
                         "bg-ui-gray focus:bg-border-gray text-mta-dark-blue border-mta-dark-blue": favorited,
                         "text-white focus:bg-mta-green opacity-[90%] bg-mta-green border-mta-green": !favorited,
-                    }
+                    },
+                    props.className
                 )
             }
-            tabIndex={collapsed?-1:0} aria-label='Toggle favorites status for this route'
-            onClick={()=>{favorited?removeFavorite(item):addFavorite(item)}}
+            tabIndex={props.collapsed?-1:0} aria-label='Toggle favorites status for this route'
+            onClick={()=>{favorited?removeFavorite(props.item):addFavorite(props.item)}}
         >
-            <svg className={cn("self-center *:focus:fill-current *:fill-current",{"hidden":favorited})} aria-label='add icon' width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+            <svg className={cn("mb-1 h-[1em] w-[1em] *:focus:fill-current *:fill-current",{"hidden":favorited})} aria-label='add icon' viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
                 <path d="M7.99903 0C6.41697 0 4.87044 0.469135 3.55501 1.34808C2.23957 2.22702 1.21432 3.4763 0.608893 4.93793C0.00346587 6.39956 -0.154941 8.0079 0.153703 9.55955C0.462347 11.1112 1.22418 12.5365 2.34286 13.6552C3.46155 14.7739 4.88684 15.5357 6.43849 15.8443C7.99015 16.153 9.59849 15.9946 11.0601 15.3892C12.5217 14.7837 13.771 13.7585 14.65 12.443C15.5289 11.1276 15.998 9.58108 15.998 7.99902C15.998 5.87755 15.1553 3.84297 13.6552 2.34286C12.1551 0.842752 10.1205 0 7.99903 0ZM10.6654 8.9989H9.3322C9.2438 8.9989 9.15903 9.03401 9.09652 9.09652C9.03402 9.15902 8.9989 9.2438 8.9989 9.33219V10.6654C8.9989 10.9305 8.89356 11.1849 8.70605 11.3724C8.51853 11.5599 8.26421 11.6652 7.99903 11.6652C7.73384 11.6652 7.47952 11.5599 7.29201 11.3724C7.10449 11.1849 6.99915 10.9305 6.99915 10.6654V9.33219C6.99915 9.2438 6.96403 9.15902 6.90153 9.09652C6.83903 9.03401 6.75425 8.9989 6.66586 8.9989H5.33269C5.0675 8.9989 4.81318 8.89356 4.62567 8.70604C4.43815 8.51853 4.33281 8.26421 4.33281 7.99902C4.33281 7.73384 4.43815 7.47951 4.62567 7.292C4.81318 7.10449 5.0675 6.99914 5.33269 6.99914H6.66586C6.75425 6.99914 6.83903 6.96403 6.90153 6.90153C6.96403 6.83902 6.99915 6.75425 6.99915 6.66585V5.33268C6.99915 5.0675 7.10449 4.81318 7.29201 4.62566C7.47952 4.43815 7.73384 4.3328 7.99903 4.3328C8.26421 4.3328 8.51853 4.43815 8.70605 4.62566C8.89356 4.81318 8.9989 5.0675 8.9989 5.33268V6.66585C8.9989 6.75425 9.03402 6.83902 9.09652 6.90153C9.15903 6.96403 9.2438 6.99914 9.3322 6.99914H10.6654C10.9306 6.99914 11.1849 7.10449 11.3724 7.292C11.5599 7.47951 11.6652 7.73384 11.6652 7.99902C11.6652 8.26421 11.5599 8.51853 11.3724 8.70604C11.1849 8.89356 10.9306 8.9989 10.6654 8.9989Z" fill="white"/>
             </svg>
 
-            <svg className={cn("self-center *:focus:fill-current *:fill-current",{"hidden":!favorited})} aria-label='remove icon' width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+            <svg className={cn("mb-1 h-[1em] w-[1em] *:focus:fill-current *:fill-current",{"hidden":!favorited})} aria-label='remove icon' viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
                 <path d="M7.99903 0C6.41697 0 4.87044 0.469135 3.55501 1.34808C2.23957 2.22702 1.21432 3.4763 0.608893 4.93793C0.00346583 6.39956 -0.154941 8.00789 0.153703 9.55955C0.462347 11.1112 1.22418 12.5365 2.34286 13.6552C3.46155 14.7739 4.88684 15.5357 6.43849 15.8443C7.99015 16.153 9.59849 15.9946 11.0601 15.3892C12.5217 14.7837 13.771 13.7585 14.65 12.443C15.5289 11.1276 15.998 9.58108 15.998 7.99902C15.998 5.87755 15.1553 3.84297 13.6552 2.34286C12.1551 0.842752 10.1205 0 7.99903 0ZM10.6654 8.9989H9.3322C9.2438 8.9989 9.15903 9.03401 9.09652 9.09652C9.03402 9.15902 8.9989 9.2438 8.9989 9.33219V10.6654C8.9989 10.9305 8.89356 11.1849 8.70605 11.3724C8.51853 11.5599 8.26421 11.6652 7.99903 11.6652C7.73384 11.6652 7.47952 11.5599 7.29201 11.3724C7.10449 11.1849 6.99915 10.9305 6.99915 10.6654V9.33219C6.99915 9.2438 6.96403 9.15902 6.90153 9.09652C6.83903 9.03401 6.75425 8.9989 6.66586 8.9989H5.33269C5.0675 8.9989 4.81318 8.89356 4.62567 8.70604C4.43815 8.51853 4.33281 8.26421 4.33281 7.99902C4.33281 7.73384 4.43815 7.47951 4.62567 7.292C4.81318 7.10449 5.0675 6.99914 5.33269 6.99914H6.66586C6.75425 6.99914 6.83903 6.96403 6.90153 6.90153C6.96403 6.83902 6.99915 6.75425 6.99915 6.66585V5.33268C6.99915 5.0675 7.10449 4.81317 7.29201 4.62566C7.47952 4.43815 7.73384 4.3328 7.99903 4.3328C8.26421 4.3328 8.51853 4.43815 8.70605 4.62566C8.89356 4.81317 8.9989 5.0675 8.9989 5.33268V6.66585C8.9989 6.75425 9.03402 6.83902 9.09652 6.90153C9.15903 6.96403 9.2438 6.99914 9.3322 6.99914H10.6654C10.9306 6.99914 11.1849 7.10449 11.3724 7.292C11.5599 7.47951 11.6652 7.73384 11.6652 7.99902C11.6652 8.26421 11.5599 8.51853 11.3724 8.70604C11.1849 8.89356 10.9306 8.9989 10.6654 8.9989Z" fill="#0E61A9"/>
                 <path d="M11.002 13H5.00195V9H11.002V13Z" fill="#0E61A9"/>
                 <path d="M11.002 7H5.00195V3H11.002V7Z" fill="#0E61A9"/>
             </svg>
-            <span className="add" style={favorited?{display:'none'}:undefined}>Add {keyword} to Favorites</span>
-            <span className="remove" style={favorited?undefined:{display:'none'}}>Remove {keyword} from Favorites</span>
+            <span className={cn("add p-0 m-0 leading-none",{"hidden":favorited})}>Add {props.keyword} to Favorites</span>
+            <span className={cn("remove p-0 m-0 leading-none",{"hidden":!favorited})}>Remove {props.keyword} from Favorites</span>
         </button>
     </React.Fragment>)
 }
