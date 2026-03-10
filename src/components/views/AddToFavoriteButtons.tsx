@@ -9,7 +9,7 @@ import {useFavorite} from "../util/MiscStateComponent";
 
 export interface SemiPrivateAddToFavoriteButtonProps {
     item: RouteMatch | StopMatch,
-    collapsed: boolean,
+    collapsed?: boolean,
     keyword?: string,
     className?: string
 }
@@ -45,7 +45,7 @@ export function FavoriteButton(props: SemiPrivateAddToFavoriteButtonProps):JSX.E
                     props.className
                 )
             }
-            tabIndex={props.collapsed?-1:0} aria-label='Toggle favorites status for this route'
+            tabIndex={props.collapsed?-1:0} aria-label={`Toggle favorites status for this ${props.keyword}`}
             onClick={()=>{favorited?removeFavorite(props.item):addFavorite(props.item)}}
         >
             <svg className={cn("mb-1 h-[1em] w-[1em] *:focus:fill-current *:fill-current",{"hidden":favorited})} aria-label='add icon' viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">

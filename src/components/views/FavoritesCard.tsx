@@ -76,28 +76,12 @@ export function FavoritesWrapper():JSX.Element{
         setForceUpdate(n => n + 1);
     }, [favoritesState]);
 
-
-    // let {jsonCookie} = useJsonCookie("favorites")
     log.info("favorites cookie:")
     log.info("favorites cookie:", favoritesState)
-
-
-
-
-    // const {state} = useContext(CardStateContext)
-    // let routes = state.currentCard.searchMatches.map(match=>{
-    //     return match.routeMatches.map(routeMatch=>{
-    //         if(routeMatch.type === MatchType.RouteMatch){return routeMatch}
-    //     })
-    // }).flat().filter(x=>x!==null&&typeof x!=='undefined')
-
 
     return (<React.Fragment>
         <h2 className={`cards-header`}>Favorites:</h2>
         <div className="cards allroutes">
-            {/* {routes.map((routeMatch,index) => {
-                return <AbreviatedRouteCard item={routeMatch} key={index}/>
-            })} */}
             {favoritesState.favorites.length == 0
                 ?<div className="pl-2 no-favorites"><em>No favorites found.</em> <br></br>Your favorite bus stops and bus routes will be listed&nbsp;here.</div>
                 :favoritesState.favorites.map((datum,index)=>{return <FavoriteItem datum={datum} key = {index}/>})}
