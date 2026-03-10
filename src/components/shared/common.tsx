@@ -43,20 +43,4 @@ const ChangeViewButton = ({
 };
 
 
-
-const SvgIcon = ({iconElement, className, ariaLabel}: 
-  {iconElement: React.ReactNode, className?: string, ariaLabel?: string}) => {
-    return (
-        <svg 
-          className={cn('*:focus:fill-current *:fill-current', className)} 
-          viewBox="0 0 24 24"
-          aria-label={ariaLabel? ariaLabel : "svg icon"} 
-          role="presentation"
-          xmlns="http://www.w3.org/2000/svg">
-            {iconElement}
-        </svg>
-    )
-}
-
-
 export {ChangeViewButton, ChangeViewButtonProps}
