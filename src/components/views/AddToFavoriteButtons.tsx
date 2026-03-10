@@ -1,13 +1,10 @@
-import React, {useContext} from 'react';
+import React from 'react';
 import {
-    MatchType,
     RouteMatch,
-    RouteMatchDirectionInterface,
-    SearchMatch,
-    StopMatch, VehicleRtInterface
+    StopMatch
 } from "../../js/updateState/DataModels";
 import {cn} from "../util/coreUtils";
-import {FavoritesCookieStateContext, useFavorite} from "../util/MiscStateComponent";
+import {useFavorite} from "../util/MiscStateComponent";
 
 
 export interface SemiPrivateAddToFavoriteButtonProps {
