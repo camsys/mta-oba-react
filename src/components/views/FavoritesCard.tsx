@@ -99,7 +99,7 @@ export function FavoritesWrapper():JSX.Element{
                 return <AbreviatedRouteCard item={routeMatch} key={index}/>
             })} */}
             {favoritesState.favorites.length == 0
-                ?<div className="no-favorites"><em>No favorites found.</em> <br></br>Your favorite bus stops and bus routes will be listed&nbsp;here.</div>
+                ?<div className="pl-2 no-favorites"><em>No favorites found.</em> <br></br>Your favorite bus stops and bus routes will be listed&nbsp;here.</div>
                 :favoritesState.favorites.map((datum,index)=>{return <FavoriteItem datum={datum} key = {index}/>})}
         </div>
     </React.Fragment>);
