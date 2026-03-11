@@ -35,7 +35,7 @@ export function MapWrapper  () : JSX.Element {
                 <div className="bottom-buttons" id="map-trigger-wrap">
                     {state.currentCard.type === CardType.HomeCard ? null : <RefreshComponent extraClasses={" button"}/>}
                     <button id="map-toggle" className="button" aria-controls="map" aria-expanded={mapVisible} aria-pressed={mapVisible}
-                            aria-label={ariaLabel} onClick={mapToggle}><span className="label"><span className="hide-label">Hide </span>Map</span>
+                            aria-label={ariaLabel} onClick={mapToggle}><span className="label flex gap-1"><span className="hide-label">Hide </span>Map</span>
                     </button>
                 </div>
                 <ul className="map-legend">
