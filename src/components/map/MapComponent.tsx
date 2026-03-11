@@ -156,7 +156,7 @@ const RoutesAndStops = ()=>{
             route.directions.forEach(dir => {
                 dir.mapRouteComponentData.forEach((datum:MapRouteComponentInterface) => {
                     // log.info("requesting new MapRouteComponent from: ", datum)
-                    mapRouteMarkers.set(datum.id,createRoutePolyline(datum))
+                    mapRouteMarkers.set(datum.routeId,createRoutePolyline(datum))
                 })
             })
             route.directions.forEach(dir => {
@@ -402,7 +402,7 @@ const Highlighted = () =>{
         if(routeDatum!==null && typeof routeDatum !=='undefined'){
             routeDatum.directions.forEach(dir => {
                 dir.mapRouteComponentData.forEach((datum:MapRouteComponentInterface) => {
-                    highlightedComponents.current.set(datum.id,createRoutePolyline(datum,true))
+                    highlightedComponents.current.set(datum.routeId,createRoutePolyline(datum,true))
                 })
             })
         }

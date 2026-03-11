@@ -7,17 +7,7 @@ import {useFavorite} from "../util/MiscStateComponent";
 import { useHighlight } from "../util/MapHighlightingStateComponent";
 import { ServiceAlertSvg } from "./ServiceAlertContainerComponent";
 
-{/* <button
-    className="card-header collapse-trigger"
-    style={{ borderColor: "#" + routeMatch.color }}
-    onMouseEnter={() => highlightId(routeMatch.id)}
-    onMouseLeave={() => highlightId(null)}
-    aria-haspopup="true" aria-expanded="true"
-    aria-label={`Toggle ${routeMatch.id.split("_")[1]} ${routeMatch.description} open/close`}
->
-    {hasServiceAlert?<ServiceAlertSvg/>:null}
-    <span className="card-title label">{OBA.Config.noWidows(routeMatch.name)}</span>
-</button> */}
+
 
 export function StopCardHeaderMany({ match}: { match: StopMatch}): JSX.Element{
     return <CardHeaderMany match={match} IconComponent={BusStopIcon }/>
