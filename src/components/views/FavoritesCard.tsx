@@ -27,6 +27,7 @@ export const FavoriteItem = ({datum}) =>{
                     tabIndex={0}
                 >
                     <h3 className="card-title flex items-center">
+                        <VehicleIcon className="icon w-4 h-4 mb-1 fill-mta-dark-blue"/>
                         <StarBorderIcon className="icon w-5 h-5 mb-1"/>
                         {OBA.Config.noWidows(routeMatch.routeTitle)}
                     </h3>
