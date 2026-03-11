@@ -7,7 +7,7 @@ import {useNavigation} from "../../js/updateState/NavigationEffect";
 import { OBA } from "../../js/oba";
 import log from 'loglevel';
 import stopPopupIcon from "../../img/icon/bus-stop.svg"
-import {StarBorderIcon, BusStopIcon} from "../shared/icons";
+import {StarBorderIcon, BusStopIcon, VehicleIcon} from "../shared/icons";
 
 
 
