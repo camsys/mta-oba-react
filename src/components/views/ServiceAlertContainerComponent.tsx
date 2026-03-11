@@ -36,15 +36,15 @@ function ServiceAlertComponent  ({serviceAlertDatum}:ServiceAlertInterface) : JS
         </div>)
 }
 
-export default function ServiceAlertContainerComponent  ({ id,serviceAlertIdentifier, collapsed}:{ id : string ,serviceAlertIdentifier : string,collapsed:boolean}) : JSX.Element {
+export default function ServiceAlertContainerComponent  ({ routeId,serviceAlertIdentifier, collapsed}:{ routeId : string ,serviceAlertIdentifier : string,collapsed:boolean}) : JSX.Element {
     log.info("generating service alert component")
     let {getServiceAlert} = useServiceAlert()
-    let serviceAlertDatum = getServiceAlert(id,serviceAlertIdentifier)
+    let serviceAlertDatum = getServiceAlert(routeId,serviceAlertIdentifier)
     if(serviceAlertDatum===null||typeof serviceAlertDatum==="undefined"){return null}
     return (<div className="service-alert inner-card collapsible">
         <button className="card-header collapse-trigger" aria-haspopup="true" aria-expanded="false" aria-label="Toggle Service Alert Open/Closed" tabIndex={collapsed?-1:0}>
             <ServiceAlertSvg/>
-            <span className="label">Service Alert for {id}</span>
+            <span className="label">Service Alert for {routeId}</span>
         </button>
         <ServiceAlertComponent {...{serviceAlertDatum}}/>
     </div>)
@@ -52,11 +52,11 @@ export default function ServiceAlertContainerComponent  ({ id,serviceAlertIdenti
 
 export function useServiceAlert(){
     const { vehicleState} = useContext(VehicleStateContext)
-    function getServiceAlert(id : string ,serviceAlertIdentifier : string){
-        log.info("getting service alert data",vehicleState,id+serviceAlertDataIdentifier,serviceAlertIdentifier)
-        let routeServiceAlerts = vehicleState[id+serviceAlertDataIdentifier]
+    function getServiceAlert(routeId : string ,serviceAlertIdentifier : string){
+        log.info("getting service alert data",vehicleState,routeId+serviceAlertDataIdentifier,serviceAlertIdentifier)
+        let routeServiceAlerts = vehicleState[routeId+serviceAlertDataIdentifier]
         if(routeServiceAlerts===null||typeof routeServiceAlerts==="undefined"){return null}
-        let serviceAlertDatum = vehicleState[id+serviceAlertDataIdentifier].get(serviceAlertIdentifier)
+        let serviceAlertDatum = vehicleState[routeId+serviceAlertDataIdentifier].get(serviceAlertIdentifier)
         log.info("service alert datum found from state",serviceAlertDatum)
         if(typeof serviceAlertDatum==="undefined"){return null}
         return serviceAlertDatum

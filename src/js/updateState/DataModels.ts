@@ -65,20 +65,20 @@ export interface VehicleRtInterface {
     vehicleId: string;
     bearing?: number;
     direction?: string;
-    id: string;
+    routeId: string;
     lastUpdate:Date
 }
 
 
 export interface MapRouteComponentInterface {
-    id: string;
+    routeId: string;
     id: string;
     points: any; // Replace 'any' with a specific type if available
     color: string;
 }
 
 export interface RouteDirectionInterface {
-    id: string;
+    routeId: string;
     directionId: string;
     hasUpcomingService: boolean;
     routeDestination: string;
@@ -86,7 +86,7 @@ export interface RouteDirectionInterface {
 }
 
 export interface RouteMatchDirectionInterface {
-    id: string;
+    routeId: string;
     color: string;
     directionId: string;
     destination: string;
@@ -181,8 +181,8 @@ export function createVehicleRtInterface(mvj: any,updateTime:Date): VehicleRtInt
             stalled = true;
         }
     }
-    let id = mvj.LineRef;
-    if(id!=null){id=id.replace("+","-SBS")}
+    let routeId = mvj.LineRef;
+    if(routeId!=null){routeId=routeId.replace("+","-SBS")}
 
 
     return {
@@ -206,23 +206,23 @@ export function createVehicleRtInterface(mvj: any,updateTime:Date): VehicleRtInt
         vehicleId: mvj.VehicleRef,
         bearing: mvj.Bearing,
         direction: mvj.DirectionRef,
-        id: id
+        routeId: routeId
     };
 }
 
-export function createMapRouteComponentInterface(id: string, componentId: string, points: any, color: string): MapRouteComponentInterface {
+export function createMapRouteComponentInterface(routeId: string, componentId: string, points: any, color: string): MapRouteComponentInterface {
     return {
-        id,
+        routeId,
         id: componentId,
         points,
         color
     };
 }
 
-export function createRouteDirectionComponentInterface(id: string, directionId: string, hasUpcomingService:boolean, routeDestination: string, stops: StopInterface[]): RouteDirectionInterface {
+export function createRouteDirectionComponentInterface(routeId: string, directionId: string, hasUpcomingService:boolean, routeDestination: string, stops: StopInterface[]): RouteDirectionInterface {
     const routeStopComponentsData = stops.map(stop => createStopInterface(stop));
     return {
-        id,
+        routeId,
         directionId,
         hasUpcomingService,
         routeDestination,
@@ -230,15 +230,15 @@ export function createRouteDirectionComponentInterface(id: string, directionId: 
     };
 }
 
-export function createRouteMatchDirectionInterface(directionJson: any, id: string, color: string): RouteMatchDirectionInterface {
+export function createRouteMatchDirectionInterface(directionJson: any, routeId: string, color: string): RouteMatchDirectionInterface {
     const mapRouteComponentData = [];
     const mapStopComponentData = [];
     const stops = directionJson?.stops || [];
 
-    log.info("createRouteMatchDirectionInterface", directionJson, id, color);
+    log.info("createRouteMatchDirectionInterface", directionJson, routeId, color);
 
     const routeDirectionComponentData = createRouteDirectionComponentInterface(
-        id,
+        routeId,
         directionJson.directionId,
         directionJson.hasUpcomingScheduledService,
         directionJson.destination,
@@ -248,17 +248,17 @@ export function createRouteMatchDirectionInterface(directionJson: any, id: strin
     for (let j = 0; j < directionJson.polylines.length; j++) {
         const encodedPolyline = directionJson.polylines[j];
         const decodedPolyline = OBA.Util.decodePolyline(encodedPolyline);
-        const polylineId = `${id}_dir_${directionJson.directionId}_polyLineNum_${j}`;
-        mapRouteComponentData.push(createMapRouteComponentInterface(id, polylineId, decodedPolyline, color));
+        const polylineId = `${routeId}_dir_${directionJson.directionId}_polyLineNum_${j}`;
+        mapRouteComponentData.push(createMapRouteComponentInterface(routeId, polylineId, decodedPolyline, color));
     }
 
     stops.forEach(stop => mapStopComponentData.push(createStopInterface(stop)));
 
     return {
-        id,
+        routeId,
         color,
         directionId: directionJson.directionId,
-        routeAndDirection: id + "_"+directionJson.directionId,
+        routeAndDirection: routeId + "_"+directionJson.directionId,
         destination: directionJson.destination,
         mapRouteComponentData,
         mapStopComponentData,
@@ -288,23 +288,23 @@ export class SearchMatch {
 
 export interface RouteInterface {
     color: string;
-    id: string;
-    name: string;
+    routeId: string;
+    routeTitle: string;
     description: string;
 }
 
 export class RouteMatch extends SearchMatch implements RouteInterface{
     color: string;
-    id: string;
-    name: string;
+    routeId: string;
+    routeTitle: string;
     description: string;
     directions: RouteMatchDirectionInterface[];
 
     constructor(data: any) {
         super(MatchType.RouteMatch);
         this.color = data?.color;
-        this.id = data?.id.replace("+","-SBS");
-        this.name = data?.shortName + " " + data?.longName;
+        this.routeId = data?.id.replace("+","-SBS");
+        this.routeTitle = data?.shortName + " " + data?.longName;
         this.description = data?.description;
         this.directions = [];
     }
@@ -369,7 +369,7 @@ export class Card {
     searchResultType: string | null;
     name: string;
     searchMatches: SearchMatch[];
-    idList: Set<string>;
+    routeIdList: Set<string>;
     stopIdList: Set<string>;
     vehicleId: string | null;
     type: CardType;
@@ -381,7 +381,7 @@ export class Card {
         this.searchResultType = null;
         this.name = "loadingCard";
         this.searchMatches = [];
-        this.idList = new Set();
+        this.routeIdList = new Set();
         this.stopIdList = new Set();
         this.vehicleId = null;
         this.type = CardType.LoadingCard; // Default or initial type if applicable
@@ -399,13 +399,13 @@ export class Card {
     setToVehicle(
         vehicleId: string,
         searchMatches: SearchMatch[],
-        idList: Set<string>
+        routeIdList: Set<string>
     ): void {
         this.setType(CardType.VehicleCard);
         this.vehicleId = vehicleId;
         this.datumId = vehicleId;
         this.searchMatches = searchMatches;
-        this.idList = idList;
+        this.routeIdList = routeIdList;
         this.searchResultType = null;
         log.info("setToVehicle",this)
     }
@@ -420,20 +420,20 @@ export class Card {
 
     setToFavorites(
         searchMatches: SearchMatch[],
-        idList: Set<string>
+        routeIdList: Set<string>
     ): void {
         this.setType(CardType.FavoritesCard);
         this.searchMatches = searchMatches;
-        this.idList = idList;
+        this.routeIdList = routeIdList;
     }
 
     setToAllRoutes(
         searchMatches: SearchMatch[],
-        idList: Set<string>
+        routeIdList: Set<string>
     ): void {
         this.setType(CardType.AllRoutesCard);
         this.searchMatches = searchMatches;
-        this.idList = idList;
+        this.routeIdList = routeIdList;
     }
 
     setSearchResultType(searchResultType: string | null): void {

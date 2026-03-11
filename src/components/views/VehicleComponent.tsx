@@ -108,7 +108,7 @@ function VehicleComponent({vehicleDatum,tabbable}:
                 <MeeplesComponentSpan vehicleDatum={vehicleDatum}/>
             </span>
             <a href="#" tabIndex={tabbable?0:-1}
-               onClick={(e)=>{e.preventDefault(); vehicleSearch(vehicleDatum.id, vehicleDatum.vehicleId)}}
+               onClick={(e)=>{e.preventDefault(); vehicleSearch(vehicleDatum.routeId, vehicleDatum.vehicleId)}}
                className={vehicleDatum?.strollerVehicle?"bus stroller-friendly":"bus"}>{vehicleDatum.vehicleId.split("_")[1]}</a>
         </li>)
     } catch (e) {

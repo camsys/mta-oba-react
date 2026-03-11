@@ -558,17 +558,17 @@ const HandleMapBoundsAndZoom = () : void=>{
         }
         else if(state.currentCard.type===CardType.VehicleCard) {
             let vehicleId = state.currentCard.vehicleId;
-            let id = shortenRoute(state.currentCard.idList.values().next().value);
-            log.info("zooming for vehicle card",vehicleId,id+vehicleDataIdentifier,vehicleState)
-            if(!vehicleState[id+vehicleDataIdentifier]){
-                log.info("vehicle state not found for id",vehicleState,id+vehicleDataIdentifier)
+            let routeId = shortenRoute(state.currentCard.routeIdList.values().next().value);
+            log.info("zooming for vehicle card",vehicleId,routeId+vehicleDataIdentifier,vehicleState)
+            if(!vehicleState[routeId+vehicleDataIdentifier]){
+                log.info("vehicle state not found for routeId",vehicleState,routeId+vehicleDataIdentifier)
                 return
             }
-            if(!vehicleState[id+vehicleDataIdentifier].get(vehicleId)){
-                log.info("vehicle not found in vehicle state, returning",vehicleState[id+vehicleDataIdentifier],vehicleId)
+            if(!vehicleState[routeId+vehicleDataIdentifier].get(vehicleId)){
+                log.info("vehicle not found in vehicle state, returning",vehicleState[routeId+vehicleDataIdentifier],vehicleId)
                 return
             }
-            [lat, long] = vehicleState[id+vehicleDataIdentifier].get(vehicleId).longLat;
+            [lat, long] = vehicleState[routeId+vehicleDataIdentifier].get(vehicleId).longLat;
             log.info("vehicle lat long",lat,long)
             // [lat, long] = state.currentCard.longlat;
             zoom = 16;

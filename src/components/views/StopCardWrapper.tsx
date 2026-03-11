@@ -23,7 +23,7 @@ import {ViewSearchItem} from "./MiscComponents";
 import log from 'loglevel';
 import {v4 as uuidv4} from "uuid";
 import { StopFavoriteButton } from './AddToFavoriteButtons.tsx';
-import { StopCardHeader, StopCardHeaderMany } from "./CardComponents";
+
 
 
 
@@ -31,9 +31,9 @@ const MiniStopDirectionList =({routeDirectionDatum,stopId, }:{routeDirectionDatu
     let {getServiceAlert} = useServiceAlert();
     const {vehiclesApproachingStopsState} = useContext(VehiclesApproachingStopsContext)
     log.info("generating StopCard MiniStopDirection",routeDirectionDatum,vehiclesApproachingStopsState)
-    let routeAndDir = routeDirectionDatum.id + "_"+routeDirectionDatum.directionId
-    let id = routeDirectionDatum.id.split("_")[1];
-    let hasServiceAlert = getServiceAlert(id,routeAndDir)!==null;
+    let routeAndDir = routeDirectionDatum.routeId + "_"+routeDirectionDatum.directionId
+    let routeId = routeDirectionDatum.routeId.split("_")[1];
+    let hasServiceAlert = getServiceAlert(routeId,routeAndDir)!==null;
     let stopsToVehicles = vehiclesApproachingStopsState[routeAndDir+stopSortedFutureVehicleDataIdentifier]
     let stopCardVehicleData = typeof stopsToVehicles !== 'undefined' &&
         stopsToVehicles.has("MTA_"+stopId)
@@ -63,7 +63,7 @@ const MiniStopDirectionList =({routeDirectionDatum,stopId, }:{routeDirectionDatu
                     return (
                         <li style={{ borderColor: '#'+routeDirectionDatum.color}}>
                             {hasServiceAlert?<ServiceAlertSvg/>:null}
-                        <strong>{id}</strong> <span>{destination}</span>
+                        <strong>{routeId}</strong> <span>{destination}</span>
                     </li>)
                 }
             )}
@@ -89,19 +89,19 @@ const RouteDirection = ({routeDirectionDatum,stopId, collapsed}:
     const {highlightId} = useHighlight();
     const {vehiclesApproachingStopsState} = useContext(VehiclesApproachingStopsContext)
     log.info("generating StopCard RouteDirection",routeDirectionDatum,vehiclesApproachingStopsState)
-    let routeAndDir = routeDirectionDatum.id + "_"+routeDirectionDatum.directionId
+    let routeAndDir = routeDirectionDatum.routeId + "_"+routeDirectionDatum.directionId
     let stopCardVehicleData = vehiclesApproachingStopsState[routeAndDir+stopSortedFutureVehicleDataIdentifier]
 
     stopCardVehicleData = typeof stopCardVehicleData !== 'undefined' &&
         stopCardVehicleData.has("MTA_"+stopId)
             ?stopCardVehicleData.get("MTA_"+stopId):null
-    let id = routeDirectionDatum.id.split("_")[1];
+    let routeId = routeDirectionDatum.routeId.split("_")[1];
     let serviceAlertIdentifier = routeAndDir
     let lastUpdateTime = stopCardVehicleData!==null
         ? OBA.Util.ISO8601StringToDate(vehiclesApproachingStopsState[routeAndDir+updatedTimeIdentifier]).getTime()
         : null
     let {getServiceAlert} = useServiceAlert();
-    let hasServiceAlert = getServiceAlert(id,serviceAlertIdentifier)!==null;
+    let hasServiceAlert = getServiceAlert(routeId,serviceAlertIdentifier)!==null;
     log.info("StopCard RouteDirection stopCardVehicleData",stopCardVehicleData,lastUpdateTime)
 
 
@@ -135,15 +135,15 @@ const RouteDirection = ({routeDirectionDatum,stopId, collapsed}:
                     className={`card-header collapse-trigger ${collapsed?"":"open"}`}
                     aria-haspopup="true"
                     aria-expanded="true"
-                    aria-label={`Toggle ${routeDirectionDatum.id.split("_")[1]} to ${destination}`}
-                    onMouseEnter={() => highlightId(routeDirectionDatum.id)}
+                    aria-label={`Toggle ${routeDirectionDatum.routeId.split("_")[1]} to ${destination}`}
+                    onMouseEnter={() => highlightId(routeDirectionDatum.routeId)}
                     onMouseLeave={() => highlightId(null)}
                     tabIndex={tabbable?0:-1}
                 >
                 <span className="card-title" style={{ borderColor: '#'+routeDirectionDatum.color}}>
                     {hasServiceAlert?<ServiceAlertSvg/>:null}
                     <span className="label">
-                        <strong>{routeDirectionDatum.id.split("_")[1]}</strong> {destination}
+                        <strong>{routeDirectionDatum.routeId.split("_")[1]}</strong> {destination}
                     </span>
                 </span>
                 </button>
@@ -152,10 +152,10 @@ const RouteDirection = ({routeDirectionDatum,stopId, collapsed}:
                         {vehicleData.map((vehicleDatum,index)=>{
                             if(index<3){return <VehicleComponent {...{vehicleDatum,lastUpdateTime}} tabbable={tabbable} key={index}/>}})}
                     </ul>
-                    <ServiceAlertContainerComponent {...{id,serviceAlertIdentifier}} collapsed={!tabbable}/>
+                    <ServiceAlertContainerComponent {...{routeId,serviceAlertIdentifier}} collapsed={!tabbable}/>
                     <ul className="menu icon-menu inner-card-menu">
                         <li>
-                            <ViewSearchItem datumId={routeDirectionDatum.id} text={"Full Route"} collapsed={!tabbable}/>
+                            <ViewSearchItem datumId={routeDirectionDatum.routeId} text={"Full Route"} collapsed={!tabbable}/>
                         </li>
                     </ul>
                 </div>
@@ -239,36 +239,36 @@ export function StopCardContent({stopMatch,collapsed}: { StopMatch, boolean }):J
 }
 
 
-// export function StopCardHeader({stopMatch, oneOfMany}: { stopMatch: StopMatch , oneOfMany:boolean}):JSX.Element{
-//     log.info("generating StopCardHeader",stopMatch)
-//     const { highlightId } = useHighlight();
-//     let header = (oneOfMany
-//         ?
-//             <button className="card-header collapse-trigger"
-//                       onMouseEnter={() => highlightId(stopMatch.id)}
-//                       onMouseLeave={() => highlightId(null)}
-//                       aria-haspopup="true" aria-expanded="true"
-//                       aria-label={`Toggle ${stopMatch.id.split("_")[1]} ${stopMatch.name} open/close`}
-//             >
-//                 <span className="card-title label">
-//                     <img src={busStopIcon} alt="bus stop icon" className="icon"/>
-//                     {stopMatch.name}
-//                 </span>
-//             </button>
-//         :
-//         <div className="card-header"
-//              onMouseEnter={() => highlightId(stopMatch.id)}
-//              onMouseLeave={() => highlightId(null)}>
-//             <h3 className="card-title">
-//                 <img src={busStopIcon} alt="bus stop icon" className="icon"/>
-//                 {stopMatch.name}
-//             </h3>
-//         </div>
-//     )
-//     return(
-//         header
-//     )
-// }
+export function StopCardHeader({stopMatch, oneOfMany}: { stopMatch: StopMatch , oneOfMany:boolean}):JSX.Element{
+    log.info("generating StopCardHeader",stopMatch)
+    const { highlightId } = useHighlight();
+    let header = (oneOfMany
+        ?
+            <button className="card-header collapse-trigger"
+                      onMouseEnter={() => highlightId(stopMatch.id)}
+                      onMouseLeave={() => highlightId(null)}
+                      aria-haspopup="true" aria-expanded="true"
+                      aria-label={`Toggle ${stopMatch.id.split("_")[1]} ${stopMatch.name} open/close`}
+            >
+                <span className="card-title label">
+                    <img src={busStopIcon} alt="bus stop icon" className="icon"/>
+                    {stopMatch.name}
+                </span>
+            </button>
+        :
+        <div className="card-header"
+             onMouseEnter={() => highlightId(stopMatch.id)}
+             onMouseLeave={() => highlightId(null)}>
+            <h3 className="card-title">
+                <img src={busStopIcon} alt="bus stop icon" className="icon"/>
+                {stopMatch.name}
+            </h3>
+        </div>
+    )
+    return(
+        header
+    )
+}
 
 
 export function StopCard (match: SearchMatch) : JSX.Element {
@@ -282,7 +282,7 @@ export function StopCard (match: SearchMatch) : JSX.Element {
     log.info("generating StopCard", stopMatch)
     return (
         <div className={`card stop-card`}>
-            <StopCardHeader match={stopMatch}/>
+            <StopCardHeader stopMatch={stopMatch} oneOfMany={false}/>
             <div className="card-content">
                 <StopCardContent stopMatch={stopMatch} collapsed={false}/>
             </div>
@@ -305,7 +305,7 @@ function InnerCollapsableStopCard ({ match, oneOfMany}: {match:SearchMatch, oneO
     log.info("generating collapsable StopCard",stopMatch)
     return(
     <div className={`card stop-card ${oneOfMany?"collapsible":""}`}>
-        <StopCardHeaderMany match={stopMatch}/>
+        <StopCardHeader stopMatch={stopMatch} oneOfMany={oneOfMany}/>
         <div className="collapse-content">
             <div className="card-content px-2">
                 <StopCardContent stopMatch={stopMatch} collapsed={oneOfMany}/>

@@ -37,7 +37,7 @@ function SideBar  () {
             log.info("adding error card")
             return decorateWithNearMeAndFavorites(<ErrorCard/>)
         }
-        if((!(state.currentCard.idList) || state.currentCard.idList.length <1) || state.currentCard.type === CardType.LoadingCard){
+        if((!(state.currentCard.routeIdList) || state.currentCard.routeIdList.length <1) || state.currentCard.type === CardType.LoadingCard){
             log.info("adding loading card")
             return decorateWithNearMeAndFavorites(<LoadingCard/>)
         }

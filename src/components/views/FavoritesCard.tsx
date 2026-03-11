@@ -7,7 +7,7 @@ import {useNavigation} from "../../js/updateState/NavigationEffect";
 import { OBA } from "../../js/oba";
 import log from 'loglevel';
 import stopPopupIcon from "../../img/icon/bus-stop.svg"
-import {StarBorderIcon, BusStopIcon, VehicleIcon} from "../shared/icons";
+import {StarBorderIcon, BusStopIcon} from "../shared/icons";
 
 
 
@@ -20,7 +20,7 @@ export const FavoriteItem = ({datum}) =>{
     if(isRouteInterface(datum)){
         let routeMatch = datum as RouteInterface
         return(<React.Fragment>
-            <div className={`card route-card ${routeMatch.id}`} onClick={()=>search(routeMatch.id)}>
+            <div className={`card route-card ${routeMatch.routeId}`} onClick={()=>search(routeMatch.routeId)}>
                 <button
                     className="card-header link-header"
                     style={{ borderColor: "#" + routeMatch.color }}
@@ -28,8 +28,7 @@ export const FavoriteItem = ({datum}) =>{
                 >
                     <h3 className="card-title flex items-center">
                         <StarBorderIcon className="icon w-5 h-5 mb-1"/>
-                        <VehicleIcon className="icon w-4 h-4 mb-1"/>
-                        {OBA.Config.noWidows(routeMatch.name)}
+                        {OBA.Config.noWidows(routeMatch.routeTitle)}
                     </h3>
                 </button>
             </div>  
