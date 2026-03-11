@@ -162,6 +162,17 @@ export function CollapsableRouteCard({ routeMatch, oneOfMany}: {routeMatch:Route
              ${oneOfMany?"collapsible":""}`}>
                 {oneOfMany?
                 <RouteCardHeaderMany match={routeMatch} hasServiceAlert={hasServiceAlert}/>
+                // <button
+                //     className="card-header collapse-trigger"
+                //     style={{ borderColor: "#" + routeMatch.color }}
+                //     onMouseEnter={() => highlightId(routeMatch.id)}
+                //     onMouseLeave={() => highlightId(null)}
+                //     aria-haspopup="true" aria-expanded="true"
+                //     aria-label={`Toggle ${routeMatch.id.split("_")[1]} ${routeMatch.description} open/close`}
+                // >
+                //     {hasServiceAlert?<ServiceAlertSvg/>:null}
+                //     <span className="card-title label">{OBA.Config.noWidows(routeMatch.name)}</span>
+                // </button>
                 :
                 <RouteCardHeader match={routeMatch}/>
             }
