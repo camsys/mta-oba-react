@@ -71,7 +71,7 @@ export interface VehicleRtInterface {
 
 
 export interface MapRouteComponentInterface {
-    routeId: string;
+    id: string;
     id: string;
     points: any; // Replace 'any' with a specific type if available
     color: string;
@@ -210,9 +210,9 @@ export function createVehicleRtInterface(mvj: any,updateTime:Date): VehicleRtInt
     };
 }
 
-export function createMapRouteComponentInterface(routeId: string, componentId: string, points: any, color: string): MapRouteComponentInterface {
+export function createMapRouteComponentInterface(id: string, componentId: string, points: any, color: string): MapRouteComponentInterface {
     return {
-        routeId,
+        id,
         id: componentId,
         points,
         color
