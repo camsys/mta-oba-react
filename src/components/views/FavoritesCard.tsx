@@ -20,16 +20,16 @@ export const FavoriteItem = ({datum}) =>{
     if(isRouteInterface(datum)){
         let routeMatch = datum as RouteInterface
         return(<React.Fragment>
-            <div className={`card route-card ${routeMatch.id}`} onClick={()=>search(routeMatch.id)}>
+            <div className={`card route-card ${routeMatch.routeId}`} onClick={()=>search(routeMatch.routeId)}>
                 <button
                     className="card-header link-header"
                     style={{ borderColor: "#" + routeMatch.color }}
                     tabIndex={0}
                 >
                     <h3 className="card-title flex items-center">
-                        <StarBorderIcon className="icon w-5 h-5 mb-1"/>
                         <VehicleIcon className="icon w-4 h-4 mb-1 fill-mta-dark-blue"/>
-                        {OBA.Config.noWidows(routeMatch.name)}
+                        <StarBorderIcon className="icon w-5 h-5 mb-1"/>
+                        {OBA.Config.noWidows(routeMatch.routeTitle)}
                     </h3>
                 </button>
             </div>  

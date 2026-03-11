@@ -25,7 +25,6 @@ export function CardHeaderMany({ match, color, IconComponent,hasServiceAlert, Ic
         IconClass?: string
      }): JSX.Element{
     
-    
     const { highlightId } = useHighlight();
     const {isFavorite} = useFavorite()
 
@@ -33,16 +32,16 @@ export function CardHeaderMany({ match, color, IconComponent,hasServiceAlert, Ic
 
     return (<button className={cn(`card-header collapse-trigger`, { favorite: favorited })}
                     style={{ borderColor: color ? `#${color}` : "inherit" }}
-                    onMouseEnter={() => highlightId(match.id)}
+                    onMouseEnter={() => highlightId(match.datumId)}
                     onMouseLeave={() => highlightId(null)}
                     aria-haspopup="true" aria-expanded="true"
-                    aria-label={`Toggle ${match.id.split("_")[1]} ${match.name} open/close`}
+                    aria-label={`Toggle ${match.datumId.split("_")[1]} ${match.datumName} open/close`}
             >
                 {hasServiceAlert?<ServiceAlertSvg/>:null}
                 <span className="card-title label">
                     <IconComponent className={cn("icon w-5 h-5 mb-1", IconClass, { "hidden": favorited } )}/>
                     <StarBorderIcon className={cn("icon w-5 h-5 mb-1", { "hidden": !favorited } )}/>
-                    {match.name}
+                    {match.datumName}
                 </span>
             </button>)
 }
@@ -71,13 +70,13 @@ export function CardHeader({ match, color, IconComponent, IconClass}: {
         <div
             className={cn(`card-header`, { favorite: favorited })}
             style={{ borderColor: color ? `#${color}` : "inherit" }}
-            onMouseEnter={() => highlightId(match.id)}
+            onMouseEnter={() => highlightId(match.datumId)}
             onMouseLeave={() => highlightId(null)}
         >
             <h3 className="card-title">
                 <IconComponent className={cn("icon w-5 h-5 mb-1", IconClass, { "hidden": favorited } )}/>
                 <StarBorderIcon className={cn("icon w-5 h-5 mb-1", { "hidden": !favorited } )}/>
-                {OBA.Config.noWidows(match.name)}
+                {OBA.Config.noWidows(match.datumName)}
             </h3>
         </div>
     </>)

@@ -31,7 +31,7 @@ function MapRouteComponent  ({mapRouteComponentDatum}:RouteDirectionInterface) :
 
     let out = (<React.Fragment>
         <Polyline {...polylineOptions} tabIndex={-1}/>
-        {highlightedId==mapRouteComponentDatum.id ? <Polyline {...highlightedPolylineOptions} tabIndex={-1}/>: null
+        {highlightedId==mapRouteComponentDatum.routeId ? <Polyline {...highlightedPolylineOptions} tabIndex={-1}/>: null
         }
     </React.Fragment>)
     return out

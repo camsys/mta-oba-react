@@ -15,10 +15,10 @@ export const FavoriteItem = ({datum}) =>{
     if(isRouteInterface(datum)){
         let routeDatum = datum as RouteInterface
         return(<li>
-            <button className={`favorite-route route-border-left ${routeDatum.id.split("_")[1]}`}
-               tabIndex="-1" onClick={()=>{search(routeDatum.id)}}>
+            <button className={`favorite-route route-border-left ${routeDatum.routeId.split("_")[1]}`}
+               tabIndex="-1" onClick={()=>{search(routeDatum.routeId)}}>
                                         <span className="label" style={{ borderColor: '#'+routeDatum.color }}>
-                                            <strong>{routeDatum.id.split("_")[1]}</strong> {routeDatum.name}
+                                            <strong>{routeDatum.routeId.split("_")[1]}</strong> {routeDatum.routeTitle}
                                         </span>
             </button>
             <ul className="menu icon-menu sub-menu-menu">
@@ -58,7 +58,7 @@ export const FavoriteItem = ({datum}) =>{
 
 export const FavoritesMenu = () => {
 
-    // Cookies.set('favorites', "{\"favorites\":[{\"color\":\"00AEEF\",\"description\":\"via 86th St \\/ Ocean Pkwy\",\"id\":\"MTA NYCT_B1\",\"longName\":\"Bay Ridge - Manhattan Beach\",\"name\":\"B1\",\"textColor\":\"FFFFFF\",\"type\":3}]}")
+    // Cookies.set('favorites', "{\"favorites\":[{\"color\":\"00AEEF\",\"description\":\"via 86th St \\/ Ocean Pkwy\",\"routeId\":\"MTA NYCT_B1\",\"longName\":\"Bay Ridge - Manhattan Beach\",\"routeTitle\":\"B1\",\"textColor\":\"FFFFFF\",\"type\":3}]}")
     // Cookies.set('favorites', "{\"favorites\":[{\"name\":\"00AEEF\",\"longLat\":[100,94],\"id\":\"MTA NYCT_B1\",\"stopDirection\":\"Bay Ridge - Manhattan Beach\"")
 
     const {favoritesState} = useContext(FavoritesCookieStateContext)

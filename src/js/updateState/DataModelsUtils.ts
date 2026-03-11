@@ -15,14 +15,14 @@ export const isRouteInterface = (obj: any): obj is RouteInterface =>
     typeof obj === "object" &&
     obj !== null &&
     typeof obj?.color === "string" &&
-    typeof obj?.id === "string" &&
-    typeof obj?.name === "string" &&
+    typeof obj?.routeId === "string" &&
+    typeof obj?.routeTitle === "string" &&
     (typeof obj?.description === "string" || obj?.description === undefined || obj?.description === null);
 
 export const extractRouteInterface = (obj: any): RouteInterface | null => {
     if (isRouteInterface(obj)) {
-        const { color, id, name, description } = obj;
-        return { color, id, name, description };
+        const { color, routeId, routeTitle, description } = obj;
+        return { color, routeId, routeTitle, description };
     }
     return null;
 };
