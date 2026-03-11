@@ -18,6 +18,7 @@ import log from 'loglevel';
 import { RouteFavoriteButton} from "./AddToFavoriteButtons";
 import {cn} from "../util/coreUtils";
 import {BusStopIcon, StarBorderIcon, VehicleIcon} from "../shared/icons";
+import { RouteCardHeader, RouteCardHeaderMany } from "./CardHeaderComponents";
 
 export function RouteStopComponent
 ({stopDatum, routeId, index}:{stopDatum:StopInterface,routeId:string,index:string}):JSX.Element{
@@ -115,29 +116,6 @@ export function RouteCardContent({ routeMatch, collapsed}: {RouteMatch,boolean})
         </React.Fragment>)
 }
 
-export function RouteCardHeader({ routeMatch}: RouteMatch): JSX.Element{
-    const { highlightId } = useHighlight();
-    const {isFavorite} = useFavorite()
-
-    let favorited = isFavorite(routeMatch)
-
-    return(<>
-        <div
-            className={cn("card-header", { favorite: favorited })}
-            style={{ borderColor: "#" + routeMatch.color }}
-            onMouseEnter={() => highlightId(routeMatch.routeId)}
-            onMouseLeave={() => highlightId(null)}
-        >
-            <h3 className="card-title">
-                <VehicleIcon className={cn("icon w-5 h-5 mb-1", { "hidden": favorited } )}/>
-                <StarBorderIcon className={cn("icon w-5 h-5 mb-1", { "hidden": !favorited } )}/>
-                {OBA.Config.noWidows(routeMatch.routeTitle)}
-            </h3>
-        </div>
-    </>)
-
-}
-
 
 export function RouteCard({ routeMatch}: RouteMatch): JSX.Element {
     log.info("generating route card: ", routeMatch);
@@ -147,8 +125,8 @@ export function RouteCard({ routeMatch}: RouteMatch): JSX.Element {
     const { highlightId } = useHighlight();
     return (
         <React.Fragment>
-            <div className={`card route-card ${routeMatch.routeId}}`}>
-                <RouteCardHeader routeMatch={routeMatch}/>
+            <div className={`card route-card ${routeMatch.datumId}}`}>
+                <RouteCardHeader match={routeMatch}/>
                 <div className="card-content">
                     <RouteCardContent routeMatch={routeMatch}/>
                     
@@ -172,35 +150,18 @@ export function CollapsableRouteCard({ routeMatch, oneOfMany}: {routeMatch:Route
 
     const { highlightId } = useHighlight();
 
-    let routeId = routeMatch.routeId.split("_")[1];
-    let serviceAlertIdentifier = routeMatch.routeId;
+    let id = routeMatch.datumId.split("_")[1];
+    let serviceAlertIdentifier = routeMatch.datumId;
     let {getServiceAlert} = useServiceAlert();
-    let hasServiceAlert = getServiceAlert(routeId,serviceAlertIdentifier)!==null;
+    let hasServiceAlert = getServiceAlert(id,serviceAlertIdentifier)!==null;
     return (
         <React.Fragment>
             <div className={`card route-card
              ${oneOfMany?"collapsible":""}`}>
                 {oneOfMany?
-                <button
-                    className="card-header collapse-trigger"
-                    style={{ borderColor: "#" + routeMatch.color }}
-                    onMouseEnter={() => highlightId(routeMatch.routeId)}
-                    onMouseLeave={() => highlightId(null)}
-                    aria-haspopup="true" aria-expanded="true"
-                    aria-label={`Toggle ${routeMatch.routeId.split("_")[1]} ${routeMatch.description} open/close`}
-                >
-                    {hasServiceAlert?<ServiceAlertSvg/>:null}
-                    <span className="card-title label">{OBA.Config.noWidows(routeMatch.routeTitle)}</span>
-                </button>
+                <RouteCardHeaderMany match={routeMatch} hasServiceAlert={hasServiceAlert}/>
                 :
-                <div
-                    className="card-header"
-                    style={{ borderColor: "#" + routeMatch.color }}
-                    onMouseEnter={() => highlightId(routeMatch.routeId)}
-                    onMouseLeave={() => highlightId(null)}
-                >
-                    <h3 className="card-title">{OBA.Config.noWidows(routeMatch.routeTitle)}</h3>
-                </div>
+                <RouteCardHeader match={routeMatch}/>
             }
 
                 <div className="collapse-content">
@@ -208,7 +169,7 @@ export function CollapsableRouteCard({ routeMatch, oneOfMany}: {routeMatch:Route
                         <RouteCardContent routeMatch={routeMatch} collapsed={true}/>
                         <ul className="menu icon-menu card-menu">
                             <li>
-                                <ViewSearchItem datumId={routeMatch.routeId} text={"Route"} collapsed={true}/>
+                                <ViewSearchItem datumId={routeMatch.datumId} text={"Route"} collapsed={true}/>
                             </li>
                         </ul>
                     </div>

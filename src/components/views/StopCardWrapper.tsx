@@ -23,6 +23,7 @@ import {ViewSearchItem} from "./MiscComponents";
 import log from 'loglevel';
 import {v4 as uuidv4} from "uuid";
 import { StopFavoriteButton } from './AddToFavoriteButtons.tsx';
+import { StopCardHeader, StopCardHeaderMany } from "./CardHeaderComponents.tsx";
 
 
 
@@ -239,38 +240,6 @@ export function StopCardContent({stopMatch,collapsed}: { StopMatch, boolean }):J
 }
 
 
-export function StopCardHeader({stopMatch, oneOfMany}: { stopMatch: StopMatch , oneOfMany:boolean}):JSX.Element{
-    log.info("generating StopCardHeader",stopMatch)
-    const { highlightId } = useHighlight();
-    let header = (oneOfMany
-        ?
-            <button className="card-header collapse-trigger"
-                      onMouseEnter={() => highlightId(stopMatch.id)}
-                      onMouseLeave={() => highlightId(null)}
-                      aria-haspopup="true" aria-expanded="true"
-                      aria-label={`Toggle ${stopMatch.id.split("_")[1]} ${stopMatch.name} open/close`}
-            >
-                <span className="card-title label">
-                    <img src={busStopIcon} alt="bus stop icon" className="icon"/>
-                    {stopMatch.name}
-                </span>
-            </button>
-        :
-        <div className="card-header"
-             onMouseEnter={() => highlightId(stopMatch.id)}
-             onMouseLeave={() => highlightId(null)}>
-            <h3 className="card-title">
-                <img src={busStopIcon} alt="bus stop icon" className="icon"/>
-                {stopMatch.name}
-            </h3>
-        </div>
-    )
-    return(
-        header
-    )
-}
-
-
 export function StopCard (match: SearchMatch) : JSX.Element {
     if (match.type !== MatchType.StopMatch) {
         return <></>
@@ -282,7 +251,7 @@ export function StopCard (match: SearchMatch) : JSX.Element {
     log.info("generating StopCard", stopMatch)
     return (
         <div className={`card stop-card`}>
-            <StopCardHeader stopMatch={stopMatch} oneOfMany={false}/>
+            <StopCardHeader match={stopMatch}/>
             <div className="card-content">
                 <StopCardContent stopMatch={stopMatch} collapsed={false}/>
             </div>
@@ -305,7 +274,7 @@ function InnerCollapsableStopCard ({ match, oneOfMany}: {match:SearchMatch, oneO
     log.info("generating collapsable StopCard",stopMatch)
     return(
     <div className={`card stop-card ${oneOfMany?"collapsible":""}`}>
-        <StopCardHeader stopMatch={stopMatch} oneOfMany={oneOfMany}/>
+        <StopCardHeaderMany match={stopMatch}/>
         <div className="collapse-content">
             <div className="card-content px-2">
                 <StopCardContent stopMatch={stopMatch} collapsed={oneOfMany}/>

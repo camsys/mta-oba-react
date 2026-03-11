@@ -350,6 +350,8 @@ export class StopMatch extends SearchMatch implements StopInterface{
     routeMatches: [RouteMatch];
     longLat: [number, number];
     stopDirection: string;
+    datumId: string;
+    datumName: string;
 
     constructor(data: any) {
         super(MatchType.StopMatch);
@@ -360,6 +362,8 @@ export class StopMatch extends SearchMatch implements StopInterface{
         this.routeMatches = [];
         this.longLat = [data.latitude,data.longitude];
         this.stopDirection = data.stopDirection;
+        this.datumId = data.id;
+        this.datumName = data.name;
     }
 }
 
