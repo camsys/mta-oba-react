@@ -27,8 +27,8 @@ export const FavoriteItem = ({datum}) =>{
                     tabIndex={0}
                 >
                     <h3 className="card-title flex items-center">
-                        <VehicleIcon className="icon w-4 h-4 mb-1 fill-mta-dark-blue"/>
-                        <StarBorderIcon className="icon w-5 h-5 mb-1"/>
+                        <StarBorderIcon className="icon w-5 h-5 mb-[0.385rem]"/>
+                        <VehicleIcon className="icon w-[1.125rem] h-[1.125rem] mb-1 fill-mta-dark-blue"/>
                         {OBA.Config.noWidows(routeMatch.routeTitle)}
                     </h3>
                 </button>
@@ -44,8 +44,8 @@ export const FavoriteItem = ({datum}) =>{
                     tabIndex={0}
                 >
                     <h3 className="card-title flex items-center">
-                        <StarBorderIcon className="icon w-5 h-5 mb-1"/>
-                        <BusStopIcon className="icon w-5 h-5 mb-1"/>
+                        <StarBorderIcon className="icon w-5 h-5 mb-[0.4rem]"/>
+                        <BusStopIcon className="icon w-5 h-6 mb-1"/>
                         {OBA.Config.noWidows(stopDatum.name)}</h3>
                 </button>
             </div>
