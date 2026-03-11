@@ -24,14 +24,15 @@ export function StopCardHeaderMany({ match}: { match: StopMatch}): JSX.Element{
 }
 
 export function RouteCardHeaderMany({ match, hasServiceAlert}: { match: RouteMatch, hasServiceAlert: boolean}): JSX.Element{
-    return <CardHeaderMany match={match} color={match.color} IconComponent={VehicleIcon} hasServiceAlert={hasServiceAlert}/>
+    return <CardHeaderMany match={match} color={match.color} IconComponent={VehicleIcon} hasServiceAlert={hasServiceAlert} IconClass="fill-mta-dark-blue"/>
 }
 
-export function CardHeaderMany({ match, color, IconComponent,hasServiceAlert}: { 
+export function CardHeaderMany({ match, color, IconComponent,hasServiceAlert, IconClass}: { 
         match: RouteMatch|StopMatch, 
         color?: string, 
         IconComponent: React.ComponentType<React.SVGProps<SVGSVGElement>>,
-        hasServiceAlert?: boolean
+        hasServiceAlert?: boolean,
+        IconClass?: string
      }): JSX.Element{
     
     
@@ -49,7 +50,7 @@ export function CardHeaderMany({ match, color, IconComponent,hasServiceAlert}: {
             >
                 {hasServiceAlert?<ServiceAlertSvg/>:null}
                 <span className="card-title label">
-                    <IconComponent className={cn("icon w-5 h-5 mb-1", { "hidden": favorited } )}/>
+                    <IconComponent className={cn("icon w-5 h-5 mb-1", IconClass, { "hidden": favorited } )}/>
                     <StarBorderIcon className={cn("icon w-5 h-5 mb-1", { "hidden": !favorited } )}/>
                     {match.name}
                 </span>
@@ -61,14 +62,15 @@ export function StopCardHeader({ match}: { match: StopMatch}): JSX.Element{
 }
 
 export function RouteCardHeader({ match}: { match: RouteMatch}): JSX.Element{
-    return <CardHeader match={match} color={match.color} IconComponent={VehicleIcon }/>
+    return <CardHeader match={match} color={match.color} IconComponent={VehicleIcon } IconClass="fill-mta-dark-blue"/>
 }
 
 
-export function CardHeader({ match, color, IconComponent}: { 
+export function CardHeader({ match, color, IconComponent, IconClass}: { 
         match: RouteMatch|StopMatch, 
         color?: string, 
-        IconComponent: React.ComponentType<React.SVGProps<SVGSVGElement>>
+        IconComponent: React.ComponentType<React.SVGProps<SVGSVGElement>>,
+        IconClass?: string
      }): JSX.Element{
     const { highlightId } = useHighlight();
     const {isFavorite} = useFavorite()
@@ -83,7 +85,7 @@ export function CardHeader({ match, color, IconComponent}: {
             onMouseLeave={() => highlightId(null)}
         >
             <h3 className="card-title">
-                <IconComponent className={cn("icon w-5 h-5 mb-1", { "hidden": favorited } )}/>
+                <IconComponent className={cn("icon w-5 h-5 mb-1", IconClass, { "hidden": favorited } )}/>
                 <StarBorderIcon className={cn("icon w-5 h-5 mb-1", { "hidden": !favorited } )}/>
                 {OBA.Config.noWidows(match.name)}
             </h3>
