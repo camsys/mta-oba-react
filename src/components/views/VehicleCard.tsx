@@ -32,7 +32,7 @@ export const VehicleCardContentComponent = ({routeMatch,vehicleDatum}
             <ul className="menu icon-menu card-menu">
                 <li>
                     {(routeMatch && vehicleDatum)?
-                        (<ViewSearchItem datumId={routeMatch.routeId} text={"Full Route"}/>)
+                        (<ViewSearchItem datumId={routeMatch.id} text={"Full Route"}/>)
                         :
                         (<ul className="card-details">
                             <li>{`The vehicle {vehicleId} can't be found`}</li>
@@ -78,7 +78,7 @@ function VehicleCard ({routeMatch,vehicleId}: { routeMatch: RouteMatch, vehicleI
         setLoading(true)
     },[state,vehicleState])
 
-    let routeId;
+    let id;
     let vehicleDatum = null;
 
 
@@ -94,8 +94,8 @@ function VehicleCard ({routeMatch,vehicleId}: { routeMatch: RouteMatch, vehicleI
         if (routeMatch.type !== MatchType.RouteMatch) {
             log.info("card is still loading so VehicleCard is still loading",loading)
             return}
-        routeId = routeMatch.routeId.split("_")[1];
-        let vehicleData = vehicleState[routeId+vehicleDataIdentifier]
+        id = routeMatch.id.split("_")[1];
+        let vehicleData = vehicleState[id+vehicleDataIdentifier]
         if(!(vehicleData===null || typeof vehicleData==='undefined')){
             vehicleDatum = vehicleData.get(vehicleId)
         }
@@ -119,26 +119,26 @@ function VehicleCard ({routeMatch,vehicleId}: { routeMatch: RouteMatch, vehicleI
         return(<ErrorBoundary><div>Unable to load vehicle. Repeating attempt.</div></ErrorBoundary>)}
 
 
-    log.info("generating VehicleCard ",routeId,vehicleDatum,vehicleState[routeId+updatedTimeIdentifier])
-    let serviceAlertIdentifier = routeMatch.routeId
+    log.info("generating VehicleCard ",id,vehicleDatum,vehicleState[id+updatedTimeIdentifier])
+    let serviceAlertIdentifier = routeMatch.id
     return (
-        <div className={`card vehicle-card ${routeMatch.routeId}`}>
+        <div className={`card vehicle-card ${routeMatch.id}`}>
             <div className="card-header" style={{ borderColor: '#'+routeMatch.color}}
-                 onMouseEnter={() => highlightId(routeMatch.routeId)}
+                 onMouseEnter={() => highlightId(routeMatch.id)}
                  onMouseLeave={() => highlightId(null)}>
                 <h3 className="card-title"
                     tabIndex={0}
-                    onClick={() => search(routeMatch.routeId.split("_")[1])}>
+                    onClick={() => search(routeMatch.id.split("_")[1])}>
                     {/*{log.info("adding vehicelcard icon")}*/}
                     <img src={vehicleDatum && vehicleDatum?.strollerVehicle?"/img/icon/bus-stroller.svg":"/img/icon/bus.svg"}
                          alt={vehicleDatum && vehicleDatum?.strollerVehicle?"bus and stroller icon":"bus icon"} className="icon" />
-                    {OBA.Config.noWidows(routeMatch.routeTitle)}
+                    {OBA.Config.noWidows(routeMatch.name)}
                 </h3>
             </div>
             <div className="card-content">
                 {/*{log.info("adding vehicelcard content")}*/}
                 {vehicleDatum?<VehicleCardContentComponent routeMatch={routeMatch} vehicleDatum={vehicleDatum}/>:null}
-                <ServiceAlertContainerComponent {...{routeId,serviceAlertIdentifier}}/>
+                <ServiceAlertContainerComponent {...{id,serviceAlertIdentifier}}/>
             </div>
         </div>
     );

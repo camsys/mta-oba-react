@@ -169,7 +169,7 @@ const siriGetAndSetVehicles = (targetAddresses,vehicleState, setState, dataProce
                     log.info("siri stop data found: ", stopsToExtendedVehiclesMap.get(stopId))
                     Object.entries(stopsToExtendedVehiclesMap.get(stopId)).forEach(
                         ([key,siriObj]) => {
-                            let routeAndDir = siriObj.routeId +"_"+siriObj.direction
+                            let routeAndDir = siriObj.id +"_"+siriObj.direction
                             let mapOfStopsToVehicles = dataObj[routeAndDir +  stopSortedFutureVehicleDataIdentifier]
                             if(typeof mapOfStopsToVehicles === "undefined"){
                                 mapOfStopsToVehicles = new Map()

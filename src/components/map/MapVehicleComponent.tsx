@@ -23,9 +23,9 @@ function MapVehicleComponent  (
 
     let markerOptions = {
         zIndex: 3,
-        title: "Vehicle " + vehicleIdWithoutAgency + ", " + vehicleDatum.routeId + " to " + vehicleDatum.destination,
+        title: "Vehicle " + vehicleIdWithoutAgency + ", " + vehicleDatum.id + " to " + vehicleDatum.destination,
         vehicleId: vehicleDatum.vehicleId,
-        routeId: vehicleDatum.routeId,
+        id: vehicleDatum.id,
         // key:COMPONENT_IDENTIFIER+"_"+vehicleDatum.vehicleId,
         key:COMPONENT_IDENTIFIER+"_"+vehicleDatum.vehicleId + "_"+vehicleDatum.longLat,
         position:vehicleDatum.longLat,
@@ -56,7 +56,7 @@ function MapVehicleComponent  (
         <Popup key={vehicleDatum.vehicleId+"_"+vehicleDatum.longLat} className="map-popup vehicle-popup" {... popupOptions}>
             <img src={vehicleDatum?.strollerVehicle?busStroller:bus} alt="bus" className="icon"/>
             <div className="popup-info">
-                <span className="route">{vehicleDatum.routeId.split("_")[1]} {vehicleDatum.destination}</span>
+                <span className="route">{vehicleDatum.id.split("_")[1]} {vehicleDatum.destination}</span>
                 <span className="vehicle">Vehicle #{vehicleIdWithoutAgency}</span>
                 <button className="view-full close-map" aria-label="view full vehicle details">
                     View Vehicle Details

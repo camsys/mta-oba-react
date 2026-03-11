@@ -12,9 +12,6 @@ function Footer  () {
     let enableGoogleTranslate = process.env.ENABLE_GOOGLE_TRANSLATE;
     return (
         <ErrorBoundary>
-            <ul className="menu ml-6 my-3" role="menu">
-                <FavoritesMenu/>
-            </ul>
             <GoogleTranslateButton/>
             <div className="footer text-white bg-mta-black-2" id="footer">
                 <h2 className='text-[1.35em] my-4 pt-[3px] font-bold'>MTA Bus Time</h2>

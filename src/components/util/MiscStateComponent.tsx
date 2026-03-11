@@ -58,14 +58,14 @@ const isValidFavorite =(datum) =>{
 
 const getId = (datum) =>{
     if(!isValidFavorite(datum)){return null}
-    return (isRouteInterface(datum)? datum?.routeId : datum?.id)
+    return (isRouteInterface(datum)? datum?.id : datum?.id)
 }
 
 const useFavorite = () =>{
     const {favoritesState,setFavoritesState} = useContext(FavoritesCookieStateContext)
     const removeFavorite = (datum:StopInterface | RouteInterface)=>{
         if(!isValidFavorite(datum)){return}
-        let targetId = isRouteInterface(datum)? datum?.routeId : datum?.id
+        let targetId = isRouteInterface(datum)? datum?.id : datum?.id
         let newFavorites = {favorites:[]}
         newFavorites["favorites"] = favoritesState.favorites.filter(d=> getId(d) !== targetId)
         setCookies(newFavorites)

@@ -1,6 +1,7 @@
 const HtmlWebPackPlugin = require("html-webpack-plugin");
 const webpack = require("webpack");
 const path = require("path");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CopyPlugin = require("copy-webpack-plugin");
 const isProd = process.env.NODE_ENV === 'production';
 const loggingLevel = isProd ?  'silent' : 'info';
@@ -38,7 +39,9 @@ module.exports = {
       {
         test: /\.(css|sass|scss)$/,
         use: [
-          "style-loader", 
+          process.env.NODE_ENV === 'production' 
+            ? MiniCssExtractPlugin.loader 
+            : 'style-loader',
           "css-loader", 
           "postcss-loader", 
           {
@@ -83,7 +86,12 @@ module.exports = {
       patterns: [
         { from: "public", to: "." }
       ]
-    })],
+    }),
+    new MiniCssExtractPlugin({
+      filename: "[name].[contenthash].css",
+      chunkFilename: "[id].[contenthash].css"
+    })
+  ],
   devServer: {
     allowedHosts: [
       process.env.ALLOWED_HOST_ADDRESS || 'localhost'
@@ -98,3 +106,4 @@ module.exports = {
     poll: 1000,
   }
 };
+

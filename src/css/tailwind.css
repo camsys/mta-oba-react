@@ -3,6 +3,9 @@
 
 @theme {
   /* Grays/Blacks */
+  --color-ui-gray: #f3f3f3;
+  --color-border-gray: #dddddd;
+  --color-dark-gray: #666677;
   --color-mta-black: #1f2026;
   --color-mta-black-2: #2f3139;
   --color-mta-black-3: #36373c;
@@ -14,7 +17,7 @@
   --color-mta-blue: #2b60a4;
   --color-mta-blue2: #3b9dfd;
   --color-mta-light-blue: #577bb8;
-
+  
   /* MTA Accents */
   --color-mta-yellow: #f2a900;
   --color-mta-green: #46a739;
@@ -22,4 +25,12 @@
   /* Others */
   --color-shuttle-gray: #737384;
   --color-alert-red: #ec1c24;
+
+
+
+  --breakpoint-four: 400px;
+  --breakpoint-five: 500px;
+  --breakpoint-six: 600px;
+  --breakpoint-seven: 700px;
+  --breakpoint-eight: 800px;
 }

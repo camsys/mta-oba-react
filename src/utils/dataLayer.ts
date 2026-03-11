@@ -55,7 +55,7 @@ export class RoutePolyline extends L.Polyline implements DatumElement {
     }
 
     getDatumId(): string {
-        return this.datum.routeId;
+        return this.datum.id;
     }
 }
 

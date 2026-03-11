@@ -2,9 +2,10 @@
 .htpasswd
 node_modules/
 
+src/.DS_Store
 logs/
 .idea/
 tmp/
-
+dist/
 
 public/css/

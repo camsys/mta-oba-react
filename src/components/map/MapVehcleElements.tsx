@@ -48,7 +48,7 @@ export const MapVehicleElements = () =>{
     const vehicleLayer = useRef<L.LayerGroup<L.Marker>>(new L.LayerGroup());
     let map = useMap()
     const iconCache = useRef<Map<string, L.Icon>>(new Map());
-    let shortenedRouteIds = new Set(Array.from(state.currentCard.routeIdList).map(shortenRoute));
+    let shortenedRouteIds = new Set(Array.from(state.currentCard.idList).map(shortenRoute));
     log.info("looking for vehicles from route ids: ",shortenedRouteIds)
 
     const popupOptions = useRef<L.PopupOptions>({
@@ -58,9 +58,9 @@ export const MapVehicleElements = () =>{
         autoClose: false
     })
 
-    const selectVehicle = (routeId:string,vehicleId:string,latlon:[number,number]) =>{
+    const selectVehicle = (id:string,vehicleId:string,latlon:[number,number]) =>{
         // log.info("clicked on " + vehicleDatum.vehicleId)
-        vehicleSearch(routeId,vehicleId)
+        vehicleSearch(id,vehicleId)
     }
 
     const createVehicleIcon = (vehicleDatum):L.Icon => {
@@ -81,10 +81,10 @@ export const MapVehicleElements = () =>{
         return icon
     }
 
-    function shortenRoute(routeId: string) {
-        let routeIdParts = routeId.split("_");
-        let routeIdWithoutAgency = routeIdParts[1];
-        return routeIdWithoutAgency;
+    function shortenRoute(id: string) {
+        let idParts = id.split("_");
+        let idWithoutAgency = idParts[1];
+        return idWithoutAgency;
     }
 
     function handleVehicleForMap(vehicleDatum: VehicleRtInterface,vehicleMap: Map<string, L.Marker>) {
@@ -105,16 +105,16 @@ export const MapVehicleElements = () =>{
             log.info("adding vehicle to map",vehicleDatum.vehicleId,vehicleDatum)
             vehicle = createVehicleMarker(vehicleDatum,createVehicleIcon(vehicleDatum),popupOptions.current)
             vehicle.on("click", (e:L.LeafletMouseEvent) => {
-                selectVehicle(vehicleDatum.routeId, vehicleDatum.vehicleId, [e.latlng.lat, e.latlng.lng]);
+                selectVehicle(vehicleDatum.id, vehicleDatum.vehicleId, [e.latlng.lat, e.latlng.lng]);
             });
             vehicleMap.set(vehicleDatum.vehicleId, vehicle)
             vehicleLayer.current.addLayer(vehicle)
         }
     }
 
-    function safeGetVehicle(routeId: string, vehicleId: string) {
-        log.info("safeGetVehicle",routeId,vehicleId,vehicleObjsRefs.current)
-        let out = vehicleObjsRefs.current.get(routeId)
+    function safeGetVehicle(id: string, vehicleId: string) {
+        log.info("safeGetVehicle",id,vehicleId,vehicleObjsRefs.current)
+        let out = vehicleObjsRefs.current.get(id)
         if (out && out!== undefined && out.has(vehicleId)) {
             let marker = out.get(vehicleId);
             if(marker && marker !== undefined){
@@ -127,8 +127,8 @@ export const MapVehicleElements = () =>{
     function openPopup(){
         if (state.currentCard.type === CardType.VehicleCard)
         {
-            shortenedRouteIds.forEach(routeId => {
-                let vehicle = safeGetVehicle(routeId, state.currentCard.datumId)
+            shortenedRouteIds.forEach(id => {
+                let vehicle = safeGetVehicle(id, state.currentCard.datumId)
                 if(vehicle){
                     log.info("open popup for vehicle",vehicle,vehicle.getLatLng())
                     vehicle?.openPopup()
@@ -140,16 +140,16 @@ export const MapVehicleElements = () =>{
     // todo: if this was done just right it probably wouldn't hit the try catch
     try{
         if(shortenedRouteIds!=null){
-            // clear out vehicles that are not in the routeIds
-            vehicleObjsRefs.current.forEach((vehicleMap, routeId) => {
-                log.info("is routeId in vehicleMap", routeId, shortenedRouteIds, shortenedRouteIds.has(routeId));
-                if (shortenedRouteIds!==null && !shortenedRouteIds.has(routeId)) {
+            // clear out vehicles that are not in the ids
+            vehicleObjsRefs.current.forEach((vehicleMap, id) => {
+                log.info("is id in vehicleMap", id, shortenedRouteIds, shortenedRouteIds.has(id));
+                if (shortenedRouteIds!==null && !shortenedRouteIds.has(id)) {
                     vehicleMap.forEach((vehicle, vehicleId) => {
                         log.info("removing vehicle from map", vehicleId, vehicleMap.get(vehicleId));
                         vehicleLayer.current.removeLayer(vehicle);
                         vehicle.removeFrom(map);
                     });
-                    vehicleObjsRefs.current.delete(routeId);
+                    vehicleObjsRefs.current.delete(id);
                 }
             });
             // handling vehicles on routes
@@ -163,7 +163,7 @@ export const MapVehicleElements = () =>{
                     vehicleDataForRoute.forEach(vehicleDatum=>{
                         let vehicleRefForRoute = vehicleObjsRefs.current.get(shortenedRouteId)
                         if(vehicleRefForRoute == null || vehicleRefForRoute == undefined){
-                            log.info("MapVehicleElements: creating new vehicle map for routeId",shortenedRouteId)
+                            log.info("MapVehicleElements: creating new vehicle map for id",shortenedRouteId)
                             vehicleRefForRoute = new Map()
                             vehicleObjsRefs.current.set(shortenedRouteId, vehicleRefForRoute)
                         }
@@ -183,7 +183,7 @@ export const MapVehicleElements = () =>{
         log.error("error in vehicle element creation",e)
     }
     useEffect(() => {
-        log.info("map vehicle elements routeIds",shortenedRouteIds,vehicleObjsRefs.current)
+        log.info("map vehicle elements ids",shortenedRouteIds,vehicleObjsRefs.current)
         vehicleLayer.current.addTo(map)
         openPopup()
         log.info("map vehicle elements layer group ref",vehicleLayer.current,vehicleLayer.current.getLayers().length)

@@ -1,10 +1,13 @@
 import React, {useContext} from 'react';
+import {cn} from "../util/coreUtils";
+
 
 interface ChangeViewButtonProps {
-  text: string;
+  text?: string | JSX.Element;
   color?: string;
   className?: string;
   textClassName?: string;
+  iconClassName?: string;
   iconElement?: React.ReactNode;
   onClick?: (e: React.MouseEvent) => void;
 }
@@ -12,33 +15,31 @@ interface ChangeViewButtonProps {
 const ChangeViewButton = ({ 
   text, 
   color,
-  className = "w-full", 
-  textClassName = "text-white",
+  className, 
+  textClassName,
+  iconClassName,
   iconElement,
   onClick
 }: ChangeViewButtonProps) => {
   return (
     <button 
       {...(color ? { style: { backgroundColor: color } } : {})}
-      className={`
-        ${className}
-        px-[1rem] py-[.98rem]
-        flex items-center justify-start gap-2 rounded-lg 
-        font-bold no-underline border-none
-        transition-opacity hover:opacity-90 no-underline
-      `}
+      className={cn(
+        `px-4 py-4 text-white flex items-center  w-full
+        justify-start gap-2 rounded-lg font-bold 
+        no-underline border-none transition-opacity hover:opacity-90`,
+        className
+      )}
       type = "button"
       onClick={onClick}
     >
-      {iconElement && (<svg className='' width="1.85rem" height="1.6rem" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">{iconElement}</svg>
-    )}
-      <span className={`${textClassName} py-[.3rem] text-lg leading-[1rem] no-underline truncate ${textClassName}`}>
+      {iconElement}
+      <span className={cn("text-lg",textClassName)}>
         {text}
       </span>
     </button>
   );
 };
-
 
 
 export {ChangeViewButton, ChangeViewButtonProps}

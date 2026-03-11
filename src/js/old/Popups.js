@@ -199,12 +199,12 @@ OBA.Popups = (function() {
 			var element = jQuery(alertLink);
 			var idParts = element.attr("id").split("|");
 			var stopId = idParts[1];
-			var routeId = idParts[2];
+			var id = idParts[2];
 			var routeShortName = idParts[3];
 
 			element.click(function(e) {
 				e.preventDefault();
-				var alertElement = jQuery('#alerts-' + routeId.hashCode());
+				var alertElement = jQuery('#alerts-' + id.hashCode());
 				if (alertElement.length === 0) {
 					expandAlerts = true;
 					jQuery.history.load(stopId + " " + routeShortName);
@@ -657,7 +657,7 @@ OBA.Popups = (function() {
 		}
 
 	    jQuery.each(visits, function(_, monitoredJourney) {
-			var routeId = monitoredJourney.MonitoredVehicleJourney.LineRef;
+			var id = monitoredJourney.MonitoredVehicleJourney.LineRef;
 			var routeShortName = monitoredJourney.MonitoredVehicleJourney.PublishedLineName;
 			
 			if (filterExistsInResults && routeShortName !== routeFilter) {
@@ -667,13 +667,13 @@ OBA.Popups = (function() {
 			var directionId = monitoredJourney.MonitoredVehicleJourney.DirectionRef;
 			var destinationNameHash = monitoredJourney.MonitoredVehicleJourney.DestinationName.hashCode();
 
-			if(typeof routeAndDirectionWithArrivals[routeId + "_" + directionId + "_" + destinationNameHash] === 'undefined') {
-				routeAndDirectionWithArrivals[routeId + "_" + directionId + "_" + destinationNameHash] = [];
-				delete routeAndDirectionWithoutArrivals[routeId + "_" + directionId + "_" + destinationNameHash];
+			if(typeof routeAndDirectionWithArrivals[id + "_" + directionId + "_" + destinationNameHash] === 'undefined') {
+				routeAndDirectionWithArrivals[id + "_" + directionId + "_" + destinationNameHash] = [];
+				delete routeAndDirectionWithoutArrivals[id + "_" + directionId + "_" + destinationNameHash];
 				routeAndDirectionWithoutArrivalsCount--;
 			}
 
-			routeAndDirectionWithArrivals[routeId + "_" + directionId + "_" + destinationNameHash].push(monitoredJourney.MonitoredVehicleJourney);
+			routeAndDirectionWithArrivals[id + "_" + directionId + "_" + destinationNameHash].push(monitoredJourney.MonitoredVehicleJourney);
 			routeAndDirectionWithArrivalsCount++;
 		});	    
 	    
