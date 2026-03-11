@@ -1648,7 +1648,9 @@
       position: relative
       z-index: 2
       font-size: 1.125rem
-      // width: auto!important
+      // todo: ideally we'd continue without minimum widths but this is on a tight timeline
+      &:has(.popup-info .route, .popup-info .stop-code)
+        min-width: 250px
       >.icon
         height: 2.5rem
         width: auto
@@ -1746,7 +1748,6 @@
     .leaflet-popup-content-wrapper
       &::before
         content: none
-
     +mq($sidebar-switch)
       .popup-info
         .view-full
