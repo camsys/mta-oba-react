@@ -16,11 +16,30 @@ export interface FavoritesCookie{
     favorites : [StopInterface | RouteInterface]
 }
 
-export interface StopInterface {
+
+export interface ObaDatumInterface {
+    datumId: string;
+    datumName: string;
+}
+
+
+export interface StopInterface extends ObaDatumInterface{
+    /** @deprecated Use datumName instead */
     name: string;
     longLat: [number, number];
+    /** @deprecated Use datumId instead */
     id: string;
     stopDirection: string;
+}
+
+
+export interface RouteInterface extends ObaDatumInterface{
+    color: string;
+    /** @deprecated Use datumId instead */
+    routeId: string;
+    /** @deprecated Use datumName instead */
+    routeTitle: string;
+    description: string;
 }
 
 
@@ -99,6 +118,8 @@ export interface RouteMatchDirectionInterface {
 
 export function createStopInterface(stopJson: any): StopInterface {
     return {
+        datumName: stopJson.name,
+        datumId: stopJson.id,
         name: stopJson.name,
         longLat: [stopJson.latitude, stopJson.longitude],
         id: stopJson.id,
@@ -286,27 +307,25 @@ export class SearchMatch {
     }
 }
 
-export interface RouteInterface {
-    color: string;
-    routeId: string;
-    routeTitle: string;
-    description: string;
-}
-
 export class RouteMatch extends SearchMatch implements RouteInterface{
     color: string;
     routeId: string;
     routeTitle: string;
     description: string;
     directions: RouteMatchDirectionInterface[];
+    datumId: string;
+    datumName: string;
 
     constructor(data: any) {
         super(MatchType.RouteMatch);
+        this.datumId = data?.id.replace("+","-SBS");
+        this.datumName = data?.shortName + " " + data?.longName;
         this.color = data?.color;
-        this.routeId = data?.id.replace("+","-SBS");
-        this.routeTitle = data?.shortName + " " + data?.longName;
+        this.routeId = this.datumId
+        this.routeTitle = this.datumName;
         this.description = data?.description;
         this.directions = [];
+        
     }
 }
 
