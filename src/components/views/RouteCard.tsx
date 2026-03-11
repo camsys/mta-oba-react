@@ -16,18 +16,19 @@ import {useFavorite} from "../util/MiscStateComponent";
 import {ViewSearchItem} from "./MiscComponents";
 import log from 'loglevel';
 import { RouteFavoriteButton} from "./AddToFavoriteButtons";
+import { RouteCardHeader, RouteCardHeaderMany } from "./CardComponents";
 import {cn} from "../util/coreUtils";
-import {BusStopIcon, StarBorderIcon, VehicleIcon} from "../shared/icons";
+import { Route } from "react-router";
 
 export function RouteStopComponent
-({stopDatum, routeId, index}:{stopDatum:StopInterface,routeId:string,index:string}):JSX.Element{
+({stopDatum, id, index}:{stopDatum:StopInterface,id:string,index:string}):JSX.Element{
 
     const { highlightId } = useHighlight();
     const {vehicleState} = useContext(VehicleStateContext)
     const { search } = useNavigation();
-    routeId=routeId.split("_")[1]
+    id=id.split("_")[1]
 
-    let vehicleChildComponents = vehicleState[routeId+stopSortedDataIdentifier]
+    let vehicleChildComponents = vehicleState[id+stopSortedDataIdentifier]
     let hasVehicleChildren = vehicleChildComponents!==null && typeof vehicleChildComponents!=="undefined"
     if(hasVehicleChildren){
         hasVehicleChildren = vehicleChildComponents.has(stopDatum.id)
@@ -71,8 +72,8 @@ export function RouteStopComponent
 export const RouteDirection = ({datum,color,collapsed}: { datum: RouteDirectionInterface, color: string ,collapsed:boolean}): JSX.Element => {
     log.info("generating RouteDirectionComponent:", datum)
     return (
-        <div className="route-direction inner-card collapsible" key={datum.routeId+datum.directionId}>
-            <button className="card-header collapse-trigger" aria-haspopup="true" aria-expanded="false" aria-label={"Toggle "+datum.routeId+" to " + datum.routeDestination +" Open / Closed"} tabIndex={collapsed?-1:0}>
+        <div className="route-direction inner-card collapsible" key={datum.id+datum.directionId}>
+            <button className="card-header collapse-trigger" aria-haspopup="true" aria-expanded="false" aria-label={"Toggle "+datum.id+" to " + datum.routeDestination +" Open / Closed"} tabIndex={collapsed?-1:0}>
                 <span className="label">to <strong> {datum.routeDestination}</strong>
                     {datum.hasUpcomingService?null:<><br/><em className="no-scheduled-service">No scheduled service at this time.</em></>}
                 </span>
@@ -84,7 +85,7 @@ export const RouteDirection = ({datum,color,collapsed}: { datum: RouteDirectionI
                     {
                         datum.routeStopComponentsData.map(
                             (stopDatum,index) =>{
-                                return <RouteStopComponent stopDatum={stopDatum} routeId = {datum.routeId} key = {index}/>})
+                                return <RouteStopComponent stopDatum={stopDatum} id = {datum.id} key = {index}/>})
                     }
                 </ul>
             </div>
@@ -101,13 +102,13 @@ function CardDetails({routeMatch}:{routeMatch:RouteMatch}) : JSX.Element{
 }
 
 export function RouteCardContent({ routeMatch, collapsed}: {RouteMatch,boolean}): JSX.Element  {
-    let routeId = routeMatch.routeId.split("_")[1];
-    let serviceAlertIdentifier = routeMatch.routeId;
+    let id = routeMatch.id.split("_")[1];
+    let serviceAlertIdentifier = routeMatch.id;
 
     return(
         <React.Fragment>
             <CardDetails routeMatch={routeMatch}/>
-            <ServiceAlertContainerComponent {...{ routeId, serviceAlertIdentifier, collapsed}} />
+            <ServiceAlertContainerComponent {...{ id, serviceAlertIdentifier, collapsed}} />
             {routeMatch.directions.map((dir, index) =>
                 (<RouteDirection
                     datum={dir.routeDirectionComponentData}
@@ -115,28 +116,7 @@ export function RouteCardContent({ routeMatch, collapsed}: {RouteMatch,boolean})
         </React.Fragment>)
 }
 
-export function RouteCardHeader({ routeMatch}: RouteMatch): JSX.Element{
-    const { highlightId } = useHighlight();
-    const {isFavorite} = useFavorite()
 
-    let favorited = isFavorite(routeMatch)
-
-    return(<>
-        <div
-            className={cn("card-header", { favorite: favorited })}
-            style={{ borderColor: "#" + routeMatch.color }}
-            onMouseEnter={() => highlightId(routeMatch.routeId)}
-            onMouseLeave={() => highlightId(null)}
-        >
-            <h3 className="card-title">
-                <VehicleIcon className={cn("icon w-5 h-5 mb-1", { "hidden": favorited } )}/>
-                <StarBorderIcon className={cn("icon w-5 h-5 mb-1", { "hidden": !favorited } )}/>
-                {OBA.Config.noWidows(routeMatch.routeTitle)}
-            </h3>
-        </div>
-    </>)
-
-}
 
 
 export function RouteCard({ routeMatch}: RouteMatch): JSX.Element {
@@ -147,8 +127,8 @@ export function RouteCard({ routeMatch}: RouteMatch): JSX.Element {
     const { highlightId } = useHighlight();
     return (
         <React.Fragment>
-            <div className={`card route-card ${routeMatch.routeId}}`}>
-                <RouteCardHeader routeMatch={routeMatch}/>
+            <div className={`card route-card ${routeMatch.id}}`}>
+                <RouteCardHeader match={routeMatch}/>
                 <div className="card-content">
                     <RouteCardContent routeMatch={routeMatch}/>
                     
@@ -172,35 +152,29 @@ export function CollapsableRouteCard({ routeMatch, oneOfMany}: {routeMatch:Route
 
     const { highlightId } = useHighlight();
 
-    let routeId = routeMatch.routeId.split("_")[1];
-    let serviceAlertIdentifier = routeMatch.routeId;
+    let id = routeMatch.id.split("_")[1];
+    let serviceAlertIdentifier = routeMatch.id;
     let {getServiceAlert} = useServiceAlert();
-    let hasServiceAlert = getServiceAlert(routeId,serviceAlertIdentifier)!==null;
+    let hasServiceAlert = getServiceAlert(id,serviceAlertIdentifier)!==null;
     return (
         <React.Fragment>
             <div className={`card route-card
              ${oneOfMany?"collapsible":""}`}>
                 {oneOfMany?
-                <button
-                    className="card-header collapse-trigger"
-                    style={{ borderColor: "#" + routeMatch.color }}
-                    onMouseEnter={() => highlightId(routeMatch.routeId)}
-                    onMouseLeave={() => highlightId(null)}
-                    aria-haspopup="true" aria-expanded="true"
-                    aria-label={`Toggle ${routeMatch.routeId.split("_")[1]} ${routeMatch.description} open/close`}
-                >
-                    {hasServiceAlert?<ServiceAlertSvg/>:null}
-                    <span className="card-title label">{OBA.Config.noWidows(routeMatch.routeTitle)}</span>
-                </button>
+                <RouteCardHeaderMany match={routeMatch} hasServiceAlert={hasServiceAlert}/>
+                // <button
+                //     className="card-header collapse-trigger"
+                //     style={{ borderColor: "#" + routeMatch.color }}
+                //     onMouseEnter={() => highlightId(routeMatch.id)}
+                //     onMouseLeave={() => highlightId(null)}
+                //     aria-haspopup="true" aria-expanded="true"
+                //     aria-label={`Toggle ${routeMatch.id.split("_")[1]} ${routeMatch.description} open/close`}
+                // >
+                //     {hasServiceAlert?<ServiceAlertSvg/>:null}
+                //     <span className="card-title label">{OBA.Config.noWidows(routeMatch.name)}</span>
+                // </button>
                 :
-                <div
-                    className="card-header"
-                    style={{ borderColor: "#" + routeMatch.color }}
-                    onMouseEnter={() => highlightId(routeMatch.routeId)}
-                    onMouseLeave={() => highlightId(null)}
-                >
-                    <h3 className="card-title">{OBA.Config.noWidows(routeMatch.routeTitle)}</h3>
-                </div>
+                <RouteCardHeader match={routeMatch}/>
             }
 
                 <div className="collapse-content">
@@ -208,7 +182,7 @@ export function CollapsableRouteCard({ routeMatch, oneOfMany}: {routeMatch:Route
                         <RouteCardContent routeMatch={routeMatch} collapsed={true}/>
                         <ul className="menu icon-menu card-menu">
                             <li>
-                                <ViewSearchItem datumId={routeMatch.routeId} text={"Route"} collapsed={true}/>
+                                <ViewSearchItem datumId={routeMatch.id} text={"Route"} collapsed={true}/>
                             </li>
                         </ul>
                     </div>

@@ -17,7 +17,7 @@ import {getSearchTermAdditions} from "./keyWordsAndSupportUtils.ts"
 
 
 
-function extractData (routeId,siri){
+function extractData (id,siri){
     let update= false;
     log.info("extractData from Siri")
     let keyword = "serviceAlert & vehicle"
@@ -84,7 +84,7 @@ function extractData (routeId,siri){
         log.info('no '+keyword+' recieved. not processing '+keyword)
     }
     log.info("maps made via siri: ",[vehicleDataMap,serviceAlertDataMap,stopsToVehiclesMap])
-    return [[routeId,vehicleDataMap,serviceAlertDataMap,stopsToVehiclesMap,lastCallTime],update]
+    return [[id,vehicleDataMap,serviceAlertDataMap,stopsToVehiclesMap,lastCallTime],update]
 }
 
 
@@ -99,13 +99,13 @@ function updateVehiclesState(updates,setState){
     setState(stateFunc);
 }
 
-const fetchAndProcessVehicleMonitoring = async ([routeId,targetAddress]) =>{
+const fetchAndProcessVehicleMonitoring = async ([id,targetAddress]) =>{
     log.info("searching for siri at: ",targetAddress)
     return fetch(targetAddress)
         .then((response) => response.json())
         .then((siri) => {
             log.info("reading serviceAlert & vehicle from " + targetAddress)
-            let processedData = extractData(routeId,siri)
+            let processedData = extractData(id,siri)
             let update = processedData[1]
             if(update){
                 log.info("should update serviceAlert & vehicle state?",update)
@@ -153,12 +153,12 @@ const siriGetAndSetVehicles = (targetAddresses,vehicleState, setState, dataProce
         let dataObjsList = returnedPromises.filter(
             (result) => result !== null && typeof result !== "undefined")
             .map(
-                ([routeId, vehicleDataList, serviceAlertDataList, stopsToVehicles, lastCallTime]) => {
+                ([id, vehicleDataList, serviceAlertDataList, stopsToVehicles, lastCallTime]) => {
                     let dataObj = {}
-                    dataObj[routeId + serviceAlertDataIdentifier] = serviceAlertDataList
-                    dataObj[routeId + vehicleDataIdentifier] = vehicleDataList
-                    dataObj[routeId + updatedTimeIdentifier] = lastCallTime
-                    dataObj[routeId + stopSortedDataIdentifier] = stopsToVehicles
+                    dataObj[id + serviceAlertDataIdentifier] = serviceAlertDataList
+                    dataObj[id + vehicleDataIdentifier] = vehicleDataList
+                    dataObj[id + updatedTimeIdentifier] = lastCallTime
+                    dataObj[id + stopSortedDataIdentifier] = stopsToVehicles
                     return dataObj
                 })
         if (dataObjsList.length === 0) {
@@ -177,24 +177,24 @@ const siriGetAndSetVehicles = (targetAddresses,vehicleState, setState, dataProce
     }).catch((x) => log.info("siri call issue!", x))
 }
 
-const getTargetList = (routeIdList, currentCard) =>{
+const getTargetList = (idList, currentCard) =>{
     let baseTargetAddress = "https://" + process.env.ENV_ADDRESS + "/" + process.env.VEHICLE_MONITORING_ENDPOINT
 
-    return [...routeIdList].map((routeId)=>{
-        let operatorRef = routeId.split("_")[0].replace(" ","+");
-        const lineRef = routeId.split("_")[1];
-        return [lineRef,baseTargetAddress+"OperatorRef=" +operatorRef + "&LineRef"+"=" + routeId.replace("-SBS","%2B") +getSearchTermAdditions(currentCard)];
+    return [...idList].map((id)=>{
+        let operatorRef = id.split("_")[0].replace(" ","+");
+        const lineRef = id.split("_")[1];
+        return [lineRef,baseTargetAddress+"OperatorRef=" +operatorRef + "&LineRef"+"=" + id.replace("-SBS","%2B") +getSearchTermAdditions(currentCard)];
     })
 }
 
 export const siriGetVehiclesForVehicleViewEffect = (currentCard, vehicleState, setState ) => {
-    let routeIdList = currentCard.routeIdList
+    let idList = currentCard.idList
     let vehicleId = currentCard.vehicleId
-    log.info("looking for Siri Data for vehicle!",routeIdList,vehicleId)
-    let targetAddresses = getTargetList(routeIdList,currentCard)
+    log.info("looking for Siri Data for vehicle!",idList,vehicleId)
+    let targetAddresses = getTargetList(idList,currentCard)
 
     if(targetAddresses.length!==1){
-        log.error("a very odd situation has occured and should be reported in siriGetVehiclesForVehicleViewEffect",routeIdList,vehicleId,vehicleState,setState)
+        log.error("a very odd situation has occured and should be reported in siriGetVehiclesForVehicleViewEffect",idList,vehicleId,vehicleState,setState)
     }
     targetAddresses = targetAddresses.concat(targetAddresses.map(adr=>{
         return [adr[0],adr[1]+`&VehicleRef=${vehicleId.split('_')[1]}&MaximumNumberOfCallsOnwards=50&VehicleMonitoringDetailLevel=calls`]}))
@@ -203,8 +203,8 @@ export const siriGetVehiclesForVehicleViewEffect = (currentCard, vehicleState, s
 }
 
 export const siriGetVehiclesForRoutesEffect = (currentCard,vehicleState, setState ) => {
-    let routeIdList = currentCard.routeIdList
-    log.info("looking for Siri Data!",routeIdList)
-    let targetAddresses = getTargetList(routeIdList, currentCard)
+    let idList = currentCard.idList
+    log.info("looking for Siri Data!",idList)
+    let targetAddresses = getTargetList(idList, currentCard)
     return siriGetAndSetVehiclesForVehicleMonitoring(targetAddresses,vehicleState,setState)
 };

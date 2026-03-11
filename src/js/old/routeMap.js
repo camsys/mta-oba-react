@@ -49,29 +49,29 @@ OBA.RouteMap = function(mapNode, initCallbackFn, serviceAlertCallbackFn) {
     var normalLocationIcon = locationIcons[0], activeLocationIcon = activeLocationIcons[0];
 
     // POLYLINE
-    function removePolylines(routeId) {
-        if(typeof polylinesByRoute[routeId] !== 'undefined') {
-            var hoverPolyines = hoverPolylinesByRoute[routeId];
+    function removePolylines(id) {
+        if(typeof polylinesByRoute[id] !== 'undefined') {
+            var hoverPolyines = hoverPolylinesByRoute[id];
 
             jQuery.each(hoverPolyines, function(_, polyline) {
                 polyline.setMap(null);
             });
 
-            var polylines = polylinesByRoute[routeId];
+            var polylines = polylinesByRoute[id];
 
             jQuery.each(polylines, function(_, polyline) {
                 polyline.setMap(null);
             });
 
-            delete polylinesByRoute[routeId];
-            delete hoverPolylinesByRoute[routeId];
+            delete polylinesByRoute[id];
+            delete hoverPolylinesByRoute[id];
         }
     }
 
-    function addPolylines(routeId, encodedPolylines, color) {
-        if(typeof polylinesByRoute[routeId] === 'undefined') {
-            polylinesByRoute[routeId] = [];
-            hoverPolylinesByRoute[routeId] = [];
+    function addPolylines(id, encodedPolylines, color) {
+        if(typeof polylinesByRoute[id] === 'undefined') {
+            polylinesByRoute[id] = [];
+            hoverPolylinesByRoute[id] = [];
         }
 
         jQuery.each(encodedPolylines, function(_, encodedPolyline) {
@@ -106,8 +106,8 @@ OBA.RouteMap = function(mapNode, initCallbackFn, serviceAlertCallbackFn) {
 
             var hoverShape = new google.maps.Polyline(hoverOptions);
 
-            polylinesByRoute[routeId].push(shape);
-            hoverPolylinesByRoute[routeId].push(hoverShape);
+            polylinesByRoute[id].push(shape);
+            hoverPolylinesByRoute[id].push(hoverShape);
         });
     }
 
@@ -194,30 +194,30 @@ OBA.RouteMap = function(mapNode, initCallbackFn, serviceAlertCallbackFn) {
     }
 
     // VEHICLES
-    function updateVehicles(routeId) {
-        if(typeof vehiclesByRoute[routeId] === 'undefined') {
-            vehiclesByRoute[routeId] = {};
+    function updateVehicles(id) {
+        if(typeof vehiclesByRoute[id] === 'undefined') {
+            vehiclesByRoute[id] = {};
         }
 
-        var routeIdParts = routeId.split("_");
-        var agencyId = routeIdParts[0];
-        var routeIdWithoutAgency = routeIdParts[1];
+        var idParts = id.split("_");
+        var agencyId = idParts[0];
+        var idWithoutAgency = idParts[1];
 
-        var params = { OperatorRef: agencyId, LineRef: routeIdWithoutAgency };
+        var params = { OperatorRef: agencyId, LineRef: idWithoutAgency };
 
         if(OBA.Config.time !== null) {
             params.time = OBA.Config.time;
         }
 
-        if(typeof siriVMRequestsByRouteId[routeId] !== 'undefined' && siriVMRequestsByRouteId[routeId] !== null) {
-            siriVMRequestsByRouteId[routeId].abort();
+        if(typeof siriVMRequestsByRouteId[id] !== 'undefined' && siriVMRequestsByRouteId[id] !== null) {
+            siriVMRequestsByRouteId[id].abort();
         }
-        siriVMRequestsByRouteId[routeId] = jQuery.getJSON(OBA.Config.siriVMUrl + "&callback=?", params,
+        siriVMRequestsByRouteId[id] = jQuery.getJSON(OBA.Config.siriVMUrl + "&callback=?", params,
             function(json) {
                 // service alerts
                 if(typeof serviceAlertCallbackFn === 'function') {
                     if(typeof json.Siri.ServiceDelivery.SituationExchangeDelivery !== 'undefined' && json.Siri.ServiceDelivery.SituationExchangeDelivery.length > 0) {
-                        serviceAlertCallbackFn(routeId,
+                        serviceAlertCallbackFn(id,
                             json.Siri.ServiceDelivery.SituationExchangeDelivery[0].Situations.PtSituationElement);
                     }
                 }
@@ -238,7 +238,7 @@ OBA.RouteMap = function(mapNode, initCallbackFn, serviceAlertCallbackFn) {
                     var marker = vehiclesById[vehicleId];
 
                     // has route been removed while in the process of updating?
-                    if(typeof vehiclesByRoute[routeId] === 'undefined') {
+                    if(typeof vehiclesByRoute[id] === 'undefined') {
                         return false;
                     }
 
@@ -249,7 +249,7 @@ OBA.RouteMap = function(mapNode, initCallbackFn, serviceAlertCallbackFn) {
                             map: map,
                             title: "Vehicle " + vehicleIdWithoutAgency + ", " + routeName + " to " + headsign,
                             vehicleId: vehicleId,
-                            routeId: routeId
+                            id: id
                         };
 
                         marker = new google.maps.Marker(markerOptions);
@@ -301,23 +301,23 @@ OBA.RouteMap = function(mapNode, initCallbackFn, serviceAlertCallbackFn) {
                     vehiclesByIdInResponse[vehicleId] = true;
 
                     // maps used to keep track of marker
-                    vehiclesByRoute[routeId][vehicleId] = marker;
+                    vehiclesByRoute[id][vehicleId] = marker;
                     vehiclesById[vehicleId] = marker;
                 });
 
                 // remove vehicles from map that are no longer in the response, for all routes in the query
                 jQuery.each(vehiclesById, function(vehicleOnMap_vehicleId, vehicleOnMap) {
                     if(typeof vehiclesByIdInResponse[vehicleOnMap_vehicleId] === 'undefined') {
-                        var vehicleOnMap_routeId = vehicleOnMap.routeId;
+                        var vehicleOnMap_id = vehicleOnMap.id;
 
                         // the route of the vehicle on the map wasn't in the query, so don't check it.
-                        if(routeId !== vehicleOnMap_routeId) {
+                        if(id !== vehicleOnMap_id) {
                             return;
                         }
 
                         vehicleOnMap.setMap(null);
                         delete vehiclesById[vehicleOnMap_vehicleId];
-                        delete vehiclesByRoute[vehicleOnMap_routeId][vehicleOnMap_vehicleId];
+                        delete vehiclesByRoute[vehicleOnMap_id][vehicleOnMap_vehicleId];
                     }
                 });
                 var overlay = new google.maps.OverlayView();
@@ -328,10 +328,10 @@ OBA.RouteMap = function(mapNode, initCallbackFn, serviceAlertCallbackFn) {
             });
     }
 
-    function removeVehicles(routeId) {
-        if(typeof vehiclesByRoute[routeId] !== 'undefined') {
-            var vehicles = vehiclesByRoute[routeId];
-            delete vehiclesByRoute[routeId];
+    function removeVehicles(id) {
+        if(typeof vehiclesByRoute[id] !== 'undefined') {
+            var vehicles = vehiclesByRoute[id];
+            delete vehiclesByRoute[id];
 
             jQuery.each(vehicles, function(_, marker) {
                 var vehicleId = marker.vehicleId;
@@ -449,8 +449,8 @@ OBA.RouteMap = function(mapNode, initCallbackFn, serviceAlertCallbackFn) {
 
     // timer to update data periodically
     setInterval(function() {
-        jQuery.each(vehiclesByRoute, function(routeId, vehicles) {
-            updateVehicles(routeId);
+        jQuery.each(vehiclesByRoute, function(id, vehicles) {
+            updateVehicles(id);
         });
     }, OBA.Config.refreshInterval);
 
@@ -524,8 +524,8 @@ OBA.RouteMap = function(mapNode, initCallbackFn, serviceAlertCallbackFn) {
         },
 
         // these methods are for routes *already on* the map
-        highlightRoute: function(routeId) {
-            var polylines = hoverPolylinesByRoute[routeId];
+        highlightRoute: function(id) {
+            var polylines = hoverPolylinesByRoute[id];
 
             if(polylines !== null) {
                 jQuery.each(polylines, function(_, polyline) {
@@ -534,8 +534,8 @@ OBA.RouteMap = function(mapNode, initCallbackFn, serviceAlertCallbackFn) {
             }
         },
 
-        unhighlightRoute: function(routeId) {
-            var polylines = hoverPolylinesByRoute[routeId];
+        unhighlightRoute: function(id) {
+            var polylines = hoverPolylinesByRoute[id];
 
             if(polylines !== null) {
                 jQuery.each(polylines, function(_, polyline) {
@@ -581,8 +581,8 @@ OBA.RouteMap = function(mapNode, initCallbackFn, serviceAlertCallbackFn) {
             });
         },
 
-        panToRoute: function(routeId) {
-            var polylines = polylinesByRoute[routeId];
+        panToRoute: function(id) {
+            var polylines = polylinesByRoute[id];
 
             if(polylines === null) {
                 return;

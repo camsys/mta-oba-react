@@ -206,7 +206,7 @@ OBA.Sidebar = function() {
 		loading.show();
 
 		// multiple of these can be out at once without being inconsistent UI-wise.
-		jQuery.getJSON(Config.stopsOnRouteForDirection + "?callback=?", { routeId: routeResult.id, directionId: direction.directionId },
+		jQuery.getJSON(Config.stopsOnRouteForDirection + "?callback=?", { id: routeResult.id, directionId: direction.directionId },
 		function(json) { 
 			loading.hide();
 
@@ -707,8 +707,8 @@ OBA.Sidebar = function() {
 						(wizard !== null) ? null : wizard = Wizard(routeMap);
 					}
 				});
-			}, function(routeId, serviceAlerts) { // service alert notification handler
-				var serviceAlertsContainer = jQuery("#alerts-" + routeId.hashCode());
+			}, function(id, serviceAlerts) { // service alert notification handler
+				var serviceAlertsContainer = jQuery("#alerts-" + id.hashCode());
 				if(serviceAlertsContainer.length === 0) {
 					return;
 				}

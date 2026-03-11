@@ -15,7 +15,7 @@ export const createVehicleMarker = (
     const marker = L.marker(vehicleDatum.longLat, {
         icon: icon,
         zIndexOffset: zIndexOverride,
-        title: `Vehicle ${vehicleIdWithoutAgency}, ${vehicleDatum.routeId} to ${vehicleDatum.destination}`,
+        title: `Vehicle ${vehicleIdWithoutAgency}, ${vehicleDatum.id} to ${vehicleDatum.destination}`,
         keyboard: false,
     });
 
@@ -23,7 +23,7 @@ export const createVehicleMarker = (
     const popupContent = `
         <img src="${vehicleDatum?.strollerVehicle ? busStroller : bus}" alt="bus" class="icon"/>
         <div class="popup-info">
-            <span class="route">${vehicleDatum.routeId.split("_")[1]} ${vehicleDatum.destination}</span>
+            <span class="route">${vehicleDatum.id.split("_")[1]} ${vehicleDatum.destination}</span>
             <span class="vehicle">Vehicle #${vehicleIdWithoutAgency}</span>
             <button class="view-full close-map" aria-label="view full vehicle details">
                 View Vehicle Details

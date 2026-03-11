@@ -34,10 +34,10 @@ const VehiclesApproachingStopsProvider = ({children}) => {
 };
 
 
-const shortenRoute = (routeId) => {
-    let routeIdParts = routeId.split("_");
-    let routeIdWithoutAgency = routeIdParts[1];
-    return routeIdWithoutAgency;
+const shortenRoute = (id) => {
+    let idParts = id.split("_");
+    let idWithoutAgency = idParts[1];
+    return idWithoutAgency;
 }
 
 const vehicleDataIdentifier = "_vehicleData"
