@@ -309,7 +309,9 @@ export class SearchMatch {
 
 export class RouteMatch extends SearchMatch implements RouteInterface{
     color: string;
+    /** @deprecated Use datumId instead */
     routeId: string;
+    /** @deprecated Use datumName instead */
     routeTitle: string;
     description: string;
     directions: RouteMatchDirectionInterface[];
@@ -318,11 +320,9 @@ export class RouteMatch extends SearchMatch implements RouteInterface{
 
     constructor(data: any) {
         super(MatchType.RouteMatch);
-        this.datumId = data?.id.replace("+","-SBS");
-        this.datumName = data?.shortName + " " + data?.longName;
+        this.datumId = this.routeId = data?.id.replace("+","-SBS");
+        this.datumName = this.routeTitle = data?.shortName + " " + data?.longName;
         this.color = data?.color;
-        this.routeId = this.datumId
-        this.routeTitle = this.datumName;
         this.description = data?.description;
         this.directions = [];
         
@@ -345,7 +345,9 @@ export class GeocodeMatch extends SearchMatch {
 export class StopMatch extends SearchMatch implements StopInterface{
     latitude: number;
     longitude: number;
+    /** @deprecated Use datumName instead */
     name: string;
+    /** @deprecated Use datumId instead */
     id: string;
     routeMatches: [RouteMatch];
     longLat: [number, number];
@@ -355,15 +357,14 @@ export class StopMatch extends SearchMatch implements StopInterface{
 
     constructor(data: any) {
         super(MatchType.StopMatch);
+        this.datumId = this.id = data.id;
+        this.datumName = this.name = data.name;
         this.latitude = data.latitude;
         this.longitude = data.longitude;
-        this.name = data.name;
-        this.id = data.id;
         this.routeMatches = [];
         this.longLat = [data.latitude,data.longitude];
         this.stopDirection = data.stopDirection;
-        this.datumId = data.id;
-        this.datumName = data.name;
+
     }
 }
 
