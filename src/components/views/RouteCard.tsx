@@ -16,7 +16,7 @@ import {useFavorite} from "../util/MiscStateComponent";
 import {ViewSearchItem} from "./MiscComponents";
 import log from 'loglevel';
 import { RouteFavoriteButton} from "./AddToFavoriteButtons";
-import { RouteCardHeader, RouteCardHeaderMany } from "./CardHeaderComponents";
+import { RouteCardHeader, RouteCardHeaderMany } from "./CardComponents";
 import {cn} from "../util/coreUtils";
 import { Route } from "react-router";
 

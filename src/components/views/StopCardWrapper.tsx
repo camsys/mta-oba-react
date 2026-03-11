@@ -23,7 +23,7 @@ import {ViewSearchItem} from "./MiscComponents";
 import log from 'loglevel';
 import {v4 as uuidv4} from "uuid";
 import { StopFavoriteButton } from './AddToFavoriteButtons.tsx';
-import { StopCardHeader, StopCardHeaderMany } from "./CardHeaderComponents.tsx";
+import { StopCardHeader, StopCardHeaderMany } from "./CardComponents";
 
 
 
