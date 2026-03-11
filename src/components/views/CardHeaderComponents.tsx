@@ -37,8 +37,9 @@ export function CardHeaderMany({ match, color, IconComponent,hasServiceAlert, Ic
                     aria-haspopup="true" aria-expanded="true"
                     aria-label={`Toggle ${match.datumId.split("_")[1]} ${match.datumName} open/close`}
             >
-                {hasServiceAlert?<ServiceAlertSvg/>:null}
-                <span className="card-title label">
+                
+                <span className="card-title label flex items-center">
+                    {hasServiceAlert?<ServiceAlertSvg/>:null}
                     <IconComponent className={cn("icon w-5 h-5 mb-1", IconClass, { "hidden": favorited } )}/>
                     <StarBorderIcon className={cn("icon w-5 h-5 mb-1", { "hidden": !favorited } )}/>
                     {match.datumName}
@@ -73,7 +74,7 @@ export function CardHeader({ match, color, IconComponent, IconClass}: {
             onMouseEnter={() => highlightId(match.datumId)}
             onMouseLeave={() => highlightId(null)}
         >
-            <h3 className="card-title">
+            <h3 className="card-title flex items-center">
                 <IconComponent className={cn("icon w-5 h-5 mb-1", IconClass, { "hidden": favorited } )}/>
                 <StarBorderIcon className={cn("icon w-5 h-5 mb-1", { "hidden": !favorited } )}/>
                 {OBA.Config.noWidows(match.datumName)}
