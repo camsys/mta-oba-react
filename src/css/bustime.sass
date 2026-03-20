@@ -1493,8 +1493,10 @@
         position: absolute
         left: .25rem
         top: .25rem
-        transform: translateX(0.75px)
+        transform: translateX(0px)
         z-index: 1
+        +mq-reverse($sidebar-switch)
+          transform: translateX(0.5px)
       &:last-child
         &::after
           display: none
