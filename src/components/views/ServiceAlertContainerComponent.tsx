@@ -5,6 +5,8 @@ import log from 'loglevel';
 import DOMPurify from 'dompurify';
 
 
+const partKeywords = ["What's happening?","Note"]
+
 
 function ServiceAlertComponent  ({serviceAlertDatum}:ServiceAlertInterface) : JSX.Element {
     log.info("service alert component contents generating ",serviceAlertDatum)
@@ -28,7 +30,7 @@ function ServiceAlertComponent  ({serviceAlertDatum}:ServiceAlertInterface) : JS
                     ALLOW_DATA_ATTR: false,
                 });
                 try{
-                    return(<p key = {itt} dangerouslySetInnerHTML={{__html: part}}></p>)
+                    return(<p key = {itt} className={partKeywords.includes(part) ? "emphasis" : ""} dangerouslySetInnerHTML={{__html: part}}></p>)
                 }catch(e){
                     log.error("Error rendering service alert component", e)
                 }
