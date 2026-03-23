@@ -13,8 +13,8 @@ function HomeCard  () : JSX.Element {
 <ul className='[&_li]:p-0 [&_li]:py-3 [&_li:first-child]:pt-[.4rem] [&_li]:my-0 [&_li]:before:content-none'>
     <li><NearMeButton/></li>
     <li><AllRoutesButton/></li>
-    <li><ShuttleButton/></li>
     <li><FavoritesButton/></li>
+    <li><ShuttleButton/></li>
 </ul>
 </div>);
 }
