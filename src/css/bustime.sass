@@ -824,12 +824,17 @@
         +rounded
         transition: border-radius .25s ease-in-out, background-color .25s ease-in-out
         width: 100%
+        overflow: hidden
+        white-space: nowrap
+        text-overflow: ellipsis
         &:hover
           border-color: $white
         &:focus
           +input-focused
         &::placeholder
           color: $white
+          +mq-reverse($nine)
+            font-size: .875rem
       .react-autosuggest__container
         &--open
           input
