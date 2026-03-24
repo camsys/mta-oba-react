@@ -54,11 +54,24 @@ export function MeeplesComponentLi({vehicleDatum}: {VehicleRtInterface}):JSX.Ele
 }
 
 
+interface VehicleComponentProps {
+    vehicleDatum: VehicleRtInterface,
+    tabbable: number,
+    vehicleSearchFunction: (routeId: string, vehicleId: string) => void
+}
 
 
-function VehicleComponent({vehicleDatum,tabbable}:
-                              { vehicleDatum :VehicleRtInterface, tabbable: number}):JSX.Element{
+function VehicleComponent({vehicleDatum,tabbable}: Omit<VehicleComponentProps, 'vehicleSearchFunction'>):JSX.Element{
     let {vehicleSearch} = useNavigation()
+    return(<VehicleComponentBase vehicleDatum={vehicleDatum} tabbable={tabbable} vehicleSearchFunction={vehicleSearch}/>)
+}
+
+function VehicleComponentWithoutSearchSpecified({vehicleDatum,tabbable, vehicleSearchFunction}: VehicleComponentProps):JSX.Element{
+    return(<VehicleComponentBase vehicleDatum={vehicleDatum} tabbable={tabbable} vehicleSearchFunction={vehicleSearchFunction}/>)
+}
+
+
+function VehicleComponentBase({vehicleDatum,tabbable, vehicleSearchFunction}: VehicleComponentProps):JSX.Element{
 
     // log.info("generating VehicleComponent",vehicleDatum)
     let hasArrivalData = typeof vehicleDatum?.vehicleArrivalData!=='undefined';
@@ -108,7 +121,7 @@ function VehicleComponent({vehicleDatum,tabbable}:
                 <MeeplesComponentSpan vehicleDatum={vehicleDatum}/>
             </span>
             <a href="#" tabIndex={tabbable?0:-1}
-               onClick={(e)=>{e.preventDefault(); vehicleSearch(vehicleDatum.routeId, vehicleDatum.vehicleId)}}
+               onClick={(e)=>{e.preventDefault();   vehicleSearchFunction(vehicleDatum.routeId, vehicleDatum.vehicleId)}}
                className={vehicleDatum?.strollerVehicle?"bus stroller-friendly":"bus"}>{vehicleDatum.vehicleId.split("_")[1]}</a>
         </li>)
     } catch (e) {
@@ -119,4 +132,4 @@ function VehicleComponent({vehicleDatum,tabbable}:
     )
 
 }
-export default VehicleComponent
+export  { VehicleComponent, VehicleComponentWithoutSearchSpecified, VehicleComponentProps}

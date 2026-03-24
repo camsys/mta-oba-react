@@ -221,12 +221,14 @@ const getRoutesAddress=()=>{
 
 
 export const useNavigation = () =>{
+    log.info("initializing navigation effect")
     const { state, setState } = useContext(CardStateContext);
     const routes = useContext(RoutesContext) as RoutesObject
     const stops = useContext(StopsContext) as StopsObject
     const allRoutesSearchTerm = "allRoutes";
     const favoritesSearchTerm = "favorites";
     const nearbySearchTerms = new Set(["NEARBY","NEARBYROUTES","NEARBYSTOPS","NEARME", "NEAR ME"])
+    log.info("navigation effect state and contexts",state,routes,stops)
 
 
     const search = async (searchTerm) =>{
