@@ -111,7 +111,7 @@ function VehicleComponentBase({vehicleDatum,tabbable, vehicleSearchFunction}: Ve
     try {
         out = (<li className="pb-1 pl-2 pt-0 text-base" key={vehicleDatum.vehicleId}>
             <span className="bus-info">
-                <span className="approaching">
+                <span className="approaching font-bold">
                     <span>{OBA.Util.getArrivalEstimateForISOString(vehicleDatum?.vehicleArrivalData?.[0].ISOTime,vehicleDatum.lastUpdate)}</span>
                     {hasArrivalData?
                         vehicleDatum?.vehicleArrivalData?.[0].prettyDistance

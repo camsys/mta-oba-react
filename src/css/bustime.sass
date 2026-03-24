@@ -1606,8 +1606,21 @@
     transition: opacity .25s ease-in-out
     margin-bottom: 1.8rem!important
     border: $content-padding*.25 solid rgba(0,0,0,.25)
+    border-radius: 1rem
     &.vehicle-popup
       margin-bottom: 2.25rem!important
+    &::before
+      content: ''
+      width: 0
+      height: 0
+      border-left: .875rem solid transparent
+      border-right: .875rem solid transparent
+      border-top: .875rem solid $white
+      position: absolute
+      bottom: -.75rem
+      left: 50%
+      transform: translateX(-50%)
+      z-index: 1
     &::after
       content: ''
       width: 0
@@ -1624,7 +1637,8 @@
       color: $black
       box-shadow: none
       padding: 0
-      border-radius: 0
+      border-radius: 1rem
+      overflow: hidden
       margin: 0
       //shadow for close button
       &::before
@@ -1638,6 +1652,7 @@
         border-radius: 50%
         z-index: -1
     .leaflet-popup-content, .popup-content
+      border-radius: 1rem
       display: flex
       flex-wrap: nowrap
       gap: .3rem
@@ -1654,17 +1669,6 @@
       >.icon
         height: 2.5rem
         width: auto
-      &::after
-        content: ''
-        width: 0
-        height: 0
-        border-left: .875rem solid transparent
-        border-right: .875rem solid transparent
-        border-top: .875rem solid $white
-        position: absolute
-        bottom: -.75rem
-        left: 50%
-        transform: translateX(-50%)
     .leaflet-popup-tip
       display: none
     a.leaflet-popup-close-button
@@ -1714,17 +1718,95 @@
       .route, .name, .vehicle, .stop-code
         display: inline-block
         // white-space: nowrap
-      .view-full
-        text-align: left
-        font-size: 1rem
-        color: $original-mta-blue
-        padding: .65rem 0 0 0
-        margin: .65rem 0 0 0
-        border: none
-        outline: none
-        border-top: 1px solid currentColor
-        background: transparent
-        white-space: nowrap
+      .stop-code
+        font-size: 0.875rem
+    .route-directions
+      display: flex
+      flex-direction: column
+      gap: .4rem
+    .map-popup-content
+      >div
+        padding: .2rem 0 .2rem .35rem
+        font-size: .875rem
+        line-height: 1.3
+        display: flex
+        flex-direction: column
+        gap: .15rem
+      .label
+        display: block
+        border-left: $thick-border solid
+        padding-left: .35rem
+      li
+        list-style: none
+        padding-left: 0
+      &.has-service-alert
+        .label
+          display: flex
+          align-items: center
+          justify-content: space-between
+          gap: .35rem
+          &::after
+            content: ''
+            display: inline-block
+            width: 1rem
+            height: 1rem
+            background-image: url(../img/icon/alert_black-yellow.svg)
+            background-size: 100% auto
+            background-repeat: no-repeat
+            flex-shrink: 0
+    .view-full
+      text-align: left
+      font-size: 1rem
+      color: $original-mta-blue
+      padding: .65rem 0 0 0
+      margin: .65rem 0 0 0
+      border: none
+      outline: none
+      border-top: 1px solid currentColor
+      background: transparent
+      white-space: nowrap
+    &.stop-popup
+      .leaflet-popup-content, .popup-content
+        flex-direction: column
+        gap: .4rem
+        padding: 0
+        max-height: 300px
+        overflow-y: auto
+        scrollbar-width: thin
+        scrollbar-color: rgba($black, 0.3) transparent
+        &::-webkit-scrollbar
+          width: 4px
+        &::-webkit-scrollbar-thumb
+          background-color: rgba($black, 0.3)
+          border-radius: 2px
+        &::-webkit-scrollbar-track
+          background: transparent
+        .popup-header
+          display: flex
+          flex-direction: row
+          flex-wrap: wrap
+          gap: .3rem
+          align-items: center
+          position: sticky
+          top: 0
+          background-color: $white
+          z-index: 1
+          margin: 0rem .5rem .5rem .5rem
+          padding: 1rem .25rem .25rem .25rem
+          border-bottom: 1px solid currentColor
+          >.icon
+            height: 2.5rem
+            width: auto
+            flex-shrink: 0
+          .buses-en-route
+            width: 100%
+            font-size: .875rem
+            padding: 0.325rem 0
+        .route-directions, .view-full
+          padding: 0 .5rem
+        .view-full
+          margin: .5rem
+          padding: 1rem 0 .5rem 0
     &.search-here-popup
       .leaflet-popup-content, .popup-content
         padding: calc($content-padding / 2)

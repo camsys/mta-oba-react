@@ -25,7 +25,6 @@ function SelectedStopComponent(): JSX.Element {
     let {getServiceAlert} = useServiceAlert();
     
     const popupOptions: L.PopupOptions = {
-        className: "map-popup vehicle-popup",
         autoPan: false,
         keepInView: false,
         autoClose: false
@@ -58,8 +57,7 @@ function SelectedStopComponent(): JSX.Element {
             return (
                 <div className={`map-popup-content ${hasServiceAlert ? 'has-service-alert' : ''}`}>
                     <div style={{ borderColor: '#' + routeDirectionDatum.color }}>
-                        <strong>{routeId}</strong>
-                        <div>No approaching vehicles</div>
+                        <span className="label"><strong>{routeId}</strong> No approaching vehicles</span>
                     </div>
                 </div>
             )
@@ -78,19 +76,20 @@ function SelectedStopComponent(): JSX.Element {
 
         return (
             <div className={`map-popup-content ${hasServiceAlert ? 'has-service-alert' : ''}`}>
-                <div style={{ borderColor: '#' + routeDirectionDatum.color }}>
-                    <strong>{routeId}</strong>
+                <div>
                     {Array.from(vehicleDataByDestination.entries()).slice(0, MAX_DESTINATIONS).map(([destination, vehicles]) => (
                         <div key={destination}>
-                            <div>{destination}</div>
-                            {vehicles.slice(0, MAX_VEHICLES_PER_DESTINATION).map((vehicle) => (
-                                <VehicleComponentWithoutSearchSpecified
-                                    key={vehicle.vehicleId}
-                                    vehicleDatum={vehicle}
-                                    tabbable={0}
-                                    vehicleSearchFunction={vehicleSearch}
-                                />
-                            ))}
+                            <span className="label" style={{ borderColor: '#' + routeDirectionDatum.color }}><strong>{routeId}</strong> {destination}</span>
+                            <ul className="approaching-buses">
+                                {vehicles.slice(0, MAX_VEHICLES_PER_DESTINATION).map((vehicle) => (
+                                    <VehicleComponentWithoutSearchSpecified
+                                        key={vehicle.vehicleId}
+                                        vehicleDatum={vehicle}
+                                        tabbable={0}
+                                        vehicleSearchFunction={vehicleSearch}
+                                    />
+                                ))}
+                            </ul>
                         </div>
                     ))}
                 </div>
@@ -131,25 +130,28 @@ function SelectedStopComponent(): JSX.Element {
                     add: (e) => e.target.openPopup(),
                 }}>
                     <Popup className="map-popup stop-popup" tabIndex={-1} {...popupOptions}>
-                        <img src={stopPopupIcon} alt="busstop icon" className="icon" />
-                        <div className="popup-info">
-                            <span className="name">{stopDatum.name}</span>
-                            <span className="stop-code">{"Stopcode " + stopDatum.id.split("_")[1]}</span>
-                            <div className='route-directions'>
-                                {searchMatch.routeMatches.map((route, routeIdx) =>
-                                    route.directions.map((dir, dirIdx) => (
-                                        <StopDirectionData
-                                            key={`${routeIdx}-${dirIdx}`}
-                                            stopId={stopId}
-                                            routeDirectionDatum={dir}
-                                        />
-                                    ))
-                                )}
+                        <div className="popup-header">
+                            <img src={stopPopupIcon} alt="busstop icon" className="icon" />
+                            <div className="popup-info">
+                                <span className="name">{stopDatum.name}</span>
+                                <span className="stop-code">{"Stopcode " + stopDatum.id.split("_")[1]}</span>
                             </div>
-                            <button className="view-full close-map" aria-label="view full stop details">
-                                View Stop Details
-                            </button>
+                            <strong className="buses-en-route">Buses en-route:</strong>
                         </div>
+                        <div className='route-directions'>
+                            {searchMatch.routeMatches.map((route, routeIdx) =>
+                                route.directions.map((dir, dirIdx) => (
+                                    <StopDirectionData
+                                        key={`${routeIdx}-${dirIdx}`}
+                                        stopId={stopId}
+                                        routeDirectionDatum={dir}
+                                    />
+                                ))
+                            )}
+                        </div>
+                        <button className="view-full close-map" aria-label="view full stop details">
+                            View Stop Details
+                        </button>
                     </Popup>
                 </Marker>
             );
