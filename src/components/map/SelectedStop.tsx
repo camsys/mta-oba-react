@@ -12,6 +12,7 @@ import {VehicleComponentWithoutSearchSpecified} from "../views/VehicleComponent.
 import { StopMatch } from '../../js/updateState/DataModels.ts';
 import { OBA } from '../../js/oba.js';
 import { JSX } from 'react/jsx-runtime';
+import { useServiceAlert } from '../views/ServiceAlertContainerComponent.tsx';
 
 const COMPONENT_IDENTIFIER = "mapStopComponent"
 const MAX_DESTINATIONS = 1;
@@ -21,7 +22,8 @@ function SelectedStopComponent(): JSX.Element {
     const { state } = useContext(CardStateContext);
     const { vehiclesApproachingStopsState } = useContext(VehiclesApproachingStopsContext)
     const { vehicleSearch } = useNavigation()
-
+    let {getServiceAlert} = useServiceAlert();
+    
     const popupOptions: L.PopupOptions = {
         className: "map-popup vehicle-popup",
         autoPan: false,
@@ -46,9 +48,15 @@ function SelectedStopComponent(): JSX.Element {
             ? stopCardVehicleData.get(stopId)
             : null;
 
+        
+        let id = routeDirectionDatum.routeId.split("_")[1];
+        let serviceAlertIdentifier = routeDirectionDatum.routeId;
+        let hasServiceAlert = getServiceAlert(id,serviceAlertIdentifier)!==null;
+
+
         if (stopCardVehicleData === null) {
             return (
-                <div className="map-popup-content">
+                <div className={`map-popup-content ${hasServiceAlert ? 'has-service-alert' : ''}`}>
                     <div style={{ borderColor: '#' + routeDirectionDatum.color }}>
                         <strong>{routeId}</strong>
                         <div>No approaching vehicles</div>
@@ -69,7 +77,7 @@ function SelectedStopComponent(): JSX.Element {
         });
 
         return (
-            <div className="map-popup-content">
+            <div className={`map-popup-content ${hasServiceAlert ? 'has-service-alert' : ''}`}>
                 <div style={{ borderColor: '#' + routeDirectionDatum.color }}>
                     <strong>{routeId}</strong>
                     {Array.from(vehicleDataByDestination.entries()).slice(0, MAX_DESTINATIONS).map(([destination, vehicles]) => (
