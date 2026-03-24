@@ -10,6 +10,7 @@ import log from 'loglevel';
 import { shortenRoute, vehicleDataIdentifier, VehicleStateContext } from "../util/VehicleStateComponent.js";
 import { CardStateContext } from "../util/CardStateComponent.tsx";
 import { MeeplesComponentSpan } from "../views/VehicleComponent.tsx";
+import { useServiceAlert } from "../views/ServiceAlertContainerComponent.tsx";
 
 const COMPONENT_IDENTIFIER = "MapVehicleComponent"
 const MAX_NEXT_STOPS = 3;
@@ -35,6 +36,7 @@ export function SelectedVehicleComponent  () :JSX.Element{
     const vehicleRefs = useRef<Map<string, L.Marker>>(new Map());
     const {search} = useNavigation();
     const popupOpen = useRef(true)
+    let {getServiceAlert} = useServiceAlert();
     
 
     if (state.currentCard.type !== CardType.VehicleCard) {
@@ -72,13 +74,12 @@ export function SelectedVehicleComponent  () :JSX.Element{
         id: COMPONENT_IDENTIFIER+"_"+vehicleDatum.vehicleId
     };
 
-    let popupOptions = {
-        // autoPan: false
-        // keepInView: false
-    }
+    let popupOptions = {}
 
 
-    // log.info("mapVehicle key: ",markerOptions.key,vehicleDatum)
+    let id = vehicleDatum.routeId.split("_")[1];
+    let serviceAlertIdentifier = vehicleDatum.routeId;
+    let hasServiceAlert = getServiceAlert(id,serviceAlertIdentifier)!==null;
 
 
     let out = (<Marker {...markerOptions}
@@ -102,7 +103,7 @@ export function SelectedVehicleComponent  () :JSX.Element{
         >
             <img src={vehicleDatum?.strollerVehicle?busStroller:bus} alt="bus" className="icon"/>
             <div className="popup-info">
-                <span className="route">{vehicleDatum.routeId.split("_")[1]} {vehicleDatum.destination}</span>
+                <span className={`route ${hasServiceAlert ? 'has-service-alert' : ''}`}>{vehicleDatum.routeId.split("_")[1]} {vehicleDatum.destination}</span>
                 <span className="vehicle">Vehicle #{vehicleIdWithoutAgency}</span>
                 <MeeplesComponentSpan vehicleDatum={vehicleDatum}/>
                 <div className="next-stops">
