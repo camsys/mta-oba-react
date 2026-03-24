@@ -1,112 +1,87 @@
-import React, { useContext, useEffect, useRef } from 'react';
-import L from 'leaflet';
-import { useMap } from 'react-leaflet';
 import log from 'loglevel';
-import { CardStateContext} from "../util/CardStateComponent";
-import { RouteMatchDirectionInterface, VehicleRtInterface } from "../../js/updateState/DataModels";
-import { renderToString } from 'react-dom/server';
-import { StopMatch, CardType } from "../../js/updateState/DataModels";
-import {VehicleComponentWithoutSearchSpecified} from "../views/VehicleComponent";
-import { OBA } from "../../js/oba";
-import { createStopMarker } from "../../utils/StopMarkerFactory.ts";
-import {stopSortedFutureVehicleDataIdentifier, updatedTimeIdentifier,
-    vehicleDataIdentifier, shortenRoute, VehicleStateContext, 
-    VehiclesApproachingStopsContext} from "../util/VehicleStateComponent";
-import {useNavigation} from "../../js/updateState/NavigationEffect";
+import React, {useContext} from "react";
+import {Marker, Popup} from "react-leaflet";
+import L from "leaflet";
+import stopPopupIcon from "../../img/icon/bus-stop.svg"
+import {useNavigation} from "../../js/updateState/NavigationEffect.ts";
+import {CardType, StopInterface} from "../../js/updateState/DataModels.ts";
+import {CardStateContext} from "../util/CardStateComponent.tsx";
+import {VehiclesApproachingStopsContext, stopSortedFutureVehicleDataIdentifier, updatedTimeIdentifier} from "../util/VehicleStateComponent.js";
+import {VehicleRtInterface, RouteMatchDirectionInterface} from "../../js/updateState/DataModels.ts";
+import {VehicleComponentWithoutSearchSpecified} from "../views/VehicleComponent.tsx";
+import { StopMatch } from '../../js/updateState/DataModels.ts';
+import { OBA } from '../../js/oba.js';
+import { JSX } from 'react/jsx-runtime';
 
-// this componenet is hot garbage and duplicates a lot of code but there is strong time pressure rn
+const COMPONENT_IDENTIFIER = "mapStopComponent"
+const MAX_DESTINATIONS = 1;
+const MAX_VEHICLES_PER_DESTINATION = 2;
 
+function SelectedStopComponent(): JSX.Element {
+    const { state } = useContext(CardStateContext);
+    const { vehiclesApproachingStopsState } = useContext(VehiclesApproachingStopsContext)
+    const { vehicleSearch } = useNavigation()
 
-
-
-export const SelectedStop = () : JSX.Element =>{
-    const { state} = useContext(CardStateContext);
-    const {vehiclesApproachingStopsState} = useContext(VehiclesApproachingStopsContext)
-    let {vehicleSearch} = useNavigation()
-
-    const selectedElementLayer = useRef<L.LayerGroup<L.Marker>>(new L.LayerGroup());
-    selectedElementLayer.current.id = "selectedElementLayer";
-    const selectedStops = useRef<L.Marker[]>([]);
-    const selectedStopPopupRef = useRef<JSX.Element|null>(null);
-    let map = useMap()
-
-
-
-
-
-
-    const popupOptions = useRef<L.PopupOptions>({
+    const popupOptions: L.PopupOptions = {
         className: "map-popup vehicle-popup",
         autoPan: false,
         keepInView: false,
         autoClose: false
-    })
-
-    const iconCache = useRef<Map<string, L.Icon>>(new Map());
-
-    const createStopIcon = (stopDatum):L.Icon => {
-        const directionKey = stopDatum?.stopDirection || "unknown";
-        const stopImageUrl = `img/stop/stop-${directionKey}.png`;
-        if(iconCache.current.has(stopImageUrl)){
-            return iconCache.current.get(stopImageUrl) as L.Icon
-        }
-        const icon = L.icon({
-            iconUrl: stopImageUrl,
-            className: "svg-icon",
-            iconSize: [27, 27],
-            iconAnchor: [13, 13],
-            popupAnchor: [0, 0],
-        });
-        iconCache.current.set(stopImageUrl, icon)
-        return icon
     }
 
-    interface SelectedStopPopupContentProps {
-        routeDirectionDatum: RouteMatchDirectionInterface;
-        stopCardVehicleData: Map<string, VehicleRtInterface> | null;
-        routeId: string;
+    if (state.currentCard.type !== CardType.StopCard) {
+        return <></>
     }
 
-
-    const SelectedStopPopupContent = ({
+    const StopDirectionData = ({
         routeDirectionDatum,
-        stopCardVehicleData,
-        routeId
-    }: SelectedStopPopupContentProps): JSX.Element | null => {
+        stopId
+    }: { routeDirectionDatum: RouteMatchDirectionInterface; stopId: string }): JSX.Element | null => {
+        const routeAndDir = routeDirectionDatum.routeId + "_" + routeDirectionDatum.directionId;
+        const routeId = routeDirectionDatum.routeId.split("_")[1];
 
-        // adding logging
+        let stopCardVehicleData = vehiclesApproachingStopsState[routeAndDir + stopSortedFutureVehicleDataIdentifier];
 
-        log.info("SelectedStopPopupContent rendering", { routeDirectionDatum, stopCardVehicleData, routeId });
+        stopCardVehicleData = typeof stopCardVehicleData !== 'undefined' && stopCardVehicleData.has(stopId)
+            ? stopCardVehicleData.get(stopId)
+            : null;
+
+        if (stopCardVehicleData === null) {
+            return (
+                <div className="map-popup-content">
+                    <div style={{ borderColor: '#' + routeDirectionDatum.color }}>
+                        <strong>{routeId}</strong>
+                        <div>No approaching vehicles</div>
+                    </div>
+                </div>
+            )
+        }
+
         // Group vehicles by destination
         const vehicleDataByDestination = new Map<string, Array<VehicleRtInterface>>();
-        if (stopCardVehicleData !== null) {
-            stopCardVehicleData.forEach((vehicleDatum: VehicleRtInterface) => {
-                if (vehicleDataByDestination.has(vehicleDatum.destination)) {
-                    vehicleDataByDestination.get(vehicleDatum.destination)!.push(vehicleDatum);
-                } else {
-                    vehicleDataByDestination.set(vehicleDatum.destination, [vehicleDatum]);
-                }
-            });
-        }
+        stopCardVehicleData.forEach((vehicleDatum: VehicleRtInterface) => {
+            const destination = vehicleDatum.destination;
+            if (vehicleDataByDestination.has(destination)) {
+                vehicleDataByDestination.get(destination)!.push(vehicleDatum);
+            } else {
+                vehicleDataByDestination.set(destination, [vehicleDatum]);
+            }
+        });
 
-        log.info("SelectedStopPopupContent vehicleDataByDestination", Array.from(vehicleDataByDestination.entries()));
-        // If no vehicle data, show minimal info
-        if (stopCardVehicleData === null) {
-            return null;
-        }
-
-        return(
-            <div className="map-popup-content" >
-                <div style={{ borderColor: '#' + routeDirectionDatum.color, paddingLeft: '8px', borderLeft: '4px solid' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
-                        {/* {hasServiceAlert && <ServiceAlertSvg />} */}
-                        <strong>{routeId}</strong>
-                    </div>
-                    {Array.from(vehicleDataByDestination.entries()).slice(0, 1).map(([destination, vehicles]) => (
-                        <div key={destination} style={{ fontSize: '0.9em', marginBottom: '8px' }}>
-                            <div style={{ fontWeight: '500', marginBottom: '4px' }}>{destination}</div>
-                            {vehicles.slice(0, 2).map((vehicle) => (
-                                <VehicleComponentWithoutSearchSpecified key={vehicle.vehicleId} vehicleDatum={vehicle} tabbable={0} vehicleSearchFunction={vehicleSearch}  />
+        return (
+            <div className="map-popup-content">
+                <div style={{ borderColor: '#' + routeDirectionDatum.color }}>
+                    <strong>{routeId}</strong>
+                    {Array.from(vehicleDataByDestination.entries()).slice(0, MAX_DESTINATIONS).map(([destination, vehicles]) => (
+                        <div key={destination}>
+                            <div>{destination}</div>
+                            {vehicles.slice(0, MAX_VEHICLES_PER_DESTINATION).map((vehicle) => (
+                                <VehicleComponentWithoutSearchSpecified
+                                    key={vehicle.vehicleId}
+                                    vehicleDatum={vehicle}
+                                    tabbable={0}
+                                    vehicleSearchFunction={vehicleSearch}
+                                />
                             ))}
                         </div>
                     ))}
@@ -115,127 +90,66 @@ export const SelectedStop = () : JSX.Element =>{
         );
     };
 
+    const stopMarkers: JSX.Element[] = [];
 
+    state.currentCard.searchMatches.forEach(searchMatch => {
+        if (searchMatch instanceof StopMatch) {
+            const stopId = searchMatch.datumId;
+            const stopDatum = searchMatch as StopInterface;
+            const direction = stopDatum?.stopDirection ?? "unknown";
+            const stopImageUrl = `img/stop/stop-${direction}-active.png`;
 
-
-    const updateStopCardStopMarkerPopup = () =>{
-        if(state.currentCard.type===CardType.StopCard) {
-            selectedStops.current.forEach((value, key) => {
-                let lastRouteDirectionDatum = null;
-                if (value !== null && value !== undefined) {
-                    //fill in the rest of routeDirection info
-                    // SelectedStop()
-                    state.currentCard.searchMatches.forEach(searchMatch => {
-                        let dirs = []
-                        if (searchMatch instanceof StopMatch){
-                            let stopId = searchMatch.datumId;
-                            searchMatch.routeMatches.map(
-                                route=>route.directions.map(
-                                    dir => {
-                                        // adding logging to this section to debug popup content updates
-                                        let routeDirectionDatum = dir.routeDirectionComponentData
-
-                                        const routeAndDir = routeDirectionDatum.routeId + "_" + routeDirectionDatum.directionId;
-                                        const routeId = routeDirectionDatum.routeId.split("_")[1];
-                                        
-                                        let stopCardVehicleData = vehiclesApproachingStopsState[routeAndDir + stopSortedFutureVehicleDataIdentifier];
-                                        
-                                        stopCardVehicleData = typeof stopCardVehicleData !== 'undefined' && stopCardVehicleData.has(stopId)
-                                            ? stopCardVehicleData.get(stopId)
-                                            : null;
-
-                                        log.info("SelectedStopPopupContent: stopCardVehicleData for popup", { stopId, routeAndDir, stopCardVehicleData });
-
-                                        const updateTimeStr = vehiclesApproachingStopsState[routeAndDir + updatedTimeIdentifier] as any;
-                                        const lastUpdateTime = stopCardVehicleData !== null && updateTimeStr
-                                            ? OBA.Util.ISO8601StringToDate(updateTimeStr)?.getTime?.()
-                                            : null;
-                                        dirs.push(<SelectedStopPopupContent 
-                                            stopCardVehicleData={stopCardVehicleData}
-                                            routeId={routeId}
-                                            routeDirectionDatum={routeDirectionDatum}/>)
-                                    }
-                                )
-                            )
-                            log.info("SelectedStopPopupContent: dirs for popup", { stopId, dirs });
-                            value.setPopupContent(
-                                renderToString(<div>{dirs}</div>)
-                                );
-                            value.openPopup();
-                        }
-                    })
-
-                    selectedStops.current.forEach((value, key) => {
-                        if (value !== null && value !== undefined) {
-                            selectedElementLayer.current.addLayer(value);
-                            value.openPopup();
-                        }
-                    });
-                }
+            const icon = L.icon({
+                iconUrl: stopImageUrl,
+                className: "svg-icon",
+                iconSize: [40, 40],
+                iconAnchor: [20, 20],
+                popupAnchor: [0, 0]
             });
+
+            const markerOptions = {
+                position: stopDatum.longLat,
+                icon: icon,
+                zIndexOffset: 1000,
+                title: stopDatum.name,
+                stopId: stopDatum.id,
+                key: `${COMPONENT_IDENTIFIER}_${stopDatum.id}`,
+                id: `${COMPONENT_IDENTIFIER}_${stopDatum.id}`,
+                keyboard: false
+            };
+
+            stopMarkers.push(
+                <Marker key={markerOptions.key} {...markerOptions} eventHandlers={{
+                    add: (e) => e.target.openPopup(),
+                }}>
+                    <Popup className="map-popup stop-popup" tabIndex={-1} {...popupOptions}>
+                        <img src={stopPopupIcon} alt="busstop icon" className="icon" />
+                        <div className="popup-info">
+                            <span className="name">{stopDatum.name}</span>
+                            <span className="stop-code">{"Stopcode " + stopDatum.id.split("_")[1]}</span>
+                            <div className='route-directions'>
+                                {searchMatch.routeMatches.map((route, routeIdx) =>
+                                    route.directions.map((dir, dirIdx) => (
+                                        <StopDirectionData
+                                            key={`${routeIdx}-${dirIdx}`}
+                                            stopId={stopId}
+                                            routeDirectionDatum={dir}
+                                        />
+                                    ))
+                                )}
+                            </div>
+                            <button className="view-full close-map" aria-label="view full stop details">
+                                View Stop Details
+                            </button>
+                        </div>
+                    </Popup>
+                </Marker>
+            );
         }
-    }
+    });
 
-    const openPopup = () =>{
-        try{
-            log.info("opening popups for selected elements")
-            selectedElementLayer.current.eachLayer((layer) => {
-                if(layer instanceof L.Marker) {
-                    layer.openPopup();
-                }
-            });
-        } catch (e) {
-            log.error("error adding stable popups",e)
-        }
-    }
-
-    const clearStopLayer = () =>{
-        selectedElementLayer.current.eachLayer((layer) => {
-            if (layer instanceof L.Polyline || layer instanceof L.Marker) {
-                layer.removeFrom(map);
-            }
-        });
-        selectedStops.current.forEach((value, key) => {value.removeFrom(map)});
-        selectedStops.current = [];
-        selectedElementLayer.current.clearLayers();
-    }
-
-    const handleCardChange =() =>{
-        clearStopLayer()
-        if(state.currentCard.type===CardType.StopCard) {
-            state.currentCard.searchMatches.forEach(searchMatch => {
-                if (searchMatch instanceof StopMatch){
-                    selectedStops.current.push(
-                        createStopMarker(
-                            searchMatch,
-                            function(){},
-                            popupOptions.current,
-                            createStopIcon(searchMatch),
-                            0
-                        )
-                    )
-                }
-            })
-            selectedStops.current.forEach(stop => {
-                selectedElementLayer.current.addLayer(stop);
-            });
-            updateStopCardStopMarkerPopup()
-            selectedElementLayer.current.addTo(map);
-            openPopup();
-        }
-    }
-
-    useEffect(() => {
-        log.info("selected stop component updating stop marker popup content",state.currentCard,vehiclesApproachingStopsState)
-        updateStopCardStopMarkerPopup()
-    }, [vehiclesApproachingStopsState])
-
-    useEffect(() => {
-        log.info("selected stop component updating map layers",state.renderCounter)
-        handleCardChange()
-    }, [state.renderCounter])
-
-    return <></>
-    
+    return stopMarkers.length > 0 ? <>{stopMarkers}</> : <></>;
 }
+
+export { SelectedStopComponent };
 

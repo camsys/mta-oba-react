@@ -17,18 +17,18 @@ export const createStopMarker = (
         keyboard: false,
     },stopDatum);
 
-    // Add popup
-    const popupContent = `
-        <img src="img/icon/bus-stop.svg" alt="busstop icon" class="icon"/>
-        <div class="popup-info">
-            <span class="name">${stopDatum.name}</span>
-            <span class="stop-code">Stopcode ${stopDatum.id.split("_")[1]}</span>
-            <button class="view-full close-map" aria-label="view full stop details">
-                View Stop Details
-            </button>
-        </div> 
-    `;
-    marker.bindPopup(popupContent, popupOptions);
+    // // Add popup
+    // const popupContent = `
+    //     <img src="img/icon/bus-stop.svg" alt="busstop icon" class="icon"/>
+    //     <div class="popup-info">
+    //         <span class="name">${stopDatum.name}</span>
+    //         <span class="stop-code">Stopcode ${stopDatum.id.split("_")[1]}</span>
+    //         <button class="view-full close-map" aria-label="view full stop details">
+    //             View Stop Details
+    //         </button>
+    //     </div> 
+    // `;
+    // marker.bindPopup(popupContent, popupOptions);
 
     marker.on("click", () => {
         selectStop(stopDatum);

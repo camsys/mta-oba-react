@@ -33,7 +33,7 @@ import { createStopMarker } from "../../utils/StopMarkerFactory.ts";
 import { createSearchedHereMarker } from "../../utils/SearchedHereFactory.ts";
 import { createVehicleMarker } from "../../utils/VehicleMarkerFactory.ts";
 import { MapVehicleElements } from "./MapVehcleElements.tsx";
-import { SelectedStop} from "./SelectedStop.tsx";
+import { SelectedStopComponent} from "./SelectedStop.tsx";
 
 log.info("createRoutePolyline:", createRoutePolyline);
 log.info("createStopMarker:", createStopMarker);
@@ -756,7 +756,7 @@ export const MapComponent = () :JSX.Element => {
                 <MapVehicleElements/>
                 <HandleMapBoundsAndZoom />
                 <SearchedHere/>
-                <SelectedStop/>
+                <SelectedStopComponent/>
                 <RightClickSearchButton/>
                 {/*<HandleMapForVehiclesBoundsAndZoom/>*/}
             </MapContainer>
