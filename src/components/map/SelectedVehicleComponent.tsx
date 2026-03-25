@@ -63,7 +63,7 @@ export function SelectedVehicleComponent  () :JSX.Element{
     let vehicleIdWithoutAgency = vehicleIdParts[1];
 
     let markerOptions = {
-        zIndex: 3,
+        zIndexOffset: 1000,
         title: "Vehicle " + vehicleIdWithoutAgency + ", " + vehicleDatum.routeId + " to " + vehicleDatum.destination,
         vehicleId: vehicleDatum.vehicleId,
         routeId: vehicleDatum.routeId,
