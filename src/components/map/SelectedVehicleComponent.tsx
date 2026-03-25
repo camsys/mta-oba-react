@@ -121,8 +121,10 @@ export function SelectedVehicleComponent  () :JSX.Element{
                     }
                     return (
                         <div key={index} className="next-stop">
-                            <span className="stop-name">{vehicleArrival.stopName}</span>
-                            <span className="arrival-time">{OBA.Util.getArrivalEstimateForISOString(vehicleArrival.ISOTime,vehicleDatum.lastUpdate)}</span>
+                            <div>
+                                <span className="stop-name">{vehicleArrival.stopName}</span>
+                                <span className="arrival-time">{OBA.Util.getArrivalEstimateForISOString(vehicleArrival.ISOTime,vehicleDatum.lastUpdate)}</span>
+                            </div>
                         </div>
                     )
                 }):null}

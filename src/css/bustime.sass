@@ -1618,7 +1618,7 @@
           bottom: -4px
           left: 50%
           transform: translateX(-50%)
-          width: 60%
+          width: 66%
           height: 2px
           background: #9B9B9B
     
@@ -1785,7 +1785,7 @@
       margin: .65rem 0 0 0
       border: none
       outline: none
-      border-top: 1px solid currentColor
+      border-top: 1px solid $black
       background: transparent
       white-space: nowrap
     &.vehicle-popup
@@ -1818,7 +1818,7 @@
             flex-direction: row
             gap: .3rem
             >.icon
-              height: 2.5rem
+              height: 2rem
               width: auto
               flex-shrink: 0
             .vehicle
@@ -1829,12 +1829,26 @@
             padding: 0
         .next-stops
           margin: 0 .25rem
-          gap: .5rem
+          gap: .75rem
           display: flex
           flex-direction: column
           .next-stop
             display: flex
-            flex-direction: column
+            flex-direction: row
+            align-items: flex-start
+            gap: .75rem
+            &::before
+              content: ''
+              display: block
+              width: .5rem
+              height: .5rem
+              border-radius: 50%
+              background-color: #46A739
+              flex-shrink: 0
+              margin-top: .3rem
+            >div
+              display: flex
+              flex-direction: column
             .stop-name
               font-weight: bold
               font-size: 1rem
