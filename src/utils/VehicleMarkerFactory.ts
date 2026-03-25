@@ -30,7 +30,7 @@ export const createVehicleMarker = (
             </button>
         </div>
     `;
-    marker.bindPopup(popupContent, popupOptions);
+    // marker.bindPopup(popupContent, popupOptions);
 
     return marker;
 };
