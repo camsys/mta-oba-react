@@ -96,35 +96,40 @@ export function SelectedVehicleComponent  () :JSX.Element{
                        }}
                        keyboard={false}
     >
-        <Popup 
-            key={vehicleDatum.vehicleId+"_"+vehicleDatum.longLat} 
-            className="map-popup vehicle-popup" 
+        <Popup
+            key={vehicleDatum.vehicleId+"_"+vehicleDatum.longLat}
+            className="map-popup vehicle-popup"
             {... popupOptions}
         >
-            <img src={vehicleDatum?.strollerVehicle?busStroller:bus} alt="bus" className="icon"/>
-            <div className="popup-info">
-                <span className={`route ${hasServiceAlert ? 'has-service-alert' : ''}`}>{vehicleDatum.routeId.split("_")[1]} {vehicleDatum.destination}</span>
-                <span className="vehicle">Vehicle #{vehicleIdWithoutAgency}</span>
-                <MeeplesComponentSpan vehicleDatum={vehicleDatum}/>
-                <div className="next-stops">
-                    {vehicleDatum?.vehicleArrivalData!=null?
-                    vehicleDatum.vehicleArrivalData.map((vehicleArrival, index)=>{
-                        log.info("adding vehicle arrival data to popup",vehicleArrival)
-                        if(index>=MAX_NEXT_STOPS){
-                            return null
-                        }
-                        return (
-                            <div key={index} className="next-stop">
-                                <span className="stop-name">{vehicleArrival.stopName}</span>
-                                <span className="arrival-time">{OBA.Util.getArrivalEstimateForISOString(vehicleArrival.ISOTime,vehicleDatum.lastUpdate)}</span>
-                            </div>
-                        )
-                    }):null}
+            <div className="popup-header">
+                <div className="popup-header-info">
+                <img src={vehicleDatum?.strollerVehicle?busStroller:bus} alt="bus" className="icon"/>
+                    <div className="popup-info">
+                        <span className={`route ${hasServiceAlert ? 'has-service-alert' : ''}`}>{vehicleDatum.routeId.split("_")[1]} {vehicleDatum.destination}</span>
+                        <span className="vehicle">Vehicle #{vehicleIdWithoutAgency}</span>
+                        <MeeplesComponentSpan vehicleDatum={vehicleDatum}/>
+                    </div>
                 </div>
-                <button className="view-full close-map" aria-label="view full vehicle details">
-                    View Vehicle Details
-                </button>
+                <strong className="next-stops-text">Next Stops</strong>
             </div>
+            <div className="next-stops">
+                {vehicleDatum?.vehicleArrivalData!=null?
+                vehicleDatum.vehicleArrivalData.map((vehicleArrival, index)=>{
+                    log.info("adding vehicle arrival data to popup",vehicleArrival)
+                    if(index>=MAX_NEXT_STOPS){
+                        return null
+                    }
+                    return (
+                        <div key={index} className="next-stop">
+                            <span className="stop-name">{vehicleArrival.stopName}</span>
+                            <span className="arrival-time">{OBA.Util.getArrivalEstimateForISOString(vehicleArrival.ISOTime,vehicleDatum.lastUpdate)}</span>
+                        </div>
+                    )
+                }):null}
+            </div>
+            <button className="view-full close-map" aria-label="view full vehicle details">
+                View Vehicle Details
+            </button>
         </Popup>
     </Marker>);
 

@@ -131,10 +131,12 @@ function SelectedStopComponent(): JSX.Element {
                 }}>
                     <Popup className="map-popup stop-popup" tabIndex={-1} {...popupOptions}>
                         <div className="popup-header">
-                            <img src={stopPopupIcon} alt="busstop icon" className="icon" />
-                            <div className="popup-info">
-                                <span className="name">{stopDatum.name}</span>
-                                <span className="stop-code">{"Stopcode " + stopDatum.id.split("_")[1]}</span>
+                            <div className="popup-header-info">
+                                <img src={stopPopupIcon} alt="busstop icon" className="icon" />
+                                <div className="popup-info">
+                                    <span className="name">{stopDatum.name}</span>
+                                    <span className="stop-code">{"Stopcode " + stopDatum.id.split("_")[1]}</span>
+                                </div>
                             </div>
                             <strong className="buses-en-route">Buses en-route:</strong>
                         </div>
