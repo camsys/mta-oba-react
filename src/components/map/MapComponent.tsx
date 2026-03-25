@@ -1,6 +1,6 @@
 import ReactLeafletGoogleLayer from "react-leaflet-google-layer";
 import { renderToString } from 'react-dom/server';
-import {LayerGroup, MapContainer, Marker, useMap, useMapEvents} from "react-leaflet";
+import {LayerGroup, MapContainer, Marker, useMap, useMapEvents, ZoomControl} from "react-leaflet";
 import React, {useContext, useEffect, useRef, useState} from "react";
 import queryString from "query-string";
 import {OBA} from "../../js/oba";
@@ -745,6 +745,7 @@ export const MapComponent = () :JSX.Element => {
                 scrollWheelZoom={true}
                 tabIndex={-1}
                 id="map"
+                zoomControl={false}
             >
                 <ReactLeafletGoogleLayer
                     apiKey='AIzaSyA-PBbsL_sXOTfo2KbkVx8XkEfcIe48xzw'
@@ -760,6 +761,7 @@ export const MapComponent = () :JSX.Element => {
                 <SelectedStopComponent/>
                 <SelectedVehicleComponent/>
                 <RightClickSearchButton/>
+                <ZoomControl position="bottomright" />
                 {/*<HandleMapForVehiclesBoundsAndZoom/>*/}
             </MapContainer>
         </React.Fragment>

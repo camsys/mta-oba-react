@@ -1598,6 +1598,29 @@
   // clearing leaflet styles
   .leaflet-container
     font-size: 1.125rem!important
+  .leaflet-control-zoom
+    display: flex
+    flex-direction: column
+    margin-right: 1rem!important
+    margin-bottom: 1rem!important
+    box-shadow: 1px 3px 3px 0px #0000001A
+    background: rgba(255, 255, 255, 0.55)
+    border-radius: 5px
+    color: $original-mta-blue
+    >a
+      &:hover
+        color: $original-mta-dark-blue
+      &:first-child
+        position: relative
+        &::after
+          content: ''
+          position: absolute
+          bottom: -4px
+          left: 50%
+          transform: translateX(-50%)
+          width: 60%
+          height: 2px
+          background: #9B9B9B
     
   .map-popup, .leaflet-popup
     background-color: transparent
