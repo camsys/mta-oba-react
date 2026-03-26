@@ -53,7 +53,8 @@ function UnderlineOnFocusElement({
     const variants = {
         mta_yellow: "focus:decoration-mta-yellow group-focus:decoration-mta-yellow",
         black: "focus:decoration-black group-focus:decoration-black",
-        mta_blue: "focus:decoration-mta-blue group-focus:decoration-mta-blue"
+        mta_blue: "focus:decoration-mta-blue group-focus:decoration-mta-blue",
+        white: "focus:decoration-white group-focus:decoration-white"
     };
 
     return (
