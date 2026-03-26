@@ -19,6 +19,7 @@ import { RouteFavoriteButton} from "./AddToFavoriteButtons";
 import {cn} from "../util/coreUtils";
 import {BusStopIcon, StarBorderIcon, VehicleIcon} from "../shared/icons";
 import { RouteCardHeader, RouteCardHeaderMany } from "./CardHeaderComponents";
+import { UnderlineOnFocusElement } from "../shared/common";
 
 export function RouteStopComponent
 ({stopDatum, routeId, index}:{stopDatum:StopInterface,routeId:string,index:string}):JSX.Element{
@@ -73,8 +74,8 @@ export const RouteDirection = ({datum,color,collapsed}: { datum: RouteDirectionI
     log.info("generating RouteDirectionComponent:", datum)
     return (
         <div className="route-direction inner-card collapsible" key={datum.routeId+datum.directionId}>
-            <button className="card-header collapse-trigger" aria-haspopup="true" aria-expanded="false" aria-label={"Toggle "+datum.routeId+" to " + datum.routeDestination +" Open / Closed"} tabIndex={collapsed?-1:0}>
-                <span className="label">to <strong> {datum.routeDestination}</strong>
+            <button className="card-header collapse-trigger group" aria-haspopup="true" aria-expanded="false" aria-label={"Toggle "+datum.routeId+" to " + datum.routeDestination +" Open / Closed"} tabIndex={collapsed?-1:0}>
+                <span className="label">to <UnderlineOnFocusElement variant="black" as="strong"> {datum.routeDestination}</UnderlineOnFocusElement>
                     {datum.hasUpcomingService?null:<><br/><em className="no-scheduled-service">No scheduled service at this time.</em></>}
                 </span>
             </button>

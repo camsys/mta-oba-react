@@ -7,6 +7,7 @@ import { OBA } from "../../js/oba";
 import {CollapsableStopCard} from "./StopCardWrapper";
 import {useNavigation} from "../../js/updateState/NavigationEffect";
 import log from 'loglevel';
+import { UnderlineOnFocusElement } from "../shared/common";
 
 
 export function AbreviatedRouteCard({ routeMatch}: RouteMatch): JSX.Element {
@@ -18,13 +19,15 @@ export function AbreviatedRouteCard({ routeMatch}: RouteMatch): JSX.Element {
     return (
         <React.Fragment>
             <div className={`card route-card ${routeMatch.routeId}`} onClick={()=>search(routeMatch.routeId)}>
-                <button
+                <UnderlineOnFocusElement
+                    variant="black"
+                    as="button"
                     className="card-header link-header"
                     style={{ borderColor: "#" + routeMatch.color }}
                     tabIndex={0}
                 >
                     <h3 className="card-title">{OBA.Config.noWidows(routeMatch.routeTitle)}</h3>
-                </button>
+                </UnderlineOnFocusElement>
             </div>
         </React.Fragment>
     );

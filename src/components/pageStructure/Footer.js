@@ -6,7 +6,7 @@ import {GoogleTranslateButton} from "Components/pageStructure/GoogleTranslate";
 import log from 'loglevel';
 import {useNavigation} from "../../js/updateState/NavigationEffect";
 import bus from "../../img/icon/bus.svg";
-import {UnderlineOnFocusElement} from "Components/shared/common";
+import { UnderlineOnFocusElement } from "../shared/common";
 
 
 function Footer  () {

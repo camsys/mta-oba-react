@@ -24,7 +24,7 @@ import log from 'loglevel';
 import {v4 as uuidv4} from "uuid";
 import { StopFavoriteButton } from './AddToFavoriteButtons.tsx';
 import { StopCardHeader, StopCardHeaderMany } from "./CardHeaderComponents.tsx";
-
+import { UnderlineOnFocusElement } from '../shared/common.tsx';
 
 
 
@@ -133,7 +133,7 @@ const RouteDirection = ({routeDirectionDatum,stopId, collapsed}:
         vehicleComponents = Array.from(vehicleDataByDestination.entries()).map(([destination,vehicleData],index)=>{
             return (<div className={`inner-card route-direction en-route collapsible ${collapsed?"":"open"}`} key={routeAndDir+destination}>
                 <button
-                    className={`card-header collapse-trigger ${collapsed?"":"open"}`}
+                    className={`card-header collapse-trigger group ${collapsed?"":"open"}`}
                     aria-haspopup="true"
                     aria-expanded="true"
                     aria-label={`Toggle ${routeDirectionDatum.routeId.split("_")[1]} to ${destination}`}
@@ -143,9 +143,9 @@ const RouteDirection = ({routeDirectionDatum,stopId, collapsed}:
                 >
                 <span className="card-title" style={{ borderColor: '#'+routeDirectionDatum.color}}>
                     {hasServiceAlert?<ServiceAlertSvg/>:null}
-                    <span className="label">
+                    <UnderlineOnFocusElement variant="black" as="span" className="label">
                         <strong>{routeDirectionDatum.routeId.split("_")[1]}</strong> {destination}
-                    </span>
+                    </UnderlineOnFocusElement>
                 </span>
                 </button>
                 <div className="card-content collapse-content">
