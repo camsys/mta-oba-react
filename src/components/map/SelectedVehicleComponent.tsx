@@ -10,7 +10,7 @@ import log from 'loglevel';
 import { shortenRoute, vehicleDataIdentifier, VehicleStateContext } from "../util/VehicleStateComponent.js";
 import { CardStateContext } from "../util/CardStateComponent.tsx";
 import { MeeplesComponentSpan } from "../views/VehicleComponent.tsx";
-import { useServiceAlert } from "../views/ServiceAlertContainerComponent.tsx";
+import { ServiceAlertSvg, useServiceAlert } from "../views/ServiceAlertContainerComponent.tsx";
 
 const COMPONENT_IDENTIFIER = "MapVehicleComponent"
 const MAX_NEXT_STOPS = 3;
@@ -105,7 +105,7 @@ export function SelectedVehicleComponent  () :JSX.Element{
                 <div className="popup-header-info">
                 <img src={vehicleDatum?.strollerVehicle?busStroller:bus} alt="bus" className="icon"/>
                     <div className="popup-info">
-                        <span className={`route ${hasServiceAlert ? 'has-service-alert' : ''}`}>{vehicleDatum.routeId.split("_")[1]} {vehicleDatum.destination}</span>
+                        <span className={`route ${hasServiceAlert ? 'has-service-alert' : ''}`}>{vehicleDatum.routeId.split("_")[1]} {vehicleDatum.destination}{hasServiceAlert ? <ServiceAlertSvg/> : null}</span>
                         <span className="vehicle">Vehicle #{vehicleIdWithoutAgency}</span>
                         <MeeplesComponentSpan vehicleDatum={vehicleDatum}/>
                     </div>
