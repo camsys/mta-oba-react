@@ -13,8 +13,8 @@ import {ViewSearchItem} from "./MiscComponents";
 import log from 'loglevel'
 import {MeeplesComponentLi} from "./VehicleComponent";
 
-export const VehicleCardContentComponent = ({routeMatch,vehicleDatum}
-                                                :{routeMatch:RouteMatch,vehicleDatum:VehicleRtInterface})
+export const VehicleCardContentComponent = ({routeMatch,vehicleDatum,serviceAlertIdentifier}
+                                                :{routeMatch:RouteMatch,vehicleDatum:VehicleRtInterface,serviceAlertIdentifier : string})
                                                 : JSX.Element=>{
     const { search } = useNavigation();
     // log.info("generating vehicleCardContentComponent for ",vehicleDatum.vehicleId)
@@ -29,7 +29,10 @@ export const VehicleCardContentComponent = ({routeMatch,vehicleDatum}
                 </li>
                 <MeeplesComponentLi vehicleDatum={vehicleDatum}/>
             </ul>
-            <ul className="menu icon-menu card-menu">
+            <div className="mb-3">
+                <ServiceAlertContainerComponent routeId={routeMatch.routeId.split("_")[1]} serviceAlertIdentifier={serviceAlertIdentifier} collapsed={false}/>
+            </div>
+            <ul className="menu icon-menu card-menu border-b border-b-mta-blue mb-4">
                 <li>
                     {(routeMatch && vehicleDatum)?
                         (<ViewSearchItem datumId={routeMatch.routeId} text={"Full Route"}/>)
@@ -137,8 +140,7 @@ function VehicleCard ({routeMatch,vehicleId}: { routeMatch: RouteMatch, vehicleI
             </div>
             <div className="card-content">
                 {/*{log.info("adding vehicelcard content")}*/}
-                {vehicleDatum?<VehicleCardContentComponent routeMatch={routeMatch} vehicleDatum={vehicleDatum}/>:null}
-                <ServiceAlertContainerComponent {...{routeId,serviceAlertIdentifier}}/>
+                {vehicleDatum?<VehicleCardContentComponent routeMatch={routeMatch} vehicleDatum={vehicleDatum} serviceAlertIdentifier={serviceAlertIdentifier}/>:null}
             </div>
         </div>
     );
