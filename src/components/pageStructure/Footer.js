@@ -6,6 +6,8 @@ import {GoogleTranslateButton} from "Components/pageStructure/GoogleTranslate";
 import log from 'loglevel';
 import {useNavigation} from "../../js/updateState/NavigationEffect";
 import bus from "../../img/icon/bus.svg";
+import { UnderlineOnFocusElement } from "../shared/common";
+
 
 function Footer  () {
     log.info("adding footer")
@@ -17,12 +19,12 @@ function Footer  () {
                 <h2 className='text-[1.35em] my-4 pt-[3px] font-bold'>MTA Bus Time</h2>
                 <nav>
                     <ul className="menu my-1 text-[1em] font-[575]">
-                        <li><a href="//mta.info">MTA Homepage</a></li>
-                        <li><a href="/about">Mobile Text Messages</a></li>
-                        <li><a href="/about">About Bus Time</a></li>
-                        <li><a href="/contact">Contact Us</a></li>
-                        <li><a href="/developers">Developers</a></li>
-                        <li><a href="//www.mta.info/privacy-policy">Privacy Policy</a></li>
+                        <li><UnderlineOnFocusElement href="//mta.info">MTA Homepage</UnderlineOnFocusElement></li>
+                        <li><UnderlineOnFocusElement href="/about">Mobile Text Messages</UnderlineOnFocusElement></li>
+                        <li><UnderlineOnFocusElement href="/about">About Bus Time</UnderlineOnFocusElement></li>
+                        <li><UnderlineOnFocusElement href="/contact">Contact Us</UnderlineOnFocusElement></li>
+                        <li><UnderlineOnFocusElement href="/developers">Developers</UnderlineOnFocusElement></li>
+                        <li><UnderlineOnFocusElement href="//www.mta.info/privacy-policy">Privacy Policy</UnderlineOnFocusElement></li>
                     </ul>
                 </nav>
             </div>

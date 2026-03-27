@@ -65,7 +65,7 @@ const ShuttleButton = (props: ChangeViewButtonProps) => {
     <ChangeViewButton 
       {...props}
       text="Shuttle Buses" 
-      className={cn("bg-shuttle-gray", props.className)}
+      className={cn("bg-shuttle-gray focus:outline-black", props.className)}
       iconElement={<ShuttleIcon fill="white" className={cn("", props.iconClassName)} />}
       onClick={() => search('shuttles')}
       textClassName={cn("", props.textClassName)}
