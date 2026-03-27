@@ -26,16 +26,15 @@ const ChangeViewButton = ({
       {...(color ? { style: { backgroundColor: color } } : {})}
       className={cn(
         `px-4 py-4 text-white flex items-center  w-full
-        justify-start gap-2 rounded-lg font-bold
-        no-underline border-none transition-opacity hover:opacity-75
-        focus-visible:outline-[1px] focus-visible:outline-black focus-visible:outline-offset-[2px] focus-visible:ring-[3px] focus-visible:ring-mta-yellow/70`,
+        justify-start gap-2 rounded-sm font-bold 
+        no-underline border-none transition-opacity focus:outline focus:outline-1 focus:outline-mta-dark-blue focus:outline-offset-1 focus:ring-1 focus:ring-mta-dark-blue focus:ring-offset-1 focus:ring-offset-[#fff]`,
         className
       )}
       type = "button"
       onClick={onClick}
     >
       {iconElement}
-      <span className={cn("text-lg",textClassName)}>
+      <span className={cn("text-lg text-[#ffffff]",textClassName)}>
         {text}
       </span>
     </button>
@@ -43,4 +42,15 @@ const ChangeViewButton = ({
 };
 
 
-export {ChangeViewButton, ChangeViewButtonProps}
+
+function UnderlineOnFocusElement ({elementType: Element = 'a', children, className, ...props}: {elementType?: keyof JSX.IntrinsicElements, children: string | JSX.Element, className?: string, [key: string]: any}) {
+    return (
+        <Element className={cn("focus:underline focus:border-none focus:outline-none focus:decoration-mta-yellow focus:decoration-3", className)} {...props}>
+            {children}
+        </Element>
+    )
+}
+
+
+
+export {ChangeViewButton, ChangeViewButtonProps, UnderlineOnFocusElement}
