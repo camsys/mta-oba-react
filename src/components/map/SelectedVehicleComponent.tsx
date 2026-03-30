@@ -36,6 +36,7 @@ export function SelectedVehicleComponent  () :JSX.Element{
     const vehicleRefs = useRef<Map<string, L.Marker>>(new Map());
     const {search} = useNavigation();
     const popupOpen = useRef(true)
+    const lastVehicleDataumId = useRef<string|null>(null)
     let {getServiceAlert} = useServiceAlert();
     
 
@@ -61,6 +62,10 @@ export function SelectedVehicleComponent  () :JSX.Element{
 
     let vehicleIdParts = vehicleDatum.vehicleId.split("_");
     let vehicleIdWithoutAgency = vehicleIdParts[1];
+    if(lastVehicleDataumId.current !== vehicleDatum.vehicleId){
+        popupOpen.current = true
+    }
+    lastVehicleDataumId.current = vehicleDatum.vehicleId
 
     let markerOptions = {
         zIndexOffset: 1000,
@@ -84,10 +89,10 @@ export function SelectedVehicleComponent  () :JSX.Element{
 
     let out = (<Marker {...markerOptions}
                        eventHandlers={{
-                            click : (event : L.LeafletMouseEvent)=>{vehicleDatum.longLat = [event.latlng.lat,event.latlng.lng];},
-                             add: (e) => {if(popupOpen.current) {e.target.openPopup()}},
-                             popupclose: () => {popupOpen.current = false},
-                             popupopen: () => {popupOpen.current = true}
+                            // click : (event : L.LeafletMouseEvent)=>{vehicleDatum.longLat = [event.latlng.lat,event.latlng.lng];},
+                            add: (e) => {if(popupOpen.current) {e.target.openPopup()}},
+                            popupclose: () => {popupOpen.current = false},
+                            popupopen: () => {popupOpen.current = true}
                        }}
                        ref={r=>{
                            // log.info("ref for vehicle component",vehicleDatum,r);
