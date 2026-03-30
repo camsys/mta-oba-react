@@ -22,7 +22,7 @@ function Footer  () {
                         <li><a href="/about">About Bus Time</a></li>
                         <li><a href="/contact">Contact Us</a></li>
                         <li><a href="/developers">Developers</a></li>
-                        <li><a href="/help">Help</a></li>
+                        <li><a href="//www.mta.info/privacy-policy">Privacy Policy</a></li>
                     </ul>
                 </nav>
             </div>

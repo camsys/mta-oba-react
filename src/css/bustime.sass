@@ -68,6 +68,8 @@
         margin: 0 0 .5rem 0
         padding: 0 0 0 .75rem
         position: relative
+        &:first-child
+          padding-top:0 !important
         &::before
           content: "■"
           display: inline-block
@@ -812,7 +814,7 @@
         background-color: rgba($white, .1)
         border: 1px solid rgba($white, 0)
         outline: none
-        padding: .2rem 2.25rem .15rem 2.25rem
+        padding: .5rem 2.25rem .5rem 2.25rem
         margin: 2px
         transition: border .25s ease-in-out, background-color .25s ease-in-out, color .25s ease-in-out
         font-weight: bold
@@ -824,6 +826,9 @@
         +rounded
         transition: border-radius .25s ease-in-out, background-color .25s ease-in-out
         width: 100%
+        overflow: hidden
+        white-space: nowrap
+        text-overflow: ellipsis
         &:hover
           border-color: $white
         &:focus
@@ -831,6 +836,8 @@
         &::placeholder
           color: $white
           font-weight: 200
+          +mq-reverse($nine)
+            font-size: .875rem
       .react-autosuggest__container
         &--open
           input
@@ -934,6 +941,8 @@
         padding: $content-padding
         padding-bottom: 0
         flex: 1 0 0
+        h2.cards-header
+          font-weight: bold
       .footer
         padding: $content-padding
         padding-top: 0
@@ -1077,14 +1086,14 @@
       display: flex
       flex-wrap: nowrap
       justify-content: center
-      align-itrems: center
+      align-items: center
       gap: $content-padding
       font-size: .75rem
       line-height: 1
       transition: background-color .25s ease-in-out
       li
         display: inline-flex
-        align-itrems: center
+        align-items: center
         justify-content: center
         gap: calc($content-padding / 4)
         &::before
@@ -1420,6 +1429,7 @@
       background-color: $ui-gray
       overflow: hidden
       .card-header
+        font-size: 1rem
         font-weight: bold
         border: 1px solid $border-gray
         border-bottom: 0px solid $original-mta-yellow
@@ -1458,6 +1468,9 @@
         position: absolute
         top: -1px
       .service-alert + &
+        &::before
+          display: none
+      &:first-child
         &::before
           display: none
       &.en-route

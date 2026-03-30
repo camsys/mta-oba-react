@@ -93,12 +93,18 @@ export const RouteDirection = ({datum,color,collapsed}: { datum: RouteDirectionI
     )
 }
 
-function CardDetails({routeMatch}:{routeMatch:RouteMatch}) : JSX.Element{
-    let jsx = (
-        <ul className={"card-details"}>
+function CardDetails({routeMatch}:{routeMatch:RouteMatch}) : JSX.Element|null{
+    log.info("generating CardDetails for routeMatch: ", routeMatch)
+    if(routeMatch.description === null || 
+        typeof routeMatch.description === "undefined" || 
+        routeMatch.description === ""  ||
+        routeMatch.description.toLowerCase() === "null" ||
+        routeMatch.description.trim().length === 0){
+        return null
+    }
+    return (<ul className={"card-details"}>
             <li className="via">{routeMatch.description}</li>
         </ul>)
-    return jsx
 }
 
 export function RouteCardContent({ routeMatch, collapsed}: {RouteMatch,boolean}): JSX.Element  {

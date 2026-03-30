@@ -26,7 +26,7 @@ const ChangeViewButton = ({
       {...(color ? { style: { backgroundColor: color } } : {})}
       className={cn(
         `px-4 py-4 text-white flex items-center  w-full
-        justify-start gap-2 rounded-lg font-bold 
+        justify-start gap-2 rounded-sm font-bold 
         no-underline border-none transition-opacity hover:opacity-90`,
         className
       )}
