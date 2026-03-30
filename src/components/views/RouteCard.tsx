@@ -11,7 +11,7 @@ import {
 } from "../../js/updateState/DataModels";
 import {stopSortedDataIdentifier, vehicleDataIdentifier, VehicleStateContext} from "../util/VehicleStateComponent";
 import {useNavigation} from "../../js/updateState/NavigationEffect"
-import VehicleComponent from "./VehicleComponent"
+import {VehicleComponent} from "./VehicleComponent"
 import {useFavorite} from "../util/MiscStateComponent";
 import {ViewSearchItem} from "./MiscComponents";
 import log from 'loglevel';

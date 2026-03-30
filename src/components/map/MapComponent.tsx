@@ -1,21 +1,26 @@
 import ReactLeafletGoogleLayer from "react-leaflet-google-layer";
-import {LayerGroup, MapContainer, Marker, useMap, useMapEvents} from "react-leaflet";
+import { renderToString } from 'react-dom/server';
+import {LayerGroup, MapContainer, Marker, useMap, useMapEvents, ZoomControl} from "react-leaflet";
 import React, {useContext, useEffect, useRef, useState} from "react";
 import queryString from "query-string";
 import {OBA} from "../../js/oba";
 import log from 'loglevel';
-import L, {LatLngBounds} from "leaflet";
+import L, {LatLngBounds, LeafletMouseEvent, LeafletEventHandlerFnMap, Popup} from "leaflet";
 
 import {CardStateContext, RoutesContext, StopsContext} from "../util/CardStateComponent.tsx";
-import {vehicleDataIdentifier, shortenRoute, VehicleStateContext} from "../util/VehicleStateComponent";
+import {stopSortedFutureVehicleDataIdentifier, updatedTimeIdentifier,
+    vehicleDataIdentifier, shortenRoute, VehicleStateContext, 
+    VehiclesApproachingStopsContext} from "../util/VehicleStateComponent";
 import MapRouteComponent from "./MapRouteComponent";
 import MapStopComponent from "./MapStopComponent";
 import MapVehicleComponent from "./MapVehicleComponent";
+// import { SelectedStopPopupContent } from "./SelectedStopPopupContent";
 import {
     CardType,
     MapRouteComponentInterface,
     MatchType,
     RouteMatch,
+    SearchMatch,
     StopInterface,
     StopMatch,
     VehicleRtInterface
@@ -28,7 +33,8 @@ import { createStopMarker } from "../../utils/StopMarkerFactory.ts";
 import { createSearchedHereMarker } from "../../utils/SearchedHereFactory.ts";
 import { createVehicleMarker } from "../../utils/VehicleMarkerFactory.ts";
 import { MapVehicleElements } from "./MapVehcleElements.tsx";
-import { stat } from "fs";
+import { SelectedStopComponent} from "./SelectedStop.tsx";
+import {SelectedVehicleComponent} from "./SelectedVehicleComponent.tsx";
 
 log.info("createRoutePolyline:", createRoutePolyline);
 log.info("createStopMarker:", createStopMarker);
@@ -107,7 +113,7 @@ const RoutesAndStops = ()=>{
     const mapStopComponents = useRef(new Map());
     const lastUsedCard = useRef(state.currentCard);
     let stopsToDisplay: Map<string, L.Polyline> = new Map();
-    let stopsToNonConditionallyDisplay: Map<string, L.Polyline> = new Map();
+    // let selectedStop: Map<string, L.Polyline> = new Map();
     const routeLayer = useRef<L.LayerGroup<L.Polyline>>(new L.LayerGroup());
     const stopLayer = useRef<L.LayerGroup<L.Marker>>(new L.LayerGroup());
     const selectedElementLayer = useRef<L.LayerGroup<L.Marker>>(new L.LayerGroup());
@@ -147,7 +153,7 @@ const RoutesAndStops = ()=>{
     //methods
 
     const selectStop = (stop:StopInterface) =>{
-        search(stop.id)
+        search(stop.datumId)
     }
 
     const processRoute = (route : RouteMatch)=> {
@@ -160,9 +166,9 @@ const RoutesAndStops = ()=>{
                 })
             })
             route.directions.forEach(dir => {
-                dir.mapStopComponentData.forEach((datum:StopInterface) => {
-                    let stopId = datum.id;
-                    let newStopMarker = createStopMarker(datum,selectStop,popupOptions.current,createStopIcon(datum),0)
+                dir.mapStopComponentData.forEach((stopInterface:StopInterface) => {
+                    let stopId = stopInterface.datumId;
+                    let newStopMarker = createStopMarker(stopInterface,selectStop,popupOptions.current,createStopIcon(stopInterface),0)
                     mapStopComponents.current.set(stopId, newStopMarker);
                     stopsToDisplay.set(stopId, newStopMarker);                
                 })
@@ -209,7 +215,7 @@ const RoutesAndStops = ()=>{
         log.info("cleared layers from map", layers);
         mapRouteMarkers.clear();
         stopsToDisplay.clear();
-        stopsToNonConditionallyDisplay.clear();
+        // selectedStop.clear();
         mapStopComponents.current.clear();
 
         routeLayer.current.clearLayers();
@@ -258,7 +264,7 @@ const RoutesAndStops = ()=>{
                     processRoute(route);
                 })
                 let stopId =state.currentCard.datumId;
-                stopsToNonConditionallyDisplay.set(stopId,mapStopComponents.current.get(stopId));
+                // selectedStop.set(stopId,mapStopComponents.current.get(stopId));
                 mapStopComponents.current.get(stopId).setZIndexOffset(20);
                 stopsToDisplay.delete(stopId)
             }
@@ -274,12 +280,12 @@ const RoutesAndStops = ()=>{
                 stopLayer.current.addLayer(value);
             }
         });
-        stopsToNonConditionallyDisplay.forEach((value, key) => {
-            if (value !== null && value !== undefined) {
-                selectedElementLayer.current.addLayer(value);
-                value.openPopup();
-            }
-        });
+        // selectedStop.forEach((value, key) => {
+        //     if (value !== null && value !== undefined) {
+        //         selectedElementLayer.current.addLayer(value);
+        //         value.openPopup();
+        //     }
+        // });
     }
 
     const checkForAndHandleCardChange = () => {
@@ -308,6 +314,7 @@ const RoutesAndStops = ()=>{
         log.info("map route elements layer group ref",routeLayer,routeLayer.current.getLayers().length)
         log.info("map stop elements layer group ref",stopLayer.current.getLayers().length)
     },[state.renderCounter])
+
 
     const lastZoomWasBelowThreshold = useRef(map.getZoom());
     useMapEvents(
@@ -738,6 +745,7 @@ export const MapComponent = () :JSX.Element => {
                 scrollWheelZoom={true}
                 tabIndex={-1}
                 id="map"
+                zoomControl={false}
             >
                 <ReactLeafletGoogleLayer
                     apiKey='AIzaSyA-PBbsL_sXOTfo2KbkVx8XkEfcIe48xzw'
@@ -750,7 +758,10 @@ export const MapComponent = () :JSX.Element => {
                 <MapVehicleElements/>
                 <HandleMapBoundsAndZoom />
                 <SearchedHere/>
+                <SelectedStopComponent/>
+                <SelectedVehicleComponent/>
                 <RightClickSearchButton/>
+                <ZoomControl position="bottomright" />
                 {/*<HandleMapForVehiclesBoundsAndZoom/>*/}
             </MapContainer>
         </React.Fragment>

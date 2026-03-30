@@ -226,20 +226,21 @@
         border: 0px solid
         transition: color .25s ease-in-out, background-color .25s ease-in-out, padding-left .25s ease-in-out, border-bottom .25s ease-in-out
         &:focus
-          background-color: $black
-          color: $white
-          padding-left: .5rem
-          .svg-icon-wrap
-            svg, path
-              fill: $white
-            .blue
-              fill: $white
-            .yellow
-              fill: $original-mta-yellow
-          &::after
-            background-image: url(../img/icon/right-caret_white.svg)
+          background-color: $color-mta-light-blue-2
+          text-decoration: underline
+          // color: $white
+          // padding-left: .5rem
+          // .svg-icon-wrap
+          //   svg, path
+          //     fill: $white
+          //   .blue
+          //     fill: $white
+          //   .yellow
+          //     fill: $original-mta-yellow
+          // &::after
+          //   background-image: url(../img/icon/right-caret_white.svg)
           &:hover
-            color: $white
+            // color: $white
             text-decoration: underline
             .label
               text-decoration: underline
@@ -1623,6 +1624,29 @@
   // clearing leaflet styles
   .leaflet-container
     font-size: 1.125rem!important
+  .leaflet-control-zoom
+    display: flex
+    flex-direction: column
+    margin-right: 1rem!important
+    margin-bottom: 1rem!important
+    box-shadow: 1px 3px 3px 0px #0000001A
+    background: rgba(255, 255, 255, 0.55)
+    border-radius: 5px
+    color: $original-mta-blue
+    >a
+      &:hover
+        color: $original-mta-dark-blue
+      &:first-child
+        position: relative
+        &::after
+          content: ''
+          position: absolute
+          bottom: -4px
+          left: 50%
+          transform: translateX(-50%)
+          width: 66%
+          height: 2px
+          background: #9B9B9B
     
   .map-popup, .leaflet-popup
     background-color: transparent
@@ -1631,8 +1655,19 @@
     transition: opacity .25s ease-in-out
     margin-bottom: 1.8rem!important
     border: $content-padding*.25 solid rgba(0,0,0,.25)
-    &.vehicle-popup
-      margin-bottom: 2.25rem!important
+    border-radius: 1rem
+    &::before
+      content: ''
+      width: 0
+      height: 0
+      border-left: .875rem solid transparent
+      border-right: .875rem solid transparent
+      border-top: .875rem solid $white
+      position: absolute
+      bottom: -.75rem
+      left: 50%
+      transform: translateX(-50%)
+      z-index: 1
     &::after
       content: ''
       width: 0
@@ -1649,7 +1684,8 @@
       color: $black
       box-shadow: none
       padding: 0
-      border-radius: 0
+      border-radius: 1rem
+      overflow: hidden
       margin: 0
       //shadow for close button
       &::before
@@ -1663,6 +1699,7 @@
         border-radius: 50%
         z-index: -1
     .leaflet-popup-content, .popup-content
+      border-radius: 1rem
       display: flex
       flex-wrap: nowrap
       gap: .3rem
@@ -1679,17 +1716,6 @@
       >.icon
         height: 2.5rem
         width: auto
-      &::after
-        content: ''
-        width: 0
-        height: 0
-        border-left: .875rem solid transparent
-        border-right: .875rem solid transparent
-        border-top: .875rem solid $white
-        position: absolute
-        bottom: -.75rem
-        left: 50%
-        transform: translateX(-50%)
     .leaflet-popup-tip
       display: none
     a.leaflet-popup-close-button
@@ -1738,18 +1764,178 @@
         font-weight: bold
       .route, .name, .vehicle, .stop-code
         display: inline-block
+        align-items: center
+        gap: .25rem
+        .svc-alert-icon svg
+          margin-left: .25rem
+          width: .875rem
+          height: .875rem
         // white-space: nowrap
-      .view-full
-        text-align: left
-        font-size: 1rem
-        color: $original-mta-blue
-        padding: .65rem 0 0 0
-        margin: .65rem 0 0 0
-        border: none
-        outline: none
-        border-top: 1px solid currentColor
-        background: transparent
-        white-space: nowrap
+      .stop-code
+        font-size: 0.875rem
+    .route-directions
+      display: flex
+      flex-direction: column
+      gap: .4rem
+    .map-popup-content
+      >div
+        padding: .2rem 0 .2rem .35rem
+        font-size: .875rem
+        line-height: 1.3
+        display: flex
+        flex-direction: column
+        gap: .15rem
+      .label
+        display: block
+        border-left: $thick-border solid
+        padding-left: .35rem
+      li
+        list-style: none
+        padding-left: 0
+      &.has-service-alert
+        .label
+          display: flex
+          width: 100%
+          align-items: top
+          strong
+            margin-right: .3rem
+          &::after
+            content: ''
+            display: inline-block
+            width: 1rem
+            height: 1rem
+            margin-left: auto
+            background-image: url(../img/icon/alert_black-yellow.svg)
+            background-size: 100% auto
+            background-repeat: no-repeat
+            flex-shrink: 0
+    .view-full
+      text-align: left
+      font-size: 1rem
+      color: $original-mta-blue
+      padding: .65rem 0 0 0
+      margin: .65rem 0 0 0
+      border: none
+      outline: none
+      border-top: 1px solid $black
+      background: transparent
+      white-space: nowrap
+    &.vehicle-popup
+      margin-bottom: 2.25rem!important
+      .leaflet-popup-content, .popup-content
+        flex-direction: column
+        gap: .4rem
+        padding: 0
+        overflow-y: auto
+        scrollbar-width: thin
+        scrollbar-color: rgba($black, 0.3) transparent
+        &::-webkit-scrollbar
+          width: 4px
+        &::-webkit-scrollbar-thumb
+          background-color: rgba($black, 0.3)
+          border-radius: 2px
+        &::-webkit-scrollbar-track
+          background: transparent
+        .popup-header
+          display: flex
+          flex-direction: column
+          flex-wrap: nowrap
+          gap: .3rem
+          align-items: top
+          margin: 0rem .5rem .5rem .5rem
+          padding: 1rem .25rem .25rem .25rem
+          border-bottom: 1px solid currentColor
+          .popup-header-info
+            display: flex
+            flex-direction: row
+            gap: .3rem
+            >.icon
+              height: 2rem
+              width: auto
+              flex-shrink: 0
+            .vehicle
+              font-size: .875rem
+        .next-stops-text
+            width: 100%
+            font-size: .875rem
+            padding: 0
+        .next-stops
+          margin: 0 .25rem
+          gap: .75rem
+          display: flex
+          flex-direction: column
+          .next-stop
+            display: flex
+            flex-direction: row
+            align-items: flex-start
+            gap: .75rem
+            &::before
+              content: ''
+              display: block
+              width: .5rem
+              height: .5rem
+              border-radius: 50%
+              background-color: #46A739
+              flex-shrink: 0
+              margin-top: .3rem
+            >div
+              display: flex
+              flex-direction: column
+            .stop-name
+              font-weight: bold
+              font-size: 1rem
+            .arrival-time
+              font-size: 1rem
+        .next-stops, .view-full
+          padding: 0 .5rem
+        .view-full
+          margin: .5rem
+          padding: 1rem .25rem .5rem .25rem
+    &.stop-popup
+      .leaflet-popup-content, .popup-content
+        flex-direction: column
+        gap: .4rem
+        padding: 0
+        max-height: 300px
+        overflow-y: auto
+        scrollbar-width: thin
+        scrollbar-color: rgba($black, 0.3) transparent
+        &::-webkit-scrollbar
+          width: 4px
+        &::-webkit-scrollbar-thumb
+          background-color: rgba($black, 0.3)
+          border-radius: 2px
+        &::-webkit-scrollbar-track
+          background: transparent
+        .popup-header
+          display: flex
+          flex-direction: column
+          gap: .3rem
+          align-items: left
+          position: sticky
+          top: 0
+          background-color: $white
+          z-index: 2
+          margin: 0rem .5rem .5rem .5rem
+          padding: 1rem .25rem .25rem .25rem
+          border-bottom: 1px solid currentColor
+          .popup-header-info
+            display: flex
+            flex-direction: row
+            gap: .3rem
+            >.icon
+              height: 2.5rem
+              width: auto
+              flex-shrink: 0
+          .buses-en-route
+            width: 100%
+            font-size: .875rem
+            padding: 0.325rem 0
+        .route-directions, .view-full
+          padding: 0 .5rem
+        .view-full
+          margin: .5rem
+          padding: 1rem .25rem .5rem .25rem
     &.search-here-popup
       .leaflet-popup-content, .popup-content
         padding: calc($content-padding / 2)
