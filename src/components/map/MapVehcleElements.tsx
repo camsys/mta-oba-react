@@ -125,16 +125,7 @@ export const MapVehicleElements = () =>{
     }
 
     function openPopup(){
-        // if (state.currentCard.type === CardType.VehicleCard)
-        // {
-        //     shortenedRouteIds.forEach(routeId => {
-        //         let vehicle = safeGetVehicle(routeId, state.currentCard.datumId)
-        //         if(vehicle){
-        //             log.info("open popup for vehicle",vehicle,vehicle.getLatLng())
-        //             vehicle?.openPopup()
-        //         }
-        //     })
-        // }
+        // kept as an optional hook for future developement
     }
 
     // todo: if this was done just right it probably wouldn't hit the try catch
