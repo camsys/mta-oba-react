@@ -228,7 +228,7 @@ export const useNavigation = () =>{
     const allRoutesSearchTerm = "allRoutes";
     const favoritesSearchTerm = "favorites";
     const nearbySearchTerms = new Set(["NEARBY","NEARBYROUTES","NEARBYSTOPS","NEARME", "NEAR ME"])
-    log.info("navigation effect state and contexts",state,routes,stops)
+    log.debug("navigation effect state and contexts", state, routes, stops)
 
 
     const search = async (searchTerm) =>{
