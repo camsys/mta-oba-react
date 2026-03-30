@@ -221,7 +221,7 @@ const getRoutesAddress=()=>{
 
 
 export const useNavigation = () =>{
-    log.info("initializing navigation effect")
+    log.debug("initializing navigation effect")
     const { state, setState } = useContext(CardStateContext);
     const routes = useContext(RoutesContext) as RoutesObject
     const stops = useContext(StopsContext) as StopsObject
