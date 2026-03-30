@@ -835,6 +835,7 @@
           +input-focused
         &::placeholder
           color: $white
+          font-weight: 200
           +mq-reverse($nine)
             font-size: .875rem
       .react-autosuggest__container
@@ -945,7 +946,10 @@
       .footer
         padding: $content-padding
         padding-top: 0
-        position: relative 
+        position: relative
+        a
+          &:hover
+            color: $original-mta-yellow
     +mq-reverse($sidebar-switch)
       #search
         &.scrolled
@@ -1082,14 +1086,14 @@
       display: flex
       flex-wrap: nowrap
       justify-content: center
-      align-itrems: center
+      align-items: center
       gap: $content-padding
       font-size: .75rem
       line-height: 1
       transition: background-color .25s ease-in-out
       li
         display: inline-flex
-        align-itrems: center
+        align-items: center
         justify-content: center
         gap: calc($content-padding / 4)
         &::before
@@ -1196,6 +1200,11 @@
       .svc-alert-icon
         width: 1.125rem
         height: 1.125rem
+    .card-content
+      .emphasis
+        font-weight: bold
+        margin-bottom: .5rem
+
 
   .refresh-button
     overflow: hidden
@@ -1479,6 +1488,7 @@
     >li
       padding: 0 0 1rem 1.5rem
       position: relative
+      line-height: 1
       &::before
         content: ''
         display: inline-block
@@ -1501,8 +1511,10 @@
         position: absolute
         left: .25rem
         top: .25rem
-        transform: translateX(1px)
+        transform: translateX(0px)
         z-index: 1
+        +mq-reverse($sidebar-switch)
+          transform: translateX(0.5px)
       &:last-child
         &::after
           display: none

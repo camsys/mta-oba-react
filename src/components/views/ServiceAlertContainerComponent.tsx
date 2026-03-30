@@ -4,15 +4,24 @@ import {ServiceAlertInterface} from "../../js/updateState/DataModels";
 import log from 'loglevel';
 import DOMPurify from 'dompurify';
 
-
+const keywordsToBold = ["What's happening?", "note"]
+const boldIfKeywordStartsPart = ["Note:"]
 
 function ServiceAlertComponent  ({serviceAlertDatum}:ServiceAlertInterface) : JSX.Element {
     log.info("service alert component contents generating ",serviceAlertDatum)
     let alerts = []
+    let partsToBold = []
     serviceAlertDatum.forEach((alert) => {
         if(alert.descriptionParts && alert.descriptionParts.length>0){
             alert.descriptionParts.forEach((part) => {
                 if(part && part.length>0){
+                    if(keywordsToBold.some(keyword => keyword.toLowerCase() === part.toLowerCase())){
+                        partsToBold.push(part)
+                    }
+                    if(boldIfKeywordStartsPart.some(keyword => part.toLowerCase().startsWith(keyword.toLowerCase()))){
+                        let keyword = boldIfKeywordStartsPart.find(keyword => part.toLowerCase().startsWith(keyword.toLowerCase()))!
+                        part = `<b>${keyword}</b>${part.substring(keyword.length)}`
+                    }
                     alerts.push(part)
                 }
             })
@@ -28,7 +37,7 @@ function ServiceAlertComponent  ({serviceAlertDatum}:ServiceAlertInterface) : JS
                     ALLOW_DATA_ATTR: false,
                 });
                 try{
-                    return(<p key = {itt} dangerouslySetInnerHTML={{__html: part}}></p>)
+                    return(<p key = {itt} className={partsToBold.includes(part) ? "emphasis" : ""} dangerouslySetInnerHTML={{__html: part}}></p>)
                 }catch(e){
                     log.error("Error rendering service alert component", e)
                 }
