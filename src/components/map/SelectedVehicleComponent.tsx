@@ -51,7 +51,7 @@ export function SelectedVehicleComponent  () :JSX.Element{
         let routeData = vehicleState[shortenedRouteId+vehicleDataIdentifier]
         vehicleDatum = typeof routeData!=="undefined"?routeData.get(state.currentCard.datumId):null
         log.info("SelectedVehicleComponent looking for vehicle data with key: ",routeData,shortenedRouteId+vehicleDataIdentifier,vehicleDatum)
-        return typeof vehicleDatum!=="undefined"
+        return typeof vehicleDatum!=="undefined" && vehicleDatum!==null
     })
     if(typeof vehicleDatum === "undefined" || vehicleDatum === null){
         log.error("SelectedVehicleComponent could not find vehicle data for selected vehicle",state.currentCard.datumId,shortenedRouteIds,vehicleState, vehicleDatum)
