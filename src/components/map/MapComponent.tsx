@@ -5,7 +5,7 @@ import React, {useContext, useEffect, useRef, useState} from "react";
 import queryString from "query-string";
 import {OBA} from "../../js/oba";
 import log from 'loglevel';
-import L, {LatLngBounds} from "leaflet";
+import L, {LatLngBounds, LeafletMouseEvent, LeafletEventHandlerFnMap, Popup} from "leaflet";
 
 import {CardStateContext, RoutesContext, StopsContext} from "../util/CardStateComponent.tsx";
 import {stopSortedFutureVehicleDataIdentifier, updatedTimeIdentifier,
