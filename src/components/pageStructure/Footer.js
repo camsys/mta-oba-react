@@ -21,10 +21,10 @@ function Footer  () {
                 <section className="my-2">
                     <div className="relative inline-block py-1 ">
                         <div className="absolute top-0 left-1/8 w-3/4 border-t border-white/40 text-center"></div>
-                        <UnderlineOnFocusElement href={classicSiteAddress} className="text-4 font-[575] mt-2">
-                            Bustime Classic
+                        <UnderlineOnFocusElement href={classicSiteAddress} className="text-4 font-[575] my-1">
+                            Bus Time Classic
                         </UnderlineOnFocusElement>
-                        {/* <div className="absolute bottom-0 left-1/8 w-3/4 border-t border-white/40 text-center"></div> */}
+                        <div className="absolute bottom-0 left-1/8 w-3/4 border-t border-white/40 text-center"></div>
                     </div>
                 </section>
                 <nav>
