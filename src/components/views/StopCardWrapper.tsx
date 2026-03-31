@@ -156,7 +156,7 @@ const RouteDirection = ({routeDirectionDatum,stopId, collapsed}:
                     <ServiceAlertContainerComponent {...{routeId,serviceAlertIdentifier}} collapsed={!tabbable}/>
                     <ul className="menu icon-menu inner-card-menu">
                         <li>
-                            <ViewSearchItem datumId={routeDirectionDatum.routeId} text={"Full Route"} collapsed={!tabbable}/>
+                            <ViewSearchItem datumId={routeDirectionDatum.routeId} text={"Full Route"} collapsed={tabbable}/>
                         </li>
                     </ul>
                 </div>
