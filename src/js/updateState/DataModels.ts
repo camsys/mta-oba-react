@@ -89,11 +89,18 @@ export interface VehicleRtInterface {
 }
 
 
+export enum MapRouteDisruptionStatus {
+    Canonical = "canonical",
+    Detour = "detour",
+    Removed = "removed"
+}
+
 export interface MapRouteComponentInterface {
     routeId: string;
     id: string;
     points: any; // Replace 'any' with a specific type if available
     color: string;
+    disruptionStatus: MapRouteDisruptionStatus;
 }
 
 export interface RouteDirectionInterface {
@@ -110,7 +117,9 @@ export interface RouteMatchDirectionInterface {
     directionId: string;
     destination: string;
     routeAndDirection: string;
+    /** @deprecated Use mapRouteComponentDataDict instead */
     mapRouteComponentData: MapRouteComponentInterface[];
+    mapRouteComponentDataDict: Record<MapRouteDisruptionStatus, MapRouteComponentInterface[]>;
     mapStopComponentData: StopInterface[];
     routeDirectionComponentData: RouteDirectionInterface;
 }
@@ -231,12 +240,13 @@ export function createVehicleRtInterface(mvj: any,updateTime:Date): VehicleRtInt
     };
 }
 
-export function createMapRouteComponentInterface(routeId: string, componentId: string, points: any, color: string): MapRouteComponentInterface {
+export function createMapRouteComponentInterface(routeId: string, componentId: string, points: any, color: string, disruptionStatus: MapRouteDisruptionStatus = MapRouteDisruptionStatus.Canonical): MapRouteComponentInterface {
     return {
         routeId,
         id: componentId,
         points,
-        color
+        color,
+        disruptionStatus
     };
 }
 
@@ -253,7 +263,12 @@ export function createRouteDirectionComponentInterface(routeId: string, directio
 
 export function createRouteMatchDirectionInterface(directionJson: any, routeId: string, color: string): RouteMatchDirectionInterface {
     const mapRouteComponentData = [];
-    const mapStopComponentData = [];
+    const mapRouteComponentDataDict: Record<MapRouteDisruptionStatus, MapRouteComponentInterface[]> = {
+        [MapRouteDisruptionStatus.Canonical]: [],
+        [MapRouteDisruptionStatus.Detour]: [],
+        [MapRouteDisruptionStatus.Removed]: []
+    };
+    const mapStopComponentData: StopInterface[] = [];
     const stops = directionJson?.stops || [];
 
     log.info("createRouteMatchDirectionInterface", directionJson, routeId, color);
@@ -267,13 +282,20 @@ export function createRouteMatchDirectionInterface(directionJson: any, routeId: 
     );
 
     for (let j = 0; j < directionJson.polylines.length; j++) {
-        const encodedPolyline = directionJson.polylines[j];
+        const polylineData = directionJson.polylines[j];
+        // Support both new format {line: string, detourStatus: string} and old format (string or {disruptionStatus: string})
+        const encodedPolyline = typeof polylineData === 'string' ? polylineData : (polylineData.line || polylineData);
         const decodedPolyline = OBA.Util.decodePolyline(encodedPolyline);
         const polylineId = `${routeId}_dir_${directionJson.directionId}_polyLineNum_${j}`;
-        mapRouteComponentData.push(createMapRouteComponentInterface(routeId, polylineId, decodedPolyline, color));
+        const disruptionStatus: MapRouteDisruptionStatus = 
+            (typeof polylineData === 'object' && (polylineData.detourStatus || polylineData.disruptionStatus)) || 
+            MapRouteDisruptionStatus.Canonical;
+        const mapRouteComponent = createMapRouteComponentInterface(routeId, polylineId, decodedPolyline, color, disruptionStatus);
+        mapRouteComponentData.push(mapRouteComponent);
+        mapRouteComponentDataDict[disruptionStatus].push(mapRouteComponent);
     }
 
-    stops.forEach(stop => mapStopComponentData.push(createStopInterface(stop)));
+    stops.forEach((stop: any) => mapStopComponentData.push(createStopInterface(stop)));
 
     return {
         routeId,
@@ -282,6 +304,7 @@ export function createRouteMatchDirectionInterface(directionJson: any, routeId: 
         routeAndDirection: routeId + "_"+directionJson.directionId,
         destination: directionJson.destination,
         mapRouteComponentData,
+        mapRouteComponentDataDict,
         mapStopComponentData,
         routeDirectionComponentData
     };
