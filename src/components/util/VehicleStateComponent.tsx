@@ -1,15 +1,29 @@
-import React, { createContext, useState } from 'react';
-
-const VehicleStateContext = createContext();
-const VehiclesApproachingStopsContext = createContext();
+import React, { createContext, useState , ReactNode} from 'react';
 import log from 'loglevel';
-import { AgencyAndId } from '../../js/updateState/DataModels';
+import { VehicleStateObject, AgencyAndId} from '../../js/updateState/DataModels';
 
 
+
+
+
+
+
+
+
+
+
+const VehicleStateContext = createContext<
+    {vehicleState: VehicleStateObject; setState: React.Dispatch<React.SetStateAction<VehicleStateObject>>;} | undefined>(undefined);
+    
+const VehiclesApproachingStopsContext = createContext<
+    {vehiclesApproachingStopsState: VehicleStateObject; setVehiclesApproachingStopsState: React.Dispatch<React.SetStateAction<VehicleStateObject>>;} | undefined>(undefined);
 //todo: should be broken out into two states based on features which change and do not change
 // eg. vehicle position vs vehicle features
-const VehicleStateProvider = ({children}) => {
-    const [vehicleState, setState] = useState({
+
+
+
+const VehicleStateProvider = ({ children }: { children: ReactNode }) : JSX.Element => {
+    const [vehicleState, setState] = useState<VehicleStateObject>({
         renderCounter:1
     });
     log.info("initial state vehicle state set: ",vehicleState)
@@ -21,21 +35,23 @@ const VehicleStateProvider = ({children}) => {
     );
 };
 
-const VehiclesApproachingStopsProvider = ({children}) => {
+
+
+const VehiclesApproachingStopsProvider = ({ children }: { children: ReactNode }) => {
     const [vehiclesApproachingStopsState, setVehiclesApproachingStopsState] = useState({
         renderCounter:1
     });
     log.info("initial state vehicle approaching state set: ",vehiclesApproachingStopsState)
 
     return (
-        <VehiclesApproachingStopsContext.Provider value={{vehiclesApproachingStopsState: vehiclesApproachingStopsState, setVehiclesApproachingStopsState}}>
+        <VehiclesApproachingStopsContext.Provider value={{vehiclesApproachingStopsState, setVehiclesApproachingStopsState}}>
             {children}
         </VehiclesApproachingStopsContext.Provider>
     );
 };
 
 
-const shortenRoute = (routeId) => {
+const shortenRoute = (routeId:AgencyAndId | string) => {
     // if string return last part, if AgencyAndId return id
     if(typeof routeId === "object"){
         return routeId.id;

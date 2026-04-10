@@ -6,7 +6,7 @@ import stopPopupIcon from "../../img/icon/bus-stop.svg"
 import {useNavigation} from "../../js/updateState/NavigationEffect.ts";
 import {CardType, StopInterface} from "../../js/updateState/DataModels.ts";
 import {CardStateContext} from "../util/CardStateComponent.tsx";
-import {VehiclesApproachingStopsContext, stopSortedFutureVehicleDataIdentifier, updatedTimeIdentifier} from "../util/VehicleStateComponent.js";
+import {VehiclesApproachingStopsContext, stopSortedFutureVehicleDataIdentifier, updatedTimeIdentifier} from "../util/VehicleStateComponent.tsx";
 import {VehicleRtInterface, RouteMatchDirectionInterface} from "../../js/updateState/DataModels.ts";
 import {VehicleComponentWithoutSearchSpecified} from "../views/VehicleComponent.tsx";
 import { StopMatch } from '../../js/updateState/DataModels.ts';

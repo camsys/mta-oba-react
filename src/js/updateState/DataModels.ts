@@ -509,6 +509,12 @@ export class Card {
 }
 
 
+
+export interface VehicleStateObject {
+    renderCounter: number;
+    [key: `${string}_${string}`]: Map<string, VehicleRtInterface | any> | undefined;
+}
+
 export interface CardStateObject {
     currentCard: Card,
     cardStack: [Card],
