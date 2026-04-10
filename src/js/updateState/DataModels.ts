@@ -164,7 +164,7 @@ export function createVehicleArrivalInterface(mc: any): VehicleArrivalInterface 
 
 export function createVehicleDepartureInterface(mvj: any,updateTime:Date): VehicleDepartureInterface {
     let departureTimeAsDateTime = OBA.Util.ISO8601StringToDate(mvj.OriginAimedDepartureTime);
-    let isDepartureOnSchedule = departureTimeAsDateTime && departureTimeAsDateTime.getTime() >= updateTime;
+    let isDepartureOnSchedule = departureTimeAsDateTime && updateTime ? departureTimeAsDateTime.getTime() >= updateTime.getTime() : false;
     if(isDepartureOnSchedule==null){isDepartureOnSchedule= false;}
     return {
         ISOTime: mvj.OriginAimedDepartureTime,
@@ -188,7 +188,7 @@ export function createVehicleRtInterface(mvj: any,updateTime:Date): VehicleRtInt
         }
     }
 
-    let apcLevel = null;
+    let apcLevel = undefined;
     if(mvj?.MonitoredCall?.Extensions?.Capacities !=null){
         log.info("apcLevel: capacity info " + mvj?.MonitoredCall?.Extensions?.Capacities?.EstimatedPassengerLoadFactor)
         switch (mvj?.MonitoredCall?.Extensions?.Capacities?.EstimatedPassengerLoadFactor){
@@ -268,7 +268,7 @@ export function createRouteDirectionComponentInterface(routeId: string, directio
 
 export function createRouteMatchDirectionInterface(directionJson: any, routeId: string, color: string): RouteMatchDirectionInterface {
     const mapRouteComponentData = [];
-    const mapStopComponentData = [];
+    const mapStopComponentData: StopInterface[] = [];
     const stops = directionJson?.stops || [];
 
     log.info("createRouteMatchDirectionInterface", directionJson, routeId, color);
@@ -288,7 +288,7 @@ export function createRouteMatchDirectionInterface(directionJson: any, routeId: 
         mapRouteComponentData.push(createMapRouteComponentInterface(routeId, polylineId, decodedPolyline, color));
     }
 
-    stops.forEach(stop => mapStopComponentData.push(createStopInterface(stop)));
+    stops.forEach((stop: any) => mapStopComponentData.push(createStopInterface(stop)));
 
     return {
         routeId,
