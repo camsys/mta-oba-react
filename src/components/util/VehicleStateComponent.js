@@ -3,6 +3,7 @@ import React, { createContext, useState } from 'react';
 const VehicleStateContext = createContext();
 const VehiclesApproachingStopsContext = createContext();
 import log from 'loglevel';
+import { AgencyAndId } from '../../js/updateState/DataModels';
 
 
 //todo: should be broken out into two states based on features which change and do not change
@@ -35,6 +36,10 @@ const VehiclesApproachingStopsProvider = ({children}) => {
 
 
 const shortenRoute = (routeId) => {
+    // if string return last part, if AgencyAndId return id
+    if(typeof routeId === "object"){
+        return routeId.id;
+    } 
     let routeIdParts = routeId.split("_");
     let routeIdWithoutAgency = routeIdParts[1];
     return routeIdWithoutAgency;

@@ -28,11 +28,13 @@ export function RouteStopComponent
     const { search } = useNavigation();
     routeId=routeId.split("_")[1]
 
+    
     let vehicleChildComponents = vehicleState[routeId+stopSortedDataIdentifier]
     let hasVehicleChildren = vehicleChildComponents!==null && typeof vehicleChildComponents!=="undefined"
     if(hasVehicleChildren){
-        hasVehicleChildren = vehicleChildComponents.has(stopDatum.id)
-        vehicleChildComponents = vehicleChildComponents.get(stopDatum.id)
+        //todo: should just use the datumId for key
+        hasVehicleChildren = vehicleChildComponents.has(stopDatum.datumId.toString())
+        vehicleChildComponents = vehicleChildComponents.get(stopDatum.datumId.toString())
     }
 
     let uniqueId = stopDatum.name + "_" + stopDatum.id + "_"+index
@@ -47,7 +49,7 @@ export function RouteStopComponent
                  onMouseEnter={() => highlightId(stopDatum.id)}
                  onMouseLeave={() => highlightId(null)}
             >
-                <a href="#" onClick={(e) => {e.preventDefault();highlightId(null);search(stopDatum.id.split("_")[1])}} tabIndex="-1">{stopDatum.name}</a>
+                <a href="#" onClick={(e) => {e.preventDefault();highlightId(null);search(stopDatum.id.id)}} tabIndex="-1">{stopDatum.name}</a>
                 {
                     hasVehicleChildren ?
                         <ul className="approaching-buses">
@@ -108,7 +110,7 @@ function CardDetails({routeMatch}:{routeMatch:RouteMatch}) : JSX.Element|null{
 }
 
 export function RouteCardContent({ routeMatch, collapsed}: {RouteMatch,boolean}): JSX.Element  {
-    let routeId = routeMatch.routeId.split("_")[1];
+    let routeId = typeof routeMatch.routeId === 'string' ? routeMatch.routeId : routeMatch.routeId.id;
     let serviceAlertIdentifier = routeMatch.routeId;
 
     return(
@@ -156,7 +158,7 @@ export function CollapsableRouteCard({ routeMatch, oneOfMany}: {routeMatch:Route
 
     const { highlightId } = useHighlight();
 
-    let id = routeMatch.datumId.split("_")[1];
+    let id = typeof routeMatch.datumId === 'string' ? routeMatch.datumId : routeMatch.datumId.id;
     let serviceAlertIdentifier = routeMatch.datumId;
     let {getServiceAlert} = useServiceAlert();
     let hasServiceAlert = getServiceAlert(id,serviceAlertIdentifier)!==null;

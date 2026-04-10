@@ -11,10 +11,12 @@ import {VehicleComponent} from "./VehicleComponent.tsx";
 import {OBA} from "../../js/oba";
 import {useHighlight} from "../util/MapHighlightingStateComponent.tsx";
 import {
+    AgencyAndId,
     MatchType,
     RouteMatch,
     RouteMatchDirectionInterface,
     SearchMatch,
+    StopInterface,
     StopMatch, VehicleRtInterface
 } from "../../js/updateState/DataModels";
 import {RunScriptAfterRender,ScriptForAfterCollapsible} from "../util/RunScriptAfterRender"
@@ -72,12 +74,12 @@ const MiniStopDirectionList =({routeDirectionDatum,stopId, }:{routeDirectionDatu
     )
 }
 
-const MiniStopDirectionListContainer = ({routeMatches,stopId}:{routeMatches:[RouteMatch],stopId:string}) : JSX.Element=>{
+const MiniStopDirectionListContainer = ({routeMatches,stopId}:{routeMatches:[RouteMatch],stopId:AgencyAndId}) : JSX.Element=>{
     return(
         <ul className='stop-routes'>
             {routeMatches.map(
                 route=>route.directions.map(
-                (dir) => {return (<MiniStopDirectionList key={uuidv4()} routeDirectionDatum={dir} stopId ={stopId.split("_")[1]}/>)}
+                (dir) => {return (<MiniStopDirectionList key={uuidv4()} routeDirectionDatum={dir} stopId ={stopId.id}/>)}
             ))}
         </ul>
     )
@@ -196,7 +198,7 @@ function CardDetails({stopMatch}:{stopMatch:StopMatch}) : JSX.Element{
     const {isFavorite} = useFavorite()
     let jsx = (
         <ul className={"card-details" + (isFavorite(stopMatch)?" favorite":"")}>
-            <li className="stopcode">Stopcode {stopMatch.id.split("_")[1]}</li>
+            <li className="stopcode">Stopcode {stopMatch.id.id}</li>
         </ul>)
     return jsx
 }
@@ -209,11 +211,11 @@ export function StopCardContent({stopMatch,collapsed}: { StopMatch, boolean }):J
             <h4 className="mb-1">Buses en-route:</h4>
             {stopMatch.routeMatches.map(
                 route=>route.directions.map(
-                    dir => <RouteDirection key={uuidv4()} routeDirectionDatum={dir} stopId ={stopMatch.id.split("_")[1]} collapsed={collapsed}/>
+                    dir => <RouteDirection key={uuidv4()} routeDirectionDatum={dir} stopId ={stopMatch.id.id} collapsed={collapsed}/>
                 ))}
             <div className="text-note">
                 <p>
-                    Text stopcode <strong>{stopMatch.id.split("_")[1]}</strong> to 511123 to receive an up-to-date list of buses
+                    Text stopcode <strong>{stopMatch.id.id}</strong> to 511123 to receive an up-to-date list of buses
                     en-route on your phone.
                 </p>
             </div>
@@ -270,7 +272,7 @@ function InnerCollapsableStopCard ({ match, oneOfMany}: {match:SearchMatch, oneO
             <StopFavoriteButton className="w-full" item={stopMatch} collapsed={oneOfMany}/>
         </div>
         <div className='card-footer'>
-            <MiniStopDirectionListContainer routeMatches={stopMatch.routeMatches} stopId={stopMatch.id} collapsed={oneOfMany}/>
+            <MiniStopDirectionListContainer routeMatches={stopMatch.routeMatches} stopId={stopMatch.datumId} collapsed={oneOfMany}/>
         </div>
     </div>
     )

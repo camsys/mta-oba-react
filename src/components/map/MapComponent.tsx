@@ -9,7 +9,7 @@ import L, {LatLngBounds, LeafletMouseEvent, LeafletEventHandlerFnMap, Popup} fro
 
 import {CardStateContext, RoutesContext, StopsContext} from "../util/CardStateComponent.tsx";
 import {stopSortedFutureVehicleDataIdentifier, updatedTimeIdentifier,
-    vehicleDataIdentifier, shortenRoute, VehicleStateContext, 
+    vehicleDataIdentifier, VehicleStateContext, 
     VehiclesApproachingStopsContext} from "../util/VehicleStateComponent";
 import MapRouteComponent from "./MapRouteComponent";
 import MapStopComponent from "./MapStopComponent";
@@ -170,7 +170,7 @@ const RoutesAndStops = ()=>{
                     let stopId = stopInterface.datumId;
                     let newStopMarker = createStopMarker(stopInterface,selectStop,popupOptions.current,createStopIcon(stopInterface),0)
                     mapStopComponents.current.set(stopId, newStopMarker);
-                    stopsToDisplay.set(stopId, newStopMarker);                
+                    stopsToDisplay.set(stopId.toString(), newStopMarker);                
                 })
             })
         }
@@ -263,7 +263,7 @@ const RoutesAndStops = ()=>{
                 searchMatch.routeMatches.forEach(route => {
                     processRoute(route);
                 })
-                let stopId =state.currentCard.datumId;
+                let stopId = state.currentCard.datumId;
                 // selectedStop.set(stopId,mapStopComponents.current.get(stopId));
                 mapStopComponents.current.get(stopId).setZIndexOffset(20);
                 stopsToDisplay.delete(stopId)
@@ -565,7 +565,7 @@ const HandleMapBoundsAndZoom = () : void=>{
         }
         else if(state.currentCard.type===CardType.VehicleCard) {
             let vehicleId = state.currentCard.vehicleId;
-            let routeId = shortenRoute(state.currentCard.routeIdList.values().next().value);
+            let routeId = state.currentCard.routeIdList.values().next().value.id;
             log.info("zooming for vehicle card",vehicleId,routeId+vehicleDataIdentifier,vehicleState)
             if(!vehicleState[routeId+vehicleDataIdentifier]){
                 log.info("vehicle state not found for routeId",vehicleState,routeId+vehicleDataIdentifier)

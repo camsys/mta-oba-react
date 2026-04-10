@@ -43,14 +43,18 @@ function SelectedStopComponent(): JSX.Element {
 
         let stopCardVehicleData = vehiclesApproachingStopsState[routeAndDir + stopSortedFutureVehicleDataIdentifier];
 
-        stopCardVehicleData = typeof stopCardVehicleData !== 'undefined' && stopCardVehicleData.has(stopId)
-            ? stopCardVehicleData.get(stopId)
+        // todo: should map with datumId instead of string keys
+        stopCardVehicleData = typeof stopCardVehicleData !== 'undefined' && stopCardVehicleData.has(stopId.toString())
+            ? stopCardVehicleData.get(stopId.toString())
             : null;
+
+        log.trace("StopDirectionData for stopId: ", stopId.toString(), " routeAndDir: ", routeAndDir, " has vehicle data? ", stopCardVehicleData, vehiclesApproachingStopsState[routeAndDir + stopSortedFutureVehicleDataIdentifier])
 
         
         let id = routeDirectionDatum.routeId.split("_")[1];
         let serviceAlertIdentifier = routeDirectionDatum.routeId;
         let hasServiceAlert = getServiceAlert(id,serviceAlertIdentifier)!==null;
+        // let hasServiceAlert = getServiceAlert(routeId,routeAndDir)!==null;
 
 
         if (stopCardVehicleData === null) {
@@ -135,7 +139,7 @@ function SelectedStopComponent(): JSX.Element {
                                 <img src={stopPopupIcon} alt="busstop icon" className="icon" />
                                 <div className="popup-info">
                                     <span className="name">{stopDatum.name}</span>
-                                    <span className="stop-code">{"Stopcode " + stopDatum.id.split("_")[1]}</span>
+                                    <span className="stop-code">{"Stopcode " + stopDatum.id.id}</span>
                                 </div>
                             </div>
                             <strong className="buses-en-route">Buses en-route:</strong>

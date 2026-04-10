@@ -2,13 +2,28 @@ import {OBA} from "../oba";
 import {LatLngLiteral} from "leaflet";
 import log from 'loglevel';
 
+export const primaryDelimiter = "_";
+
 export class AgencyAndId {
-    agency: string;
-    id: string
-    constructor(datum:string) {
-        let parts = datum.split("_")
-        this.agency = parts[0]
-        this.id = parts.reduce((acc, part, nth) => nth !== 0 ? acc + part : acc, "")
+    private static cache = new Map<string, AgencyAndId>();
+    public readonly agency: string;
+    public readonly id: string;
+
+    private constructor(agency: string, id: string) {
+        this.agency = agency;
+        this.id = id;
+    }
+
+    static get(datum: string): AgencyAndId {
+        if (!this.cache.has(datum)) {
+            let parts = datum.split(primaryDelimiter);
+            this.cache.set(datum, new AgencyAndId(parts[0], parts.slice(1).join("")));
+        }
+        return this.cache.get(datum)!;
+    }
+
+    toString(): string {
+        return `${this.agency}${primaryDelimiter}${this.id}`;
     }
 }
 
@@ -18,7 +33,7 @@ export interface FavoritesCookie{
 
 
 export interface ObaDatumInterface {
-    datumId: string;
+    datumId: AgencyAndId;
     datumName: string;
 }
 
@@ -28,7 +43,7 @@ export interface StopInterface extends ObaDatumInterface{
     name: string;
     longLat: [number, number];
     /** @deprecated Use datumId instead */
-    id: string;
+    id: AgencyAndId;
     stopDirection: string;
 }
 
@@ -36,7 +51,7 @@ export interface StopInterface extends ObaDatumInterface{
 export interface RouteInterface extends ObaDatumInterface{
     color: string;
     /** @deprecated Use datumId instead */
-    routeId: string;
+    routeId: AgencyAndId;
     /** @deprecated Use datumName instead */
     routeTitle: string;
     description: string;
@@ -119,10 +134,10 @@ export interface RouteMatchDirectionInterface {
 export function createStopInterface(stopJson: any): StopInterface {
     return {
         datumName: stopJson.name,
-        datumId: stopJson.id,
+        datumId: AgencyAndId.get(stopJson.id),
         name: stopJson.name,
         longLat: [stopJson.latitude, stopJson.longitude],
-        id: stopJson.id,
+        id: AgencyAndId.get(stopJson.id),
         stopDirection: stopJson.stopDirection
     };
 }
@@ -269,7 +284,7 @@ export function createRouteMatchDirectionInterface(directionJson: any, routeId: 
     for (let j = 0; j < directionJson.polylines.length; j++) {
         const encodedPolyline = directionJson.polylines[j];
         const decodedPolyline = OBA.Util.decodePolyline(encodedPolyline);
-        const polylineId = `${routeId}_dir_${directionJson.directionId}_polyLineNum_${j}`;
+        const polylineId = `${routeId}${primaryDelimiter}dir${primaryDelimiter}${directionJson.directionId}${primaryDelimiter}polyLineNum${primaryDelimiter}${j}`;
         mapRouteComponentData.push(createMapRouteComponentInterface(routeId, polylineId, decodedPolyline, color));
     }
 
@@ -279,7 +294,7 @@ export function createRouteMatchDirectionInterface(directionJson: any, routeId: 
         routeId,
         color,
         directionId: directionJson.directionId,
-        routeAndDirection: routeId + "_"+directionJson.directionId,
+        routeAndDirection: routeId + primaryDelimiter+directionJson.directionId,
         destination: directionJson.destination,
         mapRouteComponentData,
         mapStopComponentData,
@@ -299,7 +314,7 @@ export class SearchMatch {
     static matchTypes = MatchType;
 
     type: MatchType;
-    routeMatches: [SearchMatch]
+    routeMatches: (RouteMatch | StopMatch)[]
 
     constructor(type: MatchType) {
         this.type = type;
@@ -310,17 +325,18 @@ export class SearchMatch {
 export class RouteMatch extends SearchMatch implements RouteInterface{
     color: string;
     /** @deprecated Use datumId instead */
-    routeId: string;
+    routeId: AgencyAndId;
     /** @deprecated Use datumName instead */
     routeTitle: string;
     description: string;
     directions: RouteMatchDirectionInterface[];
-    datumId: string;
+    datumId: AgencyAndId;
     datumName: string;
 
     constructor(data: any) {
         super(MatchType.RouteMatch);
-        this.datumId = this.routeId = data?.id.replace("+","-SBS");
+        const routeIdStr = data?.id.replace("+","-SBS");
+        this.datumId = this.routeId = AgencyAndId.get(routeIdStr);
         this.datumName = this.routeTitle = data?.shortName + " " + data?.longName;
         this.color = data?.color;
         this.description = data?.description;
@@ -332,7 +348,7 @@ export class RouteMatch extends SearchMatch implements RouteInterface{
 export class GeocodeMatch extends SearchMatch {
     latitude: number;
     longitude: number;
-    routeMatches: [RouteMatch|StopMatch]
+    routeMatches: (RouteMatch|StopMatch)[]
 
     constructor(data: any) {
         super(MatchType.GeocodeMatch);
@@ -348,16 +364,16 @@ export class StopMatch extends SearchMatch implements StopInterface{
     /** @deprecated Use datumName instead */
     name: string;
     /** @deprecated Use datumId instead */
-    id: string;
-    routeMatches: [RouteMatch];
+    id: AgencyAndId;
+    routeMatches: RouteMatch[];
     longLat: [number, number];
     stopDirection: string;
-    datumId: string;
+    datumId: AgencyAndId;
     datumName: string;
 
     constructor(data: any) {
         super(MatchType.StopMatch);
-        this.datumId = this.id = data.id;
+        this.datumId = this.id = AgencyAndId.get(data.id);
         this.datumName = this.name = data.name;
         this.latitude = data.latitude;
         this.longitude = data.longitude;
@@ -389,7 +405,7 @@ export class Card {
     static cardTypes = CardType;
 
     searchTerm: string;
-    datumId:string;
+    datumId: string | null;
     searchResultType: string | null;
     name: string;
     searchMatches: SearchMatch[];

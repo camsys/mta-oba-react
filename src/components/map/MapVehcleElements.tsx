@@ -7,7 +7,7 @@ import log from 'loglevel';
 import L, {LatLngBounds, LeafletEventHandlerFn} from "leaflet";
 
 import {CardStateContext, RoutesContext, StopsContext} from "../util/CardStateComponent.tsx";
-import {vehicleDataIdentifier, VehicleStateContext} from "../util/VehicleStateComponent";
+import {vehicleDataIdentifier, VehicleStateContext, shortenRoute} from "../util/VehicleStateComponent";
 import MapRouteComponent from "./MapRouteComponent";
 import MapStopComponent from "./MapStopComponent";
 import MapVehicleComponent from "./MapVehicleComponent";
@@ -79,12 +79,6 @@ export const MapVehicleElements = () =>{
         })
         iconCache.current.set(vehicleImageUrl, icon)
         return icon
-    }
-
-    function shortenRoute(routeId: string) {
-        let routeIdParts = routeId.split("_");
-        let routeIdWithoutAgency = routeIdParts[1];
-        return routeIdWithoutAgency;
     }
 
     function handleVehicleForMap(vehicleDatum: VehicleRtInterface,vehicleMap: Map<string, L.Marker>) {

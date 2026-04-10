@@ -38,7 +38,7 @@ export const FavoriteItem = ({datum}) =>{
     if(isStopInterface(datum)){
         let stopDatum = datum as StopInterface
         return(<React.Fragment>
-            <div className={`card route-card ${stopDatum.id.split("_")[1]}`} onClick={()=>search(stopDatum.id.split("_")[1])}>
+            <div className={`card route-card ${stopDatum.id.id}`} onClick={()=>search(stopDatum.id.id)}>
                 <button
                     className="card-header link-header border-color-mta-dark-blue"
                     tabIndex={0}

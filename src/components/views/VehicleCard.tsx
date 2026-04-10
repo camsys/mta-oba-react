@@ -30,7 +30,7 @@ export const VehicleCardContentComponent = ({routeMatch,vehicleDatum,serviceAler
                 <MeeplesComponentLi vehicleDatum={vehicleDatum}/>
             </ul>
             <div className="mb-3">
-                <ServiceAlertContainerComponent routeId={routeMatch.routeId.split("_")[1]} serviceAlertIdentifier={serviceAlertIdentifier} collapsed={false}/>
+                <ServiceAlertContainerComponent routeId={routeMatch.routeId.id} serviceAlertIdentifier={serviceAlertIdentifier} collapsed={false}/>
             </div>
             <ul className="menu icon-menu card-menu border-b border-b-mta-blue mb-4">
                 <li>
@@ -97,7 +97,7 @@ function VehicleCard ({routeMatch,vehicleId}: { routeMatch: RouteMatch, vehicleI
         if (routeMatch.type !== MatchType.RouteMatch) {
             log.info("card is still loading so VehicleCard is still loading",loading)
             return}
-        routeId = routeMatch.routeId.split("_")[1];
+        routeId = routeMatch.datumId.id;
         let vehicleData = vehicleState[routeId+vehicleDataIdentifier]
         if(!(vehicleData===null || typeof vehicleData==='undefined')){
             vehicleDatum = vehicleData.get(vehicleId)
@@ -131,7 +131,7 @@ function VehicleCard ({routeMatch,vehicleId}: { routeMatch: RouteMatch, vehicleI
                  onMouseLeave={() => highlightId(null)}>
                 <h3 className="card-title"
                     tabIndex={0}
-                    onClick={() => search(routeMatch.routeId.split("_")[1])}>
+                    onClick={() => search(routeMatch.routeId.id)}>
                     {/*{log.info("adding vehicelcard icon")}*/}
                     <img src={vehicleDatum && vehicleDatum?.strollerVehicle?"/img/icon/bus-stroller.svg":"/img/icon/bus.svg"}
                          alt={vehicleDatum && vehicleDatum?.strollerVehicle?"bus and stroller icon":"bus icon"} className="icon" />

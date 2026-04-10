@@ -35,7 +35,7 @@ export function CardHeaderMany({ match, color, IconComponent,hasServiceAlert, Ic
                     onMouseEnter={() => highlightId(match.datumId)}
                     onMouseLeave={() => highlightId(null)}
                     aria-haspopup="true" aria-expanded="true"
-                    aria-label={`Toggle ${match.datumId.split("_")[1]} ${match.datumName} open/close`}
+                    aria-label={`Toggle ${match.datumId.id} ${match.datumName} open/close`}
             >
                 
                 <span className="card-title label flex items-center">

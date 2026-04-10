@@ -15,10 +15,10 @@ export const FavoriteItem = ({datum}) =>{
     if(isRouteInterface(datum)){
         let routeDatum = datum as RouteInterface
         return(<li>
-            <button className={`favorite-route route-border-left ${routeDatum.routeId.split("_")[1]}`}
+            <button className={`favorite-route route-border-left ${routeDatum.routeId.id}`}
                tabIndex="-1" onClick={()=>{search(routeDatum.routeId)}}>
                                         <span className="label" style={{ borderColor: '#'+routeDatum.color }}>
-                                            <strong>{routeDatum.routeId.split("_")[1]}</strong> {routeDatum.routeTitle}
+                                            <strong>{routeDatum.routeId.id}</strong> {routeDatum.routeTitle}
                                         </span>
             </button>
             <ul className="menu icon-menu sub-menu-menu">
@@ -39,7 +39,7 @@ export const FavoriteItem = ({datum}) =>{
         return(
             <li>
                 <button className="favorite-stop" tabIndex="-1" onClick={()=>{search(stopDatum.id)}}>
-                    <span className="label"><strong>{stopDatum.id.split("_")[1]}</strong> {stopDatum.name}</span>
+                    <span className="label"><strong>{stopDatum.id.id}</strong> {stopDatum.name}</span>
                 </button>
                 <ul className="menu icon-menu sub-menu-menu">
                     <li>

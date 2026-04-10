@@ -52,7 +52,9 @@ const setCookies =(cookie:FavoritesCookie)=>{
 }
 
 const isValidFavorite =(datum) =>{
-    if(!(isStopInterface(datum) || isRouteInterface(datum))){return false}
+    if(!(isStopInterface(datum) || isRouteInterface(datum))){
+        log.warn("invalid favorite item, must be either stop or route interface",datum)
+        return false}
     return true
 }
 

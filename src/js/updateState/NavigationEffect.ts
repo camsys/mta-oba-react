@@ -9,7 +9,8 @@ import {
     StopMatch,
     createRouteMatchDirectionInterface,
     CardType,
-    StopInterface, RoutesObject, StopsObject, SearchMatch, MatchType, VehicleRtInterface
+    StopInterface, RoutesObject, StopsObject, SearchMatch, MatchType, VehicleRtInterface,
+    AgencyAndId
 } from "./DataModels";
 import log from 'loglevel';
 import {v4 as uuidv4} from 'uuid';
@@ -231,12 +232,16 @@ export const useNavigation = () =>{
     log.debug("navigation effect state and contexts", state, routes, stops)
 
 
-    const search = async (searchTerm) =>{
+    const search = async (searchTerm :string|AgencyAndId) =>{
         log.info("searching for: ",searchTerm, state);
+        if(searchTerm instanceof Object){
+            searchTerm = searchTerm.toString()
+        }
         searchTerm = searchTerm.split("_").length > 1
             ? searchTerm.split("_").reduce((acc, part, nth) => nth !== 0 ? acc + part : acc, "")
                 .toUpperCase()
             : searchTerm.toUpperCase();
+        
         if(searchTerm===allRoutesSearchTerm){
             document.getElementById('search-input').blur();
             scrollToSidebarTop();

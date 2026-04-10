@@ -46,7 +46,7 @@ export function SelectedVehicleComponent  () :JSX.Element{
 
 
     let vehicleDatum : VehicleRtInterface | null = null;
-    let shortenedRouteIds = new Set(Array.from(state.currentCard.routeIdList).map(shortenRoute));
+    let shortenedRouteIds = new Set(Array.from(state.currentCard.routeIdList).map(routeId=>shortenRoute(routeId)));
     
     [...shortenedRouteIds].some(shortenedRouteId=>{
         let routeData = vehicleState[shortenedRouteId+vehicleDataIdentifier]
@@ -82,7 +82,7 @@ export function SelectedVehicleComponent  () :JSX.Element{
     let popupOptions = {}
 
 
-    let id = vehicleDatum.routeId.split("_")[1];
+    let id = vehicleDatum.routeId.id;
     let serviceAlertIdentifier = vehicleDatum.routeId;
     let hasServiceAlert = getServiceAlert(id,serviceAlertIdentifier)!==null;
 
@@ -110,7 +110,7 @@ export function SelectedVehicleComponent  () :JSX.Element{
                 <div className="popup-header-info">
                 <img src={vehicleDatum?.strollerVehicle?busStroller:bus} alt="bus" className="icon"/>
                     <div className="popup-info">
-                        <span className={`route ${hasServiceAlert ? 'has-service-alert' : ''}`}>{vehicleDatum.routeId.split("_")[1]} {vehicleDatum.destination}{hasServiceAlert ? <ServiceAlertSvg/> : null}</span>
+                        <span className={`route ${hasServiceAlert ? 'has-service-alert' : ''}`}>{vehicleDatum.routeId.id} {vehicleDatum.destination}{hasServiceAlert ? <ServiceAlertSvg/> : null}</span>
                         <span className="vehicle">Vehicle #{vehicleIdWithoutAgency}</span>
                         <MeeplesComponentSpan vehicleDatum={vehicleDatum}/>
                     </div>
