@@ -17,7 +17,7 @@ const CardStateContext = createContext<{
     setState: React.Dispatch<React.SetStateAction<CardStateObject>>;
 } | undefined>(undefined);
 const CardStateProvider = ({ children }: { children: ReactNode }): JSX.Element => {
-    let currentCard = getHomeCard()
+    let currentCard = getHomeCard(null)
     log.info("card generation request occured, setting base card",currentCard)
     const [state, setState] = useState<CardStateObject>({
         currentCard: currentCard,
@@ -37,7 +37,7 @@ const CardStateProvider = ({ children }: { children: ReactNode }): JSX.Element =
 
 
 const RoutesContext = createContext<React.MutableRefObject<RoutesObject>>({ current: {} });
-const RoutesProvider = ({ children }) => {
+const RoutesProvider = ({ children }: { children: ReactNode }) => {
     const routes = useRef<RoutesObject>({});
     return (
         <RoutesContext.Provider value={routes}>
@@ -48,7 +48,7 @@ const RoutesProvider = ({ children }) => {
 
 
 const StopsContext = createContext<React.MutableRefObject<StopsObject>>({ current: {} });
-const StopsProvider = ({ children }) => {
+const StopsProvider = ({ children }: { children: ReactNode }) => {
     const stops = useRef<StopsObject>({});
     return (
         <StopsContext.Provider value={stops}>
@@ -57,7 +57,7 @@ const StopsProvider = ({ children }) => {
     );
 };
 
-const SearchStateProviders = ({children}) =>{
+const SearchStateProviders = ({children}: { children: ReactNode }) =>{
     return(<CardStateProvider>
         <StopsProvider>
             <RoutesProvider>

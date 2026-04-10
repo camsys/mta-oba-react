@@ -512,7 +512,8 @@ export class Card {
 export interface CardStateObject {
     currentCard: Card,
     cardStack: [Card],
-    renderCounter:number
+    renderCounter:number,
+    historyIndex: number
 }
 export interface RoutesObject {
     [key: string]: RouteMatch;
