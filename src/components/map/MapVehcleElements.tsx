@@ -6,7 +6,7 @@ import {OBA} from "../../js/oba";
 import log from 'loglevel';
 import L, {LatLngBounds, LeafletEventHandlerFn} from "leaflet";
 
-import {useCardState, RoutesContext, StopsContext} from "../util/CardStateComponent.tsx";
+import {useCardState, useRoutes, useStops} from "../util/CardStateComponent.tsx";
 import {vehicleDataIdentifier, VehicleStateContext, shortenRoute} from "../util/VehicleStateComponent";
 import MapRouteComponent from "./MapRouteComponent";
 import MapStopComponent from "./MapStopComponent";

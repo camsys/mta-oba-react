@@ -91,4 +91,4 @@ const SearchStateProviders = ({children}: { children: ReactNode }) =>{
     </CardStateProvider>)
 }
 
-export { SearchStateProviders, useCardState, useStops, useRoutes, StopsContext, RoutesContext };
+export { SearchStateProviders, useCardState, useStops, useRoutes };

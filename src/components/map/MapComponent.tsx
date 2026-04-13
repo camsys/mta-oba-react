@@ -7,7 +7,7 @@ import {OBA} from "../../js/oba";
 import log from 'loglevel';
 import L, {LatLngBounds, LeafletMouseEvent, LeafletEventHandlerFnMap, Popup} from "leaflet";
 
-import {useCardState, RoutesContext, StopsContext} from "../util/CardStateComponent.tsx";
+import {useCardState, useRoutes, useStops} from "../util/CardStateComponent.tsx";
 import {stopSortedFutureVehicleDataIdentifier, updatedTimeIdentifier,
     vehicleDataIdentifier, VehicleStateContext, 
     VehiclesApproachingStopsContext} from "../util/VehicleStateComponent";
@@ -105,8 +105,8 @@ const SearchedHere = () :JSX.Element=>{
 
 const RoutesAndStops = ()=>{
     log.info("generating RoutesAndStops")
-    const stops = useContext(StopsContext);
-    const routes = useContext(RoutesContext);
+    const stops = useStops();
+    const routes = useRoutes();
     const { state} = useCardState();
 
     let mapRouteMarkers: Map<string, L.Polyline> = new Map();
@@ -353,8 +353,8 @@ const Highlighted = () =>{
     let {state} = useCardState();
     let highlightedComponents = useRef(new Map());
 
-    const stops = useContext(StopsContext)
-    const routes = useContext(RoutesContext)
+    const stops = useStops()
+    const routes = useRoutes()
     const map = useMap()
 
     
