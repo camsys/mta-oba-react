@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useState} from "react";
-import {VehicleStateContext} from "Components/util/VehicleStateComponent";
+import {useVehicleState} from "Components/util/VehicleStateComponent";
 import log from "loglevel";
 import {useCardState} from "Components/util/CardStateComponent";
 import {useSiri} from "../../js/updateState/getSiri.tx";
@@ -8,7 +8,7 @@ import {useSiri} from "../../js/updateState/getSiri.tx";
 export default function getRefreshComponent({extraClasses}){
     var time = new Date();
     time = time.toLocaleString('en-US', { hour: 'numeric',  minute: 'numeric', hour12: true});
-    const {vehicleState}=useContext(VehicleStateContext)
+    const {vehicleState}=useVehicleState()
     const { updateSiriEffect } = useSiri();
 
     const handleRefresh = () => {

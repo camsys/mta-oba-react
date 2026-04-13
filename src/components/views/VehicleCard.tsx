@@ -1,7 +1,7 @@
 import React, {useContext} from "react";
 import {useCardState} from "../util/CardStateComponent";
 import ServiceAlertContainerComponent from "./ServiceAlertContainerComponent";
-import {updatedTimeIdentifier, vehicleDataIdentifier, VehicleStateContext} from "../util/VehicleStateComponent";
+import {updatedTimeIdentifier, vehicleDataIdentifier, useVehicleState} from "../util/VehicleStateComponent";
 import {useNavigation} from "../../js/updateState/NavigationEffect";
 import {OBA} from "../../js/oba";
 import {useHighlight} from "../util/MapHighlightingStateComponent.tsx";
@@ -72,7 +72,7 @@ function VehicleCard ({routeMatch,vehicleId}: { routeMatch: RouteMatch, vehicleI
 
     let {highlightId} = useHighlight()
     const { search } = useNavigation();
-    const { vehicleState} = useContext(VehicleStateContext)
+    const {vehicleState} = useVehicleState()
     const {state} = useCardState()
 
 

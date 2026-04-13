@@ -9,7 +9,7 @@ import {
     SearchMatch, StopInterface, RouteMatch,
     Card
 } from "../../js/updateState/DataModels";
-import {stopSortedDataIdentifier, vehicleDataIdentifier, VehicleStateContext} from "../util/VehicleStateComponent";
+import {stopSortedDataIdentifier, vehicleDataIdentifier, useVehicleState} from "../util/VehicleStateComponent";
 import {useNavigation} from "../../js/updateState/NavigationEffect"
 import {VehicleComponent} from "./VehicleComponent"
 import {useFavorite} from "../util/MiscStateComponent";
@@ -24,7 +24,7 @@ export function RouteStopComponent
 ({stopDatum, routeId, index}:{stopDatum:StopInterface,routeId:string,index:string}):JSX.Element{
 
     const { highlightId } = useHighlight();
-    const {vehicleState} = useContext(VehicleStateContext)
+    const {vehicleState} = useVehicleState()
     const { search } = useNavigation();
     routeId=routeId.split("_")[1]
 

@@ -3,8 +3,8 @@ import log from "loglevel";
 import {useContext} from "react";
 import {useCardState} from "../../components/util/CardStateComponent";
 import {
-    VehiclesApproachingStopsContext,
-    VehicleStateContext,
+    useVehicleApproachingStops,
+    useVehicleState,
 } from "../../components/util/VehicleStateComponent";
 import {siriGetVehiclesForRoutesEffect, siriGetVehiclesForVehicleViewEffect} from "./SiriEffects";
 import {siriGetVehiclesForStopViewEffect} from "./SiriStopEffects";
@@ -13,8 +13,8 @@ import {siriGetVehiclesForStopViewEffect} from "./SiriStopEffects";
 export const useSiri = () => {
     log.info("siri vehicle loading initiated")
     const { state} = useCardState()
-    let {vehicleState, setState } = useContext(VehicleStateContext);
-    let {vehiclesApproachingStopsState, setVehiclesApproachingStopsState } = useContext(VehiclesApproachingStopsContext);
+    let {vehicleState, setState } = useVehicleState();
+    let {vehiclesApproachingStopsState, setVehiclesApproachingStopsState } = useVehicleApproachingStops();
     const updateSiriEffect = () => {
         if (state.currentCard.type === CardType.VehicleCard) {
             siriGetVehiclesForVehicleViewEffect(state.currentCard, vehicleState, setState)

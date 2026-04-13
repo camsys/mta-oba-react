@@ -4,7 +4,7 @@ import {useCardState} from "../util/CardStateComponent";
 import {useNavigation} from "../../js/updateState/NavigationEffect";
 import {
     stopSortedFutureVehicleDataIdentifier, updatedTimeIdentifier,
-    VehiclesApproachingStopsContext
+    useVehicleApproachingStops
 } from "../util/VehicleStateComponent";
 import ServiceAlertContainerComponent, {ServiceAlertSvg, useServiceAlert} from "./ServiceAlertContainerComponent";
 import {VehicleComponent} from "./VehicleComponent.tsx";
@@ -32,7 +32,7 @@ import { StopCardHeader, StopCardHeaderMany } from "./CardHeaderComponents.tsx";
 
 const MiniStopDirectionList =({routeDirectionDatum,stopId, }:{routeDirectionDatum:RouteMatchDirectionInterface,stopId:string}) : JSX.Element=>{
     let {getServiceAlert} = useServiceAlert();
-    const {vehiclesApproachingStopsState} = useContext(VehiclesApproachingStopsContext)
+    const {vehiclesApproachingStopsState} = useVehicleApproachingStops()
     log.info("generating StopCard MiniStopDirection",routeDirectionDatum,vehiclesApproachingStopsState)
     let routeAndDir = routeDirectionDatum.routeId + "_"+routeDirectionDatum.directionId
     let routeId = routeDirectionDatum.routeId.split("_")[1];
@@ -90,7 +90,7 @@ const MiniStopDirectionListContainer = ({routeMatches,stopId}:{routeMatches:[Rou
 const RouteDirection = ({routeDirectionDatum,stopId, collapsed}:
     {routeDirectionDatum:RouteMatchDirectionInterface,stopId:string, collapsed:boolean}) : JSX.Element=>{
     const {highlightId} = useHighlight();
-    const {vehiclesApproachingStopsState} = useContext(VehiclesApproachingStopsContext)
+    const {vehiclesApproachingStopsState} = useVehicleApproachingStops()
     log.info("generating StopCard RouteDirection",routeDirectionDatum,vehiclesApproachingStopsState)
     let routeAndDir = routeDirectionDatum.routeId + "_"+routeDirectionDatum.directionId
     let stopCardVehicleData = vehiclesApproachingStopsState[routeAndDir+stopSortedFutureVehicleDataIdentifier]

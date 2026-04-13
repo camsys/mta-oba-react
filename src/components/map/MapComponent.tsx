@@ -9,8 +9,8 @@ import L, {LatLngBounds, LeafletMouseEvent, LeafletEventHandlerFnMap, Popup} fro
 
 import {useCardState, useRoutes, useStops} from "../util/CardStateComponent.tsx";
 import {stopSortedFutureVehicleDataIdentifier, updatedTimeIdentifier,
-    vehicleDataIdentifier, VehicleStateContext, 
-    VehiclesApproachingStopsContext} from "../util/VehicleStateComponent";
+    vehicleDataIdentifier, useVehicleState, 
+    useVehicleApproachingStops} from "../util/VehicleStateComponent";
 import MapRouteComponent from "./MapRouteComponent";
 import MapStopComponent from "./MapStopComponent";
 import MapVehicleComponent from "./MapVehicleComponent";
@@ -522,7 +522,7 @@ const getBoundsForRoute = (routes:RouteMatch[])=> {
 
 const HandleMapBoundsAndZoom = () : void=>{
     const { state} = useCardState();
-    const { vehicleState} = useContext(VehicleStateContext);
+    const { vehicleState} = useVehicleState();
     const map = useMap()
     const firstNonHomeZoomCompleted = useRef(false)
 

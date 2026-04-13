@@ -1,12 +1,12 @@
 import React, {useContext, useEffect, useState} from "react";
 import {OBA} from "../oba";
-import {VehicleStateContext} from "../../components/util/VehicleStateComponent";
+import {useVehicleState} from "../../components/util/VehicleStateComponent";
 import log from 'loglevel';
 
 const getDataEffect = (currentCard, targetAddress,
                        dataSpecifiersList) => {
 
-    const { state, setState } = useContext(VehicleStateContext);
+    const { state, setState } = useVehicleState();
     var update = false
 
     function extractData (parsed,dataSpecifiers){

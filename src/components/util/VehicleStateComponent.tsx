@@ -1,4 +1,4 @@
-import React, { createContext, useState , ReactNode} from 'react';
+import React, { createContext, useState , ReactNode, useContext} from 'react';
 import log from 'loglevel';
 import { VehicleStateObject, AgencyAndId} from '../../js/updateState/DataModels';
 
@@ -50,6 +50,22 @@ const VehiclesApproachingStopsProvider = ({ children }: { children: ReactNode })
     );
 };
 
+const useVehicleState = () => {
+    const context = useContext(VehicleStateContext);
+    if (context === undefined) {
+        throw new Error('useVehicleState must be used within a VehicleStateProvider');
+    }
+    return context;
+}
+
+const useVehicleApproachingStops = () => {
+    const context = useContext(VehiclesApproachingStopsContext);
+    if (context === undefined) {
+        throw new Error('useVehicleApproachingStops must be used within a VehiclesApproachingStopsProvider');
+    }
+    return context;
+}
+
 
 const shortenRoute = (routeId:AgencyAndId | string) => {
     // if string return last part, if AgencyAndId return id
@@ -69,8 +85,10 @@ const stopSortedFutureVehicleDataIdentifier = "_stopSortedFutureVehicleDataIdent
 
 export { VehicleStateProvider,
     VehicleStateContext,
+    useVehicleState,
     VehiclesApproachingStopsProvider,
     VehiclesApproachingStopsContext,
+    useVehicleApproachingStops,
     vehicleDataIdentifier,
     updatedTimeIdentifier,
     serviceAlertDataIdentifier,

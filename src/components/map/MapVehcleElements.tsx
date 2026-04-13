@@ -7,7 +7,7 @@ import log from 'loglevel';
 import L, {LatLngBounds, LeafletEventHandlerFn} from "leaflet";
 
 import {useCardState, useRoutes, useStops} from "../util/CardStateComponent.tsx";
-import {vehicleDataIdentifier, VehicleStateContext, shortenRoute} from "../util/VehicleStateComponent";
+import {vehicleDataIdentifier, useVehicleState, shortenRoute} from "../util/VehicleStateComponent";
 import MapRouteComponent from "./MapRouteComponent";
 import MapStopComponent from "./MapStopComponent";
 import MapVehicleComponent from "./MapVehicleComponent";
@@ -36,7 +36,7 @@ export const MapVehicleElements = () =>{
 
     let {vehicleSearch} = useNavigation()
     const { state } = useCardState();
-    const { vehicleState} = useContext(VehicleStateContext);
+    const { vehicleState} = useVehicleState();
     const vehicleObjsRefs = useRef<Map<string, Map<string, L.Marker>>>(new Map());
     const showFocusVehicle = useRef(true)
     const lastCardWasNotVehicleView = useRef(state.currentCard.type !== CardType.VehicleCard)

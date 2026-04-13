@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useState} from "react";
-import {serviceAlertDataIdentifier, vehicleDataIdentifier, VehicleStateContext} from "../util/VehicleStateComponent";
+import {serviceAlertDataIdentifier, vehicleDataIdentifier, useVehicleState} from "../util/VehicleStateComponent";
 import {ServiceAlertInterface} from "../../js/updateState/DataModels";
 import log from 'loglevel';
 import DOMPurify from 'dompurify';
@@ -60,7 +60,7 @@ export default function ServiceAlertContainerComponent  ({ routeId,serviceAlertI
 }
 
 export function useServiceAlert(){
-    const { vehicleState} = useContext(VehicleStateContext)
+    const { vehicleState} = useVehicleState()
     function getServiceAlert(routeId : string ,serviceAlertIdentifier : string){
         log.info("getting service alert data",vehicleState,routeId+serviceAlertDataIdentifier,serviceAlertIdentifier)
         let routeServiceAlerts = vehicleState[routeId+serviceAlertDataIdentifier]
