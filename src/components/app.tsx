@@ -1,7 +1,7 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {OBA} from "../js/oba";
 import ErrorBoundary from "./util/errorBoundary";
-import {useCardState, CardStateProvider, SearchStateProviders} from "./util/CardStateComponent.tsx";
+import {useCardState, SearchStateProviders} from "./util/CardStateComponent.tsx";
 import SideBar from "./pageStructure/SideBar";
 import {
     VehiclesApproachingStopsContext,
@@ -13,27 +13,29 @@ import {useNavigation} from "../js/updateState/NavigationEffect.ts";
 import {MapHighlightingStateProvider} from "./util/MapHighlightingStateComponent.tsx";
 import {CardType} from "../js/updateState/DataModels";
 import {MapWrapper} from "./map/MapWrapper.tsx";
-import {FavoritesCookieStateProvider} from "Components/util/MiscStateComponent";
+import {FavoritesCookieStateProvider} from "./util/MiscStateComponent.tsx";
 import log from 'loglevel';
 import {useSiri} from "../js/updateState/getSiri.tx";
 import { clickHandler, keypressHandler, postClickLog } from '../js/updateState/handleTracking.ts';
 
 
 
-const VehicleLoading=()=>{
+const VehicleLoading=(): JSX.Element => {
     log.info("initiating new loading of Siri")
     const { state} = useCardState();
     const { updateSiriEffect } = useSiri();
-    let siri_freq = process.env.SIRI_REQUEST_FREQ as number;
+    const siriFreqEnv = process.env.SIRI_REQUEST_FREQ;
+    const siri_freq = siriFreqEnv && !isNaN(Number(siriFreqEnv)) ? Number(siriFreqEnv) : 30;
     useEffect(() => {
         updateSiriEffect()
         const interval = setInterval(updateSiriEffect, siri_freq*1000);
         log.info("interval set for vehicle loading",interval)
         return () => clearInterval(interval);
     }, [state]);
+    return <></>
 }
 
-function InitialCardGeneration ({setLoading}){
+function InitialCardGeneration ({setLoading}:{setLoading:React.Dispatch<React.SetStateAction<boolean>>}):JSX.Element{
     const { generateInitialCard } = useNavigation();
     const { state} = useCardState();
 
@@ -42,6 +44,7 @@ function InitialCardGeneration ({setLoading}){
             generateInitialCard(setLoading)
         }
     }, []);
+    return <></>;
 }
 
 function TitleAndH1():JSX.Element{
@@ -72,7 +75,7 @@ function App  () : JSX.Element{
     const { updateStateForPopStateEvent } = useNavigation();
 
     useEffect(() => {
-        const handlePopState = (popStateEvent) => {
+        const handlePopState = (popStateEvent: PopStateEvent) => {
             log.info("popstate event triggered",window.history.state,popStateEvent,popStateEvent.state)
             updateStateForPopStateEvent(popStateEvent);
         };
