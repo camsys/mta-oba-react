@@ -404,11 +404,11 @@ export enum CardType {
 }
 
 export class Card {
-    static ROUTECARDIDENTIFIER = "RouteResult";
-    static GEOCARDIDENTIFIER = "GeocodeResult";
-    static STOPCARDIDENTIFIER = "StopResult";
-    static LOADCARDIDENTIFIER = "LoadingResult";
-    static FAVORITESCARDIDENTIFIER = "FavoritesResult";
+    static ROUTECARDIDENTIFIERS = new Set(["RouteResult", "RouteResultV2"]);
+    static GEOCARDIDENTIFIERS = new Set(["GeocodeResult", "GeocodeResultV2"]);
+    static STOPCARDIDENTIFIERS = new Set(["StopResult", "StopResultV2"]);
+    static LOADCARDIDENTIFIERS = new Set(["LoadingResult"]);
+    static FAVORITESCARDIDENTIFIERS = new Set(["FavoritesResult"]);
     static cardTypes = CardType;
 
     searchTerm: string;
@@ -485,25 +485,22 @@ export class Card {
 
     setSearchResultType(searchResultType: string | null): void {
         this.searchResultType = searchResultType;
-        switch (searchResultType) {
-            case Card.LOADCARDIDENTIFIER:
-                this.setType(CardType.LoadingCard);
-                break;
-            case Card.ROUTECARDIDENTIFIER:
-                this.setType(CardType.RouteCard);
-                break;
-            case Card.GEOCARDIDENTIFIER:
-                this.setType(CardType.GeocodeCard);
-                break;
-            case Card.STOPCARDIDENTIFIER:
-                this.setType(CardType.StopCard);
-                break;
-            case null:
-                this.setType(CardType.ErrorCard);
-                break;
-            default:
-                this.setType(CardType.ErrorCard);
-                log.error("Invalid search result type", searchResultType);
+        if (searchResultType === null) {
+            this.setType(CardType.ErrorCard);
+            return;
+        }
+        
+        if (Card.LOADCARDIDENTIFIERS.has(searchResultType)) {
+            this.setType(CardType.LoadingCard);
+        } else if (Card.ROUTECARDIDENTIFIERS.has(searchResultType)) {
+            this.setType(CardType.RouteCard);
+        } else if (Card.GEOCARDIDENTIFIERS.has(searchResultType)) {
+            this.setType(CardType.GeocodeCard);
+        } else if (Card.STOPCARDIDENTIFIERS.has(searchResultType)) {
+            this.setType(CardType.StopCard);
+        } else {
+            this.setType(CardType.ErrorCard);
+            log.error("Invalid search result type", searchResultType);
         }
     }
 
