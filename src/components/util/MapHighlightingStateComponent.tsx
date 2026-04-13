@@ -1,8 +1,9 @@
 import React, {createContext, useContext, useState, ReactNode} from 'react';
 import log from 'loglevel';
+import { AgencyAndId } from '../../js/updateState/DataModels';
 
 interface MapHighlightingState {
-    highlightedComponentId: string;
+    highlightedComponentId: AgencyAndId | null;
 }
 
 const MapHighlightingStateContext = createContext<{
@@ -12,7 +13,7 @@ const MapHighlightingStateContext = createContext<{
 
 const MapHighlightingStateProvider = ({ children }: { children: ReactNode }): JSX.Element => {
     const [mapHighlightingState, setHighlightingState] = useState<MapHighlightingState>({
-        highlightedComponentId: ""
+        highlightedComponentId: null
     });
 
     return (
@@ -29,7 +30,7 @@ const useHighlight = () => {
     }
     const { mapHighlightingState, setHighlightingState } = context;
     
-    const highlightId = (id: string): void => {
+    const highlightId = (id: AgencyAndId | null): void => {
         log.info("highlighting: ", id);
         if (mapHighlightingState.highlightedComponentId !== id) {
             setHighlightingState((prevState) => ({
@@ -38,7 +39,7 @@ const useHighlight = () => {
         }
     };
 
-    const getHighlightedId = (): string => {
+    const getHighlightedId = (): AgencyAndId | null=> {
         return mapHighlightingState.highlightedComponentId;
     };
     

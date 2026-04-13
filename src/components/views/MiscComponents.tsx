@@ -1,7 +1,7 @@
 import React from "react";
 import {useNavigation} from "../../js/updateState/NavigationEffect";
 
-export function ViewSearchItem({datumId,text,collapsed}: { string, string, boolean}){
+export function ViewSearchItem({datumId,text,collapsed}: { datumId: string, text: string, collapsed: boolean}){
     const {search} = useNavigation()
     return(
         <button className="view-full" tabIndex={collapsed?-1:0} aria-label={'view full '+text} onClick={() => search(datumId)}>

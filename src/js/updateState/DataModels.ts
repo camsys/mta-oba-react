@@ -512,7 +512,7 @@ export class Card {
 
 export interface VehicleStateObject {
     renderCounter: number;
-    [key: `${string}_${string}`]: Map<string, VehicleRtInterface | any> | undefined;
+    [key: `${string}_${string}`]: Map<string, Map<string,VehicleRtInterface>|string|Map<string,ServiceAlertInterface>> | undefined;
 }
 
 export interface CardStateObject {

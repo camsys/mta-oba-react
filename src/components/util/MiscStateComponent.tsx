@@ -1,5 +1,5 @@
 import React, {createContext, ReactNode, useContext, useState} from "react";
-import {CardStateObject, FavoritesCookie, RouteInterface, StopInterface, AgencyAndId} from "../../js/updateState/DataModels";
+import {CardStateObject, FavoritesCookie, RouteInterface, StopInterface, AgencyAndId, primaryDelimiter} from "../../js/updateState/DataModels";
 import Cookies from "js-cookie"
 import {
     extractRouteInterface,
@@ -30,9 +30,17 @@ const FavoritesCookieStateProvider = ({children} : {children:ReactNode}):JSX.Ele
                 if (json?.favorites) {
                     json?.favorites.forEach((fav: StopInterface | RouteInterface) => {
                         log.info("received favorite", fav)
-                        if (isStopInterface(fav) || isRouteInterface(fav)) {
-                            favorites.favorites.push(fav)
+                        if (isStopInterface(fav))
+                        {
+                            fav.datumId  = fav.id = AgencyAndId.get(fav.datumId.agency + primaryDelimiter +fav.datumId.id)
                         }
+                        else if (isRouteInterface(fav)) {
+                            fav.datumId  = fav.routeId = AgencyAndId.get(fav.datumId.agency + primaryDelimiter +fav.datumId.id)
+                        } else {
+                            log.warn("invalid favorite item, must be either stop or route interface", fav)
+                            return
+                        }
+                        favorites.favorites.push(fav)
                     })
                 }
             } catch (e){
@@ -49,7 +57,7 @@ const FavoritesCookieStateProvider = ({children} : {children:ReactNode}):JSX.Ele
 }
 
 const setCookies = (cookie: FavoritesCookie): void => {
-    log.info(cookie)
+    log.info("setting cookies: ",cookie,JSON.stringify(cookie))
     Cookies.set(favoritesIdentifier,JSON.stringify(cookie),{ expires: 365*5 })
 }
 
@@ -62,14 +70,14 @@ const isValidFavorite = (datum: unknown): boolean => {
 
 const getId = (datum: StopInterface | RouteInterface): AgencyAndId | null => {
     if(!isValidFavorite(datum)){return null}
-    return (isRouteInterface(datum)? datum?.routeId : datum?.id)
+    return datum.datumId
 }
 
 const useFavorite = (): { addFavorite: (datum: StopInterface | RouteInterface) => void; removeFavorite: (datum: StopInterface | RouteInterface) => void; isFavorite: (datum: StopInterface | RouteInterface) => boolean } => {
     const {favoritesState,setFavoritesState} = useContext(FavoritesCookieStateContext)!
     const removeFavorite = (datum:StopInterface | RouteInterface): void =>{
         if(!isValidFavorite(datum)){return}
-        let targetId = isRouteInterface(datum)? datum?.routeId : datum?.id
+        let targetId = getId(datum)
         let newFavorites: FavoritesCookie = {favorites: [...favoritesState.favorites]}
         newFavorites["favorites"] = newFavorites.favorites.filter(d=> getId(d)?.toString() !== targetId?.toString()) as any
         setCookies(newFavorites)
@@ -94,7 +102,12 @@ const useFavorite = (): { addFavorite: (datum: StopInterface | RouteInterface) =
 
     const isFavorite = (datum:StopInterface | RouteInterface): boolean =>{
         if(!isValidFavorite(datum)){return false}
-        if(favoritesState.favorites.some(f=>(getId(datum)?.toString()===getId(f)?.toString()))){return true}
+        if(favoritesState.favorites.some(f=>(
+            log.info("checking if favorite",datum,"matches",f,getId(datum)?.toString(),getId(f)?.toString(),"result:",getId(datum)?.toString()===getId(f)?.toString()),
+            getId(datum)?.toString()===getId(f)?.toString()
+        ))){
+            return true
+        }
         return false
     }
 

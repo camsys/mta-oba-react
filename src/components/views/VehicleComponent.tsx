@@ -6,7 +6,7 @@ import meeples from '../../../public/img/meeples/meeples-blank.png';
 import log from 'loglevel';
 
 
-function MeeplesComponentInner({vehicleDatum}: {VehicleRtInterface}):JSX.Element{
+function MeeplesComponentInner({vehicleDatum}: {vehicleDatum: VehicleRtInterface}):JSX.Element | null{
     let percentFull = null;
     let numberOfMeeples = null;
     if(vehicleDatum.apcLevel != -1 && vehicleDatum.apcLevel != null){numberOfMeeples = vehicleDatum?.apcLevel;}
@@ -33,7 +33,7 @@ function MeeplesComponentInner({vehicleDatum}: {VehicleRtInterface}):JSX.Element
     )
 }
 
-export function MeeplesComponentSpan({vehicleDatum}: {VehicleRtInterface}):JSX.Element{
+export function MeeplesComponentSpan({vehicleDatum}: {vehicleDatum: VehicleRtInterface}):JSX.Element | null{
     if(vehicleDatum.passengerCount==null){
         return null
     }
@@ -43,7 +43,7 @@ export function MeeplesComponentSpan({vehicleDatum}: {VehicleRtInterface}):JSX.E
     )
 }
 
-export function MeeplesComponentLi({vehicleDatum}: {VehicleRtInterface}):JSX.Element{
+export function MeeplesComponentLi({vehicleDatum}: {vehicleDatum: VehicleRtInterface}):JSX.Element | null{
     if(vehicleDatum.passengerCount==null){
         return null
     }

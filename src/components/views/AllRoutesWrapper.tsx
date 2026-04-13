@@ -9,7 +9,7 @@ import {useNavigation} from "../../js/updateState/NavigationEffect";
 import log from 'loglevel';
 
 
-export function AbreviatedRouteCard({ routeMatch}: RouteMatch): JSX.Element {
+export function AbreviatedRouteCard({ routeMatch}: {routeMatch: RouteMatch}): JSX.Element | null {
     log.info("generating allroutes card: ", routeMatch);
     const {search} = useNavigation()
     if (routeMatch.type !== MatchType.RouteMatch) {
@@ -36,7 +36,7 @@ export function AllRoutesWrapper():JSX.Element{
         return match.routeMatches.map(routeMatch=>{
             if(routeMatch.type === MatchType.RouteMatch){return routeMatch}
         })
-    }).flat().filter(x=>x!==null&&typeof x!=='undefined')
+    }).flat().filter(x=>x!==null&&typeof x!=='undefined') as RouteMatch[]
 
 
     return (<React.Fragment>

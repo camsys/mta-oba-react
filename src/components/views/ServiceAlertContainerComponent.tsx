@@ -7,10 +7,10 @@ import DOMPurify from 'dompurify';
 const keywordsToBold = ["What's happening?", "note"]
 const boldIfKeywordStartsPart = ["Note:"]
 
-function ServiceAlertComponent  ({serviceAlertDatum}:ServiceAlertInterface) : JSX.Element {
+function ServiceAlertComponent  ({serviceAlertDatum}:{serviceAlertDatum: ServiceAlertInterface[]}) : JSX.Element {
     log.info("service alert component contents generating ",serviceAlertDatum)
-    let alerts = []
-    let partsToBold = []
+    let alerts: string[] = []
+    let partsToBold: string[] = []
     serviceAlertDatum.forEach((alert) => {
         if(alert.descriptionParts && alert.descriptionParts.length>0){
             alert.descriptionParts.forEach((part) => {
@@ -45,11 +45,11 @@ function ServiceAlertComponent  ({serviceAlertDatum}:ServiceAlertInterface) : JS
         </div>)
 }
 
-export default function ServiceAlertContainerComponent  ({ routeId,serviceAlertIdentifier, collapsed}:{ routeId : string ,serviceAlertIdentifier : string,collapsed:boolean}) : JSX.Element {
+export default function ServiceAlertContainerComponent  ({ routeId,serviceAlertIdentifier, collapsed}:{ routeId : string ,serviceAlertIdentifier : string,collapsed:boolean}) : JSX.Element | null {
     log.info("generating service alert component")
     let {getServiceAlert} = useServiceAlert()
     let serviceAlertDatum = getServiceAlert(routeId,serviceAlertIdentifier)
-    if(serviceAlertDatum===null||typeof serviceAlertDatum==="undefined"){return null}
+    if(serviceAlertDatum===null||typeof serviceAlertDatum==="undefined"){return null as any}
     return (<div className="service-alert inner-card collapsible">
         <button className="card-header collapse-trigger" aria-haspopup="true" aria-expanded="false" aria-label="Toggle Service Alert Open/Closed" tabIndex={collapsed?-1:0}>
             <ServiceAlertSvg/>

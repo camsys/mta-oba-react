@@ -7,7 +7,8 @@ import {
     RouteDirectionInterface,
     MatchType,
     SearchMatch, StopInterface, RouteMatch,
-    Card
+    Card,
+    VehicleStateObject
 } from "../../js/updateState/DataModels";
 import {stopSortedDataIdentifier, vehicleDataIdentifier, useVehicleState} from "../util/VehicleStateComponent";
 import {useNavigation} from "../../js/updateState/NavigationEffect"
@@ -28,13 +29,16 @@ export function RouteStopComponent
     const { search } = useNavigation();
     routeId=routeId.split("_")[1]
 
-    
-    let vehicleChildComponents = vehicleState[routeId+stopSortedDataIdentifier]
+    // todo: please clean up when moving to easier keys for vehicle state
+    let vehicleData=null
+    let vehicleChildComponents = vehicleState[(routeId + stopSortedDataIdentifier) as keyof VehicleStateObject];
     let hasVehicleChildren = vehicleChildComponents!==null && typeof vehicleChildComponents!=="undefined"
-    if(hasVehicleChildren){
+    if (vehicleChildComponents instanceof Map) {
         //todo: should just use the datumId for key
-        hasVehicleChildren = vehicleChildComponents.has(stopDatum.datumId.toString())
-        vehicleChildComponents = vehicleChildComponents.get(stopDatum.datumId.toString())
+        const datumId = stopDatum.datumId.toString();
+        hasVehicleChildren = vehicleChildComponents.has(datumId);
+        // todo: we know it is one of the other because of which key we used, yes this needs to be fixed
+        vehicleData = vehicleChildComponents.get(datumId) as Map<string,VehicleStateObject> | null;
     }
 
     let uniqueId = stopDatum.name + "_" + stopDatum.id + "_"+index
@@ -46,15 +50,15 @@ export function RouteStopComponent
             <li  className={'pb-4 ' + (hasVehicleChildren ? "has-info" : "")}
                  key={uniqueId}
                  id={uniqueId}
-                 onMouseEnter={() => highlightId(stopDatum.id)}
+                 onMouseEnter={() => highlightId(stopDatum.datumId)}
                  onMouseLeave={() => highlightId(null)}
             >
-                <a href="#" onClick={(e) => {e.preventDefault();highlightId(null);search(stopDatum.id.id)}} tabIndex="-1">{stopDatum.name}</a>
+                <a href="#" onClick={(e) => {e.preventDefault();highlightId(null);search(stopDatum.datumId.id)}} tabIndex={0}>{stopDatum.name}</a>
                 {
                     hasVehicleChildren ?
                         <ul className="approaching-buses">
-                            {vehicleChildComponents.map((vehicleDatum, index)=>{
-                                return <VehicleComponent vehicleDatum={vehicleDatum} lastUpdateTime={null} key = {index}/>})}
+                            {vehicleData && vehicleData.map((vehicleDatum: any, idx: number)=>{
+                                return <VehicleComponent vehicleDatum={vehicleDatum} tabbable={0} key = {idx}/>})}
                         </ul>
                         :null
                 }
@@ -83,11 +87,10 @@ export const RouteDirection = ({datum,color,collapsed}: { datum: RouteDirectionI
             
             <div className="card-content collapse-content">
                 <ul className="route-stops" style={{ color: '#'+color}}>
-                    {log.info("preparing to get RouteStopComponents from: ", datum)}
                     {
                         datum.routeStopComponentsData.map(
                             (stopDatum,index) =>{
-                                return <RouteStopComponent stopDatum={stopDatum} routeId = {datum.routeId} key = {index}/>})
+                                return <RouteStopComponent stopDatum={stopDatum} routeId = {datum.routeId} index={index.toString()} key = {index}/>})
                     }
                 </ul>
             </div>
@@ -109,9 +112,9 @@ function CardDetails({routeMatch}:{routeMatch:RouteMatch}) : JSX.Element|null{
         </ul>)
 }
 
-export function RouteCardContent({ routeMatch, collapsed}: {RouteMatch,boolean}): JSX.Element  {
+export function RouteCardContent({ routeMatch, collapsed}: {routeMatch: RouteMatch, collapsed: boolean}): JSX.Element | null  {
     let routeId = typeof routeMatch.routeId === 'string' ? routeMatch.routeId : routeMatch.routeId.id;
-    let serviceAlertIdentifier = routeMatch.routeId;
+    let serviceAlertIdentifier = typeof routeMatch.routeId === 'string' ? routeMatch.routeId : routeMatch.routeId.id;
 
     return(
         <React.Fragment>
@@ -125,7 +128,7 @@ export function RouteCardContent({ routeMatch, collapsed}: {RouteMatch,boolean})
 }
 
 
-export function RouteCard({ routeMatch}: RouteMatch): JSX.Element {
+export function RouteCard({ routeMatch}: {routeMatch: RouteMatch}): JSX.Element | null {
     log.info("generating route card: ", routeMatch);
     if (routeMatch.type !== MatchType.RouteMatch) {
         return null
@@ -136,7 +139,7 @@ export function RouteCard({ routeMatch}: RouteMatch): JSX.Element {
             <div className={`card route-card ${routeMatch.datumId}}`}>
                 <RouteCardHeader match={routeMatch}/>
                 <div className="card-content">
-                    <RouteCardContent routeMatch={routeMatch}/>
+                    <RouteCardContent routeMatch={routeMatch} collapsed={false}/>
                     
                 </div>
                 <ul className="menu icon-menu card-menu border-t-0">
@@ -150,7 +153,7 @@ export function RouteCard({ routeMatch}: RouteMatch): JSX.Element {
 }
 
 
-export function CollapsableRouteCard({ routeMatch, oneOfMany}: {routeMatch:RouteMatch, oneOfMany:boolean}): JSX.Element {
+export function CollapsableRouteCard({ routeMatch, oneOfMany}: {routeMatch:RouteMatch, oneOfMany:boolean}): JSX.Element | null {
     log.info("generating route card: ", routeMatch);
     if (routeMatch.type !== MatchType.RouteMatch) {
         return null
@@ -159,7 +162,7 @@ export function CollapsableRouteCard({ routeMatch, oneOfMany}: {routeMatch:Route
     const { highlightId } = useHighlight();
 
     let id = typeof routeMatch.datumId === 'string' ? routeMatch.datumId : routeMatch.datumId.id;
-    let serviceAlertIdentifier = routeMatch.datumId;
+    let serviceAlertIdentifier = id;
     let {getServiceAlert} = useServiceAlert();
     let hasServiceAlert = getServiceAlert(id,serviceAlertIdentifier)!==null;
     return (
@@ -177,7 +180,7 @@ export function CollapsableRouteCard({ routeMatch, oneOfMany}: {routeMatch:Route
                         <RouteCardContent routeMatch={routeMatch} collapsed={true}/>
                         <ul className="menu icon-menu card-menu">
                             <li>
-                                <ViewSearchItem datumId={routeMatch.datumId} text={"Route"} collapsed={true}/>
+                                <ViewSearchItem datumId={id} text={"Route"} collapsed={true}/>
                             </li>
                         </ul>
                     </div>
