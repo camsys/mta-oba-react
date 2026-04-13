@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import { OBA } from "../../js/oba";
-import { CardStateContext } from "../util/CardStateComponent";
+import { useCardState } from "../util/CardStateComponent";
 import ServiceAlertContainerComponent, {ServiceAlertSvg, useServiceAlert} from "./ServiceAlertContainerComponent";
 import { useHighlight } from "../util/MapHighlightingStateComponent";
 import {
@@ -189,7 +189,7 @@ export function CollapsableRouteCard({ routeMatch, oneOfMany}: {routeMatch:Route
 }
 
 export function RouteCardWrapper(): JSX.Element {
-    const { state } = useContext(CardStateContext);
+    const { state } = useCardState();
     log.info("adding route cards for matches:", state.currentCard.searchMatches);
 
     return (

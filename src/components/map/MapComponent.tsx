@@ -7,7 +7,7 @@ import {OBA} from "../../js/oba";
 import log from 'loglevel';
 import L, {LatLngBounds, LeafletMouseEvent, LeafletEventHandlerFnMap, Popup} from "leaflet";
 
-import {CardStateContext, RoutesContext, StopsContext} from "../util/CardStateComponent.tsx";
+import {useCardState, RoutesContext, StopsContext} from "../util/CardStateComponent.tsx";
 import {stopSortedFutureVehicleDataIdentifier, updatedTimeIdentifier,
     vehicleDataIdentifier, VehicleStateContext, 
     VehiclesApproachingStopsContext} from "../util/VehicleStateComponent";
@@ -71,7 +71,7 @@ const loadPopup = (datumId,leafletRefObjs) :void=>{
 }
 
 const SearchedHere = () :JSX.Element=>{
-    const { state} = useContext(CardStateContext);
+    const { state} = useCardState();
     const previousSearchedHereMarker = useRef<L.Marker|null>(null);
     const currentSearchedHereMarker = useRef<L.Marker|null>(null);
     let map = useMap()
@@ -107,7 +107,7 @@ const RoutesAndStops = ()=>{
     log.info("generating RoutesAndStops")
     const stops = useContext(StopsContext);
     const routes = useContext(RoutesContext);
-    const { state} = useContext(CardStateContext);
+    const { state} = useCardState();
 
     let mapRouteMarkers: Map<string, L.Polyline> = new Map();
     const mapStopComponents = useRef(new Map());
@@ -350,7 +350,7 @@ const RoutesAndStops = ()=>{
 const Highlighted = () =>{
     let {getHighlightedId} = useHighlight()
     let highlightedId = getHighlightedId()
-    let {state} = useContext(CardStateContext);
+    let {state} = useCardState();
     let highlightedComponents = useRef(new Map());
 
     const stops = useContext(StopsContext)
@@ -521,7 +521,7 @@ const getBoundsForRoute = (routes:RouteMatch[])=> {
 }
 
 const HandleMapBoundsAndZoom = () : void=>{
-    const { state} = useContext(CardStateContext);
+    const { state} = useCardState();
     const { vehicleState} = useContext(VehicleStateContext);
     const map = useMap()
     const firstNonHomeZoomCompleted = useRef(false)

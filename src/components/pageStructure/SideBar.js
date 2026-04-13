@@ -5,7 +5,7 @@ import {RouteCardWrapper} from "../views/RouteCard";
 import Header from "./Header";
 import Footer from "./Footer";
 import SearchBar from "./SearchBar"
-import {CardStateContext} from "../util/CardStateComponent.tsx";
+import {useCardState} from "../util/CardStateComponent.tsx";
 import {Card, CardType} from "../../js/updateState/DataModels"
 import RefreshComponent from "../views/RefreshComponent";
 import VehicleCard from "../views/VehicleCard.tsx";
@@ -21,7 +21,7 @@ import NearMeAndFavorites  from '../pageStructure/NearMeAndFavorites.tsx';
 
 function SideBar  () {
 
-    const { state } = useContext(CardStateContext);
+    const { state } = useCardState();
 
     function decorateWithNearMeAndFavorites (card) {
         return (<React.Fragment><NearMeAndFavorites/>{card}</React.Fragment>);

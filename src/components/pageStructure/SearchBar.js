@@ -2,7 +2,7 @@ import React, {useContext, useEffect, useState} from 'react';
 import Autosuggest from 'react-autosuggest';
 import ErrorBoundary from "../util/errorBoundary";
 import {useNavigation} from "../../js/updateState/NavigationEffect.ts";
-import {CardStateContext} from "../util/CardStateComponent.tsx";
+import {useCardState} from "../util/CardStateComponent.tsx";
 import log from 'loglevel';
 import { trackingHandler } from '../../js/updateState/handleTracking.ts';
 
@@ -21,7 +21,7 @@ const SearchBar = () => {
     const [isFocused, setIsFocused] = useState(false);
 
     const { search } = useNavigation();
-    const {state} = useContext(CardStateContext)
+    const {state} = useCardState()
     const [searchTerm, setSearchTerm] = useState("Route, intersection, or stop code");
     log.info("Search",searchTerm)
 

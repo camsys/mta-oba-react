@@ -8,7 +8,7 @@ import {useNavigation} from "../../js/updateState/NavigationEffect.ts";
 import {CardType, VehicleArrivalInterface, VehicleDepartureInterface, VehicleRtInterface} from "../../js/updateState/DataModels.ts";
 import log from 'loglevel';
 import { shortenRoute, vehicleDataIdentifier, VehicleStateContext } from "../util/VehicleStateComponent.tsx";
-import { CardStateContext } from "../util/CardStateComponent.tsx";
+import { useCardState } from "../util/CardStateComponent.tsx";
 import { MeeplesComponentSpan } from "../views/VehicleComponent.tsx";
 import { ServiceAlertSvg, useServiceAlert } from "../views/ServiceAlertContainerComponent.tsx";
 
@@ -31,7 +31,7 @@ const createVehicleIcon = (vehicleDatum: VehicleRtInterface):L.Icon => {
 }
 
 export function SelectedVehicleComponent  () :JSX.Element{
-    const { state } = useContext(CardStateContext);
+    const { state } = useCardState();
     const { vehicleState} = useContext(VehicleStateContext);
     const vehicleRefs = useRef<Map<string, L.Marker>>(new Map());
     const {search} = useNavigation();

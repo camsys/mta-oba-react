@@ -1,7 +1,7 @@
 import React, {useContext, useEffect, useState} from "react";
 import {VehicleStateContext} from "Components/util/VehicleStateComponent";
 import log from "loglevel";
-import {CardStateContext} from "Components/util/CardStateComponent";
+import {useCardState} from "Components/util/CardStateComponent";
 import {useSiri} from "../../js/updateState/getSiri.tx";
 
 

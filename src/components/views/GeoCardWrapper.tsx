@@ -1,5 +1,5 @@
 import React, {useContext} from "react";
-import {CardStateContext} from "../util/CardStateComponent";
+import {useCardState} from "../util/CardStateComponent";
 import {CollapsableRouteCard, RouteCard} from "./RouteCard";
 import {CollapsableStopCard, StopCard} from "./StopCardWrapper.tsx";
 import {MatchType} from "../../js/updateState/DataModels";
@@ -7,7 +7,7 @@ import log from 'loglevel';
 
 
 export function GeoCardWrapper  () :JSX.Element {
-    const { state} = useContext(CardStateContext);
+    const { state} = useCardState();
     log.info("generating GeoCard:", state.currentCard.searchMatches);
 
     let routes = state.currentCard.searchMatches.map(match=>{

@@ -1,7 +1,7 @@
 import {CardType} from "./DataModels";
 import log from "loglevel";
 import {useContext} from "react";
-import {CardStateContext} from "../../components/util/CardStateComponent";
+import {useCardState} from "../../components/util/CardStateComponent";
 import {
     VehiclesApproachingStopsContext,
     VehicleStateContext,
@@ -12,7 +12,7 @@ import {siriGetVehiclesForStopViewEffect} from "./SiriStopEffects";
 
 export const useSiri = () => {
     log.info("siri vehicle loading initiated")
-    const { state} = useContext(CardStateContext)
+    const { state} = useCardState()
     let {vehicleState, setState } = useContext(VehicleStateContext);
     let {vehiclesApproachingStopsState, setVehiclesApproachingStopsState } = useContext(VehiclesApproachingStopsContext);
     const updateSiriEffect = () => {

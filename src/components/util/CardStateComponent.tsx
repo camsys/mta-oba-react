@@ -1,4 +1,4 @@
-import React, {createContext, ReactNode, useRef, useState} from 'react';
+import React, {createContext, ReactNode, useContext, useRef, useState} from 'react';
 
 import {getHomeCard} from "../../js/updateState/NavigationEffect";
 import {
@@ -35,6 +35,14 @@ const CardStateProvider = ({ children }: { children: ReactNode }): JSX.Element =
 };
 
 
+const useCardState = () => {
+    const context = useContext(CardStateContext);
+    if (context === undefined) {
+        throw new Error('useCardState must be used within a CardStateProvider');
+    }
+    return context;
+};
+
 
 const RoutesContext = createContext<React.MutableRefObject<RoutesObject>>({ current: {} });
 const RoutesProvider = ({ children }: { children: ReactNode }) => {
@@ -45,6 +53,14 @@ const RoutesProvider = ({ children }: { children: ReactNode }) => {
         </RoutesContext.Provider>
     );
 };
+
+const useRoutes = () => {
+    const context = useContext(RoutesContext);
+    if (context === undefined) {
+        throw new Error('useRoutes must be used within a RoutesProvider');
+    }
+    return context;
+}
 
 
 const StopsContext = createContext<React.MutableRefObject<StopsObject>>({ current: {} });
@@ -57,6 +73,14 @@ const StopsProvider = ({ children }: { children: ReactNode }) => {
     );
 };
 
+const useStops = () => {
+    const context = useContext(StopsContext);
+    if (context === undefined) {
+        throw new Error('useStops must be used within a StopsProvider');
+    }
+    return context;
+}
+
 const SearchStateProviders = ({children}: { children: ReactNode }) =>{
     return(<CardStateProvider>
         <StopsProvider>
@@ -67,4 +91,4 @@ const SearchStateProviders = ({children}: { children: ReactNode }) =>{
     </CardStateProvider>)
 }
 
-export { SearchStateProviders, CardStateContext,StopsContext,RoutesContext};
+export { SearchStateProviders, useCardState, useStops, useRoutes, StopsContext, RoutesContext };

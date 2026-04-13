@@ -1,6 +1,6 @@
 import React, {useContext} from 'react';
 import busStopIcon from "../../img/icon/bus-stop.svg"
-import {CardStateContext} from "../util/CardStateComponent";
+import {useCardState} from "../util/CardStateComponent";
 import {useNavigation} from "../../js/updateState/NavigationEffect";
 import {
     stopSortedFutureVehicleDataIdentifier, updatedTimeIdentifier,
@@ -279,7 +279,7 @@ function InnerCollapsableStopCard ({ match, oneOfMany}: {match:SearchMatch, oneO
 }
 
 export const StopCardWrapper = () : JSX.Element => {
-    const { state } = useContext(CardStateContext);
+    const { state } = useCardState();
     let match = state.currentCard.searchMatches[0]
     return (
     <>

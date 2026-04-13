@@ -6,7 +6,7 @@ import {OBA} from "../../js/oba";
 import log from 'loglevel';
 import L, {LatLngBounds, LeafletEventHandlerFn} from "leaflet";
 
-import {CardStateContext, RoutesContext, StopsContext} from "../util/CardStateComponent.tsx";
+import {useCardState, RoutesContext, StopsContext} from "../util/CardStateComponent.tsx";
 import {vehicleDataIdentifier, VehicleStateContext, shortenRoute} from "../util/VehicleStateComponent";
 import MapRouteComponent from "./MapRouteComponent";
 import MapStopComponent from "./MapStopComponent";
@@ -35,11 +35,7 @@ log.info("createVehicleMarker:", createVehicleMarker);
 export const MapVehicleElements = () =>{
 
     let {vehicleSearch} = useNavigation()
-    const cardStateContext = useContext(CardStateContext);
-    if (!cardStateContext) {
-        throw new Error("CardStateContext is undefined. Ensure the provider is correctly set up.");
-    }
-    const { state } = cardStateContext;
+    const { state } = useCardState();
     const { vehicleState} = useContext(VehicleStateContext);
     const vehicleObjsRefs = useRef<Map<string, Map<string, L.Marker>>>(new Map());
     const showFocusVehicle = useRef(true)

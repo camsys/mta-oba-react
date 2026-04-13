@@ -5,7 +5,7 @@ import ErrorBoundary from "../util/errorBoundary";
 import ReactLeafletGoogleLayer from "react-leaflet-google-layer";
 import RefreshComponent from "../views/RefreshComponent";
 import {useContext} from "react";
-import {CardStateContext} from "../util/CardStateComponent.tsx";
+import {useCardState} from "../util/CardStateComponent.tsx";
 import {Card, CardType} from "../../js/updateState/DataModels";
 
 
@@ -25,7 +25,7 @@ export function MapWrapper  () : JSX.Element {
             return mapVisible ? 'Toggle Map Visibility (currently visible)' : 'Toggle Map Visibility (currently hidden)'
     }
 
-    const { state } = useContext(CardStateContext);
+    const { state } = useCardState();
 
 
     log.info("adding map-wrapper")

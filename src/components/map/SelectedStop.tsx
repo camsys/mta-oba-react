@@ -5,7 +5,7 @@ import L from "leaflet";
 import stopPopupIcon from "../../img/icon/bus-stop.svg"
 import {useNavigation} from "../../js/updateState/NavigationEffect.ts";
 import {CardType, StopInterface} from "../../js/updateState/DataModels.ts";
-import {CardStateContext} from "../util/CardStateComponent.tsx";
+import {useCardState} from "../util/CardStateComponent.tsx";
 import {VehiclesApproachingStopsContext, stopSortedFutureVehicleDataIdentifier, updatedTimeIdentifier} from "../util/VehicleStateComponent.tsx";
 import {VehicleRtInterface, RouteMatchDirectionInterface} from "../../js/updateState/DataModels.ts";
 import {VehicleComponentWithoutSearchSpecified} from "../views/VehicleComponent.tsx";
@@ -19,7 +19,7 @@ const MAX_DESTINATIONS = 1;
 const MAX_VEHICLES_PER_DESTINATION = 2;
 
 function SelectedStopComponent(): JSX.Element {
-    const { state } = useContext(CardStateContext);
+    const { state } = useCardState();
     const { vehiclesApproachingStopsState } = useContext(VehiclesApproachingStopsContext)
     const { vehicleSearch } = useNavigation()
     let {getServiceAlert} = useServiceAlert();

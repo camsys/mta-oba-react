@@ -1,6 +1,6 @@
 import queryString from "query-string";
 import React, {useContext, useEffect, useRef, useState} from "react";
-import {CardStateContext, RoutesContext, StopsContext} from "Components/util/CardStateComponent";
+import {useCardState, RoutesContext, StopsContext} from "../../components/util/CardStateComponent.tsx";
 import {OBA} from "../oba";
 import {
     Card,
@@ -223,7 +223,7 @@ const getRoutesAddress=()=>{
 
 export const useNavigation = () =>{
     log.debug("initializing navigation effect")
-    const { state, setState } = useContext(CardStateContext);
+    const { state, setState } = useCardState();
     const routes = useContext(RoutesContext) as RoutesObject
     const stops = useContext(StopsContext) as StopsObject
     const allRoutesSearchTerm = "allRoutes";

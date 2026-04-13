@@ -1,5 +1,5 @@
 import React, {useContext} from "react";
-import {CardStateContext} from "../util/CardStateComponent";
+import {useCardState} from "../util/CardStateComponent";
 import {MatchType, RouteMatch} from "../../js/updateState/DataModels";
 import {useHighlight} from "../util/MapHighlightingStateComponent";
 import {CollapsableRouteCard, RouteCardContent} from "./RouteCard";
@@ -31,7 +31,7 @@ export function AbreviatedRouteCard({ routeMatch}: RouteMatch): JSX.Element {
 }
 
 export function AllRoutesWrapper():JSX.Element{
-    const {state} = useContext(CardStateContext)
+    const {state} = useCardState()
     let routes = state.currentCard.searchMatches.map(match=>{
         return match.routeMatches.map(routeMatch=>{
             if(routeMatch.type === MatchType.RouteMatch){return routeMatch}

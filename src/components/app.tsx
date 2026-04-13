@@ -1,7 +1,7 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {OBA} from "../js/oba";
 import ErrorBoundary from "./util/errorBoundary";
-import {CardStateContext, CardStateProvider, SearchStateProviders} from "./util/CardStateComponent.tsx";
+import {useCardState, CardStateProvider, SearchStateProviders} from "./util/CardStateComponent.tsx";
 import SideBar from "./pageStructure/SideBar";
 import {
     VehiclesApproachingStopsContext,
@@ -22,7 +22,7 @@ import { clickHandler, keypressHandler, postClickLog } from '../js/updateState/h
 
 const VehicleLoading=()=>{
     log.info("initiating new loading of Siri")
-    const { state} = useContext(CardStateContext)
+    const { state} = useCardState();
     const { updateSiriEffect } = useSiri();
     let siri_freq = process.env.SIRI_REQUEST_FREQ as number;
     useEffect(() => {
@@ -35,17 +35,17 @@ const VehicleLoading=()=>{
 
 function InitialCardGeneration ({setLoading}){
     const { generateInitialCard } = useNavigation();
-    const { state} = useContext(CardStateContext)
+    const { state} = useCardState();
 
     useEffect(() => {
-        if(state.renderCounter =1){
+        if(state.renderCounter === 1){
             generateInitialCard(setLoading)
         }
     }, []);
 }
 
 function TitleAndH1():JSX.Element{
-    const { state } = useContext(CardStateContext);
+    const { state } = useCardState();
     let TitleAndH1 = "MTA Bustime BETA - ";
     let cardType = state.currentCard.type;
     if(cardType === CardType.HomeCard){

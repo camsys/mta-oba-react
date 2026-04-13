@@ -7,7 +7,7 @@ import stopPopupIcon from "../../img/icon/bus-stop.svg"
 import {useHighlight} from "../util/MapHighlightingStateComponent.tsx";
 import {useNavigation} from "../../js/updateState/NavigationEffect";
 import {CardType, StopInterface} from "../../js/updateState/DataModels";
-import {CardStateContext} from "../util/CardStateComponent";
+import {useCardState} from "../util/CardStateComponent";
 
 const COMPONENT_IDENTIFIER = "mapStopComponent"
 
@@ -62,7 +62,7 @@ function MapStopComponent  ({stopDatum, mapStopMarkers, zIndexOverride}:
         autoClose: false
     }
 
-    const { state} = useContext(CardStateContext);
+    const { state} = useCardState();
 
     let out = (
         <Marker {...markerOptions}

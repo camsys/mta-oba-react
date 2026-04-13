@@ -1,5 +1,5 @@
 import React, {useContext} from "react";
-import {CardStateContext} from "../util/CardStateComponent";
+import {useCardState} from "../util/CardStateComponent";
 import ServiceAlertContainerComponent from "./ServiceAlertContainerComponent";
 import {updatedTimeIdentifier, vehicleDataIdentifier, VehicleStateContext} from "../util/VehicleStateComponent";
 import {useNavigation} from "../../js/updateState/NavigationEffect";
@@ -73,7 +73,7 @@ function VehicleCard ({routeMatch,vehicleId}: { routeMatch: RouteMatch, vehicleI
     let {highlightId} = useHighlight()
     const { search } = useNavigation();
     const { vehicleState} = useContext(VehicleStateContext)
-    const {state} = useContext(CardStateContext)
+    const {state} = useCardState()
 
 
     const [loading, setLoading] = useState(true);
@@ -149,7 +149,7 @@ function VehicleCard ({routeMatch,vehicleId}: { routeMatch: RouteMatch, vehicleI
 
 //This one breaks the pattern because vehicles are not searched elsewhere. sorry
 const getVehicleCardsWrapper = () : JSX.Element => {
-        const { state} = useContext(CardStateContext);
+        const { state} = useCardState();
         log.info("adding vehicleCard info for match:", state.currentCard.searchMatches);
 
         return (<React.Fragment>
