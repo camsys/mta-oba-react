@@ -26,7 +26,7 @@ const FavoritesCookieStateProvider = ({children} : {children:ReactNode}):JSX.Ele
         if (cookie) {
             try {
                 let json = JSON.parse(cookie)
-                log.info("favorites json", json, json?.favorites, typeof favorites?.favorites)
+                log.info("favorites json loaded ", json, json?.favorites, typeof favorites?.favorites)
                 if (json?.favorites) {
                     json?.favorites.forEach((fav: StopInterface | RouteInterface) => {
                         log.info("received favorite", fav)

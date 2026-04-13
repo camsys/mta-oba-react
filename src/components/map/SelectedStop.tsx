@@ -38,8 +38,8 @@ function SelectedStopComponent(): JSX.Element {
         routeDirectionDatum,
         stopId
     }: { routeDirectionDatum: RouteMatchDirectionInterface; stopId: string }): JSX.Element | null => {
-        const routeAndDir = routeDirectionDatum.routeId + "_" + routeDirectionDatum.directionId;
-        const routeId = routeDirectionDatum.routeId.split("_")[1];
+        const routeAndDir = routeDirectionDatum.datumId.toString() + "_" + routeDirectionDatum.directionId;
+        const routeId = routeDirectionDatum.datumId.id;
 
         let stopCardVehicleData = vehiclesApproachingStopsState[routeAndDir + stopSortedFutureVehicleDataIdentifier];
 
@@ -51,8 +51,8 @@ function SelectedStopComponent(): JSX.Element {
         log.trace("StopDirectionData for stopId: ", stopId.toString(), " routeAndDir: ", routeAndDir, " has vehicle data? ", stopCardVehicleData, vehiclesApproachingStopsState[routeAndDir + stopSortedFutureVehicleDataIdentifier])
 
         
-        let id = routeDirectionDatum.routeId.split("_")[1];
-        let serviceAlertIdentifier = routeDirectionDatum.routeId;
+        let id = routeDirectionDatum.datumId.id;
+        let serviceAlertIdentifier = routeDirectionDatum.datumId.toString();
         let hasServiceAlert = getServiceAlert(id,serviceAlertIdentifier)!==null;
         // let hasServiceAlert = getServiceAlert(routeId,routeAndDir)!==null;
 

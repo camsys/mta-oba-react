@@ -8,7 +8,8 @@ import {
     MatchType,
     SearchMatch, StopInterface, RouteMatch,
     Card,
-    VehicleStateObject
+    VehicleStateObject,
+    AgencyAndId
 } from "../../js/updateState/DataModels";
 import {stopSortedDataIdentifier, vehicleDataIdentifier, useVehicleState} from "../util/VehicleStateComponent";
 import {useNavigation} from "../../js/updateState/NavigationEffect"
@@ -22,16 +23,16 @@ import {BusStopIcon, StarBorderIcon, VehicleIcon} from "../shared/icons";
 import { RouteCardHeader, RouteCardHeaderMany } from "./CardHeaderComponents";
 
 export function RouteStopComponent
-({stopDatum, routeId, index}:{stopDatum:StopInterface,routeId:string,index:string}):JSX.Element{
+({stopDatum, routeId, index}:{stopDatum:StopInterface,routeId:AgencyAndId,index:string}):JSX.Element{
 
     const { highlightId } = useHighlight();
     const {vehicleState} = useVehicleState()
     const { search } = useNavigation();
-    routeId=routeId.split("_")[1]
+    let routeName=routeId.id
 
     // todo: please clean up when moving to easier keys for vehicle state
     let vehicleData=null
-    let vehicleChildComponents = vehicleState[(routeId + stopSortedDataIdentifier) as keyof VehicleStateObject];
+    let vehicleChildComponents = vehicleState[(routeName + stopSortedDataIdentifier) as keyof VehicleStateObject];
     let hasVehicleChildren = vehicleChildComponents!==null && typeof vehicleChildComponents!=="undefined"
     if (vehicleChildComponents instanceof Map) {
         //todo: should just use the datumId for key
@@ -78,8 +79,8 @@ export function RouteStopComponent
 export const RouteDirection = ({datum,color,collapsed}: { datum: RouteDirectionInterface, color: string ,collapsed:boolean}): JSX.Element => {
     log.info("generating RouteDirectionComponent:", datum)
     return (
-        <div className="route-direction inner-card collapsible" key={datum.routeId+datum.directionId}>
-            <button className="card-header collapse-trigger" aria-haspopup="true" aria-expanded="false" aria-label={"Toggle "+datum.routeId+" to " + datum.routeDestination +" Open / Closed"} tabIndex={collapsed?-1:0}>
+        <div className="route-direction inner-card collapsible" key={datum.datumId.toString() + "_" + datum.directionId}>
+            <button className="card-header collapse-trigger" aria-haspopup="true" aria-expanded="false" aria-label={"Toggle "+datum.datumId.id+" to " + datum.routeDestination +" Open / Closed"} tabIndex={collapsed?-1:0}>
                 <span className="label">to <strong> {datum.routeDestination}</strong>
                     {datum.hasUpcomingService?null:<><br/><em className="no-scheduled-service">No scheduled service at this time.</em></>}
                 </span>
@@ -90,7 +91,7 @@ export const RouteDirection = ({datum,color,collapsed}: { datum: RouteDirectionI
                     {
                         datum.routeStopComponentsData.map(
                             (stopDatum,index) =>{
-                                return <RouteStopComponent stopDatum={stopDatum} routeId = {datum.routeId} index={index.toString()} key = {index}/>})
+                                return <RouteStopComponent stopDatum={stopDatum} routeId = {datum.datumId} index={index.toString()} key = {index}/>})
                     }
                 </ul>
             </div>

@@ -181,9 +181,9 @@ const getTargetList = (routeIdList, currentCard) =>{
     let baseTargetAddress = "https://" + process.env.ENV_ADDRESS + "/" + process.env.VEHICLE_MONITORING_ENDPOINT
 
     return [...routeIdList].map((routeId)=>{
-        let operatorRef = routeId.split("_")[0].replace(" ","+");
-        const lineRef = routeId.split("_")[1];
-        return [lineRef,baseTargetAddress+"OperatorRef=" +operatorRef + "&LineRef"+"=" + routeId.replace("-SBS","%2B") +getSearchTermAdditions(currentCard)];
+        let operatorRef = routeId.agency.replace(" ","+");
+        const lineRef = routeId.id;
+        return [lineRef,baseTargetAddress+"OperatorRef=" +operatorRef + "&LineRef"+"=" + routeId.id.replace("-SBS","%2B") +getSearchTermAdditions(currentCard)];
     })
 }
 

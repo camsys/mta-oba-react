@@ -31,13 +31,14 @@ const vehicleDelimiter = ":"
 
 function processRouteSearch(route,card:Card,stops: StopsObject,routes:RoutesObject):RouteMatch {
     let match = new RouteMatch(route)
-    log.info("processing route search results",route,card,stops,routes)
+    log.info("processing route search results",route,card,stops,routes, match)
     if (route != null && route.hasOwnProperty("directions")) {
         match.color = route?.color
-        match.routeId = route?.id.replace("+","-SBS")
+        match.datumId =match.routeId = AgencyAndId.get(route?.id.replace("+","-SBS"))
+
         log.info("assigned route id",route,match)
-        card.routeIdList.add(match.routeId)
-        match.routeTitle = route?.shortName + " " + route?.longName
+        card.routeIdList.add(match.datumId)
+        match.datumName = match.routeTitle = route?.shortName + " " + route?.longName
         match.description = route?.description
         if(match.description == null || match.description == undefined){
             match.description = "\u00A0"
@@ -47,7 +48,7 @@ function processRouteSearch(route,card:Card,stops: StopsObject,routes:RoutesObje
         match.routeMatches.push(match)
         log.info("assigned basic search values to card",route,match)
         for (let i = 0; i < route?.directions.length; i++) {
-            let directionDatum = createRouteMatchDirectionInterface(route?.directions[i],match.routeId,match.color)
+            let directionDatum = createRouteMatchDirectionInterface(route?.directions[i],match.datumId,match.color)
             directionDatum.mapStopComponentData.forEach(stop=>stops.current[stop.id]=stop)
             match.directions.push(directionDatum)
         }
@@ -274,7 +275,7 @@ export const useNavigation = () =>{
         if(searchTerm.includes(vehicleDelimiter)){
             log.info("searching for vehicle",searchTerm)
             let searchParts = searchTerm.split(vehicleDelimiter);
-            let routeId = searchParts[0];
+            let routeId = AgencyAndId.get(searchParts[0]);
             let vehicleId = searchParts[1];
             vehicleSearch(routeId,vehicleId);
             return;
@@ -417,16 +418,16 @@ export const useNavigation = () =>{
     //this function doesn't belong in "SearchEffect" but it does belong with card handling functions
 // which is what this has become
 
-    const vehicleSearch = async (routeId:string,vehicleId:string)=> {
-        log.info("setting card to vehicle card",routeId,vehicleId);
+    const vehicleSearch = async (routeId:AgencyAndId,vehicleId:string)=> {
+        log.info("setting card to vehicle card",routeId,vehicleId, typeof routeId, typeof vehicleId);
         //todo: should be current search term
         let pastCard = state.currentCard;
-        let shortenedRouteId = routeId.split("_")[1];
+        let shortenedRouteId = routeId.id;
         log.info("found routeId of target vehicle: ",shortenedRouteId);
         let currentCard = new Card(shortenedRouteId + vehicleDelimiter + vehicleId,uuidv4(),getSessionUuid(pastCard));
         log.info("generated new card to become vehicle card",currentCard,routeId,vehicleId);
-        let routeData = routes?.current;
-        if(routeData){routeData=routeData[routeId]}
+        let routeData;
+        if(routes?.current){routeData=routes?.current[routeId.toString()]}
         if(routeData){
             log.info("found routedata of target vehicle: ",routeId, routeData,routes);
             currentCard.setToVehicle(vehicleId,[routeData],new Set([routeId]));

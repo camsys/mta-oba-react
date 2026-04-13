@@ -12,6 +12,7 @@ import MapRouteComponent from "./MapRouteComponent";
 import MapStopComponent from "./MapStopComponent";
 import MapVehicleComponent from "./MapVehicleComponent";
 import {
+    AgencyAndId,
     CardType,
     MapRouteComponentInterface,
     MatchType,
@@ -54,7 +55,7 @@ export const MapVehicleElements = () =>{
         autoClose: false
     })
 
-    const selectVehicle = (routeId:string,vehicleId:string,latlon:[number,number]) =>{
+    const selectVehicle = (routeId:AgencyAndId,vehicleId:string,latlon:[number,number]) =>{
         // log.info("clicked on " + vehicleDatum.vehicleId)
         vehicleSearch(routeId,vehicleId)
     }
@@ -95,7 +96,7 @@ export const MapVehicleElements = () =>{
             log.info("adding vehicle to map",vehicleDatum.vehicleId,vehicleDatum)
             vehicle = createVehicleMarker(vehicleDatum,createVehicleIcon(vehicleDatum),popupOptions.current)
             vehicle.on("click", (e:L.LeafletMouseEvent) => {
-                selectVehicle(vehicleDatum.routeId, vehicleDatum.vehicleId, [e.latlng.lat, e.latlng.lng]);
+                selectVehicle(AgencyAndId.get(vehicleDatum.routeId), vehicleDatum.vehicleId, [e.latlng.lat, e.latlng.lng]);
             });
             vehicleMap.set(vehicleDatum.vehicleId, vehicle)
             vehicleLayer.current.addLayer(vehicle)

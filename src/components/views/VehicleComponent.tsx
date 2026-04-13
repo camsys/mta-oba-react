@@ -1,12 +1,12 @@
 import React, {useContext} from "react";
 import {OBA} from "../../js/oba";
 import {useNavigation} from "../../js/updateState/NavigationEffect";
-import {VehicleRtInterface} from "../../js/updateState/DataModels";
+import {AgencyAndId, VehicleRtInterface} from "../../js/updateState/DataModels";
 import meeples from '../../../public/img/meeples/meeples-blank.png';
 import log from 'loglevel';
 
 
-function MeeplesComponentInner({vehicleDatum}: {vehicleDatum: VehicleRtInterface}):JSX.Element | null{
+function MeeplesComponentInner({vehicleDatum}: {VehicleRtInterface}):JSX.Element{
     let percentFull = null;
     let numberOfMeeples = null;
     if(vehicleDatum.apcLevel != -1 && vehicleDatum.apcLevel != null){numberOfMeeples = vehicleDatum?.apcLevel;}
@@ -33,7 +33,7 @@ function MeeplesComponentInner({vehicleDatum}: {vehicleDatum: VehicleRtInterface
     )
 }
 
-export function MeeplesComponentSpan({vehicleDatum}: {vehicleDatum: VehicleRtInterface}):JSX.Element | null{
+export function MeeplesComponentSpan({vehicleDatum}: {VehicleRtInterface}):JSX.Element{
     if(vehicleDatum.passengerCount==null){
         return null
     }
@@ -43,7 +43,7 @@ export function MeeplesComponentSpan({vehicleDatum}: {vehicleDatum: VehicleRtInt
     )
 }
 
-export function MeeplesComponentLi({vehicleDatum}: {vehicleDatum: VehicleRtInterface}):JSX.Element | null{
+export function MeeplesComponentLi({vehicleDatum}: {VehicleRtInterface}):JSX.Element{
     if(vehicleDatum.passengerCount==null){
         return null
     }
@@ -57,7 +57,7 @@ export function MeeplesComponentLi({vehicleDatum}: {vehicleDatum: VehicleRtInter
 interface VehicleComponentProps {
     vehicleDatum: VehicleRtInterface,
     tabbable: number,
-    vehicleSearchFunction: (routeId: string, vehicleId: string) => void
+    vehicleSearchFunction: (routeId: AgencyAndId, vehicleId: string) => void
 }
 
 
@@ -121,7 +121,7 @@ function VehicleComponentBase({vehicleDatum,tabbable, vehicleSearchFunction}: Ve
                 <MeeplesComponentSpan vehicleDatum={vehicleDatum}/>
             </span>
             <a href="#" tabIndex={tabbable?0:-1}
-               onClick={(e)=>{e.preventDefault();   vehicleSearchFunction(vehicleDatum.routeId, vehicleDatum.vehicleId)}}
+               onClick={(e)=>{e.preventDefault();   vehicleSearchFunction(AgencyAndId.get(vehicleDatum.routeId), vehicleDatum.vehicleId)}}
                className={vehicleDatum?.strollerVehicle?"bus stroller-friendly":"bus"}>{vehicleDatum.vehicleId.split("_")[1]}</a>
         </li>)
     } catch (e) {

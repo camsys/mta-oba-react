@@ -34,8 +34,8 @@ const MiniStopDirectionList =({routeDirectionDatum,stopId, }:{routeDirectionDatu
     let {getServiceAlert} = useServiceAlert();
     const {vehiclesApproachingStopsState} = useVehicleApproachingStops()
     log.info("generating StopCard MiniStopDirection",routeDirectionDatum,vehiclesApproachingStopsState)
-    let routeAndDir = routeDirectionDatum.routeId + "_"+routeDirectionDatum.directionId
-    let routeId = routeDirectionDatum.routeId.split("_")[1];
+    let routeAndDir = routeDirectionDatum.datumId.toString() + "_" + routeDirectionDatum.directionId
+    let routeId = routeDirectionDatum.datumId.id;
     let hasServiceAlert = getServiceAlert(routeId,routeAndDir)!==null;
     let stopsToVehicles = vehiclesApproachingStopsState[routeAndDir+stopSortedFutureVehicleDataIdentifier]
     let stopCardVehicleData = typeof stopsToVehicles !== 'undefined' &&
@@ -92,13 +92,13 @@ const RouteDirection = ({routeDirectionDatum,stopId, collapsed}:
     const {highlightId} = useHighlight();
     const {vehiclesApproachingStopsState} = useVehicleApproachingStops()
     log.info("generating StopCard RouteDirection",routeDirectionDatum,vehiclesApproachingStopsState)
-    let routeAndDir = routeDirectionDatum.routeId + "_"+routeDirectionDatum.directionId
+    let routeAndDir = routeDirectionDatum.datumId.toString() + "_" + routeDirectionDatum.directionId
     let stopCardVehicleData = vehiclesApproachingStopsState[routeAndDir+stopSortedFutureVehicleDataIdentifier] as any
 
     stopCardVehicleData = typeof stopCardVehicleData !== 'undefined' &&
         stopCardVehicleData.has("MTA_"+stopId)
             ?stopCardVehicleData.get("MTA_"+stopId):null
-    let routeId = routeDirectionDatum.routeId.split("_")[1];
+    let routeId = routeDirectionDatum.datumId.id;
     let serviceAlertIdentifier = routeAndDir
     let lastUpdateTime = stopCardVehicleData!==null
         ? OBA.Util.ISO8601StringToDate(vehiclesApproachingStopsState[routeAndDir+updatedTimeIdentifier]).getTime()
@@ -138,15 +138,15 @@ const RouteDirection = ({routeDirectionDatum,stopId, collapsed}:
                     className={`card-header collapse-trigger ${collapsed?"":"open"}`}
                     aria-haspopup="true"
                     aria-expanded="true"
-                    aria-label={`Toggle ${routeDirectionDatum.routeId.split("_")[1]} to ${destination}`}
-                    onMouseEnter={() => highlightId(routeDirectionDatum.routeId)}
+                    aria-label={`Toggle ${routeDirectionDatum.datumId.id} to ${destination}`}
+                    onMouseEnter={() => highlightId(routeDirectionDatum.datumId)}
                     onMouseLeave={() => highlightId('')}
                     tabIndex={tabbable?0:-1}
                 >
                 <span className="card-title" style={{ borderColor: '#'+routeDirectionDatum.color}}>
                     {hasServiceAlert?<ServiceAlertSvg/>:null}
                     <span className="label">
-                        <strong>{routeDirectionDatum.routeId.split("_")[1]}</strong> {destination}
+                        <strong>{routeDirectionDatum.datumId.id}</strong> {destination}
                     </span>
                 </span>
                 </button>
@@ -158,7 +158,7 @@ const RouteDirection = ({routeDirectionDatum,stopId, collapsed}:
                     <ServiceAlertContainerComponent {...{routeId,serviceAlertIdentifier}} collapsed={!tabbable}/>
                     <ul className="menu icon-menu inner-card-menu">
                         <li>
-                            <ViewSearchItem datumId={routeDirectionDatum.routeId} text={"Full Route"} collapsed={!tabbable}/>
+                            <ViewSearchItem datumId={typeof routeDirectionDatum.datumId === 'string' ? routeDirectionDatum.datumId : routeDirectionDatum.datumId.id} text={"Full Route"} collapsed={!tabbable}/>
                         </li>
                     </ul>
                 </div>
