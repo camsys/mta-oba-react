@@ -121,6 +121,7 @@ function VehicleComponentBase({vehicleDatum,tabbable, vehicleSearchFunction}: Ve
                 <MeeplesComponentSpan vehicleDatum={vehicleDatum}/>
             </span>
             <a href="#" tabIndex={tabbable?0:-1}
+               ref={(el) => { if (el?.closest('.inner-card.collapsible.open')) el.setAttribute('tabindex', '0'); }}
                onClick={(e)=>{e.preventDefault();   vehicleSearchFunction(vehicleDatum.routeId, vehicleDatum.vehicleId)}}
                className={vehicleDatum?.strollerVehicle?"bus stroller-friendly":"bus"}>{vehicleDatum.vehicleId.split("_")[1]}</a>
         </li>)
