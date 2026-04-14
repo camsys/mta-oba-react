@@ -84,7 +84,8 @@ export function SelectedVehicleComponent  () :JSX.Element{
 
     let id = vehicleDatum.routeId.split("_")[1];
     let serviceAlertIdentifier = vehicleDatum.routeId;
-    let hasServiceAlert = getServiceAlert(id,serviceAlertIdentifier)!==null;
+    let hasServiceAlert = getServiceAlert({abbreviatedRouteId: id, routeAgencyAndId: serviceAlertIdentifier})!==null;
+    console.log("checking for service alert in Selected Vehicle with id ",id," and identifier ",serviceAlertIdentifier," result: ",hasServiceAlert);
 
 
     let out = (<Marker {...markerOptions}

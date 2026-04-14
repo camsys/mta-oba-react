@@ -34,7 +34,8 @@ const MiniStopDirectionList =({routeDirectionDatum,stopId, }:{routeDirectionDatu
     log.info("generating StopCard MiniStopDirection",routeDirectionDatum,vehiclesApproachingStopsState)
     let routeAndDir = routeDirectionDatum.routeId + "_"+routeDirectionDatum.directionId
     let routeId = routeDirectionDatum.routeId.split("_")[1];
-    let hasServiceAlert = getServiceAlert(routeId,routeAndDir)!==null;
+    let hasServiceAlert = getServiceAlert({abbreviatedRouteId: routeId, routeAgencyAndId: routeDirectionDatum.routeId, routeAndDirection: routeAndDir})!==null;
+    console.log("checking for service alert in MiniStopDirectionList with id ",routeId," and identifier ",routeAndDir," result: ",hasServiceAlert);
     let stopsToVehicles = vehiclesApproachingStopsState[routeAndDir+stopSortedFutureVehicleDataIdentifier]
     let stopCardVehicleData = typeof stopsToVehicles !== 'undefined' &&
         stopsToVehicles.has("MTA_"+stopId)
@@ -97,12 +98,12 @@ const RouteDirection = ({routeDirectionDatum,stopId, collapsed}:
         stopCardVehicleData.has("MTA_"+stopId)
             ?stopCardVehicleData.get("MTA_"+stopId):null
     let routeId = routeDirectionDatum.routeId.split("_")[1];
-    let serviceAlertIdentifier = routeAndDir
     let lastUpdateTime = stopCardVehicleData!==null
         ? OBA.Util.ISO8601StringToDate(vehiclesApproachingStopsState[routeAndDir+updatedTimeIdentifier]).getTime()
         : null
     let {getServiceAlert} = useServiceAlert();
-    let hasServiceAlert = getServiceAlert(routeId,serviceAlertIdentifier)!==null;
+    let hasServiceAlert = getServiceAlert({abbreviatedRouteId: routeId, routeAgencyAndId: routeDirectionDatum.routeId, routeAndDirection: routeAndDir})!==null
+    console.log("checking for service alert in StopCard.RouteDirection with id ",routeId," and identifier ",routeAndDir," and identifier ",routeAndDir," result: ",hasServiceAlert);
     log.info("StopCard RouteDirection stopCardVehicleData",stopCardVehicleData,lastUpdateTime)
 
 
@@ -153,7 +154,7 @@ const RouteDirection = ({routeDirectionDatum,stopId, collapsed}:
                         {vehicleData.map((vehicleDatum,index)=>{
                             if(index<3){return <VehicleComponent {...{vehicleDatum,lastUpdateTime}} tabbable={tabbable} key={index}/>}})}
                     </ul>
-                    <ServiceAlertContainerComponent {...{routeId,serviceAlertIdentifier}} collapsed={!tabbable}/>
+                    <ServiceAlertContainerComponent {...{abbreviatedRouteId: routeId, routeAgencyAndId: routeDirectionDatum.routeId, routeAndDirection: routeAndDir}} collapsed={!tabbable}/>
                     <ul className="menu icon-menu inner-card-menu">
                         <li>
                             <ViewSearchItem datumId={routeDirectionDatum.routeId} text={"Full Route"} collapsed={!tabbable}/>

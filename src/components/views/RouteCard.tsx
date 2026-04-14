@@ -109,12 +109,10 @@ function CardDetails({routeMatch}:{routeMatch:RouteMatch}) : JSX.Element|null{
 
 export function RouteCardContent({ routeMatch, collapsed}: {RouteMatch,boolean}): JSX.Element  {
     let routeId = routeMatch.routeId.split("_")[1];
-    let serviceAlertIdentifier = routeMatch.routeId;
-
     return(
         <React.Fragment>
             <CardDetails routeMatch={routeMatch}/>
-            <ServiceAlertContainerComponent {...{ routeId, serviceAlertIdentifier, collapsed}} />
+            <ServiceAlertContainerComponent {...{ abbreviatedRouteId: routeId, routeAgencyAndId: routeMatch.routeId, collapsed}} />
             {routeMatch.directions.map((dir, index) =>
                 (<RouteDirection
                     datum={dir.routeDirectionComponentData}
@@ -157,9 +155,9 @@ export function CollapsableRouteCard({ routeMatch, oneOfMany}: {routeMatch:Route
     const { highlightId } = useHighlight();
 
     let id = routeMatch.datumId.split("_")[1];
-    let serviceAlertIdentifier = routeMatch.datumId;
     let {getServiceAlert} = useServiceAlert();
-    let hasServiceAlert = getServiceAlert(id,serviceAlertIdentifier)!==null;
+    let hasServiceAlert = getServiceAlert({abbreviatedRouteId: id, routeAgencyAndId: routeMatch.datumId})!==null;
+    console.log("checking for service alert in Collapsable Route Card with id ",id," and identifier ",routeMatch.datumId," result: ",hasServiceAlert);
     return (
         <React.Fragment>
             <div className={`card route-card
