@@ -55,11 +55,7 @@ function SelectedStopComponent(): JSX.Element {
 
         if (stopCardVehicleData === null) {
             return (
-                <div className={`map-popup-content ${hasServiceAlert ? 'has-service-alert' : ''}`}>
-                    <div style={{ borderColor: '#' + routeDirectionDatum.color }}>
-                        <span className="label"><strong>{routeId}</strong> No approaching vehicles</span>
-                    </div>
-                </div>
+                <></>
             )
         }
 
