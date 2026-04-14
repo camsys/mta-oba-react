@@ -19,7 +19,7 @@ export const createRoutePolyline = (
             weight = isHighlighted ? 20 : 6;
             break;
         case MapRouteDisruptionStatus.Removed:
-            // Removed: dotted line with 80% opacity
+            // Removed: dotted line with 70% opacity
             dashArray = "3, 6";
             opacity = 0.7;
             break;
