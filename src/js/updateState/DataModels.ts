@@ -287,9 +287,16 @@ export function createRouteMatchDirectionInterface(directionJson: any, routeId: 
         const encodedPolyline = typeof polylineData === 'string' ? polylineData : (polylineData.line || polylineData);
         const decodedPolyline = OBA.Util.decodePolyline(encodedPolyline);
         const polylineId = `${routeId}_dir_${directionJson.directionId}_polyLineNum_${j}`;
-        const disruptionStatus: MapRouteDisruptionStatus = 
+        let rawDisruptionStatus: MapRouteDisruptionStatus = 
             (typeof polylineData === 'object' && (polylineData.detourStatus || polylineData.disruptionStatus)) || 
             MapRouteDisruptionStatus.Canonical;
+        const disruptionStatus = 
+            (
+                rawDisruptionStatus !== MapRouteDisruptionStatus.Detour 
+                && rawDisruptionStatus !== MapRouteDisruptionStatus.Removed
+            ) 
+                ? MapRouteDisruptionStatus.Canonical 
+                : rawDisruptionStatus;
         const mapRouteComponent = createMapRouteComponentInterface(routeId, polylineId, decodedPolyline, color, disruptionStatus);
         mapRouteComponentData.push(mapRouteComponent);
         mapRouteComponentDataDict[disruptionStatus].push(mapRouteComponent);
