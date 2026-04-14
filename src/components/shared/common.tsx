@@ -45,7 +45,7 @@ const ChangeViewButton = ({
 
 function UnderlineOnFocusElement ({elementType: Element = 'a', children, className, ...props}: {elementType?: keyof JSX.IntrinsicElements, children: string | JSX.Element, className?: string, [key: string]: any}) {
     return (
-        <Element className={cn("focus:underline focus:border-none focus:outline-none focus:decoration-black focus:decoration-3", className)} {...props}>
+        <Element className={cn("focus:underline focus:border-none focus:outline-none focus:decoration-white focus:decoration-1", className)} {...props}>
             {children}
         </Element>
     )
