@@ -14,9 +14,11 @@ import {MapHighlightingStateProvider} from "./util/MapHighlightingStateComponent
 import {CardType} from "../js/updateState/DataModels";
 import {MapWrapper} from "./map/MapWrapper.tsx";
 import {FavoritesCookieStateProvider} from "Components/util/MiscStateComponent";
+import {MapDisplayStateProvider} from "./util/MapDisplayStateComponent";
 import log from 'loglevel';
 import {useSiri} from "../js/updateState/getSiri.tx";
 import { clickHandler, keypressHandler, postClickLog } from '../js/updateState/handleTracking.ts';
+import {useMapDisplayState} from "./util/MapDisplayStateComponent";
 
 
 
@@ -70,6 +72,17 @@ function App  () : JSX.Element{
     log.info("adding app")
     const [loading, setLoading] = useState(true);
     const { updateStateForPopStateEvent } = useNavigation();
+    const { setMapIsOpen } = useMapDisplayState();
+
+    const checkScreenSize = () => {
+        const screenWidth = window.innerWidth;
+        const threshold = 450;
+        if (screenWidth > threshold) {
+            setMapIsOpen(true);
+        } else {
+            setMapIsOpen(false);
+        }
+    };
 
     useEffect(() => {
         const handlePopState = (popStateEvent) => {
@@ -92,6 +105,18 @@ function App  () : JSX.Element{
         return () => {
             document.removeEventListener("click", clickHandler, true);
             // document.removeEventListener("keypress", keypressHandler, true);
+        };
+    }, []);
+
+    useEffect(() => {
+        // Check screen size on initial load
+        checkScreenSize();
+        
+        // Add event listener for window resize
+        window.addEventListener('resize', checkScreenSize);
+        
+        return () => {
+            window.removeEventListener('resize', checkScreenSize);
         };
     }, []);
 
@@ -127,9 +152,11 @@ export function AppRoot () : JSX.Element{
                 <VehicleStateProvider>
                     <VehiclesApproachingStopsProvider>
                         <FavoritesCookieStateProvider>
-                            <MapHighlightingStateProvider>
-                                <App/>
-                            </MapHighlightingStateProvider>
+                            <MapDisplayStateProvider>
+                                <MapHighlightingStateProvider>
+                                    <App/>
+                                </MapHighlightingStateProvider>
+                            </MapDisplayStateProvider>
                         </FavoritesCookieStateProvider>
                     </VehiclesApproachingStopsProvider>
                 </VehicleStateProvider>
