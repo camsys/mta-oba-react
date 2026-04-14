@@ -261,6 +261,15 @@ export function createRouteDirectionComponentInterface(routeId: string, directio
     };
 }
 
+function safelyDecodePolyline(encodedPolyline: string): any {
+    try {
+        return OBA.Util.decodePolyline(encodedPolyline);
+    } catch (error) {
+        log.error("Error decoding polyline:", error, "Encoded polyline:", encodedPolyline);
+        return null; // or return an empty array or a default value as appropriate
+    }
+}
+
 export function createRouteMatchDirectionInterface(directionJson: any, routeId: string, color: string): RouteMatchDirectionInterface {
     const mapRouteComponentData = [];
     const mapRouteComponentDataDict: Record<MapRouteDisruptionStatus, MapRouteComponentInterface[]> = {
@@ -284,12 +293,7 @@ export function createRouteMatchDirectionInterface(directionJson: any, routeId: 
     for (let j = 0; j < directionJson.polylines.length; j++) {
         const polylineData = directionJson.polylines[j];
         const encodedPolyline = typeof polylineData === 'string' ? polylineData : (polylineData.line || polylineData);
-        try {
-            const decodedPolyline = OBA.Util.decodePolyline(encodedPolyline);
-        } catch (error) {
-            log.error("Error decoding polyline for routeId:", routeId, "directionId:", directionJson.directionId, "polyline index:", j, "encoded polyline:", encodedPolyline, "error:", error);
-            continue;
-        }
+        const decodedPolyline = safelyDecodePolyline(encodedPolyline);
         const polylineId = `${routeId}_dir_${directionJson.directionId}_polyLineNum_${j}`;
         let rawDisruptionStatus: MapRouteDisruptionStatus = 
             (typeof polylineData === 'object' && (polylineData.detourStatus || polylineData.disruptionStatus)) || 
