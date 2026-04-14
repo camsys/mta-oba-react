@@ -15,7 +15,6 @@ import { JSX } from 'react/jsx-runtime';
 import { useServiceAlert } from '../views/ServiceAlertContainerComponent.tsx';
 
 const COMPONENT_IDENTIFIER = "mapStopComponent"
-const MAX_DESTINATIONS = 1;
 const MAX_VEHICLES_PER_DESTINATION = 2;
 
 function SelectedStopComponent(): JSX.Element {
@@ -52,7 +51,6 @@ function SelectedStopComponent(): JSX.Element {
         let serviceAlertIdentifier = routeDirectionDatum.routeId;
         let hasServiceAlert = getServiceAlert(id,serviceAlertIdentifier)!==null;
 
-
         if (stopCardVehicleData === null) {
             return (
                 <></>
@@ -73,7 +71,7 @@ function SelectedStopComponent(): JSX.Element {
         return (
             <div className={`map-popup-content ${hasServiceAlert ? 'has-service-alert' : ''}`}>
                 <div>
-                    {Array.from(vehicleDataByDestination.entries()).slice(0, MAX_DESTINATIONS).map(([destination, vehicles]) => (
+                    {Array.from(vehicleDataByDestination.entries()).map(([destination, vehicles]) => (
                         <div key={destination}>
                             <span className="label" style={{ borderColor: '#' + routeDirectionDatum.color }}><strong>{routeId}</strong> {destination}</span>
                             <ul className="approaching-buses">
