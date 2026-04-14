@@ -631,14 +631,17 @@
       justify-content: center
     a
       font-size: .875rem
-      color: currentColor
-      text-decoration: underline
+      color: $black
       display: inline-flex
       align-itrems: center
+      justify-content: center
       gap: .5rem
       padding: .5rem $content-padding
-      background-color: transparent
+      background-color: $original-mta-yellow
+      font-weight: normal
+      text-underline-offset: .25rem
       transition: background-color .25s ease-in-out
+      width: 100%
       &::after
         content: ''
         display: inline-block
@@ -651,14 +654,14 @@
         position: relative
         left: 0
         transition: left .25s ease-in-out
+        filter: invert(1)
       &:hover, &:focus
-        text-decoration: none
-        &::after
-          left: .125rem
-      &:focus
-        background-color: $black
         border: none
         outline: none
+        text-decoration: underline 3px solid     
+        &::after
+          left: .125rem
+
         
   .header
     background-color: $black2
