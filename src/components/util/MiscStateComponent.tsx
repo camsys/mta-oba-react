@@ -67,7 +67,7 @@ const useFavorite = () =>{
         if(!isValidFavorite(datum)){return}
         let targetId = isRouteInterface(datum)? datum?.routeId : datum?.id
         let newFavorites = {favorites:[]}
-        newFavorites["favorites"] = favoritesState.favorites.filter(d=> getId(d) !== targetId)
+        newFavorites[favoritesCookieIdentifier] = favoritesState.favorites.filter(d=> getId(d) !== targetId)
         setCookies(newFavorites)
         log.info("previous favorites state",favoritesState)
         setFavoritesState(newFavorites)
