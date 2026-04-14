@@ -92,11 +92,16 @@ document.addEventListener('DOMContentLoaded', function() {
               else if (parent.classList.contains('card')) {
                 // allInnerTabbableItems that are a child of .card-menu
                 var allInnerCardMenuItems = collapseContent.querySelectorAll('.card-menu a[tabindex], .card-menu button[tabindex]');
-                
+
                 allInnerCardMenuItems.forEach(function(element) {
                   element.setAttribute('tabindex', '0');
                 });
                 allInnerCollapseTriggers.forEach(function(element) {
+                  element.setAttribute('tabindex', '0');
+                });
+                // also make elements inside already-open inner-card sections tabbable
+                var openInnerCardItems = collapseContent.querySelectorAll('.inner-card.open .collapse-content a[tabindex], .inner-card.open .collapse-content button[tabindex]');
+                openInnerCardItems.forEach(function(element) {
                   element.setAttribute('tabindex', '0');
                 });
               }

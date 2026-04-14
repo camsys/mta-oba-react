@@ -117,11 +117,11 @@
         width: 1.25rem
         height: 1.25rem
         color: currentColor
-    &:not(#map-toggle):not(.refresh-button)
-      &:focus, &:focus-visible
-        color: $white
-        outline: $medium-border solid $original-mta-yellow
-        background-color: $black
+    // &:not(#map-toggle):not(.refresh-button)
+    //   &:focus, &:focus-visible
+        // color: $white
+        // outline: $medium-border solid $original-mta-yellow
+        // background-color: $black
 
   .clear-button
     border: none
@@ -358,12 +358,12 @@
             svg
               path
                 fill: $dark-gray
-          &:focus-visible
-            color: $white
-            .svg-icon-wrap
-              svg
-                path
-                  fill: $white
+          // &:focus-visible
+          //   color: $white
+          //   .svg-icon-wrap
+          //     svg
+          //       path
+          //         fill: $white
     &.sub-menu-menu
       font-size: .75rem
       li
@@ -1375,6 +1375,9 @@
           background-color: $color-mta-light-blue-2
           color: $black
           outline: none
+          text-decoration: underline
+          text-decoration-color: $black
+          text-decoration-thickness: 2px
           &::after
             background-image: url(../img/icon/right-caret_black.svg)
     >.card-content
@@ -1482,11 +1485,10 @@
           .card-title
             border-left: $thick-border solid $original-mta-blue
             padding-left: calc($content-padding / 2)
-        
+  
   .route-stops
     list-style: none
     margin: calc($content-padding / 2) 0 0 0
-    padding: 0
     >li
       padding: 0 0 1rem 1.5rem
       position: relative
@@ -1550,6 +1552,8 @@
         flex-grow: 0
         flex-shrink: 0
         display: inline-flex
+        align-self: flex-start
+        margin-right:4px
         color: $original-mta-blue
         &::before, &::after
           content: ''
@@ -1772,6 +1776,17 @@
           width: .875rem
           height: .875rem
         // white-space: nowrap
+      .view-full
+        text-align: left
+        font-size: 1rem
+        color: $original-mta-blue
+        padding: .65rem 0 0 0
+        margin: .65rem 0 0 0
+        border: none
+        outline: none
+        border-top: 2px solid currentColor
+        background: transparent
+        white-space: nowrap
       .stop-code
         font-size: 0.875rem
     .route-directions

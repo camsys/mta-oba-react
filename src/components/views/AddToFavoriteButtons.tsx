@@ -5,6 +5,7 @@ import {
 } from "../../js/updateState/DataModels";
 import {cn} from "../util/coreUtils";
 import {useFavorite} from "../util/MiscStateComponent";
+import { UnderlineOnFocusElement } from '../shared/common';
 
 
 export interface SemiPrivateAddToFavoriteButtonProps {
@@ -37,7 +38,7 @@ export function FavoriteButton(props: SemiPrivateAddToFavoriteButtonProps):JSX.E
         <button className=
             {
                 cn(
-                    "flex w-full items-center text-base py-4 pl-2 pr-1 gap-2 favorite-toggle  font-bold no-underline border-2", 
+                    "group flex w-full items-center text-base py-4 pl-2 pr-1 gap-2 favorite-toggle  font-bold no-underline border-2", 
                     {
                         "bg-ui-gray focus:bg-border-gray text-mta-dark-blue border-mta-dark-blue": favorited,
                         "text-white focus:bg-mta-green opacity-[90%] bg-mta-green border-mta-green": !favorited,
@@ -57,8 +58,8 @@ export function FavoriteButton(props: SemiPrivateAddToFavoriteButtonProps):JSX.E
                 <path d="M11.002 13H5.00195V9H11.002V13Z" fill="#0E61A9"/>
                 <path d="M11.002 7H5.00195V3H11.002V7Z" fill="#0E61A9"/>
             </svg>
-            <span className={cn("add p-0 m-0 leading-none",{"hidden":favorited})}>Add {props.keyword} to Favorites</span>
-            <span className={cn("remove p-0 m-0 leading-none",{"hidden":!favorited})}>Remove {props.keyword} from Favorites</span>
+            <UnderlineOnFocusElement variant="white" as="span" className={cn("add p-0 m-0 leading-none",{"hidden":favorited})}>Add {props.keyword} to Favorites</UnderlineOnFocusElement>
+            <UnderlineOnFocusElement variant="mta_blue" as="span" className={cn("remove p-0 m-0 leading-none",{"hidden":!favorited})}>Remove {props.keyword} from Favorites</UnderlineOnFocusElement>
         </button>
     </React.Fragment>)
 }
