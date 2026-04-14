@@ -34,6 +34,7 @@ function Footer  () {
                         <li><UnderlineOnFocusElement href="/about">About Bus Time</UnderlineOnFocusElement></li>
                         <li><UnderlineOnFocusElement href="/contact">Contact Us</UnderlineOnFocusElement></li>
                         <li><UnderlineOnFocusElement href="/developers">Developers</UnderlineOnFocusElement></li>
+                        <li><UnderlineOnFocusElement href="/help">Help</UnderlineOnFocusElement></li>
                         <li><UnderlineOnFocusElement href="//www.mta.info/privacy-policy">Privacy Policy</UnderlineOnFocusElement></li>
                     </ul>
                 </nav>
