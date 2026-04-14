@@ -225,7 +225,7 @@ export const useNavigation = () =>{
     const { state, setState } = useContext(CardStateContext);
     const routes = useContext(RoutesContext) as RoutesObject
     const stops = useContext(StopsContext) as StopsObject
-    const allRoutesSearchTerm = "allRoutes";
+    const allRoutesSearchTerm = "View All Routes";
     const favoritesSearchTerm = "favorites";
     const nearbySearchTerms = new Set(["NEARBY","NEARBYROUTES","NEARBYSTOPS","NEARME", "NEAR ME"])
     log.debug("navigation effect state and contexts", state, routes, stops)
