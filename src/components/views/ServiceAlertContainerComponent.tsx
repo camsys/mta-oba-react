@@ -29,7 +29,7 @@ function ServiceAlertComponent  ({serviceAlertDatum}:ServiceAlertInterface) : JS
     })
     alerts = [...new Set(alerts)];
     return(
-        <div className="card-content collapse-content">
+        <div className="card-content collapse-content text-base">
             {alerts.map((part,itt) => {
                 part = DOMPurify.sanitize(part, {
                     ALLOWED_TAGS: ['b', 'strong', 'p', 'a'],
