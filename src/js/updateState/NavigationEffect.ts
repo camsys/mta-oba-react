@@ -226,7 +226,7 @@ export const useNavigation = () =>{
     const routes = useContext(RoutesContext) as RoutesObject
     const stops = useContext(StopsContext) as StopsObject
     const allRoutesSearchTerm = "View All Routes";
-    const favoritesSearchTerm = "favorites";
+    const favoritesSearchTerm = "View Favorites";
     const nearbySearchTerms = new Set(["NEARBY","NEARBYROUTES","NEARBYSTOPS","NEARME", "NEAR ME"])
     log.debug("navigation effect state and contexts", state, routes, stops)
 
@@ -446,7 +446,7 @@ export const useNavigation = () =>{
 
     const favoritesSearch = async () =>{
         log.info("searching for favorites")
-        let searchTerm = "favorites";
+        let searchTerm = favoritesSearchTerm;
         try {
             log.info("favorites requested, generating new card",state);
             if (state?.currentCard?.type !== CardType.FavoritesCard) {
@@ -591,7 +591,7 @@ export const useNavigation = () =>{
 
     return { search, generateInitialCard, 
         vehicleSearch, allRoutesSearch, favoritesSearch, 
-        updateStateForPopStateEvent, goBack,goForward };
+        updateStateForPopStateEvent, goBack,goForward, allRoutesSearchTerm, favoritesSearchTerm, nearbySearchTerms };
 }
 
 
