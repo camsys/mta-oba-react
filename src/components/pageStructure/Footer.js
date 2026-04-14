@@ -12,13 +12,23 @@ import { UnderlineOnFocusElement } from "../shared/common";
 function Footer  () {
     log.info("adding footer")
     let enableGoogleTranslate = process.env.ENABLE_GOOGLE_TRANSLATE;
+    let classicSiteAddress = process.env.CLASSIC_SITE_ADDRESS;
     return (
         <ErrorBoundary>
             <GoogleTranslateButton/>
             <div className="footer text-white bg-mta-black-2" id="footer">
-                <h2 className='text-[1.35em] my-4 pt-[3px] font-bold'>MTA Bus Time</h2>
+                <h2 className='text-[1.35em] mt-4 mb-2 pt-[3px] font-bold'>MTA Bus Time</h2>
+                <section className="my-2">
+                    <div className="relative inline-block py-1 ">
+                        <div className="absolute top-0 left-1/8 w-3/4 border-t border-white/40 text-center"></div>
+                        <UnderlineOnFocusElement href={classicSiteAddress} className="text-4 font-[575] my-1">
+                            Bus Time Classic
+                        </UnderlineOnFocusElement>
+                        <div className="absolute bottom-0 left-1/8 w-3/4 border-t border-white/40 text-center"></div>
+                    </div>
+                </section>
                 <nav>
-                    <ul className="menu my-1 text-[1em] font-[575]">
+                    <ul className="menu my-1 text-4 font-[575]">
                         <li><UnderlineOnFocusElement href="//mta.info">MTA Homepage</UnderlineOnFocusElement></li>
                         <li><UnderlineOnFocusElement href="/about">Mobile Text Messages</UnderlineOnFocusElement></li>
                         <li><UnderlineOnFocusElement href="/about">About Bus Time</UnderlineOnFocusElement></li>

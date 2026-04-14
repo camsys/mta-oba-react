@@ -59,13 +59,13 @@ OBA.Wizard = function(routeMap) {
 		follow_text = 'Follow the instructions above...',
 		
 		mobile_title = 'Bus Time for Mobile Web',
-		mobile_text = 'Visit <a class="mobile_link" href="https://bustime.mta.info/m">mta.info/bustime</a> on your mobile phone browser.',
+		mobile_text = 'Visit <a class="mobile_link" href="https://bustime-classic.mta.info/m">mta.info/bustime</a> on your mobile phone browser.',
 		
 		sms_title = 'Bus Time for SMS / Text',
 		sms_text = 'Text your 6-digit bus stopcode (also add bus route for best results) to <span style="font-weight:bold">511123</span>.',
 		
 		share_title = 'Copy this link',
-		share_text_prefix = '<form><input id="url" type="text" size="30" style="font-weight:bold;height:20px;width=250px;" value="https://bustime.mta.info/',
+		share_text_prefix = '<form><input id="url" type="text" size="30" style="font-weight:bold;height:20px;width=250px;" value="https://bustime-classic.mta.info/',
 		share_text_postfix = '"></input></form>',
 		
 		stop_code_title = "What's my bus stopcode?",
@@ -542,7 +542,7 @@ OBA.Wizard = function(routeMap) {
 		animate: true,
 		delayIn: 100,
 		delayOut: 100,
-		fallback: 'Go to https://bustime.mta.info on your phone',
+		fallback: 'Go to https://bustime-classic.mta.info on your phone',
 		html: true,
 		live: false,
 		offset: -10,
@@ -558,7 +558,7 @@ OBA.Wizard = function(routeMap) {
 		animate: true,
 		delayIn: 100,
 		delayOut: 100,
-		fallback: 'Go to https://bustime.mta.info on your phone',
+		fallback: 'Go to https://bustime-classic.mta.info on your phone',
 		html: true,
 		live: false,
 		offset: 0,
@@ -616,7 +616,7 @@ OBA.Wizard = function(routeMap) {
 		animate: true,
 		delayIn: 50,
 		delayOut: 100,
-		fallback: 'Copy this URL: <span style="font-weight:bold;text-decoration:none">https://bustime.mta.info/' + getSearchInputVal() + '</span>',
+		fallback: 'Copy this URL: <span style="font-weight:bold;text-decoration:none">https://bustime-classic.mta.info/' + getSearchInputVal() + '</span>',
 		html: true,
 		live: false,
 		offset: 10,

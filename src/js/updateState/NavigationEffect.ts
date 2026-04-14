@@ -122,7 +122,7 @@ async function getData(card:Card,stops: StopsObject,routes:RoutesObject,address:
             card.setSearchResultType(searchResults.resultType)
             log.info(card)
 
-            if(searchResults.resultType=="StopResult"){
+            if(Card.STOPCARDIDENTIFIERS.has(searchResults.resultType)){
                 searchResults.matches.forEach(x=>{
                     card.searchMatches.push(processStopSearch(x,card,stops,routes))
                 })
@@ -134,7 +134,7 @@ async function getData(card:Card,stops: StopsObject,routes:RoutesObject,address:
                 let stopMatch = card.searchMatches[0] as StopMatch
                 card.datumId=stopMatch.id
             }
-            if(searchResults.resultType=="GeocodeResult"){
+            if(Card.GEOCARDIDENTIFIERS.has(searchResults.resultType)){
                 searchResults.matches.forEach(x=>{
                     card.searchMatches.push(processGeocodeSearch(x,card,stops,routes))
                 })
@@ -144,7 +144,7 @@ async function getData(card:Card,stops: StopsObject,routes:RoutesObject,address:
                     })
                 }
             }
-            if(searchResults.resultType=="RouteResult"){
+            if(Card.ROUTECARDIDENTIFIERS.has(searchResults.resultType)){
                 searchResults.matches.forEach(x=>{
                     log.info("processing route search result",x,card,stops,routes)
                     card.searchMatches.push(processRouteSearch(x,card,stops,routes))
@@ -221,12 +221,14 @@ const getRoutesAddress=()=>{
 
 
 export const useNavigation = () =>{
+    log.debug("initializing navigation effect")
     const { state, setState } = useContext(CardStateContext);
     const routes = useContext(RoutesContext) as RoutesObject
     const stops = useContext(StopsContext) as StopsObject
-    const allRoutesSearchTerm = "allRoutes";
-    const favoritesSearchTerm = "favorites";
+    const allRoutesSearchTerm = "View All Routes";
+    const favoritesSearchTerm = "View Favorites";
     const nearbySearchTerms = new Set(["NEARBY","NEARBYROUTES","NEARBYSTOPS","NEARME", "NEAR ME"])
+    log.debug("navigation effect state and contexts", state, routes, stops)
 
 
     const search = async (searchTerm) =>{
@@ -444,7 +446,7 @@ export const useNavigation = () =>{
 
     const favoritesSearch = async () =>{
         log.info("searching for favorites")
-        let searchTerm = "favorites";
+        let searchTerm = favoritesSearchTerm;
         try {
             log.info("favorites requested, generating new card",state);
             if (state?.currentCard?.type !== CardType.FavoritesCard) {
@@ -589,7 +591,7 @@ export const useNavigation = () =>{
 
     return { search, generateInitialCard, 
         vehicleSearch, allRoutesSearch, favoritesSearch, 
-        updateStateForPopStateEvent, goBack,goForward };
+        updateStateForPopStateEvent, goBack,goForward, allRoutesSearchTerm, favoritesSearchTerm, nearbySearchTerms };
 }
 
 

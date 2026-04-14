@@ -7,7 +7,7 @@ import {
     VehiclesApproachingStopsContext
 } from "../util/VehicleStateComponent";
 import ServiceAlertContainerComponent, {ServiceAlertSvg, useServiceAlert} from "./ServiceAlertContainerComponent";
-import VehicleComponent from "./VehicleComponent.tsx";
+import {VehicleComponent} from "./VehicleComponent.tsx";
 import {OBA} from "../../js/oba";
 import {useHighlight} from "../util/MapHighlightingStateComponent.tsx";
 import {

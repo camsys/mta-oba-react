@@ -11,7 +11,7 @@ import {
 } from "../../js/updateState/DataModels";
 import {stopSortedDataIdentifier, vehicleDataIdentifier, VehicleStateContext} from "../util/VehicleStateComponent";
 import {useNavigation} from "../../js/updateState/NavigationEffect"
-import VehicleComponent from "./VehicleComponent"
+import {VehicleComponent} from "./VehicleComponent"
 import {useFavorite} from "../util/MiscStateComponent";
 import {ViewSearchItem} from "./MiscComponents";
 import log from 'loglevel';
@@ -42,7 +42,7 @@ export function RouteStopComponent
 
     try{
         out = (
-            <li  className={'pb-2 ' + (hasVehicleChildren ? "has-info" : "")}
+            <li  className={'pb-4 ' + (hasVehicleChildren ? "has-info" : "")}
                  key={uniqueId}
                  id={uniqueId}
                  onMouseEnter={() => highlightId(stopDatum.id)}

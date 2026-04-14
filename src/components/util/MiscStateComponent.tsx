@@ -17,7 +17,7 @@ const FavoritesCookieStateContext = createContext<{
 const FavoritesCookieStateProvider = ({children} : {children:ReactNode}):JSX.Element =>{
     const [favoritesState,setFavoritesState] = useState<FavoritesCookie>(() => {
         let favorites = {favorites:[],favCount:0}
-        const cookie = Cookies.get(favoritesIdentifier)
+        const cookie = Cookies.get(favoritesCookieIdentifier)
 
         log.info("got favorites",cookie)
 
@@ -48,7 +48,7 @@ const FavoritesCookieStateProvider = ({children} : {children:ReactNode}):JSX.Ele
 
 const setCookies =(cookie:FavoritesCookie)=>{
     log.info(cookie)
-    Cookies.set(favoritesIdentifier,JSON.stringify(cookie),{ expires: 365*5 })
+    Cookies.set(favoritesCookieIdentifier,JSON.stringify(cookie),{ expires: 365*5 })
 }
 
 const isValidFavorite =(datum) =>{
@@ -67,7 +67,7 @@ const useFavorite = () =>{
         if(!isValidFavorite(datum)){return}
         let targetId = isRouteInterface(datum)? datum?.routeId : datum?.id
         let newFavorites = {favorites:[]}
-        newFavorites["favorites"] = favoritesState.favorites.filter(d=> getId(d) !== targetId)
+        newFavorites[favoritesCookieIdentifier] = favoritesState.favorites.filter(d=> getId(d) !== targetId)
         setCookies(newFavorites)
         log.info("previous favorites state",favoritesState)
         setFavoritesState(newFavorites)
@@ -98,6 +98,6 @@ const useFavorite = () =>{
 
 
 
-const favoritesIdentifier = "favorites"
+const favoritesCookieIdentifier = "favorites"
 
-export {FavoritesCookieStateContext,FavoritesCookieStateProvider,favoritesIdentifier,useFavorite}
+export {FavoritesCookieStateContext,FavoritesCookieStateProvider,favoritesCookieIdentifier,useFavorite}
