@@ -73,7 +73,7 @@
             <p>The SIRI StopMonitoring ("SIRI SM") call allows the developer to request information about the vehicles serving a particular stop. As much as possible, the values used both in the SM request and the SM response correspond to the values in the GTFS data for the B63.</p>
             <h2>SIRI StopMonitoring Requests</h2>
             <p>It is accessible at the following URLs:</p>
-            <p><a href="https://bustime.mta.info/api/siri/stop-monitoring.json" target="_blank">https://bustime.mta.info/api/siri/stop-monitoring.json</a></p>
+            <p><a href="https://bustime-classic.mta.info/api/siri/stop-monitoring.json" target="_blank">https://bustime-classic.mta.info/api/siri/stop-monitoring.json</a></p>
             <p>with the following GET parameters:</p>
             <ul>
               <li><strong>key</strong> - your MTA Bus Time developer API key (required). Go <a href="https://register.developer.obanyc.com" target="_blank">here</a> to get one.</li>
@@ -87,8 +87,8 @@
               <li><strong>MaximumStopVisits</strong> - an upper bound on the number of buses to return in the results.</li>
               <li><strong>MinimumStopVisitsPerLine</strong> - a lower bound on the number of buses to return in the results per line/route (assuming that many are available)</li>
             </ul>
-            <p>An example URL, incorporating some of these GET parameters, is <a href="https://bustime.mta.info/api/siri/stop-monitoring.json?key=##KEY##&amp;OperatorRef=MTA&amp;MonitoringRef=308209&amp;LineRef=MTA%20NYCT_B63" target="_blank">
-              https://bustime.mta.info/api/siri/stop-monitoring.json?key=##KEY##&OperatorRef=MTA&MonitoringRef=308209&LineRef=MTA%20NYCT_B63
+            <p>An example URL, incorporating some of these GET parameters, is <a href="https://bustime-classic.mta.info/api/siri/stop-monitoring.json?key=##KEY##&amp;OperatorRef=MTA&amp;MonitoringRef=308209&amp;LineRef=MTA%20NYCT_B63" target="_blank">
+              https://bustime-classic.mta.info/api/siri/stop-monitoring.json?key=##KEY##&OperatorRef=MTA&MonitoringRef=308209&LineRef=MTA%20NYCT_B63
               </a>
             </p>
             <h2>SIRI StopMonitoring Responses</h2>
