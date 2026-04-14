@@ -283,9 +283,13 @@ export function createRouteMatchDirectionInterface(directionJson: any, routeId: 
 
     for (let j = 0; j < directionJson.polylines.length; j++) {
         const polylineData = directionJson.polylines[j];
-        // Support both new format {line: string, detourStatus: string} and old format (string or {disruptionStatus: string})
         const encodedPolyline = typeof polylineData === 'string' ? polylineData : (polylineData.line || polylineData);
-        const decodedPolyline = OBA.Util.decodePolyline(encodedPolyline);
+        try {
+            const decodedPolyline = OBA.Util.decodePolyline(encodedPolyline);
+        } catch (error) {
+            log.error("Error decoding polyline for routeId:", routeId, "directionId:", directionJson.directionId, "polyline index:", j, "encoded polyline:", encodedPolyline, "error:", error);
+            continue;
+        }
         const polylineId = `${routeId}_dir_${directionJson.directionId}_polyLineNum_${j}`;
         let rawDisruptionStatus: MapRouteDisruptionStatus = 
             (typeof polylineData === 'object' && (polylineData.detourStatus || polylineData.disruptionStatus)) || 
