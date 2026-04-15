@@ -74,7 +74,7 @@ function SideBar  () {
         <ErrorBoundary>
             <Header />
             <SearchBar />
-            <div className="sidebar-content">
+            <div className="sidebar-content" tabIndex={-1}>
                 <div className="content py-0" id="app">
                     {renderCardInfo()}
                     {state.currentCard.type === CardType.HomeCard ? null : <ul className="menu icon-menu middle-menu refresh-menu" role="menu"><li><RefreshComponent/></li></ul>}
