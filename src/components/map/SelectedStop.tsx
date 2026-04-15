@@ -79,7 +79,7 @@ function SelectedStopComponent(): JSX.Element {
                                     <VehicleComponentWithoutSearchSpecified
                                         key={vehicle.vehicleId}
                                         vehicleDatum={vehicle}
-                                        tabbable={0}
+                                        tabbable={true}
                                         vehicleSearchFunction={vehicleSearch}
                                     />
                                 ))}
@@ -123,7 +123,7 @@ function SelectedStopComponent(): JSX.Element {
                 <Marker key={markerOptions.key} {...markerOptions} eventHandlers={{
                     add: (e) => e.target.openPopup(),
                 }}>
-                    <Popup className="map-popup stop-popup" tabIndex={-1} {...popupOptions}>
+                    <Popup className="map-popup stop-popup"  {...popupOptions}>
                         <div className="popup-header">
                             <div className="popup-header-info">
                                 <img src={stopPopupIcon} alt="busstop icon" className="icon" />

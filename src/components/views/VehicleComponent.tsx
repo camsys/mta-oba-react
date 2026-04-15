@@ -56,7 +56,7 @@ export function MeeplesComponentLi({vehicleDatum}: {VehicleRtInterface}):JSX.Ele
 
 interface VehicleComponentProps {
     vehicleDatum: VehicleRtInterface,
-    tabbable: number,
+    tabbable: boolean,
     vehicleSearchFunction: (routeId: string, vehicleId: string) => void
 }
 
