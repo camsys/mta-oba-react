@@ -170,7 +170,7 @@ const RoutesAndStops = ()=>{
             route.directions.forEach(dir => {
                 dir.mapStopComponentData.forEach((stopInterface:StopInterface) => {
                     let stopId = stopInterface.datumId;
-                    let newStopMarker = createStopMarker(stopInterface,selectStop,popupOptions.current,createStopIcon(stopInterface),0)
+                    let newStopMarker = createStopMarker(stopInterface,selectStop,popupOptions.current,createStopIcon(stopInterface),0,map)
                     mapStopComponents.current.set(stopId, newStopMarker);
                     stopsToDisplay.set(stopId, newStopMarker);                
                 })
@@ -405,7 +405,7 @@ const Highlighted = () =>{
 
         let stopDatum = stops.current[highlightedId]
         if(stopDatum!==null && typeof stopDatum !=='undefined'){
-            highlightedComponents.current.set(stopDatum.id,createStopMarker(stopDatum,()=>{},popupOptions.current,createStopIcon(stopDatum),20))
+            highlightedComponents.current.set(stopDatum.id,createStopMarker(stopDatum,()=>{},popupOptions.current,createStopIcon(stopDatum),20,map))
         }
         let routeDatum = routes.current[highlightedId]
         if(routeDatum!==null && typeof routeDatum !=='undefined'){
@@ -463,6 +463,7 @@ const Highlighted = () =>{
 const setMapLatLngAndZoom = (map: L.Map, lat : number, lon :number,zoom:number,override:boolean) :void =>{
     let duration = .85
     log.info("Assessing zoom. based on requested values:",lat,lon,zoom)
+    if(zoom===null){zoom = map.getZoom()}
     if(lat===null|lon===null|zoom===null){return}
     let mapWidth=map.getBounds().getEast()-map.getBounds().getWest();
     let mapHeight=map.getBounds().getNorth()-map.getBounds().getSouth();
