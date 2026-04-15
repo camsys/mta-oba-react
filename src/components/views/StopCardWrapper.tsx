@@ -255,7 +255,7 @@ function InnerCollapsableStopCard ({ match, oneOfMany}: {match:SearchMatch, oneO
     if(match.type!==MatchType.StopMatch){return <></>}
     let stopMatch = match as StopMatch
 
-    log.info("generating collapsable StopCard",stopMatch)
+    log.info("generating collapsable StopCard",stopMatch, oneOfMany)
     return(
     <div className={`card stop-card ${oneOfMany?"collapsible":""}`}>
         <StopCardHeaderMany match={stopMatch}/>
@@ -268,7 +268,9 @@ function InnerCollapsableStopCard ({ match, oneOfMany}: {match:SearchMatch, oneO
                     </li>
                 </ul>
             </div>
-            <StopFavoriteButton className="w-full" item={stopMatch} collapsed={oneOfMany}/>
+            <div className='card-menu'>
+            <StopFavoriteButton className="w-full border-t-0" item={stopMatch} collapsed={oneOfMany}/>
+            </div>
         </div>
         <div className='card-footer'>
             <MiniStopDirectionListContainer routeMatches={stopMatch.routeMatches} stopId={stopMatch.id} collapsed={oneOfMany}/>
