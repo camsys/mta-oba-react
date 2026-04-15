@@ -2,6 +2,7 @@ import L, { map } from "leaflet";
 import { StopMarker } from "./dataLayer";
 import {useNavigation} from "../js/updateState/NavigationEffect.ts";
 import log from 'loglevel';
+import {setMapLatLngAndZoom} from "./mapZoom";
 
 export const createStopMarker = (
     stopDatum,
@@ -34,44 +35,6 @@ export const createStopMarker = (
 
 
 
-    const setMapLatLngAndZoom = (map: L.Map, lat : number, lon :number,zoom:number,override:boolean) :void =>{
-            let duration = .85
-            log.info("Assessing zoom. based on requested values:",lat,lon,zoom)
-            if(zoom===null){zoom = map.getZoom()}
-            if(lat===null|lon===null|zoom===null){return}
-            let mapWidth=map.getBounds().getEast()-map.getBounds().getWest();
-            let mapHeight=map.getBounds().getNorth()-map.getBounds().getSouth();
-            let [currentLat, currentLong,currentZoom] = [map.getCenter().lat,map.getCenter().lng,map.getZoom()]
-            let latsMatch = currentLat+mapHeight/3>lat && currentLat-mapHeight/3<lat
-            let latsOnScreen = currentLat+mapHeight>lat && currentLat-mapHeight<lat
-            let lonsMatch = currentLong+mapWidth/3>lon && currentLong-mapWidth/3<lon
-            let lonsOnScreen = currentLong+mapWidth>lon && currentLong-mapWidth<lon
-            let zoomsMatch =  zoom-.3<currentZoom && zoom+.3>currentZoom
-            let zoomSeemsIntentional = currentZoom>16
-        
-            let performZoom = override
-            
-            if(override){
-                log.info("Assessing zoom. override requested, performing zoom")
-            }
-        
-            if(zoomSeemsIntentional){
-                log.info("Assessing zoom. zoom seems intentional, checking if new selection is on screen ",currentLat,currentLong,currentZoom,"new: ",lat,lon,zoom, "matches",lonsOnScreen,latsOnScreen)
-                if(!(lonsOnScreen && latsOnScreen)){
-                    performZoom = true
-                }
-            } else {
-                log.info("Assessing zoom. update map bounds and zoom? current: ",currentLat,currentLong,currentZoom,"new: ",lat,lon,zoom, "matches",latsMatch,lonsMatch,zoomsMatch)
-                if(!(latsMatch&&lonsMatch&&zoomsMatch)){ performZoom = true }
-            }
-            if(performZoom){
-                log.info("Assessing zoom. updating map bounds and zoom")
-                map.flyTo([lat, lon], zoom, {
-                    animate: true,
-                    duration: duration
-                });
-            }
-        }
 
     // TODO: Refactor marker focus logic to use event bubbling (marker.fire).
     // Current mapRef tunneling is a shortcut to bypass Leaflet's focus 
