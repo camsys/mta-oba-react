@@ -107,6 +107,11 @@ export const MapVehicleElements = () =>{
             vehicle.on("click", (e:L.LeafletMouseEvent) => {
                 selectVehicle(vehicleDatum.routeId, vehicleDatum.vehicleId, [e.latlng.lat, e.latlng.lng]);
             });
+            vehicle.on("keypress", (e:L.LeafletKeyboardEvent) => {
+                if (e.originalEvent.key === 'Enter') {
+                    selectVehicle(vehicleDatum.routeId, vehicleDatum.vehicleId, [vehicleDatum.longLat[0], vehicleDatum.longLat[1]]);
+                }
+            });
             vehicleMap.set(vehicleDatum.vehicleId, vehicle)
             vehicleLayer.current.addLayer(vehicle)
         }

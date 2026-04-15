@@ -1,4 +1,4 @@
-import L from "leaflet";
+import L, { map } from "leaflet";
 import bus from "../img/icon/bus.svg";
 import busStroller from "../img/icon/bus-stroller.svg";
 import {VehicleRtInterface} from "../js/updateState/DataModels";
@@ -16,7 +16,7 @@ export const createVehicleMarker = (
         icon: icon,
         zIndexOffset: zIndexOverride,
         title: `Vehicle ${vehicleIdWithoutAgency}, ${vehicleDatum.routeId} to ${vehicleDatum.destination}`,
-        keyboard: false,
+        keyboard: true,
     });
 
 

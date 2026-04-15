@@ -1,4 +1,4 @@
-import L from "leaflet";
+import L, { map } from "leaflet";
 import { StopMarker } from "./dataLayer";
 import {useNavigation} from "../js/updateState/NavigationEffect.ts";
 
@@ -14,7 +14,7 @@ export const createStopMarker = (
         icon,
         zIndexOffset: zIndexOverride || -10,
         title: stopDatum.name,
-        keyboard: false,
+        keyboard: true,
     },stopDatum);
 
     // Note: Popup content and binding for stop markers are handled elsewhere;
@@ -22,6 +22,12 @@ export const createStopMarker = (
 
     marker.on("click", () => {
         selectStop(stopDatum);
+    });
+
+    marker.on("keypress", (e:L.LeafletKeyboardEvent) => {
+        if (e.originalEvent.key === 'Enter') {
+            selectStop(stopDatum);
+        }
     });
 
     return marker;

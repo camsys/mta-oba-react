@@ -116,7 +116,7 @@ function SelectedStopComponent(): JSX.Element {
                 stopId: stopDatum.id,
                 key: `${COMPONENT_IDENTIFIER}_${stopDatum.id}`,
                 id: `${COMPONENT_IDENTIFIER}_${stopDatum.id}`,
-                keyboard: false
+                keyboard: true
             };
 
             stopMarkers.push(
