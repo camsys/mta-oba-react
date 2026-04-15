@@ -27,7 +27,7 @@ const ChangeViewButton = ({
       className={cn(
         `px-4 py-4 text-white flex items-center  w-full
         justify-start gap-2 rounded-sm font-bold 
-        no-underline border-none transition-opacity focus:outline focus:outline-1 focus:outline-mta-dark-blue focus:outline-offset-1 focus:ring-1 focus:ring-mta-dark-blue focus:ring-offset-1 focus:ring-offset-[#fff]`,
+        no-underline border-none transition-opacity focus-visible:outline focus-visible:outline-2 focus-visible:outline-mta-dark-blue focus-visible:outline-offset-2 focus-visible:ring-2 focus-visible:ring-mta-dark-blue focus-visible:ring-offset-2 focus-visible:ring-offset-[#fff]`,
         className
       )}
       type = "button"
@@ -51,16 +51,16 @@ function UnderlineOnFocusElement({
     ...props 
 }: Props) {
     const variants = {
-        mta_yellow: "focus:decoration-mta-yellow group-focus:decoration-mta-yellow",
-        black: "focus:decoration-black group-focus:decoration-black",
-        mta_blue: "focus:decoration-mta-blue group-focus:decoration-mta-blue",
-        white: "focus:decoration-white group-focus:decoration-white"
+        mta_yellow: "focus-visible:decoration-mta-yellow group-focus-visible:decoration-mta-yellow",
+        black: "focus-visible:decoration-black group-focus-visible:decoration-black",
+        mta_blue: "focus-visible:decoration-mta-blue group-focus-visible:decoration-mta-blue",
+        white: "focus-visible:decoration-white group-focus-visible:decoration-white"
     };
 
     return (
         <Element 
             className={cn(
-                "focus:underline focus:outline-none focus:decoration-2 group-focus:underline group-focus:decoration-2",
+                "underline-offset-2 focus-visible:underline focus-visible:outline-none focus-visible:decoration-3 group-focus-visible:underline group-focus-visible:decoration-3",
                 variants[variant],
                 className
             )} 

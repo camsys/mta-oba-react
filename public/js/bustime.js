@@ -41,6 +41,7 @@ document.addEventListener('DOMContentLoaded', function() {
         var collapseContent = parent.querySelector('.collapse-content');
         if(collapseContent){
           var allInnerTabbableItems = collapseContent.querySelectorAll('a[tabindex], button[tabindex]');
+          console.log('found collapse content', collapseContent, 'with tabbable items', allInnerTabbableItems);
           
           var allInnerCollapseTriggers = collapseContent.querySelectorAll('.collapse-trigger');
 

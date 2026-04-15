@@ -269,7 +269,7 @@ function InnerCollapsableStopCard ({ match, oneOfMany}: {match:SearchMatch, oneO
                 </ul>
             </div>
             <div className='card-menu'>
-            <StopFavoriteButton className="w-full border-t-0" item={stopMatch} collapsed={oneOfMany}/>
+            <StopFavoriteButton className="focus:outline-none w-full" item={stopMatch} collapsed={oneOfMany}/>
             </div>
         </div>
         <div className='card-footer'>
