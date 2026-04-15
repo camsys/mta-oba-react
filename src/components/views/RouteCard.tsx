@@ -178,7 +178,9 @@ export function CollapsableRouteCard({ routeMatch, oneOfMany}: {routeMatch:Route
                             </li>
                         </ul>
                     </div>
-                    <RouteFavoriteButton className="w-full" item={routeMatch} collapsed={true}/>
+                    <div className='card-menu'>
+                        <RouteFavoriteButton className="w-full" item={routeMatch} collapsed={true}/>
+                    </div>
                 </div>
             </div>
         </React.Fragment>
