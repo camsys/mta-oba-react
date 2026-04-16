@@ -42,9 +42,10 @@ export function MapWrapper  () : JSX.Element {
             <div id="map-wrap" className={state.currentCard.type === CardType.HomeCard ? "home" : ""}>
                 <div className="bottom-buttons" id="map-trigger-wrap">
                     {state.currentCard.type === CardType.HomeCard ? null : <RefreshComponent extraClasses={" button"}/>}
+                    {state.currentCard.type !== CardType.AllRoutesCard && state.currentCard.type !== CardType.FavoritesCard &&
                     <button id="map-toggle" className="button" aria-controls="map" aria-expanded={mapIsOpen} aria-pressed={mapIsOpen}
                             aria-label={ariaLabel()} onClick={mapToggle}><span className="label flex gap-1"><span className="hide-label">Hide </span>Map</span>
-                    </button>
+                    </button>}
                 </div>
                 <ul className="map-legend">
                     <li className="real-time">Real Time</li>
