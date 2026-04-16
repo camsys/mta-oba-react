@@ -135,14 +135,24 @@ function SelectedStopComponent(): JSX.Element {
                             <strong className="buses-en-route">Buses en-route:</strong>
                         </div>
                         <div className='route-directions'>
-                            {searchMatch.routeMatches.map((route, routeIdx) =>
-                                route.directions.map((dir, dirIdx) => (
-                                    <StopDirectionData
-                                        key={`${routeIdx}-${dirIdx}`}
-                                        stopId={stopId}
-                                        routeDirectionDatum={dir}
-                                    />
-                                ))
+                            {searchMatch.routeMatches.some(route => 
+                                route.directions.some(dir => {
+                                    const routeAndDir = dir.routeId + "_" + dir.directionId;
+                                    const stopCardVehicleData = vehiclesApproachingStopsState[routeAndDir + stopSortedFutureVehicleDataIdentifier];
+                                    return stopCardVehicleData?.has(stopId);
+                                })
+                            ) ? (
+                                searchMatch.routeMatches.map((route, routeIdx) =>
+                                    route.directions.map((dir, dirIdx) => (
+                                        <StopDirectionData
+                                            key={`${routeIdx}-${dirIdx}`}
+                                            stopId={stopId}
+                                            routeDirectionDatum={dir}
+                                        />
+                                    ))
+                                )
+                            ) : (
+                                <div className="no-vehicles">no approaching vehicles</div>
                             )}
                         </div>
                         <button className="view-full close-map" aria-label="view full stop details">
