@@ -36,6 +36,7 @@ import { MapVehicleElements } from "./MapVehcleElements.tsx";
 import { SelectedStopComponent} from "./SelectedStop.tsx";
 import {SelectedVehicleComponent} from "./SelectedVehicleComponent.tsx";
 import { setMapLatLngAndZoom } from "../../utils/mapZoom.ts";
+import { useMobileState } from "../util/MobileStateComponent.tsx";
 
 log.info("createRoutePolyline:", createRoutePolyline);
 log.info("createStopMarker:", createStopMarker);
@@ -491,6 +492,7 @@ const HandleMapBoundsAndZoom = () : void=>{
     const { vehicleState} = useContext(VehicleStateContext);
     const map = useMap()
     const firstNonHomeZoomCompleted = useRef(false)
+    const { isMobile } = useMobileState();
 
     const doZoom = ()=>{
         let [lat, long] = [null,null]
@@ -498,6 +500,10 @@ const HandleMapBoundsAndZoom = () : void=>{
         let override = false
 
         log.info("card type is",state.currentCard.type)
+
+        if(isMobile){
+            override = true;
+        }
     
         if(state.currentCard.type===CardType.RouteCard){
             log.info("zooming for route card",state.currentCard.searchMatches)
