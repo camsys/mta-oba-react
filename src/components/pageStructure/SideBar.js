@@ -18,6 +18,7 @@ import {ErrorCard} from "../views/ErrorCard.tsx";
 import log from 'loglevel';
 import { LoadingCard } from '../views/LoadingCard.tsx';
 import NearMeAndFavorites  from '../pageStructure/NearMeAndFavorites.tsx';
+import {noMapNeededCardTypes} from "../../js/updateState/NavigationEffect.ts";
 
 function SideBar  () {
 
@@ -70,14 +71,14 @@ function SideBar  () {
 
     log.info("adding sideBar")
     return (
-        <div id="sidebar" className={state.currentCard.type === CardType.HomeCard ? "home" : ""}>
+        <div id="sidebar" className={state.currentCard.type === CardType.HomeCard ? "home" : state.currentCard.type === CardType.AllRoutesCard ? "all-routes" : state.currentCard.type === CardType.FavoritesCard ? "favorites" : ""}>
         <ErrorBoundary>
             <Header />
             <SearchBar />
             <div className="sidebar-content" tabIndex={-1}>
                 <div className="content py-0" id="app">
                     {renderCardInfo()}
-                    {state.currentCard.type === CardType.HomeCard ? null : <ul className="menu icon-menu middle-menu refresh-menu" role="menu"><li><RefreshComponent/></li></ul>}
+                    {noMapNeededCardTypes.includes(state.currentCard.type) ? null : <ul className="menu icon-menu middle-menu refresh-menu" role="menu"><li><RefreshComponent/></li></ul>}
                 </div>
                 <Footer />
             </div>

@@ -28,6 +28,11 @@ const vehicleDelimiter = ":"
 
 // }
 
+export const noMapNeededCardTypes = [CardType.HomeCard, CardType.FavoritesCard, CardType.AllRoutesCard]
+export const allRoutesSearchTerm = "View All Routes";
+export const favoritesSearchTerm = "View Favorites";
+export const nearbySearchTerms = new Set(["NEARBY","NEARBYROUTES","NEARBYSTOPS","NEARME", "NEAR ME"])
+
 function processRouteSearch(route,card:Card,stops: StopsObject,routes:RoutesObject):RouteMatch {
     let match = new RouteMatch(route)
     log.info("processing route search results",route,card,stops,routes)
@@ -225,10 +230,9 @@ export const useNavigation = () =>{
     const { state, setState } = useContext(CardStateContext);
     const routes = useContext(RoutesContext) as RoutesObject
     const stops = useContext(StopsContext) as StopsObject
-    const allRoutesSearchTerm = "View All Routes";
-    const favoritesSearchTerm = "View Favorites";
-    const nearbySearchTerms = new Set(["NEARBY","NEARBYROUTES","NEARBYSTOPS","NEARME", "NEAR ME"])
     log.debug("navigation effect state and contexts", state, routes, stops)
+
+    
 
 
     const search = async (searchTerm) =>{
@@ -591,8 +595,10 @@ export const useNavigation = () =>{
 
     return { search, generateInitialCard, 
         vehicleSearch, allRoutesSearch, favoritesSearch, 
-        updateStateForPopStateEvent, goBack,goForward, allRoutesSearchTerm, favoritesSearchTerm, nearbySearchTerms };
+        updateStateForPopStateEvent, goBack, goForward };
 }
+
+
 
 
 

@@ -9,8 +9,8 @@ import {CardStateContext} from "../util/CardStateComponent.tsx";
 import {Card, CardType} from "../../js/updateState/DataModels";
 import {useMapDisplayState} from "../util/MapDisplayStateComponent";
 import {useSiri} from "../../js/updateState/getSiri.tx";
-
-
+import {noMapNeededCardTypes} from "../../js/updateState/NavigationEffect.ts";
+import { useNavigation } from 'react-router';
 
 
 
@@ -39,9 +39,9 @@ export function MapWrapper  () : JSX.Element {
     log.info("adding map-wrapper")
     return(
         <ErrorBoundary>
-            <div id="map-wrap" className={state.currentCard.type === CardType.HomeCard ? "home" : ""}>
+            <div id="map-wrap" className={noMapNeededCardTypes.includes(state.currentCard.type) ? "home" : ""}>
                 <div className="bottom-buttons" id="map-trigger-wrap">
-                    {state.currentCard.type === CardType.HomeCard ? null : <RefreshComponent extraClasses={" button"}/>}
+                    {noMapNeededCardTypes.includes(state.currentCard.type) ? null : <RefreshComponent extraClasses={" button"}/>}
                     <button id="map-toggle" className="button" aria-controls="map" aria-expanded={mapIsOpen} aria-pressed={mapIsOpen}
                             aria-label={ariaLabel()} onClick={mapToggle}><span className="label flex gap-1"><span className="hide-label">Hide </span>Map</span>
                     </button>
