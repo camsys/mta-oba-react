@@ -19,6 +19,7 @@ import log from 'loglevel';
 import {useSiri} from "../js/updateState/getSiri.tx";
 import { clickHandler, keypressHandler, postClickLog } from '../js/updateState/handleTracking.ts';
 import {useMapDisplayState} from "./util/MapDisplayStateComponent";
+import { MobileStateProvider, useMobileState} from './util/MobileStateComponent.tsx';
 
 
 
@@ -73,13 +74,20 @@ function App  () : JSX.Element{
     const [loading, setLoading] = useState(true);
     const { updateStateForPopStateEvent } = useNavigation();
     const { setMapIsOpen } = useMapDisplayState();
+    const { setIsMobile } = useMobileState();
+
+    useEffect(() => {
+        log.info("App root actually rendered/updated");
+    }); // No dependency array = fires every render
 
     const checkScreenSize = () => {
         const screenWidth = window.innerWidth;
         const threshold = 450;
         if (screenWidth > threshold) {
+            setIsMobile(false);
             setMapIsOpen(true);
         } else {
+            setIsMobile(true);
             setMapIsOpen(false);
         }
     };
@@ -149,17 +157,19 @@ export function AppRoot () : JSX.Element{
     return (
         <ErrorBoundary>
             <SearchStateProviders>
-                <VehicleStateProvider>
-                    <VehiclesApproachingStopsProvider>
-                        <FavoritesCookieStateProvider>
-                            <MapDisplayStateProvider>
-                                <MapHighlightingStateProvider>
-                                    <App/>
+                <FavoritesCookieStateProvider>
+                    <MobileStateProvider>
+                        <MapDisplayStateProvider>
+                            <MapHighlightingStateProvider>
+                                <VehicleStateProvider>
+                                    <VehiclesApproachingStopsProvider>
+                                        <App/>
+                                        </VehiclesApproachingStopsProvider>
+                                    </VehicleStateProvider>
                                 </MapHighlightingStateProvider>
                             </MapDisplayStateProvider>
-                        </FavoritesCookieStateProvider>
-                    </VehiclesApproachingStopsProvider>
-                </VehicleStateProvider>
+                        </MobileStateProvider>
+                    </FavoritesCookieStateProvider>
             </SearchStateProviders>
             {log.info("app root loaded")}
         </ErrorBoundary>
