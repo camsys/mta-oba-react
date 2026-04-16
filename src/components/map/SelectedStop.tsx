@@ -152,7 +152,7 @@ function SelectedStopComponent(): JSX.Element {
                                     ))
                                 )
                             ) : (
-                                <div className="no-vehicles">no approaching vehicles</div>
+                                <div className="no-vehicles">No approaching vehicles</div>
                             )}
                         </div>
                         <button className="view-full close-map" aria-label="view full stop details">
