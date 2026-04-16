@@ -798,11 +798,11 @@
     align-content: stretch
     height: calc(100dvh - #{$button-height + 2rem})
     transition: height .5s ease-in-out
-    &.home
+    &.home, &.all-routes, &.favorites
       height: 100dvh
     .google-translate-active &
       height: calc(100dvh - #{$button-height + 2rem} - $google-translate-bar-height)
-      &.home
+      &.home, &.all-routes, &.favorites
         height: calc(100dvh - $google-translate-bar-height)
     #search
       padding: $content-padding

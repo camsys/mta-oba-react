@@ -71,7 +71,7 @@ function SideBar  () {
 
     log.info("adding sideBar")
     return (
-        <div id="sidebar" className={state.currentCard.type === CardType.HomeCard ? "home" : ""}>
+        <div id="sidebar" className={state.currentCard.type === CardType.HomeCard ? "home" : state.currentCard.type === CardType.AllRoutesCard ? "all-routes" : state.currentCard.type === CardType.FavoritesCard ? "favorites" : ""}>
         <ErrorBoundary>
             <Header />
             <SearchBar />
