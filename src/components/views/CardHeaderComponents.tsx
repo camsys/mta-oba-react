@@ -20,6 +20,17 @@ export function RouteCardHeaderMany({ match, hasServiceAlert}: { match: RouteMat
     return <CardHeaderMany match={match} color={match.color} IconComponent={VehicleIcon} hasServiceAlert={hasServiceAlert} IconClass="fill-mta-dark-blue"/>
 }
 
+export function IconOrFavorite({match, IconComponent, IconClass}:{match: RouteMatch|StopMatch, IconComponent: React.ComponentType<React.SVGProps<SVGSVGElement>>, IconClass?: string}): JSX.Element{
+    const {isFavorite} = useFavorite()
+
+    let favorited = isFavorite(match)
+
+    return(<>
+        <IconComponent className={cn("icon w-5 h-5 mb-1", IconClass, { "hidden": favorited } )}/>
+        <StarBorderIcon className={cn("icon w-5 h-5 mb-1", { "hidden": !favorited } )}/>
+    </>)
+}
+
 export function CardHeaderMany({ match, color, IconComponent,hasServiceAlert, IconClass}: { 
         match: RouteMatch|StopMatch, 
         color?: string, 
@@ -33,7 +44,7 @@ export function CardHeaderMany({ match, color, IconComponent,hasServiceAlert, Ic
 
     let favorited = isFavorite(match)
 
-    return (<button className={cn(`card-header collapse-trigger`, { favorite: favorited })}
+    return (<button className={cn(`card-header collapse-trigger`)}
                     style={{ borderColor: color ? `#${color}` : "inherit" }}
                     onMouseEnter={() => highlightId(match.datumId)}
                     onMouseLeave={() => highlightId(null)}
@@ -43,8 +54,7 @@ export function CardHeaderMany({ match, color, IconComponent,hasServiceAlert, Ic
                 
                 <span className="card-title label flex items-center">
                     {hasServiceAlert?<ServiceAlertSvg/>:null}
-                    <IconComponent className={cn("icon w-5 h-5 mb-1", IconClass, { "hidden": favorited } )}/>
-                    <StarBorderIcon className={cn("icon w-5 h-5 mb-1", { "hidden": !favorited } )}/>
+                    <IconOrFavorite match={match} IconComponent={IconComponent} IconClass={IconClass}/>
                     {match.datumName}
                 </span>
             </button>)
