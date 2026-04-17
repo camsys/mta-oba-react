@@ -31,15 +31,15 @@ import {useNavigation} from "../../js/updateState/NavigationEffect.ts";
 import { createRoutePolyline } from "../../utils/RoutePolylineFactory";
 import { createStopMarker } from "../../utils/StopMarkerFactory.ts";
 import { createSearchedHereMarker } from "../../utils/SearchedHereFactory.ts";
-import { createVehicleMarker } from "../../utils/VehicleMarkerFactory.ts";
 import { MapVehicleElements } from "./MapVehcleElements.tsx";
 import { SelectedStopComponent} from "./SelectedStop.tsx";
 import {SelectedVehicleComponent} from "./SelectedVehicleComponent.tsx";
+import { setMapLatLngAndZoom } from "../../utils/mapZoom.ts";
+import { useMobileState } from "../util/MobileStateComponent.tsx";
 
 log.info("createRoutePolyline:", createRoutePolyline);
 log.info("createStopMarker:", createStopMarker);
 log.info("createSearchedHereMarker:", createSearchedHereMarker);
-log.info("createVehicleMarker:", createVehicleMarker);
 
 const createVehicleIcon = (vehicleDatum):L.Icon => {
     let scheduled = vehicleDatum.hasRealtime?"":"scheduled/"
@@ -160,15 +160,17 @@ const RoutesAndStops = ()=>{
         log.info("processing route for map: ", route)
         if(route){
             route.directions.forEach(dir => {
-                dir.mapRouteComponentData.forEach((datum:MapRouteComponentInterface) => {
-                    // log.info("requesting new MapRouteComponent from: ", datum)
-                    mapRouteMarkers.set(datum.id,createRoutePolyline(datum))
+                // Use mapRouteComponentDataDict to process all disruption statuses
+                Object.entries(dir.mapRouteComponentDataDict).forEach(([status, components]) => {
+                    components.forEach((datum:MapRouteComponentInterface) => {
+                        mapRouteMarkers.set(datum.id,createRoutePolyline(datum))
+                    })
                 })
             })
             route.directions.forEach(dir => {
                 dir.mapStopComponentData.forEach((stopInterface:StopInterface) => {
                     let stopId = stopInterface.datumId;
-                    let newStopMarker = createStopMarker(stopInterface,selectStop,popupOptions.current,createStopIcon(stopInterface),0)
+                    let newStopMarker = createStopMarker(stopInterface,selectStop,popupOptions.current,createStopIcon(stopInterface),0,map)
                     mapStopComponents.current.set(stopId, newStopMarker);
                     stopsToDisplay.set(stopId, newStopMarker);                
                 })
@@ -403,7 +405,7 @@ const Highlighted = () =>{
 
         let stopDatum = stops.current[highlightedId]
         if(stopDatum!==null && typeof stopDatum !=='undefined'){
-            highlightedComponents.current.set(stopDatum.id,createStopMarker(stopDatum,()=>{},popupOptions.current,createStopIcon(stopDatum),20))
+            highlightedComponents.current.set(stopDatum.id,createStopMarker(stopDatum,()=>{},popupOptions.current,createStopIcon(stopDatum),20,map))
         }
         let routeDatum = routes.current[highlightedId]
         if(routeDatum!==null && typeof routeDatum !=='undefined'){
@@ -458,43 +460,6 @@ const Highlighted = () =>{
 
 }
 
-const setMapLatLngAndZoom = (map: L.Map, lat : number, lon :number,zoom:number,override:boolean) :void =>{
-    let duration = .85
-    log.info("Assessing zoom. based on requested values:",lat,lon,zoom)
-    if(lat===null|lon===null|zoom===null){return}
-    let mapWidth=map.getBounds().getEast()-map.getBounds().getWest();
-    let mapHeight=map.getBounds().getNorth()-map.getBounds().getSouth();
-    let [currentLat, currentLong,currentZoom] = [map.getCenter().lat,map.getCenter().lng,map.getZoom()]
-    let latsMatch = currentLat+mapHeight/3>lat && currentLat-mapHeight/3<lat
-    let latsOnScreen = currentLat+mapHeight>lat && currentLat-mapHeight<lat
-    let lonsMatch = currentLong+mapWidth/3>lon && currentLong-mapWidth/3<lon
-    let lonsOnScreen = currentLong+mapWidth>lon && currentLong-mapWidth<lon
-    let zoomsMatch =  zoom-.3<currentZoom && zoom+.3>currentZoom
-    let zoomSeemsIntentional = currentZoom>16
-
-    let performZoom = override
-    
-    if(override){
-        log.info("Assessing zoom. override requested, performing zoom")
-    }
-
-    if(zoomSeemsIntentional){
-        log.info("Assessing zoom. zoom seems intentional, checking if new selection is on screen ",currentLat,currentLong,currentZoom,"new: ",lat,lon,zoom, "matches",lonsOnScreen,latsOnScreen)
-        if(!(lonsOnScreen && latsOnScreen)){
-            performZoom = true
-        }
-    } else {
-        log.info("Assessing zoom. update map bounds and zoom? current: ",currentLat,currentLong,currentZoom,"new: ",lat,lon,zoom, "matches",latsMatch,lonsMatch,zoomsMatch)
-        if(!(latsMatch&&lonsMatch&&zoomsMatch)){ performZoom = true }
-    }
-    if(performZoom){
-        log.info("Assessing zoom. updating map bounds and zoom")
-        map.flyTo([lat, lon], zoom, {
-            animate: true,
-            duration: duration
-        });
-    }
-}
 
 const setMapBounds = (map: L.Map, bounds: LatLngBounds):void =>{
     map.flyToBounds(bounds)
@@ -525,6 +490,7 @@ const HandleMapBoundsAndZoom = () : void=>{
     const { vehicleState} = useContext(VehicleStateContext);
     const map = useMap()
     const firstNonHomeZoomCompleted = useRef(false)
+    const { isMobile } = useMobileState();
 
     const doZoom = ()=>{
         let [lat, long] = [null,null]
@@ -532,6 +498,10 @@ const HandleMapBoundsAndZoom = () : void=>{
         let override = false
 
         log.info("card type is",state.currentCard.type)
+
+        if(isMobile){
+            override = true;
+        }
     
         if(state.currentCard.type===CardType.RouteCard){
             log.info("zooming for route card",state.currentCard.searchMatches)

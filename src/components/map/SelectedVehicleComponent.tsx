@@ -84,7 +84,8 @@ export function SelectedVehicleComponent  () :JSX.Element{
 
     let id = vehicleDatum.routeId.split("_")[1];
     let serviceAlertIdentifier = vehicleDatum.routeId;
-    let hasServiceAlert = getServiceAlert(id,serviceAlertIdentifier)!==null;
+    let hasServiceAlert = getServiceAlert({abbreviatedRouteId: id, routeAgencyAndId: serviceAlertIdentifier})!==null;
+    console.log("checking for service alert in Selected Vehicle with id ",id," and identifier ",serviceAlertIdentifier," result: ",hasServiceAlert);
 
 
     let out = (<Marker {...markerOptions}
@@ -128,7 +129,7 @@ export function SelectedVehicleComponent  () :JSX.Element{
                         <div key={index} className="next-stop">
                             <div>
                                 <span className="stop-name">{vehicleArrival.stopName}</span>
-                                <span className="arrival-time">{OBA.Util.getArrivalEstimateForISOString(vehicleArrival.ISOTime,vehicleDatum.lastUpdate)}</span>
+                                <span className="arrival-time">{OBA.Util.getArrivalEstimateForISOString(vehicleArrival.ISOTime,vehicleDatum.lastUpdate)}{vehicleArrival.prettyDistance}</span>
                             </div>
                         </div>
                     )

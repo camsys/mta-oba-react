@@ -15,7 +15,6 @@ import { JSX } from 'react/jsx-runtime';
 import { useServiceAlert } from '../views/ServiceAlertContainerComponent.tsx';
 
 const COMPONENT_IDENTIFIER = "mapStopComponent"
-const MAX_DESTINATIONS = 1;
 const MAX_VEHICLES_PER_DESTINATION = 2;
 
 function SelectedStopComponent(): JSX.Element {
@@ -49,17 +48,12 @@ function SelectedStopComponent(): JSX.Element {
 
         
         let id = routeDirectionDatum.routeId.split("_")[1];
-        let serviceAlertIdentifier = routeDirectionDatum.routeId;
-        let hasServiceAlert = getServiceAlert(id,serviceAlertIdentifier)!==null;
-
+        let hasServiceAlert = getServiceAlert({abbreviatedRouteId: id, routeAgencyAndId: routeDirectionDatum.routeId, routeAndDirection: routeAndDir})!==null 
+        console.log("checking for service alert in Selected Stop with id ",id," and identifier ",routeDirectionDatum.routeId," and identifier ",routeAndDir," result: ",hasServiceAlert);
 
         if (stopCardVehicleData === null) {
             return (
-                <div className={`map-popup-content ${hasServiceAlert ? 'has-service-alert' : ''}`}>
-                    <div style={{ borderColor: '#' + routeDirectionDatum.color }}>
-                        <span className="label"><strong>{routeId}</strong> No approaching vehicles</span>
-                    </div>
-                </div>
+                <></>
             )
         }
 
@@ -77,7 +71,7 @@ function SelectedStopComponent(): JSX.Element {
         return (
             <div className={`map-popup-content ${hasServiceAlert ? 'has-service-alert' : ''}`}>
                 <div>
-                    {Array.from(vehicleDataByDestination.entries()).slice(0, MAX_DESTINATIONS).map(([destination, vehicles]) => (
+                    {Array.from(vehicleDataByDestination.entries()).map(([destination, vehicles]) => (
                         <div key={destination}>
                             <span className="label" style={{ borderColor: '#' + routeDirectionDatum.color }}><strong>{routeId}</strong> {destination}</span>
                             <ul className="approaching-buses">
@@ -85,7 +79,7 @@ function SelectedStopComponent(): JSX.Element {
                                     <VehicleComponentWithoutSearchSpecified
                                         key={vehicle.vehicleId}
                                         vehicleDatum={vehicle}
-                                        tabbable={0}
+                                        tabbable={true}
                                         vehicleSearchFunction={vehicleSearch}
                                     />
                                 ))}
@@ -122,14 +116,14 @@ function SelectedStopComponent(): JSX.Element {
                 stopId: stopDatum.id,
                 key: `${COMPONENT_IDENTIFIER}_${stopDatum.id}`,
                 id: `${COMPONENT_IDENTIFIER}_${stopDatum.id}`,
-                keyboard: false
+                keyboard: true
             };
 
             stopMarkers.push(
                 <Marker key={markerOptions.key} {...markerOptions} eventHandlers={{
                     add: (e) => e.target.openPopup(),
                 }}>
-                    <Popup className="map-popup stop-popup" tabIndex={-1} {...popupOptions}>
+                    <Popup className="map-popup stop-popup"  {...popupOptions}>
                         <div className="popup-header">
                             <div className="popup-header-info">
                                 <img src={stopPopupIcon} alt="busstop icon" className="icon" />
@@ -141,14 +135,24 @@ function SelectedStopComponent(): JSX.Element {
                             <strong className="buses-en-route">Buses en-route:</strong>
                         </div>
                         <div className='route-directions'>
-                            {searchMatch.routeMatches.map((route, routeIdx) =>
-                                route.directions.map((dir, dirIdx) => (
-                                    <StopDirectionData
-                                        key={`${routeIdx}-${dirIdx}`}
-                                        stopId={stopId}
-                                        routeDirectionDatum={dir}
-                                    />
-                                ))
+                            {searchMatch.routeMatches.some(route => 
+                                route.directions.some(dir => {
+                                    const routeAndDir = dir.routeId + "_" + dir.directionId;
+                                    const stopCardVehicleData = vehiclesApproachingStopsState[routeAndDir + stopSortedFutureVehicleDataIdentifier];
+                                    return stopCardVehicleData?.has(stopId);
+                                })
+                            ) ? (
+                                searchMatch.routeMatches.map((route, routeIdx) =>
+                                    route.directions.map((dir, dirIdx) => (
+                                        <StopDirectionData
+                                            key={`${routeIdx}-${dirIdx}`}
+                                            stopId={stopId}
+                                            routeDirectionDatum={dir}
+                                        />
+                                    ))
+                                )
+                            ) : (
+                                <div className="no-vehicles">No approaching vehicles</div>
                             )}
                         </div>
                         <button className="view-full close-map" aria-label="view full stop details">

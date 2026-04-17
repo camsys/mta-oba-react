@@ -7,11 +7,11 @@ import DOMPurify from 'dompurify';
 const keywordsToBold = ["What's happening?", "note"]
 const boldIfKeywordStartsPart = ["Note:"]
 
-function ServiceAlertComponent  ({serviceAlertDatum}:ServiceAlertInterface) : JSX.Element {
-    log.info("service alert component contents generating ",serviceAlertDatum)
+function ServiceAlertComponent  ({serviceAlertDatums}: {serviceAlertDatums: ServiceAlertInterface[]}) : JSX.Element {
+    log.info("service alert component contents generating ",serviceAlertDatums)
     let alerts = []
     let partsToBold = []
-    serviceAlertDatum.forEach((alert) => {
+    serviceAlertDatums.forEach((alert) => {
         if(alert.descriptionParts && alert.descriptionParts.length>0){
             alert.descriptionParts.forEach((part) => {
                 if(part && part.length>0){
@@ -28,8 +28,9 @@ function ServiceAlertComponent  ({serviceAlertDatum}:ServiceAlertInterface) : JS
         }
     })
     alerts = [...new Set(alerts)];
+    log.info("service alert component contents received",serviceAlertDatums,"generated ",{alerts,partsToBold})
     return(
-        <div className="card-content collapse-content">
+        <div className="card-content collapse-content text-base">
             {alerts.map((part,itt) => {
                 part = DOMPurify.sanitize(part, {
                     ALLOWED_TAGS: ['b', 'strong', 'p', 'a'],
@@ -45,29 +46,54 @@ function ServiceAlertComponent  ({serviceAlertDatum}:ServiceAlertInterface) : JS
         </div>)
 }
 
-export default function ServiceAlertContainerComponent  ({ routeId,serviceAlertIdentifier, collapsed}:{ routeId : string ,serviceAlertIdentifier : string,collapsed:boolean}) : JSX.Element {
+interface ServiceAlertIdentifierProps{
+    abbreviatedRouteId : string,
+    routeAndDirection? : string,
+    routeAgencyAndId? : string
+}
+
+interface ServiceAlertContainerProps extends ServiceAlertIdentifierProps{
+    collapsed?: boolean
+}
+
+
+
+export default function ServiceAlertContainerComponent  ({ abbreviatedRouteId,routeAgencyAndId,routeAndDirection, collapsed}:ServiceAlertContainerProps) : JSX.Element {
     log.info("generating service alert component")
     let {getServiceAlert} = useServiceAlert()
-    let serviceAlertDatum = getServiceAlert(routeId,serviceAlertIdentifier)
-    if(serviceAlertDatum===null||typeof serviceAlertDatum==="undefined"){return null}
+    let serviceAlertDatums = getServiceAlert({abbreviatedRouteId, routeAgencyAndId, routeAndDirection})
+    if(serviceAlertDatums === null || serviceAlertDatums.every(datum => datum===null||typeof datum==="undefined")){return <></>}
+    log.info("service alert datums found for component: ", serviceAlertDatums)
     return (<div className="service-alert inner-card collapsible">
         <button className="card-header collapse-trigger" aria-haspopup="true" aria-expanded="false" aria-label="Toggle Service Alert Open/Closed" tabIndex={collapsed?-1:0}>
             <ServiceAlertSvg/>
-            <span className="label">Service Alert for {routeId}</span>
+            <span className="label">Service Alert for {abbreviatedRouteId}</span>
         </button>
-        <ServiceAlertComponent {...{serviceAlertDatum}}/>
+        <ServiceAlertComponent {...{serviceAlertDatums}}/>
     </div>)
 }
 
-export function useServiceAlert(){
+export function useServiceAlert(){  
     const { vehicleState} = useContext(VehicleStateContext)
-    function getServiceAlert(routeId : string ,serviceAlertIdentifier : string){
-        log.info("getting service alert data",vehicleState,routeId+serviceAlertDataIdentifier,serviceAlertIdentifier)
-        let routeServiceAlerts = vehicleState[routeId+serviceAlertDataIdentifier]
+    function getServiceAlert({ abbreviatedRouteId,routeAgencyAndId,routeAndDirection}:ServiceAlertContainerProps): ServiceAlertInterface[] | null{
+        
+        log.info("getting service alert data",vehicleState,abbreviatedRouteId+serviceAlertDataIdentifier,routeAgencyAndId,routeAndDirection)
+        let routeServiceAlerts = vehicleState[abbreviatedRouteId+serviceAlertDataIdentifier]
         if(routeServiceAlerts===null||typeof routeServiceAlerts==="undefined"){return null}
-        let serviceAlertDatum = vehicleState[routeId+serviceAlertDataIdentifier].get(serviceAlertIdentifier)
+        let serviceAlertData: ServiceAlertInterface[] = []
+        let serviceAlertDatum = vehicleState[abbreviatedRouteId + serviceAlertDataIdentifier].get(routeAgencyAndId);
+        if (routeAgencyAndId) {
+            let serviceAlertDatumByAgency = vehicleState[abbreviatedRouteId + serviceAlertDataIdentifier].get(routeAgencyAndId);
+            if (serviceAlertDatumByAgency) serviceAlertData.push(...serviceAlertDatumByAgency);
+        }
+        if(routeAndDirection){
+            let serviceAlertDatumByDirection = vehicleState[abbreviatedRouteId+serviceAlertDataIdentifier].get(routeAndDirection)
+            if(serviceAlertDatumByDirection) serviceAlertData.push(...serviceAlertDatumByDirection)
+        }
+        if(serviceAlertDatum) serviceAlertData.push(...serviceAlertDatum)
         log.info("service alert datum found from state",serviceAlertDatum)
         if(typeof serviceAlertDatum==="undefined"){return null}
+        if(serviceAlertData.length===0){return null}
         return serviceAlertDatum
     }
 

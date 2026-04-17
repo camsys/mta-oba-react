@@ -24,7 +24,7 @@ import log from 'loglevel';
 import {v4 as uuidv4} from "uuid";
 import { StopFavoriteButton } from './AddToFavoriteButtons.tsx';
 import { StopCardHeader, StopCardHeaderMany } from "./CardHeaderComponents.tsx";
-
+import { UnderlineOnFocusElement } from '../shared/common.tsx';
 
 
 
@@ -34,7 +34,8 @@ const MiniStopDirectionList =({routeDirectionDatum,stopId, }:{routeDirectionDatu
     log.info("generating StopCard MiniStopDirection",routeDirectionDatum,vehiclesApproachingStopsState)
     let routeAndDir = routeDirectionDatum.routeId + "_"+routeDirectionDatum.directionId
     let routeId = routeDirectionDatum.routeId.split("_")[1];
-    let hasServiceAlert = getServiceAlert(routeId,routeAndDir)!==null;
+    let hasServiceAlert = getServiceAlert({abbreviatedRouteId: routeId, routeAgencyAndId: routeDirectionDatum.routeId, routeAndDirection: routeAndDir})!==null;
+    console.log("checking for service alert in MiniStopDirectionList with id ",routeId," and identifier ",routeAndDir," result: ",hasServiceAlert);
     let stopsToVehicles = vehiclesApproachingStopsState[routeAndDir+stopSortedFutureVehicleDataIdentifier]
     let stopCardVehicleData = typeof stopsToVehicles !== 'undefined' &&
         stopsToVehicles.has("MTA_"+stopId)
@@ -97,12 +98,12 @@ const RouteDirection = ({routeDirectionDatum,stopId, collapsed}:
         stopCardVehicleData.has("MTA_"+stopId)
             ?stopCardVehicleData.get("MTA_"+stopId):null
     let routeId = routeDirectionDatum.routeId.split("_")[1];
-    let serviceAlertIdentifier = routeAndDir
     let lastUpdateTime = stopCardVehicleData!==null
         ? OBA.Util.ISO8601StringToDate(vehiclesApproachingStopsState[routeAndDir+updatedTimeIdentifier]).getTime()
         : null
     let {getServiceAlert} = useServiceAlert();
-    let hasServiceAlert = getServiceAlert(routeId,serviceAlertIdentifier)!==null;
+    let hasServiceAlert = getServiceAlert({abbreviatedRouteId: routeId, routeAgencyAndId: routeDirectionDatum.routeId, routeAndDirection: routeAndDir})!==null
+    console.log("checking for service alert in StopCard.RouteDirection with id ",routeId," and identifier ",routeAndDir," and identifier ",routeAndDir," result: ",hasServiceAlert);
     log.info("StopCard RouteDirection stopCardVehicleData",stopCardVehicleData,lastUpdateTime)
 
 
@@ -133,7 +134,7 @@ const RouteDirection = ({routeDirectionDatum,stopId, collapsed}:
         vehicleComponents = Array.from(vehicleDataByDestination.entries()).map(([destination,vehicleData],index)=>{
             return (<div className={`inner-card route-direction en-route collapsible ${collapsed?"":"open"}`} key={routeAndDir+destination}>
                 <button
-                    className={`card-header collapse-trigger ${collapsed?"":"open"}`}
+                    className={`card-header collapse-trigger group ${collapsed?"":"open"}`}
                     aria-haspopup="true"
                     aria-expanded="true"
                     aria-label={`Toggle ${routeDirectionDatum.routeId.split("_")[1]} to ${destination}`}
@@ -143,9 +144,9 @@ const RouteDirection = ({routeDirectionDatum,stopId, collapsed}:
                 >
                 <span className="card-title" style={{ borderColor: '#'+routeDirectionDatum.color}}>
                     {hasServiceAlert?<ServiceAlertSvg/>:null}
-                    <span className="label">
+                    <UnderlineOnFocusElement variant="black" as="span" className="label">
                         <strong>{routeDirectionDatum.routeId.split("_")[1]}</strong> {destination}
-                    </span>
+                    </UnderlineOnFocusElement>
                 </span>
                 </button>
                 <div className="card-content collapse-content">
@@ -153,7 +154,7 @@ const RouteDirection = ({routeDirectionDatum,stopId, collapsed}:
                         {vehicleData.map((vehicleDatum,index)=>{
                             if(index<3){return <VehicleComponent {...{vehicleDatum,lastUpdateTime}} tabbable={tabbable} key={index}/>}})}
                     </ul>
-                    <ServiceAlertContainerComponent {...{routeId,serviceAlertIdentifier}} collapsed={!tabbable}/>
+                    <ServiceAlertContainerComponent {...{abbreviatedRouteId: routeId, routeAgencyAndId: routeDirectionDatum.routeId, routeAndDirection: routeAndDir}} collapsed={!tabbable}/>
                     <ul className="menu icon-menu inner-card-menu">
                         <li>
                             <ViewSearchItem datumId={routeDirectionDatum.routeId} text={"Full Route"} collapsed={!tabbable}/>
@@ -254,7 +255,7 @@ function InnerCollapsableStopCard ({ match, oneOfMany}: {match:SearchMatch, oneO
     if(match.type!==MatchType.StopMatch){return <></>}
     let stopMatch = match as StopMatch
 
-    log.info("generating collapsable StopCard",stopMatch)
+    log.info("generating collapsable StopCard",stopMatch, oneOfMany)
     return(
     <div className={`card stop-card ${oneOfMany?"collapsible":""}`}>
         <StopCardHeaderMany match={stopMatch}/>
@@ -267,7 +268,9 @@ function InnerCollapsableStopCard ({ match, oneOfMany}: {match:SearchMatch, oneO
                     </li>
                 </ul>
             </div>
-            <StopFavoriteButton className="w-full" item={stopMatch} collapsed={oneOfMany}/>
+            <div className='card-menu'>
+            <StopFavoriteButton className="focus:outline-none w-full" item={stopMatch} collapsed={oneOfMany}/>
+            </div>
         </div>
         <div className='card-footer'>
             <MiniStopDirectionListContainer routeMatches={stopMatch.routeMatches} stopId={stopMatch.id} collapsed={oneOfMany}/>
