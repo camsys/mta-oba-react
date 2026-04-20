@@ -631,14 +631,18 @@
       justify-content: center
     a
       font-size: .875rem
-      color: currentColor
-      text-decoration: underline
+      color: $black
       display: inline-flex
-      align-itrems: center
+      align-itrems: left
+      justify-content: left
       gap: .5rem
       padding: .5rem $content-padding
-      background-color: transparent
+      background-color: $original-mta-yellow
+      font-weight: normal
+      text-underline-offset: .2rem
       transition: background-color .25s ease-in-out
+      width: 100%
+      line-height: 1.5rem
       &::after
         content: ''
         display: inline-block
@@ -650,15 +654,16 @@
         background-image: url(../img/icon/right-caret_white.svg)
         position: relative
         left: 0
+        align-self: center
         transition: left .25s ease-in-out
+        filter: invert(1)
       &:hover, &:focus
-        text-decoration: none
-        &::after
-          left: .125rem
-      &:focus
-        background-color: $black
         border: none
         outline: none
+        text-decoration: underline 2px solid     
+        &::after
+          left: .125rem
+
         
   .header
     background-color: $black2

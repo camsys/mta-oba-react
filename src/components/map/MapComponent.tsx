@@ -31,7 +31,6 @@ import {useNavigation} from "../../js/updateState/NavigationEffect.ts";
 import { createRoutePolyline } from "../../utils/RoutePolylineFactory";
 import { createStopMarker } from "../../utils/StopMarkerFactory.ts";
 import { createSearchedHereMarker } from "../../utils/SearchedHereFactory.ts";
-import { createVehicleMarker } from "../../utils/VehicleMarkerFactory.ts";
 import { MapVehicleElements } from "./MapVehcleElements.tsx";
 import { SelectedStopComponent} from "./SelectedStop.tsx";
 import {SelectedVehicleComponent} from "./SelectedVehicleComponent.tsx";
@@ -41,7 +40,6 @@ import { useMobileState } from "../util/MobileStateComponent.tsx";
 log.info("createRoutePolyline:", createRoutePolyline);
 log.info("createStopMarker:", createStopMarker);
 log.info("createSearchedHereMarker:", createSearchedHereMarker);
-log.info("createVehicleMarker:", createVehicleMarker);
 
 const createVehicleIcon = (vehicleDatum):L.Icon => {
     let scheduled = vehicleDatum.hasRealtime?"":"scheduled/"

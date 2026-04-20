@@ -22,7 +22,7 @@ function Header  () {
             {state.currentCard.type === CardType.HomeCard && (
                 bannerText && bannerLink && (
                     <div className="beta-bar">
-                        <UnderlineOnFocusElement href={bannerLink}>{bannerText}</UnderlineOnFocusElement>
+                        <UnderlineOnFocusElement href={bannerLink} variant="black">{bannerText}</UnderlineOnFocusElement>
                     </div>
                 )
             )}
