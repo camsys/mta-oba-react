@@ -30,7 +30,7 @@ function Footer  () {
                 <nav>
                     <ul className="menu my-1 text-4 font-[575]">
                         <li><UnderlineOnFocusElement href="//mta.info">MTA Homepage</UnderlineOnFocusElement></li>
-                        <li><UnderlineOnFocusElement href="/about">Mobile Text Messages</UnderlineOnFocusElement></li>
+                        <li><UnderlineOnFocusElement href="/help/text">Mobile Text Messages</UnderlineOnFocusElement></li>
                         <li><UnderlineOnFocusElement href="/about">About Bus Time</UnderlineOnFocusElement></li>
                         <li><UnderlineOnFocusElement href="/contact">Contact Us</UnderlineOnFocusElement></li>
                         <li><UnderlineOnFocusElement href="/developers">Developers</UnderlineOnFocusElement></li>
