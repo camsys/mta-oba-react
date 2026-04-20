@@ -1539,9 +1539,13 @@
     
   .approaching-buses
     list-style: none
+    margin-top: .25rem
     padding: 0
     color: $black
     font-weight: normal
+    *
+      +mq-reverse($sidebar-switch)
+        font-size: .875rem
     a
       text-decoration: none
       color: currentColor
@@ -1551,9 +1555,9 @@
       display: flex
       flex-wrap: nowrap
       gap: .5rem
-      padding: .5rem 0
+      padding: .5rem
       .bus
-        width: 4.5rem
+        // width: 4.5rem
         flex-grow: 0
         flex-shrink: 0
         display: inline-flex
@@ -1587,6 +1591,8 @@
     .approaching
       color: $black3
       font-weight: bold
+      line-height: 1.25rem
+
     .en-route &
       margin: 0 0 calc($content-padding / 2) 0
 
