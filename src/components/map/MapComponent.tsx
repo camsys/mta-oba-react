@@ -576,6 +576,7 @@ const HandleMapBoundsAndZoom = ({userHasAdjustedMapOffMainElement}: {userHasAdju
 
 
     useEffect(() => {
+        log.info("handling map bounds and zoom for vehicle update, vehicle state changed",vehicleState,"firstNonHomeZoomCompleted",firstNonHomeZoomCompleted.current)
         if(!firstNonHomeZoomCompleted.current){
             log.info("first zoom not completed, doing zoom, vehicle state",vehicleState)
             doZoom()

@@ -35,7 +35,7 @@ export const setMapLatLngAndZoom = (map: L.Map, lat : number, lon :number,zoom:n
     
     if(override){
         log.info("Assessing zoom. override requested, performing zoom")
-    } else if(!isCenteredOn(map,lat,lon,zoom)){
+    } else if(isCenteredOn(map,lat,lon,zoom)){
         log.info("Assessed zoom and latlong, zoom is intentional or onscreen. skipping zoom")
         return
     }

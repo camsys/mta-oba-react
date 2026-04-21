@@ -1,5 +1,5 @@
 import {OBA} from "../../js/oba.js";
-import React, {useContext, useEffect, useRef} from "react";
+import React, {useContext, useEffect, useMemo, useRef} from "react";
 import {Marker, Popup} from "react-leaflet";
 import L from "leaflet";
 import bus from "../../img/icon/bus.svg";
@@ -110,6 +110,10 @@ export function PopupContents({vehicleDatum, getServiceAlert}:{
     )
 }
 
+// todo: crunch time rn, but
+// 1: put it in a layer, and have it pass up a ref and another child of the layer be responsible for moving it arround so it stops blipping a little weird
+// 2: all parts that are vehiclestate should be put in a seperate child component to avoid unnecessary re-renders
+
 export function SelectedVehicleComponent  ({selectedElementLocation, userHasAdjustedMapOffMainElement}: {selectedElementLocation: React.MutableRefObject<{lat:number, lng:number}|null>, userHasAdjustedMapOffMainElement: React.MutableRefObject<boolean>}) :JSX.Element{
     const { state } = useContext(CardStateContext);
     const { vehicleState} = useContext(VehicleStateContext);
@@ -119,6 +123,7 @@ export function SelectedVehicleComponent  ({selectedElementLocation, userHasAdju
     const lastVehicleDataumId = useRef<string|null>(null)
     let {getServiceAlert} = useServiceAlert();
     let map = useMap()
+
 
     if (state.currentCard.type !== CardType.VehicleCard) {
         return <></>
@@ -134,6 +139,7 @@ export function SelectedVehicleComponent  ({selectedElementLocation, userHasAdju
         log.info("SelectedVehicleComponent looking for vehicle data with key: ",routeData,shortenedRouteId+vehicleDataIdentifier,vehicleDatum)
         return typeof vehicleDatum!=="undefined" && vehicleDatum!==null
     })
+    
     if(typeof vehicleDatum === "undefined" || vehicleDatum === null){
         log.error("SelectedVehicleComponent could not find vehicle data for selected vehicle",state.currentCard.datumId,shortenedRouteIds,vehicleState, vehicleDatum)
         return <></>
@@ -149,6 +155,7 @@ export function SelectedVehicleComponent  ({selectedElementLocation, userHasAdju
 
 
     let autopan = !userHasAdjustedMapOffMainElement.current
+    log.info("SelectedVehicleComponent autopan value: ", autopan, "userHasAdjustedMapOffMainElement: ", userHasAdjustedMapOffMainElement.current)
 
     let markerOptions = {
         zIndexOffset: 1000,

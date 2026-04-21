@@ -98,7 +98,7 @@ export const MapVehicleElements = () =>{
                 if(state.currentCard.type !== CardType.VehicleCard || vehicleDatum.vehicleId !== state.currentCard.datumId){
                     vehicle.closePopup()
                 }
-                log.info("updated vehicle position",vehicleDatum.vehicleId,vehicleMap.get(vehicleDatum.vehicleId))
+                log.trace("updated vehicle position",vehicleDatum.vehicleId,vehicleMap.get(vehicleDatum.vehicleId))
             }
         }
         else {
