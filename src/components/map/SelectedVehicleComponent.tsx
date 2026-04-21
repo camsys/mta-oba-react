@@ -30,6 +30,33 @@ const createVehicleIcon = (vehicleDatum: VehicleRtInterface):L.Icon => {
     return icon
 }
 
+function SelectedVehicleServiceAlert({routeId}: {routeId: string}): JSX.Element{
+    let {getServiceAlert} = useServiceAlert();
+
+    if(typeof routeId === "undefined" || routeId === null || typeof routeId !== "string"){
+            log.error("SelectedVehicleServiceAlert received invalid routeId",routeId)
+        return <></>
+    }
+    let id = routeId.split("_")[1];
+    let serviceAlertIdentifier = routeId;
+    let hasServiceAlert = getServiceAlert({abbreviatedRouteId: id, routeAgencyAndId: serviceAlertIdentifier})!==null;
+    console.log("checking for service alert in Selected Vehicle with id ",id," and identifier ",serviceAlertIdentifier," result: ",hasServiceAlert);
+
+    return (
+        <>
+            {hasServiceAlert && (
+                <>
+                    <div className="w-[1px] h-3 bg-mta-black opacity-30 mx-1" />
+                    <div className="flex items-center gap-1">
+                        <ServiceAlertSvg className="w-4 h-4 mobile:-mt-[1px]" />
+                        <span className="text-[#D91A1A]">Alert</span>
+                    </div>
+                </>
+            )}
+        </>
+    )
+}
+
 export function SelectedVehicleComponent  () :JSX.Element{
     const { state } = useContext(CardStateContext);
     const { vehicleState} = useContext(VehicleStateContext);
@@ -82,12 +109,6 @@ export function SelectedVehicleComponent  () :JSX.Element{
     let popupOptions = {}
 
 
-    let id = vehicleDatum.routeId.split("_")[1];
-    let serviceAlertIdentifier = vehicleDatum.routeId;
-    let hasServiceAlert = getServiceAlert({abbreviatedRouteId: id, routeAgencyAndId: serviceAlertIdentifier})!==null;
-    console.log("checking for service alert in Selected Vehicle with id ",id," and identifier ",serviceAlertIdentifier," result: ",hasServiceAlert);
-
-
     let out = (<Marker {...markerOptions}
                        eventHandlers={{
                             // click : (event : L.LeafletMouseEvent)=>{vehicleDatum.longLat = [event.latlng.lat,event.latlng.lng];},
@@ -111,8 +132,12 @@ export function SelectedVehicleComponent  () :JSX.Element{
                 <div className="popup-header-info">
                 <img src={vehicleDatum?.strollerVehicle?busStroller:bus} alt="bus" className="icon"/>
                     <div className="popup-info">
-                        <span className={`route ${hasServiceAlert ? 'has-service-alert' : ''}`}>{vehicleDatum.routeId.split("_")[1]} {vehicleDatum.destination}{hasServiceAlert ? <ServiceAlertSvg/> : null}</span>
-                        <span className="vehicle">Vehicle #{vehicleIdWithoutAgency}</span>
+                        <span className={`route`}>{vehicleDatum.routeId.split("_")[1]} {vehicleDatum.destination}</span>
+                        <div className="flex items-center gap-1">
+                            <span className="vehicle">Vehicle #{vehicleIdWithoutAgency}</span>
+                            <SelectedVehicleServiceAlert routeId={vehicleDatum.routeId}/>
+                        </div>
+                            
                         <MeeplesComponentSpan vehicleDatum={vehicleDatum}/>
                     </div>
                 </div>

@@ -13,6 +13,8 @@ import { StopMatch } from '../../js/updateState/DataModels.ts';
 import { OBA } from '../../js/oba.js';
 import { JSX } from 'react/jsx-runtime';
 import { useServiceAlert } from '../views/ServiceAlertContainerComponent.tsx';
+import { ServiceAlertSvg } from '../views/ServiceAlertContainerComponent.tsx';
+import { LeftExpands } from '../shared/common.tsx';
 
 const COMPONENT_IDENTIFIER = "mapStopComponent"
 const MAX_VEHICLES_PER_DESTINATION = 2;
@@ -69,11 +71,25 @@ function SelectedStopComponent(): JSX.Element {
         });
 
         return (
-            <div className={`map-popup-content ${hasServiceAlert ? 'has-service-alert' : ''}`}>
+            <div className={`map-popup-content`}>
                 <div>
                     {Array.from(vehicleDataByDestination.entries()).map(([destination, vehicles]) => (
                         <div key={destination}>
-                            <span className="label" style={{ borderColor: '#' + routeDirectionDatum.color }}><strong>{routeId}</strong> {destination}</span>
+                            <LeftExpands>
+                                <LeftExpands.Main>
+                                    <span className="label" style={{ borderColor: '#' + routeDirectionDatum.color }}>
+                                        <strong>{routeId}</strong> {destination}
+                                    </span>
+                                </LeftExpands.Main>
+                                <LeftExpands.Side className='gap-1'>
+                                    {hasServiceAlert &&
+                                            (<>
+                                                <ServiceAlertSvg className='w-4 h-4'/> 
+                                                <span className='text-[#D91A1A]'>Alert</span>
+                                            </>)
+                                    }
+                                </LeftExpands.Side>
+                            </LeftExpands>
                             <ul className="approaching-buses">
                                 {vehicles.slice(0, MAX_VEHICLES_PER_DESTINATION).map((vehicle) => (
                                     <VehicleComponentWithoutSearchSpecified

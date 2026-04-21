@@ -100,9 +100,9 @@ export function useServiceAlert(){
     return {getServiceAlert}
 }
 
-export function ServiceAlertSvg(){
-    return(<span className="svg-icon-wrap svc-alert-icon" role="presentation" aria-hidden="true">
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
+export function ServiceAlertSvg({className}:{className?: string}): JSX.Element{
+    return(<span className={`svg-icon-wrap svc-alert-icon ${className}`} role="presentation" aria-hidden="true">
+                <svg width={20} height={20} viewBox="0 0 20 20" fill="none"
                      xmlns="http://www.w3.org/2000/svg">
                 <path className="yellow" fillRule="evenodd" clipRule="evenodd"
                       d="M8.88184 0.314668C9.21848 0.108886 9.60539 0 9.99995 0C10.3945 0 10.7814 0.108886 11.118 0.314668C11.4547 0.52045 11.728 0.815142 11.9079 1.1663L11.9111 1.17253L19.7705 16.8915C19.9346 17.2175 20.0133 17.5813 19.998 17.946C19.9827 18.3111 19.8744 18.6663 19.6832 18.9777C19.4919 19.2891 19.2244 19.5465 18.9057 19.7255C18.5871 19.9044 18.228 19.9989 17.8625 20H17.8604H2.13945H2.13728C1.77185 19.9989 1.41276 19.9044 1.09412 19.7255C0.775488 19.5465 0.50788 19.2891 0.316714 18.9777C0.125549 18.6663 0.0171731 18.3111 0.00187865 17.946C-0.0133979 17.5813 0.0646962 17.2187 0.228751 16.8927L8.08882 1.17255L8.09195 1.16628C8.27184 0.815127 8.54521 0.52045 8.88184 0.314668Z"/>

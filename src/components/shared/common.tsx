@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React, {ComponentPropsWithoutRef, useContext} from 'react';
 import {cn} from "../util/coreUtils";
 
 
@@ -70,6 +70,50 @@ function UnderlineOnFocusElement({
         </Element>
     );
 }
+
+
+
+// todo: we're aiming to move to Compound Component Pattern for shared components now that we've moved to tailwind
+type SlotProps = ComponentPropsWithoutRef<'div'>;
+
+const MainSlot = ({ children, className, ...props }: SlotProps) => (
+    <div {...props} className={cn("flex-grow min-w-0", className)}>
+        {children}
+    </div>
+);
+
+const SideSlot = ({ children, className, ...props }: SlotProps) => (
+    <div {...props} className={cn("flex-shrink-0 flex items-center", className)}>
+        {children}
+    </div>
+);
+
+function LeftExpandsRoot({ children, className, ...props }: SlotProps) {
+    return (
+        <div {...props} className={cn("flex items-start gap-2", className)}>
+            {children}
+        </div>
+    );
+}
+
+
+/**
+ * Use this component for standard list items or headers where the left 
+ * content should take up all available space and the right content 
+ * should stay fixed (e.g., Route Name + Alert Icon).
+ * * @example
+ * <LeftExpands>
+ * <LeftExpands.Main>Description</LeftExpands.Main>
+ * <LeftExpands.Side>Status</LeftExpands.Side>
+ * </LeftExpands>
+ */
+export const LeftExpands = Object.assign(LeftExpandsRoot, {
+    Main: MainSlot,
+    Side: SideSlot,
+});
+
+
+
 
 
 
