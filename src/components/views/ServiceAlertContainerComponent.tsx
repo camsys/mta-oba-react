@@ -53,13 +53,13 @@ function ServiceAlertComponent  ({serviceAlertDatums}: {serviceAlertDatums: Serv
         </div>)
 }
 
-interface ServiceAlertIdentifierProps{
+export interface ServiceAlertIdentifierProps{
     abbreviatedRouteId : string,
     routeAndDirection? : string,
     routeAgencyAndId? : string
 }
 
-interface ServiceAlertContainerProps extends ServiceAlertIdentifierProps{
+export interface ServiceAlertContainerProps extends ServiceAlertIdentifierProps{
     collapsed?: boolean
 }
 

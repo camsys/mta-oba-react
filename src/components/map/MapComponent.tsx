@@ -33,8 +33,8 @@ import { createStopMarker } from "../../utils/StopMarkerFactory.ts";
 import { createSearchedHereMarker } from "../../utils/SearchedHereFactory.ts";
 import { MapVehicleElements } from "./MapVehcleElements.tsx";
 import { SelectedStopComponent} from "./SelectedStop.tsx";
-import {SelectedVehicleComponent} from "./SelectedVehicleComponent.tsx";
-import { setMapLatLngAndZoom } from "../../utils/mapZoom.ts";
+import {SelectedVehicleComponent, SelectedVehicleComponentWrapper} from "./SelectedVehicleComponent.tsx";
+import { isCenteredOn,setMapLatLngAndZoom } from "../../utils/mapZoom.ts";
 import { useMobileState } from "../util/MobileStateComponent.tsx";
 
 log.info("createRoutePolyline:", createRoutePolyline);
@@ -485,12 +485,13 @@ const getBoundsForRoute = (routes:RouteMatch[])=> {
     return newBounds
 }
 
-const HandleMapBoundsAndZoom = () : void=>{
+const HandleMapBoundsAndZoom = ({userHasAdjustedMapOffMainElement}: {userHasAdjustedMapOffMainElement: React.MutableRefObject<boolean>}) : void=>{
     const { state} = useContext(CardStateContext);
     const { vehicleState} = useContext(VehicleStateContext);
     const map = useMap()
     const firstNonHomeZoomCompleted = useRef(false)
     const { isMobile } = useMobileState();
+    const lastCard = useRef(state.currentCard)
 
     const doZoom = ()=>{
         let [lat, long] = [null,null]
@@ -498,6 +499,13 @@ const HandleMapBoundsAndZoom = () : void=>{
         let override = false
 
         log.info("card type is",state.currentCard.type)
+
+        if(lastCard.current === state.currentCard
+            && userHasAdjustedMapOffMainElement.current
+        ){
+            log.info("card has not changed, and user has moved screen off of selected element, not zooming")
+            return
+        }
 
         if(isMobile){
             override = true;
@@ -556,6 +564,7 @@ const HandleMapBoundsAndZoom = () : void=>{
                 zoom = 11;
                 override = true;
             }
+        lastCard.current = state.currentCard
 
         setMapLatLngAndZoom(map,lat,long,zoom,override)
     }
@@ -575,13 +584,47 @@ const HandleMapBoundsAndZoom = () : void=>{
     log.info("map bounds and zoom handler loaded",state.currentCard,vehicleState)
 }
 
-const MapEvents = () :boolean=> {
+const MapEvents = ({userHasAdjustedMapOffMainElement, selectedElementLocation}: {userHasAdjustedMapOffMainElement: React.MutableRefObject<boolean>, selectedElementLocation: React.MutableRefObject<{lat:number, lng:number}|null>}) :boolean=> {
     log.info("generating map events")
     const openPopups = useRef<L.Popup[]>([]);
 
 
 
     useMapEvents({
+
+        moveend: (e) => {
+            if (e.originalEvent) {
+                // User manually panned or zoomed
+                console.log("User moved the map");
+                if(selectedElementLocation.current){
+                    log.info("checking if map is centered on selected element after user moved the map, selectedElementLocation",selectedElementLocation.current)
+                    if(!isCenteredOn(map, selectedElementLocation.current?.lat, selectedElementLocation.current?.lng, map.getZoom())){
+                        log.info("User moved the map off of selected element, setting flag to true")
+                        userHasAdjustedMapOffMainElement.current = true;
+                    } else {
+                        log.info("User moved the map but map is still centered on selected element")
+                        userHasAdjustedMapOffMainElement.current = false;
+                    }
+                }
+            }
+        },
+        dragend: () => {
+            // User specifically started a drag action
+            console.log("User is dragging");
+            if(!selectedElementLocation.current){
+                log.info("no selectedElementLocation, not setting userHasAdjustedMapOffMainElement to true")
+                return
+            }
+            log.info("checking if map is centered on selected element after user started dragging the map, selectedElementLocation",selectedElementLocation.current)
+            if(!isCenteredOn(map, selectedElementLocation.current?.lat, selectedElementLocation.current?.lng, map.getZoom())){
+                log.info("User started dragging the map off of selected element, setting flag to true")
+                userHasAdjustedMapOffMainElement.current = true;
+            } else {
+                log.info("User started dragging but map is still centered on selected element")
+                userHasAdjustedMapOffMainElement.current = false;
+            }
+        },
+
         popupopen(e) {
             log.info("popup opened", e.popup);
 
@@ -636,6 +679,8 @@ const MapEvents = () :boolean=> {
       }, [map]);
 
     return false;
+
+
 };
 
 
@@ -706,6 +751,9 @@ export const MapComponent = () :JSX.Element => {
 
     let startingMapCenter = OBA.Config.defaultMapCenter;
     let startingZoom = 11;
+    let userHasAdjustedMapOffMainElement = useRef(false);
+    let selectedElementLocation = useRef<{lat:number, lng:number}|null>({lat: startingMapCenter[0], lng: startingMapCenter[1]});
+    log.info("MapComponent selectedElementLocation",selectedElementLocation)
 
     return (
         <React.Fragment>
@@ -722,14 +770,14 @@ export const MapComponent = () :JSX.Element => {
                     type={'roadmap'}
                     styles={OBA.Config.mutedTransitStylesArray}
                 />
-                <MapEvents />
+                <MapEvents userHasAdjustedMapOffMainElement={userHasAdjustedMapOffMainElement} selectedElementLocation={selectedElementLocation}/>
                 <RoutesAndStops/>
                 <Highlighted/>
                 <MapVehicleElements/>
-                <HandleMapBoundsAndZoom />
+                <HandleMapBoundsAndZoom userHasAdjustedMapOffMainElement={userHasAdjustedMapOffMainElement}/>
                 <SearchedHere/>
-                <SelectedStopComponent/>
-                <SelectedVehicleComponent/>
+                <SelectedStopComponent selectedElementLocation={selectedElementLocation}/>
+                <SelectedVehicleComponent userHasAdjustedMapOffMainElement={userHasAdjustedMapOffMainElement} selectedElementLocation={selectedElementLocation}/>
                 <RightClickSearchButton/>
                 <ZoomControl position="bottomright" />
                 {/*<HandleMapForVehiclesBoundsAndZoom/>*/}

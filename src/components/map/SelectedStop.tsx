@@ -19,7 +19,7 @@ import { LeftExpands } from '../shared/common.tsx';
 const COMPONENT_IDENTIFIER = "mapStopComponent"
 const MAX_VEHICLES_PER_DESTINATION = 2;
 
-function SelectedStopComponent(): JSX.Element {
+function SelectedStopComponent({selectedElementLocation}: {selectedElementLocation: React.MutableRefObject<{lat:number, lng:number}|null>}): JSX.Element {
     const { state } = useContext(CardStateContext);
     const { vehiclesApproachingStopsState } = useContext(VehiclesApproachingStopsContext)
     const { vehicleSearch } = useNavigation()
@@ -179,6 +179,10 @@ function SelectedStopComponent(): JSX.Element {
             );
         }
     });
+
+    log.info("SelectedStopComponent generated stop markers: ", stopMarkers, "selectedElement: ", selectedElementLocation);
+    selectedElementLocation.current = stopMarkers.length > 0 ? {lat: stopMarkers[0].props.position[0], lng: stopMarkers[0].props.position[1]} : null;
+    log.info("SelectedStopComponent updated selectedElementLocation to: ", selectedElementLocation.current);
 
     return stopMarkers.length > 0 ? <>{stopMarkers}</> : <></>;
 }

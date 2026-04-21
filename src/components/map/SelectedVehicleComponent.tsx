@@ -11,6 +11,10 @@ import { shortenRoute, vehicleDataIdentifier, VehicleStateContext } from "../uti
 import { CardStateContext } from "../util/CardStateComponent.tsx";
 import { MeeplesComponentSpan } from "../views/VehicleComponent.tsx";
 import { ServiceAlertSvg, useServiceAlert } from "../views/ServiceAlertContainerComponent.tsx";
+import { ServiceAlertInterface } from "../../js/updateState/DataModels.ts";
+import { ServiceAlertContainerProps } from "../views/ServiceAlertContainerComponent.tsx";
+import { useMap } from "react-leaflet";
+import { isCenteredOn } from "../../utils/mapZoom.ts";
 
 const COMPONENT_IDENTIFIER = "MapVehicleComponent"
 const MAX_NEXT_STOPS = 3;
@@ -30,9 +34,7 @@ const createVehicleIcon = (vehicleDatum: VehicleRtInterface):L.Icon => {
     return icon
 }
 
-function SelectedVehicleServiceAlert({routeId}: {routeId: string}): JSX.Element{
-    let {getServiceAlert} = useServiceAlert();
-
+function SelectedVehicleServiceAlert({routeId,getServiceAlert}: {routeId: string, getServiceAlert: any}): JSX.Element{
     if(typeof routeId === "undefined" || routeId === null || typeof routeId !== "string"){
             log.error("SelectedVehicleServiceAlert received invalid routeId",routeId)
         return <></>
@@ -57,7 +59,58 @@ function SelectedVehicleServiceAlert({routeId}: {routeId: string}): JSX.Element{
     )
 }
 
-export function SelectedVehicleComponent  () :JSX.Element{
+
+export function PopupContents({vehicleDatum, getServiceAlert}:{
+    vehicleDatum: VehicleRtInterface, 
+    getServiceAlert: (params: ServiceAlertContainerProps) => ServiceAlertInterface[] | null;
+}): JSX.Element{
+    if(typeof vehicleDatum === "undefined" || vehicleDatum === null){
+        log.error("PopupContents received invalid vehicleDatum",vehicleDatum)
+        return <></>
+    }
+    let vehicleIdParts = vehicleDatum.vehicleId.split("_");
+    let vehicleIdWithoutAgency = vehicleIdParts[1];
+    return (
+        <>
+            <div className="popup-header">
+                <div className="popup-header-info">
+                <img src={vehicleDatum?.strollerVehicle?busStroller:bus} alt="bus" className="icon"/>
+                    <div className="popup-info">
+                        <span className={`route`}>{vehicleDatum.routeId.split("_")[1]} {vehicleDatum.destination}</span>
+                        <div className="flex items-center gap-1">
+                            <span className="vehicle">Vehicle #{vehicleIdWithoutAgency}</span>
+                            <SelectedVehicleServiceAlert routeId={vehicleDatum.routeId} getServiceAlert={getServiceAlert}/>
+                        </div>
+                            
+                        <MeeplesComponentSpan vehicleDatum={vehicleDatum}/>
+                    </div>
+                </div>
+                <strong className="next-stops-text">Next Stops</strong>
+            </div>
+            <div className="next-stops">
+                {vehicleDatum?.vehicleArrivalData!=null?
+                vehicleDatum.vehicleArrivalData.map((vehicleArrival, index)=>{
+                    if(index>=MAX_NEXT_STOPS){
+                        return null
+                    }
+                    return (
+                        <div key={index} className="next-stop">
+                            <div>
+                                <span className="stop-name">{vehicleArrival.stopName}</span>
+                                <span className="arrival-time">{OBA.Util.getArrivalEstimateForISOString(vehicleArrival.ISOTime,vehicleDatum.lastUpdate)}{vehicleArrival.prettyDistance}</span>
+                            </div>
+                        </div>
+                    )
+                }):null}
+            </div>
+            <button className="view-full close-map" aria-label="view full vehicle details">
+                View Vehicle Details
+            </button>
+        </>
+    )
+}
+
+export function SelectedVehicleComponent  ({selectedElementLocation, userHasAdjustedMapOffMainElement}: {selectedElementLocation: React.MutableRefObject<{lat:number, lng:number}|null>, userHasAdjustedMapOffMainElement: React.MutableRefObject<boolean>}) :JSX.Element{
     const { state } = useContext(CardStateContext);
     const { vehicleState} = useContext(VehicleStateContext);
     const vehicleRefs = useRef<Map<string, L.Marker>>(new Map());
@@ -65,7 +118,7 @@ export function SelectedVehicleComponent  () :JSX.Element{
     const popupOpen = useRef(true)
     const lastVehicleDataumId = useRef<string|null>(null)
     let {getServiceAlert} = useServiceAlert();
-    
+    let map = useMap()
 
     if (state.currentCard.type !== CardType.VehicleCard) {
         return <></>
@@ -94,32 +147,41 @@ export function SelectedVehicleComponent  () :JSX.Element{
     }
     lastVehicleDataumId.current = vehicleDatum.vehicleId
 
+
+    let autopan = !userHasAdjustedMapOffMainElement.current
+
     let markerOptions = {
         zIndexOffset: 1000,
         title: "Vehicle " + vehicleIdWithoutAgency + ", " + vehicleDatum.routeId + " to " + vehicleDatum.destination,
         vehicleId: vehicleDatum.vehicleId,
         routeId: vehicleDatum.routeId,
         // key:COMPONENT_IDENTIFIER+"_"+vehicleDatum.vehicleId,
-        key:COMPONENT_IDENTIFIER+"_"+vehicleDatum.vehicleId + "_"+vehicleDatum.longLat,
+        key:COMPONENT_IDENTIFIER+"_"+vehicleDatum.vehicleId+"_"+vehicleDatum.longLat, // include longLat in key to force remount of marker and popup when vehicle moves, ensuring popup content updates
         position:vehicleDatum.longLat,
         icon: createVehicleIcon(vehicleDatum),
-        id: COMPONENT_IDENTIFIER+"_"+vehicleDatum.vehicleId
+        id: COMPONENT_IDENTIFIER+"_"+vehicleDatum.vehicleId,
+        autoPan: autopan,
     };
 
-    let popupOptions = {}
+    
+    
+    let popupOptions = {
+        autoPan: autopan
 
+    }
+    log.info("SelectedVehicleComponent popup options: ", popupOptions, "marker options: ", markerOptions)
+
+    selectedElementLocation.current = vehicleDatum.longLat ? { lat: vehicleDatum.longLat[0], lng: vehicleDatum.longLat[1] } : null;
+    log.info("SelectedVehicleComponent set selectedElementLocation to: ", selectedElementLocation.current)
 
     let out = (<Marker {...markerOptions}
+                        
+                        
                        eventHandlers={{
                             // click : (event : L.LeafletMouseEvent)=>{vehicleDatum.longLat = [event.latlng.lat,event.latlng.lng];},
-                            add: (e) => {if(popupOpen.current) {e.target.openPopup()}},
+                            add: (e) => {log.info("SelectedVehicleComponent add event: ", e);if(popupOpen.current) {e.target.openPopup()}},
                             popupclose: () => {popupOpen.current = false},
                             popupopen: () => {popupOpen.current = true}
-                       }}
-                       ref={r=>{
-                           // log.info("ref for vehicle component",vehicleDatum,r);
-                           typeof vehicleRefs!=='undefined'
-                               ?vehicleRefs.current.set(vehicleDatum.vehicleId,r):null
                        }}
                        keyboard={false}
     >
@@ -128,43 +190,11 @@ export function SelectedVehicleComponent  () :JSX.Element{
             className="map-popup vehicle-popup"
             {... popupOptions}
         >
-            <div className="popup-header">
-                <div className="popup-header-info">
-                <img src={vehicleDatum?.strollerVehicle?busStroller:bus} alt="bus" className="icon"/>
-                    <div className="popup-info">
-                        <span className={`route`}>{vehicleDatum.routeId.split("_")[1]} {vehicleDatum.destination}</span>
-                        <div className="flex items-center gap-1">
-                            <span className="vehicle">Vehicle #{vehicleIdWithoutAgency}</span>
-                            <SelectedVehicleServiceAlert routeId={vehicleDatum.routeId}/>
-                        </div>
-                            
-                        <MeeplesComponentSpan vehicleDatum={vehicleDatum}/>
-                    </div>
-                </div>
-                <strong className="next-stops-text">Next Stops</strong>
-            </div>
-            <div className="next-stops">
-                {vehicleDatum?.vehicleArrivalData!=null?
-                vehicleDatum.vehicleArrivalData.map((vehicleArrival, index)=>{
-                    log.info("adding vehicle arrival data to popup",vehicleArrival)
-                    if(index>=MAX_NEXT_STOPS){
-                        return null
-                    }
-                    return (
-                        <div key={index} className="next-stop">
-                            <div>
-                                <span className="stop-name">{vehicleArrival.stopName}</span>
-                                <span className="arrival-time">{OBA.Util.getArrivalEstimateForISOString(vehicleArrival.ISOTime,vehicleDatum.lastUpdate)}{vehicleArrival.prettyDistance}</span>
-                            </div>
-                        </div>
-                    )
-                }):null}
-            </div>
-            <button className="view-full close-map" aria-label="view full vehicle details">
-                View Vehicle Details
-            </button>
+            <PopupContents vehicleDatum={vehicleDatum} getServiceAlert={getServiceAlert}/>
         </Popup>
     </Marker>);
+
+
 
     return out
 }
