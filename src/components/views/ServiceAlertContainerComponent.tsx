@@ -9,8 +9,9 @@ const boldIfKeywordStartsPart = ["Note:"]
 
 function ServiceAlertComponent  ({serviceAlertDatums}: {serviceAlertDatums: ServiceAlertInterface[]}) : JSX.Element {
     log.info("service alert component contents generating ",serviceAlertDatums)
-    let alerts = []
-    let partsToBold = []
+    let alerts: string[] = []
+    let partsToBold: string[] = []
+    let lastPartsOfAlerts: string[] = []
     serviceAlertDatums.forEach((alert) => {
         if(alert.descriptionParts && alert.descriptionParts.length>0){
             alert.descriptionParts.forEach((part) => {
@@ -25,10 +26,11 @@ function ServiceAlertComponent  ({serviceAlertDatums}: {serviceAlertDatums: Serv
                     alerts.push(part)
                 }
             })
+            lastPartsOfAlerts.push(alerts[alerts.length-1])
         }
     })
     alerts = [...new Set(alerts)];
-    log.info("service alert component contents received",serviceAlertDatums,"generated ",{alerts,partsToBold})
+    log.info("service alert component contents received",serviceAlertDatums,"generated ",{alerts,partsToBold},"last parts of alerts: ",lastPartsOfAlerts)
     return(
         <div className="card-content collapse-content text-base">
             {alerts.map((part,itt) => {
@@ -38,7 +40,12 @@ function ServiceAlertComponent  ({serviceAlertDatums}: {serviceAlertDatums: Serv
                     ALLOW_DATA_ATTR: false,
                 });
                 try{
-                    return(<p key = {itt} className={partsToBold.includes(part) ? "emphasis" : ""} dangerouslySetInnerHTML={{__html: part}}></p>)
+                    return(
+                        <>
+                            <p key = {itt} className={partsToBold.includes(part) ? "emphasis" : "my-2"} dangerouslySetInnerHTML={{__html: part}}/>
+                            {(lastPartsOfAlerts.includes(part) && itt < alerts.length - 1) && <hr className="my-4 border-t border-black"/>}
+                        </>
+                    )
                 }catch(e){
                     log.error("Error rendering service alert component", e)
                 }
