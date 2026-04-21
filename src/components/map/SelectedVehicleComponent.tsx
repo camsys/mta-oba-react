@@ -111,9 +111,11 @@ export function PopupContents({vehicleDatum, getServiceAlert}:{
 }
 
 // todo: crunch time rn, but
-// 1: put it in a layer, and have it pass up a ref and another child of the layer be responsible for moving it arround so it stops blipping a little weird
-// 2: all parts that are vehiclestate should be put in a seperate child component to avoid unnecessary re-renders
-
+// 1: top level should only use state. if it's a vehicle card, make a layer
+// 2: child component: return a marker and have it pass up a ref and don't have it display initially and give it a distant location without panning to it (or if state includes vehicle location start it there)
+// 2b: ---> the popup of the child should have a div for a portal, and should pass the container up as well
+// 3: the layer should have a second child component receives the ref and the portal
+// 4: the second child component should use vehicleState and should useEffect to update the marker position and the portal content, and should use the ref to check if the marker is on screen and only pan if it's not, and should also check if the user has manually panned away from the vehicle and not pan if they have
 export function SelectedVehicleComponent  ({selectedElementLocation, userHasAdjustedMapOffMainElement}: {selectedElementLocation: React.MutableRefObject<{lat:number, lng:number}|null>, userHasAdjustedMapOffMainElement: React.MutableRefObject<boolean>}) :JSX.Element{
     const { state } = useContext(CardStateContext);
     const { vehicleState} = useContext(VehicleStateContext);
