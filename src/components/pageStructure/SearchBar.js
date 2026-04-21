@@ -100,7 +100,11 @@ const SearchBar = () => {
         <ErrorBoundary>
             <div id="search" className="py-4" onKeyDown={(event) => {
                 if (event.key === "Enter") {
-                    search(event.target?.value);
+                    if(event.target.tagName.toLowerCase() === "input"){
+                        search(event.target?.value);
+                    } else if (event.target.tagName.toLowerCase() !== 'div') {
+                        event.preventDefault();
+                    }
                 }
             }}>
                 <div className={`search-box${isFocused ? ' is-focused' : ''}`}>
