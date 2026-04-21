@@ -49,7 +49,7 @@ function InitialCardGeneration ({setLoading}){
 
 function TitleAndH1():JSX.Element{
     const { state } = useContext(CardStateContext);
-    let TitleAndH1 = "MTA Bustime BETA - ";
+    let TitleAndH1 = "MTA Bus Time - ";
     let cardType = state.currentCard.type;
     if(cardType === CardType.HomeCard){
         TitleAndH1 += "Home";
