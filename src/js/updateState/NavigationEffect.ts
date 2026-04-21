@@ -212,7 +212,8 @@ const getBaseAddress =()=>{
 }
 
 const getSearchAddress=(searchTerm:string, card: Card)=>{
-    let out = getBaseAddress() + OBA.Config.searchUrl + "?q=" + searchTerm + getSearchTermAdditions(card)
+    const ampersandToAnd = (input:string) => String(input).replace(/&/g, 'and');
+    let out = getBaseAddress() + OBA.Config.searchUrl + "?q=" + ampersandToAnd(searchTerm) + getSearchTermAdditions(card)
     log.info("generating search address for: " + out)
     return  out
 
