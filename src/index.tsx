@@ -15,11 +15,16 @@ log.setLevel(process.env.LOGGINGLEVEL,true)
 log.setDefaultLevel(process.env.LOGGINGLEVEL)
 log.info('OBA Util is live.');
 
+const hash = window.location.hash.substring(1);
+if (hash) {
+    const cleanSearch = decodeURIComponent(hash);
+    window.location.replace(`/?search=${encodeURIComponent(cleanSearch)}`);
+} else {
+    var mapNode = document.getElementById('root');
+    var root = createRoot(mapNode);
+    root.render(<AppRoot />);
+}
 
-
-var mapNode = document.getElementById('root');
-var root = createRoot(mapNode);
-root.render(<AppRoot />);
 
 
 
