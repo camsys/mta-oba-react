@@ -41,7 +41,7 @@ const SearchBar = () => {
     };
 
 
-    const onSuggestionSelected = (event, { suggestion }) => {
+    const onSuggestionSelected = (event, { suggestion, method }) => {
         log.info('Selected suggestion:', suggestion);
         const lineRef = suggestion.value
         search(lineRef);
@@ -101,9 +101,11 @@ const SearchBar = () => {
             <div id="search" className="py-4" onKeyDown={(event) => {
                 if (event.key === "Enter") {
                     if(event.target.tagName.toLowerCase() === "input"){
-                        search(event.target?.value);
-                    } else if (event.target.tagName.toLowerCase() !== 'div') {
-                        event.preventDefault();
+                        log.info("Submitting search for",event.target?.value,event.target,event)
+                        // autosuggest prevents default
+                        if (!event.defaultPrevented) {
+                            performSearch(event.target.value);
+                        }
                     }
                 }
             }}>
