@@ -60,7 +60,7 @@ function UnderlineOnFocusElement({
     return (
         <Element 
             className={cn(
-                "underline-offset-2 focus-visible:underline focus-visible:outline-none focus-visible:decoration-3 group-focus-visible:underline group-focus-visible:decoration-3",
+                "underline-offset-2 focus-visible:underline focus-visible:outline-none",
                 variants[variant],
                 className
             )} 
