@@ -44,6 +44,9 @@ const SearchBar = () => {
     const onSuggestionSelected = (event, { suggestion, method }) => {
         log.info('Selected suggestion:', suggestion);
         const lineRef = suggestion.value
+        if(method==="enter"){
+            return
+        }
         search(lineRef);
     };
 
@@ -103,9 +106,10 @@ const SearchBar = () => {
                     if(event.target.tagName.toLowerCase() === "input"){
                         log.info("Submitting search for",event.target?.value,event.target,event)
                         // autosuggest prevents default
-                        if (!event.defaultPrevented) {
-                            performSearch(event.target.value);
-                        }
+                        // if (!event.defaultPrevented) {
+                        //     performSearch(event.target.value);
+                        // }
+                        search(event.target.value);
                     }
                 }
             }}>
