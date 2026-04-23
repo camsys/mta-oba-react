@@ -8,7 +8,7 @@
     "build": "NODE_ENV=production webpack --mode production --config webpack.config.js",
     "dev-start": "NODE_ENV=development webpack serve --config webpack.config.js",
     "dev-start:clean": "npx madge --circular src; rm -rf dist .webpack-cache .tsbuildinfo; webpack serve --config webpack.config.js",
-    "serve": "npx serve -l 8080 dist",
+    "serve": "npx serve -l 8082 dist",
     "acceptTracking": "node logger.js",
     "build-css": "sass src/css:public/css && postcss public/css/*.css --use autoprefixer --no-map -d public/css/",
     "watch-sass": "sass --watch src/css:tmp/css",
