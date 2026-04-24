@@ -1,24 +1,13 @@
-import ReactLeafletGoogleLayer from "react-leaflet-google-layer";
 import {LayerGroup, MapContainer, Marker, useMap, useMapEvents} from "react-leaflet";
 import React, {useContext, useEffect, useRef, useState} from "react";
-import queryString from "query-string";
-import {OBA} from "../../js/oba";
 import log from 'loglevel';
 import L, {LatLngBounds, LeafletEventHandlerFn} from "leaflet";
 
 import {useCardState, useRoutes, useStops} from "../util/CardStateComponent";
 import {vehicleDataIdentifier, useVehicleState, shortenRoute} from "../util/VehicleStateComponent";
-import MapRouteComponent from "./MapRouteComponent";
-import MapStopComponent from "./MapStopComponent";
-import MapVehicleComponent from "./MapVehicleComponent";
 import {
     AgencyAndId,
     CardType,
-    MapRouteComponentInterface,
-    MatchType,
-    RouteMatch,
-    StopInterface,
-    StopMatch,
     VehicleRtInterface
 } from "../../js/updateState/DataModels";
 
