@@ -1,5 +1,6 @@
 import log from 'loglevel';
 import {v4 as uuidv4} from 'uuid';
+import { Card } from './DataModels';
 
 const STORAGE_KEY = "__click_log";
 const MAX_EVENTS = 200;
@@ -20,7 +21,7 @@ const useTitleInsteadOfInnerText = new Set([
 ]);
 
 
-const getSessionUuid = (): string => {
+const getSessionUuid = (card:Card|null): string => {
   log.info("Retrieving session UUID");
   let sessionUuid = sessionStorage.getItem("uuid") 
   if(!sessionUuid) {
@@ -31,9 +32,16 @@ const getSessionUuid = (): string => {
     }
   }
   if (!sessionUuid) {
-    sessionUuid = uuidv4();
-    log.info("No session UUID found, generating new one:", sessionUuid);
-    sessionStorage.setItem("uuid", sessionUuid);
+    if (card) {
+      sessionUuid = card.uuid;
+      log.info("No session UUID found in URL parameters, using card UUID:", sessionUuid);
+      sessionStorage.setItem("uuid", sessionUuid);
+    }
+    if (!sessionUuid) {
+      sessionUuid = uuidv4();
+      log.info("No session UUID found, generating new one:", sessionUuid);
+      sessionStorage.setItem("uuid", sessionUuid);
+    }
   }
   return sessionUuid as string;
 }

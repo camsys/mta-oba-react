@@ -499,7 +499,7 @@ export class Card {
         log.info("setToVehicle",this)
     }
 
-    setToError(searchTerm: string|null) {
+    setToError(searchTerm: string | Error | null) {
         log.info("setToError", searchTerm);
         if(searchTerm){
             searchTerm = searchTerm

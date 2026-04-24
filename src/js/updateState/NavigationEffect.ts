@@ -12,13 +12,11 @@ import {
     StopInterface, RoutesObjectContainer, StopsObjectContainer, SearchMatch, MatchType, VehicleRtInterface,
     AgencyAndId
 } from "./DataModels";
-import {
-    SearchRouteData, SearchGeoData, SearchStopData
-} from "./DataContracts";
 import log from 'loglevel';
 import {v4 as uuidv4} from 'uuid';
 import {getSearchTermAdditions} from "./keyWordsAndSupportUtils"
 import { getSessionUuid } from "./handleTracking";
+import { SearchGeoData, SearchRouteData, SearchStopData } from "./DataContracts";
 
 const vehicleDelimiter = ":"
 // function getSessionUuid(card:Card|null):string{
@@ -76,12 +74,12 @@ function processGeocodeSearch(geocode: SearchGeoData, card: Card, stops: StopsOb
     log.info("processing geocode search results",geocode,card,match)
     if (geocode != null && geocode.hasOwnProperty("latitude")) {
         geocode?.nearbyRoutes.forEach((searchResult: SearchRouteData | SearchStopData) => {
-            if("stopDirection" in searchResult)
+            if('stopDirection' in searchResult)
             {
-                match.routeMatches.push(processStopSearch(searchResult, card, stops, routes))
+                match.routeMatches.push(processStopSearch(searchResult as SearchStopData, card, stops, routes))
             }
-            else if("longName" in searchResult) {
-                match.routeMatches.push(processRouteSearch(searchResult, card, stops, routes))
+            else if('longName' in searchResult) {
+                match.routeMatches.push(processRouteSearch(searchResult as SearchRouteData, card, stops, routes))
             }
         })
     }
@@ -331,8 +329,9 @@ export const useNavigation = () =>{
                     currentCard = await getData(currentCard,stops,routes,getSearchAddress(searchTerm,state?.currentCard))
                 }
                 catch (error) {
-                    log.error('There was a problem with the fetch operation:', error);
-                    currentCard.setToError(error);
+                    const safeError = error instanceof Error ? error : new Error(String(error));
+                    log.error('There was a problem with the fetch operation:', safeError);
+                    currentCard.setToError(safeError);
                 } finally {
                     document.getElementById('search-input')?.blur();
                     scrollToSidebarTop();
