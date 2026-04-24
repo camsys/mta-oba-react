@@ -106,8 +106,6 @@ function processStopSearch(stop: SearchStopData, card: Card, stops: StopsObjectC
 }
 
 function scrollToSidebarTop(){
-    // log.info("boop scrolling to top")
-    // scroll #sidebar .sidebar-content to top, animate
     let sidebar = document.getElementById("sidebar");
     let sidebarContent = sidebar?.querySelector(".sidebar-content");
     if (sidebarContent) {
@@ -125,7 +123,6 @@ async function getData(card:Card,stops: StopsObjectContainer,routes:RoutesObject
         log.info("empty search means home",card)
         return card
     }
-    // let address = "http://localhost:8080" + "/" + OBA.Config.searchUrl + "?q=" + card.searchTerm
     log.info('requesting search results from ',address,card)
     await fetch(address)
         .then((response) => response.json())
@@ -529,19 +526,6 @@ export const useNavigation = () =>{
         } finally {
         }
     }
-
-    // useEffect(() => {
-    //     const handlePopState = () => {
-    //         const url = new URL(window.location.href);
-    //         const lineRef = url.searchParams.get('LineRef');
-    //         if (lineRef) {
-    //             updateFromUrl(lineRef);
-    //         }
-    //     };
-    //
-    //     window.addEventListener('popstate', handlePopState);
-    //     return () => window.removeEventListener('popstate', handlePopState);
-    // }, []);
 
     const updateStateForPopStateEvent = (popStateEvent: PopStateEvent) => {
         log.info("navigation effect handling popstate event",window.history.state,popStateEvent,popStateEvent.state)
