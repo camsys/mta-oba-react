@@ -104,23 +104,6 @@ export interface SiriWrapper {
 
 // ------------- SEARCH CARD DATA CONTRACTS --------------
 
-
-export interface SearchStopData {
-    name: string;
-    id: string;
-    latitude: number;
-    longitude: number;
-    stopDirection: string;
-}
-
-export interface SearchRouteDirectionData {
-    directionId: string;
-    hasUpcomingScheduledService: boolean;
-    destination: string;
-    stops: SearchStopData[];
-    polylines: (string | SearchPolylineData)[];
-}
-
 export interface SearchPolylineData {
     line?: string;
     detourStatus?: string;
