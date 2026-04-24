@@ -556,9 +556,11 @@ export class Card {
 
 
 
+export type VehicleStateUpdateValue = Map<string, VehicleRtInterface | ServiceAlertInterface[]> | Map<string, VehicleRtInterface[]> | string | undefined;
+
 export interface VehicleStateObject {
     renderCounter: number;
-    [key: `${string}_${string}`]: Map<string, Map<string,VehicleRtInterface>|string|Map<string,ServiceAlertInterface>> | undefined;
+    [key: `${string}_${string}`]: VehicleStateUpdateValue;
 }
 
 export interface CardStateObject {
