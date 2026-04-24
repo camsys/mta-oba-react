@@ -130,7 +130,7 @@ export const MapVehicleElements = () =>{
                         && typeof vehicleObjsRefs.current === "object"
                         && typeof vehicleObjsRefs.current.get === 'function'){
                         log.info(`MapVehicleElements: processing vehicleDataForRoute`,vehicleDataForRoute,vehicleObjsRefs.current)
-                        vehicleDataForRoute.forEach(vehicleDatum=>{
+                        vehicleDataForRoute.forEach((vehicleDatum: VehicleRtInterface)=>{
                             let vehicleRefForRoute = vehicleObjsRefs.current.get(shortenedRouteId)
                             if(vehicleRefForRoute == null || vehicleRefForRoute == undefined){
                                 log.info("MapVehicleElements: creating new vehicle map for routeId",shortenedRouteId)
@@ -143,7 +143,7 @@ export const MapVehicleElements = () =>{
 
                         // remove vehicles that are no longer in the vehicle data for the route
                         const currentVehicleIds = new Set();
-                        vehicleDataForRoute.forEach(v => currentVehicleIds.add(v.vehicleId));
+                        vehicleDataForRoute.forEach((v: VehicleRtInterface) => currentVehicleIds.add(v.vehicleId));
                         const vehicleRefForRoute = vehicleObjsRefs.current.get(shortenedRouteId);
 
                         if (vehicleRefForRoute) {

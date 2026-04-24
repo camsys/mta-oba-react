@@ -42,7 +42,7 @@ export function FavoritesWrapper():JSX.Element{
         <div className="cards allroutes">
             {favoritesState.favorites.length == 0
                 ?<div className="pl-2 no-favorites"><em>No favorites found.</em> <br></br>Your favorite bus stops and bus routes will be listed&nbsp;here.</div>
-                :favoritesState.favorites.map((datum,index)=>{return <FavoriteItem datum={datum} key = {index}/>})}
+                :favoritesState.favorites.map((datum: RouteInterface | StopInterface, index: number)=>{return <FavoriteItem datum={datum} key = {index}/>})}
         </div>
     </React.Fragment>);
 }

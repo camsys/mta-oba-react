@@ -34,7 +34,7 @@ export const allRoutesSearchTerm = "View All Routes";
 export const favoritesSearchTerm = "View Favorites";
 export const nearbySearchTerms = new Set(["NEARBY","NEARBYROUTES","NEARBYSTOPS","NEARME", "NEAR ME"])
 
-function processRouteSearch(route,card:Card,stops: StopsObjectContainer,routes:RoutesObjectContainer):RouteMatch {
+function processRouteSearch(route: any, card:Card,stops: StopsObjectContainer,routes:RoutesObjectContainer):RouteMatch {
     let match = new RouteMatch(route)
     log.info("processing route search results",route,card,stops,routes, match)
     if (route != null && route.hasOwnProperty("directions")) {
@@ -68,11 +68,11 @@ function processRouteSearch(route,card:Card,stops: StopsObjectContainer,routes:R
     return match
 }
 
-function processGeocodeSearch(geocode,card:Card,stops: StopsObjectContainer,routes:RoutesObjectContainer):GeocodeMatch{
+function processGeocodeSearch(geocode: any, card:Card,stops: StopsObjectContainer,routes:RoutesObjectContainer):GeocodeMatch{
     let match = new GeocodeMatch(geocode)
     log.info("processing geocode search results",geocode,card,match)
     if (geocode != null && geocode.hasOwnProperty("latitude")) {
-        geocode?.nearbyRoutes.forEach(searchResult=>{
+        geocode?.nearbyRoutes.forEach((searchResult: any)=>{
             if(typeof searchResult?.stopDirection !== "undefined")
             {
                 match.routeMatches.push(processStopSearch(searchResult,card,stops,routes))
@@ -90,13 +90,13 @@ function processGeocodeSearch(geocode,card:Card,stops: StopsObjectContainer,rout
     return match
 }
 
-function processStopSearch(stop,card:Card,stops: StopsObjectContainer,routes:RoutesObjectContainer):StopMatch{
+function processStopSearch(stop: any, card:Card,stops: StopsObjectContainer,routes:RoutesObjectContainer):StopMatch{
     let match = new StopMatch(stop)
     log.info("processing stopMatch search results",stop,card,match)
     if (stop != null && stop.hasOwnProperty("latitude")) {
         card.stopIdList.add(stop.id)
         match.routeMatches = []
-        stop?.routesAvailable.forEach(x=>{
+        stop?.routesAvailable.forEach((x: any)=>{
             match.routeMatches.push(processRouteSearch(x,card,stops,routes))
         })
     }
@@ -138,11 +138,11 @@ async function getData(card:Card,stops: StopsObjectContainer,routes:RoutesObject
             log.info(card)
 
             if(Card.STOPCARDIDENTIFIERS.has(searchResults.resultType)){
-                searchResults.matches.forEach(x=>{
+                searchResults.matches.forEach((x: any)=>{
                     card.searchMatches.push(processStopSearch(x,card,stops,routes))
                 })
                 if(card.searchMatches.length===0){
-                    searchResults.suggestions.forEach(x=>{
+                    searchResults.suggestions.forEach((x: any)=>{
                         card.searchMatches.push(processStopSearch(x,card,stops,routes))
                     })
                 }
@@ -150,22 +150,22 @@ async function getData(card:Card,stops: StopsObjectContainer,routes:RoutesObject
                 card.datumId=stopMatch.id
             }
             if(Card.GEOCARDIDENTIFIERS.has(searchResults.resultType)){
-                searchResults.matches.forEach(x=>{
+                searchResults.matches.forEach((x: any)=>{
                     card.searchMatches.push(processGeocodeSearch(x,card,stops,routes))
                 })
                 if(card.searchMatches.length===0){
-                    searchResults.suggestions.forEach(x=>{
+                    searchResults.suggestions.forEach((x: any)=>{
                         card.searchMatches.push(processStopSearch(x,card,stops,routes))
                     })
                 }
             }
             if(Card.ROUTECARDIDENTIFIERS.has(searchResults.resultType)){
-                searchResults.matches.forEach(x=>{
+                searchResults.matches.forEach((x: any)=>{
                     log.info("processing route search result",x,card,stops,routes)
                     card.searchMatches.push(processRouteSearch(x,card,stops,routes))
                 })
                 if(card.searchMatches.length===0){
-                    searchResults.suggestions.forEach(x=>{
+                    searchResults.suggestions.forEach((x: any)=>{
                     log.info("processing route suggestion result",x,card,stops,routes)
                     card.searchMatches.push(processRouteSearch(x,card,stops,routes))
                 })}
@@ -295,7 +295,7 @@ export const useNavigation = () =>{
         log.info("fetch search data called, generating new card",state,searchTerm)
         if (performNewSearch(searchTerm,state?.currentCard)) {
             log.info("search term is new, generating new card",searchTerm,state?.currentCard);
-            let currentCard;
+            let currentCard: Card;
             document.getElementById('search-input')?.blur();
             scrollToSidebarTop();
             if(searchTerm==null||searchTerm==""||searchTerm=="#"|| !(searchTerm) || !(searchTerm.trim())){
@@ -342,7 +342,7 @@ export const useNavigation = () =>{
         scrollToSidebarTop();
     }
 
-    const generateInitialCard = async (setLoading)=>{
+    const generateInitialCard = async (setLoading: (loading: boolean) => void)=>{
         let currentCard = getHomeCard(new Card("",uuidv4(),getSessionUuid(state?.currentCard)));
         log.info("generating initial card",currentCard);
         let cardStack = state.cardStack;
@@ -507,7 +507,7 @@ export const useNavigation = () =>{
                         log.info("generating new card for all routes search")
                         log.info("all routes results: ",parsed);
                         let searchMatch = new SearchMatch(SearchMatch.matchTypes.AllRoutesMatch);
-                        searchMatch.routeMatches = parsed?.routes.map(route=>new RouteMatch(route));
+                        searchMatch.routeMatches = parsed?.routes.map((route: any)=>new RouteMatch(route));
                         let routeIdList: Set<AgencyAndId> = new Set();
                         // parsed?.routes.forEach(route=>routeIdList.add(route.id));
                         currentCard.setToAllRoutes([searchMatch],routeIdList);

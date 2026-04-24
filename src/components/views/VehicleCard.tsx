@@ -100,7 +100,7 @@ function VehicleCard ({routeMatch,vehicleId}: { routeMatch: RouteMatch, vehicleI
         routeId = routeMatch.datumId.id;
         let vehicleData = vehicleState[routeId+vehicleDataIdentifier]
         if(!(vehicleData===null || typeof vehicleData==='undefined')){
-            vehicleDatum = vehicleData.get(vehicleId)
+            vehicleDatum = vehicleData.get(vehicleId) as VehicleRtInterface
         }
         log.info("is VehicleCard data still loading?",loading,vehicleDatum)
         if(loading && vehicleDatum!==null && typeof vehicleDatum!=='undefined'){

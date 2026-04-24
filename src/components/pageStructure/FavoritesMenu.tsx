@@ -6,7 +6,7 @@ import {useNavigation} from "../../js/updateState/NavigationEffect";
 import log from 'loglevel';
 
 
-export const FavoriteItem = ({datum}) =>{
+export const FavoriteItem = ({datum}: {datum: RouteInterface | StopInterface}) =>{
     let {removeFavorite} = useFavorite();
     let {search} = useNavigation()
 
@@ -83,7 +83,7 @@ export const FavoritesMenu = () => {
         <ul className="sub-menu menu collapse-content" id="favorites-menu" style={{ maxHeight: '0px' }} role="menu">
             {favoritesState.favorites.length == 0
                 ?<li className="no-favorites"><em>No favorites found.</em> <br></br>Your favorite bus stops and bus routes will be listed&nbsp;here.</li>
-                :favoritesState.favorites.map((datum,index)=>{return <FavoriteItem datum={datum} key = {index}/>})}
+                :favoritesState.favorites.map((datum: RouteInterface | StopInterface, index: number)=>{return <FavoriteItem datum={datum} key = {index}/>})}
         </ul>
     </li>)
 }
