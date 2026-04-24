@@ -31,15 +31,15 @@ import {useNavigation} from "../../js/updateState/NavigationEffect.ts";
 import { createRoutePolyline } from "../../utils/RoutePolylineFactory";
 import { createStopMarker } from "../../utils/StopMarkerFactory.ts";
 import { createSearchedHereMarker } from "../../utils/SearchedHereFactory.ts";
-import { createVehicleMarker } from "../../utils/VehicleMarkerFactory.ts";
 import { MapVehicleElements } from "./MapVehcleElements.tsx";
 import { SelectedStopComponent} from "./SelectedStop.tsx";
-import {SelectedVehicleComponent} from "./SelectedVehicleComponent.tsx";
+import {SelectedVehicleComponent, SelectedVehicleComponentWrapper} from "./SelectedVehicleComponent.tsx";
+import { isCenteredOn,setMapLatLngAndZoom } from "../../utils/mapZoom.ts";
+import { useMobileState } from "../util/MobileStateComponent.tsx";
 
 log.info("createRoutePolyline:", createRoutePolyline);
 log.info("createStopMarker:", createStopMarker);
 log.info("createSearchedHereMarker:", createSearchedHereMarker);
-log.info("createVehicleMarker:", createVehicleMarker);
 
 const createVehicleIcon = (vehicleDatum):L.Icon => {
     let scheduled = vehicleDatum.hasRealtime?"":"scheduled/"
@@ -170,7 +170,7 @@ const RoutesAndStops = ()=>{
             route.directions.forEach(dir => {
                 dir.mapStopComponentData.forEach((stopInterface:StopInterface) => {
                     let stopId = stopInterface.datumId;
-                    let newStopMarker = createStopMarker(stopInterface,selectStop,popupOptions.current,createStopIcon(stopInterface),0)
+                    let newStopMarker = createStopMarker(stopInterface,selectStop,popupOptions.current,createStopIcon(stopInterface),0,map)
                     mapStopComponents.current.set(stopId, newStopMarker);
                     stopsToDisplay.set(stopId.toString(), newStopMarker);                
                 })
@@ -405,7 +405,7 @@ const Highlighted = () =>{
 
         let stopDatum = stops.current[highlightedId]
         if(stopDatum!==null && typeof stopDatum !=='undefined'){
-            highlightedComponents.current.set(stopDatum.id,createStopMarker(stopDatum,()=>{},popupOptions.current,createStopIcon(stopDatum),20))
+            highlightedComponents.current.set(stopDatum.id,createStopMarker(stopDatum,()=>{},popupOptions.current,createStopIcon(stopDatum),20,map))
         }
         let routeDatum = routes.current[highlightedId]
         if(routeDatum!==null && typeof routeDatum !=='undefined'){
@@ -460,43 +460,6 @@ const Highlighted = () =>{
 
 }
 
-const setMapLatLngAndZoom = (map: L.Map, lat : number, lon :number,zoom:number,override:boolean) :void =>{
-    let duration = .85
-    log.info("Assessing zoom. based on requested values:",lat,lon,zoom)
-    if(lat===null|lon===null|zoom===null){return}
-    let mapWidth=map.getBounds().getEast()-map.getBounds().getWest();
-    let mapHeight=map.getBounds().getNorth()-map.getBounds().getSouth();
-    let [currentLat, currentLong,currentZoom] = [map.getCenter().lat,map.getCenter().lng,map.getZoom()]
-    let latsMatch = currentLat+mapHeight/3>lat && currentLat-mapHeight/3<lat
-    let latsOnScreen = currentLat+mapHeight>lat && currentLat-mapHeight<lat
-    let lonsMatch = currentLong+mapWidth/3>lon && currentLong-mapWidth/3<lon
-    let lonsOnScreen = currentLong+mapWidth>lon && currentLong-mapWidth<lon
-    let zoomsMatch =  zoom-.3<currentZoom && zoom+.3>currentZoom
-    let zoomSeemsIntentional = currentZoom>16
-
-    let performZoom = override
-    
-    if(override){
-        log.info("Assessing zoom. override requested, performing zoom")
-    }
-
-    if(zoomSeemsIntentional){
-        log.info("Assessing zoom. zoom seems intentional, checking if new selection is on screen ",currentLat,currentLong,currentZoom,"new: ",lat,lon,zoom, "matches",lonsOnScreen,latsOnScreen)
-        if(!(lonsOnScreen && latsOnScreen)){
-            performZoom = true
-        }
-    } else {
-        log.info("Assessing zoom. update map bounds and zoom? current: ",currentLat,currentLong,currentZoom,"new: ",lat,lon,zoom, "matches",latsMatch,lonsMatch,zoomsMatch)
-        if(!(latsMatch&&lonsMatch&&zoomsMatch)){ performZoom = true }
-    }
-    if(performZoom){
-        log.info("Assessing zoom. updating map bounds and zoom")
-        map.flyTo([lat, lon], zoom, {
-            animate: true,
-            duration: duration
-        });
-    }
-}
 
 const setMapBounds = (map: L.Map, bounds: LatLngBounds):void =>{
     map.flyToBounds(bounds)
@@ -522,11 +485,13 @@ const getBoundsForRoute = (routes:RouteMatch[])=> {
     return newBounds
 }
 
-const HandleMapBoundsAndZoom = () : void=>{
+const HandleMapBoundsAndZoom = ({userHasAdjustedMapOffMainElement}: {userHasAdjustedMapOffMainElement: React.MutableRefObject<boolean>}) : void=>{
     const { state} = useContext(CardStateContext);
     const { vehicleState} = useContext(VehicleStateContext);
     const map = useMap()
     const firstNonHomeZoomCompleted = useRef(false)
+    const { isMobile } = useMobileState();
+    const lastCard = useRef(state.currentCard)
 
     const doZoom = ()=>{
         let [lat, long] = [null,null]
@@ -534,6 +499,17 @@ const HandleMapBoundsAndZoom = () : void=>{
         let override = false
 
         log.info("card type is",state.currentCard.type)
+
+        if(lastCard.current === state.currentCard
+            && userHasAdjustedMapOffMainElement.current
+        ){
+            log.info("card has not changed, and user has moved screen off of selected element, not zooming")
+            return
+        }
+
+        if(isMobile){
+            override = true;
+        }
     
         if(state.currentCard.type===CardType.RouteCard){
             log.info("zooming for route card",state.currentCard.searchMatches)
@@ -588,6 +564,7 @@ const HandleMapBoundsAndZoom = () : void=>{
                 zoom = 11;
                 override = true;
             }
+        lastCard.current = state.currentCard
 
         setMapLatLngAndZoom(map,lat,long,zoom,override)
     }
@@ -599,6 +576,7 @@ const HandleMapBoundsAndZoom = () : void=>{
 
 
     useEffect(() => {
+        log.info("handling map bounds and zoom for vehicle update, vehicle state changed",vehicleState,"firstNonHomeZoomCompleted",firstNonHomeZoomCompleted.current)
         if(!firstNonHomeZoomCompleted.current){
             log.info("first zoom not completed, doing zoom, vehicle state",vehicleState)
             doZoom()
@@ -607,13 +585,47 @@ const HandleMapBoundsAndZoom = () : void=>{
     log.info("map bounds and zoom handler loaded",state.currentCard,vehicleState)
 }
 
-const MapEvents = () :boolean=> {
+const MapEvents = ({userHasAdjustedMapOffMainElement, selectedElementLocation}: {userHasAdjustedMapOffMainElement: React.MutableRefObject<boolean>, selectedElementLocation: React.MutableRefObject<{lat:number, lng:number}|null>}) :boolean=> {
     log.info("generating map events")
     const openPopups = useRef<L.Popup[]>([]);
 
 
 
     useMapEvents({
+
+        moveend: (e) => {
+            if (e.originalEvent) {
+                // User manually panned or zoomed
+                console.log("User moved the map");
+                if(selectedElementLocation.current){
+                    log.info("checking if map is centered on selected element after user moved the map, selectedElementLocation",selectedElementLocation.current)
+                    if(!isCenteredOn(map, selectedElementLocation.current?.lat, selectedElementLocation.current?.lng, map.getZoom())){
+                        log.info("User moved the map off of selected element, setting flag to true")
+                        userHasAdjustedMapOffMainElement.current = true;
+                    } else {
+                        log.info("User moved the map but map is still centered on selected element")
+                        userHasAdjustedMapOffMainElement.current = false;
+                    }
+                }
+            }
+        },
+        dragend: () => {
+            // User specifically started a drag action
+            console.log("User is dragging");
+            if(!selectedElementLocation.current){
+                log.info("no selectedElementLocation, not setting userHasAdjustedMapOffMainElement to true")
+                return
+            }
+            log.info("checking if map is centered on selected element after user started dragging the map, selectedElementLocation",selectedElementLocation.current)
+            if(!isCenteredOn(map, selectedElementLocation.current?.lat, selectedElementLocation.current?.lng, map.getZoom())){
+                log.info("User started dragging the map off of selected element, setting flag to true")
+                userHasAdjustedMapOffMainElement.current = true;
+            } else {
+                log.info("User started dragging but map is still centered on selected element")
+                userHasAdjustedMapOffMainElement.current = false;
+            }
+        },
+
         popupopen(e) {
             log.info("popup opened", e.popup);
 
@@ -668,6 +680,8 @@ const MapEvents = () :boolean=> {
       }, [map]);
 
     return false;
+
+
 };
 
 
@@ -738,6 +752,9 @@ export const MapComponent = () :JSX.Element => {
 
     let startingMapCenter = OBA.Config.defaultMapCenter;
     let startingZoom = 11;
+    let userHasAdjustedMapOffMainElement = useRef(false);
+    let selectedElementLocation = useRef<{lat:number, lng:number}|null>({lat: startingMapCenter[0], lng: startingMapCenter[1]});
+    log.info("MapComponent selectedElementLocation",selectedElementLocation)
 
     return (
         <React.Fragment>
@@ -754,14 +771,14 @@ export const MapComponent = () :JSX.Element => {
                     type={'roadmap'}
                     styles={OBA.Config.mutedTransitStylesArray}
                 />
-                <MapEvents />
+                <MapEvents userHasAdjustedMapOffMainElement={userHasAdjustedMapOffMainElement} selectedElementLocation={selectedElementLocation}/>
                 <RoutesAndStops/>
                 <Highlighted/>
                 <MapVehicleElements/>
-                <HandleMapBoundsAndZoom />
+                <HandleMapBoundsAndZoom userHasAdjustedMapOffMainElement={userHasAdjustedMapOffMainElement}/>
                 <SearchedHere/>
-                <SelectedStopComponent/>
-                <SelectedVehicleComponent/>
+                <SelectedStopComponent selectedElementLocation={selectedElementLocation}/>
+                <SelectedVehicleComponent userHasAdjustedMapOffMainElement={userHasAdjustedMapOffMainElement} selectedElementLocation={selectedElementLocation}/>
                 <RightClickSearchButton/>
                 <ZoomControl position="bottomright" />
                 {/*<HandleMapForVehiclesBoundsAndZoom/>*/}

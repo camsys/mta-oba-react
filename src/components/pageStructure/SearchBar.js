@@ -41,9 +41,12 @@ const SearchBar = () => {
     };
 
 
-    const onSuggestionSelected = (event, { suggestion }) => {
+    const onSuggestionSelected = (event, { suggestion, method }) => {
         log.info('Selected suggestion:', suggestion);
         const lineRef = suggestion.value
+        if(method==="enter"){
+            return
+        }
         search(lineRef);
     };
 
@@ -100,7 +103,14 @@ const SearchBar = () => {
         <ErrorBoundary>
             <div id="search" className="py-4" onKeyDown={(event) => {
                 if (event.key === "Enter") {
-                    search(event.target?.value);
+                    if(event.target.tagName.toLowerCase() === "input"){
+                        log.info("Submitting search for",event.target?.value,event.target,event)
+                        // autosuggest prevents default
+                        // if (!event.defaultPrevented) {
+                        //     performSearch(event.target.value);
+                        // }
+                        search(event.target.value);
+                    }
                 }
             }}>
                 <div className={`search-box${isFocused ? ' is-focused' : ''}`}>

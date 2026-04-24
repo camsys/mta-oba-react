@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import {UnderlineOnFocusElement} from "Components/shared/common";
+import { UnderlineOnFocusElement } from "../shared/common";
 
 
 const GoogleTranslateLoadButton = ({ handleClick }) => {
     return (
         
         <UnderlineOnFocusElement
-                elementType="button"
+                as="button"
                 id="translate-menu-trigger"
                 onClick={handleClick}
-                className="py-3 bg-[#e8e8e8] w-[100%] text-mta-blue focus:decoration-mta-blue"
+                className="py-3 bg-[#e8e8e8] w-[100%] text-mta-blue focus-visible:decoration-mta-blue"
                 aria-haspopup="true"
                 aria-expanded="false"
                 aria-label="Toggle Google Translate Menu"

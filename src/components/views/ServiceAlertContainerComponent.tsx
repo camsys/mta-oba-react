@@ -7,11 +7,12 @@ import DOMPurify from 'dompurify';
 const keywordsToBold = ["What's happening?", "note"]
 const boldIfKeywordStartsPart = ["Note:"]
 
-function ServiceAlertComponent  ({serviceAlertDatum}:ServiceAlertInterface) : JSX.Element {
-    log.info("service alert component contents generating ",serviceAlertDatum)
-    let alerts = []
-    let partsToBold = []
-    serviceAlertDatum.forEach((alert) => {
+function ServiceAlertComponent  ({serviceAlertDatums}: {serviceAlertDatums: ServiceAlertInterface[]}) : JSX.Element {
+    log.info("service alert component contents generating ",serviceAlertDatums)
+    let alerts: string[] = []
+    let partsToBold: string[] = []
+    let lastPartsOfAlerts: string[] = []
+    serviceAlertDatums.forEach((alert) => {
         if(alert.descriptionParts && alert.descriptionParts.length>0){
             alert.descriptionParts.forEach((part) => {
                 if(part && part.length>0){
@@ -25,11 +26,13 @@ function ServiceAlertComponent  ({serviceAlertDatum}:ServiceAlertInterface) : JS
                     alerts.push(part)
                 }
             })
+            lastPartsOfAlerts.push(alerts[alerts.length-1])
         }
     })
     alerts = [...new Set(alerts)];
+    log.info("service alert component contents received",serviceAlertDatums,"generated ",{alerts,partsToBold},"last parts of alerts: ",lastPartsOfAlerts)
     return(
-        <div className="card-content collapse-content">
+        <div className="card-content collapse-content text-base">
             {alerts.map((part,itt) => {
                 part = DOMPurify.sanitize(part, {
                     ALLOWED_TAGS: ['b', 'strong', 'p', 'a'],
@@ -37,7 +40,12 @@ function ServiceAlertComponent  ({serviceAlertDatum}:ServiceAlertInterface) : JS
                     ALLOW_DATA_ATTR: false,
                 });
                 try{
-                    return(<p key = {itt} className={partsToBold.includes(part) ? "emphasis" : ""} dangerouslySetInnerHTML={{__html: part}}></p>)
+                    return(
+                        <>
+                            <p key = {itt} className={partsToBold.includes(part) ? "emphasis" : "my-2"} dangerouslySetInnerHTML={{__html: part}}/>
+                            {(lastPartsOfAlerts.includes(part) && itt < alerts.length - 1) && <hr className="my-4 border-t border-black"/>}
+                        </>
+                    )
                 }catch(e){
                     log.error("Error rendering service alert component", e)
                 }
@@ -45,38 +53,63 @@ function ServiceAlertComponent  ({serviceAlertDatum}:ServiceAlertInterface) : JS
         </div>)
 }
 
-export default function ServiceAlertContainerComponent  ({ routeId,serviceAlertIdentifier, collapsed}:{ routeId : string ,serviceAlertIdentifier : string,collapsed:boolean}) : JSX.Element {
+export interface ServiceAlertIdentifierProps{
+    abbreviatedRouteId : string,
+    routeAndDirection? : string,
+    routeAgencyAndId? : string
+}
+
+export interface ServiceAlertContainerProps extends ServiceAlertIdentifierProps{
+    collapsed?: boolean
+}
+
+
+
+export default function ServiceAlertContainerComponent  ({ abbreviatedRouteId,routeAgencyAndId,routeAndDirection, collapsed}:ServiceAlertContainerProps) : JSX.Element {
     log.info("generating service alert component")
     let {getServiceAlert} = useServiceAlert()
-    let serviceAlertDatum = getServiceAlert(routeId,serviceAlertIdentifier)
-    if(serviceAlertDatum===null||typeof serviceAlertDatum==="undefined"){return null}
+    let serviceAlertDatums = getServiceAlert({abbreviatedRouteId, routeAgencyAndId, routeAndDirection})
+    if(serviceAlertDatums === null || serviceAlertDatums.every(datum => datum===null||typeof datum==="undefined")){return <></>}
+    log.info("service alert datums found for component: ", serviceAlertDatums)
     return (<div className="service-alert inner-card collapsible">
         <button className="card-header collapse-trigger" aria-haspopup="true" aria-expanded="false" aria-label="Toggle Service Alert Open/Closed" tabIndex={collapsed?-1:0}>
             <ServiceAlertSvg/>
-            <span className="label">Service Alert for {routeId}</span>
+            <span className="label">Service Alert for {abbreviatedRouteId}</span>
         </button>
-        <ServiceAlertComponent {...{serviceAlertDatum}}/>
+        <ServiceAlertComponent {...{serviceAlertDatums}}/>
     </div>)
 }
 
-export function useServiceAlert(){
+export function useServiceAlert(){  
     const { vehicleState} = useContext(VehicleStateContext)
-    function getServiceAlert(routeId : string ,serviceAlertIdentifier : string){
-        log.info("getting service alert data",vehicleState,routeId+serviceAlertDataIdentifier,serviceAlertIdentifier)
-        let routeServiceAlerts = vehicleState[routeId+serviceAlertDataIdentifier]
+    function getServiceAlert({ abbreviatedRouteId,routeAgencyAndId,routeAndDirection}:ServiceAlertContainerProps): ServiceAlertInterface[] | null{
+        
+        log.info("getting service alert data",vehicleState,abbreviatedRouteId+serviceAlertDataIdentifier,routeAgencyAndId,routeAndDirection)
+        let routeServiceAlerts = vehicleState[abbreviatedRouteId+serviceAlertDataIdentifier]
         if(routeServiceAlerts===null||typeof routeServiceAlerts==="undefined"){return null}
-        let serviceAlertDatum = vehicleState[routeId+serviceAlertDataIdentifier].get(serviceAlertIdentifier)
+        let serviceAlertData: ServiceAlertInterface[] = []
+        let serviceAlertDatum = vehicleState[abbreviatedRouteId + serviceAlertDataIdentifier].get(routeAgencyAndId);
+        if (routeAgencyAndId) {
+            let serviceAlertDatumByAgency = vehicleState[abbreviatedRouteId + serviceAlertDataIdentifier].get(routeAgencyAndId);
+            if (serviceAlertDatumByAgency) serviceAlertData.push(...serviceAlertDatumByAgency);
+        }
+        if(routeAndDirection){
+            let serviceAlertDatumByDirection = vehicleState[abbreviatedRouteId+serviceAlertDataIdentifier].get(routeAndDirection)
+            if(serviceAlertDatumByDirection) serviceAlertData.push(...serviceAlertDatumByDirection)
+        }
+        if(serviceAlertDatum) serviceAlertData.push(...serviceAlertDatum)
         log.info("service alert datum found from state",serviceAlertDatum)
         if(typeof serviceAlertDatum==="undefined"){return null}
+        if(serviceAlertData.length===0){return null}
         return serviceAlertDatum
     }
 
     return {getServiceAlert}
 }
 
-export function ServiceAlertSvg(){
-    return(<span className="svg-icon-wrap svc-alert-icon" role="presentation" aria-hidden="true">
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
+export function ServiceAlertSvg({className}:{className?: string}): JSX.Element{
+    return(<span className={`svg-icon-wrap svc-alert-icon ${className}`} role="presentation" aria-hidden="true">
+                <svg width={20} height={20} viewBox="0 0 20 20" fill="none"
                      xmlns="http://www.w3.org/2000/svg">
                 <path className="yellow" fillRule="evenodd" clipRule="evenodd"
                       d="M8.88184 0.314668C9.21848 0.108886 9.60539 0 9.99995 0C10.3945 0 10.7814 0.108886 11.118 0.314668C11.4547 0.52045 11.728 0.815142 11.9079 1.1663L11.9111 1.17253L19.7705 16.8915C19.9346 17.2175 20.0133 17.5813 19.998 17.946C19.9827 18.3111 19.8744 18.6663 19.6832 18.9777C19.4919 19.2891 19.2244 19.5465 18.9057 19.7255C18.5871 19.9044 18.228 19.9989 17.8625 20H17.8604H2.13945H2.13728C1.77185 19.9989 1.41276 19.9044 1.09412 19.7255C0.775488 19.5465 0.50788 19.2891 0.316714 18.9777C0.125549 18.6663 0.0171731 18.3111 0.00187865 17.946C-0.0133979 17.5813 0.0646962 17.2187 0.228751 16.8927L8.08882 1.17255L8.09195 1.16628C8.27184 0.815127 8.54521 0.52045 8.88184 0.314668Z"/>
