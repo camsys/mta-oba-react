@@ -7,7 +7,7 @@ import {
     useVehicleState,
 } from "../../components/util/VehicleStateComponent";
 import {siriGetVehiclesForRoutesEffect, siriGetVehiclesForVehicleViewEffect} from "./SiriEffects";
-import {siriGetVehiclesForStopViewEffect} from "./SiriStopEffects";
+import { siriGetVehiclesForStopViewEffect } from "./SiriStopEffects";
 import {useMapDisplayState} from "../../components/util/MapDisplayStateComponent";
 
 

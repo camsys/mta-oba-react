@@ -9,6 +9,3 @@ declare module "*.jpeg";
 declare module "*.gif";
 declare module "*/oba";
 declare module "*/util/errorBoundary";
-declare module "./js/updateState/SiriStopEffects" {
-  export const siriGetVehiclesForStopViewEffect: (stopId: string, cardType: any) => void;
-}
