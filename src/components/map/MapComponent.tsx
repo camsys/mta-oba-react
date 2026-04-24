@@ -16,6 +16,7 @@ import {
     MatchType,
     RouteMatch,
     StopInterface,
+    StopMatch,
     StopsObject,
 } from "../../js/updateState/DataModels";
 import {useHighlight} from "../util/MapHighlightingStateComponent";
@@ -464,7 +465,7 @@ const HandleMapBoundsAndZoom = ({userHasAdjustedMapOffMainElement}: {userHasAdju
     const lastCard = useRef(state.currentCard)
 
     const doZoom = ()=>{
-        let [lat, long] = [null,null]
+        let [lat, long] = [null as number | null,null as number | null]
         let zoom = null
         let override = false
 
@@ -483,7 +484,7 @@ const HandleMapBoundsAndZoom = ({userHasAdjustedMapOffMainElement}: {userHasAdju
     
         if(state.currentCard.type===CardType.RouteCard){
             log.info("zooming for route card",state.currentCard.searchMatches)
-            setMapBounds(map,getBoundsForRoute(state.currentCard.searchMatches))
+            setMapBounds(map,getBoundsForRoute(state.currentCard.searchMatches as RouteMatch[]))
             if(!firstNonHomeZoomCompleted.current){
                 firstNonHomeZoomCompleted.current = true
             }
@@ -492,7 +493,7 @@ const HandleMapBoundsAndZoom = ({userHasAdjustedMapOffMainElement}: {userHasAdju
         else if(state.currentCard.type===CardType.GeocodeCard) {
             log.info("assessing zooming for geocode card",state.currentCard.searchMatches)
             state.currentCard.searchMatches.forEach(searchMatch=>{
-                [lat, long] = [searchMatch.latitude,searchMatch.longitude];
+                [lat, long] = [(searchMatch as GeocodeMatch).latitude,(searchMatch as GeocodeMatch).longitude];
                 zoom = 16;
                 if(!firstNonHomeZoomCompleted.current){
                     log.info("first zoom completed")
@@ -503,7 +504,7 @@ const HandleMapBoundsAndZoom = ({userHasAdjustedMapOffMainElement}: {userHasAdju
         }
         else if(state.currentCard.type===CardType.StopCard) {
             state.currentCard.searchMatches.forEach(searchMatch=>{
-                [lat, long] = [searchMatch.latitude, searchMatch.longitude];
+                [lat, long] = [(searchMatch as StopMatch).latitude, (searchMatch as StopMatch).longitude];
                 zoom = 16;
                 if(!firstNonHomeZoomCompleted.current){
                     log.info("first zoom completed")
