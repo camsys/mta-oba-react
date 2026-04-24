@@ -1,5 +1,4 @@
 import React, {useContext, useEffect, useState} from "react";
-import Cookies from "js-cookie";
 import {RouteInterface, StopInterface} from "../../js/updateState/DataModels";
 import {FavoritesCookieStateContext, useFavorite} from "../util/MiscStateComponent";
 import {isRouteInterface, isStopInterface} from "../../js/updateState/DataModelsUtils";

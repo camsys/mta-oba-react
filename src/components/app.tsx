@@ -1,6 +1,6 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {OBA} from "../js/oba";
-import ErrorBoundary from "./util/errorBoundary";
+import ErrorBoundary from "./util/errorBoundary.js";
 import {useCardState, SearchStateProviders} from "./util/CardStateComponent";
 import SideBar from "./pageStructure/SideBar";
 import {

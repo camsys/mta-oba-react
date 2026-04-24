@@ -8,7 +8,7 @@ import {useHighlight} from "../util/MapHighlightingStateComponent";
 import {MatchType, RouteMatch, SearchMatch, VehicleRtInterface} from "../../js/updateState/DataModels";
 import meeples from "../../../public/img/meeples/meeples-blank.png";
 import {useEffect, useState} from "react";
-import ErrorBoundary from "../util/errorBoundary";
+import ErrorBoundary from "../util/errorBoundary.js";
 import {ViewSearchItem} from "./MiscComponents";
 import log from 'loglevel'
 import {MeeplesComponentLi} from "./VehicleComponent";
