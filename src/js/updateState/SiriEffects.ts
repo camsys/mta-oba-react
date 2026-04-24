@@ -7,7 +7,7 @@ import {
 } from "../../components/util/VehicleStateComponent";
 import {OBA} from "../oba";
 import {createServiceAlertInterface, createVehicleRtInterface, VehicleRtInterface, ServiceAlertInterface, AgencyAndId, Card, VehicleStateObject, VehicleStateUpdateValue} from "./DataModels";
-import {SiriWrapper, MonitoredVehicleJourneyActivity, PtSituationElement, AffectedVehicleJourney, SiriResponse} from "./DataContracts";
+import {SiriWrapper, SiriMonitoredVehicleJourneyActivity, SiriPtSituationElement, SiriAffectedVehicleJourney, SiriResponse} from "./DataContracts";
 import log from 'loglevel';
 import {getSearchTermAdditions} from "./keyWordsAndSupportUtils"
 
@@ -26,7 +26,7 @@ function extractData (routeId: string, siri: SiriResponse): [[string, Map<string
     let [vehicleDataMap,serviceAlertDataMap,stopsToVehiclesMap] = [new Map(), new Map(),new Map()]
 
     let vehicleActivity = siri?.Siri?.ServiceDelivery?.VehicleMonitoringDelivery
-    let vehicleActivityArray: MonitoredVehicleJourneyActivity[] | null | undefined = vehicleActivity!=null ? vehicleActivity[0]?.VehicleActivity : null
+    let vehicleActivityArray: SiriMonitoredVehicleJourneyActivity[] | null | undefined = vehicleActivity!=null ? vehicleActivity[0]?.VehicleActivity : null
     log.info("siri vehicles found:",vehicleActivityArray, vehicleActivity, siri)
     if (vehicleActivityArray != null && vehicleActivityArray.length != 0) {
         update = true;
@@ -48,7 +48,7 @@ function extractData (routeId: string, siri: SiriResponse): [[string, Map<string
     }
 
     let serviceAlertActivity = siri?.Siri?.ServiceDelivery?.SituationExchangeDelivery
-    let serviceAlertActivityArray: PtSituationElement[] | null | undefined = serviceAlertActivity==null? null :serviceAlertActivity[0]?.Situations?.PtSituationElement
+    let serviceAlertActivityArray: SiriPtSituationElement[] | null | undefined = serviceAlertActivity==null? null :serviceAlertActivity[0]?.Situations?.PtSituationElement
     log.info("service alerts found:", serviceAlertActivityArray)
     if (serviceAlertActivityArray != null) {
         update = true;
@@ -59,7 +59,7 @@ function extractData (routeId: string, siri: SiriResponse): [[string, Map<string
             let effects = situationElement.Affects.VehicleJourneys.AffectedVehicleJourney
             log.info(effects)
             const routesWithServiceAlerts = {}
-            effects.forEach((effect: AffectedVehicleJourney) => {
+            effects.forEach((effect: SiriAffectedVehicleJourney) => {
                 let delim = "_"
                 // todo: externalize target for ease of reference & to easily generate multiple target types
                 let serviceAlertTarget = effect?.LineRef

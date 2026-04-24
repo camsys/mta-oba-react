@@ -1,7 +1,7 @@
 import {OBA} from "../oba";
 import {LatLngLiteral} from "leaflet";
 import log from 'loglevel';
-import {MonitoredCall, MonitoredVehicleJourney, PtSituationElement, StopData} from "./DataContracts";
+import {SiriMonitoredCall, SiriMonitoredVehicleJourney, SiriPtSituationElement, SearchStopData, SearchRouteDirectionData, SearchGeoData, SearchRouteData} from "./DataContracts";
 
 export const primaryDelimiter = "_";
 
@@ -117,7 +117,7 @@ export enum MapRouteDisruptionStatus {
 export interface MapRouteComponentInterface {
     routeId: string;
     id: string;
-    points: any; // Replace 'any' with a specific type if available
+    points: [number, number][];
     color: string;
     disruptionStatus: MapRouteDisruptionStatus;
 }
@@ -147,8 +147,7 @@ export interface RouteMatchDirectionInterface {
     routeDirectionComponentData: RouteDirectionInterface;
 }
 
-
-export function createStopInterface(stopJson: StopData): StopInterface {
+export function createStopInterface(stopJson: SearchStopData): StopInterface {
     return {
         datumName: stopJson.name,
         datumId: AgencyAndId.get(stopJson.id),
@@ -159,13 +158,13 @@ export function createStopInterface(stopJson: StopData): StopInterface {
     };
 }
 
-export function createServiceAlertInterface(serviceAlertJson: PtSituationElement): ServiceAlertInterface {
+export function createServiceAlertInterface(serviceAlertJson: SiriPtSituationElement): ServiceAlertInterface {
     return {
         descriptionParts: serviceAlertJson.Description.split("\n"),
         title: serviceAlertJson.Summary
     };
 }
-export function createVehicleArrivalInterface(mc: MonitoredCall): VehicleArrivalInterface {
+export function createVehicleArrivalInterface(mc: SiriMonitoredCall): VehicleArrivalInterface {
     const distances = mc?.Extensions?.Distances || {};
     return {
         prettyDistance: distances.PresentableDistance,
@@ -178,7 +177,7 @@ export function createVehicleArrivalInterface(mc: MonitoredCall): VehicleArrival
     };
 }
 
-export function createVehicleDepartureInterface(mvj: MonitoredVehicleJourney, updateTime: Date): VehicleDepartureInterface {
+export function createVehicleDepartureInterface(mvj: SiriMonitoredVehicleJourney, updateTime: Date): VehicleDepartureInterface {
     let departureTimeAsDateTime = OBA.Util.ISO8601StringToDate(mvj.OriginAimedDepartureTime);
     let isDepartureOnSchedule = departureTimeAsDateTime && updateTime ? departureTimeAsDateTime.getTime() >= updateTime.getTime() : false;
     if(isDepartureOnSchedule==null){isDepartureOnSchedule= false;}
@@ -188,7 +187,7 @@ export function createVehicleDepartureInterface(mvj: MonitoredVehicleJourney, up
     }
 }
 
-export function createVehicleRtInterface(mvj: MonitoredVehicleJourney, updateTime: Date): VehicleRtInterface {
+export function createVehicleRtInterface(mvj: SiriMonitoredVehicleJourney, updateTime: Date): VehicleRtInterface {
     const vehicleArrivalData = [];
 
     if (mvj?.MonitoredCall != null) {
@@ -196,7 +195,7 @@ export function createVehicleRtInterface(mvj: MonitoredVehicleJourney, updateTim
         vehicleArrivalData.push(createVehicleArrivalInterface(mc));
 
         if (mvj?.OnwardCalls?.OnwardCall != null) {
-            mvj.OnwardCalls.OnwardCall.forEach((call: any, index: number) => {
+            mvj.OnwardCalls.OnwardCall.forEach((call: SiriMonitoredCall, index: number) => {
                 if (index !== 0) {
                     vehicleArrivalData.push(createVehicleArrivalInterface(call));
                 }
@@ -262,7 +261,7 @@ export function createVehicleRtInterface(mvj: MonitoredVehicleJourney, updateTim
     };
 }
 
-export function createMapRouteComponentInterface(routeId: string, componentId: string, points: any, color: string, disruptionStatus: MapRouteDisruptionStatus = MapRouteDisruptionStatus.Canonical): MapRouteComponentInterface {
+export function createMapRouteComponentInterface(routeId: string, componentId: string, points: [number, number][], color: string, disruptionStatus: MapRouteDisruptionStatus = MapRouteDisruptionStatus.Canonical): MapRouteComponentInterface {
     return {
         routeId,
         id: componentId,
@@ -284,7 +283,7 @@ export function createRouteDirectionComponentInterface(routeId: AgencyAndId, dat
     };
 }
 
-function safelyDecodePolyline(encodedPolyline: string): any {
+function safelyDecodePolyline(encodedPolyline: string): [number, number][] | null {
     try {
         return OBA.Util.decodePolyline(encodedPolyline);
     } catch (error) {
@@ -293,7 +292,7 @@ function safelyDecodePolyline(encodedPolyline: string): any {
     }
 }
 
-export function createRouteMatchDirectionInterface(directionJson: any, routeId: AgencyAndId, color: string): RouteMatchDirectionInterface {
+export function createRouteMatchDirectionInterface(directionJson: SearchRouteDirectionData, routeId: AgencyAndId, color: string): RouteMatchDirectionInterface {
     const mapRouteComponentData = [];
     const mapRouteComponentDataDict: Record<MapRouteDisruptionStatus, MapRouteComponentInterface[]> = {
         [MapRouteDisruptionStatus.Canonical]: [],
@@ -301,7 +300,7 @@ export function createRouteMatchDirectionInterface(directionJson: any, routeId: 
         [MapRouteDisruptionStatus.Removed]: []
     };
     const mapStopComponentData: StopInterface[] = [];
-    const stops : StopInterface[] = directionJson?.stops?.map((stop: any) => createStopInterface(stop)) || [];
+    const stops : StopInterface[] = directionJson?.stops?.map((stop: SearchStopData) => createStopInterface(stop)) || [];
 
     log.info("createRouteMatchDirectionInterface", directionJson, routeId, color);
 
@@ -316,12 +315,16 @@ export function createRouteMatchDirectionInterface(directionJson: any, routeId: 
 
     for (let j = 0; j < directionJson.polylines.length; j++) {
         const polylineData = directionJson.polylines[j];
-        const encodedPolyline = typeof polylineData === 'string' ? polylineData : (polylineData.line || polylineData);
+        const encodedPolyline: string = typeof polylineData === 'string' ? polylineData : (polylineData.line || '');
+        if (!encodedPolyline) continue; // Skip if no encoded polyline available
         const decodedPolyline = safelyDecodePolyline(encodedPolyline);
+        if (!decodedPolyline) continue; // Skip if polyline couldn't be decoded
         const polylineId = `${routeId}${primaryDelimiter}dir${primaryDelimiter}${directionJson.directionId}${primaryDelimiter}polyLineNum${primaryDelimiter}${j}`;
+        const statusValue = typeof polylineData === 'object' ? (polylineData.detourStatus || polylineData.disruptionStatus) : null;
         let rawDisruptionStatus: MapRouteDisruptionStatus = 
-            (typeof polylineData === 'object' && (polylineData.detourStatus || polylineData.disruptionStatus)) || 
-            MapRouteDisruptionStatus.Canonical;
+            (statusValue && Object.values(MapRouteDisruptionStatus).includes(statusValue as MapRouteDisruptionStatus)) 
+                ? (statusValue as MapRouteDisruptionStatus)
+                : MapRouteDisruptionStatus.Canonical;
         const disruptionStatus = 
             (
                 rawDisruptionStatus !== MapRouteDisruptionStatus.Detour 
@@ -381,7 +384,7 @@ export class RouteMatch extends SearchMatch implements RouteInterface{
     datumId: AgencyAndId;
     datumName: string;
 
-    constructor(data: any) {
+    constructor(data: SearchRouteData) {
         super(MatchType.RouteMatch);
         const routeIdStr = data?.id.replace("+","-SBS");
         this.datumId = this.routeId = AgencyAndId.get(routeIdStr);
@@ -389,7 +392,6 @@ export class RouteMatch extends SearchMatch implements RouteInterface{
         this.color = data?.color;
         this.description = data?.description;
         this.directions = [];
-        
     }
 }
 
@@ -398,11 +400,11 @@ export class GeocodeMatch extends SearchMatch {
     longitude: number;
     routeMatches: (RouteMatch|StopMatch)[]
 
-    constructor(data: any) {
+    constructor(data: SearchGeoData) {
         super(MatchType.GeocodeMatch);
         this.latitude = data.latitude;
         this.longitude = data.longitude;
-        this.routeMatches = []
+        this.routeMatches = [];
     }
 }
 
@@ -419,7 +421,7 @@ export class StopMatch extends SearchMatch implements StopInterface{
     datumId: AgencyAndId;
     datumName: string;
 
-    constructor(data: any) {
+    constructor(data: SearchStopData) {
         super(MatchType.StopMatch);
         this.datumId = this.id = AgencyAndId.get(data.id);
         this.datumName = this.name = data.name;
@@ -428,7 +430,6 @@ export class StopMatch extends SearchMatch implements StopInterface{
         this.routeMatches = [];
         this.longLat = [data.latitude,data.longitude];
         this.stopDirection = data.stopDirection;
-
     }
 }
 

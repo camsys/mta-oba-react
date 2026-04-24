@@ -1,6 +1,6 @@
 import React from "react";
 import {createServiceAlertInterface, createVehicleRtInterface, VehicleRtInterface, ServiceAlertInterface, VehicleStateObject, VehicleStateUpdateValue, Card} from "./DataModels";
-import {SiriWrapper, MonitoredStopVisitActivity, PtSituationElement, AffectedVehicleJourney} from "./DataContracts";
+import {SiriWrapper, SiriMonitoredStopVisitActivity, SiriPtSituationElement, SiriAffectedVehicleJourney} from "./DataContracts";
 import {
     updatedTimeIdentifier,stopSortedFutureVehicleDataIdentifier
 } from "../../components/util/VehicleStateComponent";
@@ -26,7 +26,7 @@ function extractData (stopId: string, siri: SiriWrapper): [[string, Map<string, 
 
     let stopActivity = siriData?.Siri?.ServiceDelivery?.StopMonitoringDelivery
     log.info("siri stop activity",stopActivity)
-    let stopActivityArray: MonitoredStopVisitActivity[] | null | undefined = stopActivity!=null ? stopActivity[0]?.MonitoredStopVisit : null
+    let stopActivityArray: SiriMonitoredStopVisitActivity[] | null | undefined = stopActivity!=null ? stopActivity[0]?.MonitoredStopVisit : null
     log.info("siri stop vehicles found:",stopActivityArray)
     if (stopActivityArray != null && stopActivityArray.length != 0) {
         update = true;
@@ -54,7 +54,7 @@ function extractData (stopId: string, siri: SiriWrapper): [[string, Map<string, 
     }
 
     let serviceAlertActivity = siriData?.Siri?.ServiceDelivery?.SituationExchangeDelivery
-    let serviceAlertActivityArray: PtSituationElement[] | null | undefined = serviceAlertActivity==null? null :serviceAlertActivity[0]?.Situations?.PtSituationElement
+    let serviceAlertActivityArray: SiriPtSituationElement[] | null | undefined = serviceAlertActivity==null? null :serviceAlertActivity[0]?.Situations?.PtSituationElement
     log.info("siri stop service alerts found:", serviceAlertActivityArray)
     if (serviceAlertActivityArray != null) {
         update = true;
@@ -65,7 +65,7 @@ function extractData (stopId: string, siri: SiriWrapper): [[string, Map<string, 
             let effects = situationElement.Affects.VehicleJourneys.AffectedVehicleJourney
             log.info(effects)
             const routesWithServiceAlerts = {}
-            effects.forEach((effect: AffectedVehicleJourney) => {
+            effects.forEach((effect: SiriAffectedVehicleJourney) => {
                 let delim = "_"
                 // todo: externalize target for ease of reference & to easily generate multiple target types
                 let serviceAlertTarget = effect?.LineRef

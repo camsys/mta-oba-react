@@ -1,24 +1,24 @@
-
+ 
 
 
 // ---------SIRI Data Contracts----------
 
 export interface SiriServiceDelivery {
     ResponseTimestamp: string;
-    VehicleMonitoringDelivery?: VehicleMonitoringDelivery[];
-    StopMonitoringDelivery?: StopMonitoringDelivery[];
-    SituationExchangeDelivery?: SituationExchangeDelivery[];
+    VehicleMonitoringDelivery?: SiriVehicleMonitoringDelivery[];
+    StopMonitoringDelivery?: SiriStopMonitoringDelivery[];
+    SituationExchangeDelivery?: SiriSituationExchangeDelivery[];
 }
 
-export interface VehicleMonitoringDelivery {
-    VehicleActivity?: MonitoredVehicleJourneyActivity[];
+export interface SiriVehicleMonitoringDelivery {
+    VehicleActivity?: SiriMonitoredVehicleJourneyActivity[];
 }
 
-export interface MonitoredVehicleJourneyActivity {
-    MonitoredVehicleJourney: MonitoredVehicleJourney;
+export interface SiriMonitoredVehicleJourneyActivity {
+    MonitoredVehicleJourney: SiriMonitoredVehicleJourney;
 }
 
-export interface MonitoredVehicleJourney {
+export interface SiriMonitoredVehicleJourney {
     VehicleRef: string;
     LineRef: string;
     DirectionRef?: string;
@@ -30,14 +30,14 @@ export interface MonitoredVehicleJourney {
         Longitude: number;
     };
     Bearing?: number;
-    MonitoredCall?: MonitoredCall;
+    MonitoredCall?: SiriMonitoredCall;
     OnwardCalls?: {
-        OnwardCall?: MonitoredCall[];
+        OnwardCall?: SiriMonitoredCall[];
     };
     OriginAimedDepartureTime: string;
 }
 
-export interface MonitoredCall {
+export interface SiriMonitoredCall {
     StopPointRef?: string;
     StopPointName?: string;
     ExpectedArrivalTime?: string;
@@ -59,31 +59,31 @@ export interface MonitoredCall {
     };
 }
 
-export interface StopMonitoringDelivery {
-    MonitoredStopVisit?: MonitoredStopVisitActivity[];
+export interface SiriStopMonitoringDelivery {
+    MonitoredStopVisit?: SiriMonitoredStopVisitActivity[];
 }
 
-export interface MonitoredStopVisitActivity {
-    MonitoredVehicleJourney: MonitoredVehicleJourney;
+export interface SiriMonitoredStopVisitActivity {
+    MonitoredVehicleJourney: SiriMonitoredVehicleJourney;
 }
 
-export interface SituationExchangeDelivery {
+export interface SiriSituationExchangeDelivery {
     Situations?: {
-        PtSituationElement?: PtSituationElement[];
+        PtSituationElement?: SiriPtSituationElement[];
     };
 }
 
-export interface PtSituationElement {
+export interface SiriPtSituationElement {
     Summary: string;
     Description: string;
     Affects: {
         VehicleJourneys: {
-            AffectedVehicleJourney: AffectedVehicleJourney[];
+            AffectedVehicleJourney: SiriAffectedVehicleJourney[];
         };
     };
 }
 
-export interface AffectedVehicleJourney {
+export interface SiriAffectedVehicleJourney {
     LineRef?: string;
     DirectionRef?: string;
 }
@@ -105,7 +105,7 @@ export interface SiriWrapper {
 // ------------- SEARCH CARD DATA CONTRACTS --------------
 
 
-export interface StopData {
+export interface SearchStopData {
     name: string;
     id: string;
     latitude: number;
@@ -113,16 +113,48 @@ export interface StopData {
     stopDirection: string;
 }
 
-export interface RouteDirectionData {
+export interface SearchRouteDirectionData {
     directionId: string;
     hasUpcomingScheduledService: boolean;
     destination: string;
-    stops: StopData[];
-    polylines: (string | PolylineData)[];
+    stops: SearchStopData[];
+    polylines: (string | SearchPolylineData)[];
 }
 
-export interface PolylineData {
+export interface SearchPolylineData {
     line?: string;
     detourStatus?: string;
     disruptionStatus?: string;
+}
+
+export interface SearchRouteData {
+    id: string;
+    shortName: string;
+    longName: string;
+    color: string;
+    description: string;
+    directions: SearchRouteDirectionData[];
+}
+
+export interface SearchRouteDirectionData {
+    directionId: string;
+    hasUpcomingScheduledService: boolean;
+    destination: string;
+    stops: SearchStopData[];
+    polylines: (string | SearchPolylineData)[];
+}
+
+export interface SearchStopData {
+    id: string;
+    name: string;
+    latitude: number;
+    longitude: number;
+    stopDirection: string;
+    routesAvailable: SearchRouteData[];
+}
+
+export interface SearchGeoData {
+    latitude: number;
+    longitude: number;
+    nearbyRoutes: (SearchRouteData | SearchStopData)[];
 }

@@ -12,6 +12,9 @@ import {
     StopInterface, RoutesObjectContainer, StopsObjectContainer, SearchMatch, MatchType, VehicleRtInterface,
     AgencyAndId
 } from "./DataModels";
+import {
+    SearchRouteData, SearchGeoData, SearchStopData
+} from "./DataContracts";
 import log from 'loglevel';
 import {v4 as uuidv4} from 'uuid';
 import {getSearchTermAdditions} from "./keyWordsAndSupportUtils"
@@ -34,7 +37,7 @@ export const allRoutesSearchTerm = "View All Routes";
 export const favoritesSearchTerm = "View Favorites";
 export const nearbySearchTerms = new Set(["NEARBY","NEARBYROUTES","NEARBYSTOPS","NEARME", "NEAR ME"])
 
-function processRouteSearch(route: any, card:Card,stops: StopsObjectContainer,routes:RoutesObjectContainer):RouteMatch {
+function processRouteSearch(route: SearchRouteData, card: Card, stops: StopsObjectContainer, routes: RoutesObjectContainer): RouteMatch {
     let match = new RouteMatch(route)
     log.info("processing route search results",route,card,stops,routes, match)
     if (route != null && route.hasOwnProperty("directions")) {
@@ -68,17 +71,17 @@ function processRouteSearch(route: any, card:Card,stops: StopsObjectContainer,ro
     return match
 }
 
-function processGeocodeSearch(geocode: any, card:Card,stops: StopsObjectContainer,routes:RoutesObjectContainer):GeocodeMatch{
+function processGeocodeSearch(geocode: SearchGeoData, card: Card, stops: StopsObjectContainer, routes: RoutesObjectContainer): GeocodeMatch {
     let match = new GeocodeMatch(geocode)
     log.info("processing geocode search results",geocode,card,match)
     if (geocode != null && geocode.hasOwnProperty("latitude")) {
-        geocode?.nearbyRoutes.forEach((searchResult: any)=>{
-            if(typeof searchResult?.stopDirection !== "undefined")
+        geocode?.nearbyRoutes.forEach((searchResult: SearchRouteData | SearchStopData) => {
+            if("stopDirection" in searchResult)
             {
-                match.routeMatches.push(processStopSearch(searchResult,card,stops,routes))
+                match.routeMatches.push(processStopSearch(searchResult, card, stops, routes))
             }
-            else if(typeof searchResult?.longName !== "undefined") {
-                match.routeMatches.push(processRouteSearch(searchResult,card,stops,routes))
+            else if("longName" in searchResult) {
+                match.routeMatches.push(processRouteSearch(searchResult, card, stops, routes))
             }
         })
     }
@@ -90,13 +93,13 @@ function processGeocodeSearch(geocode: any, card:Card,stops: StopsObjectContaine
     return match
 }
 
-function processStopSearch(stop: any, card:Card,stops: StopsObjectContainer,routes:RoutesObjectContainer):StopMatch{
+function processStopSearch(stop: SearchStopData, card: Card, stops: StopsObjectContainer, routes: RoutesObjectContainer): StopMatch {
     let match = new StopMatch(stop)
     log.info("processing stopMatch search results",stop,card,match)
     if (stop != null && stop.hasOwnProperty("latitude")) {
         card.stopIdList.add(stop.id)
         match.routeMatches = []
-        stop?.routesAvailable.forEach((x: any)=>{
+        stop?.routesAvailable.forEach((x: SearchRouteData) => {
             match.routeMatches.push(processRouteSearch(x,card,stops,routes))
         })
     }
@@ -507,7 +510,7 @@ export const useNavigation = () =>{
                         log.info("generating new card for all routes search")
                         log.info("all routes results: ",parsed);
                         let searchMatch = new SearchMatch(SearchMatch.matchTypes.AllRoutesMatch);
-                        searchMatch.routeMatches = parsed?.routes.map((route: any)=>new RouteMatch(route));
+                        searchMatch.routeMatches = parsed?.routes.map((route: SearchRouteData) => new RouteMatch(route));
                         let routeIdList: Set<AgencyAndId> = new Set();
                         // parsed?.routes.forEach(route=>routeIdList.add(route.id));
                         currentCard.setToAllRoutes([searchMatch],routeIdList);
