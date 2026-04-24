@@ -16,7 +16,7 @@ function MeeplesComponentInner({vehicleDatum}: {vehicleDatum: VehicleRtInterface
         percentFull = Math.ceil((vehicleDatum.passengerCount / vehicleDatum.passengerCapacity) * 100);
     }
     if(vehicleDatum.passengerCount==null){
-        return null
+        return <></>
     }
     return(
         <React.Fragment>
@@ -35,7 +35,7 @@ function MeeplesComponentInner({vehicleDatum}: {vehicleDatum: VehicleRtInterface
 
 export function MeeplesComponentSpan({vehicleDatum}: {vehicleDatum: VehicleRtInterface}):JSX.Element{
     if(vehicleDatum.passengerCount==null){
-        return null
+        return <></>
     }
     return(
         <span className="passengers ml-[.33rem] flex items-center">
@@ -45,7 +45,7 @@ export function MeeplesComponentSpan({vehicleDatum}: {vehicleDatum: VehicleRtInt
 
 export function MeeplesComponentLi({vehicleDatum}: {vehicleDatum: VehicleRtInterface}):JSX.Element{
     if(vehicleDatum.passengerCount==null){
-        return null
+        return <></>
     }
     return(
         <li className="passengers">
@@ -72,7 +72,8 @@ function VehicleComponentWithoutSearchSpecified({vehicleDatum,tabbable, vehicleS
 
 
 function VehicleComponentBase({vehicleDatum,tabbable, vehicleSearchFunction}: VehicleComponentProps):JSX.Element{
-    tabbable===-1?tabbable=false:tabbable=true
+    if(tabbable===false) tabbable=-1;
+    if(tabbable===true) tabbable=0;
 
     // log.info("generating VehicleComponent",vehicleDatum)
     let hasArrivalData = typeof vehicleDatum?.vehicleArrivalData!=='undefined';
@@ -107,10 +108,8 @@ function VehicleComponentBase({vehicleDatum,tabbable, vehicleSearchFunction}: Ve
         departureInfo = departureInfo ? (<>{departureInfo} <span>(Estimated)</span></>) : (<span>(Estimated)</span>);
     }
 
-    let out = null;
-
     try {
-        out = (<li className="pb-1 pl-2 pt-0 text-base" key={vehicleDatum.vehicleId}>
+        return (<li className="pb-1 pl-2 pt-0 text-base" key={vehicleDatum.vehicleId}>
             <span className="bus-info">
                 <span className="approaching font-bold">
                     <span>{OBA.Util.getArrivalEstimateForISOString(vehicleDatum?.vehicleArrivalData?.[0].ISOTime,vehicleDatum.lastUpdate)}</span>
@@ -121,16 +120,14 @@ function VehicleComponentBase({vehicleDatum,tabbable, vehicleSearchFunction}: Ve
                 </span>
                 <MeeplesComponentSpan vehicleDatum={vehicleDatum}/>
             </span>
-            <a href="#" tabIndex={tabbable?0:-1}
+            <a href="#" tabIndex={tabbable}
                onClick={(e)=>{e.preventDefault();   vehicleSearchFunction(AgencyAndId.get(vehicleDatum.routeId), vehicleDatum.vehicleId)}}
                className={vehicleDatum?.strollerVehicle?"bus stroller-friendly":"bus"}>{vehicleDatum.vehicleId.split("_")[1]}</a>
         </li>)
     } catch (e) {
         log.error("error in VehicleComponent", e)
     }
-    return(
-        out
-    )
+    return <></>
 
 }
 export  { VehicleComponent, VehicleComponentWithoutSearchSpecified, VehicleComponentProps}
