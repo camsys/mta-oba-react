@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import log from 'loglevel';
 import {MapComponent} from './MapComponent';
-import ErrorBoundary from "../util/errorBoundary.js";
+import ErrorBoundary from "../util/errorBoundary";
 import ReactLeafletGoogleLayer from "react-leaflet-google-layer";
 import RefreshComponent from "../views/RefreshComponent.js";
 import {useContext} from "react";

@@ -1,5 +1,5 @@
 import { useContext, useEffect } from 'react';
-import { useCardState } from 'Components/util/CardStateComponent';
+import { useCardState } from '../../components/util/CardStateComponent';
 import {OBA} from "../oba";
 import queryString from "query-string";
 

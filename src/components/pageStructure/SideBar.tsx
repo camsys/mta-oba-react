@@ -1,5 +1,4 @@
-import React, {useContext} from 'react';
-import {OBA} from "../../js/oba";
+import React from 'react';
 import ErrorBoundary from "../util/errorBoundary";
 import {RouteCardWrapper} from "../views/RouteCard";
 import Header from "./Header";
@@ -12,12 +11,12 @@ import VehicleCard from "../views/VehicleCard";
 import {StopCardWrapper} from "../views/StopCardWrapper";
 import {GeoCardWrapper} from "../views/GeoCardWrapper";
 import HomeCard from "../views/HomeCard";
-import {AllRoutesWrapper} from "Components/views/AllRoutesWrapper";
-import {FavoritesWrapper} from "Components/views/FavoritesCard";
+import {AllRoutesWrapper} from "../views/AllRoutesWrapper";
+import {FavoritesWrapper} from "../views/FavoritesCard";
 import {ErrorCard} from "../views/ErrorCard";
 import log from 'loglevel';
 import { LoadingCard } from '../views/LoadingCard';
-import NearMeAndFavorites  from '../pageStructure/NearMeAndFavorites';
+import NearMeAndFavorites  from './NearMeAndFavorites';
 import {noMapNeededCardTypes} from "../../js/updateState/NavigationEffect";
 
 function SideBar  () {
