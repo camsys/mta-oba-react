@@ -51,7 +51,10 @@ const MiniStopDirectionList =({routeDirectionDatum,stopId, }:{routeDirectionDatu
     if(stopCardVehicleData!==null){
         stopCardVehicleData.forEach((vehicleDatum:VehicleRtInterface)=>{
             if(vehicleDataByDestination.has(vehicleDatum.destination)){
-                vehicleDataByDestination.get(vehicleDatum.destination).push(vehicleDatum)
+                const existing = vehicleDataByDestination.get(vehicleDatum.destination);
+                if(existing) {
+                    existing.push(vehicleDatum);
+                }
             }else{
                 vehicleDataByDestination.set(vehicleDatum.destination,[vehicleDatum])
             }
@@ -103,7 +106,7 @@ const RouteDirection = ({routeDirectionDatum,stopId, collapsed}:
         ? OBA.Util.ISO8601StringToDate(vehiclesApproachingStopsState[routeAndDir+updatedTimeIdentifier]).getTime()
         : null
     let {getServiceAlert} = useServiceAlert();
-    let hasServiceAlert = getServiceAlert({abbreviatedRouteId: routeId, routeAgencyAndId: routeDirectionDatum.routeId, routeAndDirection: routeAndDir})!==null
+    let hasServiceAlert = getServiceAlert({abbreviatedRouteId: routeId, routeAgencyAndId: routeDirectionDatum.routeId.toString(), routeAndDirection: routeAndDir})!==null
     console.log("checking for service alert in StopCard.RouteDirection with id ",routeId," and identifier ",routeAndDir," and identifier ",routeAndDir," result: ",hasServiceAlert);
     log.info("StopCard RouteDirection stopCardVehicleData",stopCardVehicleData,lastUpdateTime)
 
@@ -115,7 +118,10 @@ const RouteDirection = ({routeDirectionDatum,stopId, collapsed}:
     if(stopCardVehicleData!==null){
         stopCardVehicleData.forEach((vehicleDatum:VehicleRtInterface)=>{
             if(vehicleDataByDestination.has(vehicleDatum.destination)){
-                vehicleDataByDestination.get(vehicleDatum.destination).push(vehicleDatum)
+                const existing = vehicleDataByDestination.get(vehicleDatum.destination);
+                if(existing) {
+                    existing.push(vehicleDatum);
+                }
             }else{
                 vehicleDataByDestination.set(vehicleDatum.destination,[vehicleDatum])
             }

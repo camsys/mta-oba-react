@@ -102,11 +102,13 @@ function scrollToSidebarTop(){
     // log.info("boop scrolling to top")
     // scroll #sidebar .sidebar-content to top, animate
     let sidebar = document.getElementById("sidebar");
-    let sidebarContent = sidebar.querySelector(".sidebar-content");
-    sidebarContent.scrollTo({
-        top: 0,
-        behavior: "smooth"
-    });
+    let sidebarContent = sidebar?.querySelector(".sidebar-content");
+    if (sidebarContent) {
+        sidebarContent.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        });
+    }
 }
 
 async function getData(card:Card,stops: StopsObject,routes:RoutesObject,address:string):Promise<Card>{
@@ -246,20 +248,20 @@ export const useNavigation = () =>{
             : searchTerm.toUpperCase();
         
         if(searchTerm===allRoutesSearchTerm){
-            document.getElementById('search-input').blur();
+            document.getElementById('search-input')?.blur();
             scrollToSidebarTop();
             await allRoutesSearch()
             return
         }
         if(searchTerm===favoritesSearchTerm){
-            document.getElementById('search-input').blur();
+            document.getElementById('search-input')?.blur();
             scrollToSidebarTop();
             await favoritesSearch()
             return
         }
         if(nearbySearchTerms.has(searchTerm)){
             log.info("searching for nearby stops and routes");
-            document.getElementById('search-input').blur();
+            document.getElementById('search-input')?.blur();
             scrollToSidebarTop();
             await navigator.geolocation.getCurrentPosition(
                 (position) => {
@@ -282,13 +284,13 @@ export const useNavigation = () =>{
             vehicleSearch(routeId,vehicleId);
             return;
         }
-        document.getElementById('search-input').blur();
+        document.getElementById('search-input')?.blur();
         scrollToSidebarTop();
         log.info("fetch search data called, generating new card",state,searchTerm)
         if (performNewSearch(searchTerm,state?.currentCard)) {
             log.info("search term is new, generating new card",searchTerm,state?.currentCard);
             let currentCard;
-            document.getElementById('search-input').blur();
+            document.getElementById('search-input')?.blur();
             scrollToSidebarTop();
             if(searchTerm==null||searchTerm==""||searchTerm=="#"|| !(searchTerm) || !(searchTerm.trim())){
                 currentCard = getHomeCard(state?.currentCard);
@@ -323,14 +325,14 @@ export const useNavigation = () =>{
                     log.error('There was a problem with the fetch operation:', error);
                     currentCard.setToError(error);
                 } finally {
-                    document.getElementById('search-input').blur();
+                    document.getElementById('search-input')?.blur();
                     scrollToSidebarTop();
                 }
                 setState((prevState) => ({...prevState,renderCounter:prevState.renderCounter+1}));
             } 
             updateWindowHistory(searchTerm,currentCard.uuid);
         }
-        document.getElementById('search-input').blur();
+        document.getElementById('search-input')?.blur();
         scrollToSidebarTop();
     }
 

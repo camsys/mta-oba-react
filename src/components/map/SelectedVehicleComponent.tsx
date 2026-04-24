@@ -22,7 +22,7 @@ const MAX_NEXT_STOPS = 3;
 
 const createVehicleIcon = (vehicleDatum: VehicleRtInterface):L.Icon => {
     let scheduled = vehicleDatum.hasRealtime?"":"scheduled/"
-    let imgDegrees = vehicleDatum.bearing - vehicleDatum.bearing%5
+    let imgDegrees = (vehicleDatum.bearing ?? 0) - (vehicleDatum.bearing ?? 0)%5
     let vehicleImageUrl = "img/vehicle/"+scheduled+"vehicle-"+imgDegrees+".png"
     let icon = L.icon({
         iconUrl: vehicleImageUrl,

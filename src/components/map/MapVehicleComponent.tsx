@@ -14,7 +14,7 @@ const COMPONENT_IDENTIFIER = "MapVehicleComponent"
 
 
 function MapVehicleComponent  (
-    {vehicleDatum,vehicleRefs,vehicleIcon}:{vehicleDatum:VehicleRtInterface,vehicleRefs:React.MutableRefObject<Map<string,typeof Marker>>,vehicleIcon:L.Icon}) :JSX.Element{
+    {vehicleDatum,vehicleRefs,vehicleIcon}:{vehicleDatum:VehicleRtInterface,vehicleRefs:React.MutableRefObject<Map<string,L.Marker>>,vehicleIcon:L.Icon}) :JSX.Element{
 
     // let targetVehicleId = state.currentCard.vehicleId
     // log.info('generating mapVehicle: ',vehicleDatum.vehicleId,vehicleDatum)
@@ -48,8 +48,8 @@ function MapVehicleComponent  (
                             }}}
                        ref={r=>{
                            // log.info("ref for vehicle component",vehicleDatum,r);
-                           typeof vehicleRefs!=='undefined'
-                               ?vehicleRefs.current.set(vehicleDatum.vehicleId,r):null
+                           if(typeof vehicleRefs!=='undefined' && r)
+                               vehicleRefs.current.set(vehicleDatum.vehicleId,r)
                        }}
                        keyboard={false}
     >

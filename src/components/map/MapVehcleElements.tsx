@@ -42,7 +42,7 @@ export const MapVehicleElements = () =>{
         vehicleSearch(routeId,vehicleId)
     }
 
-    const createVehicleIcon = (vehicleDatum):L.Icon => {
+    const createVehicleIcon = (vehicleDatum: VehicleRtInterface):L.Icon => {
         let scheduled = vehicleDatum.hasRealtime?"":"scheduled/"
         let imgDegrees = vehicleDatum.bearing - vehicleDatum.bearing%5
         let vehicleImageUrl = "img/vehicle/"+scheduled+"vehicle-"+imgDegrees+".png"

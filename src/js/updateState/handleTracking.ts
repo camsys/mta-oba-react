@@ -20,20 +20,22 @@ const useTitleInsteadOfInnerText = new Set([
 ]);
 
 
-const getSessionUuid = () => {
+const getSessionUuid = (): string => {
   log.info("Retrieving session UUID");
   let sessionUuid = sessionStorage.getItem("uuid") 
   if(!sessionUuid) {
     log.info("No session UUID found in sessionStorage, checking URL parameters");
     sessionUuid = new URLSearchParams(window.location.search).get("uuid");
-    sessionStorage.setItem("uuid", sessionUuid);
+    if(sessionUuid) {
+      sessionStorage.setItem("uuid", sessionUuid);
+    }
   }
   if (!sessionUuid) {
     sessionUuid = uuidv4();
     log.info("No session UUID found, generating new one:", sessionUuid);
     sessionStorage.setItem("uuid", sessionUuid);
   }
-  return sessionUuid;
+  return sessionUuid as string;
 }
 
 const clickHandler = (e: MouseEvent) => {

@@ -51,10 +51,10 @@ export const VehicleCardContentComponent = ({routeMatch,vehicleDatum}
                         return(
                             <li
                             className="pb-2"
-                            onMouseEnter={() => highlightId(vehicleArrival.stopId)}
+                            onMouseEnter={() => vehicleArrival.stopId ? highlightId(vehicleArrival.stopId as any) : null}
                             onMouseLeave={() => highlightId(null)}
                             key={vehicleArrival.stopId}>
-                                <a className="text-base" href="#" onClick={(e) => {e.preventDefault();search(vehicleArrival.stopId)}}>{vehicleArrival.stopName}</a>
+                                <a className="text-base" href="#" onClick={(e) => {e.preventDefault();vehicleArrival.stopId && search(vehicleArrival.stopId)}}>{vehicleArrival.stopName}</a>
                                 <span className="stop-details -mt-1 ml-2">
                                     {OBA.Util.getArrivalEstimateForISOString(vehicleArrival.ISOTime,vehicleDatum.lastUpdate)}
                                     {vehicleArrival.prettyDistance}

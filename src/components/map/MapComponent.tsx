@@ -601,22 +601,24 @@ const MapEvents = ({userHasAdjustedMapOffMainElement, selectedElementLocation}: 
 
             const popupContent = e.popup.getElement();
             log.info("popup opened", popupContent);
-            popupContent.addEventListener('click', function (event) {
-                if (event.target.matches('.close-map')) {
-                    // log.info('boop popup button clicked');
-                    var mapWrap = document.querySelector('#map-wrap');
-                    var mapToggle = document.querySelector('#map-toggle');
-                    if (mapWrap) {
-                    // log.info('boop map close');
-                    mapWrap.classList.remove('open');
-                    mapToggle.setAttribute('aria-expanded', 'false');
-                    mapToggle.setAttribute('aria-label', 'Toggle Map Visibility (currently hidden)');
-                    mapToggle.setAttribute('aria-pressed', 'false');
-                    }
-                } 
-            });
+            if (popupContent) {
+                popupContent.addEventListener('click', function (event) {
+                    if (event.target && (event.target as HTMLElement).matches('.close-map')) {
+                        // log.info('boop popup button clicked');
+                        var mapWrap = document.querySelector('#map-wrap');
+                        var mapToggle = document.querySelector('#map-toggle');
+                        if (mapWrap && mapToggle) {
+                        // log.info('boop map close');
+                        mapWrap.classList.remove('open');
+                        mapToggle.setAttribute('aria-expanded', 'false');
+                        mapToggle.setAttribute('aria-label', 'Toggle Map Visibility (currently hidden)');
+                        mapToggle.setAttribute('aria-pressed', 'false');
+                        }
+                    } 
+                });
+            }
             
-            const isSearchHere = popupContent.classList.contains("search-here-popup");
+            const isSearchHere = popupContent?.classList.contains("search-here-popup");
             log.info("popup opened", e.popup,"is search here popup", isSearchHere);
             if(!isSearchHere){
                 openPopups.current.forEach((popup) => {
