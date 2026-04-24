@@ -14,9 +14,12 @@ import {MapHighlightingStateProvider} from "./util/MapHighlightingStateComponent
 import {CardType} from "../js/updateState/DataModels";
 import {MapWrapper} from "./map/MapWrapper.tsx";
 import {FavoritesCookieStateProvider} from "./util/MiscStateComponent.tsx";
+import {MapDisplayStateProvider} from "./util/MapDisplayStateComponent";
 import log from 'loglevel';
 import {useSiri} from "../js/updateState/getSiri.tx";
 import { clickHandler, keypressHandler, postClickLog } from '../js/updateState/handleTracking.ts';
+import {useMapDisplayState} from "./util/MapDisplayStateComponent";
+import { MobileStateProvider, useMobileState} from './util/MobileStateComponent.tsx';
 
 
 
@@ -49,7 +52,7 @@ function InitialCardGeneration ({setLoading}:{setLoading:React.Dispatch<React.Se
 
 function TitleAndH1():JSX.Element{
     const { state } = useCardState();
-    let TitleAndH1 = "MTA Bustime BETA - ";
+    let TitleAndH1 = "MTA Bus Time - ";
     let cardType = state.currentCard.type;
     if(cardType === CardType.HomeCard){
         TitleAndH1 += "Home";
@@ -73,6 +76,24 @@ function App  () : JSX.Element{
     log.info("adding app")
     const [loading, setLoading] = useState(true);
     const { updateStateForPopStateEvent } = useNavigation();
+    const { setMapIsOpen } = useMapDisplayState();
+    const { setIsMobile } = useMobileState();
+
+    useEffect(() => {
+        log.info("App root actually rendered/updated");
+    }); // No dependency array = fires every render
+
+    const checkScreenSize = () => {
+        const screenWidth = window.innerWidth;
+        const threshold = 450;
+        if (screenWidth > threshold) {
+            setIsMobile(false);
+            setMapIsOpen(true);
+        } else {
+            setIsMobile(true);
+            setMapIsOpen(false);
+        }
+    };
 
     useEffect(() => {
         const handlePopState = (popStateEvent: PopStateEvent) => {
@@ -89,23 +110,35 @@ function App  () : JSX.Element{
         // return () => window.removeEventListener('popstate', handlePopState);
     }, []);
 
-    useEffect(() => {     
-        document.addEventListener("click", clickHandler, true);
-        // document.addEventListener("keypress", keypressHandler, true);
+    // useEffect(() => {     
+    //     document.addEventListener("click", clickHandler, true);
+    //     // document.addEventListener("keypress", keypressHandler, true);
+    //     return () => {
+    //         document.removeEventListener("click", clickHandler, true);
+    //         // document.removeEventListener("keypress", keypressHandler, true);
+    //     };
+    // }, []);
+
+    useEffect(() => {
+        // Check screen size on initial load
+        checkScreenSize();
+        
+        // Add event listener for window resize
+        window.addEventListener('resize', checkScreenSize);
+        
         return () => {
-            document.removeEventListener("click", clickHandler, true);
-            // document.removeEventListener("keypress", keypressHandler, true);
+            window.removeEventListener('resize', checkScreenSize);
         };
     }, []);
 
-    useEffect(() => {
-        postClickLog();
-        const interval = setInterval(postClickLog, 30*1000);
-        log.info("interval set posting",interval)
-        return () => {
-            clearInterval(interval);
-            postClickLog();};
-    }, []);
+    // useEffect(() => {
+    //     postClickLog();
+    //     const interval = setInterval(postClickLog, 30*1000);
+    //     log.info("interval set posting",interval)
+    //     return () => {
+    //         clearInterval(interval);
+    //         postClickLog();};
+    // }, []);
 
     return (
         <ErrorBoundary>
@@ -127,15 +160,19 @@ export function AppRoot () : JSX.Element{
     return (
         <ErrorBoundary>
             <SearchStateProviders>
-                <VehicleStateProvider>
-                    <VehiclesApproachingStopsProvider>
-                        <FavoritesCookieStateProvider>
+                <FavoritesCookieStateProvider>
+                    <MobileStateProvider>
+                        <MapDisplayStateProvider>
                             <MapHighlightingStateProvider>
-                                <App/>
-                            </MapHighlightingStateProvider>
-                        </FavoritesCookieStateProvider>
-                    </VehiclesApproachingStopsProvider>
-                </VehicleStateProvider>
+                                <VehicleStateProvider>
+                                    <VehiclesApproachingStopsProvider>
+                                        <App/>
+                                        </VehiclesApproachingStopsProvider>
+                                    </VehicleStateProvider>
+                                </MapHighlightingStateProvider>
+                            </MapDisplayStateProvider>
+                        </MobileStateProvider>
+                    </FavoritesCookieStateProvider>
             </SearchStateProviders>
             {log.info("app root loaded")}
         </ErrorBoundary>

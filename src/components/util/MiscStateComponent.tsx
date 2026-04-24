@@ -19,7 +19,7 @@ const FavoritesCookieStateContext = createContext<{
 const FavoritesCookieStateProvider = ({children} : {children:ReactNode}):JSX.Element =>{
     const [favoritesState,setFavoritesState] = useState<FavoritesCookie>(() => {
         let favorites: FavoritesCookie = {favorites:[]}
-        const cookie = Cookies.get(favoritesIdentifier)
+        const cookie = Cookies.get(favoritesCookieIdentifier)
 
         log.info("got favorites",cookie)
 
@@ -58,7 +58,7 @@ const FavoritesCookieStateProvider = ({children} : {children:ReactNode}):JSX.Ele
 
 const setCookies = (cookie: FavoritesCookie): void => {
     log.info("setting cookies: ",cookie,JSON.stringify(cookie))
-    Cookies.set(favoritesIdentifier,JSON.stringify(cookie),{ expires: 365*5 })
+    Cookies.set(favoritesCookieIdentifier,JSON.stringify(cookie),{ expires: 365*5 })
 }
 
 const isValidFavorite = (datum: unknown): boolean => {
@@ -78,8 +78,10 @@ const useFavorite = (): { addFavorite: (datum: StopInterface | RouteInterface) =
     const removeFavorite = (datum:StopInterface | RouteInterface): void =>{
         if(!isValidFavorite(datum)){return}
         let targetId = getId(datum)
+        // TODO: IF FAVORITES WORK DELETE THIS LINE
+        // let targetId = isRouteInterface(datum)? datum?.routeId : datum?.id
         let newFavorites: FavoritesCookie = {favorites: [...favoritesState.favorites]}
-        newFavorites["favorites"] = newFavorites.favorites.filter(d=> getId(d)?.toString() !== targetId?.toString()) as any
+        newFavorites[favoritesCookieIdentifier] = favoritesState.favorites.filter(d=> getId(d) !== targetId)
         setCookies(newFavorites)
         log.info("previous favorites state",favoritesState)
         setFavoritesState(newFavorites)
@@ -116,6 +118,6 @@ const useFavorite = (): { addFavorite: (datum: StopInterface | RouteInterface) =
 
 
 
-const favoritesIdentifier = "favorites"
+const favoritesCookieIdentifier = "favorites"
 
-export {FavoritesCookieStateContext,FavoritesCookieStateProvider,favoritesIdentifier,useFavorite}
+export {FavoritesCookieStateContext,FavoritesCookieStateProvider,favoritesCookieIdentifier,useFavorite}

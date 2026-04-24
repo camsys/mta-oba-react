@@ -68,7 +68,6 @@ export const FavoritesMenu = () => {
     }, [favoritesState]);
 
 
-    // let {jsonCookie} = useJsonCookie("favorites")
     log.info("favorites cookie:")
     log.info("favorites cookie:", favoritesState)
 

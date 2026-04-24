@@ -8,48 +8,19 @@ import { OBA } from "../../js/oba";
 import log from 'loglevel';
 import stopPopupIcon from "../../img/icon/bus-stop.svg"
 import {StarBorderIcon, BusStopIcon, VehicleIcon} from "../shared/icons";
+import { SelectableFavoriteRouteCard, SelectableFavoriteStopCard } from "./CardHeaderComponents";
 
 
 
-
-export const FavoriteItem = ({datum}) =>{
+export const FavoriteItem = ({datum} : {datum: RouteInterface | StopInterface}) =>{
    let {removeFavorite} = useFavorite();
     let {search} = useNavigation()
 
-
     if(isRouteInterface(datum)){
-        let routeMatch = datum as RouteInterface
-        return(<React.Fragment>
-            <div className={`card route-card ${routeMatch.routeId}`} onClick={()=>search(routeMatch.routeId)}>
-                <button
-                    className="card-header link-header"
-                    style={{ borderColor: "#" + routeMatch.color }}
-                    tabIndex={0}
-                >
-                    <h3 className="card-title flex items-center">
-                        <StarBorderIcon className="icon w-5 h-5 mb-[0.385rem]"/>
-                        <VehicleIcon className="icon w-[1.125rem] h-[1.125rem] mb-1 fill-mta-dark-blue"/>
-                        {OBA.Config.noWidows(routeMatch.routeTitle)}
-                    </h3>
-                </button>
-            </div>  
-        </React.Fragment>)
+        return(<SelectableFavoriteRouteCard routeMatch={datum}/>)
     }
     if(isStopInterface(datum)){
-        let stopDatum = datum as StopInterface
-        return(<React.Fragment>
-            <div className={`card route-card ${stopDatum.id.id}`} onClick={()=>search(stopDatum.id.id)}>
-                <button
-                    className="card-header link-header border-color-mta-dark-blue"
-                    tabIndex={0}
-                >
-                    <h3 className="card-title flex items-center">
-                        <StarBorderIcon className="icon w-5 h-5 mb-[0.4rem]"/>
-                        <BusStopIcon className="icon w-5 h-6 mb-1"/>
-                        {OBA.Config.noWidows(stopDatum.name)}</h3>
-                </button>
-            </div>
-        </React.Fragment>)
+        return(<SelectableFavoriteStopCard stopDatum={datum}/>)
     }
 }
 

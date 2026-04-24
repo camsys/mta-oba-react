@@ -56,7 +56,7 @@ export function MeeplesComponentLi({vehicleDatum}: {VehicleRtInterface}):JSX.Ele
 
 interface VehicleComponentProps {
     vehicleDatum: VehicleRtInterface,
-    tabbable: number,
+    tabbable: number|boolean,
     vehicleSearchFunction: (routeId: AgencyAndId, vehicleId: string) => void
 }
 
@@ -72,6 +72,7 @@ function VehicleComponentWithoutSearchSpecified({vehicleDatum,tabbable, vehicleS
 
 
 function VehicleComponentBase({vehicleDatum,tabbable, vehicleSearchFunction}: VehicleComponentProps):JSX.Element{
+    tabbable===-1?tabbable=false:tabbable=true
 
     // log.info("generating VehicleComponent",vehicleDatum)
     let hasArrivalData = typeof vehicleDatum?.vehicleArrivalData!=='undefined';

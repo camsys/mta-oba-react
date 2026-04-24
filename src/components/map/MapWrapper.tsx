@@ -7,22 +7,30 @@ import RefreshComponent from "../views/RefreshComponent";
 import {useContext} from "react";
 import {useCardState} from "../util/CardStateComponent.tsx";
 import {Card, CardType} from "../../js/updateState/DataModels";
-
-
+import {useMapDisplayState} from "../util/MapDisplayStateComponent";
+import {useSiri} from "../../js/updateState/getSiri.tx";
+import {noMapNeededCardTypes} from "../../js/updateState/NavigationEffect.ts";
+import { useNavigation } from 'react-router';
 
 
 
 export function MapWrapper  () : JSX.Element {
 
-
-    const [mapVisible,setMapVisible] = useState(false)
+    const { mapIsOpen, setMapIsOpen } = useMapDisplayState()
+    const { updateSiriRouteEffect } = useSiri()
 
     function mapToggle():null{
-        setMapVisible(!mapVisible)
+        const newMapOpenState = !mapIsOpen
+        setMapIsOpen(newMapOpenState)
+        // If opening the map, kick off updateSiriRouteEffect
+        if (newMapOpenState) {
+            updateSiriRouteEffect()
+        }
+        return null
     }
 
     const ariaLabel = () : string =>{
-            return mapVisible ? 'Toggle Map Visibility (currently visible)' : 'Toggle Map Visibility (currently hidden)'
+            return mapIsOpen ? 'Toggle Map Visibility (currently visible)' : 'Toggle Map Visibility (currently hidden)'
     }
 
     const { state } = useCardState();
@@ -31,11 +39,11 @@ export function MapWrapper  () : JSX.Element {
     log.info("adding map-wrapper")
     return(
         <ErrorBoundary>
-            <div id="map-wrap" className={state.currentCard.type === CardType.HomeCard ? "home" : ""}>
+            <div id="map-wrap" className={noMapNeededCardTypes.includes(state.currentCard.type) ? "home" : ""}>
                 <div className="bottom-buttons" id="map-trigger-wrap">
-                    {state.currentCard.type === CardType.HomeCard ? null : <RefreshComponent extraClasses={" button"}/>}
-                    <button id="map-toggle" className="button" aria-controls="map" aria-expanded={mapVisible} aria-pressed={mapVisible}
-                            aria-label={ariaLabel} onClick={mapToggle}><span className="label flex gap-1"><span className="hide-label">Hide </span>Map</span>
+                    {noMapNeededCardTypes.includes(state.currentCard.type) ? null : <RefreshComponent extraClasses={" button"}/>}
+                    <button id="map-toggle" className="button" aria-controls="map" aria-expanded={mapIsOpen} aria-pressed={mapIsOpen}
+                            aria-label={ariaLabel()} onClick={mapToggle}><span className="label flex gap-1"><span className="hide-label">Hide </span>Map</span>
                     </button>
                 </div>
                 <ul className="map-legend">

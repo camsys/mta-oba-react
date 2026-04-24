@@ -29,6 +29,11 @@ const vehicleDelimiter = ":"
 
 // }
 
+export const noMapNeededCardTypes = [CardType.HomeCard, CardType.FavoritesCard, CardType.AllRoutesCard]
+export const allRoutesSearchTerm = "View All Routes";
+export const favoritesSearchTerm = "View Favorites";
+export const nearbySearchTerms = new Set(["NEARBY","NEARBYROUTES","NEARBYSTOPS","NEARME", "NEAR ME"])
+
 function processRouteSearch(route,card:Card,stops: StopsObject,routes:RoutesObject):RouteMatch {
     let match = new RouteMatch(route)
     log.info("processing route search results",route,card,stops,routes, match)
@@ -209,7 +214,8 @@ const getBaseAddress =()=>{
 }
 
 const getSearchAddress=(searchTerm:string, card: Card)=>{
-    let out = getBaseAddress() + OBA.Config.searchUrl + "?q=" + searchTerm + getSearchTermAdditions(card)
+    const ampersandToAnd = (input:string) => String(input).replace(/&/g, 'and');
+    let out = getBaseAddress() + OBA.Config.searchUrl + "?q=" + ampersandToAnd(searchTerm) + getSearchTermAdditions(card)
     log.info("generating search address for: " + out)
     return  out
 
@@ -227,11 +233,7 @@ export const useNavigation = () =>{
     const { state, setState } = useCardState();
     const routes = useRoutes()
     const stops = useStops()
-    const allRoutesSearchTerm = "allRoutes";
-    const favoritesSearchTerm = "favorites";
-    const nearbySearchTerms = new Set(["NEARBY","NEARBYROUTES","NEARBYSTOPS","NEARME", "NEAR ME"])
     log.debug("navigation effect state and contexts", state, routes, stops)
-
 
     const search = async (searchTerm :string|AgencyAndId) =>{
         log.info("searching for: ",searchTerm, state);
@@ -452,7 +454,7 @@ export const useNavigation = () =>{
 
     const favoritesSearch = async () =>{
         log.info("searching for favorites")
-        let searchTerm = "favorites";
+        let searchTerm = favoritesSearchTerm;
         try {
             log.info("favorites requested, generating new card",state);
             if (state?.currentCard?.type !== CardType.FavoritesCard) {
@@ -597,8 +599,10 @@ export const useNavigation = () =>{
 
     return { search, generateInitialCard, 
         vehicleSearch, allRoutesSearch, favoritesSearch, 
-        updateStateForPopStateEvent, goBack,goForward };
+        updateStateForPopStateEvent, goBack, goForward };
 }
+
+
 
 
 

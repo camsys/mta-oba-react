@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React, {ComponentPropsWithoutRef, useContext} from 'react';
 import {cn} from "../util/coreUtils";
 
 
@@ -27,7 +27,7 @@ const ChangeViewButton = ({
       className={cn(
         `px-4 py-4 text-white flex items-center  w-full
         justify-start gap-2 rounded-sm font-bold 
-        no-underline border-none transition-opacity focus:outline focus:outline-1 focus:outline-mta-dark-blue focus:outline-offset-1 focus:ring-1 focus:ring-mta-dark-blue focus:ring-offset-1 focus:ring-offset-[#fff]`,
+        no-underline border-none transition-opacity focus-visible:outline focus-visible:outline-2 focus-visible:outline-mta-dark-blue focus-visible:outline-offset-2 focus-visible:ring-2 focus-visible:ring-mta-dark-blue focus-visible:ring-offset-2 focus-visible:ring-offset-[#fff]`,
         className
       )}
       type = "button"
@@ -42,14 +42,78 @@ const ChangeViewButton = ({
 };
 
 
+// // has multiple variants rather than accepting color as prop becasue tailwind struggles with dynamic classes
+function UnderlineOnFocusElement({ 
+    as: Element = 'a', 
+    variant = 'mta_yellow', 
+    className, 
+    children, 
+    ...props 
+}: Props) {
+    const variants = {
+        mta_yellow: "focus-visible:decoration-mta-yellow group-focus-visible:decoration-mta-yellow",
+        black: "focus-visible:decoration-black group-focus-visible:decoration-black",
+        mta_blue: "focus-visible:decoration-mta-blue group-focus-visible:decoration-mta-blue",
+        white: "focus-visible:decoration-white group-focus-visible:decoration-white"
+    };
 
-function UnderlineOnFocusElement ({elementType: Element = 'a', children, className, ...props}: {elementType?: keyof JSX.IntrinsicElements, children: string | JSX.Element, className?: string, [key: string]: any}) {
     return (
-        <Element className={cn("focus:underline focus:border-none focus:outline-none focus:decoration-mta-yellow focus:decoration-3", className)} {...props}>
+        <Element 
+            className={cn(
+                "underline-offset-2 focus-visible:underline focus-visible:outline-none",
+                variants[variant],
+                className
+            )} 
+            {...props}
+        >
             {children}
         </Element>
-    )
+    );
 }
+
+
+
+// todo: we're aiming to move to Compound Component Pattern for shared components now that we've moved to tailwind
+type SlotProps = ComponentPropsWithoutRef<'div'>;
+
+const MainSlot = ({ children, className, ...props }: SlotProps) => (
+    <div {...props} className={cn("flex-grow min-w-0", className)}>
+        {children}
+    </div>
+);
+
+const SideSlot = ({ children, className, ...props }: SlotProps) => (
+    <div {...props} className={cn("flex-shrink-0 flex items-center", className)}>
+        {children}
+    </div>
+);
+
+function LeftExpandsRoot({ children, className, ...props }: SlotProps) {
+    return (
+        <div {...props} className={cn("flex items-start gap-2", className)}>
+            {children}
+        </div>
+    );
+}
+
+
+/**
+ * Use this component for standard list items or headers where the left 
+ * content should take up all available space and the right content 
+ * should stay fixed (e.g., Route Name + Alert Icon).
+ * * @example
+ * <LeftExpands>
+ * <LeftExpands.Main>Description</LeftExpands.Main>
+ * <LeftExpands.Side>Status</LeftExpands.Side>
+ * </LeftExpands>
+ */
+export const LeftExpands = Object.assign(LeftExpandsRoot, {
+    Main: MainSlot,
+    Side: SideSlot,
+});
+
+
+
 
 
 

@@ -13,8 +13,8 @@ import {ViewSearchItem} from "./MiscComponents";
 import log from 'loglevel'
 import {MeeplesComponentLi} from "./VehicleComponent";
 
-export const VehicleCardContentComponent = ({routeMatch,vehicleDatum,serviceAlertIdentifier}
-                                                :{routeMatch:RouteMatch,vehicleDatum:VehicleRtInterface,serviceAlertIdentifier : string})
+export const VehicleCardContentComponent = ({routeMatch,vehicleDatum}
+                                                :{routeMatch:RouteMatch,vehicleDatum:VehicleRtInterface})
                                                 : JSX.Element=>{
     const { search } = useNavigation();
     // log.info("generating vehicleCardContentComponent for ",vehicleDatum.vehicleId)
@@ -30,12 +30,12 @@ export const VehicleCardContentComponent = ({routeMatch,vehicleDatum,serviceAler
                 <MeeplesComponentLi vehicleDatum={vehicleDatum}/>
             </ul>
             <div className="mb-3">
-                <ServiceAlertContainerComponent routeId={routeMatch.routeId.id} serviceAlertIdentifier={serviceAlertIdentifier} collapsed={false}/>
+                <ServiceAlertContainerComponent abbreviatedRouteId={routeMatch.routeId.id} routeAgencyAndId={routeMatch.datumId.toString()} collapsed={false}/>
             </div>
             <ul className="menu icon-menu card-menu border-b border-b-mta-blue mb-4">
                 <li>
                     {(routeMatch && vehicleDatum)?
-                        (<ViewSearchItem datumId={routeMatch.routeId} text={"Full Route"}/>)
+                        (<ViewSearchItem datumId={routeMatch.datumId} text={"Full Route"}/>)
                         :
                         (<ul className="card-details">
                             <li>{`The vehicle {vehicleId} can't be found`}</li>
@@ -123,7 +123,6 @@ function VehicleCard ({routeMatch,vehicleId}: { routeMatch: RouteMatch, vehicleI
 
 
     log.info("generating VehicleCard ",routeId,vehicleDatum,vehicleState[routeId+updatedTimeIdentifier])
-    let serviceAlertIdentifier = routeMatch.routeId
     return (
         <div className={`card vehicle-card ${routeMatch.routeId}`}>
             <div className="card-header" style={{ borderColor: '#'+routeMatch.color}}
@@ -140,7 +139,7 @@ function VehicleCard ({routeMatch,vehicleId}: { routeMatch: RouteMatch, vehicleI
             </div>
             <div className="card-content">
                 {/*{log.info("adding vehicelcard content")}*/}
-                {vehicleDatum?<VehicleCardContentComponent routeMatch={routeMatch} vehicleDatum={vehicleDatum} serviceAlertIdentifier={serviceAlertIdentifier}/>:null}
+                {vehicleDatum?<VehicleCardContentComponent routeMatch={routeMatch} vehicleDatum={vehicleDatum}/>:null}
             </div>
         </div>
     );

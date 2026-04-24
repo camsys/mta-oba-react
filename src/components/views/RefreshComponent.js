@@ -3,6 +3,7 @@ import {useVehicleState} from "Components/util/VehicleStateComponent";
 import log from "loglevel";
 import {useCardState} from "Components/util/CardStateComponent";
 import {useSiri} from "../../js/updateState/getSiri.tx";
+import { UnderlineOnFocusElement } from "../shared/common";
 
 
 export default function getRefreshComponent({extraClasses}){
@@ -15,11 +16,11 @@ export default function getRefreshComponent({extraClasses}){
         log.info("refresh vehicle loading initiated")
         updateSiriEffect()
     }
-    useEffect(()=>{
+    useEffect(()=>{ 
         time = time.toLocaleString('en-US', { hour: 'numeric',  minute: 'numeric', hour12: true , second:'numeric'});
     },[vehicleState])
 
-    return(<button className={`refresh-button ${extraClasses}`} aria-label="Refresh the data" onClick={handleRefresh}>
+    return(<UnderlineOnFocusElement as="button" variant="mta_blue" className={`refresh-button ${extraClasses}`} aria-label="Refresh the data" onClick={handleRefresh}>
                 <span className="label">
                     <span className="svg-icon-wrap" role="presentation" aria-hidden="true">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none"
@@ -29,4 +30,4 @@ export default function getRefreshComponent({extraClasses}){
                     Refresh <span className="updated-at">(<span className="updated">updated&nbsp;
                     </span>{time})</span>
                 </span>
-            </button>)}
+            </UnderlineOnFocusElement>)}

@@ -8,6 +8,7 @@ import {
 } from "../../components/util/VehicleStateComponent";
 import {siriGetVehiclesForRoutesEffect, siriGetVehiclesForVehicleViewEffect} from "./SiriEffects";
 import {siriGetVehiclesForStopViewEffect} from "./SiriStopEffects";
+import {useMapDisplayState} from "../../components/util/MapDisplayStateComponent";
 
 
 export const useSiri = () => {
@@ -15,11 +16,15 @@ export const useSiri = () => {
     const { state} = useCardState()
     let {vehicleState, setState } = useVehicleState();
     let {vehiclesApproachingStopsState, setVehiclesApproachingStopsState } = useVehicleApproachingStops();
+    const { mapIsOpen } = useMapDisplayState()
     const updateSiriEffect = () => {
         if (state.currentCard.type === CardType.VehicleCard) {
             siriGetVehiclesForVehicleViewEffect(state.currentCard, vehicleState, setState)
         } else {
-            siriGetVehiclesForRoutesEffect(state.currentCard, vehicleState, setState)
+            // Only call siriGetVehiclesForRoutesEffect if map is open
+            if (mapIsOpen || state.currentCard.type !== CardType.StopCard) {
+                siriGetVehiclesForRoutesEffect(state.currentCard, vehicleState, setState)
+            }
             if (state.currentCard.type === CardType.StopCard) {
                 siriGetVehiclesForStopViewEffect(state.currentCard, vehiclesApproachingStopsState, setVehiclesApproachingStopsState)
             }
@@ -29,6 +34,11 @@ export const useSiri = () => {
         }
         log.info("siri call for vehicle loading completed")
     }
-    return {updateSiriEffect}
+
+    const updateSiriRouteEffect = () => {
+        siriGetVehiclesForRoutesEffect(state.currentCard, vehicleState, setState)
+    }
+
+    return {updateSiriEffect, updateSiriRouteEffect}
 
 }
