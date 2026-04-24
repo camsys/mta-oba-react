@@ -13,14 +13,6 @@ declare module "*/views/RefreshComponent.js";
 declare module "*/js/updateState/NavigationEffect.js";
 declare module "*/js/updateState/DataModels.js"
 declare module "*/pageStructure/SideBar"
-declare module "./components/util/RunScriptAfterRender" {
-  import React from 'react';
-  export const RunScriptAfterRender: (
-    WrappedComponent: React.ComponentType<any>,
-    scriptSrc: string
-  ) => (props: any) => JSX.Element;
-  export const ScriptForAfterCollapsible: string;
-}
 declare module "./js/updateState/SiriEffects" {
   export const siriGetVehiclesForRoutesEffect: (routeId: string, cardType: any) => void;
   export const siriGetVehiclesForVehicleViewEffect: (routeId: string, vehicleId: string, cardType: any) => void;
