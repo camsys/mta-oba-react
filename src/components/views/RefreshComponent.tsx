@@ -2,7 +2,7 @@ import React, {useContext, useEffect, useState} from "react";
 import {useVehicleState} from "../util/VehicleStateComponent";
 import log from "loglevel";
 import {useCardState} from "../util/CardStateComponent";
-import {useSiri} from "../../js/updateState/getSiri.tx";
+import {useSiri} from "../../js/updateState/getSiri";
 import { UnderlineOnFocusElement } from "../shared/common";
 
 

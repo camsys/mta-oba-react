@@ -16,7 +16,7 @@ import {MapWrapper} from "./map/MapWrapper";
 import {FavoritesCookieStateProvider} from "./util/MiscStateComponent";
 import {MapDisplayStateProvider} from "./util/MapDisplayStateComponent";
 import log from 'loglevel';
-import {useSiri} from "../js/updateState/getSiri.tx";
+import {useSiri} from "../js/updateState/getSiri";
 import { clickHandler, keypressHandler, postClickLog } from '../js/updateState/handleTracking';
 import {useMapDisplayState} from "./util/MapDisplayStateComponent";
 import { MobileStateProvider, useMobileState} from './util/MobileStateComponent';

@@ -8,7 +8,7 @@ import {useContext} from "react";
 import {useCardState} from "../util/CardStateComponent";
 import {Card, CardType} from "../../js/updateState/DataModels";
 import {useMapDisplayState} from "../util/MapDisplayStateComponent";
-import {useSiri} from "../../js/updateState/getSiri.tx";
+import {useSiri} from "../../js/updateState/getSiri";
 import {noMapNeededCardTypes} from "../../js/updateState/NavigationEffect";
 import { useNavigation } from 'react-router';
 
