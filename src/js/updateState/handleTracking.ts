@@ -21,7 +21,7 @@ const useTitleInsteadOfInnerText = new Set([
 ]);
 
 
-const getSessionUuid = (card:Card|null): string => {
+const getSessionUuid = (card?: Card|null): string => {
   log.info("Retrieving session UUID");
   let sessionUuid = sessionStorage.getItem("uuid") 
   if(!sessionUuid) {
