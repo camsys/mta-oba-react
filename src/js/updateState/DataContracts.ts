@@ -1,4 +1,8 @@
 
+
+
+// ---------SIRI Data Contracts----------
+
 export interface SiriServiceDelivery {
     ResponseTimestamp: string;
     VehicleMonitoringDelivery?: VehicleMonitoringDelivery[];
@@ -92,4 +96,33 @@ export interface SiriResponse {
 
 export interface SiriWrapper {
     siri?: SiriResponse;
+}
+
+
+
+
+
+// ------------- SEARCH CARD DATA CONTRACTS --------------
+
+
+export interface StopData {
+    name: string;
+    id: string;
+    latitude: number;
+    longitude: number;
+    stopDirection: string;
+}
+
+export interface RouteDirectionData {
+    directionId: string;
+    hasUpcomingScheduledService: boolean;
+    destination: string;
+    stops: StopData[];
+    polylines: (string | PolylineData)[];
+}
+
+export interface PolylineData {
+    line?: string;
+    detourStatus?: string;
+    disruptionStatus?: string;
 }

@@ -1,6 +1,7 @@
 import {OBA} from "../oba";
 import {LatLngLiteral} from "leaflet";
 import log from 'loglevel';
+import {MonitoredCall, MonitoredVehicleJourney, PtSituationElement, StopData} from "./DataContracts";
 
 export const primaryDelimiter = "_";
 
@@ -63,7 +64,6 @@ export interface RouteInterface extends ObaDatumInterface{
 
 
 export interface ServiceAlertInterface {
-    json: any;
     descriptionParts: string[];
     title: string;
 }
@@ -148,7 +148,7 @@ export interface RouteMatchDirectionInterface {
 }
 
 
-export function createStopInterface(stopJson: any): StopInterface {
+export function createStopInterface(stopJson: StopData): StopInterface {
     return {
         datumName: stopJson.name,
         datumId: AgencyAndId.get(stopJson.id),
@@ -159,14 +159,13 @@ export function createStopInterface(stopJson: any): StopInterface {
     };
 }
 
-export function createServiceAlertInterface(serviceAlertJson: any): ServiceAlertInterface {
+export function createServiceAlertInterface(serviceAlertJson: PtSituationElement): ServiceAlertInterface {
     return {
-        json: serviceAlertJson,
         descriptionParts: serviceAlertJson.Description.split("\n"),
         title: serviceAlertJson.Summary
     };
 }
-export function createVehicleArrivalInterface(mc: any): VehicleArrivalInterface {
+export function createVehicleArrivalInterface(mc: MonitoredCall): VehicleArrivalInterface {
     const distances = mc?.Extensions?.Distances || {};
     return {
         prettyDistance: distances.PresentableDistance,
@@ -179,7 +178,7 @@ export function createVehicleArrivalInterface(mc: any): VehicleArrivalInterface 
     };
 }
 
-export function createVehicleDepartureInterface(mvj: any,updateTime:Date): VehicleDepartureInterface {
+export function createVehicleDepartureInterface(mvj: MonitoredVehicleJourney, updateTime: Date): VehicleDepartureInterface {
     let departureTimeAsDateTime = OBA.Util.ISO8601StringToDate(mvj.OriginAimedDepartureTime);
     let isDepartureOnSchedule = departureTimeAsDateTime && updateTime ? departureTimeAsDateTime.getTime() >= updateTime.getTime() : false;
     if(isDepartureOnSchedule==null){isDepartureOnSchedule= false;}
@@ -189,7 +188,7 @@ export function createVehicleDepartureInterface(mvj: any,updateTime:Date): Vehic
     }
 }
 
-export function createVehicleRtInterface(mvj: any,updateTime:Date): VehicleRtInterface {
+export function createVehicleRtInterface(mvj: MonitoredVehicleJourney, updateTime: Date): VehicleRtInterface {
     const vehicleArrivalData = [];
 
     if (mvj?.MonitoredCall != null) {
@@ -274,7 +273,7 @@ export function createMapRouteComponentInterface(routeId: string, componentId: s
 }
 
 export function createRouteDirectionComponentInterface(routeId: AgencyAndId, datumId: AgencyAndId, directionId: string, hasUpcomingService:boolean, routeDestination: string, stops: StopInterface[]): RouteDirectionInterface {
-    const routeStopComponentsData = stops.map(stop => createStopInterface(stop));
+    const routeStopComponentsData = stops.map(stop => (stop));
     return {
         routeId,
         datumId,
@@ -302,7 +301,7 @@ export function createRouteMatchDirectionInterface(directionJson: any, routeId: 
         [MapRouteDisruptionStatus.Removed]: []
     };
     const mapStopComponentData: StopInterface[] = [];
-    const stops = directionJson?.stops || [];
+    const stops : StopInterface[] = directionJson?.stops?.map((stop: any) => createStopInterface(stop)) || [];
 
     log.info("createRouteMatchDirectionInterface", directionJson, routeId, color);
 
@@ -335,7 +334,7 @@ export function createRouteMatchDirectionInterface(directionJson: any, routeId: 
         mapRouteComponentDataDict[disruptionStatus].push(mapRouteComponent);
     }
 
-    stops.forEach((stop: any) => mapStopComponentData.push(createStopInterface(stop)));
+    stops.forEach((stop: StopInterface) => mapStopComponentData.push(stop));
 
     return {
         routeId: routeId,
