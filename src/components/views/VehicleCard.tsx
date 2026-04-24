@@ -35,7 +35,7 @@ export const VehicleCardContentComponent = ({routeMatch,vehicleDatum}
             <ul className="menu icon-menu card-menu border-b border-b-mta-blue mb-4">
                 <li>
                     {(routeMatch && vehicleDatum)?
-                        (<ViewSearchItem datumId={routeMatch.datumId} text={"Full Route"}/>)
+                        (<ViewSearchItem datumId={routeMatch.datumId.toString()} text={"Full Route"} collapsed={false}/>)
                         :
                         (<ul className="card-details">
                             <li>{`The vehicle {vehicleId} can't be found`}</li>

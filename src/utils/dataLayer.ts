@@ -60,19 +60,27 @@ export class RoutePolyline extends L.Polyline implements DatumElement {
 }
 
 export class RouteLayerGroup<T extends L.Layer & DatumElement> extends L.LayerGroup implements DatumElement {
-    private datumId: AgencyAndId;
+    private datumId: AgencyAndId | null;
     
 
-    constructor(datumId: AgencyAndId, layers?: T[], options?: L.LayerOptions) {
+    constructor(datumId: AgencyAndId | null, layers?: T[], options?: L.LayerOptions) {
         super(layers, options);
         this.datumId = datumId;
     }
 
-    getDatum(): AgencyAndId {
-        return this.datumId;
+    getDatum(): string {
+        if (!this.datumId) {
+            return '';
+        }
+        const probablyAgencyAndId: AgencyAndId = this.datumId;
+        const indexable = typeof probablyAgencyAndId === 'string' ? probablyAgencyAndId : probablyAgencyAndId.toString();
+        return indexable;
     }
 
     getDatumId(): AgencyAndId {
+        if (!this.datumId) {
+            throw new Error('DatumId is null');
+        }
         return this.datumId;
     }
 }

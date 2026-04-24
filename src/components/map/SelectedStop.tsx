@@ -4,7 +4,7 @@ import {Marker, Popup} from "react-leaflet";
 import L from "leaflet";
 import stopPopupIcon from "../../img/icon/bus-stop.svg"
 import {useNavigation} from "../../js/updateState/NavigationEffect";
-import {CardType, StopInterface} from "../../js/updateState/DataModels";
+import {AgencyAndId, CardType, StopInterface} from "../../js/updateState/DataModels";
 import {useCardState} from "../util/CardStateComponent";
 import {useVehicleApproachingStops, stopSortedFutureVehicleDataIdentifier, updatedTimeIdentifier} from "../util/VehicleStateComponent";
 import {VehicleRtInterface, RouteMatchDirectionInterface} from "../../js/updateState/DataModels";
@@ -37,7 +37,7 @@ function SelectedStopComponent({selectedElementLocation}: {selectedElementLocati
     const StopDirectionData = ({
         routeDirectionDatum,
         stopId
-    }: { routeDirectionDatum: RouteMatchDirectionInterface; stopId: string }): JSX.Element | null => {
+    }: { routeDirectionDatum: RouteMatchDirectionInterface; stopId: AgencyAndId }): JSX.Element | null => {
         const routeAndDir = routeDirectionDatum.datumId.toString() + "_" + routeDirectionDatum.directionId;
         const routeId = routeDirectionDatum.datumId.id;
 
@@ -156,7 +156,8 @@ function SelectedStopComponent({selectedElementLocation}: {selectedElementLocati
                                 route.directions.some(dir => {
                                     const routeAndDir = dir.routeId + "_" + dir.directionId;
                                     const stopCardVehicleData = vehiclesApproachingStopsState[routeAndDir + stopSortedFutureVehicleDataIdentifier];
-                                    return stopCardVehicleData?.has(stopId);
+                                    log.info("checking for approaching vehicles for routeAndDir: ", routeAndDir, " with stopId: ", stopId.toString(), " stopCardVehicleData: ", stopCardVehicleData, " vehiclesApproachingStopsState: ", vehiclesApproachingStopsState)
+                                    return stopCardVehicleData?.has(stopId.toString());
                                 })
                             ) ? (
                                 searchMatch.routeMatches.map((route, routeIdx) =>

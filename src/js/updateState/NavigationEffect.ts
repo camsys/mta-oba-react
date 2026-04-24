@@ -9,12 +9,12 @@ import {
     StopMatch,
     createRouteMatchDirectionInterface,
     CardType,
-    StopInterface, RoutesObject, StopsObject, SearchMatch, MatchType, VehicleRtInterface,
+    StopInterface, RoutesObjectContainer, StopsObjectContainer, SearchMatch, MatchType, VehicleRtInterface,
     AgencyAndId
 } from "./DataModels";
 import log from 'loglevel';
 import {v4 as uuidv4} from 'uuid';
-import {getSearchTermAdditions} from "./keyWordsAndSupportUtils.ts"
+import {getSearchTermAdditions} from "./keyWordsAndSupportUtils"
 import { getSessionUuid } from "./handleTracking";
 
 const vehicleDelimiter = ":"
@@ -34,7 +34,7 @@ export const allRoutesSearchTerm = "View All Routes";
 export const favoritesSearchTerm = "View Favorites";
 export const nearbySearchTerms = new Set(["NEARBY","NEARBYROUTES","NEARBYSTOPS","NEARME", "NEAR ME"])
 
-function processRouteSearch(route,card:Card,stops: StopsObject,routes:RoutesObject):RouteMatch {
+function processRouteSearch(route,card:Card,stops: StopsObjectContainer,routes:RoutesObjectContainer):RouteMatch {
     let match = new RouteMatch(route)
     log.info("processing route search results",route,card,stops,routes, match)
     if (route != null && route.hasOwnProperty("directions")) {
@@ -54,15 +54,21 @@ function processRouteSearch(route,card:Card,stops: StopsObject,routes:RoutesObje
         log.info("assigned basic search values to card",route,match)
         for (let i = 0; i < route?.directions.length; i++) {
             let directionDatum = createRouteMatchDirectionInterface(route?.directions[i],match.datumId,match.color)
-            directionDatum.mapStopComponentData.forEach(stop=>stops.current[stop.id]=stop)
+            directionDatum.mapStopComponentData.forEach(stop=>{
+                const stopId: AgencyAndId | string = stop.id;
+                const stopIndexable = typeof stopId === 'string' ? stopId : stopId.toString();
+                stops.current[stopIndexable]=stop
+            })
             match.directions.push(directionDatum)
         }
     }
-    routes.current[match.routeId]=match
+    const probablyAgencyAndId: AgencyAndId = match.routeId;
+    const routeIndexable : string = typeof probablyAgencyAndId === 'string' ? probablyAgencyAndId : probablyAgencyAndId.toString();
+    routes.current[routeIndexable]=match
     return match
 }
 
-function processGeocodeSearch(geocode,card:Card,stops: StopsObject,routes:RoutesObject):GeocodeMatch{
+function processGeocodeSearch(geocode,card:Card,stops: StopsObjectContainer,routes:RoutesObjectContainer):GeocodeMatch{
     let match = new GeocodeMatch(geocode)
     log.info("processing geocode search results",geocode,card,match)
     if (geocode != null && geocode.hasOwnProperty("latitude")) {
@@ -84,7 +90,7 @@ function processGeocodeSearch(geocode,card:Card,stops: StopsObject,routes:Routes
     return match
 }
 
-function processStopSearch(stop,card:Card,stops: StopsObject,routes:RoutesObject):StopMatch{
+function processStopSearch(stop,card:Card,stops: StopsObjectContainer,routes:RoutesObjectContainer):StopMatch{
     let match = new StopMatch(stop)
     log.info("processing stopMatch search results",stop,card,match)
     if (stop != null && stop.hasOwnProperty("latitude")) {
@@ -111,7 +117,7 @@ function scrollToSidebarTop(){
     }
 }
 
-async function getData(card:Card,stops: StopsObject,routes:RoutesObject,address:string):Promise<Card>{
+async function getData(card:Card,stops: StopsObjectContainer,routes:RoutesObjectContainer,address:string):Promise<Card>{
     log.info("filling card data with search",card,stops,routes)
     let vehicleOverride = false;
     if(card.searchTerm == null || card.searchTerm == ''){
@@ -196,7 +202,7 @@ const updateWindowHistory = (term:string,uuid:string) :void =>{
 }
 
 
-export const updateCard = async (searchRef:string,stops: StopsObject,routes:RoutesObject,address:string,sessionUuid:string):Promise<Card> =>{
+export const updateCard = async (searchRef:string,stops: StopsObjectContainer,routes:RoutesObjectContainer,address:string,sessionUuid:string):Promise<Card> =>{
     log.info("received new search input:",searchRef)
     // searchRef = searchRef.replaceAll(" ","%2520")
     let card = new Card(searchRef,uuidv4(),sessionUuid);
@@ -502,7 +508,7 @@ export const useNavigation = () =>{
                         log.info("all routes results: ",parsed);
                         let searchMatch = new SearchMatch(SearchMatch.matchTypes.AllRoutesMatch);
                         searchMatch.routeMatches = parsed?.routes.map(route=>new RouteMatch(route));
-                        let routeIdList = new Set();
+                        let routeIdList: Set<AgencyAndId> = new Set();
                         // parsed?.routes.forEach(route=>routeIdList.add(route.id));
                         currentCard.setToAllRoutes([searchMatch],routeIdList);
                         log.info('completed processing all routes results: ',currentCard,stops,routes);

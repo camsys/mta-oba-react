@@ -454,7 +454,7 @@ export class Card {
     static cardTypes = CardType;
 
     searchTerm: string;
-    datumId: string | null;
+    datumId: string | AgencyAndId |null;
     searchResultType: string | null;
     name: string;
     searchMatches: SearchMatch[];
@@ -567,9 +567,16 @@ export interface CardStateObject {
     renderCounter:number,
     historyIndex: number
 }
+
 export interface RoutesObject {
     [key: string]: RouteMatch;
 }
+
+export interface RoutesObjectContainer extends React.MutableRefObject<RoutesObject> {}
+
+
 export interface StopsObject {
     [key: string]: StopInterface;
 }
+
+export interface StopsObjectContainer extends React.MutableRefObject<StopsObject> {}

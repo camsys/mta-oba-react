@@ -10,6 +10,7 @@ import {stopSortedFutureVehicleDataIdentifier, updatedTimeIdentifier,
     vehicleDataIdentifier, useVehicleState, 
     useVehicleApproachingStops} from "../util/VehicleStateComponent";
 import {
+    AgencyAndId,
     CardType,
     GeocodeMatch,
     MapRouteComponentInterface,
@@ -17,7 +18,7 @@ import {
     RouteMatch,
     StopInterface,
     StopMatch,
-    StopsObject,
+    StopsObjectContainer,
 } from "../../js/updateState/DataModels";
 import {useHighlight} from "../util/MapHighlightingStateComponent";
 import {useLongPressSearch} from "../../js/handlers/LongPressSearchHandler";
@@ -338,7 +339,7 @@ const Highlighted = () =>{
     })
 
     const iconCache = useRef<Map<string, L.Icon>>(new Map());
-    const createStopIcon = (stopDatum: StopsObject):L.Icon => {
+    const createStopIcon = (stopDatum: StopsObjectContainer):L.Icon => {
         const directionKey = stopDatum?.stopDirection || "unknown";
         let zIndexOverride = 20;
         const stopImageUrl = `img/stop/stop-${directionKey}-active.png`;
@@ -373,11 +374,14 @@ const Highlighted = () =>{
 
         log.info("generating highlighted component",highlightedId,routes.current,stops.current)
 
-        let stopDatum = stops.current[highlightedId]
+        let probablyAgencyAndId: AgencyAndId | null = highlightedId;
+        const indexable = typeof probablyAgencyAndId === 'string' ? probablyAgencyAndId : probablyAgencyAndId?.toString() ?? '';
+        
+        let stopDatum = stops.current[indexable]
         if(stopDatum!==null && typeof stopDatum !=='undefined'){
             highlightedComponents.current.set(stopDatum.id,createStopMarker(stopDatum,()=>{},popupOptions.current,createStopIcon(stopDatum),20,map))
         }
-        let routeDatum = routes.current[highlightedId]
+        let routeDatum = routes.current[indexable]
         if(routeDatum!==null && typeof routeDatum !=='undefined'){
             routeDatum.directions.forEach(dir => {
                 dir.mapRouteComponentData.forEach((datum:MapRouteComponentInterface) => {
