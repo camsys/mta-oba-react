@@ -1,10 +1,10 @@
 import React, {useContext, useEffect, useState} from 'react';
 import Autosuggest from 'react-autosuggest';
 import ErrorBoundary from "../util/errorBoundary";
-import {useNavigation} from "../../js/updateState/NavigationEffect.ts";
-import {useCardState} from "../util/CardStateComponent.tsx";
+import {useNavigation} from "../../js/updateState/NavigationEffect";
+import {useCardState} from "../util/CardStateComponent";
 import log from 'loglevel';
-import { trackingHandler } from '../../js/updateState/handleTracking.ts';
+import { trackingHandler } from '../../js/updateState/handleTracking';
 
 // Function to fetch suggestions from an external API
 const getSuggestions = async (value) => {

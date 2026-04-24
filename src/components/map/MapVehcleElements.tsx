@@ -6,7 +6,7 @@ import {OBA} from "../../js/oba";
 import log from 'loglevel';
 import L, {LatLngBounds, LeafletEventHandlerFn} from "leaflet";
 
-import {useCardState, useRoutes, useStops} from "../util/CardStateComponent.tsx";
+import {useCardState, useRoutes, useStops} from "../util/CardStateComponent";
 import {vehicleDataIdentifier, useVehicleState, shortenRoute} from "../util/VehicleStateComponent";
 import MapRouteComponent from "./MapRouteComponent";
 import MapStopComponent from "./MapStopComponent";
@@ -22,8 +22,8 @@ import {
     VehicleRtInterface
 } from "../../js/updateState/DataModels";
 
-import { createVehicleMarker } from "../../utils/VehicleMarkerFactory.ts";
-import {useNavigation} from "../../js/updateState/NavigationEffect.ts";
+import { createVehicleMarker } from "../../utils/VehicleMarkerFactory";
+import {useNavigation} from "../../js/updateState/NavigationEffect";
 
 // this method is seperated because vehicleState updates often. that said i don't want it to trigger a rerender
 export const MapVehicleElements = () =>{

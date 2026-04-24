@@ -4,7 +4,7 @@ import ServiceAlertContainerComponent from "./ServiceAlertContainerComponent";
 import {updatedTimeIdentifier, vehicleDataIdentifier, useVehicleState} from "../util/VehicleStateComponent";
 import {useNavigation} from "../../js/updateState/NavigationEffect";
 import {OBA} from "../../js/oba";
-import {useHighlight} from "../util/MapHighlightingStateComponent.tsx";
+import {useHighlight} from "../util/MapHighlightingStateComponent";
 import {MatchType, RouteMatch, SearchMatch, VehicleRtInterface} from "../../js/updateState/DataModels";
 import meeples from "../../../public/img/meeples/meeples-blank.png";
 import {useEffect, useState} from "react";

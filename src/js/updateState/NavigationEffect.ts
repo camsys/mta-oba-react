@@ -15,7 +15,7 @@ import {
 import log from 'loglevel';
 import {v4 as uuidv4} from 'uuid';
 import {getSearchTermAdditions} from "./keyWordsAndSupportUtils.ts"
-import { getSessionUuid } from "./handleTracking.ts";
+import { getSessionUuid } from "./handleTracking";
 
 const vehicleDelimiter = ":"
 // function getSessionUuid(card:Card|null):string{

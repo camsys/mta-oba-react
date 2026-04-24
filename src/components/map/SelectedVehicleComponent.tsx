@@ -1,20 +1,20 @@
-import {OBA} from "../../js/oba.js";
+import {OBA} from "../../js/oba";
 import React, {useContext, useEffect, useMemo, useRef} from "react";
 import {Marker, Popup} from "react-leaflet";
 import L from "leaflet";
 import bus from "../../img/icon/bus.svg";
 import busStroller from "../../img/icon/bus-stroller.svg";
-import {useNavigation} from "../../js/updateState/NavigationEffect.ts";
-import {CardType, VehicleArrivalInterface, VehicleDepartureInterface, VehicleRtInterface} from "../../js/updateState/DataModels.ts";
+import {useNavigation} from "../../js/updateState/NavigationEffect";
+import {CardType, VehicleArrivalInterface, VehicleDepartureInterface, VehicleRtInterface} from "../../js/updateState/DataModels";
 import log from 'loglevel';
-import { shortenRoute, vehicleDataIdentifier, useVehicleState } from "../util/VehicleStateComponent.tsx";
-import { useCardState } from "../util/CardStateComponent.tsx";
-import { MeeplesComponentSpan } from "../views/VehicleComponent.tsx";
-import { ServiceAlertSvg, useServiceAlert } from "../views/ServiceAlertContainerComponent.tsx";
-import { ServiceAlertInterface } from "../../js/updateState/DataModels.ts";
-import { ServiceAlertContainerProps } from "../views/ServiceAlertContainerComponent.tsx";
+import { shortenRoute, vehicleDataIdentifier, useVehicleState } from "../util/VehicleStateComponent";
+import { useCardState } from "../util/CardStateComponent";
+import { MeeplesComponentSpan } from "../views/VehicleComponent";
+import { ServiceAlertSvg, useServiceAlert } from "../views/ServiceAlertContainerComponent";
+import { ServiceAlertInterface } from "../../js/updateState/DataModels";
+import { ServiceAlertContainerProps } from "../views/ServiceAlertContainerComponent";
 import { useMap } from "react-leaflet";
-import { isCenteredOn } from "../../utils/mapZoom.ts";
+import { isCenteredOn } from "../../utils/mapZoom";
 
 const COMPONENT_IDENTIFIER = "MapVehicleComponent"
 const MAX_NEXT_STOPS = 3;

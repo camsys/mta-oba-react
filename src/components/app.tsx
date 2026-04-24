@@ -1,7 +1,7 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {OBA} from "../js/oba";
 import ErrorBoundary from "./util/errorBoundary";
-import {useCardState, SearchStateProviders} from "./util/CardStateComponent.tsx";
+import {useCardState, SearchStateProviders} from "./util/CardStateComponent";
 import SideBar from "./pageStructure/SideBar";
 import {
     VehiclesApproachingStopsContext,
@@ -9,17 +9,17 @@ import {
     VehicleStateContext,
     VehicleStateProvider
 } from "./util/VehicleStateComponent";
-import {useNavigation} from "../js/updateState/NavigationEffect.ts";
-import {MapHighlightingStateProvider} from "./util/MapHighlightingStateComponent.tsx";
+import {useNavigation} from "../js/updateState/NavigationEffect";
+import {MapHighlightingStateProvider} from "./util/MapHighlightingStateComponent";
 import {CardType} from "../js/updateState/DataModels";
-import {MapWrapper} from "./map/MapWrapper.tsx";
-import {FavoritesCookieStateProvider} from "./util/MiscStateComponent.tsx";
+import {MapWrapper} from "./map/MapWrapper";
+import {FavoritesCookieStateProvider} from "./util/MiscStateComponent";
 import {MapDisplayStateProvider} from "./util/MapDisplayStateComponent";
 import log from 'loglevel';
 import {useSiri} from "../js/updateState/getSiri.tx";
-import { clickHandler, keypressHandler, postClickLog } from '../js/updateState/handleTracking.ts';
+import { clickHandler, keypressHandler, postClickLog } from '../js/updateState/handleTracking';
 import {useMapDisplayState} from "./util/MapDisplayStateComponent";
-import { MobileStateProvider, useMobileState} from './util/MobileStateComponent.tsx';
+import { MobileStateProvider, useMobileState} from './util/MobileStateComponent';
 
 
 

@@ -4,9 +4,9 @@ import ErrorBoundary from "../util/errorBoundary";
 import bustimeLogo from '../../img/bustime-logo.svg';
 import mtaLogo from '../../img/mta-logo.svg';
 import favicon from '../../img/favicon.ico';
-import {useNavigation} from "../../js/updateState/NavigationEffect.ts";
+import {useNavigation} from "../../js/updateState/NavigationEffect";
 import {UnderlineOnFocusElement} from "Components/shared/common";
-import {useCardState} from "../util/CardStateComponent.tsx";
+import {useCardState} from "../util/CardStateComponent";
 import {CardType} from "../../js/updateState/DataModels";
 
 

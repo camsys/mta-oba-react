@@ -3,18 +3,17 @@ import React, {useContext} from "react";
 import {Marker, Popup} from "react-leaflet";
 import L from "leaflet";
 import stopPopupIcon from "../../img/icon/bus-stop.svg"
-import {useNavigation} from "../../js/updateState/NavigationEffect.ts";
-import {CardType, StopInterface} from "../../js/updateState/DataModels.ts";
-import {useCardState} from "../util/CardStateComponent.tsx";
-import {useVehicleApproachingStops, stopSortedFutureVehicleDataIdentifier, updatedTimeIdentifier} from "../util/VehicleStateComponent.tsx";
-import {VehicleRtInterface, RouteMatchDirectionInterface} from "../../js/updateState/DataModels.ts";
-import {VehicleComponentWithoutSearchSpecified} from "../views/VehicleComponent.tsx";
-import { StopMatch } from '../../js/updateState/DataModels.ts';
-import { OBA } from '../../js/oba.js';
+import {useNavigation} from "../../js/updateState/NavigationEffect";
+import {CardType, StopInterface} from "../../js/updateState/DataModels";
+import {useCardState} from "../util/CardStateComponent";
+import {useVehicleApproachingStops, stopSortedFutureVehicleDataIdentifier, updatedTimeIdentifier} from "../util/VehicleStateComponent";
+import {VehicleRtInterface, RouteMatchDirectionInterface} from "../../js/updateState/DataModels";
+import {VehicleComponentWithoutSearchSpecified} from "../views/VehicleComponent";
+import { StopMatch } from '../../js/updateState/DataModels';
 import { JSX } from 'react/jsx-runtime';
-import { useServiceAlert } from '../views/ServiceAlertContainerComponent.tsx';
-import { ServiceAlertSvg } from '../views/ServiceAlertContainerComponent.tsx';
-import { LeftExpands } from '../shared/common.tsx';
+import { useServiceAlert } from '../views/ServiceAlertContainerComponent';
+import { ServiceAlertSvg } from '../views/ServiceAlertContainerComponent';
+import { LeftExpands } from '../shared/common';
 
 const COMPONENT_IDENTIFIER = "mapStopComponent"
 const MAX_VEHICLES_PER_DESTINATION = 2;

@@ -7,7 +7,7 @@ import {OBA} from "../../js/oba";
 import log from 'loglevel';
 import L, {LatLngBounds, LeafletMouseEvent, LeafletEventHandlerFnMap, Popup} from "leaflet";
 
-import {useCardState, useRoutes, useStops} from "../util/CardStateComponent.tsx";
+import {useCardState, useRoutes, useStops} from "../util/CardStateComponent";
 import {stopSortedFutureVehicleDataIdentifier, updatedTimeIdentifier,
     vehicleDataIdentifier, useVehicleState, 
     useVehicleApproachingStops} from "../util/VehicleStateComponent";
@@ -25,17 +25,17 @@ import {
     StopMatch,
     VehicleRtInterface
 } from "../../js/updateState/DataModels";
-import {useHighlight} from "Components/util/MapHighlightingStateComponent";
+import {useHighlight} from "../util/MapHighlightingStateComponent";
 import {useLongPressSearch} from "../../js/handlers/LongPressSearchHandler";
-import {useNavigation} from "../../js/updateState/NavigationEffect.ts";
+import {useNavigation} from "../../js/updateState/NavigationEffect";
 import { createRoutePolyline } from "../../utils/RoutePolylineFactory";
-import { createStopMarker } from "../../utils/StopMarkerFactory.ts";
-import { createSearchedHereMarker } from "../../utils/SearchedHereFactory.ts";
-import { MapVehicleElements } from "./MapVehcleElements.tsx";
-import { SelectedStopComponent} from "./SelectedStop.tsx";
-import {SelectedVehicleComponent, SelectedVehicleComponentWrapper} from "./SelectedVehicleComponent.tsx";
-import { isCenteredOn,setMapLatLngAndZoom } from "../../utils/mapZoom.ts";
-import { useMobileState } from "../util/MobileStateComponent.tsx";
+import { createStopMarker } from "../../utils/StopMarkerFactory";
+import { createSearchedHereMarker } from "../../utils/SearchedHereFactory";
+import { MapVehicleElements } from "./MapVehcleElements";
+import { SelectedStopComponent} from "./SelectedStop";
+import {SelectedVehicleComponent} from "./SelectedVehicleComponent";
+import { isCenteredOn,setMapLatLngAndZoom } from "../../utils/mapZoom";
+import { useMobileState } from "../util/MobileStateComponent";
 
 log.info("createRoutePolyline:", createRoutePolyline);
 log.info("createStopMarker:", createStopMarker);

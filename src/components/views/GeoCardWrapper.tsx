@@ -1,7 +1,7 @@
 import React, {useContext} from "react";
 import {useCardState} from "../util/CardStateComponent";
 import {CollapsableRouteCard, RouteCard} from "./RouteCard";
-import {CollapsableStopCard, StopCard} from "./StopCardWrapper.tsx";
+import {CollapsableStopCard, StopCard} from "./StopCardWrapper";
 import {MatchType, RouteMatch, StopMatch} from "../../js/updateState/DataModels";
 import log from 'loglevel';
 

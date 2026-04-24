@@ -7,9 +7,9 @@ import {
     useVehicleApproachingStops
 } from "../util/VehicleStateComponent";
 import ServiceAlertContainerComponent, {ServiceAlertSvg, useServiceAlert} from "./ServiceAlertContainerComponent";
-import {VehicleComponent} from "./VehicleComponent.tsx";
+import {VehicleComponent} from "./VehicleComponent";
 import {OBA} from "../../js/oba";
-import {useHighlight} from "../util/MapHighlightingStateComponent.tsx";
+import {useHighlight} from "../util/MapHighlightingStateComponent";
 import {
     AgencyAndId,
     MatchType,
@@ -24,9 +24,9 @@ import {useFavorite} from "../util/MiscStateComponent";
 import {ViewSearchItem} from "./MiscComponents";
 import log from 'loglevel';
 import {v4 as uuidv4} from "uuid";
-import { StopFavoriteButton } from './AddToFavoriteButtons.tsx';
-import { StopCardHeader, StopCardHeaderMany } from "./CardHeaderComponents.tsx";
-import { UnderlineOnFocusElement } from '../shared/common.tsx';
+import { StopFavoriteButton } from './AddToFavoriteButtons';
+import { StopCardHeader, StopCardHeaderMany } from "./CardHeaderComponents";
+import { UnderlineOnFocusElement } from '../shared/common';
 
 
 
