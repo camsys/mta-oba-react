@@ -23,7 +23,7 @@ function SideBar  () {
 
     const { state } = useCardState();
 
-    function decorateWithNearMeAndFavorites (card) {
+    function decorateWithNearMeAndFavorites (card: React.ReactNode): React.ReactNode {
         return (<React.Fragment><NearMeAndFavorites/>{card}</React.Fragment>);
     }
 

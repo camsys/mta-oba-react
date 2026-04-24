@@ -3,7 +3,7 @@ import log from 'loglevel';
 import {MapComponent} from './MapComponent';
 import ErrorBoundary from "../util/errorBoundary";
 import ReactLeafletGoogleLayer from "react-leaflet-google-layer";
-import RefreshComponent from "../views/RefreshComponent.js";
+import RefreshComponent from "../views/RefreshComponent";
 import {useContext} from "react";
 import {useCardState} from "../util/CardStateComponent";
 import {Card, CardType} from "../../js/updateState/DataModels";
