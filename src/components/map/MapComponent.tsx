@@ -1,77 +1,44 @@
 import ReactLeafletGoogleLayer from "react-leaflet-google-layer";
-import { renderToString } from 'react-dom/server';
 import {LayerGroup, MapContainer, Marker, useMap, useMapEvents, ZoomControl} from "react-leaflet";
 import React, {useContext, useEffect, useRef, useState} from "react";
-import queryString from "query-string";
 import {OBA} from "../../js/oba";
 import log from 'loglevel';
 import L, {LatLngBounds, LeafletMouseEvent, LeafletEventHandlerFnMap, Popup} from "leaflet";
 
-import {CardStateContext, RoutesContext, StopsContext} from "../util/CardStateComponent.tsx";
+import {useCardState, useRoutes, useStops} from "../util/CardStateComponent";
 import {stopSortedFutureVehicleDataIdentifier, updatedTimeIdentifier,
-    vehicleDataIdentifier, VehicleStateContext, 
-    VehiclesApproachingStopsContext} from "../util/VehicleStateComponent";
-import MapRouteComponent from "./MapRouteComponent";
-import MapStopComponent from "./MapStopComponent";
-import MapVehicleComponent from "./MapVehicleComponent";
-// import { SelectedStopPopupContent } from "./SelectedStopPopupContent";
+    vehicleDataIdentifier, useVehicleState, 
+    useVehicleApproachingStops} from "../util/VehicleStateComponent";
 import {
+    AgencyAndId,
     CardType,
+    GeocodeMatch,
     MapRouteComponentInterface,
     MatchType,
     RouteMatch,
-    SearchMatch,
     StopInterface,
     StopMatch,
-    VehicleRtInterface
+    StopsObjectContainer,
 } from "../../js/updateState/DataModels";
-import {useHighlight} from "Components/util/MapHighlightingStateComponent";
+import {useHighlight} from "../util/MapHighlightingStateComponent";
 import {useLongPressSearch} from "../../js/handlers/LongPressSearchHandler";
-import {useNavigation} from "../../js/updateState/NavigationEffect.ts";
+import {useNavigation} from "../../js/updateState/NavigationEffect";
 import { createRoutePolyline } from "../../utils/RoutePolylineFactory";
-import { createStopMarker } from "../../utils/StopMarkerFactory.ts";
-import { createSearchedHereMarker } from "../../utils/SearchedHereFactory.ts";
-import { MapVehicleElements } from "./MapVehcleElements.tsx";
-import { SelectedStopComponent} from "./SelectedStop.tsx";
-import {SelectedVehicleComponent, SelectedVehicleComponentWrapper} from "./SelectedVehicleComponent.tsx";
-import { isCenteredOn,setMapLatLngAndZoom } from "../../utils/mapZoom.ts";
-import { useMobileState } from "../util/MobileStateComponent.tsx";
+import { createStopMarker } from "../../utils/StopMarkerFactory";
+import { createSearchedHereMarker } from "../../utils/SearchedHereFactory";
+import { MapVehicleElements } from "./MapVehcleElements";
+import { SelectedStopComponent} from "./SelectedStop";
+import {SelectedVehicleComponent} from "./SelectedVehicleComponent";
+import { isCenteredOn,setMapLatLngAndZoom } from "../../utils/mapZoom";
+import { useMobileState } from "../util/MobileStateComponent";
 
 log.info("createRoutePolyline:", createRoutePolyline);
 log.info("createStopMarker:", createStopMarker);
 log.info("createSearchedHereMarker:", createSearchedHereMarker);
 
-const createVehicleIcon = (vehicleDatum):L.Icon => {
-    let scheduled = vehicleDatum.hasRealtime?"":"scheduled/"
-    let imgDegrees = vehicleDatum.bearing - vehicleDatum.bearing%5
-    let vehicleImageUrl = "img/vehicle/"+scheduled+"vehicle-"+imgDegrees+".png"
-    let icon = L.icon({
-        iconUrl: vehicleImageUrl,
-        className: "svg-icon",
-        iconSize: [51,51],
-        iconAnchor: [25,25],
-        popupAnchor: [0,0]
-    })
-    return icon
-}
-
-
-const loadPopup = (datumId,leafletRefObjs) :void=>{
-    try{
-        if(leafletRefObjs && typeof leafletRefObjs.current.get(datumId)!=='undefined'
-            && leafletRefObjs.current.get(datumId)!==null
-            && leafletRefObjs.current.get(datumId).getPopup()
-            && leafletRefObjs.current.get(datumId).getPopup()!==undefined){
-            leafletRefObjs.current.get(datumId).openPopup()
-        }
-    } catch (e) {
-        log.error("error in loadPopup",e)
-    }
-
-}
 
 const SearchedHere = () :JSX.Element=>{
-    const { state} = useContext(CardStateContext);
+    const { state} = useCardState();
     const previousSearchedHereMarker = useRef<L.Marker|null>(null);
     const currentSearchedHereMarker = useRef<L.Marker|null>(null);
     let map = useMap()
@@ -80,7 +47,8 @@ const SearchedHere = () :JSX.Element=>{
         previousSearchedHereMarker.current = currentSearchedHereMarker.current
         state.currentCard.searchMatches.forEach(searchMatch=>{
             if(state.currentCard.type===CardType.GeocodeCard){
-                currentSearchedHereMarker.current = createSearchedHereMarker([searchMatch.latitude,searchMatch.longitude])
+                const geocode = searchMatch as GeocodeMatch;
+                currentSearchedHereMarker.current = createSearchedHereMarker([geocode.latitude, geocode.longitude])
                 log.info("searched here marker created", currentSearchedHereMarker.current)
             }       
         })
@@ -105,9 +73,9 @@ const SearchedHere = () :JSX.Element=>{
 
 const RoutesAndStops = ()=>{
     log.info("generating RoutesAndStops")
-    const stops = useContext(StopsContext);
-    const routes = useContext(RoutesContext);
-    const { state} = useContext(CardStateContext);
+    const stops = useStops();
+    const routes = useRoutes();
+    const { state} = useCardState();
 
     let mapRouteMarkers: Map<string, L.Polyline> = new Map();
     const mapStopComponents = useRef(new Map());
@@ -132,7 +100,7 @@ const RoutesAndStops = ()=>{
     })
 
     const iconCache = useRef<Map<string, L.Icon>>(new Map());
-    const createStopIcon = (stopDatum):L.Icon => {
+    const createStopIcon = (stopDatum: StopInterface):L.Icon => {
         const directionKey = stopDatum?.stopDirection || "unknown";
         const stopImageUrl = `img/stop/stop-${directionKey}.png`;
         if(iconCache.current.has(stopImageUrl)){
@@ -238,37 +206,40 @@ const RoutesAndStops = ()=>{
             log.info("adding routes for:",searchMatch)
             if(state.currentCard.type===CardType.RouteCard){
                 let route = searchMatch
-                processRoute(route)
+                processRoute(route as RouteMatch)
             }
             else if(state.currentCard.type===CardType.VehicleCard){
                 log.info("vehicle route works here");
                 let route = searchMatch;
-                processRoute(route);
+                processRoute(route as RouteMatch);
             }
             else if(state.currentCard.type===CardType.GeocodeCard) {
-                searchMatch.routeMatches.forEach(match => {
-                    if(match.type === MatchType.RouteMatch){processRoute(match);}
+                const geocodeSearchMatch = searchMatch as GeocodeMatch;
+                geocodeSearchMatch.routeMatches.forEach(match => {
+                    if(match.type === MatchType.RouteMatch){processRoute(match as RouteMatch);}
                     if(match.type === MatchType.StopMatch){
                         match.routeMatches.forEach(route => {
-                            processRoute(route);
+                            processRoute(route as RouteMatch);
                         })
                     }
                 })
-                let latlon = [searchMatch.latitude,searchMatch.longitude]
-                if(latlon !== null || latlon !== undefined){
-                    // searchedHereComponent.current = <MapSearchedHereComponent latlon={latlon} key = {key} searchedHereMarker={searchedHereMarker}/>;
-                    let searchedHereMarker = createSearchedHereMarker(latlon)
-                    searchedHereMarker.addTo(selectedElementLayer.current)
+                let latlon: [number, number] = [geocodeSearchMatch.latitude, geocodeSearchMatch.longitude];
+                if (latlon[0] !== null && latlon[1] !== null) {
+                    let searchedHereMarker = createSearchedHereMarker(latlon);
+                    searchedHereMarker.addTo(selectedElementLayer.current);
                 }
+                
             }
             else if(state.currentCard.type===CardType.StopCard) {
                 searchMatch.routeMatches.forEach(route => {
-                    processRoute(route);
+                    processRoute(route as RouteMatch);
                 })
                 let stopId = state.currentCard.datumId;
                 // selectedStop.set(stopId,mapStopComponents.current.get(stopId));
                 mapStopComponents.current.get(stopId).setZIndexOffset(20);
-                stopsToDisplay.delete(stopId)
+                if(stopId!==null && typeof stopId !== 'undefined'){
+                    stopsToDisplay.delete(stopId)
+                }
             }
         })
 
@@ -352,11 +323,11 @@ const RoutesAndStops = ()=>{
 const Highlighted = () =>{
     let {getHighlightedId} = useHighlight()
     let highlightedId = getHighlightedId()
-    let {state} = useContext(CardStateContext);
+    let {state} = useCardState();
     let highlightedComponents = useRef(new Map());
 
-    const stops = useContext(StopsContext)
-    const routes = useContext(RoutesContext)
+    const stops = useStops()
+    const routes = useRoutes()
     const map = useMap()
 
     
@@ -368,7 +339,7 @@ const Highlighted = () =>{
     })
 
     const iconCache = useRef<Map<string, L.Icon>>(new Map());
-    const createStopIcon = (stopDatum):L.Icon => {
+    const createStopIcon = (stopDatum: StopsObjectContainer):L.Icon => {
         const directionKey = stopDatum?.stopDirection || "unknown";
         let zIndexOverride = 20;
         const stopImageUrl = `img/stop/stop-${directionKey}-active.png`;
@@ -403,11 +374,14 @@ const Highlighted = () =>{
 
         log.info("generating highlighted component",highlightedId,routes.current,stops.current)
 
-        let stopDatum = stops.current[highlightedId]
+        let probablyAgencyAndId: AgencyAndId | null = highlightedId;
+        const indexable = typeof probablyAgencyAndId === 'string' ? probablyAgencyAndId : probablyAgencyAndId?.toString() ?? '';
+        
+        let stopDatum = stops.current[indexable]
         if(stopDatum!==null && typeof stopDatum !=='undefined'){
             highlightedComponents.current.set(stopDatum.id,createStopMarker(stopDatum,()=>{},popupOptions.current,createStopIcon(stopDatum),20,map))
         }
-        let routeDatum = routes.current[highlightedId]
+        let routeDatum = routes.current[indexable]
         if(routeDatum!==null && typeof routeDatum !=='undefined'){
             routeDatum.directions.forEach(dir => {
                 dir.mapRouteComponentData.forEach((datum:MapRouteComponentInterface) => {
@@ -485,16 +459,17 @@ const getBoundsForRoute = (routes:RouteMatch[])=> {
     return newBounds
 }
 
+
 const HandleMapBoundsAndZoom = ({userHasAdjustedMapOffMainElement}: {userHasAdjustedMapOffMainElement: React.MutableRefObject<boolean>}) : void=>{
-    const { state} = useContext(CardStateContext);
-    const { vehicleState} = useContext(VehicleStateContext);
+    const { state} = useCardState();
+    const { vehicleState} = useVehicleState();
     const map = useMap()
     const firstNonHomeZoomCompleted = useRef(false)
     const { isMobile } = useMobileState();
     const lastCard = useRef(state.currentCard)
 
     const doZoom = ()=>{
-        let [lat, long] = [null,null]
+        let [lat, long] = [null as number | null,null as number | null]
         let zoom = null
         let override = false
 
@@ -513,7 +488,7 @@ const HandleMapBoundsAndZoom = ({userHasAdjustedMapOffMainElement}: {userHasAdju
     
         if(state.currentCard.type===CardType.RouteCard){
             log.info("zooming for route card",state.currentCard.searchMatches)
-            setMapBounds(map,getBoundsForRoute(state.currentCard.searchMatches))
+            setMapBounds(map,getBoundsForRoute(state.currentCard.searchMatches as RouteMatch[]))
             if(!firstNonHomeZoomCompleted.current){
                 firstNonHomeZoomCompleted.current = true
             }
@@ -522,7 +497,7 @@ const HandleMapBoundsAndZoom = ({userHasAdjustedMapOffMainElement}: {userHasAdju
         else if(state.currentCard.type===CardType.GeocodeCard) {
             log.info("assessing zooming for geocode card",state.currentCard.searchMatches)
             state.currentCard.searchMatches.forEach(searchMatch=>{
-                [lat, long] = [searchMatch.latitude,searchMatch.longitude];
+                [lat, long] = [(searchMatch as GeocodeMatch).latitude,(searchMatch as GeocodeMatch).longitude];
                 zoom = 16;
                 if(!firstNonHomeZoomCompleted.current){
                     log.info("first zoom completed")
@@ -533,7 +508,7 @@ const HandleMapBoundsAndZoom = ({userHasAdjustedMapOffMainElement}: {userHasAdju
         }
         else if(state.currentCard.type===CardType.StopCard) {
             state.currentCard.searchMatches.forEach(searchMatch=>{
-                [lat, long] = [searchMatch.latitude, searchMatch.longitude];
+                [lat, long] = [(searchMatch as StopMatch).latitude, (searchMatch as StopMatch).longitude];
                 zoom = 16;
                 if(!firstNonHomeZoomCompleted.current){
                     log.info("first zoom completed")
@@ -631,22 +606,24 @@ const MapEvents = ({userHasAdjustedMapOffMainElement, selectedElementLocation}: 
 
             const popupContent = e.popup.getElement();
             log.info("popup opened", popupContent);
-            popupContent.addEventListener('click', function (event) {
-                if (event.target.matches('.close-map')) {
-                    // log.info('boop popup button clicked');
-                    var mapWrap = document.querySelector('#map-wrap');
-                    var mapToggle = document.querySelector('#map-toggle');
-                    if (mapWrap) {
-                    // log.info('boop map close');
-                    mapWrap.classList.remove('open');
-                    mapToggle.setAttribute('aria-expanded', 'false');
-                    mapToggle.setAttribute('aria-label', 'Toggle Map Visibility (currently hidden)');
-                    mapToggle.setAttribute('aria-pressed', 'false');
-                    }
-                } 
-            });
+            if (popupContent) {
+                popupContent.addEventListener('click', function (event) {
+                    if (event.target && (event.target as HTMLElement).matches('.close-map')) {
+                        // log.info('boop popup button clicked');
+                        var mapWrap = document.querySelector('#map-wrap');
+                        var mapToggle = document.querySelector('#map-toggle');
+                        if (mapWrap && mapToggle) {
+                        // log.info('boop map close');
+                        mapWrap.classList.remove('open');
+                        mapToggle.setAttribute('aria-expanded', 'false');
+                        mapToggle.setAttribute('aria-label', 'Toggle Map Visibility (currently hidden)');
+                        mapToggle.setAttribute('aria-pressed', 'false');
+                        }
+                    } 
+                });
+            }
             
-            const isSearchHere = popupContent.classList.contains("search-here-popup");
+            const isSearchHere = popupContent?.classList.contains("search-here-popup");
             log.info("popup opened", e.popup,"is search here popup", isSearchHere);
             if(!isSearchHere){
                 openPopups.current.forEach((popup) => {

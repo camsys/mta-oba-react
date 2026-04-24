@@ -4,7 +4,7 @@ import {Marker, Popup} from "react-leaflet";
 import L from "leaflet";
 import bus from "../../img/icon/bus.svg";
 import busStroller from "../../img/icon/bus-stroller.svg";
-import {useNavigation} from "../../js/updateState/NavigationEffect.ts";
+import {useNavigation} from "../../js/updateState/NavigationEffect";
 import {VehicleRtInterface} from "../../js/updateState/DataModels";
 import log from 'loglevel';
 
@@ -14,7 +14,7 @@ const COMPONENT_IDENTIFIER = "MapVehicleComponent"
 
 
 function MapVehicleComponent  (
-    {vehicleDatum,vehicleRefs,vehicleIcon}:{vehicleDatum:VehicleRtInterface,vehicleRefs:React.MutableRefObject<Map<string,Marker>>,vehicleIcon:L.Icon}) :JSX.Element{
+    {vehicleDatum,vehicleRefs,vehicleIcon}:{vehicleDatum:VehicleRtInterface,vehicleRefs:React.MutableRefObject<Map<string,L.Marker>>,vehicleIcon:L.Icon}) :JSX.Element{
 
     // let targetVehicleId = state.currentCard.vehicleId
     // log.info('generating mapVehicle: ',vehicleDatum.vehicleId,vehicleDatum)
@@ -48,8 +48,8 @@ function MapVehicleComponent  (
                             }}}
                        ref={r=>{
                            // log.info("ref for vehicle component",vehicleDatum,r);
-                           typeof vehicleRefs!=='undefined'
-                               ?vehicleRefs.current.set(vehicleDatum.vehicleId,r):null
+                           if(typeof vehicleRefs!=='undefined' && r)
+                               vehicleRefs.current.set(vehicleDatum.vehicleId,r)
                        }}
                        keyboard={false}
     >

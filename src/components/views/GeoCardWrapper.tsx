@@ -1,25 +1,26 @@
 import React, {useContext} from "react";
-import {CardStateContext} from "../util/CardStateComponent";
+import {useCardState} from "../util/CardStateComponent";
 import {CollapsableRouteCard, RouteCard} from "./RouteCard";
-import {CollapsableStopCard, StopCard} from "./StopCardWrapper.tsx";
-import {MatchType} from "../../js/updateState/DataModels";
+import {CollapsableStopCard, StopCard} from "./StopCardWrapper";
+import {MatchType, RouteMatch, StopMatch} from "../../js/updateState/DataModels";
 import log from 'loglevel';
 
 
 export function GeoCardWrapper  () :JSX.Element {
-    const { state} = useContext(CardStateContext);
+    const { state} = useCardState();
     log.info("generating GeoCard:", state.currentCard.searchMatches);
 
     let routes = state.currentCard.searchMatches.map(match=>{
         return match.routeMatches.map(routeMatch=>{
             if(routeMatch.type === MatchType.RouteMatch){return routeMatch}
         })
-    }).flat().filter(x=>x!==null&&typeof x!=='undefined')
+    }).flat().filter(x=>x!==null&&typeof x!=='undefined') as RouteMatch[]
+
     let stops = state.currentCard.searchMatches.map(match=>{
         return match.routeMatches.map(stopMatch=>{
             if(stopMatch.type === MatchType.StopMatch){return stopMatch}
         })
-    }).flat().filter(x=>x!==null&&typeof x!=='undefined')
+    }).flat().filter(x=>x!==null&&typeof x!=='undefined') as StopMatch[]
 
     log.info("geocard routes&stops",routes,stops)
 

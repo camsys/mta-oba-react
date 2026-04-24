@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useState} from "react";
-import {serviceAlertDataIdentifier, vehicleDataIdentifier, VehicleStateContext} from "../util/VehicleStateComponent";
+import {serviceAlertDataIdentifier, vehicleDataIdentifier, useVehicleState} from "../util/VehicleStateComponent";
 import {ServiceAlertInterface} from "../../js/updateState/DataModels";
 import log from 'loglevel';
 import DOMPurify from 'dompurify';
@@ -53,6 +53,7 @@ function ServiceAlertComponent  ({serviceAlertDatums}: {serviceAlertDatums: Serv
         </div>)
 }
 
+
 export interface ServiceAlertIdentifierProps{
     abbreviatedRouteId : string,
     routeAndDirection? : string,
@@ -62,8 +63,6 @@ export interface ServiceAlertIdentifierProps{
 export interface ServiceAlertContainerProps extends ServiceAlertIdentifierProps{
     collapsed?: boolean
 }
-
-
 
 export default function ServiceAlertContainerComponent  ({ abbreviatedRouteId,routeAgencyAndId,routeAndDirection, collapsed}:ServiceAlertContainerProps) : JSX.Element {
     log.info("generating service alert component")
@@ -80,10 +79,10 @@ export default function ServiceAlertContainerComponent  ({ abbreviatedRouteId,ro
     </div>)
 }
 
+
 export function useServiceAlert(){  
-    const { vehicleState} = useContext(VehicleStateContext)
+    const { vehicleState} = useVehicleState()
     function getServiceAlert({ abbreviatedRouteId,routeAgencyAndId,routeAndDirection}:ServiceAlertContainerProps): ServiceAlertInterface[] | null{
-        
         log.info("getting service alert data",vehicleState,abbreviatedRouteId+serviceAlertDataIdentifier,routeAgencyAndId,routeAndDirection)
         let routeServiceAlerts = vehicleState[abbreviatedRouteId+serviceAlertDataIdentifier]
         if(routeServiceAlerts===null||typeof routeServiceAlerts==="undefined"){return null}

@@ -35,7 +35,7 @@ function cleanUpHostAddress(hostAddress) {
 
 
 module.exports = {
-  mode: 'development',
+  mode: isProd ? "production" : "development",
   entry: './src/index.tsx', 
   module: { 
     rules: [

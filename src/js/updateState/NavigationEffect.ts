@@ -1,6 +1,6 @@
 import queryString from "query-string";
 import React, {useContext, useEffect, useRef, useState} from "react";
-import {CardStateContext, RoutesContext, StopsContext} from "Components/util/CardStateComponent";
+import {useCardState, useRoutes, useStops} from "../../components/util/CardStateComponent";
 import {OBA} from "../oba";
 import {
     Card,
@@ -9,13 +9,14 @@ import {
     StopMatch,
     createRouteMatchDirectionInterface,
     CardType,
-    StopInterface, RoutesObject, StopsObject, SearchMatch, MatchType, VehicleRtInterface,
+    StopInterface, RoutesObjectContainer, StopsObjectContainer, SearchMatch, MatchType, VehicleRtInterface,
     AgencyAndId
 } from "./DataModels";
 import log from 'loglevel';
 import {v4 as uuidv4} from 'uuid';
-import {getSearchTermAdditions} from "./keyWordsAndSupportUtils.ts"
-import { getSessionUuid } from "./handleTracking.ts";
+import {getSearchTermAdditions} from "./keyWordsAndSupportUtils"
+import { getSessionUuid } from "./handleTracking";
+import { SearchGeoData, SearchRouteData, SearchStopData } from "./DataContracts";
 
 const vehicleDelimiter = ":"
 // function getSessionUuid(card:Card|null):string{
@@ -34,15 +35,16 @@ export const allRoutesSearchTerm = "View All Routes";
 export const favoritesSearchTerm = "View Favorites";
 export const nearbySearchTerms = new Set(["NEARBY","NEARBYROUTES","NEARBYSTOPS","NEARME", "NEAR ME"])
 
-function processRouteSearch(route,card:Card,stops: StopsObject,routes:RoutesObject):RouteMatch {
+function processRouteSearch(route: SearchRouteData, card: Card, stops: StopsObjectContainer, routes: RoutesObjectContainer): RouteMatch {
     let match = new RouteMatch(route)
-    log.info("processing route search results",route,card,stops,routes)
+    log.info("processing route search results",route,card,stops,routes, match)
     if (route != null && route.hasOwnProperty("directions")) {
         match.color = route?.color
-        match.routeId = route?.id.replace("+","-SBS")
+        match.datumId =match.routeId = AgencyAndId.get(route?.id.replace("+","-SBS"))
+
         log.info("assigned route id",route,match)
-        card.routeIdList.add(match.routeId)
-        match.routeTitle = route?.shortName + " " + route?.longName
+        card.routeIdList.add(match.datumId)
+        match.datumName = match.routeTitle = route?.shortName + " " + route?.longName
         match.description = route?.description
         if(match.description == null || match.description == undefined){
             match.description = "\u00A0"
@@ -52,26 +54,32 @@ function processRouteSearch(route,card:Card,stops: StopsObject,routes:RoutesObje
         match.routeMatches.push(match)
         log.info("assigned basic search values to card",route,match)
         for (let i = 0; i < route?.directions.length; i++) {
-            let directionDatum = createRouteMatchDirectionInterface(route?.directions[i],match.routeId,match.color)
-            directionDatum.mapStopComponentData.forEach(stop=>stops.current[stop.id]=stop)
+            let directionDatum = createRouteMatchDirectionInterface(route?.directions[i],match.datumId,match.color)
+            directionDatum.mapStopComponentData.forEach(stop=>{
+                const stopId: AgencyAndId | string = stop.id;
+                const stopIndexable = typeof stopId === 'string' ? stopId : stopId.toString();
+                stops.current[stopIndexable]=stop
+            })
             match.directions.push(directionDatum)
         }
     }
-    routes.current[match.routeId]=match
+    const probablyAgencyAndId: AgencyAndId = match.routeId;
+    const routeIndexable : string = typeof probablyAgencyAndId === 'string' ? probablyAgencyAndId : probablyAgencyAndId.toString();
+    routes.current[routeIndexable]=match
     return match
 }
 
-function processGeocodeSearch(geocode,card:Card,stops: StopsObject,routes:RoutesObject):GeocodeMatch{
+function processGeocodeSearch(geocode: SearchGeoData, card: Card, stops: StopsObjectContainer, routes: RoutesObjectContainer): GeocodeMatch {
     let match = new GeocodeMatch(geocode)
     log.info("processing geocode search results",geocode,card,match)
     if (geocode != null && geocode.hasOwnProperty("latitude")) {
-        geocode?.nearbyRoutes.forEach(searchResult=>{
-            if(typeof searchResult?.stopDirection !== "undefined")
+        geocode?.nearbyRoutes.forEach((searchResult: SearchRouteData | SearchStopData) => {
+            if('stopDirection' in searchResult)
             {
-                match.routeMatches.push(processStopSearch(searchResult,card,stops,routes))
+                match.routeMatches.push(processStopSearch(searchResult as SearchStopData, card, stops, routes))
             }
-            else if(typeof searchResult?.longName !== "undefined") {
-                match.routeMatches.push(processRouteSearch(searchResult,card,stops,routes))
+            else if('longName' in searchResult) {
+                match.routeMatches.push(processRouteSearch(searchResult as SearchRouteData, card, stops, routes))
             }
         })
     }
@@ -83,13 +91,13 @@ function processGeocodeSearch(geocode,card:Card,stops: StopsObject,routes:Routes
     return match
 }
 
-function processStopSearch(stop,card:Card,stops: StopsObject,routes:RoutesObject):StopMatch{
+function processStopSearch(stop: SearchStopData, card: Card, stops: StopsObjectContainer, routes: RoutesObjectContainer): StopMatch {
     let match = new StopMatch(stop)
     log.info("processing stopMatch search results",stop,card,match)
     if (stop != null && stop.hasOwnProperty("latitude")) {
         card.stopIdList.add(stop.id)
         match.routeMatches = []
-        stop?.routesAvailable.forEach(x=>{
+        stop?.routesAvailable.forEach((x: SearchRouteData) => {
             match.routeMatches.push(processRouteSearch(x,card,stops,routes))
         })
     }
@@ -98,24 +106,23 @@ function processStopSearch(stop,card:Card,stops: StopsObject,routes:RoutesObject
 }
 
 function scrollToSidebarTop(){
-    // log.info("boop scrolling to top")
-    // scroll #sidebar .sidebar-content to top, animate
     let sidebar = document.getElementById("sidebar");
-    let sidebarContent = sidebar.querySelector(".sidebar-content");
-    sidebarContent.scrollTo({
-        top: 0,
-        behavior: "smooth"
-    });
+    let sidebarContent = sidebar?.querySelector(".sidebar-content");
+    if (sidebarContent) {
+        sidebarContent.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        });
+    }
 }
 
-async function getData(card:Card,stops: StopsObject,routes:RoutesObject,address:string):Promise<Card>{
+async function getData(card:Card,stops: StopsObjectContainer,routes:RoutesObjectContainer,address:string):Promise<Card>{
     log.info("filling card data with search",card,stops,routes)
     let vehicleOverride = false;
     if(card.searchTerm == null || card.searchTerm == ''){
         log.info("empty search means home",card)
         return card
     }
-    // let address = "http://localhost:8080" + "/" + OBA.Config.searchUrl + "?q=" + card.searchTerm
     log.info('requesting search results from ',address,card)
     await fetch(address)
         .then((response) => response.json())
@@ -129,11 +136,11 @@ async function getData(card:Card,stops: StopsObject,routes:RoutesObject,address:
             log.info(card)
 
             if(Card.STOPCARDIDENTIFIERS.has(searchResults.resultType)){
-                searchResults.matches.forEach(x=>{
+                searchResults.matches.forEach((x: any)=>{
                     card.searchMatches.push(processStopSearch(x,card,stops,routes))
                 })
                 if(card.searchMatches.length===0){
-                    searchResults.suggestions.forEach(x=>{
+                    searchResults.suggestions.forEach((x: any)=>{
                         card.searchMatches.push(processStopSearch(x,card,stops,routes))
                     })
                 }
@@ -141,22 +148,22 @@ async function getData(card:Card,stops: StopsObject,routes:RoutesObject,address:
                 card.datumId=stopMatch.id
             }
             if(Card.GEOCARDIDENTIFIERS.has(searchResults.resultType)){
-                searchResults.matches.forEach(x=>{
+                searchResults.matches.forEach((x: any)=>{
                     card.searchMatches.push(processGeocodeSearch(x,card,stops,routes))
                 })
                 if(card.searchMatches.length===0){
-                    searchResults.suggestions.forEach(x=>{
+                    searchResults.suggestions.forEach((x: any)=>{
                         card.searchMatches.push(processStopSearch(x,card,stops,routes))
                     })
                 }
             }
             if(Card.ROUTECARDIDENTIFIERS.has(searchResults.resultType)){
-                searchResults.matches.forEach(x=>{
+                searchResults.matches.forEach((x: any)=>{
                     log.info("processing route search result",x,card,stops,routes)
                     card.searchMatches.push(processRouteSearch(x,card,stops,routes))
                 })
                 if(card.searchMatches.length===0){
-                    searchResults.suggestions.forEach(x=>{
+                    searchResults.suggestions.forEach((x: any)=>{
                     log.info("processing route suggestion result",x,card,stops,routes)
                     card.searchMatches.push(processRouteSearch(x,card,stops,routes))
                 })}
@@ -173,7 +180,7 @@ async function getData(card:Card,stops: StopsObject,routes:RoutesObject,address:
     return card
 }
 
-const performNewSearch = (searchRef:String,currentCard:Card):boolean=>{
+const performNewSearch = (searchRef:string,currentCard:Card):boolean=>{
     if(currentCard.type === CardType.VehicleCard){
         // this only works because vehicle searches are handled elsewhere
         return true
@@ -193,7 +200,7 @@ const updateWindowHistory = (term:string,uuid:string) :void =>{
 }
 
 
-export const updateCard = async (searchRef:String,stops: StopsObject,routes:RoutesObject,address:string,sessionUuid:string):Promise<Card> =>{
+export const updateCard = async (searchRef:string,stops: StopsObjectContainer,routes:RoutesObjectContainer,address:string,sessionUuid:string):Promise<Card> =>{
     log.info("received new search input:",searchRef)
     // searchRef = searchRef.replaceAll(" ","%2520")
     let card = new Card(searchRef,uuidv4(),sessionUuid);
@@ -213,7 +220,7 @@ const getBaseAddress =()=>{
 }
 
 const getSearchAddress=(searchTerm:string, card: Card)=>{
-    const ampersandToAnd = (input:string) => String(input).replace(/&/g, 'and');
+    const ampersandToAnd = (input:string) => input.replace(/&/g, 'and');
     let out = getBaseAddress() + OBA.Config.searchUrl + "?q=" + ampersandToAnd(searchTerm) + getSearchTermAdditions(card)
     log.info("generating search address for: " + out)
     return  out
@@ -229,13 +236,10 @@ const getRoutesAddress=()=>{
 
 export const useNavigation = () =>{
     log.debug("initializing navigation effect")
-    const { state, setState } = useContext(CardStateContext);
-    const routes = useContext(RoutesContext) as RoutesObject
-    const stops = useContext(StopsContext) as StopsObject
+    const { state, setState } = useCardState();
+    const routes = useRoutes()
+    const stops = useStops()
     log.debug("navigation effect state and contexts", state, routes, stops)
-
-    
-
 
     const search = async (searchTerm :string|AgencyAndId) =>{
         log.info("searching for: ",searchTerm, state);
@@ -248,20 +252,20 @@ export const useNavigation = () =>{
             : searchTerm.toUpperCase();
         
         if(searchTerm===allRoutesSearchTerm){
-            document.getElementById('search-input').blur();
+            document.getElementById('search-input')?.blur();
             scrollToSidebarTop();
             await allRoutesSearch()
             return
         }
         if(searchTerm===favoritesSearchTerm){
-            document.getElementById('search-input').blur();
+            document.getElementById('search-input')?.blur();
             scrollToSidebarTop();
             await favoritesSearch()
             return
         }
         if(nearbySearchTerms.has(searchTerm)){
             log.info("searching for nearby stops and routes");
-            document.getElementById('search-input').blur();
+            document.getElementById('search-input')?.blur();
             scrollToSidebarTop();
             await navigator.geolocation.getCurrentPosition(
                 (position) => {
@@ -279,18 +283,18 @@ export const useNavigation = () =>{
         if(searchTerm.includes(vehicleDelimiter)){
             log.info("searching for vehicle",searchTerm)
             let searchParts = searchTerm.split(vehicleDelimiter);
-            let routeId = searchParts[0];
+            let routeId = AgencyAndId.get(searchParts[0]);
             let vehicleId = searchParts[1];
             vehicleSearch(routeId,vehicleId);
             return;
         }
-        document.getElementById('search-input').blur();
+        document.getElementById('search-input')?.blur();
         scrollToSidebarTop();
         log.info("fetch search data called, generating new card",state,searchTerm)
         if (performNewSearch(searchTerm,state?.currentCard)) {
             log.info("search term is new, generating new card",searchTerm,state?.currentCard);
-            let currentCard;
-            document.getElementById('search-input').blur();
+            let currentCard: Card;
+            document.getElementById('search-input')?.blur();
             scrollToSidebarTop();
             if(searchTerm==null||searchTerm==""||searchTerm=="#"|| !(searchTerm) || !(searchTerm.trim())){
                 currentCard = getHomeCard(state?.currentCard);
@@ -322,21 +326,22 @@ export const useNavigation = () =>{
                     currentCard = await getData(currentCard,stops,routes,getSearchAddress(searchTerm,state?.currentCard))
                 }
                 catch (error) {
-                    log.error('There was a problem with the fetch operation:', error);
-                    currentCard.setToError(error);
+                    const safeError = error instanceof Error ? error : new Error(String(error));
+                    log.error('There was a problem with the fetch operation:', safeError);
+                    currentCard.setToError(safeError);
                 } finally {
-                    document.getElementById('search-input').blur();
+                    document.getElementById('search-input')?.blur();
                     scrollToSidebarTop();
                 }
                 setState((prevState) => ({...prevState,renderCounter:prevState.renderCounter+1}));
             } 
             updateWindowHistory(searchTerm,currentCard.uuid);
         }
-        document.getElementById('search-input').blur();
+        document.getElementById('search-input')?.blur();
         scrollToSidebarTop();
     }
 
-    const generateInitialCard = async (setLoading)=>{
+    const generateInitialCard = async (setLoading: (loading: boolean) => void)=>{
         let currentCard = getHomeCard(new Card("",uuidv4(),getSessionUuid(state?.currentCard)));
         log.info("generating initial card",currentCard);
         let cardStack = state.cardStack;
@@ -422,16 +427,16 @@ export const useNavigation = () =>{
     //this function doesn't belong in "SearchEffect" but it does belong with card handling functions
 // which is what this has become
 
-    const vehicleSearch = async (routeId:string,vehicleId:string)=> {
-        log.info("setting card to vehicle card",routeId,vehicleId);
+    const vehicleSearch = async (routeId:AgencyAndId,vehicleId:string)=> {
+        log.info("setting card to vehicle card",routeId,vehicleId, typeof routeId, typeof vehicleId);
         //todo: should be current search term
         let pastCard = state.currentCard;
-        let shortenedRouteId = routeId.split("_")[1];
+        let shortenedRouteId = routeId.id;
         log.info("found routeId of target vehicle: ",shortenedRouteId);
         let currentCard = new Card(shortenedRouteId + vehicleDelimiter + vehicleId,uuidv4(),getSessionUuid(pastCard));
         log.info("generated new card to become vehicle card",currentCard,routeId,vehicleId);
-        let routeData = routes?.current;
-        if(routeData){routeData=routeData[routeId]}
+        let routeData;
+        if(routes?.current){routeData=routes?.current[routeId.toString()]}
         if(routeData){
             log.info("found routedata of target vehicle: ",routeId, routeData,routes);
             currentCard.setToVehicle(vehicleId,[routeData],new Set([routeId]));
@@ -501,8 +506,8 @@ export const useNavigation = () =>{
                         log.info("generating new card for all routes search")
                         log.info("all routes results: ",parsed);
                         let searchMatch = new SearchMatch(SearchMatch.matchTypes.AllRoutesMatch);
-                        searchMatch.routeMatches = parsed?.routes.map(route=>new RouteMatch(route));
-                        let routeIdList = new Set();
+                        searchMatch.routeMatches = parsed?.routes.map((route: SearchRouteData) => new RouteMatch(route));
+                        let routeIdList: Set<AgencyAndId> = new Set();
                         // parsed?.routes.forEach(route=>routeIdList.add(route.id));
                         currentCard.setToAllRoutes([searchMatch],routeIdList);
                         log.info('completed processing all routes results: ',currentCard,stops,routes);
@@ -521,19 +526,6 @@ export const useNavigation = () =>{
         } finally {
         }
     }
-
-    // useEffect(() => {
-    //     const handlePopState = () => {
-    //         const url = new URL(window.location.href);
-    //         const lineRef = url.searchParams.get('LineRef');
-    //         if (lineRef) {
-    //             updateFromUrl(lineRef);
-    //         }
-    //     };
-    //
-    //     window.addEventListener('popstate', handlePopState);
-    //     return () => window.removeEventListener('popstate', handlePopState);
-    // }, []);
 
     const updateStateForPopStateEvent = (popStateEvent: PopStateEvent) => {
         log.info("navigation effect handling popstate event",window.history.state,popStateEvent,popStateEvent.state)

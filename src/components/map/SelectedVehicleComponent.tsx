@@ -1,20 +1,20 @@
-import {OBA} from "../../js/oba.js";
+import {OBA} from "../../js/oba";
 import React, {useContext, useEffect, useMemo, useRef} from "react";
 import {Marker, Popup} from "react-leaflet";
 import L from "leaflet";
 import bus from "../../img/icon/bus.svg";
 import busStroller from "../../img/icon/bus-stroller.svg";
-import {useNavigation} from "../../js/updateState/NavigationEffect.ts";
-import {CardType, VehicleArrivalInterface, VehicleDepartureInterface, VehicleRtInterface} from "../../js/updateState/DataModels.ts";
+import {useNavigation} from "../../js/updateState/NavigationEffect";
+import {CardType, VehicleArrivalInterface, VehicleDepartureInterface, VehicleRtInterface} from "../../js/updateState/DataModels";
 import log from 'loglevel';
-import { shortenRoute, vehicleDataIdentifier, VehicleStateContext } from "../util/VehicleStateComponent.js";
-import { CardStateContext } from "../util/CardStateComponent.tsx";
-import { MeeplesComponentSpan } from "../views/VehicleComponent.tsx";
-import { ServiceAlertSvg, useServiceAlert } from "../views/ServiceAlertContainerComponent.tsx";
-import { ServiceAlertInterface } from "../../js/updateState/DataModels.ts";
-import { ServiceAlertContainerProps } from "../views/ServiceAlertContainerComponent.tsx";
+import { shortenRoute, vehicleDataIdentifier, useVehicleState } from "../util/VehicleStateComponent";
+import { useCardState } from "../util/CardStateComponent";
+import { MeeplesComponentSpan } from "../views/VehicleComponent";
+import { ServiceAlertSvg, useServiceAlert } from "../views/ServiceAlertContainerComponent";
+import { ServiceAlertInterface } from "../../js/updateState/DataModels";
+import { ServiceAlertContainerProps } from "../views/ServiceAlertContainerComponent";
 import { useMap } from "react-leaflet";
-import { isCenteredOn } from "../../utils/mapZoom.ts";
+import { isCenteredOn } from "../../utils/mapZoom";
 
 const COMPONENT_IDENTIFIER = "MapVehicleComponent"
 const MAX_NEXT_STOPS = 3;
@@ -22,7 +22,7 @@ const MAX_NEXT_STOPS = 3;
 
 const createVehicleIcon = (vehicleDatum: VehicleRtInterface):L.Icon => {
     let scheduled = vehicleDatum.hasRealtime?"":"scheduled/"
-    let imgDegrees = vehicleDatum.bearing - vehicleDatum.bearing%5
+    let imgDegrees = (vehicleDatum.bearing ?? 0) - (vehicleDatum.bearing ?? 0)%5
     let vehicleImageUrl = "img/vehicle/"+scheduled+"vehicle-"+imgDegrees+".png"
     let icon = L.icon({
         iconUrl: vehicleImageUrl,
@@ -120,8 +120,8 @@ export function PopupContents({vehicleDatum, getServiceAlert}:{
 // 3: the layer should have a second child component receives the ref and the portal
 // 4: the second child component should use vehicleState and should useEffect to update the marker position and the portal content, and should use the ref to check if the marker is on screen and only pan if it's not, and should also check if the user has manually panned away from the vehicle and not pan if they have
 export function SelectedVehicleComponent  ({selectedElementLocation, userHasAdjustedMapOffMainElement}: {selectedElementLocation: React.MutableRefObject<{lat:number, lng:number}|null>, userHasAdjustedMapOffMainElement: React.MutableRefObject<boolean>}) :JSX.Element{
-    const { state } = useContext(CardStateContext);
-    const { vehicleState} = useContext(VehicleStateContext);
+    const { state } = useCardState();
+    const { vehicleState} = useVehicleState();
     const vehicleRefs = useRef<Map<string, L.Marker>>(new Map());
     const {search} = useNavigation();
     const popupOpen = useRef(true)

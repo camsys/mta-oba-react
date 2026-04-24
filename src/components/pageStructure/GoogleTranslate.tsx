@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { UnderlineOnFocusElement } from "../shared/common";
 
 
-const GoogleTranslateLoadButton = ({ handleClick }) => {
+const GoogleTranslateLoadButton = ({ handleClick }: { handleClick: () => void }) => {
     return (
         
         <UnderlineOnFocusElement

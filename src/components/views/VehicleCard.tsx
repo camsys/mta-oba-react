@@ -1,10 +1,10 @@
 import React, {useContext} from "react";
-import {CardStateContext} from "../util/CardStateComponent";
+import {useCardState} from "../util/CardStateComponent";
 import ServiceAlertContainerComponent from "./ServiceAlertContainerComponent";
-import {updatedTimeIdentifier, vehicleDataIdentifier, VehicleStateContext} from "../util/VehicleStateComponent";
+import {updatedTimeIdentifier, vehicleDataIdentifier, useVehicleState} from "../util/VehicleStateComponent";
 import {useNavigation} from "../../js/updateState/NavigationEffect";
 import {OBA} from "../../js/oba";
-import {useHighlight} from "../util/MapHighlightingStateComponent.tsx";
+import {useHighlight} from "../util/MapHighlightingStateComponent";
 import {MatchType, RouteMatch, SearchMatch, VehicleRtInterface} from "../../js/updateState/DataModels";
 import meeples from "../../../public/img/meeples/meeples-blank.png";
 import {useEffect, useState} from "react";
@@ -35,7 +35,7 @@ export const VehicleCardContentComponent = ({routeMatch,vehicleDatum}
             <ul className="menu icon-menu card-menu border-b border-b-mta-blue mb-4">
                 <li>
                     {(routeMatch && vehicleDatum)?
-                        (<ViewSearchItem datumId={routeMatch.datumId} text={"Full Route"}/>)
+                        (<ViewSearchItem datumId={routeMatch.datumId.toString()} text={"Full Route"} collapsed={false}/>)
                         :
                         (<ul className="card-details">
                             <li>{`The vehicle {vehicleId} can't be found`}</li>
@@ -51,10 +51,10 @@ export const VehicleCardContentComponent = ({routeMatch,vehicleDatum}
                         return(
                             <li
                             className="pb-2"
-                            onMouseEnter={() => highlightId(vehicleArrival.stopId)}
+                            onMouseEnter={() => vehicleArrival.stopId ? highlightId(vehicleArrival.stopId as any) : null}
                             onMouseLeave={() => highlightId(null)}
                             key={vehicleArrival.stopId}>
-                                <a className="text-base" href="#" onClick={(e) => {e.preventDefault();search(vehicleArrival.stopId)}}>{vehicleArrival.stopName}</a>
+                                <a className="text-base" href="#" onClick={(e) => {e.preventDefault();vehicleArrival.stopId && search(vehicleArrival.stopId)}}>{vehicleArrival.stopName}</a>
                                 <span className="stop-details -mt-1 ml-2">
                                     {OBA.Util.getArrivalEstimateForISOString(vehicleArrival.ISOTime,vehicleDatum.lastUpdate)}
                                     {vehicleArrival.prettyDistance}
@@ -72,8 +72,8 @@ function VehicleCard ({routeMatch,vehicleId}: { routeMatch: RouteMatch, vehicleI
 
     let {highlightId} = useHighlight()
     const { search } = useNavigation();
-    const { vehicleState} = useContext(VehicleStateContext)
-    const {state} = useContext(CardStateContext)
+    const {vehicleState} = useVehicleState()
+    const {state} = useCardState()
 
 
     const [loading, setLoading] = useState(true);
@@ -100,7 +100,7 @@ function VehicleCard ({routeMatch,vehicleId}: { routeMatch: RouteMatch, vehicleI
         routeId = routeMatch.datumId.id;
         let vehicleData = vehicleState[routeId+vehicleDataIdentifier]
         if(!(vehicleData===null || typeof vehicleData==='undefined')){
-            vehicleDatum = vehicleData.get(vehicleId)
+            vehicleDatum = vehicleData.get(vehicleId) as VehicleRtInterface
         }
         log.info("is VehicleCard data still loading?",loading,vehicleDatum)
         if(loading && vehicleDatum!==null && typeof vehicleDatum!=='undefined'){
@@ -148,7 +148,7 @@ function VehicleCard ({routeMatch,vehicleId}: { routeMatch: RouteMatch, vehicleI
 
 //This one breaks the pattern because vehicles are not searched elsewhere. sorry
 const getVehicleCardsWrapper = () : JSX.Element => {
-        const { state} = useContext(CardStateContext);
+        const { state} = useCardState();
         log.info("adding vehicleCard info for match:", state.currentCard.searchMatches);
 
         return (<React.Fragment>
