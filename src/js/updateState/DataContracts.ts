@@ -90,6 +90,6 @@ export interface SiriResponse {
     };
 }
 
-export interface SiriStopWrapper {
+export interface SiriWrapper {
     siri?: SiriResponse;
 }

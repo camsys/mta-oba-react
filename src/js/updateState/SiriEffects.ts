@@ -7,7 +7,7 @@ import {
 } from "../../components/util/VehicleStateComponent";
 import {OBA} from "../oba";
 import {createServiceAlertInterface, createVehicleRtInterface, VehicleRtInterface, ServiceAlertInterface, AgencyAndId, Card, VehicleStateObject, VehicleStateUpdateValue} from "./DataModels";
-import {SiriStopWrapper} from "./DataContracts";
+import {SiriWrapper, MonitoredVehicleJourneyActivity, PtSituationElement, AffectedVehicleJourney} from "./DataContracts";
 import log from 'loglevel';
 import {getSearchTermAdditions} from "./keyWordsAndSupportUtils"
 
@@ -18,7 +18,7 @@ import {getSearchTermAdditions} from "./keyWordsAndSupportUtils"
 
 
 
-function extractData (routeId: string, siri: SiriStopWrapper): [[string, Map<string, VehicleRtInterface>, Map<string, ServiceAlertInterface[]>, Map<string, VehicleRtInterface[]>, string | undefined], boolean] {
+function extractData (routeId: string, siri: SiriWrapper): [[string, Map<string, VehicleRtInterface>, Map<string, ServiceAlertInterface[]>, Map<string, VehicleRtInterface[]>, string | undefined], boolean] {
     let update= false;
     log.info("extractData from Siri")
     let keyword = "serviceAlert & vehicle"
@@ -27,7 +27,7 @@ function extractData (routeId: string, siri: SiriStopWrapper): [[string, Map<str
 
     let vehicleActivity = siri?.siri?.Siri?.ServiceDelivery?.VehicleMonitoringDelivery
     log.info(vehicleActivity)
-    let vehicleActivityArray: any[] | null | undefined = vehicleActivity!=null ? vehicleActivity[0]?.VehicleActivity : null
+    let vehicleActivityArray: MonitoredVehicleJourneyActivity[] | null | undefined = vehicleActivity!=null ? vehicleActivity[0]?.VehicleActivity : null
     log.info("siri vehicles found:",vehicleActivityArray)
     if (vehicleActivityArray != null && vehicleActivityArray.length != 0) {
         update = true;
@@ -49,7 +49,7 @@ function extractData (routeId: string, siri: SiriStopWrapper): [[string, Map<str
     }
 
     let serviceAlertActivity = siri?.siri?.Siri?.ServiceDelivery?.SituationExchangeDelivery
-    let serviceAlertActivityArray: any[] | null | undefined = serviceAlertActivity==null? null :serviceAlertActivity[0]?.Situations?.PtSituationElement
+    let serviceAlertActivityArray: PtSituationElement[] | null | undefined = serviceAlertActivity==null? null :serviceAlertActivity[0]?.Situations?.PtSituationElement
     log.info("service alerts found:", serviceAlertActivityArray)
     if (serviceAlertActivityArray != null) {
         update = true;
@@ -60,7 +60,7 @@ function extractData (routeId: string, siri: SiriStopWrapper): [[string, Map<str
             let effects = situationElement.Affects.VehicleJourneys.AffectedVehicleJourney
             log.info(effects)
             const routesWithServiceAlerts = {}
-            effects.forEach((effect: any) => {
+            effects.forEach((effect: AffectedVehicleJourney) => {
                 let delim = "_"
                 // todo: externalize target for ease of reference & to easily generate multiple target types
                 let serviceAlertTarget = effect?.LineRef
@@ -94,17 +94,17 @@ function updateVehiclesState(updates: Record<string, Map<string, VehicleRtInterf
     let stateFunc = (prevState: VehicleStateObject) => {
         let newState: VehicleStateObject = {...prevState}
         newState.renderCounter = prevState.renderCounter + 1
-        Object.entries(updates).forEach(([key, val]: [string, VehicleStateUpdateValue]) => {(newState as any)[key]=val})
+        Object.entries(updates).forEach(([key, val]: [string, VehicleStateUpdateValue]) => {(newState as unknown as Record<string, VehicleStateUpdateValue>)[key]=val})
         return newState
     }
     setState(stateFunc);
 }
 
-const fetchAndProcessVehicleMonitoring = async ([routeId, targetAddress]: [string, string]): Promise<any> => {
+const fetchAndProcessVehicleMonitoring = async ([routeId, targetAddress]: [string, string]): Promise<[string, Map<string, VehicleRtInterface>, Map<string, ServiceAlertInterface[]>, Map<string, VehicleRtInterface[]>, string | undefined] | null> => {
     log.info("searching for siri at: ",targetAddress)
     return fetch(targetAddress)
         .then((response: Response) => response.json())
-        .then((siri: any) => {
+        .then((siri: SiriWrapper) => {
             log.info("reading serviceAlert & vehicle from " + targetAddress)
             let processedData: [[string, Map<string, VehicleRtInterface>, Map<string, ServiceAlertInterface[]>, Map<string, VehicleRtInterface[]>, string | undefined], boolean] = extractData(routeId,siri)
             let update = processedData[1]
@@ -114,8 +114,9 @@ const fetchAndProcessVehicleMonitoring = async ([routeId, targetAddress]: [strin
             }
             return null
         })
-        .catch((error: any) => {
+        .catch((error: Error) => {
             log.error("error processing Siri data",error);
+            return null
         });
 
 
@@ -129,8 +130,8 @@ const mergeSiri = (dataObjsList: Record<string, VehicleStateUpdateValue>[]): Rec
                     combinedRoutes[routeInfoIdentifier] = routeObj
                 }
                 else if(combinedRoutes[routeInfoIdentifier] !==null && typeof combinedRoutes[routeInfoIdentifier] !=='undefined'){
-                    (routeObj as Map<any, any>).forEach((siriData: any, siriIdentifier: any) => {
-                        (combinedRoutes[routeInfoIdentifier] as Map<any, any>).set(siriIdentifier, siriData)}
+                    (routeObj as Map<string, VehicleRtInterface | ServiceAlertInterface[]>).forEach((siriData: VehicleRtInterface | ServiceAlertInterface[], siriIdentifier: string) => {
+                        (combinedRoutes[routeInfoIdentifier] as Map<string, VehicleRtInterface | ServiceAlertInterface[]>).set(siriIdentifier, siriData)}
                     )}
                 else{combinedRoutes[routeInfoIdentifier] = routeObj}})
         return combinedRoutes
@@ -141,14 +142,14 @@ const siriGetAndSetVehiclesForVehicleMonitoring = (targetAddresses: [string, str
     siriGetAndSetVehicles(targetAddresses,vehicleState, setState,fetchAndProcessVehicleMonitoring)
 }
 
-const siriGetAndSetVehicles = (targetAddresses: [string, string][], vehicleState: VehicleStateObject, setState: React.Dispatch<React.SetStateAction<VehicleStateObject>>, dataProcessFunction: (adr: [string, string]) => Promise<any>): void =>
+const siriGetAndSetVehicles = (targetAddresses: [string, string][], vehicleState: VehicleStateObject, setState: React.Dispatch<React.SetStateAction<VehicleStateObject>>, dataProcessFunction: (adr: [string, string]) => Promise<[string, Map<string, VehicleRtInterface>, Map<string, ServiceAlertInterface[]>, Map<string, VehicleRtInterface[]>, string | undefined] | null>): void =>
 {
     let getData = async () => {
         log.info("siri seeks promises from ", targetAddresses)
         let returnedPromises = await Promise.all(targetAddresses.map((adr: [string, string]) => dataProcessFunction(adr)))
         log.info("siri promises awaited ", returnedPromises)
         let dataObjsList: Record<string, VehicleStateUpdateValue>[] = returnedPromises.filter(
-            (result: any) => result !== null && typeof result !== "undefined")
+            (result) => result !== null && typeof result !== "undefined")
             .map(
                 ([routeId, vehicleDataList, serviceAlertDataList, stopsToVehicles, lastCallTime]: [string, Map<string, VehicleRtInterface>, Map<string, ServiceAlertInterface[]>, Map<string, VehicleRtInterface[]>, string | undefined]) => {
                     let dataObj: Record<string, VehicleStateUpdateValue> = {}
@@ -171,7 +172,7 @@ const siriGetAndSetVehicles = (targetAddresses: [string, string][], vehicleState
         log.info("processedData", processedData)
         processedData != null ? updateVehiclesState(processedData, setState) : null
         log.info("vehicleState", vehicleState)
-    }).catch((x: any) => log.info("siri call issue!", x))
+    }).catch((x: Error) => log.info("siri call issue!", x))
 }
 
 const getTargetList = (routeIdList: Set<AgencyAndId>, currentCard: Card): [string, string][] => {

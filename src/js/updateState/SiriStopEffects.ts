@@ -1,6 +1,6 @@
 import React from "react";
 import {createServiceAlertInterface, createVehicleRtInterface, VehicleRtInterface, ServiceAlertInterface, VehicleStateObject, VehicleStateUpdateValue, Card} from "./DataModels";
-import {SiriStopWrapper} from "./DataContracts";
+import {SiriWrapper, MonitoredStopVisitActivity, PtSituationElement, AffectedVehicleJourney} from "./DataContracts";
 import {
     updatedTimeIdentifier,stopSortedFutureVehicleDataIdentifier
 } from "../../components/util/VehicleStateComponent";
@@ -14,7 +14,7 @@ import {getSearchTermAdditions} from "./keyWordsAndSupportUtils"
 
 
 
-function extractData (stopId: string, siri: SiriStopWrapper): [[string, Map<string, VehicleRtInterface>, Map<string, ServiceAlertInterface[]>, Map<string, VehicleRtInterface[]>, Map<string, VehicleRtInterface[]>, string | undefined], boolean] {
+function extractData (stopId: string, siri: SiriWrapper): [[string, Map<string, VehicleRtInterface>, Map<string, ServiceAlertInterface[]>, Map<string, VehicleRtInterface[]>, Map<string, VehicleRtInterface[]>, string | undefined], boolean] {
     let update= false;
     log.info("extractData for siri stop ",stopId,siri)
     let keyword = "serviceAlert & vehicle"
@@ -26,7 +26,7 @@ function extractData (stopId: string, siri: SiriStopWrapper): [[string, Map<stri
 
     let stopActivity = siriData?.Siri?.ServiceDelivery?.StopMonitoringDelivery
     log.info("siri stop activity",stopActivity)
-    let stopActivityArray: any[] | null | undefined = stopActivity!=null ? stopActivity[0]?.MonitoredStopVisit : null
+    let stopActivityArray: MonitoredStopVisitActivity[] | null | undefined = stopActivity!=null ? stopActivity[0]?.MonitoredStopVisit : null
     log.info("siri stop vehicles found:",stopActivityArray)
     if (stopActivityArray != null && stopActivityArray.length != 0) {
         update = true;
@@ -54,7 +54,7 @@ function extractData (stopId: string, siri: SiriStopWrapper): [[string, Map<stri
     }
 
     let serviceAlertActivity = siriData?.Siri?.ServiceDelivery?.SituationExchangeDelivery
-    let serviceAlertActivityArray: any[] | null | undefined = serviceAlertActivity==null? null :serviceAlertActivity[0]?.Situations?.PtSituationElement
+    let serviceAlertActivityArray: PtSituationElement[] | null | undefined = serviceAlertActivity==null? null :serviceAlertActivity[0]?.Situations?.PtSituationElement
     log.info("siri stop service alerts found:", serviceAlertActivityArray)
     if (serviceAlertActivityArray != null) {
         update = true;
@@ -65,7 +65,7 @@ function extractData (stopId: string, siri: SiriStopWrapper): [[string, Map<stri
             let effects = situationElement.Affects.VehicleJourneys.AffectedVehicleJourney
             log.info(effects)
             const routesWithServiceAlerts = {}
-            effects.forEach((effect: { LineRef?: string; DirectionRef?: string }) => {
+            effects.forEach((effect: AffectedVehicleJourney) => {
                 let delim = "_"
                 // todo: externalize target for ease of reference & to easily generate multiple target types
                 let serviceAlertTarget = effect?.LineRef
@@ -109,7 +109,7 @@ const fetchAndProcessStopMonitoring = async ([stopId, targetAddress]: [string, s
     log.info("searching for siri stop at: ",targetAddress)
     return fetch(targetAddress)
         .then((response: Response) => response.json())
-        .then((siri: { siri?: { Siri?: { ServiceDelivery?: { ResponseTimestamp: string; StopMonitoringDelivery?: any[]; SituationExchangeDelivery?: any } } } }) => {
+        .then((siri: SiriWrapper) => {
             log.info("reading serviceAlert & vehicle for stop from " + targetAddress)
             let processedData: [[string, Map<string, VehicleRtInterface>, Map<string, ServiceAlertInterface[]>, Map<string, VehicleRtInterface[]>, Map<string, VehicleRtInterface[]>, string | undefined], boolean] = extractData(stopId,siri)
             let update = processedData[1]
@@ -155,10 +155,11 @@ const siriGetAndSetVehicles = (targetAddresses: [string, string][], vehicleState
         log.info("siri stop seeks promises from ", targetAddresses)
         let returnedPromises = await Promise.all(targetAddresses.map((adr: [string, string]) => dataProcessFunction(adr)))
         log.info("siri stop promises recieved ", returnedPromises)
-        let dataObjsList: any[] = returnedPromises.filter(
-            (result) => result !== null && typeof result !== "undefined" && result!==undefined)
+        type ProcessedStopData = [string, Map<string, VehicleRtInterface>, Map<string, ServiceAlertInterface[]>, Map<string, VehicleRtInterface[]>, Map<string, VehicleRtInterface[]>, string | undefined];
+        let dataObjsList: ProcessedStopData[] = returnedPromises.filter(
+            (result) => result !== null && typeof result !== "undefined" && result!==undefined) as ProcessedStopData[]
         log.info("siri stop promises filtered",dataObjsList)
-        dataObjsList = dataObjsList.map(
+        let processedDataObjs: Record<string, VehicleStateUpdateValue>[] = dataObjsList.map(
                 ([stopId, vehicleDataList, serviceAlertDataList, stopsToVehicles, stopsToExtendedVehiclesMap, lastCallTime]: [string, Map<string, VehicleRtInterface>, Map<string, ServiceAlertInterface[]>, Map<string, VehicleRtInterface[]>, Map<string, VehicleRtInterface[]>, string | undefined]) => {
                  log.info("siri stop data found: ", vehicleDataList, serviceAlertDataList, stopsToVehicles,stopsToExtendedVehiclesMap)
                 // turn them into a list by route
@@ -187,11 +188,11 @@ const siriGetAndSetVehicles = (targetAddresses: [string, string][], vehicleState
                 }
                 return dataObj
             })
-        if (dataObjsList.length === 0) {
+        if (processedDataObjs.length === 0) {
             return null
         }
-        log.info("combining siri stop objs",dataObjsList)
-        let siriCombinedDataObj = mergeSiri(dataObjsList)
+        log.info("combining siri stop objs",processedDataObjs)
+        let siriCombinedDataObj = mergeSiri(processedDataObjs)
         log.info("siri stop data found: ", siriCombinedDataObj)
         return siriCombinedDataObj
 
@@ -200,7 +201,7 @@ const siriGetAndSetVehicles = (targetAddresses: [string, string][], vehicleState
         log.info("siri stop data processedData", processedData)
         processedData != null ? updateVehiclesState(processedData, setState) : null
         log.info("siri stop  data state", vehicleState)
-    }).catch((x) => log.info("siri stop call issue!", x))
+    }).catch((x: Error) => log.info("siri stop call issue!", x))
 }
 
 
