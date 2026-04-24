@@ -104,11 +104,18 @@ export interface VehicleRtInterface {
 }
 
 
+export enum MapRouteDisruptionStatus {
+    Canonical = "canonical",
+    Detour = "detour",
+    Removed = "removed"
+}
+
 export interface MapRouteComponentInterface {
     routeId: string;
     id: string;
     points: any; // Replace 'any' with a specific type if available
     color: string;
+    disruptionStatus: MapRouteDisruptionStatus;
 }
 
 export interface RouteDirectionInterface {
@@ -125,7 +132,9 @@ export interface RouteMatchDirectionInterface {
     directionId: string;
     destination: string;
     routeAndDirection: string;
+    /** @deprecated Use mapRouteComponentDataDict instead */
     mapRouteComponentData: MapRouteComponentInterface[];
+    mapRouteComponentDataDict: Record<MapRouteDisruptionStatus, MapRouteComponentInterface[]>;
     mapStopComponentData: StopInterface[];
     routeDirectionComponentData: RouteDirectionInterface;
 }
@@ -246,12 +255,13 @@ export function createVehicleRtInterface(mvj: any,updateTime:Date): VehicleRtInt
     };
 }
 
-export function createMapRouteComponentInterface(routeId: string, componentId: string, points: any, color: string): MapRouteComponentInterface {
+export function createMapRouteComponentInterface(routeId: string, componentId: string, points: any, color: string, disruptionStatus: MapRouteDisruptionStatus = MapRouteDisruptionStatus.Canonical): MapRouteComponentInterface {
     return {
         routeId,
         id: componentId,
         points,
-        color
+        color,
+        disruptionStatus
     };
 }
 
@@ -266,9 +276,23 @@ export function createRouteDirectionComponentInterface(routeId: string, directio
     };
 }
 
+function safelyDecodePolyline(encodedPolyline: string): any {
+    try {
+        return OBA.Util.decodePolyline(encodedPolyline);
+    } catch (error) {
+        log.error("Error decoding polyline:", error, "Encoded polyline:", encodedPolyline);
+        return null; // or return an empty array or a default value as appropriate
+    }
+}
+
 export function createRouteMatchDirectionInterface(directionJson: any, routeId: string, color: string): RouteMatchDirectionInterface {
     const mapRouteComponentData = [];
-    const mapStopComponentData = [];
+    const mapRouteComponentDataDict: Record<MapRouteDisruptionStatus, MapRouteComponentInterface[]> = {
+        [MapRouteDisruptionStatus.Canonical]: [],
+        [MapRouteDisruptionStatus.Detour]: [],
+        [MapRouteDisruptionStatus.Removed]: []
+    };
+    const mapStopComponentData: StopInterface[] = [];
     const stops = directionJson?.stops || [];
 
     log.info("createRouteMatchDirectionInterface", directionJson, routeId, color);
@@ -282,13 +306,26 @@ export function createRouteMatchDirectionInterface(directionJson: any, routeId: 
     );
 
     for (let j = 0; j < directionJson.polylines.length; j++) {
-        const encodedPolyline = directionJson.polylines[j];
-        const decodedPolyline = OBA.Util.decodePolyline(encodedPolyline);
+        const polylineData = directionJson.polylines[j];
+        const encodedPolyline = typeof polylineData === 'string' ? polylineData : (polylineData.line || polylineData);
+        const decodedPolyline = safelyDecodePolyline(encodedPolyline);
         const polylineId = `${routeId}${primaryDelimiter}dir${primaryDelimiter}${directionJson.directionId}${primaryDelimiter}polyLineNum${primaryDelimiter}${j}`;
-        mapRouteComponentData.push(createMapRouteComponentInterface(routeId, polylineId, decodedPolyline, color));
+        let rawDisruptionStatus: MapRouteDisruptionStatus = 
+            (typeof polylineData === 'object' && (polylineData.detourStatus || polylineData.disruptionStatus)) || 
+            MapRouteDisruptionStatus.Canonical;
+        const disruptionStatus = 
+            (
+                rawDisruptionStatus !== MapRouteDisruptionStatus.Detour 
+                && rawDisruptionStatus !== MapRouteDisruptionStatus.Removed
+            ) 
+                ? MapRouteDisruptionStatus.Canonical 
+                : rawDisruptionStatus;
+        const mapRouteComponent = createMapRouteComponentInterface(routeId, polylineId, decodedPolyline, color, disruptionStatus);
+        mapRouteComponentData.push(mapRouteComponent);
+        mapRouteComponentDataDict[disruptionStatus].push(mapRouteComponent);
     }
 
-    stops.forEach(stop => mapStopComponentData.push(createStopInterface(stop)));
+    stops.forEach((stop: any) => mapStopComponentData.push(createStopInterface(stop)));
 
     return {
         routeId,
@@ -297,6 +334,7 @@ export function createRouteMatchDirectionInterface(directionJson: any, routeId: 
         routeAndDirection: routeId + primaryDelimiter+directionJson.directionId,
         destination: directionJson.destination,
         mapRouteComponentData,
+        mapRouteComponentDataDict,
         mapStopComponentData,
         routeDirectionComponentData
     };
@@ -397,11 +435,11 @@ export enum CardType {
 }
 
 export class Card {
-    static ROUTECARDIDENTIFIER = "RouteResult";
-    static GEOCARDIDENTIFIER = "GeocodeResult";
-    static STOPCARDIDENTIFIER = "StopResult";
-    static LOADCARDIDENTIFIER = "LoadingResult";
-    static FAVORITESCARDIDENTIFIER = "FavoritesResult";
+    static ROUTECARDIDENTIFIERS = new Set(["RouteResult", "RouteResultV2"]);
+    static GEOCARDIDENTIFIERS = new Set(["GeocodeResult", "GeocodeResultV2"]);
+    static STOPCARDIDENTIFIERS = new Set(["StopResult", "StopResultV2"]);
+    static LOADCARDIDENTIFIERS = new Set(["LoadingResult"]);
+    static FAVORITESCARDIDENTIFIERS = new Set(["FavoritesResult"]);
     static cardTypes = CardType;
 
     searchTerm: string;
@@ -478,25 +516,22 @@ export class Card {
 
     setSearchResultType(searchResultType: string | null): void {
         this.searchResultType = searchResultType;
-        switch (searchResultType) {
-            case Card.LOADCARDIDENTIFIER:
-                this.setType(CardType.LoadingCard);
-                break;
-            case Card.ROUTECARDIDENTIFIER:
-                this.setType(CardType.RouteCard);
-                break;
-            case Card.GEOCARDIDENTIFIER:
-                this.setType(CardType.GeocodeCard);
-                break;
-            case Card.STOPCARDIDENTIFIER:
-                this.setType(CardType.StopCard);
-                break;
-            case null:
-                this.setType(CardType.ErrorCard);
-                break;
-            default:
-                this.setType(CardType.ErrorCard);
-                log.error("Invalid search result type", searchResultType);
+        if (searchResultType === null) {
+            this.setType(CardType.ErrorCard);
+            return;
+        }
+        
+        if (Card.LOADCARDIDENTIFIERS.has(searchResultType)) {
+            this.setType(CardType.LoadingCard);
+        } else if (Card.ROUTECARDIDENTIFIERS.has(searchResultType)) {
+            this.setType(CardType.RouteCard);
+        } else if (Card.GEOCARDIDENTIFIERS.has(searchResultType)) {
+            this.setType(CardType.GeocodeCard);
+        } else if (Card.STOPCARDIDENTIFIERS.has(searchResultType)) {
+            this.setType(CardType.StopCard);
+        } else {
+            this.setType(CardType.ErrorCard);
+            log.error("Invalid search result type", searchResultType);
         }
     }
 
