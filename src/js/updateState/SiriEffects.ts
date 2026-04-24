@@ -7,6 +7,7 @@ import {
 } from "../../components/util/VehicleStateComponent";
 import {OBA} from "../oba";
 import {createServiceAlertInterface, createVehicleRtInterface, VehicleRtInterface, ServiceAlertInterface, AgencyAndId, Card, VehicleStateObject, VehicleStateUpdateValue} from "./DataModels";
+import {SiriStopWrapper} from "./DataContracts";
 import log from 'loglevel';
 import {getSearchTermAdditions} from "./keyWordsAndSupportUtils"
 
@@ -17,22 +18,22 @@ import {getSearchTermAdditions} from "./keyWordsAndSupportUtils"
 
 
 
-function extractData (routeId: string, siri: { Siri?: { ServiceDelivery?: { ResponseTimestamp: string; VehicleMonitoringDelivery?: any[]; SituationExchangeDelivery?: any } } }): [[string, Map<string, VehicleRtInterface>, Map<string, ServiceAlertInterface[]>, Map<string, VehicleRtInterface[]>, string | undefined], boolean] {
+function extractData (routeId: string, siri: SiriStopWrapper): [[string, Map<string, VehicleRtInterface>, Map<string, ServiceAlertInterface[]>, Map<string, VehicleRtInterface[]>, string | undefined], boolean] {
     let update= false;
     log.info("extractData from Siri")
     let keyword = "serviceAlert & vehicle"
-    let lastCallTime = siri?.Siri?.ServiceDelivery?.ResponseTimestamp
+    let lastCallTime = siri?.siri?.Siri?.ServiceDelivery?.ResponseTimestamp
     let [vehicleDataMap,serviceAlertDataMap,stopsToVehiclesMap] = [new Map(), new Map(),new Map()]
 
-    let vehicleActivity = siri?.Siri?.ServiceDelivery?.VehicleMonitoringDelivery
+    let vehicleActivity = siri?.siri?.Siri?.ServiceDelivery?.VehicleMonitoringDelivery
     log.info(vehicleActivity)
-    vehicleActivity = vehicleActivity!=null ? vehicleActivity[0]?.VehicleActivity : null
-    log.info("siri vehicles found:",vehicleActivity)
-    if (vehicleActivity != null && vehicleActivity.length != 0) {
+    let vehicleActivityArray: any[] | null | undefined = vehicleActivity!=null ? vehicleActivity[0]?.VehicleActivity : null
+    log.info("siri vehicles found:",vehicleActivityArray)
+    if (vehicleActivityArray != null && vehicleActivityArray.length != 0) {
         update = true;
-        for (let i = 0; i < vehicleActivity.length; i++) {
+        for (let i = 0; i < vehicleActivityArray.length; i++) {
             OBA.Util.trace("processing vehicle #" + i);
-            let mvj = vehicleActivity[i].MonitoredVehicleJourney
+            let mvj = vehicleActivityArray[i].MonitoredVehicleJourney
             let vehicleDatum = createVehicleRtInterface(mvj,OBA.Util.ISO8601StringToDate(lastCallTime))
             vehicleDataMap.set(mvj.VehicleRef,vehicleDatum)
             let vehicles = stopsToVehiclesMap.get(vehicleDatum.nextStop)
@@ -47,14 +48,14 @@ function extractData (routeId: string, siri: { Siri?: { ServiceDelivery?: { Resp
         log.info('no '+keyword+' recieved. not processing '+keyword)
     }
 
-    let serviceAlertActivity = siri?.Siri?.ServiceDelivery?.SituationExchangeDelivery
-    serviceAlertActivity = serviceAlertActivity==null? null :serviceAlertActivity[0]?.Situations?.PtSituationElement
-    log.info("service alerts found:", serviceAlertActivity)
-    if (serviceAlertActivity != null) {
+    let serviceAlertActivity = siri?.siri?.Siri?.ServiceDelivery?.SituationExchangeDelivery
+    let serviceAlertActivityArray: any[] | null | undefined = serviceAlertActivity==null? null :serviceAlertActivity[0]?.Situations?.PtSituationElement
+    log.info("service alerts found:", serviceAlertActivityArray)
+    if (serviceAlertActivityArray != null) {
         update = true;
-        log.info("service alerts found:", serviceAlertActivity)
-        for (let i = 0; i < serviceAlertActivity.length; i++) {
-            let situationElement = serviceAlertActivity[i]
+        log.info("service alerts found:", serviceAlertActivityArray)
+        for (let i = 0; i < serviceAlertActivityArray.length; i++) {
+            let situationElement = serviceAlertActivityArray[i]
             log.info("processing service alert:", situationElement)
             let effects = situationElement.Affects.VehicleJourneys.AffectedVehicleJourney
             log.info(effects)
