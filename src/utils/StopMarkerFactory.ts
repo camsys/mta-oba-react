@@ -1,11 +1,11 @@
 import L, { map } from "leaflet";
 import { StopMarker } from "./dataLayer";
-import {useNavigation} from "../js/updateState/NavigationEffect.ts";
 import log from 'loglevel';
 import {setMapLatLngAndZoom} from "./mapZoom";
+import { StopInterface } from "../js/updateState/DataModels";
 
 export const createStopMarker = (
-    stopDatum,
+    stopDatum: StopInterface,
     selectStop: Function,
     popupOptions: L.PopupOptions,
     icon: L.Icon,

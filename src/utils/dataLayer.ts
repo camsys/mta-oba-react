@@ -1,8 +1,8 @@
 import L from "leaflet";
-import { MapRouteComponentInterface, StopInterface, VehicleRtInterface } from "../js/updateState/DataModels";
+import { AgencyAndId, MapRouteComponentInterface, StopInterface, VehicleRtInterface } from "../js/updateState/DataModels";
 
 export interface DatumElement {
-    getDatumId(): string;
+    getDatumId(): AgencyAndId;
     getDatum(): MapRouteComponentInterface | VehicleRtInterface| StopInterface | string;
 }
 
@@ -19,8 +19,8 @@ export class StopMarker extends L.Marker implements DatumElement {
         return this.datum;
     }
 
-    getDatumId(): string {
-        return this.datum.id;
+    getDatumId(): AgencyAndId {
+        return this.datum.datumId;
     }
 }
 
@@ -37,8 +37,8 @@ export class VehicleArrivalMarker extends L.Marker implements DatumElement {
         return this.datum;
     }
 
-    getDatumId(): string {
-        return this.datum.vehicleId;
+    getDatumId(): AgencyAndId {
+        return AgencyAndId.get(this.datum.routeId);
     }
 }
 
@@ -54,25 +54,25 @@ export class RoutePolyline extends L.Polyline implements DatumElement {
         return this.datum;
     }
 
-    getDatumId(): string {
-        return this.datum.routeId;
+    getDatumId(): AgencyAndId {
+        return AgencyAndId.get(this.datum.id);
     }
 }
 
 export class RouteLayerGroup<T extends L.Layer & DatumElement> extends L.LayerGroup implements DatumElement {
-    private datumId: string;
+    private datumId: AgencyAndId;
     
 
-    constructor(datumId: string, layers?: T[], options?: L.LayerOptions) {
+    constructor(datumId: AgencyAndId, layers?: T[], options?: L.LayerOptions) {
         super(layers, options);
         this.datumId = datumId;
     }
 
-    getDatum(): string {
+    getDatum(): AgencyAndId {
         return this.datumId;
     }
 
-    getDatumId(): string {
+    getDatumId(): AgencyAndId {
         return this.datumId;
     }
 }

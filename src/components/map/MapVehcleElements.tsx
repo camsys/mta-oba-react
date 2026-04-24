@@ -21,16 +21,9 @@ import {
     StopMatch,
     VehicleRtInterface
 } from "../../js/updateState/DataModels";
-import { createRoutePolyline } from "../../utils/RoutePolylineFactory";
-import { createStopMarker } from "../../utils/StopMarkerFactory.ts";
-import { createSearchedHereMarker } from "../../utils/SearchedHereFactory.ts";
+
 import { createVehicleMarker } from "../../utils/VehicleMarkerFactory.ts";
 import {useNavigation} from "../../js/updateState/NavigationEffect.ts";
-
-log.info("createRoutePolyline:", createRoutePolyline);
-log.info("createStopMarker:", createStopMarker);
-log.info("createSearchedHereMarker:", createSearchedHereMarker);
-log.info("createVehicleMarker:", createVehicleMarker);
 
 // this method is seperated because vehicleState updates often. that said i don't want it to trigger a rerender
 export const MapVehicleElements = () =>{

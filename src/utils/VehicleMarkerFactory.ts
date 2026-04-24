@@ -1,6 +1,4 @@
 import L, { map } from "leaflet";
-import bus from "../img/icon/bus.svg";
-import busStroller from "../img/icon/bus-stroller.svg";
 import {VehicleRtInterface} from "../js/updateState/DataModels";
 import log from 'loglevel';
 import { setMapLatLngAndZoom } from "./mapZoom";
