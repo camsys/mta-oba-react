@@ -42,7 +42,7 @@ function SelectedVehicleServiceAlert({routeId,getServiceAlert}: {routeId: string
     let id = routeId.split("_")[1];
     let serviceAlertIdentifier = routeId;
     let hasServiceAlert = getServiceAlert({abbreviatedRouteId: id, routeAgencyAndId: serviceAlertIdentifier})!==null;
-    console.log("checking for service alert in Selected Vehicle with id ",id," and identifier ",serviceAlertIdentifier," result: ",hasServiceAlert);
+    log.info("checking for service alert in Selected Vehicle with id ",id," and identifier ",serviceAlertIdentifier," result: ",hasServiceAlert);
 
     return (
         <>
