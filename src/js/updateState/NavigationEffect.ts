@@ -124,7 +124,7 @@ async function getData(card:Card,stops: StopsObject,routes:RoutesObject,address:
             card.setSearchResultType(searchResults.resultType)
             log.info(card)
 
-            if(searchResults.resultType=="StopResult"){
+            if(Card.STOPCARDIDENTIFIERS.has(searchResults.resultType)){
                 searchResults.matches.forEach(x=>{
                     card.searchMatches.push(processStopSearch(x,card,stops,routes))
                 })
@@ -136,7 +136,7 @@ async function getData(card:Card,stops: StopsObject,routes:RoutesObject,address:
                 let stopMatch = card.searchMatches[0] as StopMatch
                 card.datumId=stopMatch.id
             }
-            if(searchResults.resultType=="GeocodeResult"){
+            if(Card.GEOCARDIDENTIFIERS.has(searchResults.resultType)){
                 searchResults.matches.forEach(x=>{
                     card.searchMatches.push(processGeocodeSearch(x,card,stops,routes))
                 })
@@ -146,7 +146,7 @@ async function getData(card:Card,stops: StopsObject,routes:RoutesObject,address:
                     })
                 }
             }
-            if(searchResults.resultType=="RouteResult"){
+            if(Card.ROUTECARDIDENTIFIERS.has(searchResults.resultType)){
                 searchResults.matches.forEach(x=>{
                     log.info("processing route search result",x,card,stops,routes)
                     card.searchMatches.push(processRouteSearch(x,card,stops,routes))
