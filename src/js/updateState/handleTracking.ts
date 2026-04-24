@@ -53,13 +53,15 @@ const trackingHandler = (target:HTMLElement) => {
   log.info("trackingHandler called with target:", target);
   const context:string[] = []
   let el: HTMLElement | null = target;
-  if(el?.innerText && el.innerText.length < 45 && el.innerText.length > 0) {
-      context.push(el.innerText)
-  } else if(el.hasAttribute("alt")){
-      context.push(el.title);
-  } else {
-    log.warn("tracking cannot work with element:", el);
-    context.push(el.getAttribute("value")||"")
+  if (el) {
+      if(el.innerText && el.innerText.length < 45 && el.innerText.length > 0) {
+          context.push(el.innerText)
+      } else if(el.hasAttribute("alt")){
+          context.push(el.title);
+      } else {
+        log.warn("tracking cannot work with element:", el);
+        context.push(el.getAttribute("value")||"")
+      }
   }
   while (el && el !== document.body) {
       for (const className of el.classList) {
@@ -106,7 +108,7 @@ function getClickLog() {
   return raw ? raw.split("|").filter(Boolean) : [];
 }
 
-function countItemsWithinCharLimit(items, maxChars) {
+function countItemsWithinCharLimit(items: string[], maxChars: number) {
   let totalChars = 0;
   let count = 0;
 

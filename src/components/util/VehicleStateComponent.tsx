@@ -38,7 +38,7 @@ const VehicleStateProvider = ({ children }: { children: ReactNode }) : JSX.Eleme
 
 
 const VehiclesApproachingStopsProvider = ({ children }: { children: ReactNode }) => {
-    const [vehiclesApproachingStopsState, setVehiclesApproachingStopsState] = useState({
+    const [vehiclesApproachingStopsState, setVehiclesApproachingStopsState] = useState<VehicleStateObject>({
         renderCounter:1
     });
     log.info("initial state vehicle approaching state set: ",vehiclesApproachingStopsState)

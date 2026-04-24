@@ -22,6 +22,7 @@ export const FavoriteItem = ({datum} : {datum: RouteInterface | StopInterface}) 
     if(isStopInterface(datum)){
         return(<SelectableFavoriteStopCard stopDatum={datum}/>)
     }
+    return null;
 }
 
 export function FavoritesWrapper():JSX.Element{

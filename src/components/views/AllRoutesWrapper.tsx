@@ -36,10 +36,10 @@ export function AbreviatedRouteCard({ routeMatch}: {routeMatch: RouteMatch}): JS
 export function AllRoutesWrapper():JSX.Element{
     const {state} = useCardState()
     let routes = state.currentCard.searchMatches.map(match=>{
-        return match.routeMatches.map(routeMatch=>{
-            if(routeMatch.type === MatchType.RouteMatch){return routeMatch}
-        })
-    }).flat().filter(x=>x!==null&&typeof x!=='undefined') as RouteMatch[]
+        return match.routeMatches
+            .filter(routeMatch => routeMatch.type === MatchType.RouteMatch)
+            .map(routeMatch => routeMatch)
+    }).flat() as RouteMatch[]
 
 
     return (<React.Fragment>

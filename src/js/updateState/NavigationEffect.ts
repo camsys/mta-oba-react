@@ -174,7 +174,7 @@ async function getData(card:Card,stops: StopsObject,routes:RoutesObject,address:
     return card
 }
 
-const performNewSearch = (searchRef:String,currentCard:Card):boolean=>{
+const performNewSearch = (searchRef:string,currentCard:Card):boolean=>{
     if(currentCard.type === CardType.VehicleCard){
         // this only works because vehicle searches are handled elsewhere
         return true
@@ -194,7 +194,7 @@ const updateWindowHistory = (term:string,uuid:string) :void =>{
 }
 
 
-export const updateCard = async (searchRef:String,stops: StopsObject,routes:RoutesObject,address:string,sessionUuid:string):Promise<Card> =>{
+export const updateCard = async (searchRef:string,stops: StopsObject,routes:RoutesObject,address:string,sessionUuid:string):Promise<Card> =>{
     log.info("received new search input:",searchRef)
     // searchRef = searchRef.replaceAll(" ","%2520")
     let card = new Card(searchRef,uuidv4(),sessionUuid);
@@ -214,7 +214,7 @@ const getBaseAddress =()=>{
 }
 
 const getSearchAddress=(searchTerm:string, card: Card)=>{
-    const ampersandToAnd = (input:string) => String(input).replace(/&/g, 'and');
+    const ampersandToAnd = (input:string) => input.replace(/&/g, 'and');
     let out = getBaseAddress() + OBA.Config.searchUrl + "?q=" + ampersandToAnd(searchTerm) + getSearchTermAdditions(card)
     log.info("generating search address for: " + out)
     return  out

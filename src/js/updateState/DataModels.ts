@@ -462,10 +462,10 @@ export class Card {
     stopIdList: Set<string>;
     vehicleId: string | null;
     type: CardType;
-    uuid:String;
-    sessionUuid:String;
+    uuid:string;
+    sessionUuid:string;
 
-    constructor(searchTerm: string,uuid:String, sessionUuid:String) {
+    constructor(searchTerm: string,uuid:string, sessionUuid:string) {
         this.searchTerm = searchTerm;
         this.searchResultType = null;
         this.name = "loadingCard";

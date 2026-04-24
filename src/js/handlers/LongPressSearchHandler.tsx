@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useMap } from "react-leaflet";
-import { LeafletMouseEvent, LeafletEventHandlerFnMap, Map } from "leaflet";
+import { LeafletMouseEvent, LeafletEventHandlerFnMap, Map, LeafletEvent } from "leaflet";
 
 interface UseLongPressSearchProps {
   onLongPress: (e: LeafletMouseEvent) => void;
@@ -14,9 +14,9 @@ export function useLongPressSearch({ onLongPress, pressDelay = 600 }: UseLongPre
   useEffect(() => {
     if (!map) return;
 
-    const startPress = (e: LeafletMouseEvent) => {
+    const startPress = (e: LeafletEvent | LeafletMouseEvent) => {
       const timer = setTimeout(() => {
-        onLongPress(e);
+        onLongPress(e as LeafletMouseEvent);
       }, pressDelay);
       setPressTimer(timer);
     };
