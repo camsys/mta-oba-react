@@ -5,7 +5,7 @@ import {updatedTimeIdentifier, vehicleDataIdentifier, useVehicleState} from "../
 import {useNavigation} from "../../js/updateState/NavigationEffect";
 import {OBA} from "../../js/oba";
 import {useHighlight} from "../util/MapHighlightingStateComponent";
-import {MatchType, RouteMatch, SearchMatch, VehicleRtInterface} from "../../js/updateState/DataModels";
+import {MatchType, RouteMatch, SearchMatch, VehicleArrivalInterface, VehicleRtInterface} from "../../js/updateState/DataModels";
 import meeples from "../../../public/img/meeples/meeples-blank.png";
 import {useEffect, useState} from "react";
 import ErrorBoundary from "../util/errorBoundary";
@@ -47,7 +47,7 @@ export const VehicleCardContentComponent = ({routeMatch,vehicleDatum}
             <ul className="next-stops route-stops" style={{ color: '#'+routeMatch.color}}>
                 {
                     vehicleDatum?.vehicleArrivalData!=null?
-                    vehicleDatum.vehicleArrivalData.map(vehicleArrival=>{
+                    vehicleDatum.vehicleArrivalData.map((vehicleArrival : VehicleArrivalInterface) =>{
                         return(
                             <li
                             className="pb-2"
