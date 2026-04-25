@@ -1,15 +1,18 @@
 import React, { useContext, useState } from "react";
 import { OBA } from "../../js/oba";
-import { CardStateContext } from "../util/CardStateComponent";
+import { useCardState } from "../util/CardStateComponent";
 import ServiceAlertContainerComponent, {ServiceAlertSvg, useServiceAlert} from "./ServiceAlertContainerComponent";
 import { useHighlight } from "../util/MapHighlightingStateComponent";
 import {
     RouteDirectionInterface,
     MatchType,
     SearchMatch, StopInterface, RouteMatch,
-    Card
+    Card,
+    VehicleStateObject,
+    AgencyAndId,
+    primaryDelimiter
 } from "../../js/updateState/DataModels";
-import {stopSortedDataIdentifier, vehicleDataIdentifier, VehicleStateContext} from "../util/VehicleStateComponent";
+import {stopSortedDataIdentifier, vehicleDataIdentifier, useVehicleState} from "../util/VehicleStateComponent";
 import {useNavigation} from "../../js/updateState/NavigationEffect"
 import {VehicleComponent} from "./VehicleComponent"
 import {useFavorite} from "../util/MiscStateComponent";
@@ -22,18 +25,23 @@ import { RouteCardHeader, RouteCardHeaderMany } from "./CardHeaderComponents";
 import { UnderlineOnFocusElement } from "../shared/common";
 
 export function RouteStopComponent
-({stopDatum, routeId, index}:{stopDatum:StopInterface,routeId:string,index:string}):JSX.Element{
+({stopDatum, routeId, index}:{stopDatum:StopInterface,routeId:AgencyAndId,index:string}):JSX.Element{
 
     const { highlightId } = useHighlight();
-    const {vehicleState} = useContext(VehicleStateContext)
+    const {vehicleState} = useVehicleState()
     const { search } = useNavigation();
-    routeId=routeId.split("_")[1]
+    let routeName=routeId.id
 
-    let vehicleChildComponents = vehicleState[routeId+stopSortedDataIdentifier]
+    // todo: please clean up when moving to easier keys for vehicle state
+    let vehicleData=null
+    let vehicleChildComponents = vehicleState[(routeName + stopSortedDataIdentifier) as keyof VehicleStateObject];
     let hasVehicleChildren = vehicleChildComponents!==null && typeof vehicleChildComponents!=="undefined"
-    if(hasVehicleChildren){
-        hasVehicleChildren = vehicleChildComponents.has(stopDatum.id)
-        vehicleChildComponents = vehicleChildComponents.get(stopDatum.id)
+    if (vehicleChildComponents instanceof Map) {
+        //todo: should just use the datumId for key
+        const datumId = stopDatum.datumId.toString();
+        hasVehicleChildren = vehicleChildComponents.has(datumId);
+        // todo: we know it is one of the other because of which key we used, yes this needs to be fixed
+        vehicleData = vehicleChildComponents.get(datumId) as Map<string,VehicleStateObject> | null;
     }
 
     let uniqueId = stopDatum.name + "_" + stopDatum.id + "_"+index
@@ -45,15 +53,15 @@ export function RouteStopComponent
             <li  className={'pb-4 ' + (hasVehicleChildren ? "has-info" : "")}
                  key={uniqueId}
                  id={uniqueId}
-                 onMouseEnter={() => highlightId(stopDatum.id)}
+                 onMouseEnter={() => highlightId(stopDatum.datumId)}
                  onMouseLeave={() => highlightId(null)}
             >
-                <a href="#" onClick={(e) => {e.preventDefault();highlightId(null);search(stopDatum.id.split("_")[1])}} tabIndex="-1">{stopDatum.name}</a>
+                <a href="#" onClick={(e) => {e.preventDefault();highlightId(null);search(stopDatum.datumId.id)}} tabIndex={0}>{stopDatum.name}</a>
                 {
                     hasVehicleChildren ?
                         <ul className="approaching-buses">
-                            {vehicleChildComponents.map((vehicleDatum, index)=>{
-                                return <VehicleComponent vehicleDatum={vehicleDatum} lastUpdateTime={null} key = {index}/>})}
+                            {vehicleData && vehicleData.map((vehicleDatum: any, idx: number)=>{
+                                return <VehicleComponent vehicleDatum={vehicleDatum} tabbable={0} key = {idx}/>})}
                         </ul>
                         :null
                 }
@@ -73,8 +81,8 @@ export function RouteStopComponent
 export const RouteDirection = ({datum,color,collapsed}: { datum: RouteDirectionInterface, color: string ,collapsed:boolean}): JSX.Element => {
     log.info("generating RouteDirectionComponent:", datum)
     return (
-        <div className="route-direction inner-card collapsible" key={datum.routeId+datum.directionId}>
-            <button className="card-header collapse-trigger group" aria-haspopup="true" aria-expanded="false" aria-label={"Toggle "+datum.routeId+" to " + datum.routeDestination +" Open / Closed"} tabIndex={collapsed?-1:0}>
+        <div className="route-direction inner-card collapsible" key={datum.datumId.toString()+primaryDelimiter+datum.directionId}>
+            <button className="card-header collapse-trigger group" aria-haspopup="true" aria-expanded="false" aria-label={"Toggle "+datum.datumId.id+" to " + datum.routeDestination +" Open / Closed"} tabIndex={collapsed?-1:0}>
                 <span className="label">to <UnderlineOnFocusElement variant="black" as="strong"> {datum.routeDestination}</UnderlineOnFocusElement>
                     {datum.hasUpcomingService?null:<><br/><em className="no-scheduled-service">No scheduled service at this time.</em></>}
                 </span>
@@ -82,11 +90,10 @@ export const RouteDirection = ({datum,color,collapsed}: { datum: RouteDirectionI
             
             <div className="card-content collapse-content">
                 <ul className="route-stops" style={{ color: '#'+color}}>
-                    {log.info("preparing to get RouteStopComponents from: ", datum)}
                     {
                         datum.routeStopComponentsData.map(
                             (stopDatum,index) =>{
-                                return <RouteStopComponent stopDatum={stopDatum} routeId = {datum.routeId} key = {index}/>})
+                                return <RouteStopComponent stopDatum={stopDatum} routeId = {datum.datumId} index={index.toString()} key = {index}/>})
                     }
                 </ul>
             </div>
@@ -108,12 +115,12 @@ function CardDetails({routeMatch}:{routeMatch:RouteMatch}) : JSX.Element|null{
         </ul>)
 }
 
-export function RouteCardContent({ routeMatch, collapsed}: {RouteMatch,boolean}): JSX.Element  {
-    let routeId = routeMatch.routeId.split("_")[1];
+export function RouteCardContent({ routeMatch, collapsed}: {routeMatch: RouteMatch, collapsed: boolean}): JSX.Element | null  {
+    let routeId = typeof routeMatch.routeId === 'string' ? routeMatch.routeId : routeMatch.routeId.id;
     return(
         <React.Fragment>
             <CardDetails routeMatch={routeMatch}/>
-            <ServiceAlertContainerComponent {...{ abbreviatedRouteId: routeId, routeAgencyAndId: routeMatch.routeId, collapsed}} />
+            <ServiceAlertContainerComponent {...{ abbreviatedRouteId: routeId, routeAgencyAndId: routeMatch.routeId.toString(), collapsed}} />
             {routeMatch.directions.map((dir, index) =>
                 (<RouteDirection
                     datum={dir.routeDirectionComponentData}
@@ -122,7 +129,7 @@ export function RouteCardContent({ routeMatch, collapsed}: {RouteMatch,boolean})
 }
 
 
-export function RouteCard({ routeMatch}: RouteMatch): JSX.Element {
+export function RouteCard({ routeMatch}: {routeMatch: RouteMatch}): JSX.Element | null {
     log.info("generating route card: ", routeMatch);
     if (routeMatch.type !== MatchType.RouteMatch) {
         return null
@@ -133,7 +140,7 @@ export function RouteCard({ routeMatch}: RouteMatch): JSX.Element {
             <div className={`card route-card ${routeMatch.datumId}}`}>
                 <RouteCardHeader match={routeMatch}/>
                 <div className="card-content">
-                    <RouteCardContent routeMatch={routeMatch}/>
+                    <RouteCardContent routeMatch={routeMatch} collapsed={false}/>
                     
                 </div>
                 <ul className="menu icon-menu card-menu border-t-0">
@@ -147,7 +154,7 @@ export function RouteCard({ routeMatch}: RouteMatch): JSX.Element {
 }
 
 
-export function CollapsableRouteCard({ routeMatch, oneOfMany}: {routeMatch:RouteMatch, oneOfMany:boolean}): JSX.Element {
+export function CollapsableRouteCard({ routeMatch, oneOfMany}: {routeMatch:RouteMatch, oneOfMany:boolean}): JSX.Element | null {
     log.info("generating route card: ", routeMatch);
     if (routeMatch.type !== MatchType.RouteMatch) {
         return null
@@ -155,9 +162,10 @@ export function CollapsableRouteCard({ routeMatch, oneOfMany}: {routeMatch:Route
 
     const { highlightId } = useHighlight();
 
-    let id = routeMatch.datumId.split("_")[1];
+    let id = typeof routeMatch.datumId === 'string' ? routeMatch.datumId : routeMatch.datumId.id;
+    let serviceAlertIdentifier = id;
     let {getServiceAlert} = useServiceAlert();
-    let hasServiceAlert = getServiceAlert({abbreviatedRouteId: id, routeAgencyAndId: routeMatch.datumId})!==null;
+    let hasServiceAlert = getServiceAlert({abbreviatedRouteId: id, routeAgencyAndId: routeMatch.datumId.toString()})!==null;
     console.log("checking for service alert in Collapsable Route Card with id ",id," and identifier ",routeMatch.datumId," result: ",hasServiceAlert);
     return (
         <React.Fragment>
@@ -174,7 +182,7 @@ export function CollapsableRouteCard({ routeMatch, oneOfMany}: {routeMatch:Route
                         <RouteCardContent routeMatch={routeMatch} collapsed={true}/>
                         <ul className="menu icon-menu card-menu">
                             <li>
-                                <ViewSearchItem datumId={routeMatch.datumId} text={"Route"} collapsed={true}/>
+                                <ViewSearchItem datumId={id} text={"Route"} collapsed={true}/>
                             </li>
                         </ul>
                     </div>
@@ -188,7 +196,7 @@ export function CollapsableRouteCard({ routeMatch, oneOfMany}: {routeMatch:Route
 }
 
 export function RouteCardWrapper(): JSX.Element {
-    const { state } = useContext(CardStateContext);
+    const { state } = useCardState();
     log.info("adding route cards for matches:", state.currentCard.searchMatches);
 
     return (

@@ -8,19 +8,19 @@ export const isStopInterface = (obj: any): obj is StopInterface =>
     obj.longLat?.length === 2 &&
     typeof obj.longLat?.[0] === "number" &&
     typeof obj.longLat?.[1] === "number" &&
-    typeof obj?.id === "string" &&
+    typeof obj?.id === "object" &&
     typeof obj?.stopDirection === "string" &&
-    typeof obj?.datumId === "string" &&
+    typeof obj?.datumId === "object" &&
     typeof obj?.datumName === "string";
 
 export const isRouteInterface = (obj: any): obj is RouteInterface =>
     typeof obj === "object" &&
     obj !== null &&
     typeof obj?.color === "string" &&
-    typeof obj?.routeId === "string" &&
+    typeof obj?.routeId === "object" &&
     typeof obj?.routeTitle === "string" &&
     (typeof obj?.description === "string" || obj?.description === undefined || obj?.description === null) &&
-    typeof obj?.datumId === "string" &&
+    typeof obj?.datumId === "object" &&
     typeof obj?.datumName === "string";
 
 

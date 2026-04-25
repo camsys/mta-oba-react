@@ -5,11 +5,11 @@ import ErrorBoundary from "../util/errorBoundary";
 import ReactLeafletGoogleLayer from "react-leaflet-google-layer";
 import RefreshComponent from "../views/RefreshComponent";
 import {useContext} from "react";
-import {CardStateContext} from "../util/CardStateComponent.tsx";
+import {useCardState} from "../util/CardStateComponent";
 import {Card, CardType} from "../../js/updateState/DataModels";
 import {useMapDisplayState} from "../util/MapDisplayStateComponent";
-import {useSiri} from "../../js/updateState/getSiri.tx";
-import {noMapNeededCardTypes} from "../../js/updateState/NavigationEffect.ts";
+import {useSiri} from "../../js/updateState/getSiri";
+import {noMapNeededCardTypes} from "../../js/updateState/NavigationEffect";
 import { useNavigation } from 'react-router';
 
 
@@ -33,7 +33,7 @@ export function MapWrapper  () : JSX.Element {
             return mapIsOpen ? 'Toggle Map Visibility (currently visible)' : 'Toggle Map Visibility (currently hidden)'
     }
 
-    const { state } = useContext(CardStateContext);
+    const { state } = useCardState();
 
 
     log.info("adding map-wrapper")

@@ -1,46 +1,25 @@
-import ReactLeafletGoogleLayer from "react-leaflet-google-layer";
 import {LayerGroup, MapContainer, Marker, useMap, useMapEvents} from "react-leaflet";
 import React, {useContext, useEffect, useRef, useState} from "react";
-import queryString from "query-string";
-import {OBA} from "../../js/oba";
 import log from 'loglevel';
 import L, {LatLngBounds, LeafletEventHandlerFn} from "leaflet";
 
-import {CardStateContext, RoutesContext, StopsContext} from "../util/CardStateComponent.tsx";
-import {vehicleDataIdentifier, VehicleStateContext} from "../util/VehicleStateComponent";
-import MapRouteComponent from "./MapRouteComponent";
-import MapStopComponent from "./MapStopComponent";
-import MapVehicleComponent from "./MapVehicleComponent";
+import {useCardState, useRoutes, useStops} from "../util/CardStateComponent";
+import {vehicleDataIdentifier, useVehicleState, shortenRoute} from "../util/VehicleStateComponent";
 import {
+    AgencyAndId,
     CardType,
-    MapRouteComponentInterface,
-    MatchType,
-    RouteMatch,
-    StopInterface,
-    StopMatch,
     VehicleRtInterface
 } from "../../js/updateState/DataModels";
-import { createRoutePolyline } from "../../utils/RoutePolylineFactory";
-import { createStopMarker } from "../../utils/StopMarkerFactory.ts";
-import { createSearchedHereMarker } from "../../utils/SearchedHereFactory.ts";
-import { createVehicleMarker } from "../../utils/VehicleMarkerFactory.ts";
-import {useNavigation} from "../../js/updateState/NavigationEffect.ts";
 
-log.info("createRoutePolyline:", createRoutePolyline);
-log.info("createStopMarker:", createStopMarker);
-log.info("createSearchedHereMarker:", createSearchedHereMarker);
-log.info("createVehicleMarker:", createVehicleMarker);
+import { createVehicleMarker } from "../../utils/VehicleMarkerFactory";
+import {useNavigation} from "../../js/updateState/NavigationEffect";
 
 // this method is seperated because vehicleState updates often. that said i don't want it to trigger a rerender
 export const MapVehicleElements = () =>{
 
     let {vehicleSearch} = useNavigation()
-    const cardStateContext = useContext(CardStateContext);
-    if (!cardStateContext) {
-        throw new Error("CardStateContext is undefined. Ensure the provider is correctly set up.");
-    }
-    const { state } = cardStateContext;
-    const { vehicleState} = useContext(VehicleStateContext);
+    const { state } = useCardState();
+    const { vehicleState} = useVehicleState();
     const vehicleObjsRefs = useRef<Map<string, Map<string, L.Marker>>>(new Map());
     const showFocusVehicle = useRef(true)
     const lastCardWasNotVehicleView = useRef(state.currentCard.type !== CardType.VehicleCard)
@@ -58,12 +37,12 @@ export const MapVehicleElements = () =>{
         autoClose: false
     })
 
-    const selectVehicle = (routeId:string,vehicleId:string,latlon:[number,number]) =>{
+    const selectVehicle = (routeId:AgencyAndId,vehicleId:string,latlon:[number,number]) =>{
         // log.info("clicked on " + vehicleDatum.vehicleId)
         vehicleSearch(routeId,vehicleId)
     }
 
-    const createVehicleIcon = (vehicleDatum):L.Icon => {
+    const createVehicleIcon = (vehicleDatum: VehicleRtInterface):L.Icon => {
         let scheduled = vehicleDatum.hasRealtime?"":"scheduled/"
         let imgDegrees = vehicleDatum.bearing - vehicleDatum.bearing%5
         let vehicleImageUrl = "img/vehicle/"+scheduled+"vehicle-"+imgDegrees+".png"
@@ -79,12 +58,6 @@ export const MapVehicleElements = () =>{
         })
         iconCache.current.set(vehicleImageUrl, icon)
         return icon
-    }
-
-    function shortenRoute(routeId: string) {
-        let routeIdParts = routeId.split("_");
-        let routeIdWithoutAgency = routeIdParts[1];
-        return routeIdWithoutAgency;
     }
 
     function handleVehicleForMap(vehicleDatum: VehicleRtInterface,vehicleMap: Map<string, L.Marker>) {
@@ -105,7 +78,7 @@ export const MapVehicleElements = () =>{
             log.info("adding vehicle to map",vehicleDatum.vehicleId,vehicleDatum)
             vehicle = createVehicleMarker(vehicleDatum,createVehicleIcon(vehicleDatum),popupOptions.current,3,map)
             vehicle.on("click", (e:L.LeafletMouseEvent) => {
-                selectVehicle(vehicleDatum.routeId, vehicleDatum.vehicleId, [e.latlng.lat, e.latlng.lng]);
+                selectVehicle(AgencyAndId.get(vehicleDatum.routeId), vehicleDatum.vehicleId, [e.latlng.lat, e.latlng.lng]);
             });
             vehicle.on("keypress", (e:L.LeafletKeyboardEvent) => {
                 if (e.originalEvent.key === 'Enter') {
@@ -157,7 +130,7 @@ export const MapVehicleElements = () =>{
                         && typeof vehicleObjsRefs.current === "object"
                         && typeof vehicleObjsRefs.current.get === 'function'){
                         log.info(`MapVehicleElements: processing vehicleDataForRoute`,vehicleDataForRoute,vehicleObjsRefs.current)
-                        vehicleDataForRoute.forEach(vehicleDatum=>{
+                        vehicleDataForRoute.forEach((vehicleDatum: VehicleRtInterface)=>{
                             let vehicleRefForRoute = vehicleObjsRefs.current.get(shortenedRouteId)
                             if(vehicleRefForRoute == null || vehicleRefForRoute == undefined){
                                 log.info("MapVehicleElements: creating new vehicle map for routeId",shortenedRouteId)
@@ -170,7 +143,7 @@ export const MapVehicleElements = () =>{
 
                         // remove vehicles that are no longer in the vehicle data for the route
                         const currentVehicleIds = new Set();
-                        vehicleDataForRoute.forEach(v => currentVehicleIds.add(v.vehicleId));
+                        vehicleDataForRoute.forEach((v: VehicleRtInterface) => currentVehicleIds.add(v.vehicleId));
                         const vehicleRefForRoute = vehicleObjsRefs.current.get(shortenedRouteId);
 
                         if (vehicleRefForRoute) {

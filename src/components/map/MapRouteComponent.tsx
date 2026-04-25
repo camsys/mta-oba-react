@@ -1,8 +1,8 @@
 import React, {Component, useContext, useEffect, useState} from 'react';
 import {Marker, Polyline, Popup} from "react-leaflet";
 
-import {useHighlight} from "../util/MapHighlightingStateComponent.tsx";
-import {CardStateContext} from "../util/CardStateComponent.tsx";
+import {useHighlight} from "../util/MapHighlightingStateComponent";
+import {useCardState} from "../util/CardStateComponent";
 import {RouteDirectionInterface} from "../../js/updateState/DataModels";
 import log from 'loglevel';
 

@@ -1,5 +1,5 @@
 import React, {useContext} from "react";
-import {CardStateContext} from "../util/CardStateComponent";
+import {useCardState} from "../util/CardStateComponent";
 import {MatchType, RouteMatch} from "../../js/updateState/DataModels";
 import {useHighlight} from "../util/MapHighlightingStateComponent";
 import {CollapsableRouteCard, RouteCardContent} from "./RouteCard";
@@ -10,7 +10,7 @@ import log from 'loglevel';
 import { UnderlineOnFocusElement } from "../shared/common";
 
 
-export function AbreviatedRouteCard({ routeMatch}: RouteMatch): JSX.Element {
+export function AbreviatedRouteCard({ routeMatch}: {routeMatch: RouteMatch}): JSX.Element | null {
     log.info("generating allroutes card: ", routeMatch);
     const {search} = useNavigation()
     if (routeMatch.type !== MatchType.RouteMatch) {
@@ -34,12 +34,12 @@ export function AbreviatedRouteCard({ routeMatch}: RouteMatch): JSX.Element {
 }
 
 export function AllRoutesWrapper():JSX.Element{
-    const {state} = useContext(CardStateContext)
+    const {state} = useCardState()
     let routes = state.currentCard.searchMatches.map(match=>{
-        return match.routeMatches.map(routeMatch=>{
-            if(routeMatch.type === MatchType.RouteMatch){return routeMatch}
-        })
-    }).flat().filter(x=>x!==null&&typeof x!=='undefined')
+        return match.routeMatches
+            .filter(routeMatch => routeMatch.type === MatchType.RouteMatch)
+            .map(routeMatch => routeMatch)
+    }).flat() as RouteMatch[]
 
 
     return (<React.Fragment>

@@ -1,5 +1,6 @@
 import log from 'loglevel';
 import {v4 as uuidv4} from 'uuid';
+import { Card } from './DataModels';
 
 const STORAGE_KEY = "__click_log";
 const MAX_EVENTS = 200;
@@ -20,20 +21,29 @@ const useTitleInsteadOfInnerText = new Set([
 ]);
 
 
-const getSessionUuid = () => {
+const getSessionUuid = (card?: Card|null): string => {
   log.info("Retrieving session UUID");
   let sessionUuid = sessionStorage.getItem("uuid") 
   if(!sessionUuid) {
     log.info("No session UUID found in sessionStorage, checking URL parameters");
     sessionUuid = new URLSearchParams(window.location.search).get("uuid");
-    sessionStorage.setItem("uuid", sessionUuid);
+    if(sessionUuid) {
+      sessionStorage.setItem("uuid", sessionUuid);
+    }
   }
   if (!sessionUuid) {
-    sessionUuid = uuidv4();
-    log.info("No session UUID found, generating new one:", sessionUuid);
-    sessionStorage.setItem("uuid", sessionUuid);
+    if (card) {
+      sessionUuid = card.uuid;
+      log.info("No session UUID found in URL parameters, using card UUID:", sessionUuid);
+      sessionStorage.setItem("uuid", sessionUuid);
+    }
+    if (!sessionUuid) {
+      sessionUuid = uuidv4();
+      log.info("No session UUID found, generating new one:", sessionUuid);
+      sessionStorage.setItem("uuid", sessionUuid);
+    }
   }
-  return sessionUuid;
+  return sessionUuid as string;
 }
 
 const clickHandler = (e: MouseEvent) => {
@@ -53,13 +63,15 @@ const trackingHandler = (target:HTMLElement) => {
   log.info("trackingHandler called with target:", target);
   const context:string[] = []
   let el: HTMLElement | null = target;
-  if(el?.innerText && el.innerText.length < 45 && el.innerText.length > 0) {
-      context.push(el.innerText)
-  } else if(el.hasAttribute("alt")){
-      context.push(el.title);
-  } else {
-    log.warn("tracking cannot work with element:", el);
-    context.push(el.getAttribute("value")||"")
+  if (el) {
+      if(el.innerText && el.innerText.length < 45 && el.innerText.length > 0) {
+          context.push(el.innerText)
+      } else if(el.hasAttribute("alt")){
+          context.push(el.title);
+      } else {
+        log.warn("tracking cannot work with element:", el);
+        context.push(el.getAttribute("value")||"")
+      }
   }
   while (el && el !== document.body) {
       for (const className of el.classList) {
@@ -106,7 +118,7 @@ function getClickLog() {
   return raw ? raw.split("|").filter(Boolean) : [];
 }
 
-function countItemsWithinCharLimit(items, maxChars) {
+function countItemsWithinCharLimit(items: string[], maxChars: number) {
   let totalChars = 0;
   let count = 0;
 

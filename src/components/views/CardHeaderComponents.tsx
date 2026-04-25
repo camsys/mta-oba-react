@@ -49,7 +49,7 @@ export function CardHeaderMany({ match, color, IconComponent,hasServiceAlert, Ic
                     onMouseEnter={() => highlightId(match.datumId)}
                     onMouseLeave={() => highlightId(null)}
                     aria-haspopup="true" aria-expanded="true"
-                    aria-label={`Toggle ${match.datumId.split("_")[1]} ${match.datumName} open/close`}
+                    aria-label={`Toggle ${match.datumId.id} ${match.datumName} open/close`}
             >
                 
                 <span className="card-title label flex items-center">
@@ -126,7 +126,7 @@ export const SelectableFavoriteRouteCard = ({routeMatch}:{routeMatch:RouteInterf
 export const SelectableFavoriteStopCard = ({stopDatum}:{stopDatum:StopInterface}) =>{
     let {search} = useNavigation()
     return(<React.Fragment>
-            <div className={`card route-card ${stopDatum.id.split("_")[1]}`} onClick={()=>search(stopDatum.id.split("_")[1])}>
+            <div className={`card route-card ${stopDatum.id.id}`} onClick={()=>search(stopDatum.id.id)}>
                 <button
                     className="group card-header link-header border-color-mta-dark-blue"
                     tabIndex={0}

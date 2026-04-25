@@ -1,30 +1,29 @@
-import React, {useContext} from 'react';
-import {OBA} from "../../js/oba";
+import React from 'react';
 import ErrorBoundary from "../util/errorBoundary";
 import {RouteCardWrapper} from "../views/RouteCard";
 import Header from "./Header";
 import Footer from "./Footer";
 import SearchBar from "./SearchBar"
-import {CardStateContext} from "../util/CardStateComponent.tsx";
+import {useCardState} from "../util/CardStateComponent";
 import {Card, CardType} from "../../js/updateState/DataModels"
 import RefreshComponent from "../views/RefreshComponent";
-import VehicleCard from "../views/VehicleCard.tsx";
-import {StopCardWrapper} from "../views/StopCardWrapper.tsx";
-import {GeoCardWrapper} from "../views/GeoCardWrapper.tsx";
-import HomeCard from "../views/HomeCard.tsx";
-import {AllRoutesWrapper} from "Components/views/AllRoutesWrapper";
-import {FavoritesWrapper} from "Components/views/FavoritesCard";
-import {ErrorCard} from "../views/ErrorCard.tsx";
+import VehicleCard from "../views/VehicleCard";
+import {StopCardWrapper} from "../views/StopCardWrapper";
+import {GeoCardWrapper} from "../views/GeoCardWrapper";
+import HomeCard from "../views/HomeCard";
+import {AllRoutesWrapper} from "../views/AllRoutesWrapper";
+import {FavoritesWrapper} from "../views/FavoritesCard";
+import {ErrorCard} from "../views/ErrorCard";
 import log from 'loglevel';
-import { LoadingCard } from '../views/LoadingCard.tsx';
-import NearMeAndFavorites  from '../pageStructure/NearMeAndFavorites.tsx';
-import {noMapNeededCardTypes} from "../../js/updateState/NavigationEffect.ts";
+import { LoadingCard } from '../views/LoadingCard';
+import NearMeAndFavorites  from './NearMeAndFavorites';
+import {noMapNeededCardTypes} from "../../js/updateState/NavigationEffect";
 
 function SideBar  () {
 
-    const { state } = useContext(CardStateContext);
+    const { state } = useCardState();
 
-    function decorateWithNearMeAndFavorites (card) {
+    function decorateWithNearMeAndFavorites (card: React.ReactNode): React.ReactNode {
         return (<React.Fragment><NearMeAndFavorites/>{card}</React.Fragment>);
     }
 

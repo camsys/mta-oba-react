@@ -2,10 +2,10 @@ import L from 'leaflet';
 import log from 'loglevel';
 
 
-export const isCenteredOn = (map: L.Map, lat : number, lon :number,zoom:number) :boolean =>{
+export const isCenteredOn = (map: L.Map, lat : number|null, lon :number|null,zoom:number|null) :boolean =>{
     log.info("Assessing zoom. based on requested values:",lat,lon,zoom)
     if(zoom===null){zoom = map.getZoom()}
-    if(lat===null|lon===null|zoom===null){return false}
+    if(lat===null||lon===null||zoom===null){return false}
     let mapWidth=map.getBounds().getEast()-map.getBounds().getWest();
     let mapHeight=map.getBounds().getNorth()-map.getBounds().getSouth();
     let [currentLat, currentLong,currentZoom] = [map.getCenter().lat,map.getCenter().lng,map.getZoom()]
@@ -27,11 +27,11 @@ export const isCenteredOn = (map: L.Map, lat : number, lon :number,zoom:number) 
     return true
 }
 
-export const setMapLatLngAndZoom = (map: L.Map, lat : number, lon :number,zoom:number,override:boolean) :void =>{
+export const setMapLatLngAndZoom = (map: L.Map, lat : number|null, lon :number|null,zoom:number|null,override:boolean) :void =>{
     let duration = .85
 
     if(zoom===null){zoom = map.getZoom()}
-    if(lat===null|lon===null|zoom===null){return}
+    if(lat===null||lon===null||zoom===null){return}
     
     if(override){
         log.info("Assessing zoom. override requested, performing zoom")
