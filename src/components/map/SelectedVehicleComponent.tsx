@@ -92,7 +92,7 @@ export function PopupContents({vehicleDatum, getServiceAlert}:{
             </div>
             <div className="next-stops">
                 {vehicleDatum?.vehicleArrivalData!=null?
-                vehicleDatum.vehicleArrivalData.map((vehicleArrival, index)=>{
+                vehicleDatum.vehicleArrivalData.map((vehicleArrival : VehicleArrivalInterface, index : number)=>{
                     if(index>=MAX_NEXT_STOPS){
                         return null
                     }

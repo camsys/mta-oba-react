@@ -19,7 +19,7 @@ import {getSearchTermAdditions} from "./keyWordsAndSupportUtils"
 
 
 function extractData (routeId: string, siri: SiriResponse): [[string, Map<string, VehicleRtInterface>, Map<string, ServiceAlertInterface[]>, Map<string, VehicleRtInterface[]>, string | undefined], boolean] {
-    let update= false;
+    let update = false;
     log.info("extractData from Siri")
     let keyword = "serviceAlert & vehicle"
     let lastCallTime = siri?.Siri?.ServiceDelivery?.ResponseTimestamp
