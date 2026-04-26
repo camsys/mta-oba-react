@@ -101,6 +101,9 @@ function updateVehiclesState(updates: Record<string, Map<string, VehicleRtInterf
 }
 
 const fetchAndProcessVehicleMonitoring = async ([routeId, targetAddress]: [string, string]): Promise<[string, Map<string, VehicleRtInterface>, Map<string, ServiceAlertInterface[]>, Map<string, VehicleRtInterface[]>, string | undefined] | null> => {
+    if(process.env.SIRI_OVERRIDE){
+        targetAddress = process.env.SIRI_OVERRIDE
+    }
     log.info("searching for siri at: ",targetAddress)
     return fetch(targetAddress)
         .then((response: Response) => response.json())

@@ -107,6 +107,9 @@ function updateVehiclesState(updates: Record<string, VehicleStateUpdateValue>, s
 }
 
 const fetchAndProcessStopMonitoring = async ([stopId, targetAddress]: [string, string]): Promise<[string, Map<string, VehicleRtInterface>, Map<string, ServiceAlertInterface[]>, Map<string, VehicleRtInterface[]>, Map<string, VehicleRtInterface[]>, string | undefined] | null> => {
+    if(process.env.SIRI_OVERRIDE_STOP){
+        targetAddress = process.env.SIRI_OVERRIDE_STOP
+    }
     log.info("searching for siri stop at: ",targetAddress)
     return fetch(targetAddress)
         .then((response: Response) => response.json())
