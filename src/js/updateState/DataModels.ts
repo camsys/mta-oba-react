@@ -188,7 +188,7 @@ export function createVehicleArrivalInterface(mc: SiriMonitoredCall, index?: num
     }
     if(process.env.ALTERNATE_TREATING_STOPS_AS_DETOURS === 'true' && index != null && index % 3 === 2){
         detourStatus = DisruptionStatus.Removed;
-    } 
+    }
     
     return {
         prettyDistance: distances.PresentableDistance,
