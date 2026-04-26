@@ -16,7 +16,6 @@ import { ServiceAlertContainerProps } from "../views/ServiceAlertContainerCompon
 import { useMap } from "react-leaflet";
 import { isCenteredOn } from "../../utils/mapZoom";
 import { createVehicleIcon } from "./MapVehcleElements";
-import { StrollerDetourVehicleIcon } from "../shared/icons";
 
 const COMPONENT_IDENTIFIER = "MapVehicleComponent"
 const MAX_NEXT_STOPS = 3;
@@ -63,7 +62,7 @@ export function PopupContents({vehicleDatum, getServiceAlert}:{
 
             <div className="popup-header">
                 <div className="popup-header-info">
-                <StrollerDetourVehicleIcon vehicleDatum={vehicleDatum} className="icon"/>
+                <img src={vehicleDatum?.strollerVehicle?busStroller:bus} alt="bus" className="icon"/>
                     <div className="popup-info">
                         {/* <span className={`route`}>{vehicleDatum.routeId.id} {vehicleDatum.destination}</span> */}
                         <span className={`route`}>{vehicleDatum.routeId.split("_")[1]} {vehicleDatum.destination}</span>
@@ -84,7 +83,7 @@ export function PopupContents({vehicleDatum, getServiceAlert}:{
                         return null
                     }
                     return (
-                        <div key={index} className="next-stop">
+                        <div key={index} className={`next-stop ${vehicleArrival.detourStatus}`}>
                             <div>
                                 <span className="stop-name">{vehicleArrival.stopName}</span>
                                 <span className="arrival-time">{OBA.Util.getArrivalEstimateForISOString(vehicleArrival.ISOTime,vehicleDatum.lastUpdate)}{vehicleArrival.prettyDistance}</span>

@@ -1931,6 +1931,21 @@
               background-color: #46A739
               flex-shrink: 0
               margin-top: .3rem
+            &.detour
+              &::before
+                background-color: transparent
+                border: none
+                border-radius: 0
+                transform: none
+                content: url(../img/icon/bullet_point-detour.svg)
+                width: auto
+                height: auto
+                top: .25rem 
+                left: 0
+            &.removed
+              text-decoration: line-through
+              text-decoration-color: $black
+              opacity: .5
             >div
               display: flex
               flex-direction: column
