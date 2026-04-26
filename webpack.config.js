@@ -26,7 +26,8 @@ const envPlugin = new webpack.DefinePlugin({
   'process.env.SIRI_REQUEST_FREQ': JSON.stringify(process.env.SIRI_REQUEST_FREQ || siri_request_freq),
   'process.env.CLASSIC_SITE_ADDRESS': JSON.stringify(process.env.CLASSIC_SITE_ADDRESS || 'https://bustime-classic.mta.info'),
   'process.env.BETA_BANNER_TEXT': JSON.stringify(process.env.BETA_BANNER_TEXT || 'The Spring 2026 Customers Count survey is live! Share your feedback here for a chance to win a $100 OMNY card.'),
-  'process.env.BETA_BANNER_LINK': JSON.stringify(process.env.BETA_BANNER_LINK || 'https://nymta.qualtrics.com/jfe/form/SV_d4hYIpU9OS8pYI6?link=14')
+  'process.env.BETA_BANNER_LINK': JSON.stringify(process.env.BETA_BANNER_LINK || 'https://nymta.qualtrics.com/jfe/form/SV_d4hYIpU9OS8pYI6?link=14'),
+  'process.env.OVERIDE_SEARCH_ENDPOINT': JSON.stringify(process.env.OVERIDE_SEARCH_ENDPOINT || '')
 });
 
 function cleanUpHostAddress(hostAddress) {
