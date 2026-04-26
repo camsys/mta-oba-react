@@ -1,77 +1,44 @@
 import ReactLeafletGoogleLayer from "react-leaflet-google-layer";
-import { renderToString } from 'react-dom/server';
 import {LayerGroup, MapContainer, Marker, useMap, useMapEvents, ZoomControl} from "react-leaflet";
 import React, {useContext, useEffect, useRef, useState} from "react";
-import queryString from "query-string";
 import {OBA} from "../../js/oba";
 import log from 'loglevel';
 import L, {LatLngBounds, LeafletMouseEvent, LeafletEventHandlerFnMap, Popup} from "leaflet";
 
-import {CardStateContext, RoutesContext, StopsContext} from "../util/CardStateComponent.tsx";
+import {useCardState, useRoutes, useStops} from "../util/CardStateComponent";
 import {stopSortedFutureVehicleDataIdentifier, updatedTimeIdentifier,
-    vehicleDataIdentifier, shortenRoute, VehicleStateContext, 
-    VehiclesApproachingStopsContext} from "../util/VehicleStateComponent";
-import MapRouteComponent from "./MapRouteComponent";
-import MapStopComponent from "./MapStopComponent";
-import MapVehicleComponent from "./MapVehicleComponent";
-// import { SelectedStopPopupContent } from "./SelectedStopPopupContent";
+    vehicleDataIdentifier, useVehicleState, 
+    useVehicleApproachingStops} from "../util/VehicleStateComponent";
 import {
+    AgencyAndId,
     CardType,
+    GeocodeMatch,
     MapRouteComponentInterface,
     MatchType,
     RouteMatch,
-    SearchMatch,
     StopInterface,
     StopMatch,
-    VehicleRtInterface
+    StopsObjectContainer,
 } from "../../js/updateState/DataModels";
-import {useHighlight} from "Components/util/MapHighlightingStateComponent";
+import {useHighlight} from "../util/MapHighlightingStateComponent";
 import {useLongPressSearch} from "../../js/handlers/LongPressSearchHandler";
-import {useNavigation} from "../../js/updateState/NavigationEffect.ts";
+import {useNavigation} from "../../js/updateState/NavigationEffect";
 import { createRoutePolyline } from "../../utils/RoutePolylineFactory";
-import { createStopMarker } from "../../utils/StopMarkerFactory.ts";
-import { createSearchedHereMarker } from "../../utils/SearchedHereFactory.ts";
-import { createVehicleMarker } from "../../utils/VehicleMarkerFactory.ts";
-import { MapVehicleElements } from "./MapVehcleElements.tsx";
-import { SelectedStopComponent} from "./SelectedStop.tsx";
-import {SelectedVehicleComponent} from "./SelectedVehicleComponent.tsx";
+import { createStopMarker } from "../../utils/StopMarkerFactory";
+import { createSearchedHereMarker } from "../../utils/SearchedHereFactory";
+import { MapVehicleElements } from "./MapVehcleElements";
+import { SelectedStopComponent} from "./SelectedStop";
+import {SelectedVehicleComponent} from "./SelectedVehicleComponent";
+import { isCenteredOn,setMapLatLngAndZoom } from "../../utils/mapZoom";
+import { useMobileState } from "../util/MobileStateComponent";
 
 log.info("createRoutePolyline:", createRoutePolyline);
 log.info("createStopMarker:", createStopMarker);
 log.info("createSearchedHereMarker:", createSearchedHereMarker);
-log.info("createVehicleMarker:", createVehicleMarker);
 
-const createVehicleIcon = (vehicleDatum):L.Icon => {
-    let scheduled = vehicleDatum.hasRealtime?"":"scheduled/"
-    let imgDegrees = vehicleDatum.bearing - vehicleDatum.bearing%5
-    let vehicleImageUrl = "img/vehicle/"+scheduled+"vehicle-"+imgDegrees+".png"
-    let icon = L.icon({
-        iconUrl: vehicleImageUrl,
-        className: "svg-icon",
-        iconSize: [51,51],
-        iconAnchor: [25,25],
-        popupAnchor: [0,0]
-    })
-    return icon
-}
-
-
-const loadPopup = (datumId,leafletRefObjs) :void=>{
-    try{
-        if(leafletRefObjs && typeof leafletRefObjs.current.get(datumId)!=='undefined'
-            && leafletRefObjs.current.get(datumId)!==null
-            && leafletRefObjs.current.get(datumId).getPopup()
-            && leafletRefObjs.current.get(datumId).getPopup()!==undefined){
-            leafletRefObjs.current.get(datumId).openPopup()
-        }
-    } catch (e) {
-        log.error("error in loadPopup",e)
-    }
-
-}
 
 const SearchedHere = () :JSX.Element=>{
-    const { state} = useContext(CardStateContext);
+    const { state} = useCardState();
     const previousSearchedHereMarker = useRef<L.Marker|null>(null);
     const currentSearchedHereMarker = useRef<L.Marker|null>(null);
     let map = useMap()
@@ -80,7 +47,8 @@ const SearchedHere = () :JSX.Element=>{
         previousSearchedHereMarker.current = currentSearchedHereMarker.current
         state.currentCard.searchMatches.forEach(searchMatch=>{
             if(state.currentCard.type===CardType.GeocodeCard){
-                currentSearchedHereMarker.current = createSearchedHereMarker([searchMatch.latitude,searchMatch.longitude])
+                const geocode = searchMatch as GeocodeMatch;
+                currentSearchedHereMarker.current = createSearchedHereMarker([geocode.latitude, geocode.longitude])
                 log.info("searched here marker created", currentSearchedHereMarker.current)
             }       
         })
@@ -105,9 +73,9 @@ const SearchedHere = () :JSX.Element=>{
 
 const RoutesAndStops = ()=>{
     log.info("generating RoutesAndStops")
-    const stops = useContext(StopsContext);
-    const routes = useContext(RoutesContext);
-    const { state} = useContext(CardStateContext);
+    const stops = useStops();
+    const routes = useRoutes();
+    const { state} = useCardState();
 
     let mapRouteMarkers: Map<string, L.Polyline> = new Map();
     const mapStopComponents = useRef(new Map());
@@ -132,7 +100,7 @@ const RoutesAndStops = ()=>{
     })
 
     const iconCache = useRef<Map<string, L.Icon>>(new Map());
-    const createStopIcon = (stopDatum):L.Icon => {
+    const createStopIcon = (stopDatum: StopInterface):L.Icon => {
         const directionKey = stopDatum?.stopDirection || "unknown";
         const stopImageUrl = `img/stop/stop-${directionKey}.png`;
         if(iconCache.current.has(stopImageUrl)){
@@ -170,9 +138,9 @@ const RoutesAndStops = ()=>{
             route.directions.forEach(dir => {
                 dir.mapStopComponentData.forEach((stopInterface:StopInterface) => {
                     let stopId = stopInterface.datumId;
-                    let newStopMarker = createStopMarker(stopInterface,selectStop,popupOptions.current,createStopIcon(stopInterface),0)
+                    let newStopMarker = createStopMarker(stopInterface,selectStop,popupOptions.current,createStopIcon(stopInterface),0,map)
                     mapStopComponents.current.set(stopId, newStopMarker);
-                    stopsToDisplay.set(stopId, newStopMarker);                
+                    stopsToDisplay.set(stopId.toString(), newStopMarker);                
                 })
             })
         }
@@ -238,37 +206,40 @@ const RoutesAndStops = ()=>{
             log.info("adding routes for:",searchMatch)
             if(state.currentCard.type===CardType.RouteCard){
                 let route = searchMatch
-                processRoute(route)
+                processRoute(route as RouteMatch)
             }
             else if(state.currentCard.type===CardType.VehicleCard){
                 log.info("vehicle route works here");
                 let route = searchMatch;
-                processRoute(route);
+                processRoute(route as RouteMatch);
             }
             else if(state.currentCard.type===CardType.GeocodeCard) {
-                searchMatch.routeMatches.forEach(match => {
-                    if(match.type === MatchType.RouteMatch){processRoute(match);}
+                const geocodeSearchMatch = searchMatch as GeocodeMatch;
+                geocodeSearchMatch.routeMatches.forEach(match => {
+                    if(match.type === MatchType.RouteMatch){processRoute(match as RouteMatch);}
                     if(match.type === MatchType.StopMatch){
                         match.routeMatches.forEach(route => {
-                            processRoute(route);
+                            processRoute(route as RouteMatch);
                         })
                     }
                 })
-                let latlon = [searchMatch.latitude,searchMatch.longitude]
-                if(latlon !== null || latlon !== undefined){
-                    // searchedHereComponent.current = <MapSearchedHereComponent latlon={latlon} key = {key} searchedHereMarker={searchedHereMarker}/>;
-                    let searchedHereMarker = createSearchedHereMarker(latlon)
-                    searchedHereMarker.addTo(selectedElementLayer.current)
+                let latlon: [number, number] = [geocodeSearchMatch.latitude, geocodeSearchMatch.longitude];
+                if (latlon[0] !== null && latlon[1] !== null) {
+                    let searchedHereMarker = createSearchedHereMarker(latlon);
+                    searchedHereMarker.addTo(selectedElementLayer.current);
                 }
+                
             }
             else if(state.currentCard.type===CardType.StopCard) {
                 searchMatch.routeMatches.forEach(route => {
-                    processRoute(route);
+                    processRoute(route as RouteMatch);
                 })
-                let stopId =state.currentCard.datumId;
+                let stopId = state.currentCard.datumId;
                 // selectedStop.set(stopId,mapStopComponents.current.get(stopId));
                 mapStopComponents.current.get(stopId).setZIndexOffset(20);
-                stopsToDisplay.delete(stopId)
+                if(stopId!==null && typeof stopId !== 'undefined'){
+                    stopsToDisplay.delete(stopId)
+                }
             }
         })
 
@@ -352,11 +323,11 @@ const RoutesAndStops = ()=>{
 const Highlighted = () =>{
     let {getHighlightedId} = useHighlight()
     let highlightedId = getHighlightedId()
-    let {state} = useContext(CardStateContext);
+    let {state} = useCardState();
     let highlightedComponents = useRef(new Map());
 
-    const stops = useContext(StopsContext)
-    const routes = useContext(RoutesContext)
+    const stops = useStops()
+    const routes = useRoutes()
     const map = useMap()
 
     
@@ -368,7 +339,7 @@ const Highlighted = () =>{
     })
 
     const iconCache = useRef<Map<string, L.Icon>>(new Map());
-    const createStopIcon = (stopDatum):L.Icon => {
+    const createStopIcon = (stopDatum: StopsObjectContainer):L.Icon => {
         const directionKey = stopDatum?.stopDirection || "unknown";
         let zIndexOverride = 20;
         const stopImageUrl = `img/stop/stop-${directionKey}-active.png`;
@@ -403,11 +374,14 @@ const Highlighted = () =>{
 
         log.info("generating highlighted component",highlightedId,routes.current,stops.current)
 
-        let stopDatum = stops.current[highlightedId]
+        let probablyAgencyAndId: AgencyAndId | null = highlightedId;
+        const indexable = typeof probablyAgencyAndId === 'string' ? probablyAgencyAndId : probablyAgencyAndId?.toString() ?? '';
+        
+        let stopDatum = stops.current[indexable]
         if(stopDatum!==null && typeof stopDatum !=='undefined'){
-            highlightedComponents.current.set(stopDatum.id,createStopMarker(stopDatum,()=>{},popupOptions.current,createStopIcon(stopDatum),20))
+            highlightedComponents.current.set(stopDatum.id,createStopMarker(stopDatum,()=>{},popupOptions.current,createStopIcon(stopDatum),20,map))
         }
-        let routeDatum = routes.current[highlightedId]
+        let routeDatum = routes.current[indexable]
         if(routeDatum!==null && typeof routeDatum !=='undefined'){
             routeDatum.directions.forEach(dir => {
                 dir.mapRouteComponentData.forEach((datum:MapRouteComponentInterface) => {
@@ -460,43 +434,6 @@ const Highlighted = () =>{
 
 }
 
-const setMapLatLngAndZoom = (map: L.Map, lat : number, lon :number,zoom:number,override:boolean) :void =>{
-    let duration = .85
-    log.info("Assessing zoom. based on requested values:",lat,lon,zoom)
-    if(lat===null|lon===null|zoom===null){return}
-    let mapWidth=map.getBounds().getEast()-map.getBounds().getWest();
-    let mapHeight=map.getBounds().getNorth()-map.getBounds().getSouth();
-    let [currentLat, currentLong,currentZoom] = [map.getCenter().lat,map.getCenter().lng,map.getZoom()]
-    let latsMatch = currentLat+mapHeight/3>lat && currentLat-mapHeight/3<lat
-    let latsOnScreen = currentLat+mapHeight>lat && currentLat-mapHeight<lat
-    let lonsMatch = currentLong+mapWidth/3>lon && currentLong-mapWidth/3<lon
-    let lonsOnScreen = currentLong+mapWidth>lon && currentLong-mapWidth<lon
-    let zoomsMatch =  zoom-.3<currentZoom && zoom+.3>currentZoom
-    let zoomSeemsIntentional = currentZoom>16
-
-    let performZoom = override
-    
-    if(override){
-        log.info("Assessing zoom. override requested, performing zoom")
-    }
-
-    if(zoomSeemsIntentional){
-        log.info("Assessing zoom. zoom seems intentional, checking if new selection is on screen ",currentLat,currentLong,currentZoom,"new: ",lat,lon,zoom, "matches",lonsOnScreen,latsOnScreen)
-        if(!(lonsOnScreen && latsOnScreen)){
-            performZoom = true
-        }
-    } else {
-        log.info("Assessing zoom. update map bounds and zoom? current: ",currentLat,currentLong,currentZoom,"new: ",lat,lon,zoom, "matches",latsMatch,lonsMatch,zoomsMatch)
-        if(!(latsMatch&&lonsMatch&&zoomsMatch)){ performZoom = true }
-    }
-    if(performZoom){
-        log.info("Assessing zoom. updating map bounds and zoom")
-        map.flyTo([lat, lon], zoom, {
-            animate: true,
-            duration: duration
-        });
-    }
-}
 
 const setMapBounds = (map: L.Map, bounds: LatLngBounds):void =>{
     map.flyToBounds(bounds)
@@ -522,22 +459,36 @@ const getBoundsForRoute = (routes:RouteMatch[])=> {
     return newBounds
 }
 
-const HandleMapBoundsAndZoom = () : void=>{
-    const { state} = useContext(CardStateContext);
-    const { vehicleState} = useContext(VehicleStateContext);
+
+const HandleMapBoundsAndZoom = ({userHasAdjustedMapOffMainElement}: {userHasAdjustedMapOffMainElement: React.MutableRefObject<boolean>}) : void=>{
+    const { state} = useCardState();
+    const { vehicleState} = useVehicleState();
     const map = useMap()
     const firstNonHomeZoomCompleted = useRef(false)
+    const { isMobile } = useMobileState();
+    const lastCard = useRef(state.currentCard)
 
     const doZoom = ()=>{
-        let [lat, long] = [null,null]
+        let [lat, long] = [null as number | null,null as number | null]
         let zoom = null
         let override = false
 
         log.info("card type is",state.currentCard.type)
+
+        if(lastCard.current === state.currentCard
+            && userHasAdjustedMapOffMainElement.current
+        ){
+            log.info("card has not changed, and user has moved screen off of selected element, not zooming")
+            return
+        }
+
+        if(isMobile){
+            override = true;
+        }
     
         if(state.currentCard.type===CardType.RouteCard){
             log.info("zooming for route card",state.currentCard.searchMatches)
-            setMapBounds(map,getBoundsForRoute(state.currentCard.searchMatches))
+            setMapBounds(map,getBoundsForRoute(state.currentCard.searchMatches as RouteMatch[]))
             if(!firstNonHomeZoomCompleted.current){
                 firstNonHomeZoomCompleted.current = true
             }
@@ -546,7 +497,7 @@ const HandleMapBoundsAndZoom = () : void=>{
         else if(state.currentCard.type===CardType.GeocodeCard) {
             log.info("assessing zooming for geocode card",state.currentCard.searchMatches)
             state.currentCard.searchMatches.forEach(searchMatch=>{
-                [lat, long] = [searchMatch.latitude,searchMatch.longitude];
+                [lat, long] = [(searchMatch as GeocodeMatch).latitude,(searchMatch as GeocodeMatch).longitude];
                 zoom = 16;
                 if(!firstNonHomeZoomCompleted.current){
                     log.info("first zoom completed")
@@ -557,7 +508,7 @@ const HandleMapBoundsAndZoom = () : void=>{
         }
         else if(state.currentCard.type===CardType.StopCard) {
             state.currentCard.searchMatches.forEach(searchMatch=>{
-                [lat, long] = [searchMatch.latitude, searchMatch.longitude];
+                [lat, long] = [(searchMatch as StopMatch).latitude, (searchMatch as StopMatch).longitude];
                 zoom = 16;
                 if(!firstNonHomeZoomCompleted.current){
                     log.info("first zoom completed")
@@ -567,7 +518,7 @@ const HandleMapBoundsAndZoom = () : void=>{
         }
         else if(state.currentCard.type===CardType.VehicleCard) {
             let vehicleId = state.currentCard.vehicleId;
-            let routeId = shortenRoute(state.currentCard.routeIdList.values().next().value);
+            let routeId = state.currentCard.routeIdList.values().next().value.id;
             log.info("zooming for vehicle card",vehicleId,routeId+vehicleDataIdentifier,vehicleState)
             if(!vehicleState[routeId+vehicleDataIdentifier]){
                 log.info("vehicle state not found for routeId",vehicleState,routeId+vehicleDataIdentifier)
@@ -588,6 +539,7 @@ const HandleMapBoundsAndZoom = () : void=>{
                 zoom = 11;
                 override = true;
             }
+        lastCard.current = state.currentCard
 
         setMapLatLngAndZoom(map,lat,long,zoom,override)
     }
@@ -599,6 +551,7 @@ const HandleMapBoundsAndZoom = () : void=>{
 
 
     useEffect(() => {
+        log.info("handling map bounds and zoom for vehicle update, vehicle state changed",vehicleState,"firstNonHomeZoomCompleted",firstNonHomeZoomCompleted.current)
         if(!firstNonHomeZoomCompleted.current){
             log.info("first zoom not completed, doing zoom, vehicle state",vehicleState)
             doZoom()
@@ -607,34 +560,70 @@ const HandleMapBoundsAndZoom = () : void=>{
     log.info("map bounds and zoom handler loaded",state.currentCard,vehicleState)
 }
 
-const MapEvents = () :boolean=> {
+const MapEvents = ({userHasAdjustedMapOffMainElement, selectedElementLocation}: {userHasAdjustedMapOffMainElement: React.MutableRefObject<boolean>, selectedElementLocation: React.MutableRefObject<{lat:number, lng:number}|null>}) :boolean=> {
     log.info("generating map events")
     const openPopups = useRef<L.Popup[]>([]);
 
 
 
     useMapEvents({
+
+        moveend: (e) => {
+            if (e.originalEvent) {
+                // User manually panned or zoomed
+                console.log("User moved the map");
+                if(selectedElementLocation.current){
+                    log.info("checking if map is centered on selected element after user moved the map, selectedElementLocation",selectedElementLocation.current)
+                    if(!isCenteredOn(map, selectedElementLocation.current?.lat, selectedElementLocation.current?.lng, map.getZoom())){
+                        log.info("User moved the map off of selected element, setting flag to true")
+                        userHasAdjustedMapOffMainElement.current = true;
+                    } else {
+                        log.info("User moved the map but map is still centered on selected element")
+                        userHasAdjustedMapOffMainElement.current = false;
+                    }
+                }
+            }
+        },
+        dragend: () => {
+            // User specifically started a drag action
+            console.log("User is dragging");
+            if(!selectedElementLocation.current){
+                log.info("no selectedElementLocation, not setting userHasAdjustedMapOffMainElement to true")
+                return
+            }
+            log.info("checking if map is centered on selected element after user started dragging the map, selectedElementLocation",selectedElementLocation.current)
+            if(!isCenteredOn(map, selectedElementLocation.current?.lat, selectedElementLocation.current?.lng, map.getZoom())){
+                log.info("User started dragging the map off of selected element, setting flag to true")
+                userHasAdjustedMapOffMainElement.current = true;
+            } else {
+                log.info("User started dragging but map is still centered on selected element")
+                userHasAdjustedMapOffMainElement.current = false;
+            }
+        },
+
         popupopen(e) {
             log.info("popup opened", e.popup);
 
             const popupContent = e.popup.getElement();
             log.info("popup opened", popupContent);
-            popupContent.addEventListener('click', function (event) {
-                if (event.target.matches('.close-map')) {
-                    // log.info('boop popup button clicked');
-                    var mapWrap = document.querySelector('#map-wrap');
-                    var mapToggle = document.querySelector('#map-toggle');
-                    if (mapWrap) {
-                    // log.info('boop map close');
-                    mapWrap.classList.remove('open');
-                    mapToggle.setAttribute('aria-expanded', 'false');
-                    mapToggle.setAttribute('aria-label', 'Toggle Map Visibility (currently hidden)');
-                    mapToggle.setAttribute('aria-pressed', 'false');
-                    }
-                } 
-            });
+            if (popupContent) {
+                popupContent.addEventListener('click', function (event) {
+                    if (event.target && (event.target as HTMLElement).matches('.close-map')) {
+                        // log.info('boop popup button clicked');
+                        var mapWrap = document.querySelector('#map-wrap');
+                        var mapToggle = document.querySelector('#map-toggle');
+                        if (mapWrap && mapToggle) {
+                        // log.info('boop map close');
+                        mapWrap.classList.remove('open');
+                        mapToggle.setAttribute('aria-expanded', 'false');
+                        mapToggle.setAttribute('aria-label', 'Toggle Map Visibility (currently hidden)');
+                        mapToggle.setAttribute('aria-pressed', 'false');
+                        }
+                    } 
+                });
+            }
             
-            const isSearchHere = popupContent.classList.contains("search-here-popup");
+            const isSearchHere = popupContent?.classList.contains("search-here-popup");
             log.info("popup opened", e.popup,"is search here popup", isSearchHere);
             if(!isSearchHere){
                 openPopups.current.forEach((popup) => {
@@ -668,6 +657,8 @@ const MapEvents = () :boolean=> {
       }, [map]);
 
     return false;
+
+
 };
 
 
@@ -738,6 +729,9 @@ export const MapComponent = () :JSX.Element => {
 
     let startingMapCenter = OBA.Config.defaultMapCenter;
     let startingZoom = 11;
+    let userHasAdjustedMapOffMainElement = useRef(false);
+    let selectedElementLocation = useRef<{lat:number, lng:number}|null>({lat: startingMapCenter[0], lng: startingMapCenter[1]});
+    log.info("MapComponent selectedElementLocation",selectedElementLocation)
 
     return (
         <React.Fragment>
@@ -754,14 +748,14 @@ export const MapComponent = () :JSX.Element => {
                     type={'roadmap'}
                     styles={OBA.Config.mutedTransitStylesArray}
                 />
-                <MapEvents />
+                <MapEvents userHasAdjustedMapOffMainElement={userHasAdjustedMapOffMainElement} selectedElementLocation={selectedElementLocation}/>
                 <RoutesAndStops/>
                 <Highlighted/>
                 <MapVehicleElements/>
-                <HandleMapBoundsAndZoom />
+                <HandleMapBoundsAndZoom userHasAdjustedMapOffMainElement={userHasAdjustedMapOffMainElement}/>
                 <SearchedHere/>
-                <SelectedStopComponent/>
-                <SelectedVehicleComponent/>
+                <SelectedStopComponent selectedElementLocation={selectedElementLocation}/>
+                <SelectedVehicleComponent userHasAdjustedMapOffMainElement={userHasAdjustedMapOffMainElement} selectedElementLocation={selectedElementLocation}/>
                 <RightClickSearchButton/>
                 <ZoomControl position="bottomright" />
                 {/*<HandleMapForVehiclesBoundsAndZoom/>*/}

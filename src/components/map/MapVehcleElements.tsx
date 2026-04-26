@@ -1,46 +1,25 @@
-import ReactLeafletGoogleLayer from "react-leaflet-google-layer";
 import {LayerGroup, MapContainer, Marker, useMap, useMapEvents} from "react-leaflet";
 import React, {useContext, useEffect, useRef, useState} from "react";
-import queryString from "query-string";
-import {OBA} from "../../js/oba";
 import log from 'loglevel';
 import L, {LatLngBounds, LeafletEventHandlerFn} from "leaflet";
 
-import {CardStateContext, RoutesContext, StopsContext} from "../util/CardStateComponent.tsx";
-import {vehicleDataIdentifier, VehicleStateContext} from "../util/VehicleStateComponent";
-import MapRouteComponent from "./MapRouteComponent";
-import MapStopComponent from "./MapStopComponent";
-import MapVehicleComponent from "./MapVehicleComponent";
+import {useCardState, useRoutes, useStops} from "../util/CardStateComponent";
+import {vehicleDataIdentifier, useVehicleState, shortenRoute} from "../util/VehicleStateComponent";
 import {
+    AgencyAndId,
     CardType,
-    MapRouteComponentInterface,
-    MatchType,
-    RouteMatch,
-    StopInterface,
-    StopMatch,
     VehicleRtInterface
 } from "../../js/updateState/DataModels";
-import { createRoutePolyline } from "../../utils/RoutePolylineFactory";
-import { createStopMarker } from "../../utils/StopMarkerFactory.ts";
-import { createSearchedHereMarker } from "../../utils/SearchedHereFactory.ts";
-import { createVehicleMarker } from "../../utils/VehicleMarkerFactory.ts";
-import {useNavigation} from "../../js/updateState/NavigationEffect.ts";
 
-log.info("createRoutePolyline:", createRoutePolyline);
-log.info("createStopMarker:", createStopMarker);
-log.info("createSearchedHereMarker:", createSearchedHereMarker);
-log.info("createVehicleMarker:", createVehicleMarker);
+import { createVehicleMarker } from "../../utils/VehicleMarkerFactory";
+import {useNavigation} from "../../js/updateState/NavigationEffect";
 
 // this method is seperated because vehicleState updates often. that said i don't want it to trigger a rerender
 export const MapVehicleElements = () =>{
 
     let {vehicleSearch} = useNavigation()
-    const cardStateContext = useContext(CardStateContext);
-    if (!cardStateContext) {
-        throw new Error("CardStateContext is undefined. Ensure the provider is correctly set up.");
-    }
-    const { state } = cardStateContext;
-    const { vehicleState} = useContext(VehicleStateContext);
+    const { state } = useCardState();
+    const { vehicleState} = useVehicleState();
     const vehicleObjsRefs = useRef<Map<string, Map<string, L.Marker>>>(new Map());
     const showFocusVehicle = useRef(true)
     const lastCardWasNotVehicleView = useRef(state.currentCard.type !== CardType.VehicleCard)
@@ -58,12 +37,12 @@ export const MapVehicleElements = () =>{
         autoClose: false
     })
 
-    const selectVehicle = (routeId:string,vehicleId:string,latlon:[number,number]) =>{
+    const selectVehicle = (routeId:AgencyAndId,vehicleId:string,latlon:[number,number]) =>{
         // log.info("clicked on " + vehicleDatum.vehicleId)
         vehicleSearch(routeId,vehicleId)
     }
 
-    const createVehicleIcon = (vehicleDatum):L.Icon => {
+    const createVehicleIcon = (vehicleDatum: VehicleRtInterface):L.Icon => {
         let scheduled = vehicleDatum.hasRealtime?"":"scheduled/"
         let imgDegrees = vehicleDatum.bearing - vehicleDatum.bearing%5
         let vehicleImageUrl = "img/vehicle/"+scheduled+"vehicle-"+imgDegrees+".png"
@@ -81,31 +60,30 @@ export const MapVehicleElements = () =>{
         return icon
     }
 
-    function shortenRoute(routeId: string) {
-        let routeIdParts = routeId.split("_");
-        let routeIdWithoutAgency = routeIdParts[1];
-        return routeIdWithoutAgency;
-    }
-
     function handleVehicleForMap(vehicleDatum: VehicleRtInterface,vehicleMap: Map<string, L.Marker>) {
         // check if in map, if not add it, if so update it
         let vehicle = vehicleMap.get(vehicleDatum.vehicleId);
         if (vehicle) {
-            if(vehicleDatum.longLat[0] !=vehicle.getLatLng().lat, vehicleDatum.longLat[1] != vehicle.getLatLng().lng){
+            if(vehicleDatum.longLat[0] !=vehicle.getLatLng().lat || vehicleDatum.longLat[1] != vehicle.getLatLng().lng){
                 // update vehicle to be in new pos
                 vehicle.setLatLng(vehicleDatum.longLat)
                 vehicle.setIcon(createVehicleIcon(vehicleDatum))
                 if(state.currentCard.type !== CardType.VehicleCard || vehicleDatum.vehicleId !== state.currentCard.datumId){
                     vehicle.closePopup()
                 }
-                log.info("updated vehicle position",vehicleDatum.vehicleId,vehicleMap.get(vehicleDatum.vehicleId))
+                log.trace("updated vehicle position",vehicleDatum.vehicleId,vehicleMap.get(vehicleDatum.vehicleId))
             }
         }
         else {
             log.info("adding vehicle to map",vehicleDatum.vehicleId,vehicleDatum)
-            vehicle = createVehicleMarker(vehicleDatum,createVehicleIcon(vehicleDatum),popupOptions.current)
+            vehicle = createVehicleMarker(vehicleDatum,createVehicleIcon(vehicleDatum),popupOptions.current,3,map)
             vehicle.on("click", (e:L.LeafletMouseEvent) => {
-                selectVehicle(vehicleDatum.routeId, vehicleDatum.vehicleId, [e.latlng.lat, e.latlng.lng]);
+                selectVehicle(AgencyAndId.get(vehicleDatum.routeId), vehicleDatum.vehicleId, [e.latlng.lat, e.latlng.lng]);
+            });
+            vehicle.on("keypress", (e:L.LeafletKeyboardEvent) => {
+                if (e.originalEvent.key === 'Enter') {
+                    selectVehicle(vehicleDatum.routeId, vehicleDatum.vehicleId, [vehicleDatum.longLat[0], vehicleDatum.longLat[1]]);
+                }
             });
             vehicleMap.set(vehicleDatum.vehicleId, vehicle)
             vehicleLayer.current.addLayer(vehicle)
@@ -128,51 +106,75 @@ export const MapVehicleElements = () =>{
         // kept as an optional hook for future developement
     }
 
-    // todo: if this was done just right it probably wouldn't hit the try catch
-    try{
-        if(shortenedRouteIds!=null){
-            // clear out vehicles that are not in the routeIds
-            vehicleObjsRefs.current.forEach((vehicleMap, routeId) => {
-                log.info("is routeId in vehicleMap", routeId, shortenedRouteIds, shortenedRouteIds.has(routeId));
-                if (shortenedRouteIds!==null && !shortenedRouteIds.has(routeId)) {
-                    vehicleMap.forEach((vehicle, vehicleId) => {
-                        log.info("removing vehicle from map", vehicleId, vehicleMap.get(vehicleId));
-                        vehicleLayer.current.removeLayer(vehicle);
-                        vehicle.removeFrom(map);
-                    });
-                    vehicleObjsRefs.current.delete(routeId);
-                }
-            });
-            // handling vehicles on routes
-            [...shortenedRouteIds].forEach(shortenedRouteId=>{
-                let vehicleDataForRoute = vehicleState[shortenedRouteId+vehicleDataIdentifier]
-                log.info("key:",shortenedRouteId+vehicleDataIdentifier,"vehicleState",vehicleState,"vehicleDataForRoute",vehicleDataForRoute)
-                if(vehicleDataForRoute!=null && vehicleObjsRefs.current!=undefined
-                    && typeof vehicleObjsRefs.current === "object"
-                    && typeof vehicleObjsRefs.current.get === 'function'){
-                    log.info(`MapVehicleElements: processing vehicleDataForRoute`,vehicleDataForRoute,vehicleObjsRefs.current)
-                    vehicleDataForRoute.forEach(vehicleDatum=>{
-                        let vehicleRefForRoute = vehicleObjsRefs.current.get(shortenedRouteId)
-                        if(vehicleRefForRoute == null || vehicleRefForRoute == undefined){
-                            log.info("MapVehicleElements: creating new vehicle map for routeId",shortenedRouteId)
-                            vehicleRefForRoute = new Map()
-                            vehicleObjsRefs.current.set(shortenedRouteId, vehicleRefForRoute)
-                        }
-                        handleVehicleForMap(vehicleDatum, vehicleRefForRoute)
-                    });
-                }
-                log.info("MapVehicleElements: vehicleObjsRefs",vehicleObjsRefs.current)
-            })
-        }
+    useEffect(() => {
+        // todo: if this was done just right it probably wouldn't hit the try catch
+        try{
+            if(shortenedRouteIds!=null){
+                // clear out vehicles that are not in the routeIds
+                vehicleObjsRefs.current.forEach((vehicleMap, routeId) => {
+                    log.info("is routeId in vehicleMap", routeId, shortenedRouteIds, shortenedRouteIds.has(routeId));
+                    if (shortenedRouteIds!==null && !shortenedRouteIds.has(routeId)) {
+                        vehicleMap.forEach((vehicle, vehicleId) => {
+                            log.info("removing vehicle from map", vehicleId, vehicleMap.get(vehicleId));
+                            vehicleLayer.current.removeLayer(vehicle);
+                            vehicle.removeFrom(map);
+                        });
+                        vehicleObjsRefs.current.delete(routeId);
+                    } 
+                });
+                // handling vehicles on routes
+                [...shortenedRouteIds].forEach(shortenedRouteId=>{
+                    let vehicleDataForRoute = vehicleState[shortenedRouteId+vehicleDataIdentifier]
+                    log.info("key:",shortenedRouteId+vehicleDataIdentifier,"vehicleState",vehicleState,"vehicleDataForRoute",vehicleDataForRoute)
+                    if(vehicleDataForRoute!=null && vehicleObjsRefs.current!=undefined
+                        && typeof vehicleObjsRefs.current === "object"
+                        && typeof vehicleObjsRefs.current.get === 'function'){
+                        log.info(`MapVehicleElements: processing vehicleDataForRoute`,vehicleDataForRoute,vehicleObjsRefs.current)
+                        vehicleDataForRoute.forEach((vehicleDatum: VehicleRtInterface)=>{
+                            let vehicleRefForRoute = vehicleObjsRefs.current.get(shortenedRouteId)
+                            if(vehicleRefForRoute == null || vehicleRefForRoute == undefined){
+                                log.info("MapVehicleElements: creating new vehicle map for routeId",shortenedRouteId)
+                                vehicleRefForRoute = new Map()
+                                vehicleObjsRefs.current.set(shortenedRouteId, vehicleRefForRoute)
+                            }
+                            handleVehicleForMap(vehicleDatum, vehicleRefForRoute)
+                        });
 
-        log.info("end of map vehicle elements creation, state, vehicleObjsRefs,lastCardWasNotVehicleView",state,vehicleObjsRefs.current,lastCardWasNotVehicleView)
-        if(state.currentCard.type !== CardType.VehicleCard){
-            lastCardWasNotVehicleView.current = true
+
+                        // remove vehicles that are no longer in the vehicle data for the route
+                        const currentVehicleIds = new Set();
+                        vehicleDataForRoute.forEach((v: VehicleRtInterface) => currentVehicleIds.add(v.vehicleId));
+                        const vehicleRefForRoute = vehicleObjsRefs.current.get(shortenedRouteId);
+
+                        if (vehicleRefForRoute) {
+                            vehicleRefForRoute.forEach((marker, vehicleId) => {
+                                if (!currentVehicleIds.has(vehicleId)) {
+                                    log.info("removing vehicle from map because it is no longer in vehicle data for route", 
+                                        vehicleId, shortenedRouteId, vehicleRefForRoute.get(vehicleId), 
+                                        vehicleDataForRoute, currentVehicleIds, vehicleRefForRoute);
+                                    vehicleLayer.current.removeLayer(marker);
+                                    marker.removeFrom(map);
+                                    vehicleRefForRoute.delete(vehicleId);
+                                }
+                            });
+                        }
+                    }
+                    log.info("MapVehicleElements: vehicleObjsRefs",vehicleObjsRefs.current)
+                })
+            }
+
+            log.info("end of map vehicle elements creation, state, vehicleObjsRefs,lastCardWasNotVehicleView",state,vehicleObjsRefs.current,lastCardWasNotVehicleView)
+            if(state.currentCard.type !== CardType.VehicleCard){
+                lastCardWasNotVehicleView.current = true
+            }
         }
-    }
-    catch (e) {
-        log.error("error in vehicle element creation",e)
-    }
+        catch (e) {
+            log.error("error in vehicle element creation",e)
+        }
+    }, [state.currentCard.routeIdList, vehicleState])
+
+
+
     useEffect(() => {
         log.info("map vehicle elements routeIds",shortenedRouteIds,vehicleObjsRefs.current)
         vehicleLayer.current.addTo(map)

@@ -1,13 +1,13 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Autosuggest from 'react-autosuggest';
 import ErrorBoundary from "../util/errorBoundary";
-import {useNavigation} from "../../js/updateState/NavigationEffect.ts";
-import {CardStateContext} from "../util/CardStateComponent.tsx";
+import {useNavigation} from "../../js/updateState/NavigationEffect";
+import {useCardState} from "../util/CardStateComponent";
 import log from 'loglevel';
-import { trackingHandler } from '../../js/updateState/handleTracking.ts';
+import { trackingHandler } from '../../js/updateState/handleTracking';
 
 // Function to fetch suggestions from an external API
-const getSuggestions = async (value) => {
+const getSuggestions = async (value: string): Promise<any> => {
     log.info(`fetching autocomplete for ${value}: https://${process.env.ENV_ADDRESS}/api/autocomplete?term=${value}`)
     const response = await fetch(`https://${process.env.ENV_ADDRESS}/api/autocomplete?term=${value}`);
     const suggestions = await response.json();
@@ -21,11 +21,11 @@ const SearchBar = () => {
     const [isFocused, setIsFocused] = useState(false);
 
     const { search } = useNavigation();
-    const {state} = useContext(CardStateContext)
+    const {state} = useCardState()
     const [searchTerm, setSearchTerm] = useState("Route, intersection, or stop code");
     log.info("Search",searchTerm)
 
-    const onSuggestionsFetchRequested = async ({ value }) => {
+    const onSuggestionsFetchRequested = async ({ value }: { value: string }): Promise<void> => {
         try{
             const suggestions = await getSuggestions(value);
             if(suggestions!=null){
@@ -41,21 +41,24 @@ const SearchBar = () => {
     };
 
 
-    const onSuggestionSelected = (event, { suggestion }) => {
+    const onSuggestionSelected = (event: React.FormEvent, { suggestion, method }: { suggestion: any; method: string }): void => {
         log.info('Selected suggestion:', suggestion);
         const lineRef = suggestion.value
+        if(method==="enter"){
+            return
+        }
         search(lineRef);
     };
 
 
-    const clearSearch = (event) => {
+    const clearSearch = (event?: React.FormEvent): void => {
         setSearchTerm("Route, intersection, or stop code")
         setValue("")
     }
 
-    const clearAndFocusSearch = (event) => {
+    const clearAndFocusSearch = (event?: React.FormEvent): void => {
         clearSearch()
-        document.getElementById("search-input").focus();
+        document.getElementById("search-input")?.focus();
     }
 
 
@@ -86,7 +89,7 @@ const SearchBar = () => {
         placeholder: searchTerm,
         id: "search-input",
         value,
-        onChange: (event, { newValue }) => setValue(newValue),
+        onChange: (event: React.FormEvent, { newValue }: { newValue: string }): void => setValue(newValue),
         onFocus: () => setIsFocused(true),
         onBlur: () => {
             // Allow suggestion click to register before blur ends focus
@@ -98,9 +101,17 @@ const SearchBar = () => {
 
     return (
         <ErrorBoundary>
-            <div id="search" className="py-4" onKeyDown={(event) => {
+            <div id="search" className="py-4" onKeyDown={(event: React.KeyboardEvent) => {
                 if (event.key === "Enter") {
-                    search(event.target?.value);
+                    const target = event.target as HTMLInputElement;
+                    if(target.tagName.toLowerCase() === "input"){
+                        log.info("Submitting search for",target?.value,target,event)
+                        // autosuggest prevents default
+                        // if (!event.defaultPrevented) {
+                        //     performSearch(target.value);
+                        // }
+                        search(target.value);
+                    }
                 }
             }}>
                 <div className={`search-box${isFocused ? ' is-focused' : ''}`}>
@@ -109,8 +120,8 @@ const SearchBar = () => {
                         onSuggestionsFetchRequested={onSuggestionsFetchRequested}
                         onSuggestionsClearRequested={onSuggestionsClearRequested}
                         onSuggestionSelected={onSuggestionSelected}
-                        getSuggestionValue={(suggestion) => suggestion.label}
-                        renderSuggestion={(suggestion) => <div>{suggestion.label}</div>}
+                        getSuggestionValue={(suggestion: any) => suggestion.label}
+                        renderSuggestion={(suggestion: any) => <div>{suggestion.label}</div>}
                         inputProps={inputProps}
                     />
                     <button

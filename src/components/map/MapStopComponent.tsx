@@ -4,10 +4,10 @@ import {Marker, Popup, useMap} from "react-leaflet";
 import L from "leaflet";
 import stopMapIcon from "../../img/icon/star_black.svg"
 import stopPopupIcon from "../../img/icon/bus-stop.svg"
-import {useHighlight} from "../util/MapHighlightingStateComponent.tsx";
+import {useHighlight} from "../util/MapHighlightingStateComponent";
 import {useNavigation} from "../../js/updateState/NavigationEffect";
 import {CardType, StopInterface} from "../../js/updateState/DataModels";
-import {CardStateContext} from "../util/CardStateComponent";
+import {useCardState} from "../util/CardStateComponent";
 
 const COMPONENT_IDENTIFIER = "mapStopComponent"
 
@@ -62,7 +62,7 @@ function MapStopComponent  ({stopDatum, mapStopMarkers, zIndexOverride}:
         autoClose: false
     }
 
-    const { state} = useContext(CardStateContext);
+    const { state} = useCardState();
 
     let out = (
         <Marker {...markerOptions}
@@ -79,7 +79,7 @@ function MapStopComponent  ({stopDatum, mapStopMarkers, zIndexOverride}:
                 <img src={stopPopupIcon} alt="busstop icon" className="icon"/>
                 <div className="popup-info">
                     <span className="name">{stopDatum.name}</span>
-                    <span className="stop-code">{"Stopcode "+stopDatum.id.split("_")[1]}</span>
+                    <span className="stop-code">{"Stopcode "+stopDatum.id.id}</span>
                     <button className="view-full close-map" aria-label="view full stop details">
                         View Stop Details
                     </button>

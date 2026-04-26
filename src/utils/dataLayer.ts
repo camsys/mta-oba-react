@@ -1,8 +1,8 @@
 import L from "leaflet";
-import { MapRouteComponentInterface, StopInterface, VehicleRtInterface } from "../js/updateState/DataModels";
+import { AgencyAndId, MapRouteComponentInterface, StopInterface, VehicleRtInterface } from "../js/updateState/DataModels";
 
 export interface DatumElement {
-    getDatumId(): string;
+    getDatumId(): AgencyAndId;
     getDatum(): MapRouteComponentInterface | VehicleRtInterface| StopInterface | string;
 }
 
@@ -19,8 +19,8 @@ export class StopMarker extends L.Marker implements DatumElement {
         return this.datum;
     }
 
-    getDatumId(): string {
-        return this.datum.id;
+    getDatumId(): AgencyAndId {
+        return this.datum.datumId;
     }
 }
 
@@ -37,8 +37,8 @@ export class VehicleArrivalMarker extends L.Marker implements DatumElement {
         return this.datum;
     }
 
-    getDatumId(): string {
-        return this.datum.vehicleId;
+    getDatumId(): AgencyAndId {
+        return AgencyAndId.get(this.datum.routeId);
     }
 }
 
@@ -54,25 +54,33 @@ export class RoutePolyline extends L.Polyline implements DatumElement {
         return this.datum;
     }
 
-    getDatumId(): string {
-        return this.datum.routeId;
+    getDatumId(): AgencyAndId {
+        return AgencyAndId.get(this.datum.id);
     }
 }
 
 export class RouteLayerGroup<T extends L.Layer & DatumElement> extends L.LayerGroup implements DatumElement {
-    private datumId: string;
+    private datumId: AgencyAndId | null;
     
 
-    constructor(datumId: string, layers?: T[], options?: L.LayerOptions) {
+    constructor(datumId: AgencyAndId | null, layers?: T[], options?: L.LayerOptions) {
         super(layers, options);
         this.datumId = datumId;
     }
 
     getDatum(): string {
-        return this.datumId;
+        if (!this.datumId) {
+            return '';
+        }
+        const probablyAgencyAndId: AgencyAndId = this.datumId;
+        const indexable = typeof probablyAgencyAndId === 'string' ? probablyAgencyAndId : probablyAgencyAndId.toString();
+        return indexable;
     }
 
-    getDatumId(): string {
+    getDatumId(): AgencyAndId {
+        if (!this.datumId) {
+            throw new Error('DatumId is null');
+        }
         return this.datumId;
     }
 }

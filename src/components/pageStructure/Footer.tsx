@@ -1,12 +1,11 @@
 import React from 'react';
-import {OBA} from "../../js/oba";
 import ErrorBoundary from "../util/errorBoundary";
-import {FavoritesMenu} from "Components/pageStructure/FavoritesMenu";
-import {GoogleTranslateButton} from "Components/pageStructure/GoogleTranslate";
+import {FavoritesMenu} from "./FavoritesMenu";
+import {GoogleTranslateButton} from "./GoogleTranslate";
 import log from 'loglevel';
 import {useNavigation} from "../../js/updateState/NavigationEffect";
 import bus from "../../img/icon/bus.svg";
-import {UnderlineOnFocusElement} from "Components/shared/common";
+import { UnderlineOnFocusElement } from "../shared/common";
 
 
 function Footer  () {
@@ -30,10 +29,11 @@ function Footer  () {
                 <nav>
                     <ul className="menu my-1 text-4 font-[575]">
                         <li><UnderlineOnFocusElement href="//mta.info">MTA Homepage</UnderlineOnFocusElement></li>
-                        <li><UnderlineOnFocusElement href="/about">Mobile Text Messages</UnderlineOnFocusElement></li>
+                        <li><UnderlineOnFocusElement href="/help/text">Mobile Text Messages</UnderlineOnFocusElement></li>
                         <li><UnderlineOnFocusElement href="/about">About Bus Time</UnderlineOnFocusElement></li>
                         <li><UnderlineOnFocusElement href="/contact">Contact Us</UnderlineOnFocusElement></li>
                         <li><UnderlineOnFocusElement href="/developers">Developers</UnderlineOnFocusElement></li>
+                        <li><UnderlineOnFocusElement href="/help">Help</UnderlineOnFocusElement></li>
                         <li><UnderlineOnFocusElement href="//www.mta.info/privacy-policy">Privacy Policy</UnderlineOnFocusElement></li>
                     </ul>
                 </nav>
