@@ -56,6 +56,9 @@ export interface SiriMonitoredCall {
         VehicleFeatures?: {
             StrollerVehicle?: boolean;
         };
+        StopDetourStatus?: {
+            IsDetour?: boolean;
+        };
     };
 }
 

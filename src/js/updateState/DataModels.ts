@@ -76,6 +76,7 @@ export interface VehicleArrivalInterface {
     stopId?: string;
     stopName?: string;
     ISOTime?: string;
+    disruptionStatus?: DisruptionStatus;
 }
 
 export interface VehicleDepartureInterface {
@@ -104,11 +105,12 @@ export interface VehicleRtInterface {
     bearing?: number;
     direction?: string;
     routeId: string;
+    disruptionStatus?: DisruptionStatus;
     lastUpdate:Date
 }
 
 
-export enum MapRouteDisruptionStatus {
+export enum DisruptionStatus {
     Canonical = "canonical",
     Detour = "detour",
     Removed = "removed"
@@ -119,7 +121,7 @@ export interface MapRouteComponentInterface {
     id: string;
     points: [number, number][];
     color: string;
-    disruptionStatus: MapRouteDisruptionStatus;
+    disruptionStatus: DisruptionStatus;
 }
 
 export interface RouteDirectionInterface {
@@ -142,7 +144,7 @@ export interface RouteMatchDirectionInterface {
     routeAndDirection: string;
     /** @deprecated Use mapRouteComponentDataDict instead */
     mapRouteComponentData: MapRouteComponentInterface[];
-    mapRouteComponentDataDict: Record<MapRouteDisruptionStatus, MapRouteComponentInterface[]>;
+    mapRouteComponentDataDict: Record<DisruptionStatus, MapRouteComponentInterface[]>;
     mapStopComponentData: StopInterface[];
     routeDirectionComponentData: RouteDirectionInterface;
 }
@@ -166,6 +168,13 @@ export function createServiceAlertInterface(serviceAlertJson: SiriPtSituationEle
 }
 export function createVehicleArrivalInterface(mc: SiriMonitoredCall): VehicleArrivalInterface {
     const distances = mc?.Extensions?.Distances || {};
+    const isDetour = mc?.Extensions?.StopDetourStatus?.IsDetour;
+    let disruptionStatus: DisruptionStatus = DisruptionStatus.Canonical;
+    if (isDetour === true) {
+        disruptionStatus = DisruptionStatus.Detour;
+    } else if (isDetour === false) {
+        disruptionStatus = DisruptionStatus.Removed;
+    }
     return {
         prettyDistance: distances.PresentableDistance,
         rawDistanceInfo: distances.DistanceFromCall,
@@ -173,7 +182,8 @@ export function createVehicleArrivalInterface(mc: SiriMonitoredCall): VehicleArr
         rawDistanceOnRoute: distances.CallDistanceAlongRoute,
         stopId: mc?.StopPointRef,
         stopName: mc?.StopPointName,
-        ISOTime: mc?.ExpectedArrivalTime
+        ISOTime: mc?.ExpectedArrivalTime,
+        disruptionStatus: disruptionStatus
     };
 }
 
@@ -189,10 +199,20 @@ export function createVehicleDepartureInterface(mvj: SiriMonitoredVehicleJourney
 
 export function createVehicleRtInterface(mvj: SiriMonitoredVehicleJourney, updateTime: Date): VehicleRtInterface {
     const vehicleArrivalData = [];
+    let vehicleDisruptionStatus: DisruptionStatus = DisruptionStatus.Canonical;
 
     if (mvj?.MonitoredCall != null) {
         const mc = mvj.MonitoredCall;
-        vehicleArrivalData.push(createVehicleArrivalInterface(mc));
+        const arrivalData = createVehicleArrivalInterface(mc);
+        vehicleArrivalData.push(arrivalData);
+        
+        // Set vehicle disruption status based on monitored call detour status
+        const isDetour = mc?.Extensions?.StopDetourStatus?.IsDetour;
+        if (isDetour === true) {
+            vehicleDisruptionStatus = DisruptionStatus.Detour;
+        } else if (isDetour === false) {
+            vehicleDisruptionStatus = DisruptionStatus.Canonical;
+        }
 
         if (mvj?.OnwardCalls?.OnwardCall != null) {
             mvj.OnwardCalls.OnwardCall.forEach((call: SiriMonitoredCall, index: number) => {
@@ -261,7 +281,7 @@ export function createVehicleRtInterface(mvj: SiriMonitoredVehicleJourney, updat
     };
 }
 
-export function createMapRouteComponentInterface(routeId: string, componentId: string, points: [number, number][], color: string, disruptionStatus: MapRouteDisruptionStatus = MapRouteDisruptionStatus.Canonical): MapRouteComponentInterface {
+export function createMapRouteComponentInterface(routeId: string, componentId: string, points: [number, number][], color: string, disruptionStatus: DisruptionStatus = DisruptionStatus.Canonical): MapRouteComponentInterface {
     return {
         routeId,
         id: componentId,
@@ -294,10 +314,10 @@ function safelyDecodePolyline(encodedPolyline: string): [number, number][] | nul
 
 export function createRouteMatchDirectionInterface(directionJson: SearchRouteDirectionData, routeId: AgencyAndId, color: string): RouteMatchDirectionInterface {
     const mapRouteComponentData = [];
-    const mapRouteComponentDataDict: Record<MapRouteDisruptionStatus, MapRouteComponentInterface[]> = {
-        [MapRouteDisruptionStatus.Canonical]: [],
-        [MapRouteDisruptionStatus.Detour]: [],
-        [MapRouteDisruptionStatus.Removed]: []
+    const mapRouteComponentDataDict: Record<DisruptionStatus, MapRouteComponentInterface[]> = {
+        [DisruptionStatus.Canonical]: [],
+        [DisruptionStatus.Detour]: [],
+        [DisruptionStatus.Removed]: []
     };
     const mapStopComponentData: StopInterface[] = [];
     const stops : StopInterface[] = directionJson?.stops?.map((stop: SearchStopData) => createStopInterface(stop)) || [];
@@ -321,16 +341,16 @@ export function createRouteMatchDirectionInterface(directionJson: SearchRouteDir
         if (!decodedPolyline) continue; // Skip if polyline couldn't be decoded
         const polylineId = `${routeId}${primaryDelimiter}dir${primaryDelimiter}${directionJson.directionId}${primaryDelimiter}polyLineNum${primaryDelimiter}${j}`;
         const statusValue = typeof polylineData === 'object' ? (polylineData.detourStatus || polylineData.disruptionStatus) : null;
-        let rawDisruptionStatus: MapRouteDisruptionStatus = 
-            (statusValue && Object.values(MapRouteDisruptionStatus).includes(statusValue as MapRouteDisruptionStatus)) 
-                ? (statusValue as MapRouteDisruptionStatus)
-                : MapRouteDisruptionStatus.Canonical;
+        let rawDisruptionStatus: DisruptionStatus = 
+            (statusValue && Object.values(DisruptionStatus).includes(statusValue as DisruptionStatus)) 
+                ? (statusValue as DisruptionStatus)
+                : DisruptionStatus.Canonical;
         const disruptionStatus = 
             (
-                rawDisruptionStatus !== MapRouteDisruptionStatus.Detour 
-                && rawDisruptionStatus !== MapRouteDisruptionStatus.Removed
+                rawDisruptionStatus !== DisruptionStatus.Detour 
+                && rawDisruptionStatus !== DisruptionStatus.Removed
             ) 
-                ? MapRouteDisruptionStatus.Canonical 
+                ? DisruptionStatus.Canonical 
                 : rawDisruptionStatus;
         const mapRouteComponent = createMapRouteComponentInterface(routeId.toString(), polylineId, decodedPolyline, color, disruptionStatus);
         mapRouteComponentData.push(mapRouteComponent);
