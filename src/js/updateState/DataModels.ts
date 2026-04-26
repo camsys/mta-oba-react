@@ -166,7 +166,7 @@ export function createServiceAlertInterface(serviceAlertJson: SiriPtSituationEle
         title: serviceAlertJson.Summary
     };
 }
-export function createVehicleArrivalInterface(mc: SiriMonitoredCall): VehicleArrivalInterface {
+export function createVehicleArrivalInterface(mc: SiriMonitoredCall, index?: number): VehicleArrivalInterface {
     const distances = mc?.Extensions?.Distances || {};
     
     // Map IsDetour to DetourStatus for VehicleArrivalInterface
@@ -180,6 +180,16 @@ export function createVehicleArrivalInterface(mc: SiriMonitoredCall): VehicleArr
         detourStatus = DisruptionStatus.Removed;
     }
     
+    if(process.env.ALTERNATE_TREATING_STOPS_AS_DETOURS === 'true' && index != null && index % 3 === 0){
+        detourStatus = DisruptionStatus.Detour;
+    }
+    if(process.env.ALTERNATE_TREATING_STOPS_AS_DETOURS === 'true' && index != null && index % 3 === 1){
+        detourStatus = DisruptionStatus.Canonical;
+    }
+    if(process.env.ALTERNATE_TREATING_STOPS_AS_DETOURS === 'true' && index != null && index % 3 === 2){
+        detourStatus = DisruptionStatus.Removed;
+    }
+
     return {
         prettyDistance: distances.PresentableDistance,
         rawDistanceInfo: distances.DistanceFromCall,
@@ -212,7 +222,7 @@ export function createVehicleRtInterface(mvj: SiriMonitoredVehicleJourney, updat
         if (mvj?.OnwardCalls?.OnwardCall != null) {
             mvj.OnwardCalls.OnwardCall.forEach((call: SiriMonitoredCall, index: number) => {
                 if (index !== 0) {
-                    vehicleArrivalData.push(createVehicleArrivalInterface(call));
+                    vehicleArrivalData.push(createVehicleArrivalInterface(call, index));
                 }
             });
         }
@@ -256,6 +266,10 @@ export function createVehicleRtInterface(mvj: SiriMonitoredVehicleJourney, updat
     // not supplied/null => canonical
     let detourStatus = DisruptionStatus.Canonical; // default to canonical
     if (tripLevelIsDetour === true) {
+        detourStatus = DisruptionStatus.Detour;
+    }
+
+    if(process.env.OVERRIDE_ALL_VEHICLE_DETOUR_STATUS_TRUE === 'true'){
         detourStatus = DisruptionStatus.Detour;
     }
 
