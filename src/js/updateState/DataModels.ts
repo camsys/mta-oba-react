@@ -188,8 +188,8 @@ export function createVehicleArrivalInterface(mc: SiriMonitoredCall, index?: num
     }
     if(process.env.ALTERNATE_TREATING_STOPS_AS_DETOURS === 'true' && index != null && index % 3 === 2){
         detourStatus = DisruptionStatus.Removed;
-    }
-
+    } 
+    
     return {
         prettyDistance: distances.PresentableDistance,
         rawDistanceInfo: distances.DistanceFromCall,
@@ -217,7 +217,7 @@ export function createVehicleRtInterface(mvj: SiriMonitoredVehicleJourney, updat
 
     if (mvj?.MonitoredCall != null) {
         const mc = mvj.MonitoredCall;
-        vehicleArrivalData.push(createVehicleArrivalInterface(mc));
+        vehicleArrivalData.push(createVehicleArrivalInterface(mc, 0));
 
         if (mvj?.OnwardCalls?.OnwardCall != null) {
             mvj.OnwardCalls.OnwardCall.forEach((call: SiriMonitoredCall, index: number) => {
