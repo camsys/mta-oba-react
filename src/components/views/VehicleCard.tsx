@@ -51,7 +51,7 @@ export const VehicleCardContentComponent = ({routeMatch,vehicleDatum}
                     vehicleDatum.vehicleArrivalData.map((vehicleArrival : VehicleArrivalInterface) =>{
                         return(
                             <li
-                            className="pb-2"
+                            className={`pb-2 ${vehicleArrival.detourStatus} `}
                             onMouseEnter={() => vehicleArrival.stopId ? highlightId(vehicleArrival.stopId as any) : null}
                             onMouseLeave={() => highlightId(null)}
                             key={vehicleArrival.stopId}>
