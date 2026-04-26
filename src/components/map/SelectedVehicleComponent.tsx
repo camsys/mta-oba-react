@@ -15,24 +15,11 @@ import { ServiceAlertInterface } from "../../js/updateState/DataModels";
 import { ServiceAlertContainerProps } from "../views/ServiceAlertContainerComponent";
 import { useMap } from "react-leaflet";
 import { isCenteredOn } from "../../utils/mapZoom";
+import { createVehicleIcon } from "./MapVehcleElements";
+import { StrollerDetourVehicleIcon } from "../shared/icons";
 
 const COMPONENT_IDENTIFIER = "MapVehicleComponent"
 const MAX_NEXT_STOPS = 3;
-
-
-const createVehicleIcon = (vehicleDatum: VehicleRtInterface):L.Icon => {
-    let scheduled = vehicleDatum.hasRealtime?"":"scheduled/"
-    let imgDegrees = (vehicleDatum.bearing ?? 0) - (vehicleDatum.bearing ?? 0)%5
-    let vehicleImageUrl = "img/vehicle/"+scheduled+"vehicle-"+imgDegrees+".png"
-    let icon = L.icon({
-        iconUrl: vehicleImageUrl,
-        className: "svg-icon",
-        iconSize: [51,51],
-        iconAnchor: [25,25],
-        popupAnchor: [0,0]
-    })
-    return icon
-}
 
 function SelectedVehicleServiceAlert({routeId,getServiceAlert}: {routeId: string, getServiceAlert: any}): JSX.Element{
     if(typeof routeId === "undefined" || routeId === null || typeof routeId !== "string"){
@@ -76,7 +63,7 @@ export function PopupContents({vehicleDatum, getServiceAlert}:{
 
             <div className="popup-header">
                 <div className="popup-header-info">
-                <img src={vehicleDatum?.strollerVehicle?busStroller:bus} alt="bus" className="icon"/>
+                <StrollerDetourVehicleIcon vehicleDatum={vehicleDatum} className="icon"/>
                     <div className="popup-info">
                         {/* <span className={`route`}>{vehicleDatum.routeId.id} {vehicleDatum.destination}</span> */}
                         <span className={`route`}>{vehicleDatum.routeId.split("_")[1]} {vehicleDatum.destination}</span>
