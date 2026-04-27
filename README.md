@@ -65,9 +65,9 @@ right now we're basicly at 0.5.29, we're about to have our first frozen release 
 sample sequence of releases:
 
 frozen first release: 0.5.29-disrupt.1
-moving: 0.5.29-disrupt.2.SNAPSHOT
+moving: 0.5.29-disrupt.2-SNAPSHOT
 frozen second release: 0.5.29-disrupt.2
-moving: 0.5.29-disrupt.3.SNAPSHOT
+moving: 0.5.29-disrupt.3-SNAPSHOT
 
 then, main finishes a release && 0.5.30 is released
 we freeze this branch 0.5.29-disrupt.3
