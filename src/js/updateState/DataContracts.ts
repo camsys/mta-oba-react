@@ -142,6 +142,7 @@ export interface SearchStopData {
     latitude: number;
     longitude: number;
     stopDirection: string;
+    detourStatus?: string;
     routesAvailable: SearchRouteData[];
 }
 

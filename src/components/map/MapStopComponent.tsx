@@ -6,14 +6,14 @@ import stopMapIcon from "../../img/icon/star_black.svg"
 import stopPopupIcon from "../../img/icon/bus-stop.svg"
 import {useHighlight} from "../util/MapHighlightingStateComponent";
 import {useNavigation} from "../../js/updateState/NavigationEffect";
-import {CardType, StopInterface} from "../../js/updateState/DataModels";
+import {CardType, EnhancedStopInterface} from "../../js/updateState/DataModels";
 import {useCardState} from "../util/CardStateComponent";
 
 const COMPONENT_IDENTIFIER = "mapStopComponent"
 
 
 function MapStopComponent  ({stopDatum, mapStopMarkers, zIndexOverride}:
-                                {stopDatum:StopInterface,
+                                {stopDatum:EnhancedStopInterface,
                                 mapStopMarkers:React.MutableRefObject<Map<string,Marker>>,
                                 zIndexOverride:number}) : JSX.Element{
     // log.info('generating MapStopComponent: ', stopDatum,mapStopMarkers,zIndexOverride)
@@ -29,8 +29,20 @@ function MapStopComponent  ({stopDatum, mapStopMarkers, zIndexOverride}:
     if(directionKey === null) {
         directionKey = "unknown";
     }
-    let stopImageUrl = "img/stop/stop-" + (directionKey==null? "unknown":directionKey) + ".png"
-    if(zIndexOverride){stopImageUrl = "img/stop/stop-" + (directionKey==null? "unknown":directionKey) + "-active.png"}
+    
+    let statusSuffix = "";
+    if(stopDatum.detourStatus) {
+        const status = stopDatum.detourStatus.toLowerCase();
+        if(status === "detour") {
+            // statusSuffix = "-detour";
+        } else if(status === "removed") {
+            statusSuffix = "-removed";
+        }
+    }
+    log.info("stop detour information", stopDatum.name, " direction ", directionKey, " detour status ", stopDatum.detourStatus, " resulting in suffix ", statusSuffix)
+    
+    let stopImageUrl = "img/stop/stop-" + (directionKey==null? "unknown":directionKey) + statusSuffix + ".png"
+    if(zIndexOverride){stopImageUrl = "img/stop/stop-" + (directionKey==null? "unknown":directionKey) + statusSuffix + "-active.png"}
     let {search} = useNavigation()
 
     let icon = L.icon({
