@@ -76,7 +76,7 @@ export interface VehicleArrivalInterface {
     stopId?: string;
     stopName?: string;
     ISOTime?: string;
-    disruptionStatus?: DisruptionStatus;
+    detourStatus?: DisruptionStatus;
 }
 
 export interface VehicleDepartureInterface {
@@ -105,8 +105,8 @@ export interface VehicleRtInterface {
     bearing?: number;
     direction?: string;
     routeId: string;
-    disruptionStatus?: DisruptionStatus;
-    lastUpdate:Date
+    lastUpdate:Date;
+    detourStatus?: DisruptionStatus;
 }
 
 
@@ -166,15 +166,29 @@ export function createServiceAlertInterface(serviceAlertJson: SiriPtSituationEle
         title: serviceAlertJson.Summary
     };
 }
-export function createVehicleArrivalInterface(mc: SiriMonitoredCall): VehicleArrivalInterface {
+export function createVehicleArrivalInterface(mc: SiriMonitoredCall, index?: number): VehicleArrivalInterface {
     const distances = mc?.Extensions?.Distances || {};
-    const isDetour = mc?.Extensions?.StopDetourStatus?.IsDetour;
-    let disruptionStatus: DisruptionStatus = DisruptionStatus.Canonical;
-    if (isDetour === true) {
-        disruptionStatus = DisruptionStatus.Detour;
-    } else if (isDetour === false) {
-        disruptionStatus = DisruptionStatus.Removed;
+    // Map IsDetour to DetourStatus for VehicleArrivalInterface
+    // onDetour=true => detour
+    // onDetour=false => removed
+    // not supplied/null => canonical
+    let detourStatus = DisruptionStatus.Canonical; // default to canonical
+    if (mc?.Extensions?.StopDetourStatus?.IsDetour === true) {
+        detourStatus = DisruptionStatus.Detour;
+    } else if (mc?.Extensions?.StopDetourStatus?.IsDetour === false) {
+        detourStatus = DisruptionStatus.Removed;
     }
+    
+    if(process.env.ALTERNATE_TREATING_STOPS_AS_DETOURS === 'true' && index != null && index % 3 === 0){
+        detourStatus = DisruptionStatus.Detour;
+    }
+    if(process.env.ALTERNATE_TREATING_STOPS_AS_DETOURS === 'true' && index != null && index % 3 === 1){
+        detourStatus = DisruptionStatus.Canonical;
+    }
+    if(process.env.ALTERNATE_TREATING_STOPS_AS_DETOURS === 'true' && index != null && index % 3 === 2){
+        detourStatus = DisruptionStatus.Removed;
+    }
+    
     return {
         prettyDistance: distances.PresentableDistance,
         rawDistanceInfo: distances.DistanceFromCall,
@@ -183,7 +197,7 @@ export function createVehicleArrivalInterface(mc: SiriMonitoredCall): VehicleArr
         stopId: mc?.StopPointRef,
         stopName: mc?.StopPointName,
         ISOTime: mc?.ExpectedArrivalTime,
-        disruptionStatus: disruptionStatus
+        detourStatus: detourStatus
     };
 }
 
@@ -197,14 +211,13 @@ export function createVehicleDepartureInterface(mvj: SiriMonitoredVehicleJourney
     }
 }
 
-export function createVehicleRtInterface(mvj: SiriMonitoredVehicleJourney, updateTime: Date): VehicleRtInterface {
+export function createVehicleRtInterface(mvj: SiriMonitoredVehicleJourney, updateTime: Date, tripLevelIsDetour?: boolean): VehicleRtInterface {
     const vehicleArrivalData = [];
     let vehicleDisruptionStatus: DisruptionStatus = DisruptionStatus.Canonical;
 
     if (mvj?.MonitoredCall != null) {
         const mc = mvj.MonitoredCall;
-        const arrivalData = createVehicleArrivalInterface(mc);
-        vehicleArrivalData.push(arrivalData);
+        vehicleArrivalData.push(createVehicleArrivalInterface(mc, 0));
         
         // Set vehicle disruption status based on monitored call detour status
         const isDetour = mc?.Extensions?.StopDetourStatus?.IsDetour;
@@ -217,7 +230,7 @@ export function createVehicleRtInterface(mvj: SiriMonitoredVehicleJourney, updat
         if (mvj?.OnwardCalls?.OnwardCall != null) {
             mvj.OnwardCalls.OnwardCall.forEach((call: SiriMonitoredCall, index: number) => {
                 if (index !== 0) {
-                    vehicleArrivalData.push(createVehicleArrivalInterface(call));
+                    vehicleArrivalData.push(createVehicleArrivalInterface(call, index));
                 }
             });
         }
@@ -255,6 +268,18 @@ export function createVehicleRtInterface(mvj: SiriMonitoredVehicleJourney, updat
     let routeId = mvj.LineRef;
     if(routeId!=null){routeId=routeId.replace("+","-SBS")}
 
+    // Map IsDetour to DetourStatus for VehicleRtInterface (trip-level)
+    // onDetour=true => detour
+    // onDetour=false => canonical
+    // not supplied/null => canonical
+    let detourStatus = DisruptionStatus.Canonical; // default to canonical
+    if (tripLevelIsDetour === true) {
+        detourStatus = DisruptionStatus.Detour;
+    }
+
+    if(process.env.OVERRIDE_ALL_VEHICLE_DETOUR_STATUS_TRUE === 'true'){
+        detourStatus = DisruptionStatus.Detour;
+    }
 
     return {
         lastUpdate: updateTime,
@@ -277,7 +302,8 @@ export function createVehicleRtInterface(mvj: SiriMonitoredVehicleJourney, updat
         vehicleId: mvj.VehicleRef,
         bearing: mvj.Bearing,
         direction: mvj.DirectionRef,
-        routeId: routeId
+        routeId: routeId,
+        detourStatus: detourStatus
     };
 }
 

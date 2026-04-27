@@ -27,7 +27,11 @@ const envPlugin = new webpack.DefinePlugin({
   'process.env.CLASSIC_SITE_ADDRESS': JSON.stringify(process.env.CLASSIC_SITE_ADDRESS || 'https://bustime-classic.mta.info'),
   'process.env.BETA_BANNER_TEXT': JSON.stringify(process.env.BETA_BANNER_TEXT || 'The Spring 2026 Customers Count survey is live! Share your feedback here for a chance to win a $100 OMNY card.'),
   'process.env.BETA_BANNER_LINK': JSON.stringify(process.env.BETA_BANNER_LINK || 'https://nymta.qualtrics.com/jfe/form/SV_d4hYIpU9OS8pYI6?link=14'),
-  'process.env.OVERIDE_SEARCH_ENDPOINT': JSON.stringify(process.env.OVERIDE_SEARCH_ENDPOINT || '')
+  'process.env.OVERIDE_SEARCH_ENDPOINT': JSON.stringify(process.env.OVERIDE_SEARCH_ENDPOINT || ''),
+  'process.env.SIRI_OVERRIDE': JSON.stringify(process.env.SIRI_OVERRIDE || ''),
+  'process.env.SIRI_OVERRIDE_STOP': JSON.stringify(process.env.SIRI_OVERRIDE_STOP || ''),
+  'process.env.OVERRIDE_ALL_VEHICLE_DETOUR_STATUS_TRUE': JSON.stringify(process.env.OVERRIDE_ALL_VEHICLE_DETOUR_STATUS_TRUE === 'true' || 'false'),
+  'process.env.ALTERNATE_TREATING_STOPS_AS_DETOURS': JSON.stringify(process.env.ALTERNATE_TREATING_STOPS_AS_DETOURS === 'true' || 'false')
 });
 
 function cleanUpHostAddress(hostAddress) {

@@ -16,6 +16,9 @@ export interface SiriVehicleMonitoringDelivery {
 
 export interface SiriMonitoredVehicleJourneyActivity {
     MonitoredVehicleJourney: SiriMonitoredVehicleJourney;
+    Extensions?: {
+        IsDetour?: boolean;
+    };
 }
 
 export interface SiriMonitoredVehicleJourney {
@@ -68,6 +71,9 @@ export interface SiriStopMonitoringDelivery {
 
 export interface SiriMonitoredStopVisitActivity {
     MonitoredVehicleJourney: SiriMonitoredVehicleJourney;
+    Extensions?: {
+        IsDetour?: boolean;
+    };
 }
 
 export interface SiriSituationExchangeDelivery {

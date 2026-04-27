@@ -33,7 +33,8 @@ function extractData (stopId: string, siri: SiriWrapper): [[string, Map<string, 
         for (let i = 0; i < stopActivityArray.length; i++) {
             OBA.Util.trace("siri stop processing vehicle #" + i);
             let mvj = stopActivityArray[i].MonitoredVehicleJourney
-            let vehicleDatum = createVehicleRtInterface(mvj,OBA.Util.ISO8601StringToDate(lastCallTime))
+            let tripLevelIsDetour = stopActivityArray[i].Extensions?.IsDetour
+            let vehicleDatum = createVehicleRtInterface(mvj, OBA.Util.ISO8601StringToDate(lastCallTime), tripLevelIsDetour)
             vehicleDataMap.set(mvj.VehicleRef,vehicleDatum)
             let vehicles = stopsToVehiclesMap.get(vehicleDatum.nextStop)
             if(vehicles===null || typeof vehicles === "undefined"){
@@ -106,6 +107,9 @@ function updateVehiclesState(updates: Record<string, VehicleStateUpdateValue>, s
 }
 
 const fetchAndProcessStopMonitoring = async ([stopId, targetAddress]: [string, string]): Promise<[string, Map<string, VehicleRtInterface>, Map<string, ServiceAlertInterface[]>, Map<string, VehicleRtInterface[]>, Map<string, VehicleRtInterface[]>, string | undefined] | null> => {
+    if(process.env.SIRI_OVERRIDE_STOP){
+        targetAddress = process.env.SIRI_OVERRIDE_STOP
+    }
     log.info("searching for siri stop at: ",targetAddress)
     return fetch(targetAddress)
         .then((response: Response) => response.json())
