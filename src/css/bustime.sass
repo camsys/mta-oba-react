@@ -1521,7 +1521,7 @@
           width: auto
           height: auto
           top: .25rem 
-          left: 0
+          left: -.125rem
       &.removed
         text-decoration: line-through
         text-decoration-color: $black
@@ -1554,9 +1554,10 @@
           width: auto
           height: auto
           top: .25rem 
-          left: 0
+          left: -.05rem
       &.removed
         text-decoration: line-through
+        text-decoration-thickness: .125rem
         text-decoration-color: $black
         opacity: .5
     a
@@ -1617,6 +1618,9 @@
         &.detour
           &::before
             background-image: url(../img/icon/detour.svg)
+            width: 1.25rem
+            height: 1.25rem
+            margin-top: -.325rem
       .bus-info
         flex-grow: 1
         display: inline-flex
@@ -1946,7 +1950,11 @@
               background-color: #46A739
               flex-shrink: 0
               margin-top: .3rem
+            &.canonical, &.removed
+              &::before
+                margin-left: .2rem
             &.detour
+              gap: .625rem
               &::before
                 background-color: transparent
                 border: none
@@ -1959,6 +1967,7 @@
                 left: 0
             &.removed
               text-decoration: line-through
+              text-decoration-thickness: .125rem
               text-decoration-color: $black
               opacity: .5
             >div
