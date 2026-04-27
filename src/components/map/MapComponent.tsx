@@ -139,7 +139,7 @@ const RoutesAndStops = ()=>{
         log.info("processing route for map: ", route)
         if(route){
             route.directions.forEach(dir => {
-                // Use mapRouteComponentDataDict to process all disruption statuses
+                // Use mapRouteComponentDataDict to process all detour statuses
                 Object.entries(dir.mapRouteComponentDataDict).forEach(([status, components]) => {
                     components.forEach((datum:MapRouteComponentInterface) => {
                         mapRouteMarkers.set(datum.id,createRoutePolyline(datum))

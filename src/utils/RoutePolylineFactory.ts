@@ -8,7 +8,7 @@ export const createRoutePolyline = (
 ) => {
     log.info("RoutePolylineFactory loaded");
     
-    // Determine polyline style based on disruption status
+    // Determine polyline style based on detour status
     let weight = isHighlighted ? 10 : 3;
     let dashArray = undefined;
     let opacity = isHighlighted ? 0.6 : 1;
