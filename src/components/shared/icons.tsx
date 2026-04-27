@@ -6,6 +6,7 @@ import busStroller from "../../img/icon/bus-stroller.svg";
 import busDetourStroller from "../../img/icon/bus-detour-stroller.svg";
 import busDetour from "../../img/icon/bus-detour.svg";
 import log from 'loglevel';
+import {DetourStatus} from "../../js/updateState/DataModels";
 
 
 export interface SemiPrivateSvgWrapperProps{
@@ -112,18 +113,19 @@ export function BusStopIcon(props: React.SVGProps<SVGSVGElement>): JSX.Element{
 
 export function StrollerDetourVehicleIcon({vehicleDatum, className, popup}: {vehicleDatum: VehicleRtInterface, className?: string, popup?: boolean}): JSX.Element{
   const isStroller = vehicleDatum?.strollerVehicle;
-  const isDetour = vehicleDatum?.detourStatus;
+  const isDetour = vehicleDatum?.detourStatus===DetourStatus.Detour;
   log.info(`Vehicle ${vehicleDatum?.id} stroller status: ${isStroller}, detour status: ${isDetour}`);
 
   let largerSize = popup ? "h-10 -mt-2" : "h-7 -mt-3";
+  let standardSize = popup ? "h-8" : "h-5 -mt-[2px]";
   
   if (isStroller && isDetour) {
     return (<img src={busDetourStroller} alt="bus with stroller and detour" className={cn(largerSize,className)}/>);
   }  else if (isDetour) {
     return (<img src={busDetour} alt="bus on detour" className={cn(largerSize,className)}/>);
   } else if (isStroller) {
-    return (<img src={busStroller} alt="bus with stroller" className={className}/>);
+    return (<img src={busStroller} alt="bus with stroller" className={cn(standardSize,className)}/>);
   }  else {
-    return (<img src={bus} alt="bus" className={className}/>);
+    return (<img src={bus} alt="bus" className={cn(standardSize,className)}/>);
   }
 }
