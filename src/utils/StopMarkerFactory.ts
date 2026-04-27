@@ -2,7 +2,7 @@ import L, { map } from "leaflet";
 import { StopMarker } from "./dataLayer";
 import log from 'loglevel';
 import {setMapLatLngAndZoom} from "./mapZoom";
-import { EnhancedStopInterface } from "../js/updateState/DataModels";
+import { DetourStatus, EnhancedStopInterface } from "../js/updateState/DataModels";
 
 export const createStopMarker = (
     stopDatum: EnhancedStopInterface,

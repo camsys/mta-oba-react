@@ -19,6 +19,7 @@ import {
     EnhancedStopInterface,
     StopMatch,
     StopsObjectContainer,
+    DetourStatus,
 } from "../../js/updateState/DataModels";
 import {useHighlight} from "../util/MapHighlightingStateComponent";
 import {useLongPressSearch} from "../../js/handlers/LongPressSearchHandler";
@@ -78,9 +79,10 @@ const RoutesAndStops = ()=>{
     const { state} = useCardState();
 
     let mapRouteMarkers: Map<string, L.Polyline> = new Map();
-    const mapStopComponents = useRef(new Map());
+    const mapStopComponents : React.MutableRefObject<Map<AgencyAndId, L.Marker>> = useRef(new Map());
+    const mapStopComponentsToStopData : React.MutableRefObject<Map<L.Marker, EnhancedStopInterface>> = useRef(new Map());
     const lastUsedCard = useRef(state.currentCard);
-    let stopsToDisplay: Map<string, L.Polyline> = new Map();
+    let stopsToDisplay: Map<AgencyAndId, L.Marker> = new Map();
     // let selectedStop: Map<string, L.Polyline> = new Map();
     const routeLayer = useRef<L.LayerGroup<L.Polyline>>(new L.LayerGroup());
     const stopLayer = useRef<L.LayerGroup<L.Marker>>(new L.LayerGroup());
@@ -150,8 +152,11 @@ const RoutesAndStops = ()=>{
                 dir.mapStopComponentData.forEach((stopInterface:EnhancedStopInterface) => {
                     let stopId = stopInterface.datumId;
                     let newStopMarker = createStopMarker(stopInterface,selectStop,popupOptions.current,createStopIcon(stopInterface),0,map)
-                    mapStopComponents.current.set(stopId, newStopMarker);
-                    stopsToDisplay.set(stopId.toString(), newStopMarker);                
+                    if(!mapStopComponents.current.has(stopId) || mapStopComponentsToStopData.current.get(mapStopComponents.current.get(stopId) as L.Marker)?.detourStatus === DetourStatus.Removed){
+                        mapStopComponents.current.set(stopId, newStopMarker);
+                        mapStopComponentsToStopData.current.set(newStopMarker, stopInterface);
+                        stopsToDisplay.set(stopId, newStopMarker);  
+                    }
                 })
             })
         }
