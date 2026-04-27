@@ -46,3 +46,31 @@ state handling:
   - all information needed by components is stored in "card" objects kept in the global state object
   - this object will not trigger a new state update if the reference to the card is kept the same
   - some subclasses should be rendered more frequently than that state being updated
+
+
+
+
+---------
+
+IF YOU ARE DOING A RELEASE FROM THIS BRANCH:
+
+unfortunately we have no meaningful release tool support. when someone has time we should add that.
+
+here is the versioning sequence for releases:
+
+sample:
+
+right now we're basicly at 0.5.29, we're about to have our first frozen release and at that point we will diverge into this branch having a more stable long term structure, because it's likely what is needed depending on timelines for the sandbox.
+
+sample sequence of releases:
+
+frozen first release: 0.5.29-disrupt.1
+moving: 0.5.29-disrupt.2.SNAPSHOT
+frozen second release: 0.5.29-disrupt.2
+moving: 0.5.29-disrupt.3.SNAPSHOT
+
+then, main finishes a release && 0.5.30 is released
+we freeze this branch 0.5.29-disrupt.3
+we merge in main
+we bump the version of main, and this branch:
+0.5.30-disrupt.3.1-SNAPSHOT
