@@ -2,10 +2,10 @@ import L, { map } from "leaflet";
 import { StopMarker } from "./dataLayer";
 import log from 'loglevel';
 import {setMapLatLngAndZoom} from "./mapZoom";
-import { StopInterface } from "../js/updateState/DataModels";
+import { EnhancedStopInterface } from "../js/updateState/DataModels";
 
 export const createStopMarker = (
-    stopDatum: StopInterface,
+    stopDatum: EnhancedStopInterface,
     selectStop: Function,
     popupOptions: L.PopupOptions,
     icon: L.Icon,

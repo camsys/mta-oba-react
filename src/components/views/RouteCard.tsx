@@ -6,7 +6,7 @@ import { useHighlight } from "../util/MapHighlightingStateComponent";
 import {
     RouteDirectionInterface,
     MatchType,
-    SearchMatch, StopInterface, RouteMatch,
+    SearchMatch, EnhancedStopInterface, RouteMatch,
     Card,
     VehicleStateObject,
     AgencyAndId,
@@ -25,7 +25,7 @@ import { RouteCardHeader, RouteCardHeaderMany } from "./CardHeaderComponents";
 import { UnderlineOnFocusElement } from "../shared/common";
 
 export function RouteStopComponent
-({stopDatum, routeId, index}:{stopDatum:StopInterface,routeId:AgencyAndId,index:string}):JSX.Element{
+({stopDatum, routeId, index}:{stopDatum:EnhancedStopInterface,routeId:AgencyAndId,index:string}):JSX.Element{
 
     const { highlightId } = useHighlight();
     const {vehicleState} = useVehicleState()
@@ -49,8 +49,9 @@ export function RouteStopComponent
     let out = null;
 
     try{
+        const detourClass = stopDatum.detourStatus ? stopDatum.detourStatus.toLowerCase() : '';
         out = (
-            <li  className={'pb-4 ' + (hasVehicleChildren ? "has-info" : "")}
+            <li  className={'pb-4 ' + (hasVehicleChildren ? "has-info" : "") + (detourClass ? " " + detourClass : "")}
                  key={uniqueId}
                  id={uniqueId}
                  onMouseEnter={() => highlightId(stopDatum.datumId)}

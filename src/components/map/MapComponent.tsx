@@ -16,7 +16,7 @@ import {
     MapRouteComponentInterface,
     MatchType,
     RouteMatch,
-    StopInterface,
+    EnhancedStopInterface,
     StopMatch,
     StopsObjectContainer,
 } from "../../js/updateState/DataModels";
@@ -100,9 +100,20 @@ const RoutesAndStops = ()=>{
     })
 
     const iconCache = useRef<Map<string, L.Icon>>(new Map());
-    const createStopIcon = (stopDatum: StopInterface):L.Icon => {
+    const createStopIcon = (stopDatum: EnhancedStopInterface):L.Icon => {
         const directionKey = stopDatum?.stopDirection || "unknown";
-        const stopImageUrl = `img/stop/stop-${directionKey}.png`;
+
+        let statusSuffix = "";
+        if(stopDatum.detourStatus) {
+            const status = stopDatum.detourStatus.toLowerCase();
+            if(status === "detour") {
+                // statusSuffix = "-detour";
+            } else if(status === "removed") {
+                statusSuffix = "-removed";
+            }
+        }
+
+        const stopImageUrl = `img/stop/stop-${directionKey}${statusSuffix}.png`;
         if(iconCache.current.has(stopImageUrl)){
             return iconCache.current.get(stopImageUrl) as L.Icon
         }
@@ -120,7 +131,7 @@ const RoutesAndStops = ()=>{
 
     //methods
 
-    const selectStop = (stop:StopInterface) =>{
+    const selectStop = (stop:EnhancedStopInterface) =>{
         search(stop.datumId)
     }
 
@@ -136,7 +147,7 @@ const RoutesAndStops = ()=>{
                 })
             })
             route.directions.forEach(dir => {
-                dir.mapStopComponentData.forEach((stopInterface:StopInterface) => {
+                dir.mapStopComponentData.forEach((stopInterface:EnhancedStopInterface) => {
                     let stopId = stopInterface.datumId;
                     let newStopMarker = createStopMarker(stopInterface,selectStop,popupOptions.current,createStopIcon(stopInterface),0,map)
                     mapStopComponents.current.set(stopId, newStopMarker);
@@ -339,7 +350,7 @@ const Highlighted = () =>{
     })
 
     const iconCache = useRef<Map<string, L.Icon>>(new Map());
-    const createStopIcon = (stopDatum: StopsObjectContainer):L.Icon => {
+    const createStopIcon = (stopDatum: EnhancedStopInterface):L.Icon => {
         const directionKey = stopDatum?.stopDirection || "unknown";
         let zIndexOverride = 20;
         const stopImageUrl = `img/stop/stop-${directionKey}-active.png`;

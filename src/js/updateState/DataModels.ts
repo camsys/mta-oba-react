@@ -52,6 +52,10 @@ export interface StopInterface extends ObaDatumInterface{
     stopDirection: string;
 }
 
+export interface EnhancedStopInterface extends StopInterface {
+    detourStatus?: DisruptionStatus;
+}
+
 
 export interface RouteInterface extends ObaDatumInterface{
     color: string;
@@ -131,7 +135,7 @@ export interface RouteDirectionInterface {
     directionId: string;
     hasUpcomingService: boolean;
     routeDestination: string;
-    routeStopComponentsData: StopInterface[];
+    routeStopComponentsData: EnhancedStopInterface[];
 }
 
 export interface RouteMatchDirectionInterface {
@@ -145,18 +149,32 @@ export interface RouteMatchDirectionInterface {
     /** @deprecated Use mapRouteComponentDataDict instead */
     mapRouteComponentData: MapRouteComponentInterface[];
     mapRouteComponentDataDict: Record<DisruptionStatus, MapRouteComponentInterface[]>;
-    mapStopComponentData: StopInterface[];
+    mapStopComponentData: EnhancedStopInterface[];
     routeDirectionComponentData: RouteDirectionInterface;
 }
 
-export function createStopInterface(stopJson: SearchStopData): StopInterface {
+export function createStopInterface(stopJson: SearchStopData): EnhancedStopInterface {
+    let detourStatus: DisruptionStatus = DisruptionStatus.Canonical;
+    
+    if (stopJson.detourStatus) {
+        const statusLower = stopJson.detourStatus.toLowerCase();
+        if (statusLower === "detour") {
+            detourStatus = DisruptionStatus.Detour;
+            log.info(`Stop with DETOUR status detected: ${stopJson.name} (${stopJson.id})`);
+        } else if (statusLower === "removed") {
+            detourStatus = DisruptionStatus.Removed;
+            log.info(`Stop with REMOVED status detected: ${stopJson.name} (${stopJson.id})`);
+        }
+    }
+    
     return {
         datumName: stopJson.name,
         datumId: AgencyAndId.get(stopJson.id),
         name: stopJson.name,
         longLat: [stopJson.latitude, stopJson.longitude],
         id: AgencyAndId.get(stopJson.id),
-        stopDirection: stopJson.stopDirection
+        stopDirection: stopJson.stopDirection,
+        detourStatus: detourStatus
     };
 }
 
@@ -317,7 +335,7 @@ export function createMapRouteComponentInterface(routeId: string, componentId: s
     };
 }
 
-export function createRouteDirectionComponentInterface(routeId: AgencyAndId, datumId: AgencyAndId, directionId: string, hasUpcomingService:boolean, routeDestination: string, stops: StopInterface[]): RouteDirectionInterface {
+export function createRouteDirectionComponentInterface(routeId: AgencyAndId, datumId: AgencyAndId, directionId: string, hasUpcomingService:boolean, routeDestination: string, stops: EnhancedStopInterface[]): RouteDirectionInterface {
     const routeStopComponentsData = stops.map(stop => (stop));
     return {
         routeId,
@@ -345,8 +363,8 @@ export function createRouteMatchDirectionInterface(directionJson: SearchRouteDir
         [DisruptionStatus.Detour]: [],
         [DisruptionStatus.Removed]: []
     };
-    const mapStopComponentData: StopInterface[] = [];
-    const stops : StopInterface[] = directionJson?.stops?.map((stop: SearchStopData) => createStopInterface(stop)) || [];
+    const mapStopComponentData: EnhancedStopInterface[] = [];
+    const stops : EnhancedStopInterface[] = directionJson?.stops?.map((stop: SearchStopData) => createStopInterface(stop)) || [];
 
     log.info("createRouteMatchDirectionInterface", directionJson, routeId, color);
 
@@ -383,7 +401,7 @@ export function createRouteMatchDirectionInterface(directionJson: SearchRouteDir
         mapRouteComponentDataDict[disruptionStatus].push(mapRouteComponent);
     }
 
-    stops.forEach((stop: StopInterface) => mapStopComponentData.push(stop));
+    stops.forEach((stop: EnhancedStopInterface) => mapStopComponentData.push(stop));
 
     return {
         routeId: routeId,
@@ -624,7 +642,7 @@ export interface RoutesObjectContainer extends React.MutableRefObject<RoutesObje
 
 
 export interface StopsObject {
-    [key: string]: StopInterface;
+    [key: string]: EnhancedStopInterface;
 }
 
 export interface StopsObjectContainer extends React.MutableRefObject<StopsObject> {}

@@ -1,21 +1,21 @@
 import L from "leaflet";
-import { AgencyAndId, MapRouteComponentInterface, StopInterface, VehicleRtInterface } from "../js/updateState/DataModels";
+import { AgencyAndId, MapRouteComponentInterface, StopInterface, EnhancedStopInterface, VehicleRtInterface } from "../js/updateState/DataModels";
 
 export interface DatumElement {
     getDatumId(): AgencyAndId;
-    getDatum(): MapRouteComponentInterface | VehicleRtInterface| StopInterface | string;
+    getDatum(): MapRouteComponentInterface | VehicleRtInterface| EnhancedStopInterface | string;
 }
 
 
 export class StopMarker extends L.Marker implements DatumElement {
-    private datum: StopInterface;
+    private datum: EnhancedStopInterface;
 
-    constructor(latlng: L.LatLngExpression, options: L.MarkerOptions, datum: StopInterface) {
+    constructor(latlng: L.LatLngExpression, options: L.MarkerOptions, datum: EnhancedStopInterface) {
         super(latlng, options);
         this.datum = datum;
     }
 
-    getDatum(): StopInterface {
+    getDatum(): EnhancedStopInterface {
         return this.datum;
     }
 

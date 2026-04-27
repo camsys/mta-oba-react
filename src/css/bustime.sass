@@ -1544,6 +1544,21 @@
           display: none
       &.has-info
         font-weight: bold
+      &.detour
+        &::before
+          background-color: transparent
+          border: none
+          border-radius: 0
+          transform: none
+          content: url(../img/icon/bullet_point-detour.svg)
+          width: auto
+          height: auto
+          top: .25rem 
+          left: 0
+      &.removed
+        text-decoration: line-through
+        text-decoration-color: $black
+        opacity: .5
     a
       text-decoration: none
       color:#000000
