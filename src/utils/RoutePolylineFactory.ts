@@ -1,6 +1,6 @@
 import L from "leaflet";
 import log from "loglevel";
-import { MapRouteComponentInterface, DisruptionStatus } from "../js/updateState/DataModels";
+import { MapRouteComponentInterface, DetourStatus } from "../js/updateState/DataModels";
 
 export const createRoutePolyline = (
     routeData: MapRouteComponentInterface,
@@ -13,17 +13,17 @@ export const createRoutePolyline = (
     let dashArray = undefined;
     let opacity = isHighlighted ? 0.6 : 1;
     
-    switch (routeData.disruptionStatus) {
-        case DisruptionStatus.Detour:
+    switch (routeData.detourStatus) {
+        case DetourStatus.Detour:
             // Detour: bold line (2x normal weight)
             weight = isHighlighted ? 20 : 6;
             break;
-        case DisruptionStatus.Removed:
+        case DetourStatus.Removed:
             // Removed: dotted line with 70% opacity
             dashArray = "3, 6";
             opacity = 0.7;
             break;
-        case DisruptionStatus.Canonical:
+        case DetourStatus.Canonical:
         default:
             // Canonical: normal appearance
             break;
