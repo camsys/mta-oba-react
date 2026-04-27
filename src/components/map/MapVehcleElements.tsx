@@ -17,7 +17,7 @@ import {useNavigation} from "../../js/updateState/NavigationEffect";
 // Exported utility function to create vehicle icons
 export const createVehicleIcon = (vehicleDatum: VehicleRtInterface, iconCache?: React.MutableRefObject<Map<string, L.Icon>>):L.Icon => {
     let scheduled = vehicleDatum.hasRealtime?"":"scheduled/"
-    let detourPath = vehicleDatum.detourStatus ? "detour/" : ""
+    let detourPath = vehicleDatum.detourStatus === "detour" ? "detour/" : ""
     let imgDegrees = (vehicleDatum.bearing ?? 0) - (vehicleDatum.bearing ?? 0)%5
     let vehicleImageUrl = "img/vehicle/"+scheduled+detourPath+"vehicle-"+imgDegrees+".png"
     if(iconCache && iconCache.current.has(vehicleImageUrl)){

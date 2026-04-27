@@ -295,7 +295,10 @@ export function createVehicleRtInterface(mvj: SiriMonitoredVehicleJourney, updat
         detourStatus = DisruptionStatus.Detour;
     }
 
-    if(process.env.OVERRIDE_ALL_VEHICLE_DETOUR_STATUS_TRUE === 'true'){
+    const overrideAllVehicleDetourStatusTrue =
+        process.env.OVERRIDE_ALL_VEHICLE_DETOUR_STATUS_TRUE === true ||
+        process.env.OVERRIDE_ALL_VEHICLE_DETOUR_STATUS_TRUE === 'true';
+    if (overrideAllVehicleDetourStatusTrue) {
         detourStatus = DisruptionStatus.Detour;
     }
 
