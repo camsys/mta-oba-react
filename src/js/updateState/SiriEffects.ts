@@ -33,7 +33,8 @@ function extractData (routeId: string, siri: SiriResponse): [[string, Map<string
         for (let i = 0; i < vehicleActivityArray.length; i++) {
             OBA.Util.trace("processing vehicle #" + i);
             let mvj = vehicleActivityArray[i].MonitoredVehicleJourney
-            let vehicleDatum = createVehicleRtInterface(mvj,OBA.Util.ISO8601StringToDate(lastCallTime))
+            let tripLevelIsDetour = vehicleActivityArray[i].Extensions?.IsDetour
+            let vehicleDatum = createVehicleRtInterface(mvj, OBA.Util.ISO8601StringToDate(lastCallTime), tripLevelIsDetour)
             vehicleDataMap.set(mvj.VehicleRef,vehicleDatum)
             let vehicles = stopsToVehiclesMap.get(vehicleDatum.nextStop)
             if(vehicles===null || typeof vehicles === "undefined"){
@@ -100,6 +101,9 @@ function updateVehiclesState(updates: Record<string, Map<string, VehicleRtInterf
 }
 
 const fetchAndProcessVehicleMonitoring = async ([routeId, targetAddress]: [string, string]): Promise<[string, Map<string, VehicleRtInterface>, Map<string, ServiceAlertInterface[]>, Map<string, VehicleRtInterface[]>, string | undefined] | null> => {
+    if(process.env.SIRI_OVERRIDE){
+        targetAddress = process.env.SIRI_OVERRIDE
+    }
     log.info("searching for siri at: ",targetAddress)
     return fetch(targetAddress)
         .then((response: Response) => response.json())

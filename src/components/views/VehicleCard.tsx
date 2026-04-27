@@ -12,6 +12,7 @@ import ErrorBoundary from "../util/errorBoundary";
 import {ViewSearchItem} from "./MiscComponents";
 import log from 'loglevel'
 import {MeeplesComponentLi} from "./VehicleComponent";
+import { StrollerDetourVehicleIcon } from "../shared/icons";
 
 export const VehicleCardContentComponent = ({routeMatch,vehicleDatum}
                                                 :{routeMatch:RouteMatch,vehicleDatum:VehicleRtInterface})
@@ -50,7 +51,7 @@ export const VehicleCardContentComponent = ({routeMatch,vehicleDatum}
                     vehicleDatum.vehicleArrivalData.map((vehicleArrival : VehicleArrivalInterface) =>{
                         return(
                             <li
-                            className="pb-2"
+                            className={`pb-2 ${vehicleArrival.detourStatus} `}
                             onMouseEnter={() => vehicleArrival.stopId ? highlightId(vehicleArrival.stopId as any) : null}
                             onMouseLeave={() => highlightId(null)}
                             key={vehicleArrival.stopId}>
@@ -82,7 +83,7 @@ function VehicleCard ({routeMatch,vehicleId}: { routeMatch: RouteMatch, vehicleI
     },[state,vehicleState])
 
     let routeId;
-    let vehicleDatum = null;
+    let vehicleDatum : VehicleRtInterface | null = null;
 
 
 
@@ -131,9 +132,7 @@ function VehicleCard ({routeMatch,vehicleId}: { routeMatch: RouteMatch, vehicleI
                 <h3 className="card-title"
                     tabIndex={0}
                     onClick={() => search(routeMatch.routeId.id)}>
-                    {/*{log.info("adding vehicelcard icon")}*/}
-                    <img src={vehicleDatum && vehicleDatum?.strollerVehicle?"/img/icon/bus-stroller.svg":"/img/icon/bus.svg"}
-                         alt={vehicleDatum && vehicleDatum?.strollerVehicle?"bus and stroller icon":"bus icon"} className="icon" />
+                    {vehicleDatum && <StrollerDetourVehicleIcon vehicleDatum={vehicleDatum} className="icon" />}
                     {OBA.Config.noWidows(routeMatch.routeTitle)}
                 </h3>
             </div>

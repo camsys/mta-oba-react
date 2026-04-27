@@ -14,6 +14,28 @@ import {
 import { createVehicleMarker } from "../../utils/VehicleMarkerFactory";
 import {useNavigation} from "../../js/updateState/NavigationEffect";
 
+// Exported utility function to create vehicle icons
+export const createVehicleIcon = (vehicleDatum: VehicleRtInterface, iconCache?: React.MutableRefObject<Map<string, L.Icon>>):L.Icon => {
+    let scheduled = vehicleDatum.hasRealtime?"":"scheduled/"
+    let detourPath = vehicleDatum.detourStatus === "detour" ? "detour/" : ""
+    let imgDegrees = (vehicleDatum.bearing ?? 0) - (vehicleDatum.bearing ?? 0)%5
+    let vehicleImageUrl = "img/vehicle/"+scheduled+detourPath+"vehicle-"+imgDegrees+".png"
+    if(iconCache && iconCache.current.has(vehicleImageUrl)){
+        return iconCache.current.get(vehicleImageUrl) as L.Icon
+    }
+    let icon = L.icon({
+        iconUrl: vehicleImageUrl,
+        className: "svg-icon",
+        iconSize: [51,51],
+        iconAnchor: [25,25],
+        popupAnchor: [0,0]
+    })
+    if(iconCache){
+        iconCache.current.set(vehicleImageUrl, icon)
+    }
+    return icon
+}
+
 // this method is seperated because vehicleState updates often. that said i don't want it to trigger a rerender
 export const MapVehicleElements = () =>{
 
@@ -42,22 +64,8 @@ export const MapVehicleElements = () =>{
         vehicleSearch(routeId,vehicleId)
     }
 
-    const createVehicleIcon = (vehicleDatum: VehicleRtInterface):L.Icon => {
-        let scheduled = vehicleDatum.hasRealtime?"":"scheduled/"
-        let imgDegrees = vehicleDatum.bearing - vehicleDatum.bearing%5
-        let vehicleImageUrl = "img/vehicle/"+scheduled+"vehicle-"+imgDegrees+".png"
-        if(iconCache.current.has(vehicleImageUrl)){
-            return iconCache.current.get(vehicleImageUrl) as L.Icon
-        }
-        let icon = L.icon({
-            iconUrl: vehicleImageUrl,
-            className: "svg-icon",
-            iconSize: [51,51],
-            iconAnchor: [25,25],
-            popupAnchor: [0,0]
-        })
-        iconCache.current.set(vehicleImageUrl, icon)
-        return icon
+    const createVehicleIconWithCache = (vehicleDatum: VehicleRtInterface):L.Icon => {
+        return createVehicleIcon(vehicleDatum, iconCache)
     }
 
     function handleVehicleForMap(vehicleDatum: VehicleRtInterface,vehicleMap: Map<string, L.Marker>) {
@@ -67,7 +75,7 @@ export const MapVehicleElements = () =>{
             if(vehicleDatum.longLat[0] !=vehicle.getLatLng().lat || vehicleDatum.longLat[1] != vehicle.getLatLng().lng){
                 // update vehicle to be in new pos
                 vehicle.setLatLng(vehicleDatum.longLat)
-                vehicle.setIcon(createVehicleIcon(vehicleDatum))
+                vehicle.setIcon(createVehicleIconWithCache(vehicleDatum))
                 if(state.currentCard.type !== CardType.VehicleCard || vehicleDatum.vehicleId !== state.currentCard.datumId){
                     vehicle.closePopup()
                 }
@@ -76,7 +84,7 @@ export const MapVehicleElements = () =>{
         }
         else {
             log.info("adding vehicle to map",vehicleDatum.vehicleId,vehicleDatum)
-            vehicle = createVehicleMarker(vehicleDatum,createVehicleIcon(vehicleDatum),popupOptions.current,3,map)
+            vehicle = createVehicleMarker(vehicleDatum,createVehicleIconWithCache(vehicleDatum),popupOptions.current,3,map)
             vehicle.on("click", (e:L.LeafletMouseEvent) => {
                 selectVehicle(AgencyAndId.get(vehicleDatum.routeId), vehicleDatum.vehicleId, [e.latlng.lat, e.latlng.lng]);
             });

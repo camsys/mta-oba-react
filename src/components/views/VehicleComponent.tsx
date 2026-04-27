@@ -122,7 +122,7 @@ function VehicleComponentBase({vehicleDatum,tabbable, vehicleSearchFunction}: Ve
             </span>
             <a href="#" tabIndex={tabbable}
                onClick={(e)=>{e.preventDefault();   vehicleSearchFunction(AgencyAndId.get(vehicleDatum.routeId), vehicleDatum.vehicleId)}}
-               className={vehicleDatum?.strollerVehicle?"bus stroller-friendly":"bus"}>{vehicleDatum.vehicleId.split("_")[1]}</a>
+               className={`bus${vehicleDatum?.strollerVehicle ? " stroller-friendly" : ""}${vehicleDatum?.detourStatus === "detour" ? " detour" : ""}`}>{vehicleDatum.vehicleId.split("_")[1]}</a>
         </li>)
     } catch (e) {
         log.error("error in VehicleComponent", e)
