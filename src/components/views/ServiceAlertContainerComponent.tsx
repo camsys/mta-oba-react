@@ -83,7 +83,8 @@ export default function ServiceAlertContainerComponent  ({ abbreviatedRouteId,ro
 export function useServiceAlert(){  
     const { vehicleState} = useContext(VehicleStateContext)
     function getServiceAlert({ abbreviatedRouteId,routeAgencyAndId,routeAndDirection}:ServiceAlertContainerProps): ServiceAlertInterface[] | null{
-        
+        routeAgencyAndId = routeAgencyAndId?.replace("-SBS", "+")
+        routeAndDirection = routeAndDirection?.replace("-SBS", "+")
         log.info("getting service alert data",vehicleState,abbreviatedRouteId+serviceAlertDataIdentifier,routeAgencyAndId,routeAndDirection)
         let routeServiceAlerts = vehicleState[abbreviatedRouteId+serviceAlertDataIdentifier]
         if(routeServiceAlerts===null||typeof routeServiceAlerts==="undefined"){return null}
