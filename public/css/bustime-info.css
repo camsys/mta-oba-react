@@ -3116,7 +3116,11 @@ The only content we actually need is whatever is required to support the about p
   margin: 1rem 0;
   position: relative;
 }
-#footer .footer-divider::after, #footer .footer-divider::before {
+
+#footer .footer-divider {
+  margin-bottom: .5rem;
+}
+#footer .footer-divider::before {
   content: '';
   display: block;
   width: 50%;
