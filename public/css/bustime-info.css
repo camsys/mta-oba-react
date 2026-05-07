@@ -1207,6 +1207,7 @@ The only content we actually need is whatever is required to support the about p
   .header .mta-logo-link {
     width: 1.875rem;
     position: relative;
+    align-content: center;
   }
   .header nav {
     display: none;
@@ -1277,7 +1278,7 @@ The only content we actually need is whatever is required to support the about p
             justify-content: space-between;
     align-itrems: baseline;
     width: 100%;
-    max-width: 60em;
+    /* max-width: 60em; */
     padding: 1rem;
     gap: 1rem;
     position: relative;
@@ -1311,7 +1312,7 @@ The only content we actually need is whatever is required to support the about p
   }
   @media screen and (min-width: 600px) {
     .header .mta-logo-link {
-      width: 2rem;
+      width: 2.5rem;
     }
     .header nav {
       display: block;
