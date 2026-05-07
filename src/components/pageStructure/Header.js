@@ -29,7 +29,8 @@ function Header  () {
             <header className="header pt-2 pb-3" id="header">
                 <div className="header-main text-[1.20em] ">
                     <a href="#" onClick={(e) => {e.preventDefault(); search("")}} aria-label="MTA Bus Time Home" className="logo-link group">
-                        <img src={bustimeLogo} alt="MTA Bus Time" className="logo group-focus-visible:border-mta-yellow border-b-3 border-transparent" />
+                        <img src={bustimeLogo} alt="MTA Bus Time" className="logo group-focus-visible:border-mta-yellow border-b-3 border-transparent
+                         h-[48.3px]  nine:h-[48.3px]" />
                     </a>
                     
                 </div>
