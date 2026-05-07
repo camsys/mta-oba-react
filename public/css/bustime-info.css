@@ -809,6 +809,7 @@ The only content we actually need is whatever is required to support the about p
   }
   .main-body.no-map .main-content {
     padding: 1rem;
+    margin-bottom: 4rem;
     max-width: 60em;
     -webkit-box-flex: 1;
         -ms-flex-positive: 1;
