@@ -10,7 +10,6 @@ import {Card, CardType} from "../../js/updateState/DataModels";
 import {useMapDisplayState} from "../util/MapDisplayStateComponent";
 import {useSiri} from "../../js/updateState/getSiri.tx";
 import {noMapNeededCardTypes} from "../../js/updateState/NavigationEffect.ts";
-import { useNavigation } from 'react-router';
 
 
 
