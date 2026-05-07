@@ -1277,7 +1277,7 @@ The only content we actually need is whatever is required to support the about p
             justify-content: space-between;
     align-itrems: baseline;
     width: 100%;
-    max-width: 60em;
+    /* max-width: 60em; */
     padding: 1rem;
     gap: 1rem;
     position: relative;
@@ -3150,8 +3150,9 @@ The only content we actually need is whatever is required to support the about p
 }
 #footer li {
   margin: 0;
-  padding: 0;
+  padding: .25rem 0;
   list-style: none;
+  font-weight: 575;
 }
 #footer li::before,
 #footer li::marker {
