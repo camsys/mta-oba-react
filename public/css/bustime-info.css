@@ -3088,3 +3088,58 @@ The only content we actually need is whatever is required to support the about p
     max-width: 80dvw !important;
   }
 }
+
+/* Page footer */
+#footer {
+  background-color: #2f3139;
+  color: #fff;
+  padding: 1rem;
+}
+#footer a {
+  color: #fff;
+  text-decoration: none;
+  display: inline-block;
+}
+#footer a:hover {
+  color: #f2a900;
+}
+#footer a:focus-visible {
+  outline: none;
+  text-decoration: underline;
+  text-decoration-color: #f2a900;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 2px;
+}
+#footer .footer-classic-section {
+  display: inline-block;
+  margin: 1rem 0;
+  position: relative;
+}
+#footer .footer-classic-section::after {
+  content: '';
+  display: block;
+  width: 66%;
+  height: 1px;
+  background-color: rgba(255, 255, 255, 0.4);
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 0.75rem;
+}
+#footer .footer-classic-link {
+  font-weight: 575;
+}
+#footer .footer-nav {
+  list-style: none;
+  padding: 0;
+  margin: 0.25rem 0;
+  display: inline-flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+#footer .footer-nav li {
+  margin: 0;
+  padding: 0;
+}
+#footer .footer-nav li::before {
+  content: none;
+}
