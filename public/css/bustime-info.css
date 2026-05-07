@@ -3115,18 +3115,22 @@ The only content we actually need is whatever is required to support the about p
   margin: 1rem 0;
   position: relative;
 }
-#footer .footer-classic-section::after {
+#footer .footer-divider::after, #footer .footer-divider::before {
   content: '';
   display: block;
-  width: 66%;
+  width: 50%;
   height: 1px;
   background-color: rgba(255, 255, 255, 0.4);
   margin-left: auto;
   margin-right: auto;
-  margin-top: 0.75rem;
+  margin: 0.75rem 0;
 }
+
 #footer .footer-classic-link {
   font-weight: 575;
+}
+#footer nav {
+  display: inline-block;
 }
 #footer .footer-nav {
   list-style: none;
@@ -3136,10 +3140,15 @@ The only content we actually need is whatever is required to support the about p
   flex-direction: column;
   gap: 0.5rem;
 }
-#footer .footer-nav li {
-  margin: 0;
+#footer .menu {
   padding: 0;
 }
-#footer .footer-nav li::before {
+#footer li {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+#footer li::before,
+#footer li::marker {
   content: none;
 }
