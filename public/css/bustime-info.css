@@ -1277,7 +1277,7 @@ The only content we actually need is whatever is required to support the about p
         -ms-flex-pack: justify;
             justify-content: space-between;
     align-itrems: baseline;
-    width: 100%;
+    width: calc(100% - 1rem);
     /* max-width: 60em; */
     padding: 1rem;
     gap: 1rem;
