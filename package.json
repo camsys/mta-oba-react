@@ -9,13 +9,7 @@
     "dev-start": "NODE_ENV=development webpack serve --config webpack.config.js",
     "dev-start:clean": "npx madge --circular src; rm -rf dist .webpack-cache .tsbuildinfo; webpack serve --config webpack.config.js",
     "serve": "npx serve -l 8082 dist",
-    "acceptTracking": "node logger.js",
-    "build-css": "sass src/css:public/css && postcss public/css/*.css --use autoprefixer --no-map -d public/css/",
-    "watch-sass": "sass --watch src/css:tmp/css",
-    "watch-prefix": "onchange \"tmp/css/*.css\" -- npx postcss {{changed}} --use autoprefixer --no-map -d public/css/",
-    "watch-tailwind": "npx @tailwindcss/cli -i ./src/css/tailwind.css -o ./public/css/tailwind.css --watch",
-    "dev-css": "npm run build-css && concurrently \"npm run watch-sass\" \"npm run watch-prefix\"",
-    "dev": "concurrently \"npm run dev-start:clean\" \"npm run dev-css\""
+    "acceptTracking": "node logger.js"
   },
   "keywords": [],
   "author": "",
