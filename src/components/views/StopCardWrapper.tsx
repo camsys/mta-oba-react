@@ -35,7 +35,7 @@ const MiniStopDirectionList =({routeDirectionDatum,stopId, }:{routeDirectionDatu
     let routeAndDir = routeDirectionDatum.routeId + "_"+routeDirectionDatum.directionId
     let routeId = routeDirectionDatum.routeId.split("_")[1];
     let hasServiceAlert = getServiceAlert({abbreviatedRouteId: routeId, routeAgencyAndId: routeDirectionDatum.routeId, routeAndDirection: routeAndDir})!==null;
-    console.log("checking for service alert in MiniStopDirectionList with id ",routeId," and identifier ",routeAndDir," result: ",hasServiceAlert);
+    log.info("checking for service alert in MiniStopDirectionList with id ",routeId," and identifier ",routeAndDir," result: ",hasServiceAlert);
     let stopsToVehicles = vehiclesApproachingStopsState[routeAndDir+stopSortedFutureVehicleDataIdentifier]
     let stopCardVehicleData = typeof stopsToVehicles !== 'undefined' &&
         stopsToVehicles.has("MTA_"+stopId)
@@ -103,7 +103,7 @@ const RouteDirection = ({routeDirectionDatum,stopId, collapsed}:
         : null
     let {getServiceAlert} = useServiceAlert();
     let hasServiceAlert = getServiceAlert({abbreviatedRouteId: routeId, routeAgencyAndId: routeDirectionDatum.routeId, routeAndDirection: routeAndDir})!==null
-    console.log("checking for service alert in StopCard.RouteDirection with id ",routeId," and identifier ",routeAndDir," and identifier ",routeAndDir," result: ",hasServiceAlert);
+    log.info("checking for service alert in StopCard.RouteDirection with id ",routeId," and identifier ",routeAndDir," and identifier ",routeAndDir," result: ",hasServiceAlert);
     log.info("StopCard RouteDirection stopCardVehicleData",stopCardVehicleData,lastUpdateTime)
 
 
@@ -164,7 +164,7 @@ const RouteDirection = ({routeDirectionDatum,stopId, collapsed}:
             </div>)
         })
     } catch (e) {
-        console.error("Error generating vehicleComponents",e)
+        log.error("Error generating vehicleComponents",e)
     }
 
 

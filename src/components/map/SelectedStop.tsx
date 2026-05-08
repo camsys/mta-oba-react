@@ -51,7 +51,7 @@ function SelectedStopComponent({selectedElementLocation}: {selectedElementLocati
         
         let id = routeDirectionDatum.routeId.split("_")[1];
         let hasServiceAlert = getServiceAlert({abbreviatedRouteId: id, routeAgencyAndId: routeDirectionDatum.routeId, routeAndDirection: routeAndDir})!==null 
-        console.log("checking for service alert in Selected Stop with id ",id," and identifier ",routeDirectionDatum.routeId," and identifier ",routeAndDir," result: ",hasServiceAlert);
+        log.info("checking for service alert in Selected Stop with id ",id," and identifier ",routeDirectionDatum.routeId," and identifier ",routeAndDir," result: ",hasServiceAlert);
 
         if (stopCardVehicleData === null) {
             return (

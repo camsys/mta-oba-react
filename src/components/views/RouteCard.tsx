@@ -158,7 +158,7 @@ export function CollapsableRouteCard({ routeMatch, oneOfMany}: {routeMatch:Route
     let id = routeMatch.datumId.split("_")[1];
     let {getServiceAlert} = useServiceAlert();
     let hasServiceAlert = getServiceAlert({abbreviatedRouteId: id, routeAgencyAndId: routeMatch.datumId})!==null;
-    console.log("checking for service alert in Collapsable Route Card with id ",id," and identifier ",routeMatch.datumId," result: ",hasServiceAlert);
+    log.info("checking for service alert in Collapsable Route Card with id ",id," and identifier ",routeMatch.datumId," result: ",hasServiceAlert);
     return (
         <React.Fragment>
             <div className={`card route-card

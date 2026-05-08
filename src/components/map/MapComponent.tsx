@@ -596,7 +596,7 @@ const MapEvents = ({userHasAdjustedMapOffMainElement, selectedElementLocation}: 
         moveend: (e) => {
             if (e.originalEvent) {
                 // User manually panned or zoomed
-                console.log("User moved the map");
+                log.info("User moved the map");
                 if(selectedElementLocation.current){
                     log.info("checking if map is centered on selected element after user moved the map, selectedElementLocation",selectedElementLocation.current)
                     if(!isCenteredOn(map, selectedElementLocation.current?.lat, selectedElementLocation.current?.lng, map.getZoom())){
@@ -611,7 +611,7 @@ const MapEvents = ({userHasAdjustedMapOffMainElement, selectedElementLocation}: 
         },
         dragend: () => {
             // User specifically started a drag action
-            console.log("User is dragging");
+            log.info("User is dragging");
             if(!selectedElementLocation.current){
                 log.info("no selectedElementLocation, not setting userHasAdjustedMapOffMainElement to true")
                 return
