@@ -22,10 +22,11 @@ export const useSiri = () => {
         if (state.currentCard.type === CardType.VehicleCard) {
             siriGetVehiclesForVehicleViewEffect(state.currentCard, vehicleState, setState)
         } else {
-            // Only call siriGetVehiclesForRoutesEffect if map is open
-            if (mapIsOpen || state.currentCard.type !== CardType.StopCard) {
-                siriGetVehiclesForRoutesEffect(state.currentCard, vehicleState, setState)
-            }
+            // // Only call siriGetVehiclesForRoutesEffect if map is open
+            // if (mapIsOpen || state.currentCard.type !== CardType.StopCard) {
+            //     siriGetVehiclesForRoutesEffect(state.currentCard, vehicleState, setState)
+            // }
+            siriGetVehiclesForRoutesEffect(state.currentCard, vehicleState, setState)
             if (state.currentCard.type === CardType.StopCard) {
                 siriGetVehiclesForStopViewEffect(state.currentCard, vehiclesApproachingStopsState, setVehiclesApproachingStopsState)
             }
