@@ -1289,6 +1289,11 @@ The only content we actually need is whatever is required to support the about p
     max-width: 19.375rem;
     margin: 0;
   }
+  .no-map .header .header-right {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
   .no-map .header .mta-logo-link {
     -ms-flex-negative: 0;
         flex-shrink: 0;
@@ -3122,7 +3127,7 @@ The only content we actually need is whatever is required to support the about p
 #footer .footer-divider {
   margin-bottom: .5rem;
 }
-#footer .footer-divider::before {
+#footer .footer-divider::after {
   content: '';
   display: block;
   width: 50%;
@@ -3130,7 +3135,7 @@ The only content we actually need is whatever is required to support the about p
   background-color: rgba(255, 255, 255, 0.4);
   margin-left: auto;
   margin-right: auto;
-  margin: 0 0 0.75rem 0;
+  margin: 0.75rem 0 0 0;
 }
 
 #footer .footer-classic-link {

@@ -33,6 +33,7 @@ function Footer  () {
                         <li><UnderlineOnFocusElement href="//cloud.info.mta.org/create-mta-service-alerts?utm_source=MTA_Bus_Time&utm_medium=referral&utm_campaign=MTA_Service_Alerts">Sign Up For Service Alerts</UnderlineOnFocusElement></li>
                         <li><UnderlineOnFocusElement href="/about">About Bus Time</UnderlineOnFocusElement></li>
                         <li><UnderlineOnFocusElement href="/contact">Contact Us</UnderlineOnFocusElement></li>
+                        <li><UnderlineOnFocusElement href="/help">Help</UnderlineOnFocusElement></li>
                         <li><UnderlineOnFocusElement href="//www.mta.info/privacy-policy">Privacy Policy</UnderlineOnFocusElement></li>
                         <li><UnderlineOnFocusElement href="//www.mta.info/terms-and-conditions">Terms & Conditions</UnderlineOnFocusElement></li>
                     </ul>
