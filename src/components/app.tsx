@@ -9,7 +9,7 @@ import {
     VehicleStateContext,
     VehicleStateProvider
 } from "./util/VehicleStateComponent";
-import {useNavigation} from "../js/updateState/NavigationEffect";
+import {useNavigation, useRouteAndStopsAreUnchanged} from "../js/updateState/NavigationEffect";
 import {MapHighlightingStateProvider} from "./util/MapHighlightingStateComponent";
 import {CardType} from "../js/updateState/DataModels";
 import {MapWrapper} from "./map/MapWrapper";
@@ -37,6 +37,20 @@ const VehicleLoading=(): JSX.Element => {
     }, [state]);
     return <></>
 }
+
+
+const SearchLoading=(): JSX.Element => {
+    const { searchMatchesAreUnchanged } = useRouteAndStopsAreUnchanged()
+    const {refreshSearchData} = useNavigation();
+    useEffect(() => {
+        const interval = setInterval(()=>{if(!searchMatchesAreUnchanged()){refreshSearchData()}}, 30*1000);
+        log.info("SearchMatchVerification -- interval set for validating search results",interval)
+        return () => clearInterval(interval);
+    }, [searchMatchesAreUnchanged]);
+    return <></>
+}
+
+
 
 function InitialCardGeneration ({setLoading}:{setLoading:React.Dispatch<React.SetStateAction<boolean>>}):JSX.Element{
     const { generateInitialCard } = useNavigation();
@@ -152,6 +166,7 @@ function App  () : JSX.Element{
                 <MapWrapper/>
             </React.Fragment>)}
             <VehicleLoading/>
+            <SearchLoading/>
         </ErrorBoundary>
     )
 }

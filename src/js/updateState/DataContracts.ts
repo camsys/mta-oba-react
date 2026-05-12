@@ -126,6 +126,7 @@ export interface SearchRouteData {
     color: string;
     description: string;
     directions: SearchRouteDirectionData[];
+    etag: string;
 }
 
 export interface SearchRouteDirectionData {
@@ -144,6 +145,7 @@ export interface SearchStopData {
     stopDirection: string;
     detourStatus?: string;
     routesAvailable: SearchRouteData[];
+    etag: string;
 }
 
 export interface SearchGeoData {

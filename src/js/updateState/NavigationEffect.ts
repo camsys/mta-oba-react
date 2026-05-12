@@ -18,7 +18,7 @@ import {getSearchTermAdditions} from "./keyWordsAndSupportUtils"
 import { getSessionUuid } from "./handleTracking";
 import { SearchGeoData, SearchRouteData, SearchStopData } from "./DataContracts";
 
-const vehicleDelimiter = ":"
+
 // function getSessionUuid(card:Card|null):string{
 //     log.info("getting session uuid",card)
 //     let sessionUuid;
@@ -30,10 +30,25 @@ const vehicleDelimiter = ":"
 
 // }
 
+
+
+// *-----------------SHARED CONSTANTS-----------------*
+const vehicleDelimiter = ":"
 export const noMapNeededCardTypes = [CardType.HomeCard, CardType.FavoritesCard, CardType.AllRoutesCard]
 export const allRoutesSearchTerm = "View All Routes";
 export const favoritesSearchTerm = "View Favorites";
 export const nearbySearchTerms = new Set(["NEARBY","NEARBYROUTES","NEARBYSTOPS","NEARME", "NEAR ME"])
+
+
+
+
+
+
+
+/// *-----------------DATA SEEKING METHODS-----------------*
+
+
+
 
 function processRouteSearch(route: SearchRouteData, card: Card, stops: StopsObjectContainer, routes: RoutesObjectContainer): RouteMatch {
     let match = new RouteMatch(route)
@@ -105,16 +120,7 @@ function processStopSearch(stop: SearchStopData, card: Card, stops: StopsObjectC
     return match
 }
 
-function scrollToSidebarTop(){
-    let sidebar = document.getElementById("sidebar");
-    let sidebarContent = sidebar?.querySelector(".sidebar-content");
-    if (sidebarContent) {
-        sidebarContent.scrollTo({
-            top: 0,
-            behavior: "smooth"
-        });
-    }
-}
+
 
 async function getData(card:Card,stops: StopsObjectContainer,routes:RoutesObjectContainer,address:string):Promise<Card>{
     log.info("filling card data with search",card,stops,routes)
@@ -180,6 +186,8 @@ async function getData(card:Card,stops: StopsObjectContainer,routes:RoutesObject
     return card
 }
 
+
+
 const performNewSearch = (searchRef:string,currentCard:Card):boolean=>{
     if(currentCard.type === CardType.VehicleCard){
         // this only works because vehicle searches are handled elsewhere
@@ -191,6 +199,31 @@ const performNewSearch = (searchRef:string,currentCard:Card):boolean=>{
     return true
 }
 
+
+
+
+
+
+
+
+
+// *-----------------PAGE UTILITIES-----------------*
+
+
+
+function scrollToSidebarTop(){
+    let sidebar = document.getElementById("sidebar");
+    let sidebarContent = sidebar?.querySelector(".sidebar-content");
+    if (sidebarContent) {
+        sidebarContent.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        });
+    }
+}
+
+
+
 const updateWindowHistory = (term:string,uuid:string) :void =>{
     let url = new URL(window.location.href);
     url.searchParams.set("search", term);
@@ -200,20 +233,8 @@ const updateWindowHistory = (term:string,uuid:string) :void =>{
 }
 
 
-export const updateCard = async (searchRef:string,stops: StopsObjectContainer,routes:RoutesObjectContainer,address:string,sessionUuid:string):Promise<Card> =>{
-    log.info("received new search input:",searchRef)
-    // searchRef = searchRef.replaceAll(" ","%2520")
-    let card = new Card(searchRef,uuidv4(),sessionUuid);
-    card.setType(CardType.LoadingCard);
-    return await getData(card,stops,routes,address)
-}
+// *-----------------ADDRESS UTILITIES-----------------*
 
-export const getHomeCard = (card:Card|null) :Card=>{
-    log.info("generating homecard")
-    let newCard = new Card("",uuidv4(),getSessionUuid(card))
-    newCard.setType(CardType.HomeCard);
-    return newCard
-}
 
 const getBaseAddress =()=>{
     return "https://" + process.env.ENV_ADDRESS + "/"
@@ -237,12 +258,156 @@ const getRoutesAddress=()=>{
 
 
 
+
+// *-----------------CARD UTILITIES-----------------*
+
+export const updateCard = async (searchRef:string,stops: StopsObjectContainer,routes:RoutesObjectContainer,address:string,sessionUuid:string):Promise<Card> =>{
+    log.info("received new search input:",searchRef)
+    // searchRef = searchRef.replaceAll(" ","%2520")
+    let card = new Card(searchRef,uuidv4(),sessionUuid);
+    card.setType(CardType.LoadingCard);
+    return await getData(card,stops,routes,address)
+}
+
+export const getHomeCard = (card:Card|null) :Card=>{
+    log.info("generating homecard")
+    let newCard = new Card("",uuidv4(),getSessionUuid(card))
+    newCard.setType(CardType.HomeCard);
+    return newCard
+}
+
+
+
+
+
+const newerDataExists = async (match : RouteMatch | StopMatch, card: Card):Promise<boolean> =>{
+    log.info("SearchMatchVerification -- newerDataExists called for match:", match.datumId);
+    let address = getSearchAddress(match.datumId.id,card)
+    let ETag = match.etag;
+
+    log.info("SearchMatchVerification -- ETag value:", ETag);
+    if(ETag){
+        try {
+            log.info("SearchMatchVerification -- checking for newer data with ETag at address:", address)
+            if(process.env.CACHING_ENABLED === "true"){
+                let response = await fetch(address, {
+                    headers: {
+                        'If-None-Match': ETag
+                    }
+                });
+                log.info("SearchMatchVerification -- fetch response status:", response.status);
+                if(response.status === 304){
+                    log.info("SearchMatchVerification -- received 304 Not Modified, data is unchanged");
+                    return false;
+                }
+            }
+            else{
+                let response = await fetch(address);
+                
+            }
+            log.info("SearchMatchVerification -- received non-304 response, newer data EXISTS");
+            return true;
+        } catch (error) {
+            log.error("SearchMatchVerification -- error during newerDataExists fetch:", error);
+            return false;
+        }
+    }
+    log.info("SearchMatchVerification -- no ETag found, assuming newer data exists");
+    return true;
+
+}
+
+
+// it would be more efficient to inject the fixes and bump the render counter but that represents a higher risk of errors. 
+// may be worth coming back to post playwright tests
+const shouldRefreshCardLevelData = async (searchMatch : SearchMatch, card: Card):Promise<boolean> =>{
+    log.info("SearchMatchVerification -- shouldRefreshCardLevelData called with match type:", searchMatch.type);
+    // if the type is routeMatch, just do that level
+    if(searchMatch.type === MatchType.RouteMatch || searchMatch.type === MatchType.StopMatch){
+        log.info("SearchMatchVerification -- detected RouteMatch or StopMatch");
+        // insert the remote check here
+        let routeOrStopMatch = searchMatch as RouteMatch | StopMatch;
+        log.info("SearchMatchVerification -- checking if newer data exists for:", routeOrStopMatch.datumId);
+        if(await newerDataExists(routeOrStopMatch, card)){
+            log.info("SearchMatchVerification -- newer data DOES exist, returning true");
+            return true;
+        }
+        log.info("SearchMatchVerification -- no newer data found for this match");
+    }
+    if(searchMatch.type === MatchType.GeocodeMatch){
+        log.info("SearchMatchVerification -- detected GeocodeMatch, recursively checking route matches");
+        let geocodeMatch = searchMatch as GeocodeMatch;
+        log.info("SearchMatchVerification -- geocodeMatch has", geocodeMatch.routeMatches.length, "route matches to check");
+        for (const routeOrStopMatch of geocodeMatch.routeMatches) {
+            log.info("SearchMatchVerification -- recursively checking route match:", routeOrStopMatch.datumId);
+            if(await shouldRefreshCardLevelData(routeOrStopMatch as SearchMatch, card)){
+                log.info("SearchMatchVerification -- recursive check found newer data, returning true");
+                return true;
+            }
+        }
+        log.info("SearchMatchVerification -- all geocode route matches checked, no newer data found");
+    }
+
+    log.info("SearchMatchVerification -- shouldRefreshCardLevelData returning false");
+    return false;
+}
+
+
+
+// goes through each search match recursively, if there's no ETag it treats it as though true (This is the case for GeocodeMatches or old backends)
+// and checks its ETag and seeks new data if the ETag has changed. if it has returns false, otherwise returns true
+export const useRouteAndStopsAreUnchanged = ()=>{
+    const { state } = useCardState();
+
+    const searchMatchesAreUnchanged = async ():Promise<boolean> =>{
+        log.info("SearchMatchVerification -- kicking off search match validation",state)
+        log.info("SearchMatchVerification -- total search matches to validate:", state.currentCard.searchMatches.length);
+        let matchIndex = 0;
+        for (const match of state.currentCard.searchMatches) {
+            log.info(`SearchMatchVerification -- validating match ${matchIndex} of ${state.currentCard.searchMatches.length}`);
+            if(await shouldRefreshCardLevelData(match, state.currentCard)){
+                log.info(`SearchMatchVerification -- match ${matchIndex} requires new search, returning false`);
+                return false
+            }
+            log.info(`SearchMatchVerification -- match ${matchIndex} passed validation`);
+            matchIndex++;
+        }
+        log.info("SearchMatchVerification -- search match validation complete, all matches unchanged",state)
+        return true
+    }
+    return {searchMatchesAreUnchanged}
+}
+
+
+
+
 export const useNavigation = () =>{
     log.debug("initializing navigation effect")
     const { state, setState } = useCardState();
     const routes = useRoutes()
     const stops = useStops()
     log.debug("navigation effect state and contexts", state, routes, stops)
+
+
+    // add refresh data function. it behaves exactly like the page were reloaded and refreshed except no new base careeds are used, 
+    // eg. downloads new data and replaces search matches but doesn't generate a new card and updates state. it also has appropriate handling for vehicle cards whiles still replacing underlying data
+    const refreshSearchData = async (): Promise<void> =>{ 
+        log.info("refreshSearchData called, refreshing data for current card",state.currentCard)
+        let currentCard = state.currentCard;
+        let address = getSearchAddress(currentCard.searchTerm,currentCard)
+        let updatedCard = await getData(currentCard,stops,routes,address)
+        if(currentCard.type === CardType.VehicleCard){
+            log.info("refreshSearchData -- current card is VehicleCard, applying updated search matches to vehicle card",updatedCard.searchMatches)
+            currentCard.searchMatches = updatedCard.searchMatches;
+            currentCard.routeIdList = updatedCard.routeIdList;
+            setState((prevState) => ({...prevState, currentCard: currentCard, renderCounter: prevState.renderCounter+1}));
+        } else {
+            log.info("refreshSearchData -- current card is not VehicleCard, replacing with updated card",updatedCard)
+            setState((prevState) => ({...prevState, currentCard: updatedCard, renderCounter: prevState.renderCounter+1}));
+        }
+    }
+
+
 
     const search = async (searchTerm :string|AgencyAndId) =>{
         log.info("searching for: ",searchTerm, state);
@@ -596,7 +761,7 @@ export const useNavigation = () =>{
 
     return { search, generateInitialCard, 
         vehicleSearch, allRoutesSearch, favoritesSearch, 
-        updateStateForPopStateEvent, goBack, goForward };
+        updateStateForPopStateEvent, goBack, goForward, refreshSearchData };
 }
 
 

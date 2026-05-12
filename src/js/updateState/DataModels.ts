@@ -431,6 +431,7 @@ export enum MatchType {
 export class SearchMatch {
     static matchTypes = MatchType;
 
+    etag: string | undefined | null;
     type: MatchType;
     routeMatches: (RouteMatch | StopMatch)[]
 
@@ -459,6 +460,7 @@ export class RouteMatch extends SearchMatch implements RouteInterface{
         this.color = data?.color;
         this.description = data?.description;
         this.directions = [];
+        this.etag = data?.etag;
     }
 }
 
@@ -472,6 +474,7 @@ export class GeocodeMatch extends SearchMatch {
         this.latitude = data.latitude;
         this.longitude = data.longitude;
         this.routeMatches = [];
+        this.etag = data?.etag;
     }
 }
 
@@ -497,6 +500,7 @@ export class StopMatch extends SearchMatch implements StopInterface{
         this.routeMatches = [];
         this.longLat = [data.latitude,data.longitude];
         this.stopDirection = data.stopDirection;
+        this.etag = data?.etag;
     }
 }
 
