@@ -1,7 +1,7 @@
 import ReactLeafletGoogleLayer from "react-leaflet-google-layer";
 import { renderToString } from 'react-dom/server';
 import {LayerGroup, MapContainer, Marker, useMap, useMapEvents, ZoomControl} from "react-leaflet";
-import React, {useContext, useEffect, useRef, useState} from "react";
+import React, {useContext, useEffect, useMemo, useRef, useState} from "react";
 import queryString from "query-string";
 import {OBA} from "../../js/oba";
 import log from 'loglevel';
@@ -36,6 +36,7 @@ import { SelectedStopComponent} from "./SelectedStop.tsx";
 import {SelectedVehicleComponent, SelectedVehicleComponentWrapper} from "./SelectedVehicleComponent.tsx";
 import { isCenteredOn,setMapLatLngAndZoom } from "../../utils/mapZoom.ts";
 import { useMobileState } from "../util/MobileStateComponent.tsx";
+import { useMapDisplayState } from "../util/MapDisplayStateComponent.tsx";
 
 log.info("createRoutePolyline:", createRoutePolyline);
 log.info("createStopMarker:", createStopMarker);
@@ -747,6 +748,35 @@ export function RightClickSearchButton() {
   }
 
 
+const GoogleLayer = (): JSX.Element => {
+    const { mapIsOpen } = useMapDisplayState();
+    const [hasBeenActivated, setHasBeenActivated] = useState(false);
+
+    if (mapIsOpen && !hasBeenActivated) {
+        setHasBeenActivated(true);
+    }
+
+
+    if (!hasBeenActivated) {
+        return <></>;
+    }
+
+    return (
+        <div style={{ 
+            transition: 'opacity 0.5s ease-in-out', 
+            opacity: mapIsOpen ? 1 : 0,
+            pointerEvents: mapIsOpen ? 'auto' : 'none'
+        }}>
+            <ReactLeafletGoogleLayer
+                apiKey="AIzaSyA-PBbsL_sXOTfo2KbkVx8XkEfcIe48xzw"
+                type={'roadmap'}
+                styles={OBA.Config.mutedTransitStylesArray}
+            />
+        </div>
+    );
+};
+
+
 export const MapComponent = () :JSX.Element => {
     log.info("generating map")
 
@@ -765,12 +795,9 @@ export const MapComponent = () :JSX.Element => {
                 tabIndex={-1}
                 id="map"
                 zoomControl={false}
+                style={{backgroundColor: "#f3f3f3"}}
             >
-                <ReactLeafletGoogleLayer
-                    apiKey='AIzaSyA-PBbsL_sXOTfo2KbkVx8XkEfcIe48xzw'
-                    type={'roadmap'}
-                    styles={OBA.Config.mutedTransitStylesArray}
-                />
+                <GoogleLayer/>
                 <MapEvents userHasAdjustedMapOffMainElement={userHasAdjustedMapOffMainElement} selectedElementLocation={selectedElementLocation}/>
                 <RoutesAndStops/>
                 <Highlighted/>
