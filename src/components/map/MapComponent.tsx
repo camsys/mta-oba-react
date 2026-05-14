@@ -767,11 +767,13 @@ const GoogleLayer = (): JSX.Element => {
             opacity: mapIsOpen ? 1 : 0,
             pointerEvents: mapIsOpen ? 'auto' : 'none'
         }}>
-            <ReactLeafletGoogleLayer
+            {
+                mapIsOpen &&
+                <ReactLeafletGoogleLayer
                 apiKey="AIzaSyA-PBbsL_sXOTfo2KbkVx8XkEfcIe48xzw"
                 type={'roadmap'}
                 styles={OBA.Config.mutedTransitStylesArray}
-            />
+            />}
         </div>
     );
 };
@@ -795,7 +797,6 @@ export const MapComponent = () :JSX.Element => {
                 tabIndex={-1}
                 id="map"
                 zoomControl={false}
-                style={{backgroundColor: "#f3f3f3"}}
             >
                 <GoogleLayer/>
                 <MapEvents userHasAdjustedMapOffMainElement={userHasAdjustedMapOffMainElement} selectedElementLocation={selectedElementLocation}/>
