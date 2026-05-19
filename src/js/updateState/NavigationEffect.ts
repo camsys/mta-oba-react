@@ -124,7 +124,6 @@ function processStopSearch(stop: SearchStopData, card: Card, stops: StopsObjectC
 
 async function getData(card:Card,stops: StopsObjectContainer,routes:RoutesObjectContainer,address:string):Promise<Card>{
     log.info("filling card data with search",card,stops,routes)
-    let vehicleOverride = false;
     if(card.searchTerm == null || card.searchTerm == ''){
         log.info("empty search means home",card)
         return card
@@ -301,10 +300,6 @@ const newerDataExists = async (match : RouteMatch | StopMatch, card: Card):Promi
                     return false;
                 }
             }
-            else{
-                let response = await fetch(address);
-                
-            }
             log.info("SearchMatchVerification -- received non-304 response, newer data EXISTS");
             return true;
         } catch (error) {
@@ -341,7 +336,7 @@ const shouldRefreshCardLevelData = async (searchMatch : SearchMatch, card: Card)
         for (const routeOrStopMatch of geocodeMatch.routeMatches) {
             log.info("SearchMatchVerification -- recursively checking route match:", routeOrStopMatch.datumId);
             if(await shouldRefreshCardLevelData(routeOrStopMatch as SearchMatch, card)){
-                log.info("SearchMatchVerification -- recursive check found newer data, returning true");
+                log.info("SearchMatchVerification -- recursive check found newer data, newer data DOES exist, returning true");
                 return true;
             }
         }

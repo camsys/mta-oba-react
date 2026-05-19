@@ -43,7 +43,7 @@ const SearchLoading=(): JSX.Element => {
     const { searchMatchesAreUnchanged } = useRouteAndStopsAreUnchanged()
     const {refreshSearchData} = useNavigation();
     useEffect(() => {
-        const interval = setInterval(()=>{if(!searchMatchesAreUnchanged()){refreshSearchData()}}, 30*1000);
+        const interval = setInterval(async ()=>{if(! await searchMatchesAreUnchanged()){log.info("SearchMatchVerification -- refreshing search data"); refreshSearchData()}}, 30*1000);
         log.info("SearchMatchVerification -- interval set for validating search results",interval)
         return () => clearInterval(interval);
     }, [searchMatchesAreUnchanged]);
