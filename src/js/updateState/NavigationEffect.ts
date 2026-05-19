@@ -285,28 +285,28 @@ const newerDataExists = async (match : RouteMatch | StopMatch, card: Card):Promi
     let ETag = match.etag;
 
     log.info("SearchMatchVerification -- ETag value:", ETag);
-    if(ETag){
-        try {
-            log.info("SearchMatchVerification -- checking for newer data with ETag at address:", address)
-            if(process.env.CACHING_ENABLED === "true"){
-                let response = await fetch(address, {
-                    headers: {
-                        'If-None-Match': ETag
-                    }
-                });
-                log.info("SearchMatchVerification -- fetch response status:", response.status);
-                if(response.status === 304){
-                    log.info("SearchMatchVerification -- received 304 Not Modified, data is unchanged");
-                    return false;
-                }
-            }
-            log.info("SearchMatchVerification -- received non-304 response, newer data EXISTS");
-            return true;
-        } catch (error) {
-            log.error("SearchMatchVerification -- error during newerDataExists fetch:", error);
-            return false;
-        }
-    }
+    // if(ETag){
+    //     try {
+    //         log.info("SearchMatchVerification -- checking for newer data with ETag at address:", address)
+    //         if(process.env.CACHING_ENABLED === "true"){
+    //             let response = await fetch(address, {
+    //                 headers: {
+    //                     'If-None-Match': ETag
+    //                 }
+    //             });
+    //             log.info("SearchMatchVerification -- fetch response status:", response.status);
+    //             if(response.status === 304){
+    //                 log.info("SearchMatchVerification -- received 304 Not Modified, data is unchanged");
+    //                 return false;
+    //             }
+    //         }
+    //         log.info("SearchMatchVerification -- received non-304 response, newer data EXISTS");
+    //         return true;
+    //     } catch (error) {
+    //         log.error("SearchMatchVerification -- error during newerDataExists fetch:", error);
+    //         return false;
+    //     }
+    // }
     log.info("SearchMatchVerification -- no ETag found, assuming newer data exists");
     return true;
 
