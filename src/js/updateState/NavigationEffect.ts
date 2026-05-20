@@ -191,6 +191,39 @@ const performNewSearch = (searchRef:string,currentCard:Card):boolean=>{
     return true
 }
 
+<<<<<<< Updated upstream
+=======
+
+
+
+
+
+
+
+
+// *-----------------PAGE UTILITIES-----------------*
+
+
+function blurAndScroll(){
+    document.getElementById('search-input')?.blur();
+    scrollToSidebarTop();
+}
+
+
+function scrollToSidebarTop(){
+    let sidebar = document.getElementById("sidebar");
+    let sidebarContent = sidebar?.querySelector(".sidebar-content");
+    if (sidebarContent) {
+        sidebarContent.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        });
+    }
+}
+
+
+
+>>>>>>> Stashed changes
 const updateWindowHistory = (term:string,uuid:string) :void =>{
     let url = new URL(window.location.href);
     url.searchParams.set("search", term);
@@ -252,21 +285,18 @@ export const useNavigation = () =>{
             : searchTerm.toUpperCase();
         
         if(searchTerm===allRoutesSearchTerm){
-            document.getElementById('search-input')?.blur();
-            scrollToSidebarTop();
+            blurAndScroll();
             await allRoutesSearch()
             return
         }
         if(searchTerm===favoritesSearchTerm){
-            document.getElementById('search-input')?.blur();
-            scrollToSidebarTop();
+            blurAndScroll();
             await favoritesSearch()
             return
         }
         if(nearbySearchTerms.has(searchTerm)){
             log.info("searching for nearby stops and routes");
-            document.getElementById('search-input')?.blur();
-            scrollToSidebarTop();
+            blurAndScroll();
             await navigator.geolocation.getCurrentPosition(
                 (position) => {
                     log.info("got location",position.coords.latitude,position.coords.longitude);
@@ -288,14 +318,12 @@ export const useNavigation = () =>{
             vehicleSearch(routeId,vehicleId);
             return;
         }
-        document.getElementById('search-input')?.blur();
-        scrollToSidebarTop();
+        blurAndScroll();
         log.info("fetch search data called, generating new card",state,searchTerm)
         if (performNewSearch(searchTerm,state?.currentCard)) {
             log.info("search term is new, generating new card",searchTerm,state?.currentCard);
             let currentCard: Card;
-            document.getElementById('search-input')?.blur();
-            scrollToSidebarTop();
+            blurAndScroll();
             if(searchTerm==null||searchTerm==""||searchTerm=="#"|| !(searchTerm) || !(searchTerm.trim())){
                 currentCard = getHomeCard(state?.currentCard);
                 log.info("search term was empty, generating home card",currentCard);
@@ -330,15 +358,13 @@ export const useNavigation = () =>{
                     log.error('There was a problem with the fetch operation:', safeError);
                     currentCard.setToError(safeError);
                 } finally {
-                    document.getElementById('search-input')?.blur();
-                    scrollToSidebarTop();
+                    blurAndScroll();
                 }
                 setState((prevState) => ({...prevState,renderCounter:prevState.renderCounter+1}));
             } 
             updateWindowHistory(searchTerm,currentCard.uuid);
         }
-        document.getElementById('search-input')?.blur();
-        scrollToSidebarTop();
+        blurAndScroll();
     }
 
     const generateInitialCard = async (setLoading: (loading: boolean) => void)=>{
@@ -526,6 +552,34 @@ export const useNavigation = () =>{
         } finally {
         }
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// *-----------------FORWORDS BACKWARDS NAVIGATION-----------------*
 
     const updateStateForPopStateEvent = (popStateEvent: PopStateEvent) => {
         log.info("navigation effect handling popstate event",window.history.state,popStateEvent,popStateEvent.state)
