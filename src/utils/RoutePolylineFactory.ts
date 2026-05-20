@@ -1,12 +1,12 @@
 import L from "leaflet";
 import log from "loglevel";
-import { MapRouteDisruptionStatus } from "../js/updateState/DataModels";
+import { MapRouteComponentInterface, MapRouteDisruptionStatus } from "../js/updateState/DataModels";
 
 export const createRoutePolyline = (
-    routeData,
+    routeData : MapRouteComponentInterface,
     isHighlighted = false
 ) => {
-    log.info("RoutePolylineFactory loaded");
+    log.info("RoutePolylineFactory loaded, routeDataId:", routeData.id, "routeData:", routeData);
     
     // Determine polyline style based on disruption status
     let weight = isHighlighted ? 10 : 3;
