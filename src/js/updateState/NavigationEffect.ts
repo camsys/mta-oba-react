@@ -251,6 +251,28 @@ const getRoutesAddress=()=>{
 }
 
 
+const normalizeSearchTerm = (searchTerm:string|AgencyAndId):string=>{
+    if(searchTerm instanceof Object){
+        searchTerm = searchTerm.toString()
+    }
+    searchTerm = searchTerm.split("_").length > 1
+        ? searchTerm.split("_").reduce((acc, part, nth) => nth !== 0 ? acc + part : acc, "")
+            .toUpperCase()
+        : searchTerm.toUpperCase();
+    return searchTerm
+}
+
+const extractRouteFromVehicleSearchTerm = (searchTerm:string):AgencyAndId =>{
+    let searchParts = searchTerm.split(vehicleDelimiter);
+    let routeId = AgencyAndId.get(searchParts[0]);
+    return routeId;
+}
+
+const extractVehicleFromVehicleSearchTerm = (searchTerm:string):string =>{
+    let searchParts = searchTerm.split(vehicleDelimiter);
+    return searchParts[1];
+}
+
 
 
 export const useNavigation = () =>{
@@ -270,99 +292,64 @@ export const useNavigation = () =>{
             currentCard: newCard,
             cardStack: cardStack,
         }));
+    }
+
+    const setCurrentAndRerender = (newCard: Card, cardStack: [Card] = state.cardStack) => {
+        setCurrentCard(newCard, cardStack);
         reRender();
     }
 
-    const addCardToStackAndSetCurrent = (newCard: Card) =>{
+    const addToStackAndSetCurrentAndRerender = (newCard: Card) =>{
         let cardStack = state.cardStack
         cardStack.push(newCard);
-        setCurrentCard(newCard, cardStack)
+        setCurrentAndRerender(newCard, cardStack)
     }
 
 
     const search = async (searchTerm :string|AgencyAndId) =>{
         log.info("searching for: ",searchTerm, state);
-        if(searchTerm instanceof Object){
-            searchTerm = searchTerm.toString()
-        }
-        searchTerm = searchTerm.split("_").length > 1
-            ? searchTerm.split("_").reduce((acc, part, nth) => nth !== 0 ? acc + part : acc, "")
-                .toUpperCase()
-            : searchTerm.toUpperCase();
-        
+        searchTerm = normalizeSearchTerm(searchTerm);
+
         if(searchTerm===allRoutesSearchTerm){
             blurAndScroll();
-            await allRoutesSearch()
+            await allRoutesSearch();
             return
         }
         if(searchTerm===favoritesSearchTerm){
             blurAndScroll();
-            await favoritesSearch()
+            await favoritesSearch();
             return
         }
         if(nearbySearchTerms.has(searchTerm)){
             log.info("searching for nearby stops and routes");
             blurAndScroll();
-            await navigator.geolocation.getCurrentPosition(
-                (position) => {
-                    log.info("got location",position.coords.latitude,position.coords.longitude);
-                    let searchTerm = position.coords.latitude.toFixed(6) + "," + position.coords.longitude.toFixed(6);
-                    log.info("searching nearby: got location",searchTerm);
-                    search(searchTerm);
-                },
-                (error) => {
-                    log.info("error getting location",error)
-                    searchTerm = "could not find user location";
-                });
+            await nearbySearch(searchTerm);
             return;
         }  
         if(searchTerm.includes(vehicleDelimiter)){
             log.info("searching for vehicle",searchTerm)
-            let searchParts = searchTerm.split(vehicleDelimiter);
-            let routeId = AgencyAndId.get(searchParts[0]);
-            let vehicleId = searchParts[1];
+            let routeId = extractRouteFromVehicleSearchTerm(searchTerm);
+            let vehicleId = extractVehicleFromVehicleSearchTerm(searchTerm);
+
+            blurAndScroll();
             vehicleSearch(routeId,vehicleId);
             return;
         }
         blurAndScroll();
         log.info("fetch search data called, generating new card",state,searchTerm)
         if (performNewSearch(searchTerm,state?.currentCard)) {
-            log.info("search term is new, generating new card",searchTerm,state?.currentCard);
-            let currentCard: Card;
+            regularSearch(searchTerm);
             blurAndScroll();
-            if(searchTerm==null||searchTerm==""||searchTerm=="#"|| !(searchTerm) || !(searchTerm.trim())){
-                currentCard = getHomeCard(state?.currentCard);
-                log.info("search term was empty, generating home card",currentCard);
-                log.info("updating state with new card:", currentCard,stops,routes);
-                addCardToStackAndSetCurrent(currentCard);
-            }
-            else{
-                log.info("search term is not empty, generating new card",searchTerm);
-                currentCard = new Card(searchTerm,uuidv4(),getSessionUuid(state?.currentCard));
-                currentCard.setType(CardType.LoadingCard);
-
-                addCardToStackAndSetCurrent(currentCard);
-                try{
-                    currentCard = await getData(currentCard,stops,routes,getSearchAddress(searchTerm,state?.currentCard))
-                }
-                catch (error) {
-                    const safeError = error instanceof Error ? error : new Error(String(error));
-                    log.error('There was a problem with the fetch operation:', safeError);
-                    currentCard.setToError(safeError);
-                } finally {
-                    blurAndScroll();
-                }
-                setState((prevState) => ({...prevState,renderCounter:prevState.renderCounter+1}));
-            } 
-            updateWindowHistory(searchTerm,currentCard.uuid);
         }
-        blurAndScroll();
+
     }
+
+
 
     const generateInitialCard = async (setLoading: (loading: boolean) => void)=>{
         let currentCard = getHomeCard(new Card("",uuidv4(),getSessionUuid(state?.currentCard)));
         log.info("generating initial card",currentCard);
-        addCardToStackAndSetCurrent(currentCard);
+        addToStackAndSetCurrentAndRerender(currentCard);
         setLoading(false);
 
         try {
@@ -407,7 +394,7 @@ export const useNavigation = () =>{
             }
             log.info("generated card based on query and search url", searchRef, searchAddress);
             currentCard = new Card(searchRef,uuidv4(),getSessionUuid(currentCard));
-            setCurrentCard(currentCard);
+            setCurrentAndRerender(currentCard);
             currentCard = await getData(currentCard,stops,routes,searchAddress);
             // let currentCard = new Card(searchRef,uuidv4());
 
@@ -429,8 +416,6 @@ export const useNavigation = () =>{
         }
     }
 
-    //this function doesn't belong in "SearchEffect" but it does belong with card handling functions
-// which is what this has become
 
     const vehicleSearch = async (routeId:AgencyAndId,vehicleId:string)=> {
         log.info("setting card to vehicle card",routeId,vehicleId, typeof routeId, typeof vehicleId);
@@ -451,7 +436,7 @@ export const useNavigation = () =>{
         }
         log.info("updating state prev card -> new vehicle card: \n", pastCard,currentCard);
         // todo: condense all of these into a single method, copied and pasted too many times
-        addCardToStackAndSetCurrent(currentCard);
+        addToStackAndSetCurrentAndRerender(currentCard);
         scrollToSidebarTop();
         updateWindowHistory(currentCard.searchTerm,currentCard.uuid);
         log.info("vehicleSearch complete, new card: ",currentCard);
@@ -465,7 +450,7 @@ export const useNavigation = () =>{
             if (state?.currentCard?.type !== CardType.FavoritesCard) {
                 let currentCard = new Card(searchTerm,uuidv4(),getSessionUuid(state?.currentCard));
                 currentCard.setToFavorites([],new Set());
-                addCardToStackAndSetCurrent(currentCard);
+                addToStackAndSetCurrentAndRerender(currentCard);
                 updateWindowHistory(searchTerm,currentCard.uuid);
                 log.info("updating state with new card:", currentCard,stops,routes);
             }
@@ -483,7 +468,8 @@ export const useNavigation = () =>{
             log.info("all routes requested, generating new card",state);
             if (state?.currentCard?.type !== CardType.AllRoutesCard) {
                 let currentCard = new Card(searchTerm,uuidv4(),getSessionUuid(state?.currentCard));
-                addCardToStackAndSetCurrent(currentCard);
+                addToStackAndSetCurrentAndRerender(currentCard);
+                updateWindowHistory(searchTerm,currentCard.uuid);
                 await fetch(address)
                     .then((response) => response.json())
                     .then((parsed) => {
@@ -500,9 +486,8 @@ export const useNavigation = () =>{
                     .catch((error) => {
                         log.error(error);
                     });
-                updateWindowHistory(searchTerm,currentCard.uuid);
                 log.info("updating state with new card:", currentCard,stops,routes);
-                setState((prevState) => ({...prevState,renderCounter:prevState.renderCounter+1}));
+                reRender();
             }
         }
         catch (error) {
@@ -510,6 +495,53 @@ export const useNavigation = () =>{
         } finally {
         }
     }
+
+    const nearbySearch = async (searchTerm: string) =>{
+        await navigator.geolocation.getCurrentPosition(
+        (position) => {
+            log.info("got location",position.coords.latitude,position.coords.longitude);
+            let searchTerm = position.coords.latitude.toFixed(6) + "," + position.coords.longitude.toFixed(6);
+            log.info("searching nearby: got location",searchTerm);
+            search(searchTerm);
+        },
+        (error) => {
+            log.info("error getting location",error)
+            searchTerm = "could not find user location";
+        });
+    }
+
+    const regularSearch = async (searchTerm:string) =>{
+        log.info("search term is new, generating new card",searchTerm,state?.currentCard);
+        let currentCard: Card;
+        blurAndScroll();
+        if(searchTerm==null||searchTerm==""||searchTerm=="#"|| !(searchTerm) || !(searchTerm.trim())){
+            currentCard = getHomeCard(state?.currentCard);
+            log.info("search term was empty, generating home card",currentCard);
+            log.info("updating state with new card:", currentCard,stops,routes);
+            addToStackAndSetCurrentAndRerender(currentCard);
+        }
+        else{
+            log.info("search term is not empty, generating new card",searchTerm);
+            currentCard = new Card(searchTerm,uuidv4(),getSessionUuid(state?.currentCard));
+            currentCard.setType(CardType.LoadingCard);
+
+            addToStackAndSetCurrentAndRerender(currentCard);
+            try{
+                currentCard = await getData(currentCard,stops,routes,getSearchAddress(searchTerm,state?.currentCard))
+            }
+            catch (error) {
+                const safeError = error instanceof Error ? error : new Error(String(error));
+                log.error('There was a problem with the fetch operation:', safeError);
+                currentCard.setToError(safeError);
+            } finally {
+                blurAndScroll();
+            }
+            reRender();
+        } 
+        updateWindowHistory(searchTerm,currentCard.uuid);
+
+    }
+
 
 
 
