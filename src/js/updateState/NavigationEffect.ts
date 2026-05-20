@@ -105,16 +105,6 @@ function processStopSearch(stop: SearchStopData, card: Card, stops: StopsObjectC
     return match
 }
 
-function scrollToSidebarTop(){
-    let sidebar = document.getElementById("sidebar");
-    let sidebarContent = sidebar?.querySelector(".sidebar-content");
-    if (sidebarContent) {
-        sidebarContent.scrollTo({
-            top: 0,
-            behavior: "smooth"
-        });
-    }
-}
 
 async function getData(card:Card,stops: StopsObjectContainer,routes:RoutesObjectContainer,address:string):Promise<Card>{
     log.info("filling card data with search",card,stops,routes)
@@ -191,9 +181,6 @@ const performNewSearch = (searchRef:string,currentCard:Card):boolean=>{
     return true
 }
 
-<<<<<<< Updated upstream
-=======
-
 
 
 
@@ -223,7 +210,6 @@ function scrollToSidebarTop(){
 
 
 
->>>>>>> Stashed changes
 const updateWindowHistory = (term:string,uuid:string) :void =>{
     let url = new URL(window.location.href);
     url.searchParams.set("search", term);
@@ -273,6 +259,26 @@ export const useNavigation = () =>{
     const routes = useRoutes()
     const stops = useStops()
     log.debug("navigation effect state and contexts", state, routes, stops)
+
+    const reRender = ()=>{
+        setState((prevState) => ({...prevState,renderCounter:prevState.renderCounter+1}));
+    }
+
+    const setCurrentCard = (newCard: Card, cardStack: [Card] = state.cardStack) => {
+        setState((prevState) => ({
+            ...prevState,
+            currentCard: newCard,
+            cardStack: cardStack,
+        }));
+        reRender();
+    }
+
+    const addCardToStackAndSetCurrent = (newCard: Card) =>{
+        let cardStack = state.cardStack
+        cardStack.push(newCard);
+        setCurrentCard(newCard, cardStack)
+    }
+
 
     const search = async (searchTerm :string|AgencyAndId) =>{
         log.info("searching for: ",searchTerm, state);
@@ -327,29 +333,15 @@ export const useNavigation = () =>{
             if(searchTerm==null||searchTerm==""||searchTerm=="#"|| !(searchTerm) || !(searchTerm.trim())){
                 currentCard = getHomeCard(state?.currentCard);
                 log.info("search term was empty, generating home card",currentCard);
-                let cardStack = state.cardStack;
-                cardStack.push(currentCard);
                 log.info("updating state with new card:", currentCard,stops,routes);
-                setState((prevState) => ({
-                    ...prevState,
-                    currentCard: currentCard,
-                    cardStack: cardStack,
-                    renderCounter:prevState.renderCounter+1
-                }));
+                addCardToStackAndSetCurrent(currentCard);
             }
             else{
                 log.info("search term is not empty, generating new card",searchTerm);
                 currentCard = new Card(searchTerm,uuidv4(),getSessionUuid(state?.currentCard));
                 currentCard.setType(CardType.LoadingCard);
 
-                let cardStack = state.cardStack;
-                cardStack.push(currentCard);
-                setState((prevState) => ({
-                    ...prevState,
-                    currentCard: currentCard,
-                    cardStack: cardStack,
-                    renderCounter:prevState.renderCounter+1
-                }));
+                addCardToStackAndSetCurrent(currentCard);
                 try{
                     currentCard = await getData(currentCard,stops,routes,getSearchAddress(searchTerm,state?.currentCard))
                 }
@@ -370,14 +362,7 @@ export const useNavigation = () =>{
     const generateInitialCard = async (setLoading: (loading: boolean) => void)=>{
         let currentCard = getHomeCard(new Card("",uuidv4(),getSessionUuid(state?.currentCard)));
         log.info("generating initial card",currentCard);
-        let cardStack = state.cardStack;
-        cardStack.push(currentCard);
-        setState((prevState) => ({
-            ...prevState,
-            currentCard: currentCard,
-            cardStack: cardStack,
-            renderCounter:prevState.renderCounter+1
-        }));
+        addCardToStackAndSetCurrent(currentCard);
         setLoading(false);
 
         try {
@@ -422,12 +407,7 @@ export const useNavigation = () =>{
             }
             log.info("generated card based on query and search url", searchRef, searchAddress);
             currentCard = new Card(searchRef,uuidv4(),getSessionUuid(currentCard));
-            setState((prevState) => ({
-                ...prevState,
-                currentCard: currentCard,
-                cardStack: cardStack,
-                renderCounter:prevState.renderCounter+1
-            }));
+            setCurrentCard(currentCard);
             currentCard = await getData(currentCard,stops,routes,searchAddress);
             // let currentCard = new Card(searchRef,uuidv4());
 
@@ -443,8 +423,7 @@ export const useNavigation = () =>{
                 currentCard.setToError(null);
             }
             log.info("setting card based on starting query",currentCard);
-            cardStack.push(currentCard);
-            setState((prevState) => ({...prevState,renderCounter:prevState.renderCounter+1}));
+            reRender();
         } catch (error) {
             log.error('There was a problem with the fetch operation:', error);
         }
@@ -470,16 +449,9 @@ export const useNavigation = () =>{
             log.error("there's no route data for this vehicle search, routes object is empty or undefined",routeId,routes);
             currentCard.setToError(routeId+vehicleDelimiter+vehicleId)
         }
-        let cardStack = state.cardStack;
-        cardStack.push(currentCard);
         log.info("updating state prev card -> new vehicle card: \n", pastCard,currentCard);
         // todo: condense all of these into a single method, copied and pasted too many times
-        setState((prevState) => ({
-            ...prevState,
-            currentCard: currentCard,
-            cardStack: cardStack,
-            renderCounter:prevState.renderCounter+1
-        }));
+        addCardToStackAndSetCurrent(currentCard);
         scrollToSidebarTop();
         updateWindowHistory(currentCard.searchTerm,currentCard.uuid);
         log.info("vehicleSearch complete, new card: ",currentCard);
@@ -493,14 +465,7 @@ export const useNavigation = () =>{
             if (state?.currentCard?.type !== CardType.FavoritesCard) {
                 let currentCard = new Card(searchTerm,uuidv4(),getSessionUuid(state?.currentCard));
                 currentCard.setToFavorites([],new Set());
-                let cardStack = state.cardStack;
-                cardStack.push(currentCard);
-                setState((prevState) => ({
-                    ...prevState,
-                    currentCard: currentCard,
-                    cardStack: cardStack,
-                    renderCounter:prevState.renderCounter+1
-                }));
+                addCardToStackAndSetCurrent(currentCard);
                 updateWindowHistory(searchTerm,currentCard.uuid);
                 log.info("updating state with new card:", currentCard,stops,routes);
             }
@@ -518,14 +483,7 @@ export const useNavigation = () =>{
             log.info("all routes requested, generating new card",state);
             if (state?.currentCard?.type !== CardType.AllRoutesCard) {
                 let currentCard = new Card(searchTerm,uuidv4(),getSessionUuid(state?.currentCard));
-                let cardStack = state.cardStack;
-                cardStack.push(currentCard);
-                setState((prevState) => ({
-                    ...prevState,
-                    currentCard: currentCard,
-                    cardStack: cardStack,
-                    renderCounter:prevState.renderCounter+1
-                }));
+                addCardToStackAndSetCurrent(currentCard);
                 await fetch(address)
                     .then((response) => response.json())
                     .then((parsed) => {
