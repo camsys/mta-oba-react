@@ -6,7 +6,7 @@ export const createRoutePolyline = (
     routeData: MapRouteComponentInterface,
     isHighlighted = false
 ) => {
-    log.info("RoutePolylineFactory loaded");
+    log.info("RoutePolylineFactory loaded, routeDataId:", routeData.id, "routeData:", routeData);
     
     // Determine polyline style based on detour status
     let weight = isHighlighted ? 10 : 3;

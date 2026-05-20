@@ -230,6 +230,7 @@ const RoutesAndStops = ()=>{
                 processRoute(route as RouteMatch);
             }
             else if(state.currentCard.type===CardType.GeocodeCard) {
+                log.info("adding geocode search match to map",state.currentCard,searchMatch)
                 const geocodeSearchMatch = searchMatch as GeocodeMatch;
                 geocodeSearchMatch.routeMatches.forEach(match => {
                     if(match.type === MatchType.RouteMatch){processRoute(match as RouteMatch);}
