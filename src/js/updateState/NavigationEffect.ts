@@ -122,7 +122,7 @@ async function getData(card:Card,stops: StopsObjectContainer,routes:RoutesObject
             let searchResults = parsed?.searchResults
             log.info("search results found ",searchResults)
             log.info("resultType = ", searchResults.resultType)
-            card.setSearchResultType(searchResults.resultType)
+            card.asSearchResultType(searchResults.resultType)
             log.info(card)
 
             if(Card.STOPCARDIDENTIFIERS.has(searchResults.resultType)){
@@ -164,7 +164,7 @@ async function getData(card:Card,stops: StopsObjectContainer,routes:RoutesObject
         })
         .catch((error) => {
             log.error(error);
-            card.setToError(error);
+            card.asError(error);
         });
     log.info("got card data: ", card, typeof card, card==null,stops,routes)
     return card
@@ -223,14 +223,14 @@ export const updateCard = async (searchRef:string,stops: StopsObjectContainer,ro
     log.info("received new search input:",searchRef)
     // searchRef = searchRef.replaceAll(" ","%2520")
     let card = new Card(searchRef,uuidv4(),sessionUuid);
-    card.setType(CardType.LoadingCard);
+    card.asType(CardType.LoadingCard);
     return await getData(card,stops,routes,address)
 }
 
 export const getHomeCard = (card:Card|null) :Card=>{
     log.info("generating homecard")
     let newCard = new Card("",uuidv4(),getSessionUuid(card))
-    newCard.setType(CardType.HomeCard);
+    newCard.asType(CardType.HomeCard);
     return newCard
 }
 
@@ -285,10 +285,10 @@ const generateVehicleCard = (routeId: AgencyAndId, vehicleId: string, card: Card
     if(routes?.current){routeData=routes?.current[routeId.toString()]}
     if(routeData){
         log.info("found routedata of target vehicle: ",routeId, routeData,routes);
-        currentCard.setToVehicle(vehicleId,[routeData],new Set([routeId]));
+        currentCard.asVehicle(vehicleId,[routeData],new Set([routeId]));
     } else {
         log.error("there's no route data for this vehicle search, routes object is empty or undefined",routeId,routes);
-        currentCard.setToError(routeId+vehicleDelimiter+vehicleId)
+        currentCard.asError(routeId+vehicleDelimiter+vehicleId)
     }
     log.info("updating state prev card -> new vehicle card: \n", pastCard,currentCard);
     return currentCard;
@@ -297,7 +297,7 @@ const generateVehicleCard = (routeId: AgencyAndId, vehicleId: string, card: Card
 const transformIntoErrorCard = (error: unknown, card: Card):Card =>{
     const safeError = error instanceof Error ? error : new Error(String(error));
     log.error('There was a problem with the fetch operation:', safeError);
-    card.setToError(safeError);
+    card.asError(safeError);
     return card;
 }
 
@@ -313,7 +313,7 @@ const transformIntoAllRoutesCard = async (card: Card):Promise<Card> =>{
             searchMatch.routeMatches = parsed?.routes.map((route: SearchRouteData) => new RouteMatch(route));
             let routeIdList: Set<AgencyAndId> = new Set();
             // parsed?.routes.forEach(route=>routeIdList.add(route.id));
-            card.setToAllRoutes([searchMatch],routeIdList);
+            card.asAllRoutes([searchMatch],routeIdList);
             return card
         })
         .catch((error) => {
@@ -414,8 +414,11 @@ export const useNavigation = () =>{
         }
 
         // card render and window history update
-        addToStackAndSetCurrentAndRerender(getHomeCard(state?.currentCard));
-        updateWindowHistory("",state?.currentCard?.uuid??"");
+        let currentCard = getHomeCard(state?.currentCard);
+        addToStackAndSetCurrentAndRerender(currentCard);
+        updateWindowHistory(currentCard.searchTerm,currentCard.uuid);
+
+        // fetch data and update card
 
         // post update
         blurAndScroll();
@@ -431,6 +434,8 @@ export const useNavigation = () =>{
         addToStackAndSetCurrentAndRerender(currentCard);
         updateWindowHistory(currentCard.searchTerm,currentCard.uuid);
 
+        // fetch data and update card
+
         // post update
         log.info("vehicleSearch complete, new card: ",currentCard);
         blurAndScroll();
@@ -444,11 +449,11 @@ export const useNavigation = () =>{
         }
 
         // card render and window history update
-        let searchTerm = favoritesSearchTerm;
-        let currentCard = new Card(searchTerm,uuidv4(),getSessionUuid(state?.currentCard));
-        currentCard.setToFavorites([],new Set());
+        let currentCard = new Card(favoritesSearchTerm,uuidv4(),getSessionUuid(state?.currentCard)).asFavorites([],new Set());
         addToStackAndSetCurrentAndRerender(currentCard);
-        updateWindowHistory(searchTerm,currentCard.uuid);
+        updateWindowHistory(currentCard.searchTerm,currentCard.uuid);
+
+        // fetch data and update card
         
         // post update
         blurAndScroll();
@@ -462,18 +467,17 @@ export const useNavigation = () =>{
         }
 
         // initial card render and window history update
-        let searchTerm = allRoutesSearchTerm;
-        let currentCard = new Card(searchTerm,uuidv4(),getSessionUuid(state?.currentCard));
+        let currentCard = new Card(allRoutesSearchTerm,uuidv4(),getSessionUuid(state?.currentCard));
         addToStackAndSetCurrentAndRerender(currentCard);
-        updateWindowHistory(searchTerm,currentCard.uuid);
+        updateWindowHistory(currentCard.searchTerm,currentCard.uuid);
 
         // fetch data and update card
         await transformIntoAllRoutesCard(currentCard);
-
+        reRender();
 
         // post update
         blurAndScroll();
-        reRender();
+        
     
     }
 
@@ -485,18 +489,17 @@ export const useNavigation = () =>{
         if (!performNewSearch(searchTerm,state?.currentCard)){return}
         
         // initial card render and window history update
-        blurAndScroll();
-        let currentCard = new Card(searchTerm,uuidv4(),getSessionUuid(state?.currentCard));
-        currentCard.setType(CardType.LoadingCard);
+        let currentCard = new Card(searchTerm,uuidv4(),getSessionUuid(state?.currentCard)).asType(CardType.LoadingCard);
         addToStackAndSetCurrentAndRerender(currentCard);
+        updateWindowHistory(currentCard.searchTerm,currentCard.uuid);
 
         // fetch data and update card
         await transfromIntoRegularSearchCard(currentCard,stops,routes)
+        reRender();
 
         // post update
-        reRender();
-        updateWindowHistory(searchTerm,currentCard.uuid);
         blurAndScroll();
+
 
     }
 
@@ -586,10 +589,10 @@ export const useNavigation = () =>{
                 let searchParts = searchRef.split(vehicleDelimiter);
                 let routeId = searchParts[0];
                 let vehicleId = searchParts[1];
-                currentCard.setToVehicle(vehicleId,currentCard.searchMatches,currentCard.routeIdList);
+                currentCard.asVehicle(vehicleId,currentCard.searchMatches,currentCard.routeIdList);
             }
             if(currentCard.routeIdList.size===0){
-                currentCard.setToError(null);
+                currentCard.asError(null);
             }
             log.info("setting card based on starting query",currentCard);
             reRender();
