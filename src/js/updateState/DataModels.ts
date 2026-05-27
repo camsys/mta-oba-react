@@ -550,71 +550,77 @@ export class Card {
         this.sessionUuid = sessionUuid;
     }
 
-    setType(cardType: CardType): void {
+    asType(cardType: CardType): Card {
         this.type = cardType;
         this.name = this.type;
         log.info("setType", this.type, this.name);
+        return this;
     }
 
-    setToVehicle(
+    asVehicle(
         vehicleId: string,
         searchMatches: SearchMatch[],
         routeIdList: Set<AgencyAndId>
-    ): void {
-        this.setType(CardType.VehicleCard);
+    ): Card {
+        this.asType(CardType.VehicleCard);
         this.vehicleId = vehicleId;
         this.datumId = vehicleId;
         this.searchMatches = searchMatches;
         this.routeIdList = routeIdList;
         this.searchResultType = null;
         log.info("setToVehicle",this)
+        return this;
     }
 
-    setToError(searchTerm: string | Error | null) {
+    asError(searchTerm: string | Error | null): Card {
         log.info("setToError", searchTerm);
         if(searchTerm){
             searchTerm = searchTerm
         }
-        this.setType(CardType.ErrorCard);
+        this.asType(CardType.ErrorCard);
+        return this;
     }
 
-    setToFavorites(
+    asFavorites(
         searchMatches: SearchMatch[],
         routeIdList: Set<AgencyAndId>
-    ): void {
-        this.setType(CardType.FavoritesCard);
+    ): Card {
+        this.asType(CardType.FavoritesCard);
         this.searchMatches = searchMatches;
         this.routeIdList = routeIdList;
+        return this;
     }
 
-    setToAllRoutes(
+    asAllRoutes(
         searchMatches: SearchMatch[],
         routeIdList: Set<AgencyAndId>
-    ): void {
-        this.setType(CardType.AllRoutesCard);
+    ): Card {
+        this.asType(CardType.AllRoutesCard);
         this.searchMatches = searchMatches;
         this.routeIdList = routeIdList;
+        return this;
     }
 
-    setSearchResultType(searchResultType: string | null): void {
+    asSearchResultType(searchResultType: string | null): Card {
         this.searchResultType = searchResultType;
         if (searchResultType === null) {
-            this.setType(CardType.ErrorCard);
-            return;
+            this.asType(CardType.ErrorCard);
+            return this;
         }
         
         if (Card.LOADCARDIDENTIFIERS.has(searchResultType)) {
-            this.setType(CardType.LoadingCard);
+            this.asType(CardType.LoadingCard);
         } else if (Card.ROUTECARDIDENTIFIERS.has(searchResultType)) {
-            this.setType(CardType.RouteCard);
+            this.asType(CardType.RouteCard);
         } else if (Card.GEOCARDIDENTIFIERS.has(searchResultType)) {
-            this.setType(CardType.GeocodeCard);
+            this.asType(CardType.GeocodeCard);
         } else if (Card.STOPCARDIDENTIFIERS.has(searchResultType)) {
-            this.setType(CardType.StopCard);
+            this.asType(CardType.StopCard);
         } else {
-            this.setType(CardType.ErrorCard);
+            this.asType(CardType.ErrorCard);
             log.error("Invalid search result type", searchResultType);
         }
+        return this;
     }
 
     equals(that: Card | null): boolean {

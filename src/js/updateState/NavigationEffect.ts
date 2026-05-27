@@ -120,8 +120,6 @@ function processStopSearch(stop: SearchStopData, card: Card, stops: StopsObjectC
     return match
 }
 
-
-
 async function getData(card:Card,stops: StopsObjectContainer,routes:RoutesObjectContainer,address:string):Promise<Card>{
     log.info("filling card data with search",card,stops,routes)
     if(card.searchTerm == null || card.searchTerm == ''){
@@ -137,7 +135,7 @@ async function getData(card:Card,stops: StopsObjectContainer,routes:RoutesObject
             let searchResults = parsed?.searchResults
             log.info("search results found ",searchResults)
             log.info("resultType = ", searchResults.resultType)
-            card.setSearchResultType(searchResults.resultType)
+            card.asSearchResultType(searchResults.resultType)
             log.info(card)
 
             if(Card.STOPCARDIDENTIFIERS.has(searchResults.resultType)){
@@ -179,7 +177,7 @@ async function getData(card:Card,stops: StopsObjectContainer,routes:RoutesObject
         })
         .catch((error) => {
             log.error(error);
-            card.setToError(error);
+            card.asError(error);
         });
     log.info("got card data: ", card, typeof card, card==null,stops,routes)
     return card
@@ -205,10 +203,13 @@ const performNewSearch = (searchRef:string,currentCard:Card):boolean=>{
 
 
 
-
 // *-----------------PAGE UTILITIES-----------------*
 
 
+function blurAndScroll(){
+    document.getElementById('search-input')?.blur();
+    scrollToSidebarTop();
+}
 
 function scrollToSidebarTop(){
     let sidebar = document.getElementById("sidebar");
@@ -264,14 +265,14 @@ export const updateCard = async (searchRef:string,stops: StopsObjectContainer,ro
     log.info("received new search input:",searchRef)
     // searchRef = searchRef.replaceAll(" ","%2520")
     let card = new Card(searchRef,uuidv4(),sessionUuid);
-    card.setType(CardType.LoadingCard);
+    card.asType(CardType.LoadingCard);
     return await getData(card,stops,routes,address)
 }
 
 export const getHomeCard = (card:Card|null) :Card=>{
     log.info("generating homecard")
     let newCard = new Card("",uuidv4(),getSessionUuid(card))
-    newCard.setType(CardType.HomeCard);
+    newCard.asType(CardType.HomeCard);
     return newCard
 }
 
@@ -374,6 +375,89 @@ export const useRouteAndStopsAreUnchanged = ()=>{
 }
 
 
+const normalizeSearchTerm = (searchTerm:string|AgencyAndId):string=>{
+    if(searchTerm instanceof Object){
+        searchTerm = searchTerm.toString()
+    }
+    searchTerm = searchTerm.split("_").length > 1
+        ? searchTerm.split("_").reduce((acc, part, nth) => nth !== 0 ? acc + part : acc, "")
+            .toUpperCase()
+        : searchTerm.toUpperCase();
+    return searchTerm
+}
+
+const extractRouteFromVehicleSearchTerm = (searchTerm:string):AgencyAndId =>{
+    let searchParts = searchTerm.split(vehicleDelimiter);
+    let routeId = AgencyAndId.get(searchParts[0]);
+    return routeId;
+}
+
+const extractVehicleFromVehicleSearchTerm = (searchTerm:string):string =>{
+    let searchParts = searchTerm.split(vehicleDelimiter);
+    return searchParts[1];
+}
+
+
+const generateVehicleCard = (routeId: AgencyAndId, vehicleId: string, card: Card, routes: RoutesObjectContainer):Card =>{
+        //todo: should be current search term
+    let pastCard = card;
+    let shortenedRouteId = routeId.id;
+    log.info("found routeId of target vehicle: ",shortenedRouteId);
+    let currentCard = new Card(shortenedRouteId + vehicleDelimiter + vehicleId,uuidv4(),getSessionUuid(pastCard));
+    log.info("generated new card to become vehicle card",currentCard,routeId,vehicleId);
+    let routeData;
+    if(routes?.current){routeData=routes?.current[routeId.toString()]}
+    if(routeData){
+        log.info("found routedata of target vehicle: ",routeId, routeData,routes);
+        currentCard.asVehicle(vehicleId,[routeData],new Set([routeId]));
+    } else {
+        log.error("there's no route data for this vehicle search, routes object is empty or undefined",routeId,routes);
+        currentCard.asError(routeId+vehicleDelimiter+vehicleId)
+    }
+    log.info("updating state prev card -> new vehicle card: \n", pastCard,currentCard);
+    return currentCard;
+}
+
+const transformIntoErrorCard = (error: unknown, card: Card):Card =>{
+    const safeError = error instanceof Error ? error : new Error(String(error));
+    log.error('There was a problem with the fetch operation:', safeError);
+    card.asError(safeError);
+    return card;
+}
+
+
+const transformIntoAllRoutesCard = async (card: Card):Promise<Card> =>{
+    let address = getRoutesAddress();
+    await fetch(address)
+        .then((response) => response.json())
+        .then((parsed) => {
+            log.info("generating new card for all routes search")
+            log.info("all routes results: ",parsed);
+            let searchMatch = new SearchMatch(SearchMatch.matchTypes.AllRoutesMatch);
+            searchMatch.routeMatches = parsed?.routes.map((route: SearchRouteData) => new RouteMatch(route));
+            let routeIdList: Set<AgencyAndId> = new Set();
+            // parsed?.routes.forEach(route=>routeIdList.add(route.id));
+            card.asAllRoutes([searchMatch],routeIdList);
+            return card
+        })
+        .catch((error) => {
+            log.error(error);
+            return transformIntoErrorCard(error, card);
+        });
+    return card;
+}
+
+const transfromIntoRegularSearchCard = async (card: Card,stops: StopsObjectContainer,routes:RoutesObjectContainer):Promise<Card> =>{
+    let address = getSearchAddress(card.searchTerm,card);
+    try{
+        card = await getData(card,stops,routes,address)
+    }
+    catch (error) {
+        transformIntoErrorCard(error, card);
+    }
+    return card;
+}
+
 
 
 export const useNavigation = () =>{
@@ -382,7 +466,6 @@ export const useNavigation = () =>{
     const routes = useRoutes()
     const stops = useStops()
     log.debug("navigation effect state and contexts", state, routes, stops)
-
 
     // add refresh data function. it behaves exactly like the page were reloaded and refreshed except no new base careeds are used, 
     // eg. downloads new data and replaces search matches but doesn't generate a new card and updates state. it also has appropriate handling for vehicle cards whiles still replacing underlying data
@@ -404,117 +487,198 @@ export const useNavigation = () =>{
 
 
 
+    const reRender = ()=>{
+        setState((prevState) => ({...prevState,renderCounter:prevState.renderCounter+1}));
+    }
+
+    const setCurrentCard = (newCard: Card, cardStack: [Card] = state.cardStack) => {
+        setState((prevState) => ({
+            ...prevState,
+            currentCard: newCard,
+            cardStack: cardStack,
+        }));
+    }
+
+    const setCurrentAndRerender = (newCard: Card, cardStack: [Card] = state.cardStack) => {
+        setCurrentCard(newCard, cardStack);
+        reRender();
+    }
+
+    const addToStackAndSetCurrentAndRerender = (newCard: Card) =>{
+        let cardStack = state.cardStack
+        cardStack.push(newCard);
+        setCurrentAndRerender(newCard, cardStack)
+    }
+
+
     const search = async (searchTerm :string|AgencyAndId) =>{
         log.info("searching for: ",searchTerm, state);
-        if(searchTerm instanceof Object){
-            searchTerm = searchTerm.toString()
-        }
-        searchTerm = searchTerm.split("_").length > 1
-            ? searchTerm.split("_").reduce((acc, part, nth) => nth !== 0 ? acc + part : acc, "")
-                .toUpperCase()
-            : searchTerm.toUpperCase();
+        searchTerm = normalizeSearchTerm(searchTerm);
         
+
         if(searchTerm===allRoutesSearchTerm){
-            document.getElementById('search-input')?.blur();
-            scrollToSidebarTop();
-            await allRoutesSearch()
+            await allRoutesSearch();
             return
         }
         if(searchTerm===favoritesSearchTerm){
-            document.getElementById('search-input')?.blur();
-            scrollToSidebarTop();
-            await favoritesSearch()
+            await favoritesSearch();
             return
         }
         if(nearbySearchTerms.has(searchTerm)){
             log.info("searching for nearby stops and routes");
-            document.getElementById('search-input')?.blur();
-            scrollToSidebarTop();
-            await navigator.geolocation.getCurrentPosition(
-                (position) => {
-                    log.info("got location",position.coords.latitude,position.coords.longitude);
-                    let searchTerm = position.coords.latitude.toFixed(6) + "," + position.coords.longitude.toFixed(6);
-                    log.info("searching nearby: got location",searchTerm);
-                    search(searchTerm);
-                },
-                (error) => {
-                    log.info("error getting location",error)
-                    searchTerm = "could not find user location";
-                });
+            await nearbySearch(searchTerm);
             return;
         }  
         if(searchTerm.includes(vehicleDelimiter)){
             log.info("searching for vehicle",searchTerm)
-            let searchParts = searchTerm.split(vehicleDelimiter);
-            let routeId = AgencyAndId.get(searchParts[0]);
-            let vehicleId = searchParts[1];
+            let routeId = extractRouteFromVehicleSearchTerm(searchTerm);
+            let vehicleId = extractVehicleFromVehicleSearchTerm(searchTerm);
+
             vehicleSearch(routeId,vehicleId);
             return;
         }
-        document.getElementById('search-input')?.blur();
-        scrollToSidebarTop();
-        log.info("fetch search data called, generating new card",state,searchTerm)
-        if (performNewSearch(searchTerm,state?.currentCard)) {
-            log.info("search term is new, generating new card",searchTerm,state?.currentCard);
-            let currentCard: Card;
-            document.getElementById('search-input')?.blur();
-            scrollToSidebarTop();
-            if(searchTerm==null||searchTerm==""||searchTerm=="#"|| !(searchTerm) || !(searchTerm.trim())){
-                currentCard = getHomeCard(state?.currentCard);
-                log.info("search term was empty, generating home card",currentCard);
-                let cardStack = state.cardStack;
-                cardStack.push(currentCard);
-                log.info("updating state with new card:", currentCard,stops,routes);
-                setState((prevState) => ({
-                    ...prevState,
-                    currentCard: currentCard,
-                    cardStack: cardStack,
-                    renderCounter:prevState.renderCounter+1
-                }));
-            }
-            else{
-                log.info("search term is not empty, generating new card",searchTerm);
-                currentCard = new Card(searchTerm,uuidv4(),getSessionUuid(state?.currentCard));
-                currentCard.setType(CardType.LoadingCard);
-
-                let cardStack = state.cardStack;
-                cardStack.push(currentCard);
-                setState((prevState) => ({
-                    ...prevState,
-                    currentCard: currentCard,
-                    cardStack: cardStack,
-                    renderCounter:prevState.renderCounter+1
-                }));
-                try{
-                    currentCard = await getData(currentCard,stops,routes,getSearchAddress(searchTerm,state?.currentCard))
-                }
-                catch (error) {
-                    const safeError = error instanceof Error ? error : new Error(String(error));
-                    log.error('There was a problem with the fetch operation:', safeError);
-                    currentCard.setToError(safeError);
-                } finally {
-                    document.getElementById('search-input')?.blur();
-                    scrollToSidebarTop();
-                }
-                setState((prevState) => ({...prevState,renderCounter:prevState.renderCounter+1}));
-            } 
-            updateWindowHistory(searchTerm,currentCard.uuid);
+        if(searchTerm==null||searchTerm==""||searchTerm=="#"|| !(searchTerm) || !(searchTerm.trim())){
+            homeSearch();
+            return;
         }
-        document.getElementById('search-input')?.blur();
-        scrollToSidebarTop();
+        if (performNewSearch(searchTerm,state?.currentCard)) {
+            log.info("fetch search data called, generating new card",state,searchTerm)
+            regularSearch(searchTerm);
+        }
+
     }
+
+
+
+    const homeSearch = () =>{
+        // validation
+        log.info("search term was empty, requested home card");
+        if(state?.currentCard?.type === CardType.HomeCard) {
+            return;
+        }
+
+        // card render and window history update
+        let currentCard = getHomeCard(state?.currentCard);
+        addToStackAndSetCurrentAndRerender(currentCard);
+        updateWindowHistory(currentCard.searchTerm,currentCard.uuid);
+
+        // fetch data and update card
+
+        // post update
+        blurAndScroll();
+    }
+
+
+    const vehicleSearch = async (routeId:AgencyAndId,vehicleId:string)=> {
+        // validation
+        log.info("setting card to vehicle card",routeId,vehicleId, typeof routeId, typeof vehicleId);
+        
+        // card render and window history update
+        let currentCard = generateVehicleCard(routeId,vehicleId,state?.currentCard,routes);
+        addToStackAndSetCurrentAndRerender(currentCard);
+        updateWindowHistory(currentCard.searchTerm,currentCard.uuid);
+
+        // fetch data and update card
+
+        // post update
+        log.info("vehicleSearch complete, new card: ",currentCard);
+        blurAndScroll();
+    }
+
+    const favoritesSearch = async () =>{
+        // validation
+        log.info("favorites requested, generating new card",state);
+        if (state?.currentCard?.type === CardType.FavoritesCard) {
+            return 
+        }
+
+        // card render and window history update
+        let currentCard = new Card(favoritesSearchTerm,uuidv4(),getSessionUuid(state?.currentCard)).asFavorites([],new Set());
+        addToStackAndSetCurrentAndRerender(currentCard);
+        updateWindowHistory(currentCard.searchTerm,currentCard.uuid);
+
+        // fetch data and update card
+        
+        // post update
+        blurAndScroll();
+    }
+
+    const allRoutesSearch = async () =>{
+        // validation
+        log.info("all routes requested, generating new card",state);
+        if (state?.currentCard?.type === CardType.AllRoutesCard) {
+            return;
+        }
+
+        // initial card render and window history update
+        let currentCard = new Card(allRoutesSearchTerm,uuidv4(),getSessionUuid(state?.currentCard));
+        addToStackAndSetCurrentAndRerender(currentCard);
+        updateWindowHistory(currentCard.searchTerm,currentCard.uuid);
+
+        // fetch data and update card
+        await transformIntoAllRoutesCard(currentCard);
+        reRender();
+
+        // post update
+        blurAndScroll();
+        
+    
+    }
+
+
+
+    const regularSearch = async (searchTerm:string) =>{
+        // validation
+        log.info("search term is new, generating new card",searchTerm,state?.currentCard);
+        if (!performNewSearch(searchTerm,state?.currentCard)){return}
+        
+        // initial card render and window history update
+        let currentCard = new Card(searchTerm,uuidv4(),getSessionUuid(state?.currentCard)).asType(CardType.LoadingCard);
+        addToStackAndSetCurrentAndRerender(currentCard);
+        updateWindowHistory(currentCard.searchTerm,currentCard.uuid);
+
+        // fetch data and update card
+        await transfromIntoRegularSearchCard(currentCard,stops,routes)
+        reRender();
+
+        // post update
+        blurAndScroll();
+
+
+    }
+
+
+    const nearbySearch = async (searchTerm: string) =>{
+        await navigator.geolocation.getCurrentPosition(
+        (position) => {
+            log.info("got location",position.coords.latitude,position.coords.longitude);
+            let searchTerm = position.coords.latitude.toFixed(6) + "," + position.coords.longitude.toFixed(6);
+            log.info("searching nearby: got location",searchTerm);
+            search(searchTerm);
+        },
+        (error) => {
+            log.info("error getting location",error)
+            searchTerm = "could not find user location";
+        });
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     const generateInitialCard = async (setLoading: (loading: boolean) => void)=>{
         let currentCard = getHomeCard(new Card("",uuidv4(),getSessionUuid(state?.currentCard)));
         log.info("generating initial card",currentCard);
-        let cardStack = state.cardStack;
-        cardStack.push(currentCard);
-        setState((prevState) => ({
-            ...prevState,
-            currentCard: currentCard,
-            cardStack: cardStack,
-            renderCounter:prevState.renderCounter+1
-        }));
+        addToStackAndSetCurrentAndRerender(currentCard);
         setLoading(false);
 
         try {
@@ -559,12 +723,7 @@ export const useNavigation = () =>{
             }
             log.info("generated card based on query and search url", searchRef, searchAddress);
             currentCard = new Card(searchRef,uuidv4(),getSessionUuid(currentCard));
-            setState((prevState) => ({
-                ...prevState,
-                currentCard: currentCard,
-                cardStack: cardStack,
-                renderCounter:prevState.renderCounter+1
-            }));
+            setCurrentAndRerender(currentCard);
             currentCard = await getData(currentCard,stops,routes,searchAddress);
             // let currentCard = new Card(searchRef,uuidv4());
 
@@ -574,121 +733,32 @@ export const useNavigation = () =>{
                 let searchParts = searchRef.split(vehicleDelimiter);
                 let routeId = searchParts[0];
                 let vehicleId = searchParts[1];
-                currentCard.setToVehicle(vehicleId,currentCard.searchMatches,currentCard.routeIdList);
+                currentCard.asVehicle(vehicleId,currentCard.searchMatches,currentCard.routeIdList);
             }
             if(currentCard.routeIdList.size===0){
-                currentCard.setToError(null);
+                currentCard.asError(null);
             }
             log.info("setting card based on starting query",currentCard);
-            cardStack.push(currentCard);
-            setState((prevState) => ({...prevState,renderCounter:prevState.renderCounter+1}));
+            reRender();
         } catch (error) {
             log.error('There was a problem with the fetch operation:', error);
         }
     }
 
-    //this function doesn't belong in "SearchEffect" but it does belong with card handling functions
-// which is what this has become
 
-    const vehicleSearch = async (routeId:AgencyAndId,vehicleId:string)=> {
-        log.info("setting card to vehicle card",routeId,vehicleId, typeof routeId, typeof vehicleId);
-        //todo: should be current search term
-        let pastCard = state.currentCard;
-        let shortenedRouteId = routeId.id;
-        log.info("found routeId of target vehicle: ",shortenedRouteId);
-        let currentCard = new Card(shortenedRouteId + vehicleDelimiter + vehicleId,uuidv4(),getSessionUuid(pastCard));
-        log.info("generated new card to become vehicle card",currentCard,routeId,vehicleId);
-        let routeData;
-        if(routes?.current){routeData=routes?.current[routeId.toString()]}
-        if(routeData){
-            log.info("found routedata of target vehicle: ",routeId, routeData,routes);
-            currentCard.setToVehicle(vehicleId,[routeData],new Set([routeId]));
-        } else {
-            log.error("there's no route data for this vehicle search, routes object is empty or undefined",routeId,routes);
-            currentCard.setToError(routeId+vehicleDelimiter+vehicleId)
-        }
-        let cardStack = state.cardStack;
-        cardStack.push(currentCard);
-        log.info("updating state prev card -> new vehicle card: \n", pastCard,currentCard);
-        // todo: condense all of these into a single method, copied and pasted too many times
-        setState((prevState) => ({
-            ...prevState,
-            currentCard: currentCard,
-            cardStack: cardStack,
-            renderCounter:prevState.renderCounter+1
-        }));
-        scrollToSidebarTop();
-        updateWindowHistory(currentCard.searchTerm,currentCard.uuid);
-        log.info("vehicleSearch complete, new card: ",currentCard);
-    }
 
-    const favoritesSearch = async () =>{
-        log.info("searching for favorites")
-        let searchTerm = favoritesSearchTerm;
-        try {
-            log.info("favorites requested, generating new card",state);
-            if (state?.currentCard?.type !== CardType.FavoritesCard) {
-                let currentCard = new Card(searchTerm,uuidv4(),getSessionUuid(state?.currentCard));
-                currentCard.setToFavorites([],new Set());
-                let cardStack = state.cardStack;
-                cardStack.push(currentCard);
-                setState((prevState) => ({
-                    ...prevState,
-                    currentCard: currentCard,
-                    cardStack: cardStack,
-                    renderCounter:prevState.renderCounter+1
-                }));
-                updateWindowHistory(searchTerm,currentCard.uuid);
-                log.info("updating state with new card:", currentCard,stops,routes);
-            }
-        }
-        catch (error) {
-            log.error('There was a problem with the fetch operation:', error);
-        } finally {
-        }
-    }
 
-    const allRoutesSearch = async () =>{
-        let searchTerm = allRoutesSearchTerm;
-        let address = getRoutesAddress();
-        try {
-            log.info("all routes requested, generating new card",state);
-            if (state?.currentCard?.type !== CardType.AllRoutesCard) {
-                let currentCard = new Card(searchTerm,uuidv4(),getSessionUuid(state?.currentCard));
-                let cardStack = state.cardStack;
-                cardStack.push(currentCard);
-                setState((prevState) => ({
-                    ...prevState,
-                    currentCard: currentCard,
-                    cardStack: cardStack,
-                    renderCounter:prevState.renderCounter+1
-                }));
-                await fetch(address)
-                    .then((response) => response.json())
-                    .then((parsed) => {
-                        log.info("generating new card for all routes search")
-                        log.info("all routes results: ",parsed);
-                        let searchMatch = new SearchMatch(SearchMatch.matchTypes.AllRoutesMatch);
-                        searchMatch.routeMatches = parsed?.routes.map((route: SearchRouteData) => new RouteMatch(route));
-                        let routeIdList: Set<AgencyAndId> = new Set();
-                        // parsed?.routes.forEach(route=>routeIdList.add(route.id));
-                        currentCard.setToAllRoutes([searchMatch],routeIdList);
-                        log.info('completed processing all routes results: ',currentCard,stops,routes);
-                        return currentCard
-                    })
-                    .catch((error) => {
-                        log.error(error);
-                    });
-                updateWindowHistory(searchTerm,currentCard.uuid);
-                log.info("updating state with new card:", currentCard,stops,routes);
-                setState((prevState) => ({...prevState,renderCounter:prevState.renderCounter+1}));
-            }
-        }
-        catch (error) {
-            log.error('There was a problem with the fetch operation:', error);
-        } finally {
-        }
-    }
+
+
+
+
+
+
+
+
+
+
+// *-----------------FORWORDS BACKWARDS NAVIGATION-----------------*
 
     const updateStateForPopStateEvent = (popStateEvent: PopStateEvent) => {
         log.info("navigation effect handling popstate event",window.history.state,popStateEvent,popStateEvent.state)
