@@ -2,6 +2,7 @@ import {OBA} from "../oba";
 import {LatLngLiteral} from "leaflet";
 import log from 'loglevel';
 import {SiriMonitoredCall, SiriMonitoredVehicleJourney, SiriPtSituationElement, SearchStopData, SearchRouteDirectionData, SearchGeoData, SearchRouteData} from "./DataContracts";
+import isEqual from 'fast-deep-equal';
 
 export const primaryDelimiter = "_";
 
@@ -405,6 +406,10 @@ export function createRouteMatchDirectionInterface(directionJson: SearchRouteDir
     }
 
     stops.forEach((stop: EnhancedStopInterface) => mapStopComponentData.push(stop));
+    mapRouteComponentData.sort((a, b) => a.id.localeCompare(b.id));
+    for (const status in mapRouteComponentDataDict) {
+        mapRouteComponentDataDict[status as DetourStatus].sort((a, b) => a.id.localeCompare(b.id));
+    }
 
     return {
         routeId: routeId,
@@ -428,16 +433,39 @@ export enum MatchType {
     AllRoutesMatch = "allRoutesMatch"
 }
 
-export class SearchMatch {
-    static matchTypes = MatchType;
+export abstract class SearchMatch {
+static matchTypes = MatchType;
 
     etag: string | undefined | null;
     type: MatchType;
-    routeMatches: (RouteMatch | StopMatch)[]
+    
+    abstract get routeMatches(): (RouteMatch | StopMatch)[];
 
     constructor(type: MatchType) {
         this.type = type;
-        this.routeMatches = []
+    }
+
+    abstract equals(other: SearchMatch): boolean;
+
+    mayEqual (other: SearchMatch): boolean {
+        if (this === other) {
+            return true;
+        }
+        if (this.etag !== other.etag) {
+            return false;
+        }
+        if (this.type !== other.type) {
+            return false;
+        }
+        return true;   
+    }
+
+    asOverrideEtag(etag: string | null = null): SearchMatch {
+        if(etag != null){
+            return this
+        }
+        this.etag = etag;
+        return this;
     }
 }
 
@@ -448,9 +476,32 @@ export class RouteMatch extends SearchMatch implements RouteInterface{
     /** @deprecated Use datumName instead */
     routeTitle: string;
     description: string;
-    directions: RouteMatchDirectionInterface[];
     datumId: AgencyAndId;
     datumName: string;
+
+    private _directions: RouteMatchDirectionInterface[] = [];
+    get directions(): RouteMatchDirectionInterface[] {
+        return this._directions;
+    }
+    set directions(value: RouteMatchDirectionInterface[]) {
+        // Automatically sort whenever directions are updated
+        this._directions = [...value].sort((a, b) => {
+            // Replace 'id' or 'name' with whatever property you want to sort by
+            return a.routeAndDirection.localeCompare(b.routeAndDirection); 
+        });
+    }
+
+    private _routeMatches: (RouteMatch | StopMatch)[] = [];
+    override get routeMatches(): (RouteMatch | StopMatch)[] {
+        return this._routeMatches;
+    }
+    override set routeMatches(value: (RouteMatch | StopMatch)[]) {
+        // Automatically sort whenever routeMatches are updated
+        this._routeMatches = [...value].sort((a, b) => {
+            // Replace 'id' or 'name' with whatever property you want to sort by
+            return a.datumId.toString().localeCompare(b.datumId.toString()); 
+        });
+    }
 
     constructor(data: SearchRouteData) {
         super(MatchType.RouteMatch);
@@ -461,6 +512,18 @@ export class RouteMatch extends SearchMatch implements RouteInterface{
         this.description = data?.description;
         this.directions = [];
         this.etag = data?.etag;
+    }
+
+    equals(other: SearchMatch): boolean {
+        if(!super.mayEqual(other)){return false;}
+        this.directions.forEach((direction, index) => {
+            if (!isEqual(direction, (other as RouteMatch).directions[index])) {
+                log.info("RouteMatch equals -- direction at index", index, "has changed", direction, (other as RouteMatch).directions[index]);
+                return false;
+            }
+        });
+        log.info("RouteMatch equals -- all directions are deeply equal");
+        return true;
     }
 }
 
@@ -476,6 +539,21 @@ export class GeocodeMatch extends SearchMatch {
         this.routeMatches = [];
         this.etag = data?.etag;
     }
+
+
+    equals(other: SearchMatch): boolean {
+        if(!super.mayEqual(other)){return false;}
+        if(this.routeMatches.length !== (other as GeocodeMatch).routeMatches.length){return false;}
+        this.routeMatches.forEach((routeMatch, index) => {
+            if (!routeMatch.equals(other.routeMatches[index])) {
+                log.info("GeocodeMatch equals -- route match at index", index, "has changed");
+                return false;
+            }
+        });
+        log.info("GeocodeMatch equals -- all route matches are deeply equal");
+        return this.latitude === (other as GeocodeMatch).latitude &&
+               this.longitude === (other as GeocodeMatch).longitude;
+    }
 }
 
 export class StopMatch extends SearchMatch implements StopInterface{
@@ -485,11 +563,22 @@ export class StopMatch extends SearchMatch implements StopInterface{
     name: string;
     /** @deprecated Use datumId instead */
     id: AgencyAndId;
-    routeMatches: RouteMatch[];
     longLat: [number, number];
     stopDirection: string;
     datumId: AgencyAndId;
     datumName: string;
+
+    private _routeMatches: (RouteMatch | StopMatch)[] = [];
+    override get routeMatches(): (RouteMatch | StopMatch)[] {
+        return this._routeMatches;
+    }
+    override set routeMatches(value: (RouteMatch | StopMatch)[]) {
+        // Automatically sort whenever routeMatches are updated
+        this._routeMatches = [...value].sort((a, b) => {
+            // Replace 'id' or 'name' with whatever property you want to sort by
+            return a.datumId.toString().localeCompare(b.datumId.toString()); 
+        });
+    }
 
     constructor(data: SearchStopData) {
         super(MatchType.StopMatch);
@@ -501,6 +590,23 @@ export class StopMatch extends SearchMatch implements StopInterface{
         this.longLat = [data.latitude,data.longitude];
         this.stopDirection = data.stopDirection;
         this.etag = data?.etag;
+    }
+
+    equals(other: SearchMatch): boolean {
+        if(!super.mayEqual(other)){return false;}
+        if(this.routeMatches.length !== (other as StopMatch).routeMatches.length){return false;}
+        this.routeMatches.forEach((routeMatch, index) => {
+            if (routeMatch!=this && !routeMatch.equals(other.routeMatches[index])) {
+                log.info("StopMatch equals -- route match at index", index, "has changed");
+                return false;
+            }
+        });
+        log.info("StopMatch equals -- all route matches are deeply equal");
+        return this.latitude === (other as StopMatch).latitude &&
+               this.longitude === (other as StopMatch).longitude &&
+               this.name === (other as StopMatch).name &&
+               this.id.toString() === (other as StopMatch).id.toString() &&
+               this.stopDirection === (other as StopMatch).stopDirection;
     }
 }
 

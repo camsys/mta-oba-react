@@ -9,7 +9,7 @@ import {
     VehicleStateContext,
     VehicleStateProvider
 } from "./util/VehicleStateComponent";
-import {useNavigation, useRouteAndStopsAreUnchanged} from "../js/updateState/NavigationEffect";
+import {useNavigation} from "../js/updateState/NavigationEffect";
 import {MapHighlightingStateProvider} from "./util/MapHighlightingStateComponent";
 import {CardType} from "../js/updateState/DataModels";
 import {MapWrapper} from "./map/MapWrapper";
@@ -30,7 +30,7 @@ const VehicleLoading=(): JSX.Element => {
     const siriFreqEnv = process.env.SIRI_REQUEST_FREQ;
     const siri_freq = siriFreqEnv && !isNaN(Number(siriFreqEnv)) ? Number(siriFreqEnv) : 30;
     useEffect(() => {
-        updateSiriEffect()
+        updateSiriEffect();
         const interval = setInterval(updateSiriEffect, siri_freq*1000);
         log.info("interval set for vehicle loading",interval)
         return () => clearInterval(interval);
@@ -40,13 +40,13 @@ const VehicleLoading=(): JSX.Element => {
 
 
 const SearchLoading=(): JSX.Element => {
-    const { searchMatchesAreUnchanged } = useRouteAndStopsAreUnchanged()
-    const {refreshSearchData} = useNavigation();
+    const { state} = useCardState();
+    const {conditionallyRefreshSearchData} = useNavigation();
     useEffect(() => {
-        const interval = setInterval(async ()=>{if(! await searchMatchesAreUnchanged()){log.info("SearchMatchVerification -- refreshing search data"); refreshSearchData()}}, 30*1000);
+        const interval = setInterval(async ()=>{conditionallyRefreshSearchData()}, 30*1000);
         log.info("SearchMatchVerification -- interval set for validating search results",interval)
         return () => clearInterval(interval);
-    }, [searchMatchesAreUnchanged]);
+    }, [state]);
     return <></>
 }
 

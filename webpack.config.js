@@ -32,7 +32,7 @@ const envPlugin = new webpack.DefinePlugin({
   'process.env.SIRI_OVERRIDE_STOP': JSON.stringify(process.env.SIRI_OVERRIDE_STOP || ''),
   'process.env.OVERRIDE_ALL_VEHICLE_DETOUR_STATUS_TRUE': JSON.stringify(process.env.OVERRIDE_ALL_VEHICLE_DETOUR_STATUS_TRUE === 'true' || 'false'),
   'process.env.ALTERNATE_TREATING_STOPS_AS_DETOURS': JSON.stringify(process.env.ALTERNATE_TREATING_STOPS_AS_DETOURS === 'true' || 'false'),
-  'process.env.CACHING_ENABLED': JSON.stringify(process.env.CACHING_ENABLED === 'true' || 'true')
+  'process.env.CACHING_ENABLED': JSON.stringify(process.env.CACHING_ENABLED === 'true' || 'false')
 });
 
 function cleanUpHostAddress(hostAddress) {

@@ -120,6 +120,64 @@ function processStopSearch(stop: SearchStopData, card: Card, stops: StopsObjectC
     return match
 }
 
+
+function processSearchResponse(response: Response, card:Card,stops: StopsObjectContainer,routes:RoutesObjectContainer, assignEtag = null): Card {
+    try {
+        let parsed = response?.json ? response.json() : response;
+        log.info("got back search results")
+        log.info("parsed: ",parsed)
+        let searchResults = parsed?.searchResults
+        log.info("search results found ",searchResults)
+        log.info("resultType = ", searchResults.resultType)
+        card.asSearchResultType(searchResults.resultType)
+        log.info(card)
+
+        if(Card.STOPCARDIDENTIFIERS.has(searchResults.resultType)){
+            searchResults.matches.forEach((x: any)=>{
+                card.searchMatches.push(processStopSearch(x,card,stops,routes).asOverrideEtag(assignEtag))
+            })
+            if(card.searchMatches.length===0){
+                searchResults.suggestions.forEach((x: any)=>{
+                    card.searchMatches.push(processStopSearch(x,card,stops,routes).asOverrideEtag(assignEtag))
+                })
+            }
+            let stopMatch = card.searchMatches[0] as StopMatch
+            card.datumId=stopMatch.id
+        }
+        if(Card.GEOCARDIDENTIFIERS.has(searchResults.resultType)){
+            searchResults.matches.forEach((x: any)=>{
+                card.searchMatches.push(processGeocodeSearch(x,card,stops,routes).asOverrideEtag(assignEtag))
+            })
+            if(card.searchMatches.length===0){
+                searchResults.suggestions.forEach((x: any)=>{
+                    card.searchMatches.push(processGeocodeSearch(x,card,stops,routes).asOverrideEtag(assignEtag))
+                })
+            }
+        }
+        if(Card.ROUTECARDIDENTIFIERS.has(searchResults.resultType)){
+            searchResults.matches.forEach((x: any)=>{
+                log.info("processing route search result",x,card,stops,routes)
+                card.searchMatches.push(processRouteSearch(x,card,stops,routes).asOverrideEtag(assignEtag))
+            })
+            if(card.searchMatches.length===0){
+                searchResults.suggestions.forEach((x: any)=>{
+                log.info("processing route suggestion result",x,card,stops,routes)
+                card.searchMatches.push(processRouteSearch(x,card,stops,routes).asOverrideEtag(assignEtag))
+            })}
+            let routeMatch = card.searchMatches[0] as RouteMatch
+            card.datumId=routeMatch.routeId
+        }
+        log.info('completed search results: ',card,stops,routes)
+    } catch (error) {
+        log.error("SearchMatchVerification -- error processing search response:", error);
+        error = error instanceof Error ? error : new Error(String(error));
+        log.error(error);
+        card.asError(error);
+    }
+    return card;
+}
+
+
 async function getData(card:Card,stops: StopsObjectContainer,routes:RoutesObjectContainer,address:string):Promise<Card>{
     log.info("filling card data with search",card,stops,routes)
     if(card.searchTerm == null || card.searchTerm == ''){
@@ -128,53 +186,7 @@ async function getData(card:Card,stops: StopsObjectContainer,routes:RoutesObject
     }
     log.info('requesting search results from ',address,card)
     await fetch(address)
-        .then((response) => response.json())
-        .then((parsed) => {
-            log.info("got back search results")
-            log.info("parsed: ",parsed)
-            let searchResults = parsed?.searchResults
-            log.info("search results found ",searchResults)
-            log.info("resultType = ", searchResults.resultType)
-            card.asSearchResultType(searchResults.resultType)
-            log.info(card)
-
-            if(Card.STOPCARDIDENTIFIERS.has(searchResults.resultType)){
-                searchResults.matches.forEach((x: any)=>{
-                    card.searchMatches.push(processStopSearch(x,card,stops,routes))
-                })
-                if(card.searchMatches.length===0){
-                    searchResults.suggestions.forEach((x: any)=>{
-                        card.searchMatches.push(processStopSearch(x,card,stops,routes))
-                    })
-                }
-                let stopMatch = card.searchMatches[0] as StopMatch
-                card.datumId=stopMatch.id
-            }
-            if(Card.GEOCARDIDENTIFIERS.has(searchResults.resultType)){
-                searchResults.matches.forEach((x: any)=>{
-                    card.searchMatches.push(processGeocodeSearch(x,card,stops,routes))
-                })
-                if(card.searchMatches.length===0){
-                    searchResults.suggestions.forEach((x: any)=>{
-                        card.searchMatches.push(processStopSearch(x,card,stops,routes))
-                    })
-                }
-            }
-            if(Card.ROUTECARDIDENTIFIERS.has(searchResults.resultType)){
-                searchResults.matches.forEach((x: any)=>{
-                    log.info("processing route search result",x,card,stops,routes)
-                    card.searchMatches.push(processRouteSearch(x,card,stops,routes))
-                })
-                if(card.searchMatches.length===0){
-                    searchResults.suggestions.forEach((x: any)=>{
-                    log.info("processing route suggestion result",x,card,stops,routes)
-                    card.searchMatches.push(processRouteSearch(x,card,stops,routes))
-                })}
-                let routeMatch = card.searchMatches[0] as RouteMatch
-                card.datumId=routeMatch.routeId
-            }
-            log.info('completed search results: ',card,stops,routes)
-        })
+        .then(async (response) => {processSearchResponse(await response.json(), card, stops, routes, response.headers.get('ETag'))})
         .catch((error) => {
             log.error(error);
             card.asError(error);
@@ -280,99 +292,6 @@ export const getHomeCard = (card:Card|null) :Card=>{
 
 
 
-const newerDataExists = async (match : RouteMatch | StopMatch, card: Card):Promise<boolean> =>{
-    log.info("SearchMatchVerification -- newerDataExists called for match:", match.datumId);
-    let address = getSearchAddress(match.datumId.id,card)
-    let ETag = match.etag;
-
-    log.info("SearchMatchVerification -- ETag value:", ETag);
-    // if(ETag){
-    //     try {
-    //         log.info("SearchMatchVerification -- checking for newer data with ETag at address:", address)
-    //         if(process.env.CACHING_ENABLED === "true"){
-    //             let response = await fetch(address, {
-    //                 headers: {
-    //                     'If-None-Match': ETag
-    //                 }
-    //             });
-    //             log.info("SearchMatchVerification -- fetch response status:", response.status);
-    //             if(response.status === 304){
-    //                 log.info("SearchMatchVerification -- received 304 Not Modified, data is unchanged");
-    //                 return false;
-    //             }
-    //         }
-    //         log.info("SearchMatchVerification -- received non-304 response, newer data EXISTS");
-    //         return true;
-    //     } catch (error) {
-    //         log.error("SearchMatchVerification -- error during newerDataExists fetch:", error);
-    //         return false;
-    //     }
-    // }
-    log.info("SearchMatchVerification -- no ETag found, assuming newer data exists");
-    return true;
-
-}
-
-
-// it would be more efficient to inject the fixes and bump the render counter but that represents a higher risk of errors. 
-// may be worth coming back to post playwright tests
-const shouldRefreshCardLevelData = async (searchMatch : SearchMatch, card: Card):Promise<boolean> =>{
-    log.info("SearchMatchVerification -- shouldRefreshCardLevelData called with match type:", searchMatch.type);
-    // if the type is routeMatch, just do that level
-    if(searchMatch.type === MatchType.RouteMatch || searchMatch.type === MatchType.StopMatch){
-        log.info("SearchMatchVerification -- detected RouteMatch or StopMatch");
-        // insert the remote check here
-        let routeOrStopMatch = searchMatch as RouteMatch | StopMatch;
-        log.info("SearchMatchVerification -- checking if newer data exists for:", routeOrStopMatch.datumId);
-        if(await newerDataExists(routeOrStopMatch, card)){
-            log.info("SearchMatchVerification -- newer data DOES exist, returning true");
-            return true;
-        }
-        log.info("SearchMatchVerification -- no newer data found for this match");
-    }
-    if(searchMatch.type === MatchType.GeocodeMatch){
-        log.info("SearchMatchVerification -- detected GeocodeMatch, recursively checking route matches");
-        let geocodeMatch = searchMatch as GeocodeMatch;
-        log.info("SearchMatchVerification -- geocodeMatch has", geocodeMatch.routeMatches.length, "route matches to check");
-        for (const routeOrStopMatch of geocodeMatch.routeMatches) {
-            log.info("SearchMatchVerification -- recursively checking route match:", routeOrStopMatch.datumId);
-            if(await shouldRefreshCardLevelData(routeOrStopMatch as SearchMatch, card)){
-                log.info("SearchMatchVerification -- recursive check found newer data, newer data DOES exist, returning true");
-                return true;
-            }
-        }
-        log.info("SearchMatchVerification -- all geocode route matches checked, no newer data found");
-    }
-
-    log.info("SearchMatchVerification -- shouldRefreshCardLevelData returning false");
-    return false;
-}
-
-
-
-// goes through each search match recursively, if there's no ETag it treats it as though true (This is the case for GeocodeMatches or old backends)
-// and checks its ETag and seeks new data if the ETag has changed. if it has returns false, otherwise returns true
-export const useRouteAndStopsAreUnchanged = ()=>{
-    const { state } = useCardState();
-
-    const searchMatchesAreUnchanged = async ():Promise<boolean> =>{
-        log.info("SearchMatchVerification -- kicking off search match validation",state)
-        log.info("SearchMatchVerification -- total search matches to validate:", state.currentCard.searchMatches.length);
-        let matchIndex = 0;
-        for (const match of state.currentCard.searchMatches) {
-            log.info(`SearchMatchVerification -- validating match ${matchIndex} of ${state.currentCard.searchMatches.length}`);
-            if(await shouldRefreshCardLevelData(match, state.currentCard)){
-                log.info(`SearchMatchVerification -- match ${matchIndex} requires new search, returning false`);
-                return false
-            }
-            log.info(`SearchMatchVerification -- match ${matchIndex} passed validation`);
-            matchIndex++;
-        }
-        log.info("SearchMatchVerification -- search match validation complete, all matches unchanged",state)
-        return true
-    }
-    return {searchMatchesAreUnchanged}
-}
 
 
 const normalizeSearchTerm = (searchTerm:string|AgencyAndId):string=>{
@@ -459,6 +378,52 @@ const transfromIntoRegularSearchCard = async (card: Card,stops: StopsObjectConta
 }
 
 
+// it would be more efficient to inject the fixes and bump the render counter but that represents a higher risk of errors. 
+// may be worth coming back to post playwright tests
+const shouldRefreshCardLevelData = async (searchMatch : SearchMatch, card: Card):Promise<boolean> =>{
+    log.info("SearchMatchVerification -- shouldRefreshCardLevelData called with match type:", searchMatch.type);
+    // if the type is routeMatch, just do that level
+    if(searchMatch.type === MatchType.RouteMatch || searchMatch.type === MatchType.StopMatch){
+        log.info("SearchMatchVerification -- detected RouteMatch or StopMatch");
+        // insert the remote check here
+        let routeOrStopMatch = searchMatch as RouteMatch | StopMatch;
+        log.info("SearchMatchVerification -- checking if newer data exists for:", routeOrStopMatch.datumId);
+        if(await newerDataExists(routeOrStopMatch, card)){
+            log.info("SearchMatchVerification -- newer data DOES exist, returning true");
+            return true;
+        }
+        log.info("SearchMatchVerification -- no newer data found for this match");
+    }
+    if(searchMatch.type === MatchType.GeocodeMatch){
+        log.info("SearchMatchVerification -- detected GeocodeMatch, recursively checking route matches");
+        let geocodeMatch = searchMatch as GeocodeMatch;
+        log.info("SearchMatchVerification -- geocodeMatch has", geocodeMatch.routeMatches.length, "route matches to check");
+        for (const routeOrStopMatch of geocodeMatch.routeMatches) {
+            log.info("SearchMatchVerification -- recursively checking route match:", routeOrStopMatch.datumId);
+            if(await shouldRefreshCardLevelData(routeOrStopMatch as SearchMatch, card)){
+                log.info("SearchMatchVerification -- recursive check found newer data, newer data DOES exist, returning true");
+                return true;
+            }
+        }
+        log.info("SearchMatchVerification -- all geocode route matches checked, no newer data found");
+    }
+
+    log.info("SearchMatchVerification -- shouldRefreshCardLevelData returning false");
+    return false;
+}
+
+const getEtagFromCard = (card: Card): string | null =>{
+    if(card.searchMatches.length > 0){
+        if(card.searchMatches.length > 1){
+            log.warn("etag requested from card with multiple top level search matches, using etag from first match.")
+        }
+        return card.searchMatches[0]?.etag || null;
+    }
+    return null;
+}
+
+
+
 
 export const useNavigation = () =>{
     log.debug("initializing navigation effect")
@@ -467,24 +432,114 @@ export const useNavigation = () =>{
     const stops = useStops()
     log.debug("navigation effect state and contexts", state, routes, stops)
 
-    // add refresh data function. it behaves exactly like the page were reloaded and refreshed except no new base careeds are used, 
-    // eg. downloads new data and replaces search matches but doesn't generate a new card and updates state. it also has appropriate handling for vehicle cards whiles still replacing underlying data
-    const refreshSearchData = async (): Promise<void> =>{ 
-        log.info("refreshSearchData called, refreshing data for current card",state.currentCard)
+    const generateCardForSearchTerm = async (searchTerm:string, etag: string | null = null):Promise<Card> =>{
+        log.info("generating card for search term: ",searchTerm)
+        let card = new Card(searchTerm,uuidv4(),getSessionUuid(state.currentCard));
+
+        let address = getSearchAddress(searchTerm,card)
+        log.info("SearchMatchVerification -- ETag value:", etag);
+        try {
+            let response;
+            log.info("SearchMatchVerification -- checking for newer data with ETag at address:", address)
+            if(process.env.CACHING_ENABLED === "true" && etag){
+                response = await fetch(address, {
+                    headers: {
+                        'If-None-Match': etag
+                    }
+                });
+                response = await response.json();
+                log.info("SearchMatchVerification -- fetch response status:", response.status);
+                if(response.status === 304){
+                    log.info("SearchMatchVerification -- received 304 Not Modified, data is unchanged");
+                    // todo: this should be more surgical and adds code debt of weird result handling
+                    card = state.currentCard;
+                }
+                else {
+                    processSearchResponse(response, card, stops, routes);
+                }
+            } else {
+                response = await getData(card,stops,routes,getSearchAddress(searchTerm,card))
+            }      
+        } catch (error) {
+            log.error("SearchMatchVerification -- error during newerDataExists fetch:", error);
+            error = error instanceof Error ? error : new Error(String(error));
+            log.error(error);
+            card.asError(error);
+        }
+        return card;
+    }
+    
+    const conditionallyRefreshSearchData = async (): Promise<void> =>{ 
+
+        let searchTerm = state.currentCard.searchTerm;
+        searchTerm = normalizeSearchTerm(searchTerm);
+        log.info("SearchMatchVerification -- newerDataExists called for match:", searchTerm, state.currentCard);
+
+        if(searchTerm===allRoutesSearchTerm){
+            return
+        }
+        if(searchTerm===favoritesSearchTerm){
+            return
+        }
+        if(nearbySearchTerms.has(searchTerm)){
+            return;
+        }
+        if(searchTerm==null||searchTerm==""||searchTerm=="#"|| !(searchTerm) || !(searchTerm.trim())){
+            return;
+        }  
+        if(searchTerm.includes(vehicleDelimiter)){
+            searchTerm = extractRouteFromVehicleSearchTerm(searchTerm).id;
+        }
         let currentCard = state.currentCard;
-        let address = getSearchAddress(currentCard.searchTerm,currentCard)
-        let updatedCard = await getData(currentCard,stops,routes,address)
-        if(currentCard.type === CardType.VehicleCard){
-            log.info("refreshSearchData -- current card is VehicleCard, applying updated search matches to vehicle card",updatedCard.searchMatches)
-            currentCard.searchMatches = updatedCard.searchMatches;
-            currentCard.routeIdList = updatedCard.routeIdList;
-            setState((prevState) => ({...prevState, currentCard: currentCard, renderCounter: prevState.renderCounter+1}));
-        } else {
-            log.info("refreshSearchData -- current card is not VehicleCard, replacing with updated card",updatedCard)
-            setState((prevState) => ({...prevState, currentCard: updatedCard, renderCounter: prevState.renderCounter+1}));
+        if(currentCard.type === CardType.RouteCard || currentCard.type === CardType.StopCard 
+            || currentCard.type === CardType.VehicleCard || 
+            (currentCard.type === CardType.GeocodeCard && process.env.CACHING_ENABLED !== "true")){
+            let etag = getEtagFromCard(currentCard);
+            let newCard = await generateCardForSearchTerm(searchTerm, etag);
+            let searchMatchesUnchanged = newCard.searchMatches.every((match, index)=>{
+                if(!match.equals(currentCard.searchMatches[index])){
+                    log.info("SearchMatchVerification -- search match at index", index, "has changed");
+                    return false;
+                }
+                return true;
+            });
+            if(searchMatchesUnchanged){
+                log.info("SearchMatchVerification -- search matches are deeply equal, no update needed");
+                return;
+            }
+            currentCard.searchMatches=newCard.searchMatches;
+            currentCard.routeIdList = newCard.routeIdList;
+            currentCard.stopIdList = newCard.stopIdList;
+            reRender();
+        }
+        if(currentCard.type === CardType.GeocodeCard){
+            // if we have support for caching and etags, we can do a more targeted update
+            currentCard.searchMatches.forEach((match, index)=>{
+                if(match.type === MatchType.GeocodeMatch){
+                    let changeToGeocard = false;
+                    match.routeMatches.forEach((routeOrStopMatch, nestedIndex)=>{
+                        let etag = routeOrStopMatch.etag;
+                        generateCardForSearchTerm(routeOrStopMatch.datumId.id, etag).then(newCard=>{
+                            let newMatch = newCard.searchMatches[index] as RouteMatch | StopMatch;
+                            if(!newMatch.equals(routeOrStopMatch)){
+                                log.info("SearchMatchVerification -- geocode sub-match at index", nestedIndex, "has changed, updating card");
+                                (currentCard.searchMatches[index] as RouteMatch | StopMatch).routeMatches[nestedIndex] = newMatch;
+                                changeToGeocard = true;
+                            } else {
+                                log.info("SearchMatchVerification -- geocode sub-match at index", nestedIndex, "is unchanged");
+                            }
+                        })
+                    })
+                    if(changeToGeocard){
+                        log.info("SearchMatchVerification -- at least one geocode sub-match has changed, updating card");
+                        reRender();
+                    } else {
+                        log.info("SearchMatchVerification -- all geocode sub-matches are unchanged");
+                    }
+                }
+            })
         }
     }
-
 
 
     const reRender = ()=>{
@@ -826,7 +881,7 @@ export const useNavigation = () =>{
 
     return { search, generateInitialCard, 
         vehicleSearch, allRoutesSearch, favoritesSearch, 
-        updateStateForPopStateEvent, goBack, goForward, refreshSearchData };
+        updateStateForPopStateEvent, goBack, goForward, conditionallyRefreshSearchData };
 }
 
 
