@@ -1,6 +1,6 @@
 {
   "name": "mta-oba-react",
-  "version": "0.5.29-disrupt.4",
+  "version": "0.5.29-disrupt.5-SNAPSHOT",
   "description": "",
   "main": "index.tsx",
   "scripts": {
