@@ -45,10 +45,11 @@ const SearchBar = () => {
     const onSuggestionSelected = (event, { suggestion, method }) => {
         log.info('Selected suggestion:', suggestion);
         const lineRef = suggestion.value
+        const label = suggestion.label
         if(method==="enter"){
             return
         }
-        search(lineRef);
+        search(lineRef, label);
     };
 
 
