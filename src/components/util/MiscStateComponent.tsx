@@ -20,7 +20,7 @@ const FavoritesCookieStateProvider = ({children} : {children:ReactNode}):JSX.Ele
         const idsCookie = Cookies.get(favoritesIdsCookieIdentifier)
         let favoritesObjectCookies = []
         idsCookie?.split(",")?.forEach((id) => {
-            favoritesObjectCookies.push(Cookies.get(favoritesCookieIdentifier + id))
+            favoritesObjectCookies.push(Cookies.get(id))
         })
 
         log.info("got favorites",favoritesObjectCookies)
@@ -34,7 +34,7 @@ const FavoritesCookieStateProvider = ({children} : {children:ReactNode}):JSX.Ele
                     if (isStopInterface(json) || isRouteInterface(json)) {
                         favorites?.favorites.push(json)
                         let targetId = isRouteInterface(json)? json?.routeId : json?.id
-                        if (idsCookie?.split(",")?.includes(targetId)) {
+                        if (idsCookie?.split(",")?.includes(targetId.split("_")[1])) {
                             favorites?.favoritesIds?.push(targetId)
                         }
                     }
@@ -44,7 +44,7 @@ const FavoritesCookieStateProvider = ({children} : {children:ReactNode}):JSX.Ele
                 setFavoritesCookies(favorites)
             }
         })
-        return {favorites}
+        return favorites
     })
 
     return (<FavoritesCookieStateContext.Provider value={{favoritesState,setFavoritesState}}>
@@ -56,9 +56,9 @@ const setFavoritesCookies =(cookies:FavoritesCookies)=>{
     cookies.favorites.forEach((f) => {
         log.info(f)
         let targetId = isRouteInterface(f)? f?.routeId : f?.id
-        Cookies.set(favoritesCookieIdentifier + targetId,JSON.stringify(f),{ expires: 365*5 })
+        Cookies.set(targetId.split("_")[1],JSON.stringify(f),{ expires: 365*5 })
     })
-    Cookies.set(favoritesIdsCookieIdentifier, cookies.favoritesIds.join(","),{ expires: 365*5 })
+    Cookies.set(favoritesIdsCookieIdentifier, cookies.favoritesIds.map(id => id.split("_")[1]).join(","),{ expires: 365*5 })
 }
 
 const isValidFavorite =(datum) =>{
@@ -77,7 +77,7 @@ const useFavorite = () =>{
         if(!isValidFavorite(datum)){return}
         let targetId = isRouteInterface(datum)? datum?.routeId : datum?.id
         let newFavorites = {favorites:[], favoritesIds: []}
-        newFavorites[favoritesCookieIdentifier] = favoritesState.favorites.filter(d=> getId(d) !== targetId)
+        newFavorites.favorites = favoritesState.favorites.filter(d=> getId(d) !== targetId)
         newFavorites[favoritesIdsCookieIdentifier] = favoritesState.favoritesIds.filter(id=> id !== targetId)
         setFavoritesCookies(newFavorites)
         log.info("previous favorites state",favoritesState)
