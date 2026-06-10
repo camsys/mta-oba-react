@@ -18,6 +18,34 @@ const FavoritesCookieStateProvider = ({children} : {children:ReactNode}):JSX.Ele
     const [favoritesState,setFavoritesState] = useState<FavoritesCookies>(() => {
         let favorites = {favorites:[],favoritesIds:[]}
         const idsCookie = Cookies.get(favoritesIdsCookieIdentifier)
+        // Convert old favorites cookie into new format
+        const oldFavoritesCookie = Cookies.get(oldFavoritesCookieIdentifier)
+        if (oldFavoritesCookie) {
+            try {
+                let json = JSON.parse(oldFavoritesCookie)
+                log.info("old favorites json", json, json?.favorites, typeof favorites?.favorites)
+                if (json?.favorites) {
+                    let favoritesIds = idsCookie?.split(",")
+                    json?.favorites.forEach((fav) => {
+                        log.info("reading favorite", fav)
+                        if (isStopInterface(fav) || isRouteInterface(fav)) {
+                            let targetId = isRouteInterface(fav)? fav?.routeId?.split("_")[1] : fav?.id?.split("_")[1]
+                            if (!Cookies.get(targetId)) {
+                                Cookies.set(targetId,JSON.stringify(fav),{ expires: 365*5 })
+                            }
+                            if (!favoritesIds?.includes(targetId)) {
+                                favoritesIds?.push(targetId)
+                            }
+                        }
+                    })
+                    Cookies.set(favoritesIdsCookieIdentifier,favoritesIds.join(","),{ expires: 365*5 })
+                }
+                Cookies.remove(oldFavoritesCookieIdentifier)
+            } catch (e){
+                log.info("Cannot convert old cookies.",oldFavoritesCookie)
+            }
+        }
+
         let favoritesObjectCookies = []
         idsCookie?.split(",")?.forEach((id) => {
             favoritesObjectCookies.push(Cookies.get(id))
@@ -80,6 +108,7 @@ const useFavorite = () =>{
         newFavorites.favorites = favoritesState.favorites.filter(d=> getId(d) !== targetId)
         newFavorites[favoritesIdsCookieIdentifier] = favoritesState.favoritesIds.filter(id=> id !== targetId)
         setFavoritesCookies(newFavorites)
+        Cookies.remove(targetId.split("_")[1])
         log.info("previous favorites state",favoritesState)
         setFavoritesState(newFavorites)
         log.info("new favorites state",favoritesState)
@@ -115,7 +144,7 @@ const useFavorite = () =>{
 
 
 
-const favoritesCookieIdentifier = "favorite"
+const oldFavoritesCookieIdentifier = "favorites"
 const favoritesIdsCookieIdentifier = "favoritesIds"
 
-export {FavoritesCookieStateContext,FavoritesCookieStateProvider,favoritesCookieIdentifier,favoritesIdsCookieIdentifier,useFavorite}
+export {FavoritesCookieStateContext,FavoritesCookieStateProvider,oldFavoritesCookieIdentifier,favoritesIdsCookieIdentifier,useFavorite}
