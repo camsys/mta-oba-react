@@ -236,7 +236,7 @@ export const useNavigation = () =>{
     
 
 
-    const search = async (searchTerm, label) =>{
+    const search = async (searchTerm) =>{
         log.info("searching for: ",searchTerm, state);
         searchTerm = searchTerm.split("_").length > 1
             ? searchTerm.split("_").reduce((acc, part, nth) => nth !== 0 ? acc + part : acc, "")
@@ -302,7 +302,7 @@ export const useNavigation = () =>{
             }
             else{
                 log.info("search term is not empty, generating new card",searchTerm);
-                currentCard = new Card(([null,"",false].includes(label) ? searchTerm : label),uuidv4(),getSessionUuid(state?.currentCard));
+                currentCard = new Card(searchTerm,uuidv4(),getSessionUuid(state?.currentCard));
                 currentCard.setType(CardType.LoadingCard);
 
                 let cardStack = state.cardStack;
