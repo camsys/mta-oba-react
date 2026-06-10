@@ -8,8 +8,9 @@ import { trackingHandler } from '../../js/updateState/handleTracking.ts';
 
 // Function to fetch suggestions from an external API
 const getSuggestions = async (value) => {
-    log.info(`fetching autocomplete for ${value}: https://${process.env.ENV_ADDRESS}/api/autocomplete?term=${value}`)
-    const response = await fetch(`https://${process.env.ENV_ADDRESS}/api/autocomplete?term=${value}`);
+    const cleanValue = encodeURIComponent(value);
+    log.info(`fetching autocomplete for ${value}: https://${process.env.ENV_ADDRESS}/api/autocomplete?term=${cleanValue}`)
+    const response = await fetch(`https://${process.env.ENV_ADDRESS}/api/autocomplete?term=${cleanValue}`);
     const suggestions = await response.json();
     log.info("got suggestions!",suggestions)
     return suggestions;
