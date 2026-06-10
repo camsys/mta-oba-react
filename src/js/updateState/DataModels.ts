@@ -12,8 +12,9 @@ export class AgencyAndId {
     }
 }
 
-export interface FavoritesCookie{
-    favorites : [StopInterface | RouteInterface]
+export interface FavoritesCookies{
+    favorites : [StopInterface | RouteInterface];
+    favoritesIds: string[];
 }
 
 

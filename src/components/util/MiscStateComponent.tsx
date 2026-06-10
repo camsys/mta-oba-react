@@ -1,5 +1,5 @@
 import React, {createContext, ReactNode, useContext, useState} from "react";
-import {CardStateObject, FavoritesCookie, RouteInterface, StopInterface} from "../../js/updateState/DataModels";
+import {CardStateObject, FavoritesCookies, RouteInterface, StopInterface} from "../../js/updateState/DataModels";
 import Cookies from "js-cookie"
 import {
     extractRouteInterface,
@@ -10,34 +10,68 @@ import {
 import log from 'loglevel';
 
 const FavoritesCookieStateContext = createContext<{
-    favoritesState:FavoritesCookie,
-    setFavoritesState: React.Dispatch<React.SetStateAction<FavoritesCookie>>;
+    favoritesState:FavoritesCookies,
+    setFavoritesState: React.Dispatch<React.SetStateAction<FavoritesCookies>>;
 }|undefined>(undefined)
 
 const FavoritesCookieStateProvider = ({children} : {children:ReactNode}):JSX.Element =>{
-    const [favoritesState,setFavoritesState] = useState<FavoritesCookie>(() => {
-        let favorites = {favorites:[],favCount:0}
-        const cookie = Cookies.get(favoritesCookieIdentifier)
-
-        log.info("got favorites",cookie)
-
-        if (cookie) {
+    const [favoritesState,setFavoritesState] = useState<FavoritesCookies>(() => {
+        let favorites = {favorites:[],favoritesIds:[]}
+        const idsCookie = Cookies.get(favoritesIdsCookieIdentifier)
+        // Convert old favorites cookie into new format
+        const oldFavoritesCookie = Cookies.get(oldFavoritesCookieIdentifier)
+        if (oldFavoritesCookie) {
             try {
-                let json = JSON.parse(cookie)
-                log.info("favorites json", json, json?.favorites, typeof favorites?.favorites)
+                let json = JSON.parse(oldFavoritesCookie)
+                log.info("old favorites json", json, json?.favorites, typeof favorites?.favorites)
                 if (json?.favorites) {
+                    let favoritesIds = idsCookie?.split(",")
                     json?.favorites.forEach((fav) => {
-                        log.info("received favorite", fav)
+                        log.info("reading favorite", fav)
                         if (isStopInterface(fav) || isRouteInterface(fav)) {
-                            favorites.favorites.push(fav)
+                            let targetId = isRouteInterface(fav)? fav?.routeId?.split("_")[1] : fav?.id?.split("_")[1]
+                            if (!Cookies.get(targetId)) {
+                                Cookies.set(targetId,JSON.stringify(fav),{ expires: 365*5 })
+                            }
+                            if (!favoritesIds?.includes(targetId)) {
+                                favoritesIds?.push(targetId)
+                            }
                         }
                     })
+                    Cookies.set(favoritesIdsCookieIdentifier,favoritesIds.join(","),{ expires: 365*5 })
                 }
+                Cookies.remove(oldFavoritesCookieIdentifier)
             } catch (e){
-                log.info("cookies are broken.",cookie)
-                setCookies(favorites)
+                log.info("Cannot convert old cookies.",oldFavoritesCookie)
             }
         }
+
+        let favoritesObjectCookies = []
+        idsCookie?.split(",")?.forEach((id) => {
+            favoritesObjectCookies.push(Cookies.get(id))
+        })
+
+        log.info("got favorites",favoritesObjectCookies)
+
+        favoritesObjectCookies?.forEach((cookie) => {
+            try {
+                let json = JSON.parse(cookie)
+                log.info("favorites json", json, typeof favorites?.favorites)
+                if (json) {
+                    log.info("received favorite", json)
+                    if (isStopInterface(json) || isRouteInterface(json)) {
+                        favorites?.favorites.push(json)
+                        let targetId = isRouteInterface(json)? json?.routeId : json?.id
+                        if (idsCookie?.split(",")?.includes(targetId.split("_")[1])) {
+                            favorites?.favoritesIds?.push(targetId)
+                        }
+                    }
+                }
+            } catch (e){
+                log.info("cookies are broken.",favoritesObjectCookies)
+                setFavoritesCookies(favorites)
+            }
+        })
         return favorites
     })
 
@@ -46,9 +80,13 @@ const FavoritesCookieStateProvider = ({children} : {children:ReactNode}):JSX.Ele
     </FavoritesCookieStateContext.Provider>)
 }
 
-const setCookies =(cookie:FavoritesCookie)=>{
-    log.info(cookie)
-    Cookies.set(favoritesCookieIdentifier,JSON.stringify(cookie),{ expires: 365*5 })
+const setFavoritesCookies =(cookies:FavoritesCookies)=>{
+    cookies.favorites.forEach((f) => {
+        log.info(f)
+        let targetId = isRouteInterface(f)? f?.routeId : f?.id
+        Cookies.set(targetId.split("_")[1],JSON.stringify(f),{ expires: 365*5 })
+    })
+    Cookies.set(favoritesIdsCookieIdentifier, cookies.favoritesIds.map(id => id.split("_")[1]).join(","),{ expires: 365*5 })
 }
 
 const isValidFavorite =(datum) =>{
@@ -66,9 +104,11 @@ const useFavorite = () =>{
     const removeFavorite = (datum:StopInterface | RouteInterface)=>{
         if(!isValidFavorite(datum)){return}
         let targetId = isRouteInterface(datum)? datum?.routeId : datum?.id
-        let newFavorites = {favorites:[]}
-        newFavorites[favoritesCookieIdentifier] = favoritesState.favorites.filter(d=> getId(d) !== targetId)
-        setCookies(newFavorites)
+        let newFavorites = {favorites:[], favoritesIds: []}
+        newFavorites.favorites = favoritesState.favorites.filter(d=> getId(d) !== targetId)
+        newFavorites[favoritesIdsCookieIdentifier] = favoritesState.favoritesIds.filter(id=> id !== targetId)
+        setFavoritesCookies(newFavorites)
+        Cookies.remove(targetId.split("_")[1])
         log.info("previous favorites state",favoritesState)
         setFavoritesState(newFavorites)
         log.info("new favorites state",favoritesState)
@@ -80,16 +120,22 @@ const useFavorite = () =>{
         if(!isValidFavorite(datum)){return}
         log.info("adding favorite",datum)
         datum = isRouteInterface(datum)? extractRouteInterface(datum):extractStopInterface(datum)
-        let newFavorites = {favorites: favoritesState.favorites}
-        if(newFavorites.favorites.some(f=>(getId(datum)===getId(f)))){return}
+        let newFavorites = {favorites: favoritesState.favorites, favoritesIds: favoritesState.favoritesIds}
+        if(newFavorites.favorites.length > 0) {
+            if (newFavorites.favorites.some(f=>(getId(datum)===getId(f)))){return}
+        }
+        let targetId = isRouteInterface(datum)? datum?.routeId : datum?.id
         newFavorites.favorites.push(datum)
-        setCookies(newFavorites)
+        newFavorites.favoritesIds.push(targetId)
+        setFavoritesCookies(newFavorites)
         setFavoritesState(newFavorites)
     }
 
     const isFavorite = (datum:StopInterface | RouteInterface) =>{
         if(!isValidFavorite(datum)){return false}
-        if(favoritesState.favorites.some(f=>(getId(datum)===getId(f)))){return true}
+        if(favoritesState.favorites.length > 0) {
+            if (favoritesState.favorites?.some(f => (getId(datum) === getId(f)))) {return true}
+        }
         return false
     }
 
@@ -98,6 +144,7 @@ const useFavorite = () =>{
 
 
 
-const favoritesCookieIdentifier = "favorites"
+const oldFavoritesCookieIdentifier = "favorites"
+const favoritesIdsCookieIdentifier = "favoritesIds"
 
-export {FavoritesCookieStateContext,FavoritesCookieStateProvider,favoritesCookieIdentifier,useFavorite}
+export {FavoritesCookieStateContext,FavoritesCookieStateProvider,oldFavoritesCookieIdentifier,favoritesIdsCookieIdentifier,useFavorite}
