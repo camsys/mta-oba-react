@@ -1923,9 +1923,16 @@
               font-size: 1rem
         .next-stops, .view-full
           padding: 0 .5rem
+        .next-stops
+          padding-bottom: 0
         .view-full
           margin: .5rem
           padding: 1rem .25rem .5rem .25rem
+        +mq($sidebar-switch)
+          .view-full
+            display: none
+          .next-stops
+            padding-bottom: 1rem
     &.stop-popup
       .leaflet-popup-content, .popup-content
         flex-direction: column
@@ -1971,6 +1978,9 @@
         .view-full
           margin: .5rem
           padding: 1rem .25rem .5rem .25rem
+      +mq($sidebar-switch)
+        .view-full
+          display: none
     &.search-here-popup
       .leaflet-popup-content, .popup-content
         padding: calc($content-padding / 2)
