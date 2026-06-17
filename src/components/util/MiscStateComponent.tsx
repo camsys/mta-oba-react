@@ -17,7 +17,7 @@ const FavoritesCookieStateContext = createContext<{
 const FavoritesCookieStateProvider = ({children} : {children:ReactNode}):JSX.Element =>{
     const [favoritesState,setFavoritesState] = useState<FavoritesCookies>(() => {
         let favorites = {favorites:[],favoritesIds:[]}
-        const idsCookie = Cookies.get(favoritesIdsCookieIdentifier)
+        let idsCookie = Cookies.get(favoritesIdsCookieIdentifier)
         // Convert old favorites cookie into new format
         const oldFavoritesCookie = Cookies.get(oldFavoritesCookieIdentifier)
         if (oldFavoritesCookie) {
@@ -26,6 +26,7 @@ const FavoritesCookieStateProvider = ({children} : {children:ReactNode}):JSX.Ele
                 log.info("old favorites json", json, json?.favorites, typeof favorites?.favorites)
                 if (json?.favorites) {
                     let favoritesIds = idsCookie?.split(",")
+                    favoritesIds = favoritesIds ? favoritesIds : []
                     json?.favorites.forEach((fav) => {
                         log.info("reading favorite", fav)
                         if (isStopInterface(fav) || isRouteInterface(fav)) {
@@ -41,6 +42,7 @@ const FavoritesCookieStateProvider = ({children} : {children:ReactNode}):JSX.Ele
                     Cookies.set(favoritesIdsCookieIdentifier,favoritesIds.join(","),{ expires: 365*5 })
                 }
                 Cookies.remove(oldFavoritesCookieIdentifier)
+                idsCookie = Cookies.get(favoritesIdsCookieIdentifier)
             } catch (e){
                 log.info("Cannot convert old cookies.",oldFavoritesCookie)
             }
