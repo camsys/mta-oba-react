@@ -4,7 +4,7 @@ import {ServiceAlertInterface} from "../../js/updateState/DataModels";
 import log from 'loglevel';
 import DOMPurify from 'dompurify';
 
-const keywordsToBold = ["What's happening?", "note"]
+const keywordsToBold = ["What's happening?", "note", "What happened"]
 const boldIfKeywordStartsPart = ["Note:"]
 
 function ServiceAlertComponent  ({serviceAlertDatums}: {serviceAlertDatums: ServiceAlertInterface[]}) : JSX.Element {
