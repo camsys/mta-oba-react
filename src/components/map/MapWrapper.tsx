@@ -21,9 +21,9 @@ export function MapWrapper  () : JSX.Element {
         const newMapOpenState = !mapIsOpen
         setMapIsOpen(newMapOpenState)
         // If opening the map, kick off updateSiriRouteEffect
-        if (newMapOpenState) {
-            updateSiriRouteEffect()
-        }
+        // if (newMapOpenState) {
+        //     updateSiriRouteEffect()
+        // }
         return null
     }
 

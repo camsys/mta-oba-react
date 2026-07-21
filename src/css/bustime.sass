@@ -353,11 +353,11 @@
       li
         border-bottom: 1px solid $border-gray
         button
-          color: $dark-gray
+          color: $black3
           .svg-icon-wrap
             svg
               path
-                fill: $dark-gray
+                fill: $black3
           // &:focus-visible
           //   color: $white
           //   .svg-icon-wrap
@@ -1442,12 +1442,13 @@
         font-size: 1rem
         font-weight: bold
         border: 1px solid $border-gray
-        border-bottom: 0px solid $original-mta-yellow
+        // border-bottom: 0px solid $original-mta-yellow
         transition: border-bottom .25s ease-in-out
         &:focus
           border-top-color: $black
           border-right-color: $black
           border-left-color: $black
+          border-bottom-color: $black
       .card-content
         border: 1px solid $border-gray
         border-top: 0px solid transparent
@@ -1923,9 +1924,16 @@
               font-size: 1rem
         .next-stops, .view-full
           padding: 0 .5rem
+        .next-stops
+          padding-bottom: 0
         .view-full
           margin: .5rem
           padding: 1rem .25rem .5rem .25rem
+        +mq($sidebar-switch)
+          .view-full
+            display: none
+          .next-stops
+            padding-bottom: 1rem
     &.stop-popup
       .leaflet-popup-content, .popup-content
         flex-direction: column
@@ -1971,6 +1979,9 @@
         .view-full
           margin: .5rem
           padding: 1rem .25rem .5rem .25rem
+      +mq($sidebar-switch)
+        .view-full
+          display: none
     &.search-here-popup
       .leaflet-popup-content, .popup-content
         padding: calc($content-padding / 2)
