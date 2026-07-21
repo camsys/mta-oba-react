@@ -25,7 +25,7 @@ const envPlugin = new webpack.DefinePlugin({
   'process.env.ENABLE_GOOGLE_TRANSLATE': JSON.stringify(process.env.ENABLE_GOOGLE_TRANSLATE || true),
   'process.env.SIRI_REQUEST_FREQ': JSON.stringify(process.env.SIRI_REQUEST_FREQ || siri_request_freq),
   'process.env.CLASSIC_SITE_ADDRESS': JSON.stringify(process.env.CLASSIC_SITE_ADDRESS || 'https://bustime-classic.mta.info'),
-  'process.env.BETA_BANNER_TEXT': JSON.stringify(process.env.BETA_BANNER_TEXT || 'How was your trip? Click here to give us feedback'),
+  'process.env.BETA_BANNER_TEXT': JSON.stringify(process.env.BETA_BANNER_TEXT || 'How was your trip? Share your feedback.'),
   'process.env.BETA_BANNER_LINK': JSON.stringify(process.env.BETA_BANNER_LINK || 'https://nymta.qualtrics.com/jfe/form/SV_1S8VydnSB0gyC6G?S=bt')
 });
 
