@@ -1,4 +1,4 @@
-import React, {useContext} from "react";
+import React, {useContext, useRef} from "react";
 import {CardStateContext} from "../util/CardStateComponent";
 import ServiceAlertContainerComponent from "./ServiceAlertContainerComponent";
 import {updatedTimeIdentifier, vehicleDataIdentifier, VehicleStateContext} from "../util/VehicleStateComponent";
@@ -19,7 +19,14 @@ export const VehicleCardContentComponent = ({routeMatch,vehicleDatum}
     const { search } = useNavigation();
     // log.info("generating vehicleCardContentComponent for ",vehicleDatum.vehicleId)
     let {highlightId} = useHighlight()
+    const cardRef = useRef<HTMLButtonElement>(null)
 
+    // Auto focus top of vehicle card details once rendered
+    useEffect(() => {
+        if(cardRef.current) {
+            cardRef.current.focus();
+        }
+    },[])
     return(
         <React.Fragment>
             <ul className="card-details">
@@ -35,7 +42,7 @@ export const VehicleCardContentComponent = ({routeMatch,vehicleDatum}
             <ul className="menu icon-menu card-menu border-b border-b-mta-blue mb-4">
                 <li>
                     {(routeMatch && vehicleDatum)?
-                        (<ViewSearchItem datumId={routeMatch.datumId} text={"Full Route"}/>)
+                        (<ViewSearchItem datumId={routeMatch.datumId} text={"Full Route"} focusRef={cardRef}/>)
                         :
                         (<ul className="card-details">
                             <li>{`The vehicle {vehicleId} can't be found`}</li>
