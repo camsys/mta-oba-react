@@ -46,3 +46,18 @@ state handling:
   - all information needed by components is stored in "card" objects kept in the global state object
   - this object will not trigger a new state update if the reference to the card is kept the same
   - some subclasses should be rendered more frequently than that state being updated
+
+
+
+--------
+
+How to deploy:
+- bump version to a release version (no snapshot)
+  - ensure package.json, package-lock.json, and public/version.json match your version
+- commit
+- tag that commit with the version
+- bump the version to snapshot
+- commit
+- push commits and tags
+- bump version in devops repo for the environment you want to change
+- kick off a jenkins build for the appropriate env
