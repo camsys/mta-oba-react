@@ -21,10 +21,10 @@ function MeeplesComponentInner({vehicleDatum}: {VehicleRtInterface}):JSX.Element
     return(
         <React.Fragment>
             {(percentFull !==null && numberOfMeeples!==null) && (
-                <span className={'meeples mb-2 meeples-' + `${numberOfMeeples}`}>
+                <span className={'meeples mb-2 meeples-' + `${numberOfMeeples}`}
+                      title={`vehicle is ~${percentFull}% full`}>
                             <img src={meeples}
                                  alt={`vehicle is ~${percentFull}% full`}
-                                 title={`vehicle is ~${percentFull}% full`}
                                  className={`meeples-${numberOfMeeples}`}/>
                         </span>
             )}
