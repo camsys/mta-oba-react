@@ -655,8 +655,22 @@ const MapEvents = ({userHasAdjustedMapOffMainElement, selectedElementLocation}: 
                         popup.close();
                     }
                 });
-            } 
+            }
             openPopups.current.push(e.popup);
+
+            if (popupContent && popupContent.classList.contains("stop-popup")) {
+                setTimeout(() => {
+                    const container = e.popup.getElement();
+                    if (!container) return;
+                    const closeButton = container.querySelector<HTMLElement>(".leaflet-popup-close-button");
+                    if (closeButton && container.firstChild !== closeButton) {
+                        container.insertBefore(closeButton, container.firstChild);
+                    }
+                    const firstFocusable = closeButton
+                        || container.querySelector<HTMLElement>(".route-directions a[href], a[href], button:not([disabled])");
+                    firstFocusable?.focus({preventScroll: true});
+                }, 0);
+            }
         }
 
         // popupclose(e) {}
