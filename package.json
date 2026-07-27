@@ -10,6 +10,7 @@
     "dev-start:clean": "npx madge --circular src; rm -rf dist .webpack-cache .tsbuildinfo; webpack serve --config webpack.config.js",
     "serve": "npx serve -l 8082 dist",
     "acceptTracking": "node logger.js",
+    "preversion": "npm audit --audit-level=high || (echo 'npm audit required to proceed' && exit 1)",
     "version": "node scripts/sync-version.mjs && git add public/version.json"
   },
   "keywords": [],
