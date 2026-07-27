@@ -1,6 +1,6 @@
 {
   "name": "mta-oba-react",
-  "version": "1.0.8",
+  "version": "1.0.10",
   "description": "",
   "main": "index.tsx",
   "scripts": {
@@ -9,7 +9,9 @@
     "dev-start": "NODE_ENV=development webpack serve --config webpack.config.js",
     "dev-start:clean": "npx madge --circular src; rm -rf dist .webpack-cache .tsbuildinfo; webpack serve --config webpack.config.js",
     "serve": "npx serve -l 8082 dist",
-    "acceptTracking": "node logger.js"
+    "acceptTracking": "node logger.js",
+    "preversion": "npm audit --audit-level=high || (echo 'npm audit required to proceed' && exit 1)",
+    "version": "node scripts/sync-version.mjs && git add public/version.json"
   },
   "keywords": [],
   "author": "",
