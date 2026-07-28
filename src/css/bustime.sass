@@ -660,11 +660,10 @@
       &:hover, &:focus
         border: none
         outline: none
-        text-decoration: underline 2px solid     
+        text-decoration: underline 2px solid
         &::after
           left: .125rem
 
-        
   .header
     background-color: $black2
     color: $white
@@ -956,6 +955,11 @@
         a
           &:hover
             color: $original-mta-yellow
+    &.home
+      +mq-reverse($sidebar-switch)
+        .sidebar-content
+          transition: padding-bottom .5s ease-in-out
+
     +mq-reverse($sidebar-switch)
       #search
         &.scrolled
@@ -978,6 +982,11 @@
         height: auto
     +mq($nine)
       width: $sidebar-width
+
+    body.smart-banner-visible &.home
+      +mq-reverse($sidebar-switch)
+        .sidebar-content
+          padding-bottom: 5.125rem
 
   .breadcrumb
     list-style: none
