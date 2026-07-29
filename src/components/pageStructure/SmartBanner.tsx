@@ -5,19 +5,23 @@ import {CardType} from "../../js/updateState/DataModels";
 import mtaAppIcon from "../../img/mta-app-icon.svg";
 import closeCircleIcon from "../../img/icon/close-circle.svg";
 
+const MOBILE_USER_AGENT_REGEX = /Android|iPhone|iPad|iPod|IEMobile|BlackBerry|Opera Mini/i;
+
 function SmartBanner(): JSX.Element {
     const { state } = useContext(CardStateContext);
     const [dismissed, setDismissed] = useState(false);
     const isHome = state.currentCard.type === CardType.HomeCard;
+    const isMobileDevice = MOBILE_USER_AGENT_REGEX.test(navigator.userAgent);
+    const shouldRender = isHome && isMobileDevice;
 
     useEffect(() => {
-        document.body.classList.toggle('smart-banner-visible', isHome && !dismissed);
+        document.body.classList.toggle('smart-banner-visible', shouldRender && !dismissed);
         return () => {
             document.body.classList.remove('smart-banner-visible');
         };
-    }, [isHome, dismissed]);
+    }, [shouldRender, dismissed]);
 
-    if (!isHome) {
+    if (!shouldRender) {
         return <></>;
     }
 
