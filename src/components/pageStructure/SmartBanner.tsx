@@ -4,6 +4,7 @@ import {CardStateContext} from "../util/CardStateComponent.tsx";
 import {CardType} from "../../js/updateState/DataModels";
 import mtaAppIcon from "../../img/mta-app-icon.svg";
 import closeCircleIcon from "../../img/icon/close-circle.svg";
+import {setCookie, getCookie} from "../util/appCookies.js";
 
 const IOS_UA_REGEX = /iPhone|iPad|iPod/i;
 const ANDROID_UA_REGEX = /Android/i;
@@ -11,14 +12,21 @@ const ANDROID_UA_REGEX = /Android/i;
 const IOS_APP_STORE_URL = "https://apps.apple.com/us/app/the-official-mta-app/id1297605670";
 const GOOGLE_PLAY_STORE_URL = "https://play.google.com/store/apps/details?id=info.mta.mymta&hl=en_US";
 
+const bannerDismissed = "bannerDismissed";
+
 function SmartBanner(): JSX.Element {
     const { state } = useContext(CardStateContext);
-    const [dismissed, setDismissed] = useState(false);
+    const [dismissed, setDismissed] = useState(() => !!getCookie(bannerDismissed));
     const isHome = state.currentCard.type === CardType.HomeCard;
     const isIOS = IOS_UA_REGEX.test(navigator.userAgent);
     const isAndroid = ANDROID_UA_REGEX.test(navigator.userAgent);
     const shouldRender = isHome && (isIOS || isAndroid);
     const storeUrl = isIOS ? IOS_APP_STORE_URL : GOOGLE_PLAY_STORE_URL;
+
+    const dismissBanner = () => {
+        setCookie(bannerDismissed, "true");
+        setDismissed(true);
+    };
 
     useEffect(() => {
         document.body.classList.toggle('smart-banner-visible', shouldRender && !dismissed);
@@ -48,7 +56,7 @@ function SmartBanner(): JSX.Element {
                     focus-visible:outline-2 focus-visible:outline-mta-dark-blue focus-visible:outline-offset-2 focus-visible:ring-2 focus-visible:ring-mta-dark-blue focus-visible:ring-offset-2 focus-visible:ring-offset-[#fff] bg-mta-blue"
                 aria-label="Dismiss app download banner"
                 tabIndex={dismissed ? -1 : 0}
-                onClick={() => setDismissed(true)}
+                onClick={dismissBanner}
             >
                 <img src={closeCircleIcon} alt="Dismiss app download banner" className="absolute inset-px w-[calc(100%-2px)] h-[calc(100%-2px)]" />
             </button>
@@ -64,6 +72,7 @@ function SmartBanner(): JSX.Element {
                 className="shrink-0 font-bold text-sm text-white bg-mta-dark-blue rounded-sm px-5 py-2.5 border-none
                     focus-visible:outline-2 focus-visible:outline-mta-dark-blue focus-visible:outline-offset-2 focus-visible:ring-2 focus-visible:ring-mta-dark-blue focus-visible:ring-offset-2 focus-visible:ring-offset-[#fff] bg-mta-blue"
                 tabIndex={dismissed ? -1 : 0}
+                onClick={dismissBanner}
             >
                 Download
             </a>
