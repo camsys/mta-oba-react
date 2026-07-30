@@ -5,14 +5,20 @@ import {CardType} from "../../js/updateState/DataModels";
 import mtaAppIcon from "../../img/mta-app-icon.svg";
 import closeCircleIcon from "../../img/icon/close-circle.svg";
 
-const MOBILE_USER_AGENT_REGEX = /Android|iPhone|iPad|iPod|IEMobile|BlackBerry|Opera Mini/i;
+const IOS_UA_REGEX = /iPhone|iPad|iPod/i;
+const ANDROID_UA_REGEX = /Android/i;
+
+const IOS_APP_STORE_URL = "https://apps.apple.com/us/app/the-official-mta-app/id1297605670";
+const GOOGLE_PLAY_STORE_URL = "https://play.google.com/store/apps/details?id=info.mta.mymta&hl=en_US";
 
 function SmartBanner(): JSX.Element {
     const { state } = useContext(CardStateContext);
     const [dismissed, setDismissed] = useState(false);
     const isHome = state.currentCard.type === CardType.HomeCard;
-    const isMobileDevice = MOBILE_USER_AGENT_REGEX.test(navigator.userAgent);
-    const shouldRender = isHome && isMobileDevice;
+    const isIOS = IOS_UA_REGEX.test(navigator.userAgent);
+    const isAndroid = ANDROID_UA_REGEX.test(navigator.userAgent);
+    const shouldRender = isHome && (isIOS || isAndroid);
+    const storeUrl = isIOS ? IOS_APP_STORE_URL : GOOGLE_PLAY_STORE_URL;
 
     useEffect(() => {
         document.body.classList.toggle('smart-banner-visible', shouldRender && !dismissed);
@@ -51,13 +57,16 @@ function SmartBanner(): JSX.Element {
                 <span className="font-bold">Get The MTA App</span>
                 <span className="text-sm">Real-time tracking and favorites</span>
             </div>
-            <button
+            <a
+                href={storeUrl}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="shrink-0 font-bold text-sm text-white bg-mta-dark-blue rounded-sm px-5 py-2.5 border-none
                     focus-visible:outline-2 focus-visible:outline-mta-dark-blue focus-visible:outline-offset-2 focus-visible:ring-2 focus-visible:ring-mta-dark-blue focus-visible:ring-offset-2 focus-visible:ring-offset-[#fff] bg-mta-blue"
                 tabIndex={dismissed ? -1 : 0}
             >
                 Download
-            </button>
+            </a>
         </div>
     );
 }
