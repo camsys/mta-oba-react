@@ -13,6 +13,7 @@ import {useNavigation} from "../js/updateState/NavigationEffect.ts";
 import {MapHighlightingStateProvider} from "./util/MapHighlightingStateComponent.tsx";
 import {CardType} from "../js/updateState/DataModels";
 import {MapWrapper} from "./map/MapWrapper.tsx";
+import SmartBanner from "./pageStructure/SmartBanner.tsx";
 import {FavoritesCookieStateProvider} from "Components/util/MiscStateComponent";
 import {MapDisplayStateProvider} from "./util/MapDisplayStateComponent";
 import log from 'loglevel';
@@ -145,6 +146,7 @@ function App  () : JSX.Element{
                 (<ErrorBoundary><div>Loading...</div></ErrorBoundary>)
                 :(<React.Fragment>
                 <TitleAndH1/>
+                <SmartBanner/>
                 <SideBar/>
                 <MapWrapper/>
             </React.Fragment>)}
