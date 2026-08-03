@@ -64,13 +64,13 @@ function SmartBanner(): JSX.Element {
             <img src={mtaAppIcon} alt="MTA App icon" className="w-12 h-12 rounded-lg shrink-0" />
             <div className="flex flex-col grow leading-tight">
                 <span className="font-bold">Get The MTA App</span>
-                <span className="text-sm">Real-time tracking and favorites</span>
+                <span className="text-xs">Real-time tracking and favorites</span>
             </div>
             <a
                 href={storeUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="shrink-0 font-bold text-sm text-white bg-mta-dark-blue rounded-sm px-5 py-2.5 border-none
+                className="shrink-0 font-normal text-sm text-white bg-mta-dark-blue rounded-sm px-2 py-2 border-none
                     focus-visible:outline-2 focus-visible:outline-mta-dark-blue focus-visible:outline-offset-2 focus-visible:ring-2 focus-visible:ring-mta-dark-blue focus-visible:ring-offset-2 focus-visible:ring-offset-[#fff]"
                 tabIndex={visible ? 0 : -1}
                 onClick={dismissBanner}
