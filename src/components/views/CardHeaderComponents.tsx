@@ -104,38 +104,50 @@ export function CardHeader({ match, color, IconComponent, IconClass}: {
 
 export const SelectableFavoriteRouteCard = ({routeMatch}:{routeMatch:RouteInterface}) =>{
     let {search} = useNavigation()
+    let {reorderFavorite} = useFavorite()
     {
         return(<React.Fragment>
-            <div className={`card route-card ${routeMatch.routeId}`} onClick={()=>search(routeMatch.routeId)}>
-                <button
-                    className="group card-header link-header"
-                    style={{ borderColor: "#" + routeMatch.color }}
-                    tabIndex={0}
-                >
-                    <UnderlineOnFocusElement variant="black" as={"h3"} className="card-title flex items-center">
-                        <StarBorderIcon className="icon w-5 h-5 mb-[0.385rem]"/>
-                        <VehicleIcon className="icon w-[1.125rem] h-[1.125rem] mb-1 fill-mta-dark-blue"/>
-                        {OBA.Config.noWidows(routeMatch.routeTitle)}
-                    </UnderlineOnFocusElement>
-                </button>
-            </div>  
+            <div className={"card-wrapper"}>
+                {/*TODO: Terry implement up/down buttons*/}
+                <button onClick={()=>reorderFavorite(routeMatch.datumId, -1)}>Up</button>
+                <button onClick={()=>reorderFavorite(routeMatch.datumId, 1)}>Down</button>
+                <div className={`card route-card ${routeMatch.routeId}`} onClick={()=>search(routeMatch.routeId)}>
+                    <button
+                        className="group card-header link-header"
+                        style={{ borderColor: "#" + routeMatch.color }}
+                        tabIndex={0}
+                    >
+                        <UnderlineOnFocusElement variant="black" as={"h3"} className="card-title flex items-center">
+                            <StarBorderIcon className="icon w-5 h-5 mb-[0.385rem]"/>
+                            <VehicleIcon className="icon w-[1.125rem] h-[1.125rem] mb-1 fill-mta-dark-blue"/>
+                            {OBA.Config.noWidows(routeMatch.routeTitle)}
+                        </UnderlineOnFocusElement>
+                    </button>
+                </div>
+            </div>
         </React.Fragment>)
     }
 }
 
 export const SelectableFavoriteStopCard = ({stopDatum}:{stopDatum:StopInterface}) =>{
     let {search} = useNavigation()
+    let {reorderFavorite} = useFavorite()
     return(<React.Fragment>
-            <div className={`card route-card ${stopDatum.id.split("_")[1]}`} onClick={()=>search(stopDatum.id.split("_")[1])}>
-                <button
-                    className="group card-header link-header border-color-mta-dark-blue"
-                    tabIndex={0}
-                >
-                    <UnderlineOnFocusElement variant="black" as={"h3"} className="card-title flex items-center">
-                        <StarBorderIcon className="icon w-5 h-5 mb-[0.4rem]"/>
-                        <BusStopIcon className="icon w-5 h-6 mb-1"/>
-                        {OBA.Config.noWidows(stopDatum.name)}</UnderlineOnFocusElement>
-                </button>
+            <div className={"card-wrapper"}>
+                {/*TODO: Terry implement up/down buttons*/}
+                <button onClick={()=>reorderFavorite(stopDatum.datumId, -1)}>Up</button>
+                <button onClick={()=>reorderFavorite(stopDatum.datumId, 1)}>Down</button>
+                <div className={`card route-card ${stopDatum.id.split("_")[1]}`} onClick={()=>search(stopDatum.id.split("_")[1])}>
+                    <button
+                        className="group card-header link-header border-color-mta-dark-blue"
+                        tabIndex={0}
+                    >
+                        <UnderlineOnFocusElement variant="black" as={"h3"} className="card-title flex items-center">
+                            <StarBorderIcon className="icon w-5 h-5 mb-[0.4rem]"/>
+                            <BusStopIcon className="icon w-5 h-6 mb-1"/>
+                            {OBA.Config.noWidows(stopDatum.name)}</UnderlineOnFocusElement>
+                    </button>
+                </div>
             </div>
         </React.Fragment>)
 }
