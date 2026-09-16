@@ -37,6 +37,17 @@ export function FavoritesWrapper():JSX.Element{
     log.info("favorites cookie:", favoritesState)
 
     return (<React.Fragment>
+        <button
+            type="button"
+            aria-label="Sort favorites"
+            className="w-full flex items-center justify-center gap-1 mb-3 px-4 py-2 rounded-sm border-none bg-mta-green text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-mta-dark-blue focus-visible:outline-offset-2"
+        >
+            <svg className="flex-shrink-0 w-[1.233rem] h-[1.067rem]" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M7 4V20M7 20L3 16M7 20L11 16" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                <path d="M17 20V4M17 4L13 8M17 4L21 8" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+            <span className="text-sm font-bold">Sort</span>
+        </button>
         <h2 className={`cards-header`}>Favorites:</h2>
         <div className="cards allroutes">
             {favoritesState.favorites.length == 0
