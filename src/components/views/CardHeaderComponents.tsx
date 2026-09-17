@@ -102,15 +102,41 @@ export function CardHeader({ match, color, IconComponent, IconClass}: {
 
 // todo: these are so close to generalized card headers that they should probably be refactored to use the same underlying component, but time constraints
 
+function FavoriteReorderButtons({datumId, label}: {datumId: string, label: string}): JSX.Element{
+    let {reorderFavorite} = useFavorite()
+    const buttonClass = "flex items-center justify-center w-6 h-6 rounded-sm border-none bg-ui-gray text-mta-black focus-visible:outline focus-visible:outline-2 focus-visible:outline-mta-dark-blue focus-visible:outline-offset-2"
+    return (
+        <div className="reorder-buttons flex flex-col justify-center shrink-0">
+            <button
+                type="button"
+                onClick={() => reorderFavorite(datumId, -1)}
+                aria-label={`Move ${label} up in favorites`}
+                className={buttonClass}
+            >
+                <svg className="w-4 h-4" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M12 5L20 17H4L12 5Z" fill="currentColor"/>
+                </svg>
+            </button>
+            <button
+                type="button"
+                onClick={() => reorderFavorite(datumId, 1)}
+                aria-label={`Move ${label} down in favorites`}
+                className={buttonClass}
+            >
+                <svg className="w-4 h-4" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M12 19L4 7H20L12 19Z" fill="currentColor"/>
+                </svg>
+            </button>
+        </div>
+    )
+}
+
 export const SelectableFavoriteRouteCard = ({routeMatch}:{routeMatch:RouteInterface}) =>{
     let {search} = useNavigation()
-    let {reorderFavorite} = useFavorite()
     {
         return(<React.Fragment>
-            <div className={"card-wrapper"}>
-                {/*TODO: Terry implement up/down buttons*/}
-                <button onClick={()=>reorderFavorite(routeMatch.datumId, -1)}>Up</button>
-                <button onClick={()=>reorderFavorite(routeMatch.datumId, 1)}>Down</button>
+            <div className={"card-wrapper flex flex-row items-stretch gap-1"}>
+                <FavoriteReorderButtons datumId={routeMatch.datumId} label={routeMatch.datumName}/>
                 <div className={`card route-card ${routeMatch.routeId}`} onClick={()=>search(routeMatch.routeId)}>
                     <button
                         className="group card-header link-header"
@@ -131,12 +157,9 @@ export const SelectableFavoriteRouteCard = ({routeMatch}:{routeMatch:RouteInterf
 
 export const SelectableFavoriteStopCard = ({stopDatum}:{stopDatum:StopInterface}) =>{
     let {search} = useNavigation()
-    let {reorderFavorite} = useFavorite()
     return(<React.Fragment>
-            <div className={"card-wrapper"}>
-                {/*TODO: Terry implement up/down buttons*/}
-                <button onClick={()=>reorderFavorite(stopDatum.datumId, -1)}>Up</button>
-                <button onClick={()=>reorderFavorite(stopDatum.datumId, 1)}>Down</button>
+            <div className={"card-wrapper flex flex-row items-stretch gap-1"}>
+                <FavoriteReorderButtons datumId={stopDatum.datumId} label={stopDatum.datumName}/>
                 <div className={`card route-card ${stopDatum.id.split("_")[1]}`} onClick={()=>search(stopDatum.id.split("_")[1])}>
                     <button
                         className="group card-header link-header border-color-mta-dark-blue"
