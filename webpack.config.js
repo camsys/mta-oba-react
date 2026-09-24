@@ -25,8 +25,9 @@ const envPlugin = new webpack.DefinePlugin({
   'process.env.ENABLE_GOOGLE_TRANSLATE': JSON.stringify(process.env.ENABLE_GOOGLE_TRANSLATE || true),
   'process.env.SIRI_REQUEST_FREQ': JSON.stringify(process.env.SIRI_REQUEST_FREQ || siri_request_freq),
   'process.env.CLASSIC_SITE_ADDRESS': JSON.stringify(process.env.CLASSIC_SITE_ADDRESS || 'https://bustime-classic.mta.info'),
-  'process.env.BETA_BANNER_TEXT': JSON.stringify(process.env.BETA_BANNER_TEXT || ''),
-  'process.env.BETA_BANNER_LINK': JSON.stringify(process.env.BETA_BANNER_LINK || '')
+  'process.env.BETA_BANNER_CHIP': JSON.stringify(process.env.BETA_BANNER_CHIP || 'Take our 2-minute survey'),
+  'process.env.BETA_BANNER_TEXT': JSON.stringify(process.env.BETA_BANNER_TEXT || 'Help shape Bus Time — __win a $100 OMNY card__'),
+  'process.env.BETA_BANNER_LINK': JSON.stringify(process.env.BETA_BANNER_LINK || 'https://bustime-classic.mta.info')
 });
 
 function cleanUpHostAddress(hostAddress) {

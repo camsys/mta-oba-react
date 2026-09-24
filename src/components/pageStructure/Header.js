@@ -1,30 +1,59 @@
-import React, {useContext} from 'react';
+import React, {useState} from 'react';
 import log from 'loglevel';
 import ErrorBoundary from "../util/errorBoundary";
 import bustimeLogo from '../../img/bustime-logo.svg';
 import mtaLogo from '../../img/mta-logo.svg';
 import favicon from '../../img/favicon.ico';
+import closeCircleIcon from '../../img/icon/close-circle.svg';
 import {useNavigation} from "../../js/updateState/NavigationEffect.ts";
-import {UnderlineOnFocusElement} from "Components/shared/common";
-import {CardStateContext} from "../util/CardStateComponent.tsx";
-import {CardType} from "../../js/updateState/DataModels";
+import {setCookie, getCookie} from "../util/appCookies.js";
 
+const SURVEY_BANNER_DISMISSED_COOKIE = "surveyBannerDismissed";
+const SURVEY_BANNER_DISMISS_DAYS = 1;
 
+// BETA_BANNER_TEXT may mark a portion to underline by wrapping it in double underscores
+
+function renderBannerText(text) {
+    const parts = text.split(/__(.+?)__/g);
+    return parts.map((part, i) =>
+        i % 2 === 1 ? <span className="beta-bar-underline" key={i}>{part}</span> : part
+    );
+}
 
 function Header  () {
     log.info("adding header")
     const { search } = useNavigation();
-    const { state } = useContext(CardStateContext);
+    const [bannerDismissed, setBannerDismissed] = useState(() => !!getCookie(SURVEY_BANNER_DISMISSED_COOKIE));
+    let bannerChip = process.env.BETA_BANNER_CHIP;
     let bannerText = process.env.BETA_BANNER_TEXT;
     let bannerLink = process.env.BETA_BANNER_LINK;
+
+    const dismissBanner = () => {
+        setCookie(SURVEY_BANNER_DISMISSED_COOKIE, "true", SURVEY_BANNER_DISMISS_DAYS);
+        setBannerDismissed(true);
+    };
+
     return (
         <ErrorBoundary>
-            {state.currentCard.type === CardType.HomeCard && (
-                bannerText && bannerLink && (
-                    <div className="beta-bar">
-                        <UnderlineOnFocusElement href={bannerLink} variant="black">{bannerText}</UnderlineOnFocusElement>
-                    </div>
-                )
+            {bannerText && bannerLink && !bannerDismissed && (
+                <div className="beta-bar">
+                    <button
+                        className="beta-bar-dismiss"
+                        aria-label="Dismiss announcement"
+                        onClick={dismissBanner}
+                    >
+                        <img src={closeCircleIcon} alt="" aria-hidden="true" />
+                    </button>
+                    <a href={bannerLink} className="beta-bar-link">
+                        <span className="beta-bar-text">
+                            {bannerChip && <span className="beta-bar-chip">{bannerChip}</span>}
+                            <span className="beta-bar-detail">{renderBannerText(bannerText)}</span>
+                        </span>
+                        <svg className="beta-bar-chevron" width="32" height="32" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                            <path d="M7.5 4.5L13 10L7.5 15.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                        </svg>
+                    </a>
+                </div>
             )}
             <header className="header pt-2 pb-3" id="header">
                 <div className="header-main text-[1.20em] ">
