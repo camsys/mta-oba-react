@@ -102,40 +102,75 @@ export function CardHeader({ match, color, IconComponent, IconClass}: {
 
 // todo: these are so close to generalized card headers that they should probably be refactored to use the same underlying component, but time constraints
 
-export const SelectableFavoriteRouteCard = ({routeMatch}:{routeMatch:RouteInterface}) =>{
+function FavoriteReorderButtons({datumId, label}: {datumId: string, label: string}): JSX.Element{
+    let {reorderFavorite} = useFavorite()
+    const buttonClass = "flex items-center justify-center w-6 h-6 rounded-sm border-none bg-ui-gray text-mta-black focus-visible:outline focus-visible:outline-2 focus-visible:outline-mta-dark-blue focus-visible:outline-offset-2"
+    return (
+        <div className="reorder-buttons flex flex-col justify-center shrink-0">
+            <button
+                type="button"
+                onClick={() => reorderFavorite(datumId, -1)}
+                aria-label={`Move ${label} up in favorites`}
+                className={buttonClass}
+            >
+                <svg className="w-4 h-4" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M12 5L20 17H4L12 5Z" fill="currentColor"/>
+                </svg>
+            </button>
+            <button
+                type="button"
+                onClick={() => reorderFavorite(datumId, 1)}
+                aria-label={`Move ${label} down in favorites`}
+                className={buttonClass}
+            >
+                <svg className="w-4 h-4" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M12 19L4 7H20L12 19Z" fill="currentColor"/>
+                </svg>
+            </button>
+        </div>
+    )
+}
+
+export const SelectableFavoriteRouteCard = ({routeMatch, showSort}:{routeMatch:RouteInterface, showSort:boolean}) =>{
     let {search} = useNavigation()
     {
         return(<React.Fragment>
-            <div className={`card route-card ${routeMatch.routeId}`} onClick={()=>search(routeMatch.routeId)}>
-                <button
-                    className="group card-header link-header"
-                    style={{ borderColor: "#" + routeMatch.color }}
-                    tabIndex={0}
-                >
-                    <UnderlineOnFocusElement variant="black" as={"h3"} className="card-title flex items-center">
-                        <StarBorderIcon className="icon w-5 h-5 mb-[0.385rem]"/>
-                        <VehicleIcon className="icon w-[1.125rem] h-[1.125rem] mb-1 fill-mta-dark-blue"/>
-                        {OBA.Config.noWidows(routeMatch.routeTitle)}
-                    </UnderlineOnFocusElement>
-                </button>
-            </div>  
+            <div className={"card-wrapper flex flex-row items-stretch gap-1"}>
+                {showSort && <FavoriteReorderButtons datumId={routeMatch.datumId} label={routeMatch.datumName}/>}
+                <div className={`card route-card ${routeMatch.routeId}`} onClick={()=>search(routeMatch.routeId)}>
+                    <button
+                        className="group card-header link-header"
+                        style={{ borderColor: "#" + routeMatch.color }}
+                        tabIndex={0}
+                    >
+                        <UnderlineOnFocusElement variant="black" as={"h3"} className="card-title flex items-center">
+                            <StarBorderIcon className="icon w-5 h-5 mb-[0.385rem]"/>
+                            <VehicleIcon className="icon w-[1.125rem] h-[1.125rem] mb-1 fill-mta-dark-blue"/>
+                            {OBA.Config.noWidows(routeMatch.routeTitle)}
+                        </UnderlineOnFocusElement>
+                    </button>
+                </div>
+            </div>
         </React.Fragment>)
     }
 }
 
-export const SelectableFavoriteStopCard = ({stopDatum}:{stopDatum:StopInterface}) =>{
+export const SelectableFavoriteStopCard = ({stopDatum, showSort}:{stopDatum:StopInterface, showSort:boolean}) =>{
     let {search} = useNavigation()
     return(<React.Fragment>
-            <div className={`card route-card ${stopDatum.id.split("_")[1]}`} onClick={()=>search(stopDatum.id.split("_")[1])}>
-                <button
-                    className="group card-header link-header border-color-mta-dark-blue"
-                    tabIndex={0}
-                >
-                    <UnderlineOnFocusElement variant="black" as={"h3"} className="card-title flex items-center">
-                        <StarBorderIcon className="icon w-5 h-5 mb-[0.4rem]"/>
-                        <BusStopIcon className="icon w-5 h-6 mb-1"/>
-                        {OBA.Config.noWidows(stopDatum.name)}</UnderlineOnFocusElement>
-                </button>
+            <div className={"card-wrapper flex flex-row items-stretch gap-1"}>
+                {showSort && <FavoriteReorderButtons datumId={stopDatum.datumId} label={stopDatum.datumName}/>}
+                <div className={`card route-card ${stopDatum.id.split("_")[1]}`} onClick={()=>search(stopDatum.id.split("_")[1])}>
+                    <button
+                        className="group card-header link-header border-color-mta-dark-blue"
+                        tabIndex={0}
+                    >
+                        <UnderlineOnFocusElement variant="black" as={"h3"} className="card-title flex items-center">
+                            <StarBorderIcon className="icon w-5 h-5 mb-[0.4rem]"/>
+                            <BusStopIcon className="icon w-5 h-6 mb-1"/>
+                            {OBA.Config.noWidows(stopDatum.name)}</UnderlineOnFocusElement>
+                    </button>
+                </div>
             </div>
         </React.Fragment>)
 }

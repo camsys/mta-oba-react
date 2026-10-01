@@ -141,7 +141,23 @@ const useFavorite = () =>{
         return false
     }
 
-    return {addFavorite,removeFavorite,isFavorite}
+    const reorderFavorite = (favoritesId : string, indexChange : number) => {
+        let newFavorites = {favorites: favoritesState.favorites, favoritesIds: favoritesState.favoritesIds}
+        let favoriteIndex = newFavorites.favoritesIds.indexOf(favoritesId)
+        if ((indexChange < 0 && favoriteIndex > 0) || (indexChange > 0 && favoriteIndex < newFavorites.favoritesIds.length - 1)) {
+            newFavorites.favoritesIds.splice(favoriteIndex, 1)
+            let deletedFavorite = newFavorites.favorites.splice(favoriteIndex, 1)
+            log.info(`removed favorite ${favoritesId} from initial position`)
+            newFavorites.favoritesIds.splice(favoriteIndex + indexChange, 0, favoritesId)
+            newFavorites.favorites.splice(favoriteIndex + indexChange, 0, deletedFavorite[0])
+            log.info(`reinserted favorite ${favoritesId} at position ${favoriteIndex + indexChange} (${indexChange})`)
+            setFavoritesCookies(newFavorites)
+            setFavoritesState(newFavorites)
+            log.info("updated favorites state",favoritesState)
+        }
+    }
+
+    return {addFavorite,removeFavorite,isFavorite, reorderFavorite}
 }
 
 
