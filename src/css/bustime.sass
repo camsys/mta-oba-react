@@ -614,55 +614,71 @@
       top: $google-translate-bar-height
       height: calc(100% - $google-translate-bar-height)
   .beta-bar
-    background-color: $black3
-    color: $white
+    background-color: $original-mta-yellow
+    color: $black2
     display: flex
-    align-itrems: stretch
-    justify-content: space-between
-    line-height: 1rem
+    align-items: center
+    gap: .5rem
+    padding: .625rem $content-padding
     border-bottom: 1px solid $black
-    strong
-      display: inline-flex
-      background-color: $original-mta-yellow
-      color: $black
-      padding: .5rem $content-padding
-      font-size: 1.125rem
-      align-itrems: center
+    &-dismiss
+      flex-shrink: 0
+      display: flex
+      align-items: center
       justify-content: center
-    a
-      font-size: .875rem
-      color: $black
-      display: inline-flex
-      align-itrems: left
-      justify-content: left
+      width: 22px
+      height: 22px
+      padding: 0
+      background-color: transparent
+      border: none
+      cursor: pointer
+      img
+        width: 100%
+        height: 100%
+      &:focus-visible
+        outline: 2px solid $black2
+        outline-offset: 2px
+    &-link
+      flex-grow: 1
+      display: flex
+      align-items: center
       gap: .5rem
-      padding: .5rem $content-padding
-      background-color: $original-mta-yellow
+      color: $black2
+      text-decoration: none
+      &:focus-visible
+        outline: 2px solid $black2
+        outline-offset: 2px
+    &-text
+      display: flex
+      flex-direction: column
+      gap: .1875rem
+      flex-grow: 1
+      min-width: 0
+    &-chip
+      display: inline-flex
+      align-self: flex-start
+      background-color: $black2
+      color: $original-mta-yellow
+      font-weight: bold
+      font-size: .75rem
+      letter-spacing: .05em
+      text-transform: uppercase
+      padding: .325rem
+      border-radius: 2px
+      line-height: 1.2
+    &-detail
+      color: $black2
+      font-size: .875rem
       font-weight: normal
-      text-underline-offset: .2rem
-      transition: background-color .25s ease-in-out
-      width: 100%
-      line-height: 1.5rem
-      &::after
-        content: ''
-        display: inline-block
-        width: 1rem
-        height: 1rem
-        background-size: auto 100%
-        background-repeat: no-repeat
-        background-position: center
-        background-image: url(../img/icon/right-caret_white.svg)
-        position: relative
-        left: 0
-        align-self: center
-        transition: left .25s ease-in-out
-        filter: invert(1)
-      &:hover, &:focus
-        border: none
-        outline: none
-        text-decoration: underline 2px solid
-        &::after
-          left: .125rem
+      line-height: 1.5
+    &-underline
+      text-decoration: underline
+      text-decoration-color: $black2
+      text-underline-offset: .15rem
+    &-chevron
+      flex-shrink: 0
+      margin-left: auto
+      color: $black2
 
   .header
     background-color: $black2
