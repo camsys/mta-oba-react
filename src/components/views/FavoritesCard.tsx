@@ -12,7 +12,7 @@ import { SelectableFavoriteRouteCard, SelectableFavoriteStopCard } from "./CardH
 
 
 
-export const FavoriteItem = ({datum, showReorder: showReorder} : {datum: RouteInterface | StopInterface, showReorder: boolean}) =>{
+export const FavoriteItem = ({datum, showReorder} : {datum: RouteInterface | StopInterface, showReorder: boolean}) =>{
    let {removeFavorite} = useFavorite();
     let {search} = useNavigation()
 
@@ -20,7 +20,7 @@ export const FavoriteItem = ({datum, showReorder: showReorder} : {datum: RouteIn
         return(<SelectableFavoriteRouteCard routeMatch={datum} showReorder={showReorder}/>)
     }
     if(isStopInterface(datum)){
-        return(<SelectableFavoriteStopCard stopDatum={datum} showSort={showReorder}/>)
+        return(<SelectableFavoriteStopCard stopDatum={datum} showReorder={showReorder}/>)
     }
 }
 
@@ -41,6 +41,7 @@ export function FavoritesWrapper():JSX.Element{
         <button
             type="button"
             aria-label="Reorder favorites"
+            aria-pressed={showReorder}
             className="w-full flex items-center justify-center gap-1 mb-3 px-4 py-2 rounded-sm border-none bg-mta-green text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-mta-dark-blue focus-visible:outline-offset-2"
             onClick={()=>setShowReorder(!showReorder)}
         >

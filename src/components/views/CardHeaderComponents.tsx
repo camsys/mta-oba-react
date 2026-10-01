@@ -131,7 +131,7 @@ function FavoriteReorderButtons({datumId, label}: {datumId: string, label: strin
     )
 }
 
-export const SelectableFavoriteRouteCard = ({routeMatch, showReorder: showReorder}:{routeMatch:RouteInterface, showReorder:boolean}) =>{
+export const SelectableFavoriteRouteCard = ({routeMatch, showReorder}:{routeMatch:RouteInterface, showReorder:boolean}) =>{
     let {search} = useNavigation()
     {
         return(<React.Fragment>
