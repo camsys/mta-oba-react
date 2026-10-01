@@ -131,12 +131,12 @@ function FavoriteReorderButtons({datumId, label}: {datumId: string, label: strin
     )
 }
 
-export const SelectableFavoriteRouteCard = ({routeMatch, showReorder: showSort}:{routeMatch:RouteInterface, showReorder:boolean}) =>{
+export const SelectableFavoriteRouteCard = ({routeMatch, showReorder: showReorder}:{routeMatch:RouteInterface, showReorder:boolean}) =>{
     let {search} = useNavigation()
     {
         return(<React.Fragment>
             <div className={"card-wrapper flex flex-row items-stretch gap-1"}>
-                {showSort && <FavoriteReorderButtons datumId={routeMatch.datumId} label={routeMatch.datumName}/>}
+                {showReorder && <FavoriteReorderButtons datumId={routeMatch.datumId} label={routeMatch.datumName}/>}
                 <div className={`card route-card ${routeMatch.routeId}`} onClick={()=>search(routeMatch.routeId)}>
                     <button
                         className="group card-header link-header"
@@ -155,11 +155,11 @@ export const SelectableFavoriteRouteCard = ({routeMatch, showReorder: showSort}:
     }
 }
 
-export const SelectableFavoriteStopCard = ({stopDatum, showSort}:{stopDatum:StopInterface, showSort:boolean}) =>{
+export const SelectableFavoriteStopCard = ({stopDatum, showReorder}:{stopDatum:StopInterface, showReorder:boolean}) =>{
     let {search} = useNavigation()
     return(<React.Fragment>
             <div className={"card-wrapper flex flex-row items-stretch gap-1"}>
-                {showSort && <FavoriteReorderButtons datumId={stopDatum.datumId} label={stopDatum.datumName}/>}
+                {showReorder && <FavoriteReorderButtons datumId={stopDatum.datumId} label={stopDatum.datumName}/>}
                 <div className={`card route-card ${stopDatum.id.split("_")[1]}`} onClick={()=>search(stopDatum.id.split("_")[1])}>
                     <button
                         className="group card-header link-header border-color-mta-dark-blue"
