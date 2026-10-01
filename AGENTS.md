@@ -22,5 +22,7 @@ The README and Dockerfile mention `npm run start` / `build-css`, which no longer
 ## Rules
 - **Env config defaults in `webpack.config.js`:** use `??`, not `||`, for any variable that a remote env config must be able to set to `''` (e.g. `BETA_BANNER_TEXT`, `BETA_BANNER_LINK`), and add its key to `test/webpack.config.test.js` (or, if it isn't a `DefinePlugin` value, a test showing `''` turns it off, as in `test/gaTag.test.js`).
   Why: `||` treats `''` as missing and silently restores the default, so an environment can't turn the feature off.
+- **Google tag on every page:** new HTML pages in `public/` need `<!-- GA_TAG_INJECTION_MARKER: replaced at build time by webpack.config.js -->` as the first line inside `<head>`. CI fails the build otherwise (`npm test`, then `npm run check-ga-tag` over `dist/`).
+  Why: MTA compares usage between the new and classic sites; a page without the tag silently drops out of those numbers.
 - **Versioning:** `package.json`, `package-lock.json` and `public/version.json` must match. `npm version` syncs them through `scripts/sync-version.mjs`.
   Why: deploys are tagged by version and the app reports `version.json`. See "How to deploy" in README.md.
