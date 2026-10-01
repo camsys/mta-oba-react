@@ -9,7 +9,7 @@ import {useNavigation} from "../../js/updateState/NavigationEffect.ts";
 import {setCookie, getCookie} from "../util/appCookies.js";
 
 const SURVEY_BANNER_DISMISSED_COOKIE = "surveyBannerDismissed";
-const SURVEY_BANNER_DISMISS_DAYS = 1;
+const SURVEY_BANNER_DISMISS_DAYS = 2;
 
 // BETA_BANNER_TEXT may mark a portion to underline by wrapping it in double underscores
 
