@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.tsx",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "node --test test/*.test.js",
     "build": "NODE_ENV=production webpack --mode production --config webpack.config.js",
     "dev-start": "NODE_ENV=development webpack serve --config webpack.config.js",
     "dev-start:clean": "npx madge --circular src; rm -rf dist .webpack-cache .tsbuildinfo; webpack serve --config webpack.config.js",
