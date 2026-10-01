@@ -20,7 +20,7 @@ The README and Dockerfile mention `npm run start` / `build-css`, which no longer
   Why: README notes the JS data models were a workaround for the lack of typing.
 
 ## Rules
-- **Env config defaults in `webpack.config.js`:** use `??`, not `||`, for any variable that a remote env config must be able to set to `''` (e.g. `BETA_BANNER_TEXT`, `BETA_BANNER_LINK`), and add its key to `test/webpack.config.test.js`.
+- **Env config defaults in `webpack.config.js`:** use `??`, not `||`, for any variable that a remote env config must be able to set to `''` (e.g. `BETA_BANNER_TEXT`, `BETA_BANNER_LINK`), and add its key to `test/webpack.config.test.js` (or, if it isn't a `DefinePlugin` value, a test showing `''` turns it off, as in `test/gaTag.test.js`).
   Why: `||` treats `''` as missing and silently restores the default, so an environment can't turn the feature off.
 - **Versioning:** `package.json`, `package-lock.json` and `public/version.json` must match. `npm version` syncs them through `scripts/sync-version.mjs`.
   Why: deploys are tagged by version and the app reports `version.json`. See "How to deploy" in README.md.
