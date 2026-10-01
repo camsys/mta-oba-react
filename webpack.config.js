@@ -11,6 +11,21 @@ const tracking_host_address = process.env.ALLOWED_HOST_ADDRESS ?
   "https://" + process.env.ALLOWED_HOST_ADDRESS :
   'http://localhost:8081'
 
+// Google Analytics tag, injected right after <head> in every page at build time.
+// Empty (the default) means no tag, so local/dev builds don't report to either property.
+const gaMeasurementId = process.env.GA_MEASUREMENT_ID ?? '';
+if (gaMeasurementId && !/^G-[A-Z0-9]+$/.test(gaMeasurementId)) {
+  throw new Error(`Invalid GA_MEASUREMENT_ID: ${gaMeasurementId}`);
+}
+const gaTag = gaMeasurementId ? `<!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=${gaMeasurementId}"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', '${gaMeasurementId}', { site_version: 'new' });
+    </script>` : '';
+const GA_MARKER = '<!-- GA_TAG_INJECTION_MARKER: replaced at build time by webpack.config.js -->';
 
 // Environment variables setup using DefinePlugin
 const envPlugin = new webpack.DefinePlugin({
@@ -83,12 +98,20 @@ module.exports = {
   plugins: [
     new HtmlWebPackPlugin({
       template: "./src/index.html",
-      filename: "./index.html"
+      filename: "./index.html",
+      templateParameters: { gaTag }
     }), 
     envPlugin,
     new CopyPlugin({
       patterns: [
-        { from: "public", to: "." }
+        {
+          from: "public",
+          to: ".",
+          transform: (content, absoluteFrom) =>
+            absoluteFrom.endsWith('.html')
+              ? content.toString().replace(GA_MARKER, gaTag)
+              : content
+        }
       ]
     }),
     new MiniCssExtractPlugin({

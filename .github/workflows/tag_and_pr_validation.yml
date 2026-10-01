@@ -26,7 +26,16 @@ jobs:
       - name: Security Audit
         run: npm audit --audit-level=high
 
+      - name: Tests
+        run: npm test
+
       - name: Build Check
         run: npm run build
         env:
           CI: true
+          GA_MEASUREMENT_ID: G-TEST1234
+
+      - name: Google tag on every page
+        run: npm run check-ga-tag
+        env:
+          GA_MEASUREMENT_ID: G-TEST1234
