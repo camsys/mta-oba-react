@@ -1,5 +1,5 @@
 {
-  "recordedAt": "2026-10-02T15:26:45.705Z",
+  "recordedAt": "2026-10-02T21:45:05.511Z",
   "source": "app.qa.obanyc.com",
   "responses": {
     "GET /api/search-v2?newUI=true&q=B63": [
@@ -823,18 +823,6 @@
         }
       }
     ],
-    "GET /api/autocomplete?term=B63": [
-      {
-        "status": 200,
-        "contentType": "application/json;charset=UTF-8",
-        "body": [
-          {
-            "label": "B63",
-            "value": "B63"
-          }
-        ]
-      }
-    ],
     "GET /api/siri/vehicle-monitoring.json?LineRef=MTA+NYCT_B63&newUI=true&OperatorRef=MTA+NYCT": [
       {
         "status": 200,
@@ -842,7 +830,7 @@
         "body": {
           "Siri": {
             "ServiceDelivery": {
-              "ResponseTimestamp": "2026-10-02T11:26:46.612-04:00",
+              "ResponseTimestamp": "2026-10-02T17:45:05.813-04:00",
               "VehicleMonitoringDelivery": [
                 {
                   "VehicleActivity": [
@@ -852,7 +840,7 @@
                         "DirectionRef": "1",
                         "FramedVehicleJourneyRef": {
                           "DataFrameRef": "2026-10-02",
-                          "DatedVehicleJourneyRef": "MTA NYCT_JG_D6-Weekday-SDon-059800_B63_655"
+                          "DatedVehicleJourneyRef": "MTA NYCT_JG_D6-Weekday-SDon-097100_B63_659"
                         },
                         "JourneyPatternRef": "MTA_B630077",
                         "PublishedLineName": "B63",
@@ -866,140 +854,36 @@
                         ],
                         "Monitored": true,
                         "VehicleLocation": {
-                          "Longitude": -74.035899,
-                          "Latitude": 40.612361
+                          "Longitude": -74.00937,
+                          "Latitude": 40.646001
                         },
-                        "Bearing": 316.38965,
-                        "ProgressRate": "noProgress",
-                        "ProgressStatus": "layover",
-                        "VehicleRef": "MTA NYCT_747",
-                        "MonitoredCall": {
-                          "AimedArrivalTime": "2026-10-02T11:24:00.000-04:00",
-                          "ExpectedArrivalTime": "2026-10-02T11:26:47.612-04:00",
-                          "AimedDepartureTime": "2026-10-02T11:24:00.000-04:00",
-                          "ExpectedDepartureTime": "2026-10-02T11:26:47.612-04:00",
-                          "Extensions": {
-                            "Distances": {
-                              "PresentableDistance": "at stop",
-                              "DistanceFromCall": 0,
-                              "StopsFromCall": 0,
-                              "CallDistanceAlongRoute": 12240.99
-                            },
-                            "VehicleFeatures": {
-                              "StrollerVehicle": true
-                            }
-                          },
-                          "StopPointRef": "MTA_801042",
-                          "VisitNumber": 1,
-                          "StopPointName": "SHORE RD/3 AV"
-                        },
-                        "OnwardCalls": {}
-                      },
-                      "RecordedAtTime": "2026-10-02T11:26:42.582-04:00"
-                    },
-                    {
-                      "MonitoredVehicleJourney": {
-                        "LineRef": "MTA NYCT_B63",
-                        "DirectionRef": "1",
-                        "FramedVehicleJourneyRef": {
-                          "DataFrameRef": "2026-10-02",
-                          "DatedVehicleJourneyRef": "MTA NYCT_JG_D6-Weekday-SDon-068800_B37_602"
-                        },
-                        "JourneyPatternRef": "MTA_B630077",
-                        "PublishedLineName": "B63",
-                        "OperatorRef": "MTA NYCT",
-                        "OriginRef": "MTA_308616",
-                        "DestinationName": "BAY RIDGE SHORE RD via 5 AV",
-                        "OriginAimedDepartureTime": "2026-10-02T11:28:00.000-04:00",
-                        "SituationRef": [
-                          {
-                            "SituationSimpleRef": "MTA NYCT_lmm:planned_work:29537"
-                          }
-                        ],
-                        "Monitored": true,
-                        "VehicleLocation": {
-                          "Longitude": -74.00084,
-                          "Latitude": 40.693049
-                        },
-                        "Bearing": 163.95099,
-                        "ProgressRate": "noProgress",
-                        "ProgressStatus": "layover",
-                        "BlockRef": "MTA NYCT_JG_D6-Weekday-SDon_E_JG_22800_B63-660",
-                        "VehicleRef": "MTA NYCT_354",
-                        "MonitoredCall": {
-                          "AimedArrivalTime": "2026-10-02T11:28:00.000-04:00",
-                          "ExpectedArrivalTime": "2026-10-02T11:28:00.000-04:00",
-                          "AimedDepartureTime": "2026-10-02T11:28:00.000-04:00",
-                          "ExpectedDepartureTime": "2026-10-02T11:28:00.000-04:00",
-                          "Extensions": {
-                            "Distances": {
-                              "PresentableDistance": "at stop",
-                              "DistanceFromCall": 0,
-                              "StopsFromCall": 0,
-                              "CallDistanceAlongRoute": 0
-                            },
-                            "VehicleFeatures": {
-                              "StrollerVehicle": true
-                            }
-                          },
-                          "StopPointRef": "MTA_308616",
-                          "VisitNumber": 1,
-                          "StopPointName": "BROOKLYN BRIDGE PARK/PIER 6"
-                        },
-                        "OnwardCalls": {}
-                      },
-                      "RecordedAtTime": "2026-10-02T11:26:14.000-04:00"
-                    },
-                    {
-                      "MonitoredVehicleJourney": {
-                        "LineRef": "MTA NYCT_B63",
-                        "DirectionRef": "1",
-                        "FramedVehicleJourneyRef": {
-                          "DataFrameRef": "2026-10-02",
-                          "DatedVehicleJourneyRef": "MTA NYCT_JG_D6-Weekday-SDon-062800_B63_657"
-                        },
-                        "JourneyPatternRef": "MTA_B630077",
-                        "PublishedLineName": "B63",
-                        "OperatorRef": "MTA NYCT",
-                        "OriginRef": "MTA_308616",
-                        "DestinationName": "BAY RIDGE SHORE RD via 5 AV",
-                        "SituationRef": [
-                          {
-                            "SituationSimpleRef": "MTA NYCT_lmm:planned_work:29537"
-                          }
-                        ],
-                        "Monitored": true,
-                        "VehicleLocation": {
-                          "Longitude": -74.016348,
-                          "Latitude": 40.639303
-                        },
-                        "Bearing": 225,
+                        "Bearing": 222.67398,
                         "ProgressRate": "normalProgress",
-                        "BlockRef": "MTA NYCT_JG_D6-Weekday-SDon_E_JG_19800_B63-657",
-                        "VehicleRef": "MTA NYCT_433",
+                        "BlockRef": "MTA NYCT_JG_D6-Weekday-SDon_E_JG_38340_B63-672",
+                        "VehicleRef": "MTA NYCT_660",
                         "MonitoredCall": {
-                          "AimedArrivalTime": "2026-10-02T11:27:31.000-04:00",
-                          "ExpectedArrivalTime": "2026-10-02T11:26:47.612-04:00",
-                          "AimedDepartureTime": "2026-10-02T11:27:31.000-04:00",
-                          "ExpectedDepartureTime": "2026-10-02T11:26:47.612-04:00",
+                          "AimedArrivalTime": "2026-10-02T17:04:55.000-04:00",
+                          "ExpectedArrivalTime": "2026-10-02T17:45:06.813-04:00",
+                          "AimedDepartureTime": "2026-10-02T17:04:55.000-04:00",
+                          "ExpectedDepartureTime": "2026-10-02T17:45:06.813-04:00",
                           "Extensions": {
                             "Distances": {
                               "PresentableDistance": "at stop",
-                              "DistanceFromCall": 10.22,
+                              "DistanceFromCall": 2.4,
                               "StopsFromCall": 0,
-                              "CallDistanceAlongRoute": 8515.91
+                              "CallDistanceAlongRoute": 7558.61
                             },
                             "VehicleFeatures": {
                               "StrollerVehicle": true
                             }
                           },
-                          "StopPointRef": "MTA_308338",
+                          "StopPointRef": "MTA_305442",
                           "VisitNumber": 1,
-                          "StopPointName": "5 AV/60 ST"
+                          "StopPointName": "5 AV/48 ST"
                         },
                         "OnwardCalls": {}
                       },
-                      "RecordedAtTime": "2026-10-02T11:26:23.000-04:00"
+                      "RecordedAtTime": "2026-10-02T17:44:51.000-04:00"
                     },
                     {
                       "MonitoredVehicleJourney": {
@@ -1007,7 +891,7 @@
                         "DirectionRef": "0",
                         "FramedVehicleJourneyRef": {
                           "DataFrameRef": "2026-10-02",
-                          "DatedVehicleJourneyRef": "MTA NYCT_JG_D6-Weekday-SDon-062300_B63_663"
+                          "DatedVehicleJourneyRef": "MTA NYCT_JG_D6-Weekday-SDon-094900_B63_681"
                         },
                         "JourneyPatternRef": "MTA_B630081",
                         "PublishedLineName": "B63",
@@ -1021,28 +905,454 @@
                         ],
                         "Monitored": true,
                         "VehicleLocation": {
-                          "Longitude": -73.980286,
-                          "Latitude": 40.676581
+                          "Longitude": -73.996093,
+                          "Latitude": 40.690708
                         },
-                        "Bearing": 56.309933,
+                        "Bearing": 164.43004,
+                        "ProgressRate": "normalProgress",
+                        "Occupancy": "seatsAvailable",
+                        "BlockRef": "MTA NYCT_JG_D6-Weekday-SDon_E_JG_49440_B63-681",
+                        "VehicleRef": "MTA NYCT_780",
+                        "MonitoredCall": {
+                          "AimedArrivalTime": "2026-10-02T17:13:31.000-04:00",
+                          "ExpectedArrivalTime": "2026-10-02T17:45:06.813-04:00",
+                          "AimedDepartureTime": "2026-10-02T17:13:31.000-04:00",
+                          "ExpectedDepartureTime": "2026-10-02T17:45:06.813-04:00",
+                          "Extensions": {
+                            "Distances": {
+                              "PresentableDistance": "at stop",
+                              "DistanceFromCall": 2.59,
+                              "StopsFromCall": 0,
+                              "CallDistanceAlongRoute": 11542.43
+                            },
+                            "Capacities": {
+                              "EstimatedPassengerCount": 10,
+                              "EstimatedPassengerCapacity": 80,
+                              "EstimatedPassengerLoadFactor": "manySeatsAvailable"
+                            },
+                            "VehicleFeatures": {
+                              "StrollerVehicle": true
+                            }
+                          },
+                          "StopPointRef": "MTA_305217",
+                          "VisitNumber": 1,
+                          "StopPointName": "ATLANTIC AV/HENRY ST"
+                        },
+                        "OnwardCalls": {}
+                      },
+                      "RecordedAtTime": "2026-10-02T17:44:35.000-04:00"
+                    },
+                    {
+                      "MonitoredVehicleJourney": {
+                        "LineRef": "MTA NYCT_B63",
+                        "DirectionRef": "1",
+                        "FramedVehicleJourneyRef": {
+                          "DataFrameRef": "2026-10-02",
+                          "DatedVehicleJourneyRef": "MTA NYCT_JG_D6-Weekday-SDon-102600_B63_667"
+                        },
+                        "JourneyPatternRef": "MTA_B630077",
+                        "PublishedLineName": "B63",
+                        "OperatorRef": "MTA NYCT",
+                        "OriginRef": "MTA_308616",
+                        "DestinationName": "BAY RIDGE SHORE RD via 5 AV",
+                        "SituationRef": [
+                          {
+                            "SituationSimpleRef": "MTA NYCT_lmm:planned_work:29537"
+                          }
+                        ],
+                        "Monitored": true,
+                        "VehicleLocation": {
+                          "Longitude": -73.996414,
+                          "Latitude": 40.690795
+                        },
+                        "Bearing": 344.96783,
+                        "ProgressRate": "normalProgress",
+                        "BlockRef": "MTA NYCT_JG_D6-Weekday-SDon_E_JG_19800_B63-657",
+                        "VehicleRef": "MTA NYCT_433",
+                        "MonitoredCall": {
+                          "AimedArrivalTime": "2026-10-02T17:10:07.000-04:00",
+                          "ExpectedArrivalTime": "2026-10-02T17:45:06.813-04:00",
+                          "AimedDepartureTime": "2026-10-02T17:10:07.000-04:00",
+                          "ExpectedDepartureTime": "2026-10-02T17:45:06.813-04:00",
+                          "Extensions": {
+                            "Distances": {
+                              "PresentableDistance": "at stop",
+                              "DistanceFromCall": 4.66,
+                              "StopsFromCall": 0,
+                              "CallDistanceAlongRoute": 575.86
+                            },
+                            "VehicleFeatures": {
+                              "StrollerVehicle": true
+                            }
+                          },
+                          "StopPointRef": "MTA_305110",
+                          "VisitNumber": 1,
+                          "StopPointName": "ATLANTIC AV/HENRY ST"
+                        },
+                        "OnwardCalls": {}
+                      },
+                      "RecordedAtTime": "2026-10-02T17:44:44.000-04:00"
+                    },
+                    {
+                      "MonitoredVehicleJourney": {
+                        "LineRef": "MTA NYCT_B63",
+                        "DirectionRef": "1",
+                        "FramedVehicleJourneyRef": {
+                          "DataFrameRef": "2026-10-02",
+                          "DatedVehicleJourneyRef": "MTA NYCT_JG_D6-Weekday-SDon-099800_B63_669"
+                        },
+                        "JourneyPatternRef": "MTA_B630077",
+                        "PublishedLineName": "B63",
+                        "OperatorRef": "MTA NYCT",
+                        "OriginRef": "MTA_308616",
+                        "DestinationName": "BAY RIDGE SHORE RD via 5 AV",
+                        "SituationRef": [
+                          {
+                            "SituationSimpleRef": "MTA NYCT_lmm:planned_work:29537"
+                          }
+                        ],
+                        "Monitored": true,
+                        "VehicleLocation": {
+                          "Longitude": -74.004108,
+                          "Latitude": 40.651047
+                        },
+                        "Bearing": 223.0488,
+                        "ProgressRate": "normalProgress",
+                        "BlockRef": "MTA NYCT_JG_D6-Weekday-SDon_E_JG_18600_B63-655",
+                        "VehicleRef": "MTA NYCT_265",
+                        "MonitoredCall": {
+                          "AimedArrivalTime": "2026-10-02T17:27:00.000-04:00",
+                          "ExpectedArrivalTime": "2026-10-02T17:45:06.813-04:00",
+                          "AimedDepartureTime": "2026-10-02T17:27:00.000-04:00",
+                          "ExpectedDepartureTime": "2026-10-02T17:45:06.813-04:00",
+                          "Extensions": {
+                            "Distances": {
+                              "PresentableDistance": "at stop",
+                              "DistanceFromCall": 5.19,
+                              "StopsFromCall": 0,
+                              "CallDistanceAlongRoute": 6845.77
+                            },
+                            "VehicleFeatures": {
+                              "StrollerVehicle": true
+                            }
+                          },
+                          "StopPointRef": "MTA_305438",
+                          "VisitNumber": 1,
+                          "StopPointName": "5 AV/39 ST"
+                        },
+                        "OnwardCalls": {}
+                      },
+                      "RecordedAtTime": "2026-10-02T17:44:35.000-04:00"
+                    },
+                    {
+                      "MonitoredVehicleJourney": {
+                        "LineRef": "MTA NYCT_B63",
+                        "DirectionRef": "0",
+                        "FramedVehicleJourneyRef": {
+                          "DataFrameRef": "2026-10-02",
+                          "DatedVehicleJourneyRef": "MTA NYCT_JG_D6-Weekday-SDon-100000_B37_605"
+                        },
+                        "JourneyPatternRef": "MTA_B630081",
+                        "PublishedLineName": "B63",
+                        "OperatorRef": "MTA NYCT",
+                        "OriginRef": "MTA_306619",
+                        "DestinationName": "PIER 6 BKLYN BRIDGE PARK via 5 AV",
+                        "SituationRef": [
+                          {
+                            "SituationSimpleRef": "MTA NYCT_lmm:planned_work:29537"
+                          }
+                        ],
+                        "Monitored": true,
+                        "VehicleLocation": {
+                          "Longitude": -73.983142,
+                          "Latitude": 40.672968
+                        },
+                        "Bearing": 49.754025,
+                        "ProgressRate": "normalProgress",
+                        "BlockRef": "MTA NYCT_JG_D6-Weekday-SDon_E_JG_22800_B63-660",
+                        "VehicleRef": "MTA NYCT_354",
+                        "MonitoredCall": {
+                          "AimedArrivalTime": "2026-10-02T17:41:40.000-04:00",
+                          "ExpectedArrivalTime": "2026-10-02T17:45:06.813-04:00",
+                          "AimedDepartureTime": "2026-10-02T17:41:40.000-04:00",
+                          "ExpectedDepartureTime": "2026-10-02T17:45:06.813-04:00",
+                          "Extensions": {
+                            "Distances": {
+                              "PresentableDistance": "at stop",
+                              "DistanceFromCall": 10.7,
+                              "StopsFromCall": 0,
+                              "CallDistanceAlongRoute": 8338.95
+                            },
+                            "VehicleFeatures": {
+                              "StrollerVehicle": true
+                            }
+                          },
+                          "StopPointRef": "MTA_308207",
+                          "VisitNumber": 1,
+                          "StopPointName": "5 AV/3 ST"
+                        },
+                        "OnwardCalls": {}
+                      },
+                      "RecordedAtTime": "2026-10-02T17:44:45.000-04:00"
+                    },
+                    {
+                      "MonitoredVehicleJourney": {
+                        "LineRef": "MTA NYCT_B63",
+                        "DirectionRef": "0",
+                        "FramedVehicleJourneyRef": {
+                          "DataFrameRef": "2026-10-02",
+                          "DatedVehicleJourneyRef": "MTA NYCT_JG_D6-Weekday-SDon-104600_B63_671"
+                        },
+                        "JourneyPatternRef": "MTA_B630081",
+                        "PublishedLineName": "B63",
+                        "OperatorRef": "MTA NYCT",
+                        "OriginRef": "MTA_306619",
+                        "DestinationName": "PIER 6 BKLYN BRIDGE PARK via 5 AV",
+                        "SituationRef": [
+                          {
+                            "SituationSimpleRef": "MTA NYCT_lmm:planned_work:29537"
+                          }
+                        ],
+                        "Monitored": true,
+                        "VehicleLocation": {
+                          "Longitude": -74.031027,
+                          "Latitude": 40.615844
+                        },
+                        "Bearing": 33.111343,
+                        "ProgressRate": "normalProgress",
+                        "Occupancy": "seatsAvailable",
+                        "BlockRef": "MTA NYCT_JG_D6-Weekday-SDon_E_JG_25200_B63-665",
+                        "VehicleRef": "MTA NYCT_792",
+                        "MonitoredCall": {
+                          "AimedArrivalTime": "2026-10-02T17:31:23.000-04:00",
+                          "ExpectedArrivalTime": "2026-10-02T17:45:06.813-04:00",
+                          "AimedDepartureTime": "2026-10-02T17:31:23.000-04:00",
+                          "ExpectedDepartureTime": "2026-10-02T17:45:06.813-04:00",
+                          "Extensions": {
+                            "Distances": {
+                              "PresentableDistance": "at stop",
+                              "DistanceFromCall": 15.99,
+                              "StopsFromCall": 0,
+                              "CallDistanceAlongRoute": 739.36
+                            },
+                            "Capacities": {
+                              "EstimatedPassengerCount": 10,
+                              "EstimatedPassengerCapacity": 80,
+                              "EstimatedPassengerLoadFactor": "manySeatsAvailable"
+                            },
+                            "VehicleFeatures": {
+                              "StrollerVehicle": true
+                            }
+                          },
+                          "StopPointRef": "MTA_308130",
+                          "VisitNumber": 1,
+                          "StopPointName": "5 AV/95 ST"
+                        },
+                        "OnwardCalls": {}
+                      },
+                      "RecordedAtTime": "2026-10-02T17:44:40.000-04:00"
+                    },
+                    {
+                      "MonitoredVehicleJourney": {
+                        "LineRef": "MTA NYCT_B63",
+                        "DirectionRef": "0",
+                        "FramedVehicleJourneyRef": {
+                          "DataFrameRef": "2026-10-02",
+                          "DatedVehicleJourneyRef": "MTA NYCT_JG_D6-Weekday-SDon-102200_B63_673"
+                        },
+                        "JourneyPatternRef": "MTA_B630081",
+                        "PublishedLineName": "B63",
+                        "OperatorRef": "MTA NYCT",
+                        "OriginRef": "MTA_306619",
+                        "DestinationName": "PIER 6 BKLYN BRIDGE PARK via 5 AV",
+                        "SituationRef": [
+                          {
+                            "SituationSimpleRef": "MTA NYCT_lmm:planned_work:29537"
+                          }
+                        ],
+                        "Monitored": true,
+                        "VehicleLocation": {
+                          "Longitude": -74.008478,
+                          "Latitude": 40.646868
+                        },
+                        "Bearing": 43.470905,
+                        "ProgressRate": "normalProgress",
+                        "BlockRef": "MTA NYCT_JG_D6-Weekday-SDon_E_JG_35280_B63-670",
+                        "VehicleRef": "MTA NYCT_459",
+                        "MonitoredCall": {
+                          "AimedArrivalTime": "2026-10-02T17:39:10.000-04:00",
+                          "ExpectedArrivalTime": "2026-10-02T17:45:06.813-04:00",
+                          "AimedDepartureTime": "2026-10-02T17:39:10.000-04:00",
+                          "ExpectedDepartureTime": "2026-10-02T17:45:06.813-04:00",
+                          "Extensions": {
+                            "Distances": {
+                              "PresentableDistance": "at stop",
+                              "DistanceFromCall": 20.11,
+                              "StopsFromCall": 0,
+                              "CallDistanceAlongRoute": 4739.52
+                            },
+                            "VehicleFeatures": {
+                              "StrollerVehicle": true
+                            }
+                          },
+                          "StopPointRef": "MTA_308328",
+                          "VisitNumber": 1,
+                          "StopPointName": "5 AV/47 ST"
+                        },
+                        "OnwardCalls": {}
+                      },
+                      "RecordedAtTime": "2026-10-02T17:44:42.000-04:00"
+                    },
+                    {
+                      "MonitoredVehicleJourney": {
+                        "LineRef": "MTA NYCT_B63",
+                        "DirectionRef": "1",
+                        "FramedVehicleJourneyRef": {
+                          "DataFrameRef": "2026-10-02",
+                          "DatedVehicleJourneyRef": "MTA NYCT_JG_D6-Weekday-SDon-100700_B63_662"
+                        },
+                        "JourneyPatternRef": "MTA_B630077",
+                        "PublishedLineName": "B63",
+                        "OperatorRef": "MTA NYCT",
+                        "OriginRef": "MTA_308616",
+                        "DestinationName": "BAY RIDGE SHORE RD via 5 AV",
+                        "SituationRef": [
+                          {
+                            "SituationSimpleRef": "MTA NYCT_lmm:planned_work:29537"
+                          }
+                        ],
+                        "Monitored": true,
+                        "VehicleLocation": {
+                          "Longitude": -73.995012,
+                          "Latitude": 40.659808
+                        },
+                        "Bearing": 223.02507,
+                        "ProgressRate": "normalProgress",
+                        "Occupancy": "seatsAvailable",
+                        "BlockRef": "MTA NYCT_JG_D6-Weekday-SDon_E_JG_41220_B63-661",
+                        "VehicleRef": "MTA NYCT_747",
+                        "MonitoredCall": {
+                          "AimedArrivalTime": "2026-10-02T17:28:17.000-04:00",
+                          "ExpectedArrivalTime": "2026-10-02T17:45:10.471-04:00",
+                          "AimedDepartureTime": "2026-10-02T17:28:17.000-04:00",
+                          "ExpectedDepartureTime": "2026-10-02T17:45:10.471-04:00",
+                          "Extensions": {
+                            "Distances": {
+                              "PresentableDistance": "approaching",
+                              "DistanceFromCall": 49.23,
+                              "StopsFromCall": 0,
+                              "CallDistanceAlongRoute": 5649.73
+                            },
+                            "Capacities": {
+                              "EstimatedPassengerCount": 22,
+                              "EstimatedPassengerCapacity": 80,
+                              "EstimatedPassengerLoadFactor": "manySeatsAvailable"
+                            },
+                            "VehicleFeatures": {
+                              "StrollerVehicle": true
+                            }
+                          },
+                          "StopPointRef": "MTA_305431",
+                          "VisitNumber": 1,
+                          "StopPointName": "5 AV/24 ST"
+                        },
+                        "OnwardCalls": {}
+                      },
+                      "RecordedAtTime": "2026-10-02T17:44:52.582-04:00"
+                    },
+                    {
+                      "MonitoredVehicleJourney": {
+                        "LineRef": "MTA NYCT_B63",
+                        "DirectionRef": "0",
+                        "FramedVehicleJourneyRef": {
+                          "DataFrameRef": "2026-10-02",
+                          "DatedVehicleJourneyRef": "MTA NYCT_JG_D6-Weekday-SDon-097800_B63_684"
+                        },
+                        "JourneyPatternRef": "MTA_B630081",
+                        "PublishedLineName": "B63",
+                        "OperatorRef": "MTA NYCT",
+                        "OriginRef": "MTA_306619",
+                        "DestinationName": "PIER 6 BKLYN BRIDGE PARK via 5 AV",
+                        "SituationRef": [
+                          {
+                            "SituationSimpleRef": "MTA NYCT_lmm:planned_work:29537"
+                          }
+                        ],
+                        "Monitored": true,
+                        "VehicleLocation": {
+                          "Longitude": -73.980133,
+                          "Latitude": 40.685101
+                        },
+                        "Bearing": 158.3177,
+                        "ProgressRate": "normalProgress",
+                        "BlockRef": "MTA NYCT_JG_D6-Weekday-SDon_E_JG_44820_B63-679",
+                        "VehicleRef": "MTA NYCT_456",
+                        "MonitoredCall": {
+                          "AimedArrivalTime": "2026-10-02T17:33:27.000-04:00",
+                          "ExpectedArrivalTime": "2026-10-02T17:45:36.319-04:00",
+                          "AimedDepartureTime": "2026-10-02T17:33:27.000-04:00",
+                          "ExpectedDepartureTime": "2026-10-02T17:45:36.319-04:00",
+                          "Extensions": {
+                            "Distances": {
+                              "PresentableDistance": "approaching",
+                              "DistanceFromCall": 87.72,
+                              "StopsFromCall": 0,
+                              "CallDistanceAlongRoute": 10142.42
+                            },
+                            "VehicleFeatures": {
+                              "StrollerVehicle": true
+                            }
+                          },
+                          "StopPointRef": "MTA_308323",
+                          "VisitNumber": 1,
+                          "StopPointName": "ATLANTIC AV/3 AV"
+                        },
+                        "OnwardCalls": {}
+                      },
+                      "RecordedAtTime": "2026-10-02T17:44:47.000-04:00"
+                    },
+                    {
+                      "MonitoredVehicleJourney": {
+                        "LineRef": "MTA NYCT_B63",
+                        "DirectionRef": "0",
+                        "FramedVehicleJourneyRef": {
+                          "DataFrameRef": "2026-10-02",
+                          "DatedVehicleJourneyRef": "MTA NYCT_JG_D6-Weekday-SDon-103300_B63_682"
+                        },
+                        "JourneyPatternRef": "MTA_B630081",
+                        "PublishedLineName": "B63",
+                        "OperatorRef": "MTA NYCT",
+                        "OriginRef": "MTA_306619",
+                        "DestinationName": "PIER 6 BKLYN BRIDGE PARK via 5 AV",
+                        "SituationRef": [
+                          {
+                            "SituationSimpleRef": "MTA NYCT_lmm:planned_work:29537"
+                          }
+                        ],
+                        "Monitored": true,
+                        "VehicleLocation": {
+                          "Longitude": -74.010943,
+                          "Latitude": 40.644481
+                        },
+                        "Bearing": 43.59855,
                         "ProgressRate": "normalProgress",
                         "Occupancy": "seatsAvailable",
                         "BlockRef": "MTA NYCT_JG_D6-Weekday-SDon_E_JG_24360_B63-663",
                         "VehicleRef": "MTA NYCT_757",
                         "MonitoredCall": {
-                          "AimedArrivalTime": "2026-10-02T11:27:54.000-04:00",
-                          "ExpectedArrivalTime": "2026-10-02T11:26:47.612-04:00",
-                          "AimedDepartureTime": "2026-10-02T11:27:54.000-04:00",
-                          "ExpectedDepartureTime": "2026-10-02T11:26:47.612-04:00",
+                          "AimedArrivalTime": "2026-10-02T17:48:00.000-04:00",
+                          "ExpectedArrivalTime": "2026-10-02T17:45:53.183-04:00",
+                          "AimedDepartureTime": "2026-10-02T17:48:00.000-04:00",
+                          "ExpectedDepartureTime": "2026-10-02T17:45:53.183-04:00",
                           "Extensions": {
                             "Distances": {
-                              "PresentableDistance": "at stop",
-                              "DistanceFromCall": 13.69,
+                              "PresentableDistance": "approaching",
+                              "DistanceFromCall": 119.78,
                               "StopsFromCall": 0,
-                              "CallDistanceAlongRoute": 8810.59
+                              "CallDistanceAlongRoute": 4501.9
                             },
                             "Capacities": {
-                              "EstimatedPassengerCount": 23,
+                              "EstimatedPassengerCount": 14,
                               "EstimatedPassengerCapacity": 80,
                               "EstimatedPassengerLoadFactor": "manySeatsAvailable"
                             },
@@ -1050,121 +1360,13 @@
                               "StrollerVehicle": true
                             }
                           },
-                          "StopPointRef": "MTA_308209",
+                          "StopPointRef": "MTA_305358",
                           "VisitNumber": 1,
-                          "StopPointName": "5 AV/UNION ST"
+                          "StopPointName": "5 AV/50 ST"
                         },
                         "OnwardCalls": {}
                       },
-                      "RecordedAtTime": "2026-10-02T11:26:24.000-04:00"
-                    },
-                    {
-                      "MonitoredVehicleJourney": {
-                        "LineRef": "MTA NYCT_B63",
-                        "DirectionRef": "0",
-                        "FramedVehicleJourneyRef": {
-                          "DataFrameRef": "2026-10-02",
-                          "DatedVehicleJourneyRef": "MTA NYCT_JG_D6-Weekday-SDon-065900_B63_672"
-                        },
-                        "JourneyPatternRef": "MTA_B630081",
-                        "PublishedLineName": "B63",
-                        "OperatorRef": "MTA NYCT",
-                        "OriginRef": "MTA_306619",
-                        "DestinationName": "PIER 6 BKLYN BRIDGE PARK via 5 AV",
-                        "SituationRef": [
-                          {
-                            "SituationSimpleRef": "MTA NYCT_lmm:planned_work:29537"
-                          }
-                        ],
-                        "Monitored": true,
-                        "VehicleLocation": {
-                          "Longitude": -74.022563,
-                          "Latitude": 40.629676
-                        },
-                        "Bearing": 67.27934,
-                        "ProgressRate": "normalProgress",
-                        "BlockRef": "MTA NYCT_JG_D6-Weekday-SDon_E_JG_38340_B63-672",
-                        "VehicleRef": "MTA NYCT_660",
-                        "MonitoredCall": {
-                          "AimedArrivalTime": "2026-10-02T11:16:44.000-04:00",
-                          "ExpectedArrivalTime": "2026-10-02T11:26:47.612-04:00",
-                          "AimedDepartureTime": "2026-10-02T11:16:44.000-04:00",
-                          "ExpectedDepartureTime": "2026-10-02T11:26:47.612-04:00",
-                          "Extensions": {
-                            "Distances": {
-                              "PresentableDistance": "at stop",
-                              "DistanceFromCall": 18.55,
-                              "StopsFromCall": 0,
-                              "CallDistanceAlongRoute": 2454.3
-                            },
-                            "VehicleFeatures": {
-                              "StrollerVehicle": true
-                            }
-                          },
-                          "StopPointRef": "MTA_305346",
-                          "VisitNumber": 1,
-                          "StopPointName": "5 AV/BAY RIDGE PKWY"
-                        },
-                        "OnwardCalls": {}
-                      },
-                      "RecordedAtTime": "2026-10-02T11:26:19.000-04:00"
-                    },
-                    {
-                      "MonitoredVehicleJourney": {
-                        "LineRef": "MTA NYCT_B63",
-                        "DirectionRef": "0",
-                        "FramedVehicleJourneyRef": {
-                          "DataFrameRef": "2026-10-02",
-                          "DatedVehicleJourneyRef": "MTA NYCT_JG_D6-Weekday-SDon-059300_B63_661"
-                        },
-                        "JourneyPatternRef": "MTA_B630081",
-                        "PublishedLineName": "B63",
-                        "OperatorRef": "MTA NYCT",
-                        "OriginRef": "MTA_306619",
-                        "DestinationName": "PIER 6 BKLYN BRIDGE PARK via 5 AV",
-                        "SituationRef": [
-                          {
-                            "SituationSimpleRef": "MTA NYCT_lmm:planned_work:29537"
-                          }
-                        ],
-                        "Monitored": true,
-                        "VehicleLocation": {
-                          "Longitude": -73.992333,
-                          "Latitude": 40.689673
-                        },
-                        "Bearing": 161.38983,
-                        "ProgressRate": "normalProgress",
-                        "Occupancy": "seatsAvailable",
-                        "BlockRef": "MTA NYCT_JG_D6-Weekday-SDon_E_JG_23220_B63-661",
-                        "VehicleRef": "MTA NYCT_428",
-                        "MonitoredCall": {
-                          "AimedArrivalTime": "2026-10-02T11:14:27.000-04:00",
-                          "ExpectedArrivalTime": "2026-10-02T11:26:47.612-04:00",
-                          "AimedDepartureTime": "2026-10-02T11:14:27.000-04:00",
-                          "ExpectedDepartureTime": "2026-10-02T11:26:47.612-04:00",
-                          "Extensions": {
-                            "Distances": {
-                              "PresentableDistance": "at stop",
-                              "DistanceFromCall": 20.82,
-                              "StopsFromCall": 0,
-                              "CallDistanceAlongRoute": 11223.36
-                            },
-                            "Capacities": {
-                              "EstimatedPassengerCount": 2,
-                              "EstimatedPassengerCapacity": 80,
-                              "EstimatedPassengerLoadFactor": "manySeatsAvailable"
-                            },
-                            "VehicleFeatures": {
-                              "StrollerVehicle": true
-                            }
-                          },
-                          "StopPointRef": "MTA_305397",
-                          "VisitNumber": 1,
-                          "StopPointName": "ATLANTIC AV/COURT ST"
-                        },
-                        "OnwardCalls": {}
-                      },
-                      "RecordedAtTime": "2026-10-02T11:26:19.000-04:00"
+                      "RecordedAtTime": "2026-10-02T17:44:43.000-04:00"
                     },
                     {
                       "MonitoredVehicleJourney": {
@@ -1172,7 +1374,7 @@
                         "DirectionRef": "1",
                         "FramedVehicleJourneyRef": {
                           "DataFrameRef": "2026-10-02",
-                          "DatedVehicleJourneyRef": "MTA NYCT_JG_D6-Weekday-SDon-065800_B63_669"
+                          "DatedVehicleJourneyRef": "MTA NYCT_JG_D6-Weekday-SDon-101600_B63_679"
                         },
                         "JourneyPatternRef": "MTA_B630077",
                         "PublishedLineName": "B63",
@@ -1186,81 +1388,30 @@
                         ],
                         "Monitored": true,
                         "VehicleLocation": {
-                          "Longitude": -73.986198,
-                          "Latitude": 40.66928
+                          "Longitude": -73.977353,
+                          "Latitude": 40.680978
                         },
-                        "Bearing": 230.52754,
+                        "Bearing": 236.72511,
                         "ProgressRate": "normalProgress",
                         "Occupancy": "seatsAvailable",
-                        "BlockRef": "MTA NYCT_JG_D6-Weekday-SDon_E_JG_21000_B63-659",
-                        "VehicleRef": "MTA NYCT_409",
+                        "BlockRef": "MTA NYCT_JG_D6-Weekday-SDon_E_JG_41940_B63-674",
+                        "VehicleRef": "MTA NYCT_487",
                         "MonitoredCall": {
-                          "AimedArrivalTime": "2026-10-02T11:27:00.000-04:00",
-                          "ExpectedArrivalTime": "2026-10-02T11:26:54.811-04:00",
-                          "AimedDepartureTime": "2026-10-02T11:27:00.000-04:00",
-                          "ExpectedDepartureTime": "2026-10-02T11:26:54.811-04:00",
+                          "AimedArrivalTime": "2026-10-02T17:18:17.000-04:00",
+                          "ExpectedArrivalTime": "2026-10-02T17:45:45.082-04:00",
+                          "AimedDepartureTime": "2026-10-02T17:18:17.000-04:00",
+                          "ExpectedDepartureTime": "2026-10-02T17:45:45.082-04:00",
                           "Extensions": {
                             "Distances": {
                               "PresentableDistance": "approaching",
-                              "DistanceFromCall": 54.52,
-                              "StopsFromCall": 0,
-                              "CallDistanceAlongRoute": 4363.88
-                            },
-                            "Capacities": {
-                              "EstimatedPassengerCount": 16,
-                              "EstimatedPassengerCapacity": 80,
-                              "EstimatedPassengerLoadFactor": "manySeatsAvailable"
-                            },
-                            "VehicleFeatures": {
-                              "StrollerVehicle": true
-                            }
-                          },
-                          "StopPointRef": "MTA_305423",
-                          "VisitNumber": 1,
-                          "StopPointName": "5 AV/9 ST"
-                        },
-                        "OnwardCalls": {}
-                      },
-                      "RecordedAtTime": "2026-10-02T11:26:28.000-04:00"
-                    },
-                    {
-                      "MonitoredVehicleJourney": {
-                        "LineRef": "MTA NYCT_B63",
-                        "DirectionRef": "1",
-                        "FramedVehicleJourneyRef": {
-                          "DataFrameRef": "2026-10-02",
-                          "DatedVehicleJourneyRef": "MTA NYCT_JG_D6-Weekday-SDon-067300_B63_668"
-                        },
-                        "JourneyPatternRef": "MTA_B630077",
-                        "PublishedLineName": "B63",
-                        "OperatorRef": "MTA NYCT",
-                        "OriginRef": "MTA_308616",
-                        "DestinationName": "BAY RIDGE SHORE RD via 5 AV",
-                        "SituationRef": [
-                          {
-                            "SituationSimpleRef": "MTA NYCT_lmm:planned_work:29537"
-                          }
-                        ],
-                        "Monitored": true,
-                        "VehicleLocation": {
-                          "Longitude": -73.977664,
-                          "Latitude": 40.680518
-                        },
-                        "Bearing": 235.58163,
-                        "ProgressRate": "normalProgress",
-                        "BlockRef": "MTA NYCT_JG_D6-Weekday-SDon_E_JG_17640_B63-651",
-                        "VehicleRef": "MTA NYCT_403",
-                        "MonitoredCall": {
-                          "AimedArrivalTime": "2026-10-02T11:31:57.000-04:00",
-                          "ExpectedArrivalTime": "2026-10-02T11:27:25.325-04:00",
-                          "AimedDepartureTime": "2026-10-02T11:31:57.000-04:00",
-                          "ExpectedDepartureTime": "2026-10-02T11:27:25.325-04:00",
-                          "Extensions": {
-                            "Distances": {
-                              "PresentableDistance": "approaching",
-                              "DistanceFromCall": 73.65,
+                              "DistanceFromCall": 131.18,
                               "StopsFromCall": 0,
                               "CallDistanceAlongRoute": 2939.37
+                            },
+                            "Capacities": {
+                              "EstimatedPassengerCount": 32,
+                              "EstimatedPassengerCapacity": 80,
+                              "EstimatedPassengerLoadFactor": "fewSeatsAvailable"
                             },
                             "VehicleFeatures": {
                               "StrollerVehicle": true
@@ -1272,58 +1423,7 @@
                         },
                         "OnwardCalls": {}
                       },
-                      "RecordedAtTime": "2026-10-02T11:26:42.000-04:00"
-                    },
-                    {
-                      "MonitoredVehicleJourney": {
-                        "LineRef": "MTA NYCT_B63",
-                        "DirectionRef": "1",
-                        "FramedVehicleJourneyRef": {
-                          "DataFrameRef": "2026-10-02",
-                          "DatedVehicleJourneyRef": "MTA NYCT_JG_D6-Weekday-SDon-061300_B63_667"
-                        },
-                        "JourneyPatternRef": "MTA_B630077",
-                        "PublishedLineName": "B63",
-                        "OperatorRef": "MTA NYCT",
-                        "OriginRef": "MTA_308616",
-                        "DestinationName": "BAY RIDGE SHORE RD via 5 AV",
-                        "SituationRef": [
-                          {
-                            "SituationSimpleRef": "MTA NYCT_lmm:planned_work:29537"
-                          }
-                        ],
-                        "Monitored": true,
-                        "VehicleLocation": {
-                          "Longitude": -74.020831,
-                          "Latitude": 40.633893
-                        },
-                        "Bearing": 247.49648,
-                        "ProgressRate": "normalProgress",
-                        "BlockRef": "MTA NYCT_JG_D6-Weekday-SDon_E_JG_28980_B63-667",
-                        "VehicleRef": "MTA NYCT_764",
-                        "MonitoredCall": {
-                          "AimedArrivalTime": "2026-10-02T11:19:00.000-04:00",
-                          "ExpectedArrivalTime": "2026-10-02T11:27:04.682-04:00",
-                          "AimedDepartureTime": "2026-10-02T11:19:00.000-04:00",
-                          "ExpectedDepartureTime": "2026-10-02T11:27:04.682-04:00",
-                          "Extensions": {
-                            "Distances": {
-                              "PresentableDistance": "approaching",
-                              "DistanceFromCall": 84.07,
-                              "StopsFromCall": 0,
-                              "CallDistanceAlongRoute": 9310.46
-                            },
-                            "VehicleFeatures": {
-                              "StrollerVehicle": true
-                            }
-                          },
-                          "StopPointRef": "MTA_305453",
-                          "VisitNumber": 1,
-                          "StopPointName": "5 AV/BAY RIDGE AV"
-                        },
-                        "OnwardCalls": {}
-                      },
-                      "RecordedAtTime": "2026-10-02T11:26:26.000-04:00"
+                      "RecordedAtTime": "2026-10-02T17:44:42.000-04:00"
                     },
                     {
                       "MonitoredVehicleJourney": {
@@ -1331,7 +1431,7 @@
                         "DirectionRef": "0",
                         "FramedVehicleJourneyRef": {
                           "DataFrameRef": "2026-10-02",
-                          "DatedVehicleJourneyRef": "MTA NYCT_JG_D6-Weekday-SDon-064700_B63_658"
+                          "DatedVehicleJourneyRef": "MTA NYCT_JG_D6-Weekday-SDon-101100_B63_683"
                         },
                         "JourneyPatternRef": "MTA_B630081",
                         "PublishedLineName": "B63",
@@ -1345,28 +1445,79 @@
                         ],
                         "Monitored": true,
                         "VehicleLocation": {
-                          "Longitude": -73.999165,
-                          "Latitude": 40.65582
+                          "Longitude": -73.979638,
+                          "Latitude": 40.677563
                         },
-                        "Bearing": 42.990448,
+                        "Bearing": 54.688786,
                         "ProgressRate": "normalProgress",
-                        "Occupancy": "seatsAvailable",
-                        "BlockRef": "MTA NYCT_JG_D6-Weekday-SDon_E_JG_16800_B63-654",
-                        "VehicleRef": "MTA NYCT_478",
+                        "BlockRef": "MTA NYCT_JG_D6-Weekday-SDon_E_JG_53220_B63-683",
+                        "VehicleRef": "MTA NYCT_240",
                         "MonitoredCall": {
-                          "AimedArrivalTime": "2026-10-02T11:34:19.000-04:00",
-                          "ExpectedArrivalTime": "2026-10-02T11:27:11.979-04:00",
-                          "AimedDepartureTime": "2026-10-02T11:34:19.000-04:00",
-                          "ExpectedDepartureTime": "2026-10-02T11:27:11.979-04:00",
+                          "AimedArrivalTime": "2026-10-02T17:58:17.000-04:00",
+                          "ExpectedArrivalTime": "2026-10-02T17:45:42.588-04:00",
+                          "AimedDepartureTime": "2026-10-02T17:58:17.000-04:00",
+                          "ExpectedDepartureTime": "2026-10-02T17:45:42.588-04:00",
                           "Extensions": {
                             "Distances": {
                               "PresentableDistance": "approaching",
-                              "DistanceFromCall": 107.91,
+                              "DistanceFromCall": 138.27,
                               "StopsFromCall": 0,
-                              "CallDistanceAlongRoute": 6095.53
+                              "CallDistanceAlongRoute": 9057.35
+                            },
+                            "VehicleFeatures": {
+                              "StrollerVehicle": true
+                            }
+                          },
+                          "StopPointRef": "MTA_308210",
+                          "VisitNumber": 1,
+                          "StopPointName": "5 AV/SAINT JOHNS PL"
+                        },
+                        "OnwardCalls": {}
+                      },
+                      "RecordedAtTime": "2026-10-02T17:44:43.000-04:00"
+                    },
+                    {
+                      "MonitoredVehicleJourney": {
+                        "LineRef": "MTA NYCT_B63",
+                        "DirectionRef": "0",
+                        "FramedVehicleJourneyRef": {
+                          "DataFrameRef": "2026-10-02",
+                          "DatedVehicleJourneyRef": "MTA NYCT_JG_D6-Weekday-SDon-096800_B63_654"
+                        },
+                        "JourneyPatternRef": "MTA_B630081",
+                        "PublishedLineName": "B63",
+                        "OperatorRef": "MTA NYCT",
+                        "OriginRef": "MTA_306619",
+                        "DestinationName": "PIER 6 BKLYN BRIDGE PARK via 5 AV",
+                        "SituationRef": [
+                          {
+                            "SituationSimpleRef": "MTA NYCT_lmm:planned_work:29537"
+                          }
+                        ],
+                        "Monitored": true,
+                        "VehicleLocation": {
+                          "Longitude": -73.981602,
+                          "Latitude": 40.685671
+                        },
+                        "Bearing": 159.62357,
+                        "ProgressRate": "normalProgress",
+                        "Occupancy": "seatsAvailable",
+                        "BlockRef": "MTA NYCT_JG_D6-Weekday-SDon_E_JG_21000_B63-659",
+                        "VehicleRef": "MTA NYCT_409",
+                        "MonitoredCall": {
+                          "AimedArrivalTime": "2026-10-02T17:24:42.000-04:00",
+                          "ExpectedArrivalTime": "2026-10-02T17:45:40.299-04:00",
+                          "AimedDepartureTime": "2026-10-02T17:24:42.000-04:00",
+                          "ExpectedDepartureTime": "2026-10-02T17:45:40.299-04:00",
+                          "Extensions": {
+                            "Distances": {
+                              "PresentableDistance": "approaching",
+                              "DistanceFromCall": 141.37,
+                              "StopsFromCall": 0,
+                              "CallDistanceAlongRoute": 10335.2
                             },
                             "Capacities": {
-                              "EstimatedPassengerCount": 6,
+                              "EstimatedPassengerCount": 21,
                               "EstimatedPassengerCapacity": 80,
                               "EstimatedPassengerLoadFactor": "manySeatsAvailable"
                             },
@@ -1374,13 +1525,13 @@
                               "StrollerVehicle": true
                             }
                           },
-                          "StopPointRef": "MTA_305367",
+                          "StopPointRef": "MTA_305392",
                           "VisitNumber": 1,
-                          "StopPointName": "5 AV/30 ST"
+                          "StopPointName": "ATLANTIC AV/NEVINS ST"
                         },
                         "OnwardCalls": {}
                       },
-                      "RecordedAtTime": "2026-10-02T11:26:42.000-04:00"
+                      "RecordedAtTime": "2026-10-02T17:44:55.000-04:00"
                     },
                     {
                       "MonitoredVehicleJourney": {
@@ -1388,7 +1539,7 @@
                         "DirectionRef": "0",
                         "FramedVehicleJourneyRef": {
                           "DataFrameRef": "2026-10-02",
-                          "DatedVehicleJourneyRef": "MTA NYCT_JG_D6-Weekday-SDon-060800_B63_670"
+                          "DatedVehicleJourneyRef": "MTA NYCT_JG_D6-Weekday-SDon-095800_B37_603"
                         },
                         "JourneyPatternRef": "MTA_B630081",
                         "PublishedLineName": "B63",
@@ -1402,36 +1553,42 @@
                         ],
                         "Monitored": true,
                         "VehicleLocation": {
-                          "Longitude": -73.978782,
-                          "Latitude": 40.683619
+                          "Longitude": -74.000451,
+                          "Latitude": 40.691916
                         },
-                        "Bearing": 66.80141,
+                        "Bearing": 161.56505,
                         "ProgressRate": "normalProgress",
-                        "BlockRef": "MTA NYCT_JG_D6-Weekday-SDon_E_JG_35280_B63-670",
-                        "VehicleRef": "MTA NYCT_459",
+                        "Occupancy": "seatsAvailable",
+                        "BlockRef": "MTA NYCT_JG_D6-Weekday-SDon_E_JG_51900_B37-603",
+                        "VehicleRef": "MTA NYCT_803",
                         "MonitoredCall": {
-                          "AimedArrivalTime": "2026-10-02T11:21:00.000-04:00",
-                          "ExpectedArrivalTime": "2026-10-02T11:27:18.791-04:00",
-                          "AimedDepartureTime": "2026-10-02T11:21:00.000-04:00",
-                          "ExpectedDepartureTime": "2026-10-02T11:27:18.791-04:00",
+                          "AimedArrivalTime": "2026-10-02T17:26:00.000-04:00",
+                          "ExpectedArrivalTime": "2026-10-02T17:45:57.450-04:00",
+                          "AimedDepartureTime": "2026-10-02T17:26:00.000-04:00",
+                          "ExpectedDepartureTime": "2026-10-02T17:45:57.450-04:00",
                           "Extensions": {
                             "Distances": {
                               "PresentableDistance": "approaching",
-                              "DistanceFromCall": 129.96,
+                              "DistanceFromCall": 149.28,
                               "StopsFromCall": 0,
-                              "CallDistanceAlongRoute": 9917.95
+                              "CallDistanceAlongRoute": 12080.36
+                            },
+                            "Capacities": {
+                              "EstimatedPassengerCount": 46,
+                              "EstimatedPassengerCapacity": 80,
+                              "EstimatedPassengerLoadFactor": "fewSeatsAvailable"
                             },
                             "VehicleFeatures": {
                               "StrollerVehicle": true
                             }
                           },
-                          "StopPointRef": "MTA_307540",
+                          "StopPointRef": "MTA_801007",
                           "VisitNumber": 1,
-                          "StopPointName": "ATLANTIC AV/4 AV"
+                          "StopPointName": "BROOKLYN BRIDGE PARK RD/JORALEMON ST"
                         },
                         "OnwardCalls": {}
                       },
-                      "RecordedAtTime": "2026-10-02T11:26:22.000-04:00"
+                      "RecordedAtTime": "2026-10-02T17:44:41.000-04:00"
                     },
                     {
                       "MonitoredVehicleJourney": {
@@ -1439,7 +1596,7 @@
                         "DirectionRef": "0",
                         "FramedVehicleJourneyRef": {
                           "DataFrameRef": "2026-10-02",
-                          "DatedVehicleJourneyRef": "MTA NYCT_JG_D6-Weekday-SDon-068300_B70_703"
+                          "DatedVehicleJourneyRef": "MTA NYCT_JG_D6-Weekday-SDon-098900_B63_672"
                         },
                         "JourneyPatternRef": "MTA_B630081",
                         "PublishedLineName": "B63",
@@ -1453,36 +1610,87 @@
                         ],
                         "Monitored": true,
                         "VehicleLocation": {
-                          "Longitude": -74.033292,
-                          "Latitude": 40.613233
+                          "Longitude": -73.978493,
+                          "Latitude": 40.679338
                         },
-                        "Bearing": 48.274548,
+                        "Bearing": 53.471146,
+                        "ProgressRate": "normalProgress",
+                        "BlockRef": "MTA NYCT_JG_D6-Weekday-SDon_E_JG_51660_B63-672",
+                        "VehicleRef": "MTA NYCT_671",
+                        "MonitoredCall": {
+                          "AimedArrivalTime": "2026-10-02T17:38:08.000-04:00",
+                          "ExpectedArrivalTime": "2026-10-02T17:47:16.614-04:00",
+                          "AimedDepartureTime": "2026-10-02T17:38:08.000-04:00",
+                          "ExpectedDepartureTime": "2026-10-02T17:47:16.614-04:00",
+                          "Extensions": {
+                            "Distances": {
+                              "PresentableDistance": "< 1 stop away",
+                              "DistanceFromCall": 156.38,
+                              "StopsFromCall": 0,
+                              "CallDistanceAlongRoute": 9295.12
+                            },
+                            "VehicleFeatures": {
+                              "StrollerVehicle": true
+                            }
+                          },
+                          "StopPointRef": "MTA_308211",
+                          "VisitNumber": 1,
+                          "StopPointName": "5 AV/PROSPECT PL"
+                        },
+                        "OnwardCalls": {}
+                      },
+                      "RecordedAtTime": "2026-10-02T17:45:02.000-04:00"
+                    },
+                    {
+                      "MonitoredVehicleJourney": {
+                        "LineRef": "MTA NYCT_B63",
+                        "DirectionRef": "1",
+                        "FramedVehicleJourneyRef": {
+                          "DataFrameRef": "2026-10-02",
+                          "DatedVehicleJourneyRef": "MTA NYCT_JG_D6-Weekday-SDon-098900_B63_665"
+                        },
+                        "JourneyPatternRef": "MTA_B630077",
+                        "PublishedLineName": "B63",
+                        "OperatorRef": "MTA NYCT",
+                        "OriginRef": "MTA_308616",
+                        "DestinationName": "BAY RIDGE SHORE RD via 5 AV",
+                        "SituationRef": [
+                          {
+                            "SituationSimpleRef": "MTA NYCT_lmm:planned_work:29537"
+                          }
+                        ],
+                        "Monitored": true,
+                        "VehicleLocation": {
+                          "Longitude": -74.011128,
+                          "Latitude": 40.644305
+                        },
+                        "Bearing": 223.5312,
                         "ProgressRate": "normalProgress",
                         "BlockRef": "MTA NYCT_JG_D6-Weekday-SDon_E_JG_21660_B63-652",
                         "VehicleRef": "MTA NYCT_402",
                         "MonitoredCall": {
-                          "AimedArrivalTime": "2026-10-02T11:26:44.000-04:00",
-                          "ExpectedArrivalTime": "2026-10-02T11:27:07.605-04:00",
-                          "AimedDepartureTime": "2026-10-02T11:26:44.000-04:00",
-                          "ExpectedDepartureTime": "2026-10-02T11:27:07.605-04:00",
+                          "AimedArrivalTime": "2026-10-02T17:26:06.000-04:00",
+                          "ExpectedArrivalTime": "2026-10-02T17:46:00.799-04:00",
+                          "AimedDepartureTime": "2026-10-02T17:26:06.000-04:00",
+                          "ExpectedDepartureTime": "2026-10-02T17:46:00.799-04:00",
                           "Extensions": {
                             "Distances": {
-                              "PresentableDistance": "approaching",
-                              "DistanceFromCall": 138.86,
+                              "PresentableDistance": "< 1 stop away",
+                              "DistanceFromCall": 158.77,
                               "StopsFromCall": 0,
-                              "CallDistanceAlongRoute": 513.28
+                              "CallDistanceAlongRoute": 7954.85
                             },
                             "VehicleFeatures": {
                               "StrollerVehicle": true
                             }
                           },
-                          "StopPointRef": "MTA_305335",
+                          "StopPointRef": "MTA_305445",
                           "VisitNumber": 1,
-                          "StopPointName": "4 AV/MARINE AV"
+                          "StopPointName": "5 AV/53 ST"
                         },
                         "OnwardCalls": {}
                       },
-                      "RecordedAtTime": "2026-10-02T11:26:24.000-04:00"
+                      "RecordedAtTime": "2026-10-02T17:44:47.000-04:00"
                     },
                     {
                       "MonitoredVehicleJourney": {
@@ -1490,7 +1698,7 @@
                         "DirectionRef": "1",
                         "FramedVehicleJourneyRef": {
                           "DataFrameRef": "2026-10-02",
-                          "DatedVehicleJourneyRef": "MTA NYCT_JG_D6-Weekday-SDon-064300_B63_664"
+                          "DatedVehicleJourneyRef": "MTA NYCT_JG_D6-Weekday-SDon-098000_B63_675"
                         },
                         "JourneyPatternRef": "MTA_B630077",
                         "PublishedLineName": "B63",
@@ -1504,144 +1712,36 @@
                         ],
                         "Monitored": true,
                         "VehicleLocation": {
-                          "Longitude": -73.992507,
-                          "Latitude": 40.662198
+                          "Longitude": -74.012544,
+                          "Latitude": 40.642943
                         },
-                        "Bearing": 223.51291,
-                        "ProgressRate": "normalProgress",
-                        "BlockRef": "MTA NYCT_JG_D6-Weekday-SDon_E_JG_24720_B63-664",
-                        "VehicleRef": "MTA NYCT_253",
-                        "MonitoredCall": {
-                          "AimedArrivalTime": "2026-10-02T11:18:48.000-04:00",
-                          "ExpectedArrivalTime": "2026-10-02T11:27:21.414-04:00",
-                          "AimedDepartureTime": "2026-10-02T11:18:48.000-04:00",
-                          "ExpectedDepartureTime": "2026-10-02T11:27:21.414-04:00",
-                          "Extensions": {
-                            "Distances": {
-                              "PresentableDistance": "< 1 stop away",
-                              "DistanceFromCall": 158.18,
-                              "StopsFromCall": 0,
-                              "CallDistanceAlongRoute": 5419.11
-                            },
-                            "VehicleFeatures": {
-                              "StrollerVehicle": true
-                            }
-                          },
-                          "StopPointRef": "MTA_308335",
-                          "VisitNumber": 1,
-                          "StopPointName": "5 AV/21 ST"
-                        },
-                        "OnwardCalls": {}
-                      },
-                      "RecordedAtTime": "2026-10-02T11:26:30.000-04:00"
-                    },
-                    {
-                      "MonitoredVehicleJourney": {
-                        "LineRef": "MTA NYCT_B63",
-                        "DirectionRef": "0",
-                        "FramedVehicleJourneyRef": {
-                          "DataFrameRef": "2026-10-02",
-                          "DatedVehicleJourneyRef": "MTA NYCT_JG_D6-Weekday-SDon-067100_B63_666"
-                        },
-                        "JourneyPatternRef": "MTA_B630081",
-                        "PublishedLineName": "B63",
-                        "OperatorRef": "MTA NYCT",
-                        "OriginRef": "MTA_306619",
-                        "DestinationName": "PIER 6 BKLYN BRIDGE PARK via 5 AV",
-                        "SituationRef": [
-                          {
-                            "SituationSimpleRef": "MTA NYCT_lmm:planned_work:29537"
-                          }
-                        ],
-                        "Monitored": true,
-                        "VehicleLocation": {
-                          "Longitude": -74.024841,
-                          "Latitude": 40.624097
-                        },
-                        "Bearing": 66.95915,
+                        "Bearing": 223.98602,
                         "ProgressRate": "normalProgress",
                         "BlockRef": "MTA NYCT_JG_D6-Weekday-SDon_E_JG_26520_B63-666",
                         "VehicleRef": "MTA NYCT_434",
                         "MonitoredCall": {
-                          "AimedArrivalTime": "2026-10-02T11:25:36.000-04:00",
-                          "ExpectedArrivalTime": "2026-10-02T11:27:46.940-04:00",
-                          "AimedDepartureTime": "2026-10-02T11:25:36.000-04:00",
-                          "ExpectedDepartureTime": "2026-10-02T11:27:46.940-04:00",
+                          "AimedArrivalTime": "2026-10-02T17:19:11.000-04:00",
+                          "ExpectedArrivalTime": "2026-10-02T17:46:24.043-04:00",
+                          "AimedDepartureTime": "2026-10-02T17:19:11.000-04:00",
+                          "ExpectedDepartureTime": "2026-10-02T17:46:24.043-04:00",
                           "Extensions": {
                             "Distances": {
                               "PresentableDistance": "< 1 stop away",
-                              "DistanceFromCall": 230.02,
+                              "DistanceFromCall": 203.24,
                               "StopsFromCall": 0,
-                              "CallDistanceAlongRoute": 2016.24
+                              "CallDistanceAlongRoute": 8192.28
                             },
                             "VehicleFeatures": {
                               "StrollerVehicle": true
                             }
                           },
-                          "StopPointRef": "MTA_305344",
+                          "StopPointRef": "MTA_305446",
                           "VisitNumber": 1,
-                          "StopPointName": "5 AV/80 ST"
+                          "StopPointName": "5 AV/56 ST"
                         },
                         "OnwardCalls": {}
                       },
-                      "RecordedAtTime": "2026-10-02T11:26:17.000-04:00"
-                    },
-                    {
-                      "MonitoredVehicleJourney": {
-                        "LineRef": "MTA NYCT_B63",
-                        "DirectionRef": "0",
-                        "FramedVehicleJourneyRef": {
-                          "DataFrameRef": "2026-10-02",
-                          "DatedVehicleJourneyRef": "MTA NYCT_JG_D6-Weekday-SDon-063500_B63_656"
-                        },
-                        "JourneyPatternRef": "MTA_B630081",
-                        "PublishedLineName": "B63",
-                        "OperatorRef": "MTA NYCT",
-                        "OriginRef": "MTA_306619",
-                        "DestinationName": "PIER 6 BKLYN BRIDGE PARK via 5 AV",
-                        "SituationRef": [
-                          {
-                            "SituationSimpleRef": "MTA NYCT_lmm:planned_work:29537"
-                          }
-                        ],
-                        "Monitored": true,
-                        "VehicleLocation": {
-                          "Longitude": -73.994916,
-                          "Latitude": 40.659896
-                        },
-                        "Bearing": 43.099106,
-                        "ProgressRate": "normalProgress",
-                        "Occupancy": "seatsAvailable",
-                        "BlockRef": "MTA NYCT_JG_D6-Weekday-SDon_E_JG_25200_B63-665",
-                        "VehicleRef": "MTA NYCT_792",
-                        "MonitoredCall": {
-                          "AimedArrivalTime": "2026-10-02T11:26:35.000-04:00",
-                          "ExpectedArrivalTime": "2026-10-02T11:27:57.710-04:00",
-                          "AimedDepartureTime": "2026-10-02T11:26:35.000-04:00",
-                          "ExpectedDepartureTime": "2026-10-02T11:27:57.710-04:00",
-                          "Extensions": {
-                            "Distances": {
-                              "PresentableDistance": "< 1 stop away",
-                              "DistanceFromCall": 237.74,
-                              "StopsFromCall": 0,
-                              "CallDistanceAlongRoute": 6803.23
-                            },
-                            "Capacities": {
-                              "EstimatedPassengerCount": 31,
-                              "EstimatedPassengerCapacity": 80,
-                              "EstimatedPassengerLoadFactor": "fewSeatsAvailable"
-                            },
-                            "VehicleFeatures": {
-                              "StrollerVehicle": true
-                            }
-                          },
-                          "StopPointRef": "MTA_308331",
-                          "VisitNumber": 1,
-                          "StopPointName": "5 AV/21 ST"
-                        },
-                        "OnwardCalls": {}
-                      },
-                      "RecordedAtTime": "2026-10-02T11:26:24.000-04:00"
+                      "RecordedAtTime": "2026-10-02T17:44:48.000-04:00"
                     },
                     {
                       "MonitoredVehicleJourney": {
@@ -1649,7 +1749,7 @@
                         "DirectionRef": "1",
                         "FramedVehicleJourneyRef": {
                           "DataFrameRef": "2026-10-02",
-                          "DatedVehicleJourneyRef": "MTA NYCT_JG_D6-Weekday-SDon-059800_B63_655"
+                          "DatedVehicleJourneyRef": "MTA NYCT_JG_D6-Weekday-SDon-103500_B63_680"
                         },
                         "JourneyPatternRef": "MTA_B630077",
                         "PublishedLineName": "B63",
@@ -1663,28 +1763,28 @@
                         ],
                         "Monitored": true,
                         "VehicleLocation": {
-                          "Longitude": -74.026422,
-                          "Latitude": 40.621247
+                          "Longitude": -73.992072,
+                          "Latitude": 40.689585
                         },
-                        "Bearing": 229.16362,
+                        "Bearing": 341.4077,
                         "ProgressRate": "normalProgress",
                         "Occupancy": "seatsAvailable",
-                        "BlockRef": "MTA NYCT_JG_D6-Weekday-SDon_E_JG_18600_B63-655",
-                        "VehicleRef": "MTA NYCT_803",
+                        "BlockRef": "MTA NYCT_JG_D6-Weekday-SDon_E_JG_43380_B63-677",
+                        "VehicleRef": "MTA NYCT_798",
                         "MonitoredCall": {
-                          "AimedArrivalTime": "2026-10-02T11:15:50.000-04:00",
-                          "ExpectedArrivalTime": "2026-10-02T11:28:16.623-04:00",
-                          "AimedDepartureTime": "2026-10-02T11:15:50.000-04:00",
-                          "ExpectedDepartureTime": "2026-10-02T11:28:16.623-04:00",
+                          "AimedArrivalTime": "2026-10-02T17:24:04.000-04:00",
+                          "ExpectedArrivalTime": "2026-10-02T17:47:08.741-04:00",
+                          "AimedDepartureTime": "2026-10-02T17:24:04.000-04:00",
+                          "ExpectedDepartureTime": "2026-10-02T17:47:08.741-04:00",
                           "Extensions": {
                             "Distances": {
                               "PresentableDistance": "< 1 stop away",
-                              "DistanceFromCall": 265.19,
+                              "DistanceFromCall": 306.72,
                               "StopsFromCall": 0,
-                              "CallDistanceAlongRoute": 10979.22
+                              "CallDistanceAlongRoute": 1268.01
                             },
                             "Capacities": {
-                              "EstimatedPassengerCount": 38,
+                              "EstimatedPassengerCount": 29,
                               "EstimatedPassengerCapacity": 80,
                               "EstimatedPassengerLoadFactor": "fewSeatsAvailable"
                             },
@@ -1692,17 +1792,17 @@
                               "StrollerVehicle": true
                             }
                           },
-                          "StopPointRef": "MTA_308423",
+                          "StopPointRef": "MTA_305407",
                           "VisitNumber": 1,
-                          "StopPointName": "5 AV/89 ST"
+                          "StopPointName": "ATLANTIC AV/SMITH ST"
                         },
                         "OnwardCalls": {}
                       },
-                      "RecordedAtTime": "2026-10-02T11:26:28.000-04:00"
+                      "RecordedAtTime": "2026-10-02T17:44:35.000-04:00"
                     }
                   ],
-                  "ResponseTimestamp": "2026-10-02T11:26:46.612-04:00",
-                  "ValidUntil": "2026-10-02T11:27:46.612-04:00"
+                  "ResponseTimestamp": "2026-10-02T17:45:05.813-04:00",
+                  "ValidUntil": "2026-10-02T17:46:05.813-04:00"
                 }
               ],
               "SituationExchangeDelivery": [
@@ -1712,7 +1812,7 @@
                       {
                         "PublicationWindow": {
                           "StartTime": "2026-01-06T00:00:00.000-05:00",
-                          "EndTime": "2027-03-31T11:25:19.000-04:00"
+                          "EndTime": "2027-03-31T17:42:57.000-04:00"
                         },
                         "Severity": "undefined",
                         "Summary": "B63 buses may experience delays on 5th Ave between 64th St and 65th St and will wait out any temporary closures",
@@ -1722,11 +1822,11 @@
                             "AffectedVehicleJourney": [
                               {
                                 "LineRef": "MTA NYCT_B63",
-                                "DirectionRef": "0"
+                                "DirectionRef": "1"
                               },
                               {
                                 "LineRef": "MTA NYCT_B63",
-                                "DirectionRef": "1"
+                                "DirectionRef": "0"
                               }
                             ]
                           }

@@ -29,7 +29,7 @@
   - paragraph:
     - strong: What's happening?
   - paragraph: DOT - Lane Shift/5th Avenue Bridge/65th Street
-- button "Toggle MTA NYCT_B63 to BAY RIDGE SHORE RD via 5 AV Open / Closed" [expanded]:
+- button "Toggle MTA NYCT_B63 to BAY RIDGE SHORE RD via 5 AV Open / Closed":
   - text: ""
   - strong: BAY RIDGE SHORE RD via 5 AV
 - list:
@@ -244,7 +244,7 @@
   - listitem:
     - link "SHORE RD/3 AV":
       - /url: "#"
-- button "Toggle MTA NYCT_B63 to PIER 6 BKLYN BRIDGE PARK via 5 AV Open / Closed":
+- button "Toggle MTA NYCT_B63 to PIER 6 BKLYN BRIDGE PARK via 5 AV Open / Closed" [expanded]:
   - text: ""
   - strong: PIER 6 BKLYN BRIDGE PARK via 5 AV
 - list:
