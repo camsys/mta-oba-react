@@ -1,0 +1,445 @@
+- banner:
+  - link "MTA Bus Time Home":
+    - /url: "#"
+    - img "MTA Bus Time"
+  - link "MTA Home":
+    - /url: https://www.mta.info/
+    - img "MTA"
+- combobox:
+  - textbox "Route, intersection, or stop code": B1
+  - listbox
+- button "clear search button"
+- button "Favorites":
+  - img
+  - text: ""
+- button "Nearby Buses":
+  - img
+  - text: ""
+- heading "Routes:" [level=2]
+- heading "B1 Bay Ridge - Manhattan Beach" [level=3]:
+  - img
+  - text: ""
+- list:
+  - listitem: via 86th St / Ocean Pkwy
+- button "Toggle MTA NYCT_B1 to BAY RIDGE 4 AV Open / Closed":
+  - text: ""
+  - strong: BAY RIDGE 4 AV
+- list:
+  - listitem:
+    - link "ORIENTAL BLVD/MACKENZIE ST":
+      - /url: "#"
+  - listitem:
+    - link "ORIENTAL BLVD/JAFFRAY ST":
+      - /url: "#"
+  - listitem:
+    - link "ORIENTAL BLVD/HASTINGS ST":
+      - /url: "#"
+  - listitem:
+    - link "ORIENTAL BLVD/FALMOUTH ST":
+      - /url: "#"
+  - listitem:
+    - link "ORIENTAL BLVD/DOVER ST":
+      - /url: "#"
+  - listitem:
+    - link "ORIENTAL BLVD/BEAUMONT ST":
+      - /url: "#"
+  - listitem:
+    - link "ORIENTAL BLVD/WEST END AV":
+      - /url: "#"
+  - listitem:
+    - link "BRIGHTON BEACH AV/CORBIN PL":
+      - /url: "#"
+  - listitem:
+    - link /BRIGHTON BEACH AV\/BRIGHTON \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /BRIGHTON BEACH AV\/BRIGHTON \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link "BRIGHTON BEACH AV/CONEY ISLAND AV":
+      - /url: "#"
+    - list:
+      - listitem:
+        - text: 0 minutes, < 1 stop away
+        - link /\d+/:
+          - /url: "#"
+  - listitem:
+    - link "BRIGHTON BEACH AV/BRIGHTON 5 ST":
+      - /url: "#"
+  - listitem:
+    - link "BRIGHTON BEACH AV/BRIGHTON 3 ST":
+      - /url: "#"
+  - listitem:
+    - link "BRIGHTON BEACH AV/BRIGHTON 1 PL":
+      - /url: "#"
+  - listitem:
+    - link "BRIGHTON BEACH AV/OCEAN PKWY":
+      - /url: "#"
+  - listitem:
+    - link "OCEAN PKWY/OCEAN VIEW AV":
+      - /url: "#"
+  - listitem:
+    - link "OCEAN PKWY/NEPTUNE AV":
+      - /url: "#"
+  - listitem:
+    - link "OCEAN PKWY/WEST AV":
+      - /url: "#"
+  - listitem:
+    - link "OCEAN PKWY/SHORE PKWY":
+      - /url: "#"
+    - list:
+      - listitem:
+        - text: 0 minutes, < 1 stop away
+        - link /\d+/:
+          - /url: "#"
+  - listitem:
+    - link "AVENUE X/OCEAN PKWY":
+      - /url: "#"
+  - listitem:
+    - link "AVENUE X/E 2 ST":
+      - /url: "#"
+  - listitem:
+    - link "AVENUE X/WEST ST":
+      - /url: "#"
+  - listitem:
+    - link "AVENUE X/McDONALD AV":
+      - /url: "#"
+    - list:
+      - listitem:
+        - text: 0 minutes, at stop
+        - link /\d+/:
+          - /url: "#"
+      - listitem:
+        - text: 1 minute, < 1 stop away
+        - link /\d+/:
+          - /url: "#"
+  - listitem:
+    - link /\d+ ST\/VAN SICKLEN ST/:
+      - /url: "#"
+  - listitem:
+    - link /\d+ ST\/W 7 ST/:
+      - /url: "#"
+  - listitem:
+    - link /\d+ ST\/W 9 ST/:
+      - /url: "#"
+  - listitem:
+    - link /\d+ ST\/AVENUE U/:
+      - /url: "#"
+  - listitem:
+    - link /\d+ ST\/STILLWELL AV/:
+      - /url: "#"
+  - listitem:
+    - link /\d+ ST\/\d+ AV/:
+      - /url: "#"
+  - listitem:
+    - link /\d+ ST\/\d+ AV/:
+      - /url: "#"
+  - listitem:
+    - link /\d+ ST\/\d+ AV/:
+      - /url: "#"
+  - listitem:
+    - link /\d+ ST\/BAY PKWY/:
+      - /url: "#"
+    - list:
+      - listitem:
+        - text: 0 minutes, < 1 stop away
+        - link /\d+/:
+          - /url: "#"
+  - listitem:
+    - link /\d+ ST\/\d+ AV/:
+      - /url: "#"
+    - list:
+      - listitem:
+        - text: 0 minutes, at stop
+        - link /\d+/:
+          - /url: "#"
+  - listitem:
+    - link /\d+ ST\/\d+ AV/:
+      - /url: "#"
+  - listitem:
+    - link /\d+ ST\/\d+ AV/:
+      - /url: "#"
+  - listitem:
+    - link /\d+ ST\/\d+ AV/:
+      - /url: "#"
+  - listitem:
+    - link /\d+ ST\/\d+ AV/:
+      - /url: "#"
+  - listitem:
+    - link /\d+ ST\/\d+ AV/:
+      - /url: "#"
+    - list:
+      - listitem:
+        - text: 0 minutes, approaching
+        - link /\d+/:
+          - /url: "#"
+  - listitem:
+    - link /\d+ ST\/\d+ AV/:
+      - /url: "#"
+  - listitem:
+    - link /\d+ ST\/\d+ AV/:
+      - /url: "#"
+  - listitem:
+    - link /\d+ ST\/\d+ AV/:
+      - /url: "#"
+  - listitem:
+    - link /\d+ ST\/\d+ AV/:
+      - /url: "#"
+    - list:
+      - listitem:
+        - text: 0 minutes, < 1 stop away
+        - link /\d+/:
+          - /url: "#"
+      - listitem:
+        - text: 0 minutes, < 1 stop away
+        - link /\d+/:
+          - /url: "#"
+  - listitem:
+    - link /\d+ ST\/\d+ AV/:
+      - /url: "#"
+  - listitem:
+    - link /\d+ ST\/7 AV/:
+      - /url: "#"
+  - listitem:
+    - link /\d+ ST\/FORT HAMILTON PKWY/:
+      - /url: "#"
+  - listitem:
+    - link /5 AV\/\d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /\d+ ST\/4 AV/:
+      - /url: "#"
+- button "Toggle MTA NYCT_B1 to MANHATTAN BEACH KINGSBORO CC Open / Closed" [expanded]:
+  - text: ""
+  - strong: MANHATTAN BEACH KINGSBORO CC
+- list:
+  - listitem:
+    - link /\d+ ST\/4 AV/:
+      - /url: "#"
+  - listitem:
+    - link /\d+ ST\/5 AV/:
+      - /url: "#"
+  - listitem:
+    - link /\d+ ST\/FORT HAMILTON PKWY/:
+      - /url: "#"
+  - listitem:
+    - link /\d+ ST\/DAHLGREN PL/:
+      - /url: "#"
+    - list:
+      - listitem:
+        - text: 0 minutes, approaching
+        - link /\d+/:
+          - /url: "#"
+  - listitem:
+    - link /\d+ ST\/7 AV/:
+      - /url: "#"
+  - listitem:
+    - link /\d+ ST\/\d+ AV/:
+      - /url: "#"
+  - listitem:
+    - link /\d+ ST\/\d+ AV/:
+      - /url: "#"
+  - listitem:
+    - link /\d+ ST\/\d+ AV/:
+      - /url: "#"
+  - listitem:
+    - link /\d+ ST\/\d+ AV/:
+      - /url: "#"
+  - listitem:
+    - link /\d+ ST\/\d+ AV/:
+      - /url: "#"
+  - listitem:
+    - link /\d+ ST\/\d+ AV/:
+      - /url: "#"
+    - list:
+      - listitem:
+        - text: 0 minutes, at stop
+        - link /\d+/:
+          - /url: "#"
+  - listitem:
+    - link /\d+ ST\/\d+ AV/:
+      - /url: "#"
+  - listitem:
+    - link /\d+ ST\/\d+ AV/:
+      - /url: "#"
+  - listitem:
+    - link /\d+ ST\/\d+ AV/:
+      - /url: "#"
+  - listitem:
+    - link /\d+ ST\/\d+ AV/:
+      - /url: "#"
+  - listitem:
+    - link /\d+ ST\/\d+ AV/:
+      - /url: "#"
+  - listitem:
+    - link /\d+ ST\/BAY PKWY/:
+      - /url: "#"
+  - listitem:
+    - link /\d+ ST\/\d+ AV/:
+      - /url: "#"
+    - list:
+      - listitem:
+        - text: 0 minutes, approaching
+        - img /vehicle is ~\d+% full/
+        - text: /~\d+ passengers/
+        - link /\d+/:
+          - /url: "#"
+  - listitem:
+    - link /\d+ ST\/\d+ AV/:
+      - /url: "#"
+  - listitem:
+    - link /\d+ ST\/\d+ AV/:
+      - /url: "#"
+  - listitem:
+    - link /\d+ ST\/STILLWELL AV/:
+      - /url: "#"
+    - list:
+      - listitem:
+        - text: 0 minutes, at stop
+        - img /vehicle is ~\d+% full/
+        - text: /~\d+ passengers/
+        - link /\d+/:
+          - /url: "#"
+  - listitem:
+    - link /\d+ ST\/AVENUE U/:
+      - /url: "#"
+  - listitem:
+    - link /\d+ ST\/AVENUE V/:
+      - /url: "#"
+  - listitem:
+    - link /\d+ ST\/W 8 ST/:
+      - /url: "#"
+  - listitem:
+    - link /\d+ ST\/AVENUE W/:
+      - /url: "#"
+  - listitem:
+    - link "AVENUE X/SHELL RD":
+      - /url: "#"
+  - listitem:
+    - link "AVENUE X/W 1 ST":
+      - /url: "#"
+  - listitem:
+    - link "AVENUE X/E 1 ST":
+      - /url: "#"
+  - listitem:
+    - link "AVENUE X/E 3 ST":
+      - /url: "#"
+  - listitem:
+    - link "AVENUE X/OCEAN PKWY":
+      - /url: "#"
+  - listitem:
+    - link "OCEAN PKWY/SHORE PKWY":
+      - /url: "#"
+  - listitem:
+    - link "OCEAN PKWY/WEST AV":
+      - /url: "#"
+  - listitem:
+    - link "OCEAN PKWY/NEPTUNE AV":
+      - /url: "#"
+  - listitem:
+    - link "OCEAN PKWY/OCEAN VIEW AV":
+      - /url: "#"
+  - listitem:
+    - link "BRIGHTON BEACH AV/OCEAN PKWY":
+      - /url: "#"
+  - listitem:
+    - link "BRIGHTON BEACH AV/BRIGHTON 1 PL":
+      - /url: "#"
+    - list:
+      - listitem:
+        - text: 0 minutes, approaching
+        - link /\d+/:
+          - /url: "#"
+  - listitem:
+    - link "BRIGHTON BEACH AV/BRIGHTON 3 ST":
+      - /url: "#"
+  - listitem:
+    - link "BRIGHTON BEACH AV/BRIGHTON 6 ST":
+      - /url: "#"
+    - list:
+      - listitem:
+        - text: 0 minutes, at stop
+        - link /\d+/:
+          - /url: "#"
+  - listitem:
+    - link "BRIGHTON BEACH AV/CONEY ISLAND AV":
+      - /url: "#"
+  - listitem:
+    - link /BRIGHTON BEACH AV\/BRIGHTON \d+ ST/:
+      - /url: "#"
+    - list:
+      - listitem:
+        - text: 1 minute, < 1 stop away
+        - link /\d+/:
+          - /url: "#"
+  - listitem:
+    - link /BRIGHTON BEACH AV\/BRIGHTON \d+ ST/:
+      - /url: "#"
+    - list:
+      - listitem:
+        - text: 0 minutes, < 1 stop away
+        - img /vehicle is ~\d+% full/
+        - text: /~\d+ passengers/
+        - link /\d+/:
+          - /url: "#"
+  - listitem:
+    - link "CORBIN PL/BRIGHTON BEACH AV":
+      - /url: "#"
+  - listitem:
+    - link "ORIENTAL BLVD/WEST END AV":
+      - /url: "#"
+  - listitem:
+    - link "ORIENTAL BLVD/BEAUMONT ST":
+      - /url: "#"
+  - listitem:
+    - link "ORIENTAL BLVD/DOVER ST":
+      - /url: "#"
+  - listitem:
+    - link "ORIENTAL BLVD/OCEAN AV":
+      - /url: "#"
+  - listitem:
+    - link "ORIENTAL BLVD/HASTINGS ST":
+      - /url: "#"
+  - listitem:
+    - link "ORIENTAL BLVD/KENSINGTON ST":
+      - /url: "#"
+  - listitem:
+    - link "ORIENTAL BLVD/MACKENZIE ST":
+      - /url: "#"
+- list:
+  - listitem:
+    - button "Toggle favorites status for this Route":
+      - img "remove icon"
+      - text: Remove Route from Favorites
+- menu:
+  - listitem:
+    - button "Refresh the data": /Refresh \(updated 6:\d+ PM\)/
+- button "Toggle Google Translate Menu": TRANSLATE
+- link "Bus Time Classic":
+  - /url: https://bustime-classic.mta.info
+- navigation:
+  - list:
+    - listitem:
+      - link "MTA Website":
+        - /url: //mta.info
+    - listitem:
+      - link "Mobile Text Messages":
+        - /url: /help/text
+    - listitem:
+      - link "Sign Up For Service Alerts":
+        - /url: //cloud.info.mta.org/create-mta-service-alerts?utm_source=MTA_Bus_Time&utm_medium=referral&utm_campaign=MTA_Service_Alerts
+    - listitem:
+      - link "About Bus Time":
+        - /url: /about
+    - listitem:
+      - link "Contact Us":
+        - /url: /contact
+    - listitem:
+      - link "Help":
+        - /url: /help
+    - listitem:
+      - link "Privacy Policy":
+        - /url: //www.mta.info/privacy-policy
+    - listitem:
+      - link "Terms & Conditions":
+        - /url: //www.mta.info/terms-and-conditions

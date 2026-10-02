@@ -1,0 +1,126 @@
+- banner:
+  - link "MTA Bus Time Home":
+    - /url: "#"
+    - img "MTA Bus Time"
+  - link "MTA Home":
+    - /url: https://www.mta.info/
+    - img "MTA"
+- combobox:
+  - textbox "Route, intersection, or stop code": B1
+  - listbox
+- button "clear search button"
+- button "Favorites":
+  - img
+  - text: ""
+- button "Nearby Buses":
+  - img
+  - text: ""
+- heading "Vehicle:" [level=2]
+- heading "bus and stroller icon B1 Bay Ridge - Manhattan Beach" [level=3]:
+  - img "bus and stroller icon"
+  - text: ""
+- list:
+  - listitem: "/Vehicle #\\d+ Stroller storage available/"
+- list:
+  - listitem:
+    - button "view full Full Route":
+      - img
+      - text: View Full Route
+- heading "Next Stops:" [level=4]
+- list:
+  - listitem:
+    - link /\d+ ST\/BAY PKWY/:
+      - /url: "#"
+    - text: 0 minutes, < 1 stop away
+  - listitem:
+    - link /\d+ ST\/\d+ AV/:
+      - /url: "#"
+    - text: 2 minutes, 1 stop away
+  - listitem:
+    - link /\d+ ST\/\d+ AV/:
+      - /url: "#"
+    - text: 4 minutes, 2 stops away
+  - listitem:
+    - link /\d+ ST\/\d+ AV/:
+      - /url: "#"
+    - text: 6 minutes, 0.6 miles away
+  - listitem:
+    - link /\d+ ST\/\d+ AV/:
+      - /url: "#"
+    - text: 8 minutes, 0.8 miles away
+  - listitem:
+    - link /\d+ ST\/\d+ AV/:
+      - /url: "#"
+    - text: 9 minutes, 0.9 miles away
+  - listitem:
+    - link /\d+ ST\/\d+ AV/:
+      - /url: "#"
+    - text: /\d+ minutes, 1\.1 miles away/
+  - listitem:
+    - link /\d+ ST\/\d+ AV/:
+      - /url: "#"
+    - text: /\d+ minutes, 1\.2 miles away/
+  - listitem:
+    - link /\d+ ST\/\d+ AV/:
+      - /url: "#"
+    - text: /\d+ minutes, 1\.4 miles away/
+  - listitem:
+    - link /\d+ ST\/\d+ AV/:
+      - /url: "#"
+    - text: /\d+ minutes, 1\.5 miles away/
+  - listitem:
+    - link /\d+ ST\/\d+ AV/:
+      - /url: "#"
+    - text: /\d+ minutes, 1\.7 miles away/
+  - listitem:
+    - link /\d+ ST\/\d+ AV/:
+      - /url: "#"
+    - text: /\d+ minutes, 1\.8 miles away/
+  - listitem:
+    - link /\d+ ST\/7 AV/:
+      - /url: "#"
+    - text: /\d+ minutes, 2\.0 miles away/
+  - listitem:
+    - link /\d+ ST\/FORT HAMILTON PKWY/:
+      - /url: "#"
+    - text: /\d+ minutes, 2\.2 miles away/
+  - listitem:
+    - link /5 AV\/\d+ ST/:
+      - /url: "#"
+    - text: /\d+ minutes, 2\.3 miles away/
+  - listitem:
+    - link /\d+ ST\/4 AV/:
+      - /url: "#"
+    - text: /\d+ minutes, 2\.5 miles away/
+- menu:
+  - listitem:
+    - button "Refresh the data": /Refresh \(updated 6:\d+ PM\)/
+- button "Toggle Google Translate Menu": TRANSLATE
+- link "Bus Time Classic":
+  - /url: https://bustime-classic.mta.info
+- navigation:
+  - list:
+    - listitem:
+      - link "MTA Website":
+        - /url: //mta.info
+    - listitem:
+      - link "Mobile Text Messages":
+        - /url: /help/text
+    - listitem:
+      - link "Sign Up For Service Alerts":
+        - /url: //cloud.info.mta.org/create-mta-service-alerts?utm_source=MTA_Bus_Time&utm_medium=referral&utm_campaign=MTA_Service_Alerts
+    - listitem:
+      - link "About Bus Time":
+        - /url: /about
+    - listitem:
+      - link "Contact Us":
+        - /url: /contact
+    - listitem:
+      - link "Help":
+        - /url: /help
+    - listitem:
+      - link "Privacy Policy":
+        - /url: //www.mta.info/privacy-policy
+    - listitem:
+      - link "Terms & Conditions":
+        - /url: //www.mta.info/terms-and-conditions
