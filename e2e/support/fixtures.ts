@@ -107,6 +107,8 @@ export const test = base.extend<Options & Fixtures>({
 
   checkpoint: async ({ page }, use) => {
     await use(async (name) => {
+      // Recording sees live data, which no snapshot would match; snapshots come from replay.
+      if (isRecording) return;
       // Waits (and retries) until the sidebar matches, so the screenshot below sees a settled page.
       await expect(page.locator('#sidebar')).toMatchAriaSnapshot({ name: `${name}.aria.yml` });
       await useScreenshotStyles(page);

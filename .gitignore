@@ -11,9 +11,11 @@ dist/
 public/css/
 
 # Playwright
-/test-results/
-/playwright-report/
+/test-results*/
+/playwright-report*/
 /blob-report/
 /playwright/.cache/
 /playwright/.auth/
 /e2e/drafts/
+/dist-e2e*/
+/dist-qa/

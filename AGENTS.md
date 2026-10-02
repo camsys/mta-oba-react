@@ -4,9 +4,10 @@ Notes for AI coding agents (and humans) working in this repo. Keep it short.
 Give the *why* with each rule, so it can be applied to cases it doesn't name.
 
 ## Commands
-- `npm run dev-start`: webpack dev server (http://localhost:8080/?LineRef=B63)
+- `npm run dev-start`: webpack dev server (http://localhost:8080/?search=B63)
 - `npm run build`: production build into `dist/` (CI runs this plus `npm audit --audit-level=high`)
 - `npm test`: Node built-in test runner over `test/*.test.js`; no test framework dependency
+- `npm run test:e2e`: Playwright browser tests in `e2e/`, replaying recorded API responses. How to write, record and snapshot a test: `e2e/README.md`
 
 The README and Dockerfile mention `npm run start` / `build-css`, which no longer exist. Use the scripts in `package.json`.
 
@@ -20,6 +21,8 @@ The README and Dockerfile mention `npm run start` / `build-css`, which no longer
   Why: README notes the JS data models were a workaround for the lack of typing.
 
 ## Rules
+- **e2e snapshots come from code you mean to accept:** check `git diff -- src/` before `--update-snapshots`, and never regenerate snapshots just to make a failing test pass.
+  Why: references define "correct"; generating them from a broken or experimental build makes the tests protect the bug.
 - **Env config defaults in `webpack.config.js`:** use `??`, not `||`, for any variable that a remote env config must be able to set to `''` (e.g. `BETA_BANNER_TEXT`, `BETA_BANNER_LINK`), and add its key to `test/webpack.config.test.js` (or, if it isn't a `DefinePlugin` value, a test showing `''` turns it off, as in `test/gaTag.test.js`).
   Why: `||` treats `''` as missing and silently restores the default, so an environment can't turn the feature off.
 - **Google tag on every page:** new HTML pages in `public/` need `<!-- GA_TAG_INJECTION_MARKER: replaced at build time by webpack.config.js -->` as the first line inside `<head>`. CI fails the build otherwise (`npm test`, then `npm run check-ga-tag` over `dist/`).
