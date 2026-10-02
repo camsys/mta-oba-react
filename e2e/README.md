@@ -73,7 +73,9 @@ test('what the user does', async ({ page, checkpoint }) => {
 - Keep the recorded steps and their order. Only remove clicks that just focus an element.
 - Key presses: codegen writes them as `locator.press`, which focuses the locator first and so
   skips the real tab order. Convert each to `expect(locator).toBeFocused()` followed by
-  `page.keyboard.press`, as `press` in `favorites.spec.ts` does.
+  `page.keyboard.press`, as `press` in `favorites.spec.ts` does. The route-b63, location and
+  stop-403424 specs still use `locator.press`, so they don't test tab order yet. A follow-up will
+  re-record them, with codegen and the API capture in the same session, so the buses match.
 - Anything that should survive a reload needs a `page.reload()` added by hand; codegen doesn't
   record reloads.
 - Put a `checkpoint('<name>')` after the page loads and after each step that changes the
