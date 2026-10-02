@@ -18,7 +18,7 @@
 - heading "Nearby:" [level=2]
 - button "Show nearby routes (currently visible)" [expanded] [pressed]: Routes
 - button "Show nearby stops (currently hidden)": Stops
-- button "Toggle M15 M15 East Harlem - South Ferry open/close":
+- button "Toggle M15 M15 East Harlem - South Ferry open/close" [expanded]:
   - img
   - text: ""
 - list:

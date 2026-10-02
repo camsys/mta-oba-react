@@ -18,7 +18,7 @@
 - heading "Nearby:" [level=2]
 - button "Show nearby routes (currently visible)" [expanded] [pressed]: Routes
 - button "Show nearby stops (currently hidden)": Stops
-- button "Toggle M15 M15 East Harlem - South Ferry open/close":
+- button "Toggle M15 M15 East Harlem - South Ferry open/close" [expanded]:
   - img
   - text: ""
 - list:
@@ -322,7 +322,7 @@
         - text: /0 minutes, approaching \(at terminal, scheduled to depart at \d+:\d+ AM\)/
         - link /\d+/:
           - /url: "#"
-- button "Toggle MTA NYCT_M15 to SOUTH FERRY via 2 AV Open / Closed":
+- button "Toggle MTA NYCT_M15 to SOUTH FERRY via 2 AV Open / Closed" [expanded]:
   - text: ""
   - strong: SOUTH FERRY via 2 AV
 - list:

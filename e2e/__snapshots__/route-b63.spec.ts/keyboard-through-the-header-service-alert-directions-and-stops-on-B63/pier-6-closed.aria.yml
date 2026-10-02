@@ -21,7 +21,7 @@
   - text: ""
 - list:
   - listitem: via 5th Av / Atlantic Av
-- button "Toggle Service Alert Open/Closed": Service Alert for B63
+- button "Toggle Service Alert Open/Closed" [expanded]: Service Alert for B63
 - paragraph: B63 buses may experience delays on 5th Ave between 64th St and 65th St and will wait out any temporary closures
 - paragraph:
   - paragraph: Please allow additional travel time.
@@ -29,7 +29,7 @@
   - paragraph:
     - strong: What's happening?
   - paragraph: DOT - Lane Shift/5th Avenue Bridge/65th Street
-- button "Toggle MTA NYCT_B63 to BAY RIDGE SHORE RD via 5 AV Open / Closed" [expanded]:
+- button "Toggle MTA NYCT_B63 to BAY RIDGE SHORE RD via 5 AV Open / Closed":
   - text: ""
   - strong: BAY RIDGE SHORE RD via 5 AV
 - list:
@@ -242,7 +242,7 @@
         - text: 0 minutes, at stop (at terminal)
         - link /\d+/:
           - /url: "#"
-- button "Toggle MTA NYCT_B63 to PIER 6 BKLYN BRIDGE PARK via 5 AV Open / Closed" [expanded]:
+- button "Toggle MTA NYCT_B63 to PIER 6 BKLYN BRIDGE PARK via 5 AV Open / Closed":
   - text: ""
   - strong: PIER 6 BKLYN BRIDGE PARK via 5 AV
 - list:

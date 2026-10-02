@@ -1,0 +1,536 @@
+- banner:
+  - link "MTA Bus Time Home":
+    - /url: "#"
+    - img "MTA Bus Time"
+  - link "MTA Home":
+    - /url: https://www.mta.info/
+    - img "MTA"
+- combobox:
+  - textbox "Route, intersection, or stop code": B44
+  - listbox
+- button "clear search button"
+- button "Favorites":
+  - img
+  - text: ""
+- button "Nearby Buses":
+  - img
+  - text: ""
+- heading "Routes:" [level=2]
+- heading "B44 Sheepshead Bay - Williamsburg" [level=3]:
+  - img
+  - text: ""
+- list:
+  - listitem: via Nostrand Av
+- button "Toggle Service Alert Open/Closed": Service Alert for B44
+- paragraph: Sheepshead Bay-bound ‌B44‌ buses are detoured due to roadwork on Nostrand Ave from Tilden Av to Avenue D.
+- paragraph:
+  - paragraph:
+    - text: Sheepshead Bay-bound ?
+    - strong: B44
+    - text: "? buses will not make stops on Nostrand Ave from Tilde Ave to Clarendon Rd.While detoured, Sheepshead Bay-bound ?"
+    - strong: B44
+    - text: "? buses will make stops on New York Ave upon request."
+    - strong: "NOTE:"
+    - text: Bus arrival information may not be accurate/available while buses are detoured.
+- button "Toggle MTA NYCT_B44 to FLUSHING AV via NOSTRAND Open / Closed":
+  - text: ""
+  - strong: FLUSHING AV via NOSTRAND
+- list:
+  - listitem:
+    - link "KNAPP ST/SHORE PKWY":
+      - /url: "#"
+  - listitem:
+    - link "EMMONS AV/BRIGHAM ST":
+      - /url: "#"
+  - listitem:
+    - link "EMMONS AV/FORD ST":
+      - /url: "#"
+  - listitem:
+    - link "EMMONS AV/BROWN ST":
+      - /url: "#"
+  - listitem:
+    - link "EMMONS AV/HARING ST":
+      - /url: "#"
+  - listitem:
+    - link "NOSTRAND AV/SHORE PKWY":
+      - /url: "#"
+  - listitem:
+    - link "NOSTRAND AV/VOORHIES AV":
+      - /url: "#"
+  - listitem:
+    - link "NOSTRAND AV/AVENUE Z":
+      - /url: "#"
+  - listitem:
+    - link "NOSTRAND AV/AVENUE Y":
+      - /url: "#"
+  - listitem:
+    - link "NOSTRAND AV/AVENUE X":
+      - /url: "#"
+  - listitem:
+    - link "NOSTRAND AV/AVENUE W":
+      - /url: "#"
+  - listitem:
+    - link "NOSTRAND AV/AVENUE V":
+      - /url: "#"
+  - listitem:
+    - link "NOSTRAND AV/AVENUE U":
+      - /url: "#"
+  - listitem:
+    - link "NOSTRAND AV/AVENUE T":
+      - /url: "#"
+  - listitem:
+    - link "NOSTRAND AV/AVENUE S":
+      - /url: "#"
+  - listitem:
+    - link "STUART ST/FILLMORE AV":
+      - /url: "#"
+  - listitem:
+    - link "NOSTRAND AV/AVENUE R":
+      - /url: "#"
+  - listitem:
+    - link "NOSTRAND AV/GERRITSEN AV":
+      - /url: "#"
+  - listitem:
+    - link "NOSTRAND AV/QUENTIN RD":
+      - /url: "#"
+  - listitem:
+    - link "NOSTRAND AV/AVENUE P":
+      - /url: "#"
+  - listitem:
+    - link "NOSTRAND AV/MARINE PKWY":
+      - /url: "#"
+  - listitem:
+    - link "NOSTRAND AV/KINGS HWY":
+      - /url: "#"
+  - listitem:
+    - link "NOSTRAND AV/AVENUE N":
+      - /url: "#"
+  - listitem:
+    - link "NOSTRAND AV/AVENUE M":
+      - /url: "#"
+  - listitem:
+    - link "NOSTRAND AV/AVENUE L":
+      - /url: "#"
+  - listitem:
+    - link "AVENUE K/NOSTRAND AV":
+      - /url: "#"
+  - listitem:
+    - link "NOSTRAND AV/AVENUE K":
+      - /url: "#"
+  - listitem:
+    - link "NOSTRAND AV/AVENUE J":
+      - /url: "#"
+  - listitem:
+    - link "NOSTRAND AV/AVENUE I":
+      - /url: "#"
+  - listitem:
+    - link "NOSTRAND AV/FLATBUSH AV":
+      - /url: "#"
+  - listitem:
+    - link "NOSTRAND AV/GLENWOOD RD":
+      - /url: "#"
+  - listitem:
+    - link "FARRAGUT RD/NOSTRAND AV":
+      - /url: "#"
+  - listitem:
+    - link "NEW YORK AV/FARRAGUT RD":
+      - /url: "#"
+  - listitem:
+    - link "NEW YORK AV/FOSTER AV":
+      - /url: "#"
+  - listitem:
+    - link "NEW YORK AV/AVENUE D":
+      - /url: "#"
+  - listitem:
+    - link "NEW YORK AV/CLARENDON RD":
+      - /url: "#"
+  - listitem:
+    - link "NEW YORK AV/BEVERLY RD":
+      - /url: "#"
+  - listitem:
+    - link "NEW YORK AV/TILDEN AV":
+      - /url: "#"
+  - listitem:
+    - link "NEW YORK AV/SNYDER AV":
+      - /url: "#"
+  - listitem:
+    - link "NEW YORK AV/CHURCH AV":
+      - /url: "#"
+  - listitem:
+    - link "NEW YORK AV/LINDEN BLVD":
+      - /url: "#"
+  - listitem:
+    - link "NEW YORK AV/LENOX RD":
+      - /url: "#"
+  - listitem:
+    - link "NEW YORK AV/CLARKSON AV":
+      - /url: "#"
+  - listitem:
+    - link "NEW YORK AV/WINTHROP ST":
+      - /url: "#"
+  - listitem:
+    - link "NEW YORK AV/FENIMORE ST":
+      - /url: "#"
+  - listitem:
+    - link "NEW YORK AV/MIDWOOD ST":
+      - /url: "#"
+  - listitem:
+    - link "NEW YORK AV/EAST NEW YORK AV":
+      - /url: "#"
+  - listitem:
+    - link "NEW YORK AV/EMPIRE BL":
+      - /url: "#"
+  - listitem:
+    - link "NEW YORK AV/MONTGOMERY ST":
+      - /url: "#"
+  - listitem:
+    - link "NEW YORK AV/CARROLL ST":
+      - /url: "#"
+  - listitem:
+    - link "NEW YORK AV/UNION ST":
+      - /url: "#"
+  - listitem:
+    - link "NEW YORK AV/EASTERN PKWY":
+      - /url: "#"
+  - listitem:
+    - link "NEW YORK AV/SAINT JOHNS PL":
+      - /url: "#"
+  - listitem:
+    - link "NEW YORK AV/STERLING PL":
+      - /url: "#"
+  - listitem:
+    - link "NEW YORK AV/PROSPECT PL":
+      - /url: "#"
+  - listitem:
+    - link "NEW YORK AV/BERGEN ST":
+      - /url: "#"
+  - listitem:
+    - link "NEW YORK AV/PACIFIC ST":
+      - /url: "#"
+  - listitem:
+    - link "NEW YORK AV/ATLANTIC AV":
+      - /url: "#"
+  - listitem:
+    - link "FULTON ST/NEW YORK AV":
+      - /url: "#"
+  - listitem:
+    - link "FULTON ST/NOSTRAND AV":
+      - /url: "#"
+  - listitem:
+    - link "BEDFORD AV/FULTON ST":
+      - /url: "#"
+    - list:
+      - listitem:
+        - text: 0 minutes, approaching
+        - link /\d+/:
+          - /url: "#"
+  - listitem:
+    - link "BEDFORD AV/HANCOCK ST":
+      - /url: "#"
+  - listitem:
+    - link "BEDFORD AV/PUTNAM AV":
+      - /url: "#"
+  - listitem:
+    - link "BEDFORD AV/MONROE ST":
+      - /url: "#"
+  - listitem:
+    - link "BEDFORD AV/GREENE AV":
+      - /url: "#"
+  - listitem:
+    - link "BEDFORD AV/LAFAYETTE AV":
+      - /url: "#"
+  - listitem:
+    - link "BEDFORD AV/DE KALB AV":
+      - /url: "#"
+  - listitem:
+    - link "BEDFORD AV/WILLOUGHBY AV":
+      - /url: "#"
+  - listitem:
+    - link "BEDFORD AV/MYRTLE AV":
+      - /url: "#"
+  - listitem:
+    - link "BEDFORD AV/PARK AV":
+      - /url: "#"
+  - listitem:
+    - link "BEDFORD AV/FLUSHING AV":
+      - /url: "#"
+  - listitem:
+    - link "BEDFORD AV/HEWES ST":
+      - /url: "#"
+  - listitem:
+    - link "BEDFORD AV/TAYLOR ST":
+      - /url: "#"
+  - listitem:
+    - link "WILLIAMSBURG BRIDGE PLAZA/LANE 4":
+      - /url: "#"
+    - list:
+      - listitem:
+        - text: /0 minutes, approaching \(at terminal, scheduled to depart at \d+:\d+ PM\)/
+        - link /\d+/:
+          - /url: "#"
+- button "Toggle MTA NYCT_B44 to SHEEPSHEAD BAY KNAPP ST via NOSTRAND Open / Closed":
+  - text: ""
+  - strong: SHEEPSHEAD BAY KNAPP ST via NOSTRAND
+- list:
+  - listitem:
+    - link "WILLIAMSBURG BRIDGE PLAZA/LANE 4":
+      - /url: "#"
+  - listitem:
+    - link "LEE AV/TAYLOR ST":
+      - /url: "#"
+  - listitem:
+    - link "LEE AV/ROSS ST":
+      - /url: "#"
+  - listitem:
+    - link "LEE AV/HEWES ST":
+      - /url: "#"
+  - listitem:
+    - link "LEE AV/LYNCH ST":
+      - /url: "#"
+  - listitem:
+    - link "LEE AV/WALLABOUT ST":
+      - /url: "#"
+  - listitem:
+    - link "NOSTRAND AV/PARK AV":
+      - /url: "#"
+  - listitem:
+    - link "NOSTRAND AV/MYRTLE AV":
+      - /url: "#"
+  - listitem:
+    - link "NOSTRAND AV/WILLOUGHBY AV":
+      - /url: "#"
+  - listitem:
+    - link "NOSTRAND AV/DEKALB AV":
+      - /url: "#"
+  - listitem:
+    - link "NOSTRAND AV/LAFAYETTE AV":
+      - /url: "#"
+    - list:
+      - listitem:
+        - text: 0 minutes, approaching
+        - link /\d+/:
+          - /url: "#"
+  - listitem:
+    - link "NOSTRAND AV/GREENE AV":
+      - /url: "#"
+  - listitem:
+    - link "NOSTRAND AV/MONROE ST":
+      - /url: "#"
+  - listitem:
+    - link "NOSTRAND AV/PUTNAM AV":
+      - /url: "#"
+  - listitem:
+    - link "NOSTRAND AV/HANCOCK ST":
+      - /url: "#"
+  - listitem:
+    - link "NOSTRAND AV/FULTON ST":
+      - /url: "#"
+  - listitem:
+    - link "NOSTRAND AV/PACIFIC ST":
+      - /url: "#"
+    - list:
+      - listitem:
+        - text: 0 minutes, approaching
+        - img /vehicle is ~\d+% full/
+        - text: /~\d+ passengers/
+        - link /\d+/:
+          - /url: "#"
+  - listitem:
+    - link "NOSTRAND AV/BERGEN ST":
+      - /url: "#"
+  - listitem:
+    - link "NOSTRAND AV/PROSPECT PL":
+      - /url: "#"
+  - listitem:
+    - link "NOSTRAND AV/SAINT JOHNS PL":
+      - /url: "#"
+  - listitem:
+    - link "NOSTRAND AV/EASTERN PKWY":
+      - /url: "#"
+  - listitem:
+    - link "NOSTRAND AV/CARROLL ST":
+      - /url: "#"
+  - listitem:
+    - link "NOSTRAND AV/MONTGOMERY ST":
+      - /url: "#"
+  - listitem:
+    - link "NOSTRAND AV/EMPIRE BLVD":
+      - /url: "#"
+  - listitem:
+    - link "NOSTRAND AV/LEFFERTS AV":
+      - /url: "#"
+  - listitem:
+    - link "NOSTRAND AV/MAPLE ST":
+      - /url: "#"
+  - listitem:
+    - link "NOSTRAND AV/RUTLAND RD":
+      - /url: "#"
+  - listitem:
+    - link "NOSTRAND AV/HAWTHORNE ST":
+      - /url: "#"
+  - listitem:
+    - link "NOSTRAND AV/CLARKSON AV":
+      - /url: "#"
+  - listitem:
+    - link "NOSTRAND AV/LINDEN BLVD":
+      - /url: "#"
+  - listitem:
+    - link "NOSTRAND AV/CHURCH AV":
+      - /url: "#"
+  - listitem:
+    - link "NOSTRAND AV/SNYDER AV":
+      - /url: "#"
+  - listitem:
+    - link "NOSTRAND AV/TILDEN AV":
+      - /url: "#"
+  - listitem:
+    - link "NOSTRAND AV/BEVERLY RD":
+      - /url: "#"
+  - listitem:
+    - link "NOSTRAND AV/CLARENDON RD":
+      - /url: "#"
+  - listitem:
+    - link "NOSTRAND AV/AVENUE D":
+      - /url: "#"
+  - listitem:
+    - link "NOSTRAND AV/FOSTER AV":
+      - /url: "#"
+  - listitem:
+    - link "NOSTRAND AV/FARRAGUT RD":
+      - /url: "#"
+  - listitem:
+    - link "NOSTRAND AV/GLENWOOD RD":
+      - /url: "#"
+  - listitem:
+    - link "NOSTRAND AV/FLATBUSH AV":
+      - /url: "#"
+    - list:
+      - listitem:
+        - text: 0 minutes, approaching
+        - link /\d+/:
+          - /url: "#"
+  - listitem:
+    - link "NOSTRAND AV/AVENUE I":
+      - /url: "#"
+  - listitem:
+    - link "NOSTRAND AV/AVENUE J":
+      - /url: "#"
+  - listitem:
+    - link "NOSTRAND AV/AVENUE K":
+      - /url: "#"
+  - listitem:
+    - link "NOSTRAND AV/AVENUE L":
+      - /url: "#"
+  - listitem:
+    - link "NOSTRAND AV/AVENUE M":
+      - /url: "#"
+  - listitem:
+    - link "NOSTRAND AV/AVENUE N":
+      - /url: "#"
+  - listitem:
+    - link "NOSTRAND AV/KINGS HWY":
+      - /url: "#"
+  - listitem:
+    - link "NOSTRAND AV/AVENUE P":
+      - /url: "#"
+  - listitem:
+    - link "STUART ST/FILLMORE AV":
+      - /url: "#"
+  - listitem:
+    - link "NOSTRAND AV/QUENTIN RD":
+      - /url: "#"
+  - listitem:
+    - link "NOSTRAND AV/AVENUE R":
+      - /url: "#"
+  - listitem:
+    - link "NOSTRAND AV/AVENUE S":
+      - /url: "#"
+  - listitem:
+    - link "NOSTRAND AV/AVENUE T":
+      - /url: "#"
+  - listitem:
+    - link "NOSTRAND AV/AVENUE U":
+      - /url: "#"
+  - listitem:
+    - link "NOSTRAND AV/AVENUE V":
+      - /url: "#"
+  - listitem:
+    - link "NOSTRAND AV/AVENUE W":
+      - /url: "#"
+  - listitem:
+    - link "NOSTRAND AV/AVENUE X":
+      - /url: "#"
+  - listitem:
+    - link "NOSTRAND AV/AVENUE Y":
+      - /url: "#"
+  - listitem:
+    - link "NOSTRAND AV/AVENUE Z":
+      - /url: "#"
+  - listitem:
+    - link "NOSTRAND AV/VOORHIES AV":
+      - /url: "#"
+  - listitem:
+    - link "SHORE PKWY/NOSTRAND AV":
+      - /url: "#"
+  - listitem:
+    - link "SHORE PKWY/BROWN ST":
+      - /url: "#"
+  - listitem:
+    - link "SHORE PKWY/COYLE ST":
+      - /url: "#"
+    - list:
+      - listitem:
+        - text: 0 minutes, at stop
+        - link /\d+/:
+          - /url: "#"
+  - listitem:
+    - link "SHORE PKWY/BRIGHAM ST":
+      - /url: "#"
+  - listitem:
+    - link "KNAPP ST/SHORE PKWY":
+      - /url: "#"
+  - listitem:
+    - link "EMMONS AV/NOSTRAND AV":
+      - /url: "#"
+    - list:
+      - listitem:
+        - text: /0 minutes, approaching \(at terminal, scheduled to depart at \d+:\d+ PM\) ~1 passengers/
+        - link /\d+/:
+          - /url: "#"
+- list:
+  - listitem:
+    - button "Toggle favorites status for this Route":
+      - img "remove icon"
+      - text: Remove Route from Favorites
+- menu:
+  - listitem:
+    - button "Refresh the data": /Refresh \(updated \d+:\d+ PM\)/
+- button "Toggle Google Translate Menu": TRANSLATE
+- link "Bus Time Classic":
+  - /url: https://bustime-classic.mta.info
+- navigation:
+  - list:
+    - listitem:
+      - link "MTA Website":
+        - /url: //mta.info
+    - listitem:
+      - link "Mobile Text Messages":
+        - /url: /help/text
+    - listitem:
+      - link "Sign Up For Service Alerts":
+        - /url: //cloud.info.mta.org/create-mta-service-alerts?utm_source=MTA_Bus_Time&utm_medium=referral&utm_campaign=MTA_Service_Alerts
+    - listitem:
+      - link "About Bus Time":
+        - /url: /about
+    - listitem:
+      - link "Contact Us":
+        - /url: /contact
+    - listitem:
+      - link "Help":
+        - /url: /help
+    - listitem:
+      - link "Privacy Policy":
+        - /url: //www.mta.info/privacy-policy
+    - listitem:
+      - link "Terms & Conditions":
+        - /url: //www.mta.info/terms-and-conditions

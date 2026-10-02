@@ -18,13 +18,13 @@
 - heading "Nearby:" [level=2]
 - button "Show nearby routes (currently hidden)": Routes
 - button "Show nearby stops (currently visible)" [expanded] [pressed]: Stops
-- button /Toggle \d+ 2 AV\/E \d+ ST open\/close/:
+- button /Toggle \d+ 2 AV\/E \d+ ST open\/close/ [expanded]:
   - img
   - text: ""
 - list:
   - listitem: /Stopcode \d+/
 - heading "Buses en-route:" [level=4]
-- button "Toggle M15 to SOUTH FERRY via 2 AV" [expanded]:
+- button "Toggle M15 to SOUTH FERRY via 2 AV":
   - strong: M15
   - text: ""
 - list:
@@ -40,7 +40,7 @@
     - text: /5\.2 miles away \(at terminal, scheduled to depart at \d+:\d+ AM\)/
     - link /\d+/:
       - /url: "#"
-- button "Toggle Service Alert Open/Closed" [expanded]: Service Alert for M15
+- button "Toggle Service Alert Open/Closed": Service Alert for M15
 - paragraph: M15 stops on South St at Whitehall St will be bypassed, the first and last stops will be made on Whitehall St at Water St
 - paragraph:
   - paragraph:
@@ -104,7 +104,7 @@
     - button "view full Full Route":
       - img
       - text: View Full Route
-- button "Toggle M15 to PIKE ST -via 2 AV" [expanded]:
+- button "Toggle M15 to PIKE ST -via 2 AV":
   - strong: M15
   - text: ""
 - list:

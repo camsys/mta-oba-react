@@ -18,12 +18,12 @@
 - heading "Nearby:" [level=2]
 - button "Show nearby routes (currently visible)" [expanded] [pressed]: Routes
 - button "Show nearby stops (currently hidden)": Stops
-- button "Toggle M15 M15 East Harlem - South Ferry open/close" [expanded]:
+- button "Toggle M15 M15 East Harlem - South Ferry open/close":
   - img
   - text: ""
 - list:
   - listitem: via 1st Av / 2nd Av
-- button "Toggle Service Alert Open/Closed": Service Alert for M15
+- button "Toggle Service Alert Open/Closed" [expanded]: Service Alert for M15
 - paragraph: M15 stops on South St at Whitehall St will be bypassed, the first and last stops will be made on Whitehall St at Water St
 - paragraph:
   - paragraph:
@@ -322,7 +322,7 @@
         - text: /0 minutes, approaching \(at terminal, scheduled to depart at \d+:\d+ AM\)/
         - link /\d+/:
           - /url: "#"
-- button "Toggle MTA NYCT_M15 to SOUTH FERRY via 2 AV Open / Closed" [expanded]:
+- button "Toggle MTA NYCT_M15 to SOUTH FERRY via 2 AV Open / Closed":
   - text: ""
   - strong: SOUTH FERRY via 2 AV
 - list:
@@ -565,7 +565,7 @@
 - button "Toggle favorites status for this Route":
   - img "add icon"
   - text: Add Route to Favorites
-- button "Toggle SIM10 SIM10 Eltingville - Midtown Manhattan Express open/close":
+- button "Toggle SIM10 SIM10 Eltingville - Midtown Manhattan Express open/close" [expanded]:
   - img
   - text: ""
 - list:

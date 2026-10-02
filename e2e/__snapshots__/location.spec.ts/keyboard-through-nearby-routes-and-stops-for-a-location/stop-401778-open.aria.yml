@@ -18,7 +18,7 @@
 - heading "Nearby:" [level=2]
 - button "Show nearby routes (currently hidden)": Routes
 - button "Show nearby stops (currently visible)" [expanded] [pressed]: Stops
-- button /Toggle \d+ 2 AV\/E \d+ ST open\/close/:
+- button /Toggle \d+ 2 AV\/E \d+ ST open\/close/ [expanded]:
   - img
   - text: ""
 - list:
