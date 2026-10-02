@@ -47,17 +47,30 @@ document.addEventListener('DOMContentLoaded', function() {
 
           if (parent && collapseContent) {
 
+            // cancel timers left over from a previous toggle, so they can't undo this one
+            if (parent.collapseTimers) {
+              parent.collapseTimers.forEach(function(timer) {
+                clearTimeout(timer);
+              });
+            }
+            parent.collapseTimers = [];
+
+            // the 'open' class on the parent is applied 10ms late, so use the state set by a pending toggle if there is one
+            var wasOpen = parent.dataset.collapseState ? parent.dataset.collapseState === 'open' : parent.classList.contains('open');
+            parent.dataset.collapseState = wasOpen ? 'closed' : 'open';
+
             // if the card is open, close it, adjust the max height, and tabindex of inner elements
-            if (parent.classList.contains('open')) {
+            if (wasOpen) {
 
               // window.log.info('boop closing collapsible')
 
               collapseContent.style.maxHeight = collapseContent.scrollHeight + 'px'; // Set maxHeight before collapsing
 
-              setTimeout(() => {
+              parent.collapseTimers.push(setTimeout(() => {
                 parent.classList.remove('open');
+                delete parent.dataset.collapseState; // class is up to date again
                 collapseContent.style.maxHeight = '0'; // Collapse the content
-              }, 10); // Small delay to trigger transition
+              }, 10)); // Small delay to trigger transition
 
               // set tabindex of all inner elements to -1
               allInnerTabbableItems.forEach(function(element) {
@@ -74,14 +87,15 @@ document.addEventListener('DOMContentLoaded', function() {
               collapseContent.style.maxHeight = collapseContent.scrollHeight + 'px'; // Allow it to expand
 
               // Add class to parent to trigger transition
-              setTimeout(() => {
+              parent.collapseTimers.push(setTimeout(() => {
                 parent.classList.add('open');
-              }, 10); // Small delay to trigger transition
+                delete parent.dataset.collapseState; // class is up to date again
+              }, 10)); // Small delay to trigger transition
 
               // Set maxHeight back to none after transition
-              setTimeout(() => {
+              parent.collapseTimers.push(setTimeout(() => {
                 collapseContent.style.maxHeight = 'none'; // Reset to none to allow further expansion
-              }, 500); // Timeout matches the transition duration
+              }, 500)); // Timeout matches the transition duration
 
               // if parent has class 'inner-card', set tabindex of all inner elements to 0
               if (parent.classList.contains('inner-card')) {
@@ -115,9 +129,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
             }
 
-            // Update aria-expanded attribute
+            // Update aria-expanded attribute to the state this click moves to
 
-            collapseTrigger.setAttribute('aria-expanded', parent.classList.contains('open'));
+            collapseTrigger.setAttribute('aria-expanded', !wasOpen);
 
           }
         }
