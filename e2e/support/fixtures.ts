@@ -138,9 +138,17 @@ export const test = base.extend<Options & Fixtures>({
       // would never match (or, with --update-snapshots, would overwrite a Linux reference).
       if (process.platform !== 'linux') return noteScreenshotsSkipped();
       await useScreenshotStyles(page);
+      // A clicked element left under the mouse gets captured hovered (seen in favorites
+      // stop-card). (330, 30) is the plain header at every checkpoint, nothing interactive.
+      await page.mouse.move(330, 30);
       await expect(page).toHaveScreenshot(`${name}.png`, {
-        // Shows the browser's own clock, which keeps running during replay.
-        mask: [page.locator('.updated-at')],
+        mask: [
+          // Shows the browser's own clock, which keeps running during replay.
+          page.locator('.updated-at'),
+          // SearchBar.js's racy is-focused colour (onBlur clears it from a 100ms timeout, which
+          // sometimes doesn't run). Remove this mask when NYCUI-602 fixes it.
+          page.locator('#clear-search'),
+        ],
       });
     });
   },

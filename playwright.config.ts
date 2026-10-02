@@ -35,11 +35,14 @@ export default defineConfig({
     toHaveScreenshot: {
       animations: 'disabled',
       caret: 'hide',
-      // Keep it well below what a real change costs: swapping two favorites changes 5,891 pixels
-      // (0.64%) of the 1280x720 page, which a 1% tolerance let through. 0.001 is about 920 pixels.
+      // References and runs share one Linux image, so only real noise needs absorbing: at most
+      // 8 pixels (map text antialiasing in favorites) over 5 repeats of every spec, with the
+      // clear (×) button masked (see `checkpoint()`). The old 0.1% (~920 px) missed a focused
+      // stop link losing its underline (226 px) and the active Routes toggle losing its bold
+      // (218 px); 15 catches both.
       // Leave the per-pixel `threshold` at its default: it absorbs the tiny shading differences
       // between arm64 Docker (a Mac) and x64 CI, at most 4/255 per channel.
-      maxDiffPixelRatio: 0.001,
+      maxDiffPixels: 15,
     },
   },
   reporter: isCI

@@ -206,10 +206,15 @@ Snapshots are only as correct as the source they're generated from: check
    one, and a diff with changed pixels highlighted; ARIA snapshot failures show a text diff.
    Revert the change afterwards.
 
-Snapshots are compared with a 0.1% pixel tolerance (`maxDiffPixelRatio` in
-`playwright.config.ts`, about 920 pixels of the 1280x720 page). 1% was too loose: swapping two
-favorites changes only 0.64% of the page. The clock in the Refresh button is masked, since the browser
-clock keeps running during replay.
+Screenshots may differ by at most 15 pixels (`maxDiffPixels` in `playwright.config.ts`).
+References and runs come from the same Linux image, so the only noise left is up to 8 pixels
+of map-text antialiasing in favorites (measured over 5 repeats of every spec). The old 0.1%
+(about 920 pixels) missed a focused stop link losing its underline (226 pixels) and the active
+Routes toggle losing its bold (218 pixels); 15 catches both. Two things are masked: the clock
+in the Refresh button, since the browser clock keeps running during replay, and the search
+box's clear (×) button, whose colour depends on a racy focus state in `SearchBar.js` (remove
+that mask when NYCUI-602 is fixed). Before each screenshot `checkpoint()` moves the mouse to
+the header, so an element left hovered by a click isn't captured.
 
 Don't lower Playwright's per-pixel `threshold` (and never to 0): references made in Docker on a
 Mac (arm64) differ from CI's x64 runs by up to 4/255 per channel in many pixels, and the
