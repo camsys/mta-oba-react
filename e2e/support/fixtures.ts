@@ -121,6 +121,17 @@ export const test = base.extend<Options & Fixtures>({
     await use(async (name) => {
       // Recording sees live data, which no snapshot would match; snapshots come from replay.
       if (isRecording) return;
+      // A collapsible toggle (public/js/bustime.js) finishes on timers: the `open` class
+      // changes 10ms after the click (data-collapse-state is set until then), and an opening
+      // section's max-height stays pinned in px until 500ms, when it becomes `none`. Snapshotting
+      // before then catches it half open or up to 1px short, depending on how fast the run is.
+      await page.waitForFunction(
+        () =>
+          !document.querySelector('[data-collapse-state]') &&
+          [...document.querySelectorAll<HTMLElement>('.collapse-content')].every((el) =>
+            ['', 'none', '0px'].includes(el.style.maxHeight),
+          ),
+      );
       // Waits (and retries) until the sidebar matches, so the screenshot below sees a settled page.
       await expect(page.locator('#sidebar')).toMatchAriaSnapshot({ name: `${name}.aria.yml` });
       // References are made on Linux; text renders differently on macOS, so a Mac screenshot
