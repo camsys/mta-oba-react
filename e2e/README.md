@@ -71,6 +71,11 @@ test('what the user does', async ({ page, checkpoint }) => {
 - Import `test` from `./support/fixtures`, not `@playwright/test`.
 - Use relative URLs and drop codegen's `uuid=` parameter.
 - Keep the recorded steps and their order. Only remove clicks that just focus an element.
+- Key presses: codegen writes them as `locator.press`, which focuses the locator first and so
+  skips the real tab order. Convert each to `expect(locator).toBeFocused()` followed by
+  `page.keyboard.press`, as `press` in `favorites.spec.ts` does.
+- Anything that should survive a reload needs a `page.reload()` added by hand; codegen doesn't
+  record reloads.
 - Put a `checkpoint('<name>')` after the page loads and after each step that changes the
   screen. Checkpoints replace hand-written assertions; names must be unique in the spec.
 - `advance(ms)` moves time forward (`POLL_INTERVAL_MS` is one SIRI poll) if a scenario needs

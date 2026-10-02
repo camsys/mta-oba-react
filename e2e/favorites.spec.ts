@@ -1,5 +1,5 @@
-import type { Page } from '@playwright/test';
-import { test } from './support/fixtures';
+import type { Locator, Page } from '@playwright/test';
+import { expect, test } from './support/fixtures';
 
 test.use({ recording: 'favorites' });
 
@@ -12,12 +12,19 @@ const favorite = (page: Page, name: string | RegExp) =>
 const B44 = /^B44 Sheepshead Bay -/;
 const STOP = 'LEE AV/ROSS ST';
 
+// Checks `on` still has focus, then presses the key there: locator.press would move focus to
+// `on` first, so it wouldn't notice focus leaving the search box.
+async function press(page: Page, on: Locator, key: string) {
+  await expect(on).toBeFocused();
+  await page.keyboard.press(key);
+}
+
 // Picks a suggestion with the keyboard; `keys` are pressed before Enter.
 async function searchFromSuggestions(page: Page, term: string, keys = ['ArrowDown']) {
   await page.getByRole('button', { name: 'clear search button' }).click();
   await searchBox(page).fill(term);
-  for (const key of keys) await searchBox(page).press(key);
-  await searchBox(page).press('Enter');
+  for (const key of keys) await press(page, searchBox(page), key);
+  await press(page, searchBox(page), 'Enter');
 }
 
 test('add and remove a route and a stop as favorites', async ({ page, checkpoint }) => {
@@ -28,6 +35,7 @@ test('add and remove a route and a stop as favorites', async ({ page, checkpoint
   await searchFromSuggestions(page, 'b44', ['ArrowDown', 'ArrowDown', 'ArrowUp']);
   await checkpoint('route-card');
   await toggleFavorite(page).click();
+  await checkpoint('route-toggle-favorited');
   await openFavorites(page);
   await checkpoint('route-favorited');
 
@@ -58,4 +66,8 @@ test('add and remove a route and a stop as favorites', async ({ page, checkpoint
   await toggleFavorite(page).click();
   await openFavorites(page);
   await checkpoint('route-favorited-again');
+
+  // Favorites are kept in cookies, so B44 is still listed after a reload.
+  await page.reload();
+  await checkpoint('after-reload');
 });
