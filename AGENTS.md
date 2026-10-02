@@ -21,8 +21,8 @@ The README and Dockerfile mention `npm run start` / `build-css`, which no longer
   Why: README notes the JS data models were a workaround for the lack of typing.
 
 ## Rules
-- **e2e snapshots come from code you mean to accept:** check `git diff -- src/` before `--update-snapshots`, and never regenerate snapshots just to make a failing test pass.
-  Why: references define "correct"; generating them from a broken or experimental build makes the tests protect the bug.
+- **e2e snapshots come from code you mean to accept:** check `git diff -- src/` before `--update-snapshots`, and never regenerate snapshots just to make a failing test pass. Generate them with `npm run test:e2e:docker -- --update-snapshots`, never natively.
+  Why: references define "correct"; generating them from a broken or experimental build makes the tests protect the bug. Reference screenshots are Linux (CI's Docker image); macOS renders text differently, so native runs skip screenshots.
 - **Env config defaults in `webpack.config.js`:** use `??`, not `||`, for any variable that a remote env config must be able to set to `''` (e.g. `BETA_BANNER_TEXT`, `BETA_BANNER_LINK`), and add its key to `test/webpack.config.test.js` (or, if it isn't a `DefinePlugin` value, a test showing `''` turns it off, as in `test/gaTag.test.js`).
   Why: `||` treats `''` as missing and silently restores the default, so an environment can't turn the feature off.
 - **Google tag on every page:** new HTML pages in `public/` need `<!-- GA_TAG_INJECTION_MARKER: replaced at build time by webpack.config.js -->` as the first line inside `<head>`. CI fails the build otherwise (`npm test`, then `npm run check-ga-tag` over `dist/`).

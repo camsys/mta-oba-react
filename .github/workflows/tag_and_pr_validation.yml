@@ -39,3 +39,46 @@ jobs:
         run: npm run check-ga-tag
         env:
           GA_MEASUREMENT_ID: G-TEST1234
+
+  e2e:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    # Screenshot references are made in this image (npm run test:e2e:docker), so CI must use the
+    # same one: its browser build and fonts are what make the screenshots match.
+    container:
+      image: mcr.microsoft.com/playwright:v1.63.0-noble
+      options: --ipc=host
+    steps:
+      - uses: actions/checkout@v4
+
+      # The image tag above is hard-coded; after a Playwright bump, screenshots would silently
+      # be compared against another browser build. Reads the lockfile, so it fails before installing.
+      - name: Playwright version matches the image
+        run: |
+          installed="$(node -p "require('./package-lock.json').packages['node_modules/@playwright/test'].version")"
+          image="1.63.0"
+          if [ "$installed" != "$image" ]; then
+            echo "::error::@playwright/test is $installed but the e2e job uses mcr.microsoft.com/playwright:v$image-noble. Update the image tag in this workflow to v$installed-noble, then regenerate the references with npm run test:e2e:docker -- --update-snapshots."
+            exit 1
+          fi
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install
+        run: npm ci
+
+      - name: E2E tests
+        run: npm run test:e2e
+
+      - name: Upload report
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: |
+            playwright-report/
+            test-results/
+          retention-days: 14

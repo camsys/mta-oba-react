@@ -14,6 +14,7 @@
     "preversion": "npm audit --audit-level=high || (echo 'npm audit required to proceed' && exit 1)",
     "version": "node scripts/sync-version.mjs && git add public/version.json",
     "test:e2e": "playwright test",
+    "test:e2e:docker": "scripts/e2e-docker.sh",
     "test:e2e:record": "SIRI_MODE=record ENV_ADDRESS=app.qa.obanyc.com playwright test"
   },
   "keywords": [],
