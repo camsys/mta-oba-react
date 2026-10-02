@@ -24,20 +24,22 @@
 - list:
   - listitem: /Stopcode \d+/
 - heading "Buses en-route:" [level=4]
-- button "Toggle M15 to SOUTH FERRY via 2 AV" [expanded]:
+- button "Toggle M15 to SOUTH FERRY via 2 AV":
   - strong: M15
   - text: ""
 - list:
   - listitem:
     - text: /\d+ minutes, 1\.2 miles away/
+    - img /vehicle is ~\d+% full/
+    - text: /~\d+ passengers/
     - link /\d+/:
       - /url: "#"
   - listitem:
-    - text: /\d+ minutes, 4\.4 miles away/
+    - text: /\d+ minutes, 4\.1 miles away/
     - link /\d+/:
       - /url: "#"
   - listitem:
-    - text: /5\.2 miles away \(at terminal, scheduled to depart at \d+:\d+ AM\)/
+    - text: /\d+ minutes, 4\.6 miles away/
     - link /\d+/:
       - /url: "#"
 - button "Toggle Service Alert Open/Closed": Service Alert for M15
@@ -87,18 +89,6 @@
     - text: ":"
     - strong: M15-SBS
     - text: customers must pay fare before boarding by using the machine at regular bus stop located on Water St at Pine St or bus door with OMNY.
-- separator
-- paragraph: Northbound M15 and M22 buses will bypass stops at Madison St/Market St
-- paragraph:
-  - paragraph: Use the stop at Madison St/Oliver St instead.
-  - paragraph
-  - paragraph:
-    - strong: What?s happening?
-  - paragraph: Gas Main Repair
-  - paragraph
-  - paragraph:
-    - strong: Note
-    - text: ": Bus arrival information may be unavailable or inaccurate while buses are detoured."
 - list:
   - listitem:
     - button "view full Full Route":
@@ -109,18 +99,18 @@
   - text: ""
 - list:
   - listitem:
-    - text: /\d+ minutes, 3\.2 miles away/
+    - text: /\d+ minutes, 2\.1 miles away/
     - link /\d+/:
       - /url: "#"
   - listitem:
-    - text: /\d+ minutes, 5\.1 miles away \(at terminal\)/
+    - text: /\d+ minutes, 5\.1 miles away \(at terminal, scheduled to depart at 5:\d+ PM\)/
     - link /\d+/:
       - /url: "#"
   - listitem:
-    - text: /5\.1 miles away \(at terminal, scheduled to depart at \d+:\d+ AM\)/
+    - text: /8\.5 miles away \(\+layover, scheduled to depart terminal at 6:\d+ PM\)/
     - link /\d+/:
       - /url: "#"
-- button "Toggle Service Alert Open/Closed": Service Alert for M15
+- button "Toggle Service Alert Open/Closed" [expanded]: Service Alert for M15
 - paragraph: M15 stops on South St at Whitehall St will be bypassed, the first and last stops will be made on Whitehall St at Water St
 - paragraph:
   - paragraph:
@@ -167,18 +157,6 @@
     - text: ":"
     - strong: M15-SBS
     - text: customers must pay fare before boarding by using the machine at regular bus stop located on Water St at Pine St or bus door with OMNY.
-- separator
-- paragraph: Northbound M15 and M22 buses will bypass stops at Madison St/Market St
-- paragraph:
-  - paragraph: Use the stop at Madison St/Oliver St instead.
-  - paragraph
-  - paragraph:
-    - strong: What?s happening?
-  - paragraph: Gas Main Repair
-  - paragraph
-  - paragraph:
-    - strong: Note
-    - text: ": Bus arrival information may be unavailable or inaccurate while buses are detoured."
 - list:
   - listitem:
     - button "view full Full Route":
@@ -203,7 +181,7 @@
   - listitem:
     - strong: M15
     - text: PIKE ST -via 2 AV
-- button /Toggle \d+ E \d+ ST\/2 AV open\/close/ [expanded]:
+- button /Toggle \d+ E \d+ ST\/2 AV open\/close/:
   - img
   - text: ""
 - list:
@@ -214,13 +192,15 @@
   - text: ""
 - list:
   - listitem:
-    - text: 7 minutes, 0.9 miles away
+    - text: /\d+ minutes, 1\.1 miles away/
     - link /\d+/:
       - /url: "#"
-- button "Toggle Service Alert Open/Closed": Service Alert for BM1
-- paragraph: Manhattan-bound ‌BM1, BM2 and BM3 buses are detoured due to roadwork on Cortelyou Rd from Ocean Ave to Coney Island Ave.
-- paragraph:
-  - paragraph: "Stops from Cortelyou Rd/East 19th St to Coney Island Ave/Beverley Rd will not be made.Board buses along Beverley Rd instead.Note: Bus arrival information may not be accurate while buses are detoured."
+  - listitem:
+    - text: /\d+ minutes, 2\.2 miles away/
+    - img "vehicle is ~4% full"
+    - text: ~2 passengers
+    - link /\d+/:
+      - /url: "#"
 - list:
   - listitem:
     - button "view full Full Route":
@@ -231,20 +211,15 @@
   - text: ""
 - list:
   - listitem:
-    - text: 6 minutes, 0.8 miles away
+    - text: 0 minutes, approaching
+    - link /\d+/:
+      - /url: "#"
+  - listitem:
+    - text: /\d+ minutes, 2\.0 miles away/
     - img "vehicle is ~5% full"
     - text: ~3 passengers
     - link /\d+/:
       - /url: "#"
-  - listitem:
-    - text: /5\.9 miles away \(\+layover, scheduled to depart terminal at 2:\d+ PM\)/
-    - link /\d+/:
-      - /url: "#"
-- button "Toggle Service Alert Open/Closed": Service Alert for BM2
-- paragraph: BM2 and B103 buses are detoured in both directions due to roadwork at Cortelyou Rd/Ocean Ave.
-- paragraph:
-  - paragraph: You will experience some extra turns, but no stops will be missed.
-  - paragraph: "Note: Bus arrival information may not be accurate while buses are detoured."
 - list:
   - listitem:
     - button "view full Full Route":
@@ -255,13 +230,139 @@
   - text: ""
 - list:
   - listitem:
-    - text: /2\.8 miles away \(\+layover, scheduled to depart terminal at 2:\d+ PM\)/
+    - text: /\d+ minutes, 1\.3 miles away/
+    - img /vehicle is ~\d+% full/
+    - text: ~9 passengers
     - link /\d+/:
       - /url: "#"
-- button "Toggle Service Alert Open/Closed": Service Alert for BM3
-- paragraph: Manhattan-bound ‌BM1, BM2 and BM3 buses are detoured due to roadwork on Cortelyou Rd from Ocean Ave to Coney Island Ave.
+  - listitem:
+    - text: 2.7 miles away
+    - link /\d+/:
+      - /url: "#"
+- list:
+  - listitem:
+    - button "view full Full Route":
+      - img
+      - text: View Full Route
+- button "Toggle BM4 to GERRITSEN BCH GERRITSEN AV" [expanded]:
+  - strong: BM4
+  - text: ""
+- list:
+  - listitem:
+    - text: /\d+ minutes, 1\.7 miles away/
+    - link /\d+/:
+      - /url: "#"
+- list:
+  - listitem:
+    - button "view full Full Route":
+      - img
+      - text: View Full Route
+- button "Toggle SIM3 to PORT RICHMOND via WATCHOGUE RD" [expanded]:
+  - strong: SIM3
+  - text: ""
+- list:
+  - listitem:
+    - text: /\d+ minutes, 1\.1 miles away/
+    - img "vehicle is ~7% full"
+    - text: ~4 passengers
+    - link /\d+/:
+      - /url: "#"
+  - listitem:
+    - text: /\d+ minutes, 3\.0 miles away \(at terminal\)/
+    - link /\d+/:
+      - /url: "#"
+  - listitem:
+    - text: /\d+ minutes, 3\.0 miles away \(\+layover, scheduled to depart terminal at 6:\d+ PM\)/
+    - link /\d+/:
+      - /url: "#"
+- button "Toggle Service Alert Open/Closed": Service Alert for SIM3
+- paragraph: SIM1, SIM3, SIM7, SIM10, SIM11, SIM15, SIM33C and SIM35 stop on Narrows Rd North/St Johns Ave has been removed
 - paragraph:
-  - paragraph: "Stops from Cortelyou Rd/East 19th St to Coney Island Ave/Beverley Rd will not be made.Board buses along Beverley Rd instead.Note: Bus arrival information may not be accurate while buses are detoured."
+  - paragraph: Drop-off stop has been relocated to Narrows Rd North/North Drive.
+  - paragraph
+  - paragraph:
+    - strong: "Note:"
+    - text: Bus arrival information may not be available/accurate while buses are detoured
+- list:
+  - listitem:
+    - button "view full Full Route":
+      - img
+      - text: View Full Route
+- button "Toggle SIM6 to ELTVLLE TRANS CTR via F CAP BL via GFRDS" [expanded]:
+  - strong: SIM6
+  - text: ""
+- list:
+  - listitem:
+    - text: /\d+ minutes, 1\.3 miles away/
+    - img /vehicle is ~\d+% full/
+    - text: /~\d+ passengers/
+    - link /\d+/:
+      - /url: "#"
+- button "Toggle Service Alert Open/Closed": Service Alert for SIM6
+- paragraph: /The 4:\d+ PM SIM6 trip from Lexington Ave\/E 55th St will not run\./
+- paragraph:
+  - paragraph
+  - paragraph: We?re running as much service as we can with the bus operators we have available.
+- separator
+- paragraph: Southbound SIM6 and SIM11 buses are skipping the stop on Lexington Ave at E 45th St - use the temporary stop on Lexington Ave at E 43rd St instead
+- paragraph:
+  - paragraph
+  - paragraph
+  - paragraph:
+    - strong: What's happening?
+  - paragraph: Water main construction
+- list:
+  - listitem:
+    - button "view full Full Route":
+      - img
+      - text: View Full Route
+- button "Toggle SIM10 to ELTINGVILLE TRANS CTR via HYLAN via RICH" [expanded]:
+  - strong: SIM10
+  - text: ""
+- list:
+  - listitem:
+    - text: 2 minutes, 1 stop away
+    - link /\d+/:
+      - /url: "#"
+  - listitem:
+    - text: 3 minutes, 1 stop away
+    - img /vehicle is ~\d+% full/
+    - text: /~\d+ passengers/
+    - link /\d+/:
+      - /url: "#"
+  - listitem:
+    - text: 6 minutes, 0.6 miles away
+    - img /vehicle is ~\d+% full/
+    - text: ~9 passengers
+    - link /\d+/:
+      - /url: "#"
+- button "Toggle Service Alert Open/Closed": Service Alert for SIM10
+- paragraph: SIM1, SIM3, SIM7, SIM10, SIM11, SIM15, SIM33C and SIM35 stop on Narrows Rd North/St Johns Ave has been removed
+- paragraph:
+  - paragraph: Drop-off stop has been relocated to Narrows Rd North/North Drive.
+  - paragraph
+  - paragraph:
+    - strong: "Note:"
+    - text: Bus arrival information may not be available/accurate while buses are detoured
+- list:
+  - listitem:
+    - button "view full Full Route":
+      - img
+      - text: View Full Route
+- button "Toggle SIM31 to ELTINGVILLE TRANS CTR via FOREST HILL RD" [expanded]:
+  - strong: SIM31
+  - text: ""
+- list:
+  - listitem:
+    - text: /\d+ minutes, 1\.8 miles away/
+    - img /vehicle is ~\d+% full/
+    - text: ~6 passengers
+    - link /\d+/:
+      - /url: "#"
+- button "Toggle Service Alert Open/Closed": Service Alert for SIM31
+- paragraph: "/The following SIM31 trips will not run today: From East 57th St\\/Lexington Ave - 3:\\d+ PM, 4:\\d+ PM and 5:\\d+ PM/"
+- paragraph:
+  - paragraph: We?re running as much service as we can with the bus operators we have available.
 - list:
   - listitem:
     - button "view full Full Route":
@@ -289,6 +390,21 @@
   - listitem:
     - strong: BM3
     - text: SHEEPSHEAD BAY EMMONS AV via OCEAN AV
+  - listitem:
+    - strong: BM4
+    - text: GERRITSEN BCH GERRITSEN AV
+  - listitem:
+    - strong: SIM3
+    - text: PORT RICHMOND via WATCHOGUE RD
+  - listitem:
+    - strong: SIM6
+    - text: ELTVLLE TRANS CTR via F CAP BL via GFRDS
+  - listitem:
+    - strong: SIM10
+    - text: ELTINGVILLE TRANS CTR via HYLAN via RICH
+  - listitem:
+    - strong: SIM31
+    - text: ELTINGVILLE TRANS CTR via FOREST HILL RD
 - button /Toggle \d+ E \d+ ST\/2 AV open\/close/ [expanded]:
   - img
   - text: ""
@@ -300,23 +416,17 @@
   - text: ""
 - list:
   - listitem:
-    - text: 2 minutes, 1 stop away
-    - img /vehicle is ~\d+% full/
-    - text: ~8 passengers
+    - text: /\d+ minutes, 0\.7 miles away \(at terminal, scheduled to depart at 6:\d+ PM\)/
     - link /\d+/:
       - /url: "#"
   - listitem:
-    - text: /\d+ minutes, 0\.6 miles away \(at terminal, scheduled to depart at \d+:\d+ AM\)/
+    - text: /\d+ minutes, 2\.4 miles away \(\+layover, scheduled to depart terminal at 6:\d+ PM\)/
     - link /\d+/:
       - /url: "#"
   - listitem:
-    - text: /\d+ minutes, 1\.7 miles away \(\+layover, scheduled to depart terminal at \d+:\d+ AM\)/
+    - text: /\d+ minutes, 5\.1 miles away \(\+layover, scheduled to depart terminal at 6:\d+ PM\)/
     - link /\d+/:
       - /url: "#"
-- button "Toggle Service Alert Open/Closed": Service Alert for M9
-- paragraph: Westbound M9 and Eastbound M23-SBS, M34-SBS, M34A-SBS buses will skip the E 23rd St/2nd Ave stop due to utility work on E 23rd St between 1st Ave and 2nd Ave.
-- paragraph:
-  - paragraph: Use the E 23rd St/1st Ave stop instead.
 - list:
   - listitem:
     - button "view full Full Route":
@@ -327,7 +437,11 @@
   - text: ""
 - list:
   - listitem:
-    - text: 3 minutes, 2 stops away
+    - text: 1 minute, approaching
+    - link /\d+/:
+      - /url: "#"
+  - listitem:
+    - text: 2 minutes, 1 stop away
     - img /vehicle is ~\d+% full/
     - text: /~\d+ passengers/
     - link /\d+/:
@@ -336,14 +450,6 @@
     - text: /\d+ minutes, 1\.6 miles away/
     - link /\d+/:
       - /url: "#"
-  - listitem:
-    - text: /\d+ minutes, 1\.9 miles away \(at terminal, scheduled to depart at \d+:\d+ AM\)/
-    - link /\d+/:
-      - /url: "#"
-- button "Toggle Service Alert Open/Closed": Service Alert for M23-SBS
-- paragraph: Westbound M9 and Eastbound M23-SBS, M34-SBS, M34A-SBS buses will skip the E 23rd St/2nd Ave stop due to utility work on E 23rd St between 1st Ave and 2nd Ave.
-- paragraph:
-  - paragraph: Use the E 23rd St/1st Ave stop instead.
 - list:
   - listitem:
     - button "view full Full Route":
@@ -354,22 +460,18 @@
   - text: ""
 - list:
   - listitem:
-    - text: /\d+ minutes, 1\.9 miles away/
+    - text: 1 minute, < 1 stop away
     - link /\d+/:
       - /url: "#"
   - listitem:
-    - text: /\d+ minutes, 3\.1 miles away \(\+layover, scheduled to depart terminal at \d+:\d+ AM\)/
+    - text: 3 minutes, 1 stop away
     - link /\d+/:
       - /url: "#"
   - listitem:
-    - text: /\d+ minutes, 3\.7 miles away \(\+layover, scheduled to depart terminal at \d+:\d+ PM\)/
+    - text: /\d+ minutes, 2\.0 miles away/
     - link /\d+/:
       - /url: "#"
 - button "Toggle Service Alert Open/Closed": Service Alert for M34A-SBS
-- paragraph: Westbound M9 and Eastbound M23-SBS, M34-SBS, M34A-SBS buses will skip the E 23rd St/2nd Ave stop due to utility work on E 23rd St between 1st Ave and 2nd Ave.
-- paragraph:
-  - paragraph: Use the E 23rd St/1st Ave stop instead.
-- separator
 - paragraph: Southbound M11 and eastbound M34A-SBS stop at 9th Ave/W 40th St is closed
 - paragraph:
   - paragraph:
@@ -384,6 +486,31 @@
   - paragraph:
     - strong: "Note:"
     - text: Bus arrival information may not be accurate or available in the service change area.
+- list:
+  - listitem:
+    - button "view full Full Route":
+      - img
+      - text: View Full Route
+- button /Toggle M34-SBS to SELECT BUS WATERSIDE via \d+ ST via 2 AV/ [expanded]:
+  - strong: M34-SBS
+  - text: ""
+- list:
+  - listitem:
+    - text: 0 minutes, < 1 stop away
+    - img /vehicle is ~\d+% full/
+    - text: /~\d+ passengers/
+    - link /\d+/:
+      - /url: "#"
+  - listitem:
+    - text: /\d+ minutes, 1\.9 miles away/
+    - img /vehicle is ~\d+% full/
+    - text: /~\d+ passengers/
+    - link /\d+/:
+      - /url: "#"
+- button "Toggle Service Alert Open/Closed": Service Alert for M34-SBS
+- paragraph: M34-SBS buses are part suspended between East 34th St/1st Ave and Marginal St/East 34th St.
+- paragraph:
+  - paragraph: "The last eastbound stop will be made at East 34th St/1st Ave. The first eastbound stop will be at East 34th St/3rd Ave. Note: Bus arrival information may not be accurate while buses are detoured."
 - list:
   - listitem:
     - button "view full Full Route":
@@ -411,98 +538,33 @@
   - listitem:
     - strong: M34A-SBS
     - text: /SELECT BUS WATERSIDE via \d+ ST via 2 AV/
+  - listitem:
+    - strong: M34-SBS
+    - text: /SELECT BUS WATERSIDE via \d+ ST via 2 AV/
 - button /Toggle \d+ E \d+ ST\/1 AV open\/close/ [expanded]:
   - img
   - text: ""
 - list:
   - listitem: /Stopcode \d+/
 - heading "Buses en-route:" [level=4]
-- button /Toggle BM2 to MIDTOWN \d+ ST via CHURCH ST via MADISON AV/ [expanded]:
-  - strong: BM2
-  - text: ""
-- list:
-  - listitem:
-    - text: 1 minute, 0.6 miles away
-    - img "vehicle is ~4% full"
-    - text: ~2 passengers
-    - link /\d+/:
-      - /url: "#"
-  - listitem:
-    - text: /\d+ minutes, \d+\.\d+ miles away/
-    - link /\d+/:
-      - /url: "#"
-- button "Toggle Service Alert Open/Closed": Service Alert for BM2
-- paragraph: BM2 and B103 buses are detoured in both directions due to roadwork at Cortelyou Rd/Ocean Ave.
-- paragraph:
-  - paragraph: You will experience some extra turns, but no stops will be missed.
-  - paragraph: "Note: Bus arrival information may not be accurate while buses are detoured."
-- list:
-  - listitem:
-    - button "view full Full Route":
-      - img
-      - text: View Full Route
-- button /Toggle BM3 to MIDTOWN \d+ ST via CHURCH ST via MADISON AV/ [expanded]:
-  - strong: BM3
-  - text: ""
-- list:
-  - listitem:
-    - text: /\d+ minutes, 3\.9 miles away/
-    - img /vehicle is ~\d+% full/
-    - text: ~8 passengers
-    - link /\d+/:
-      - /url: "#"
-  - listitem:
-    - text: /\d+ minutes, \d+\.\d+ miles away/
-    - link /\d+/:
-      - /url: "#"
-- button "Toggle Service Alert Open/Closed": Service Alert for BM3
-- paragraph: Manhattan-bound ‌BM1, BM2 and BM3 buses are detoured due to roadwork on Cortelyou Rd from Ocean Ave to Coney Island Ave.
-- paragraph:
-  - paragraph: "Stops from Cortelyou Rd/East 19th St to Coney Island Ave/Beverley Rd will not be made.Board buses along Beverley Rd instead.Note: Bus arrival information may not be accurate while buses are detoured."
-- list:
-  - listitem:
-    - button "view full Full Route":
-      - img
-      - text: View Full Route
-- button /Toggle BM4 to MIDTOWN \d+ ST via CHURCH ST via MADISON AV/ [expanded]:
-  - strong: BM4
-  - text: ""
-- list:
-  - listitem:
-    - text: /\d+ minutes, \d+\.\d+ miles away/
-    - img "vehicle is ~4% full"
-    - text: ~2 passengers
-    - link /\d+/:
-      - /url: "#"
-- button "Toggle Service Alert Open/Closed": Service Alert for BM4
-- paragraph: Manhattan-bound ‌BM1, BM2 and BM3 buses are detoured due to roadwork on Cortelyou Rd from Ocean Ave to Coney Island Ave.
-- paragraph:
-  - paragraph: "Stops from Cortelyou Rd/East 19th St to Coney Island Ave/Beverley Rd will not be made.Board buses along Beverley Rd instead.Note: Bus arrival information may not be accurate while buses are detoured."
-- list:
-  - listitem:
-    - button "view full Full Route":
-      - img
-      - text: View Full Route
 - button "Toggle M23-SBS to SELECT BUS CHELSEA PIERS 12AV CROSSTOWN" [expanded]:
   - strong: M23-SBS
   - text: ""
 - list:
   - listitem:
-    - text: 6 minutes, 0.5 miles away
+    - text: 0 minutes, approaching
+    - img /vehicle is ~\d+% full/
+    - text: /~\d+ passengers/
     - link /\d+/:
       - /url: "#"
   - listitem:
-    - text: /\d+ minutes, 0\.6 miles away \(\+layover, scheduled to depart terminal at \d+:\d+ AM\)/
+    - text: /7 minutes, 0\.6 miles away \(\+layover, scheduled to depart terminal at 5:\d+ PM\)/
     - link /\d+/:
       - /url: "#"
   - listitem:
-    - text: /\d+ minutes, 1\.4 miles away \(\+layover, scheduled to depart terminal at \d+:\d+ AM\)/
+    - text: /\d+ minutes, 1\.1 miles away \(\+layover, scheduled to depart terminal at 6:\d+ PM\)/
     - link /\d+/:
       - /url: "#"
-- button "Toggle Service Alert Open/Closed": Service Alert for M23-SBS
-- paragraph: Westbound M9 and Eastbound M23-SBS, M34-SBS, M34A-SBS buses will skip the E 23rd St/2nd Ave stop due to utility work on E 23rd St between 1st Ave and 2nd Ave.
-- paragraph:
-  - paragraph: Use the E 23rd St/1st Ave stop instead.
 - list:
   - listitem:
     - button "view full Full Route":
@@ -522,15 +584,6 @@
   - text: Add Stop to Favorites
 - list:
   - listitem:
-    - strong: BM2
-    - text: /MIDTOWN \d+ ST via CHURCH ST via MADISON AV/
-  - listitem:
-    - strong: BM3
-    - text: /MIDTOWN \d+ ST via CHURCH ST via MADISON AV/
-  - listitem:
-    - strong: BM4
-    - text: /MIDTOWN \d+ ST via CHURCH ST via MADISON AV/
-  - listitem:
     - strong: M23-SBS
     - text: SELECT BUS CHELSEA PIERS 12AV CROSSTOWN
 - button /Toggle \d+ E \d+ ST\/2 AV open\/close/ [expanded]:
@@ -544,21 +597,19 @@
   - text: ""
 - list:
   - listitem:
-    - text: 0 minutes, approaching
+    - text: 2 minutes, 1 stop away
+    - img /vehicle is ~\d+% full/
+    - text: /~\d+ passengers/
     - link /\d+/:
       - /url: "#"
   - listitem:
-    - text: 7 minutes, 0.7 miles away
+    - text: /8 minutes, 0\.7 miles away \(\+layover, scheduled to depart terminal at 5:\d+ PM\)/
     - link /\d+/:
       - /url: "#"
   - listitem:
-    - text: /\d+ minutes, 0\.7 miles away \(\+layover, scheduled to depart terminal at \d+:\d+ AM\)/
+    - text: /\d+ minutes, 1\.3 miles away \(\+layover, scheduled to depart terminal at 6:\d+ PM\)/
     - link /\d+/:
       - /url: "#"
-- button "Toggle Service Alert Open/Closed": Service Alert for M23-SBS
-- paragraph: Westbound M9 and Eastbound M23-SBS, M34-SBS, M34A-SBS buses will skip the E 23rd St/2nd Ave stop due to utility work on E 23rd St between 1st Ave and 2nd Ave.
-- paragraph:
-  - paragraph: Use the E 23rd St/1st Ave stop instead.
 - list:
   - listitem:
     - button "view full Full Route":
@@ -591,19 +642,21 @@
   - text: ""
 - list:
   - listitem:
-    - text: /\d+ minutes, 1\.1 miles away/
+    - text: 7 minutes, 0.9 miles away
     - img /vehicle is ~\d+% full/
     - text: /~\d+ passengers/
     - link /\d+/:
       - /url: "#"
   - listitem:
-    - text: /\d+ minutes, 2\.2 miles away/
+    - text: /\d+ minutes, 1\.9 miles away/
     - img /vehicle is ~\d+% full/
     - text: /~\d+ passengers/
     - link /\d+/:
       - /url: "#"
   - listitem:
-    - text: /\d+ minutes, 2\.4 miles away/
+    - text: /\d+ minutes, 2\.8 miles away/
+    - img /vehicle is ~\d+% full/
+    - text: /~\d+ passengers/
     - link /\d+/:
       - /url: "#"
 - button "Toggle Service Alert Open/Closed": Service Alert for M15-SBS
@@ -650,25 +703,19 @@
   - text: ""
 - list:
   - listitem:
-    - text: 0 minutes, at stop
-    - img "vehicle is ~5% full"
-    - text: ~4 passengers
+    - text: /0 minutes, at stop \(at terminal, scheduled to depart at 6:\d+ PM\)/
     - link /\d+/:
       - /url: "#"
   - listitem:
-    - text: 8 minutes, 1.0 miles away
-    - link /\d+/:
-      - /url: "#"
-  - listitem:
-    - text: /\d+ minutes, 2\.6 miles away/
+    - text: /\d+ minutes, 1\.2 miles away/
     - img /vehicle is ~\d+% full/
-    - text: ~9 passengers
+    - text: /~\d+ passengers/
     - link /\d+/:
       - /url: "#"
-- button "Toggle Service Alert Open/Closed": Service Alert for M9
-- paragraph: Westbound M9 and Eastbound M23-SBS, M34-SBS, M34A-SBS buses will skip the E 23rd St/2nd Ave stop due to utility work on E 23rd St between 1st Ave and 2nd Ave.
-- paragraph:
-  - paragraph: Use the E 23rd St/1st Ave stop instead.
+  - listitem:
+    - text: /\d+ minutes, 1\.7 miles away/
+    - link /\d+/:
+      - /url: "#"
 - list:
   - listitem:
     - button "view full Full Route":
@@ -696,6 +743,105 @@
 - list:
   - listitem: /Stopcode \d+/
 - heading "Buses en-route:" [level=4]
+- button /Toggle X37 to BAY RIDGE SHORE RD via \d+ ST via FDR DR/ [expanded]:
+  - strong: X37
+  - text: ""
+- list:
+  - listitem:
+    - text: /\d+ minutes, 1\.7 miles away/
+    - img /vehicle is ~\d+% full/
+    - text: /~\d+ passengers/
+    - link /\d+/:
+      - /url: "#"
+- list:
+  - listitem:
+    - button "view full Full Route":
+      - img
+      - text: View Full Route
+- button /Toggle X38 to CONEY ISL SEA GTE via \d+ ST-FDR via CROP/ [expanded]:
+  - strong: X38
+  - text: ""
+- list:
+  - listitem:
+    - text: 4 minutes, 1 stop away
+    - link /\d+/:
+      - /url: "#"
+  - listitem:
+    - text: /\d+ minutes, 2\.8 miles away \(\+layover, scheduled to depart terminal at 5:\d+ PM\)/
+    - link /\d+/:
+      - /url: "#"
+- button "Toggle Service Alert Open/Closed": Service Alert for X38
+- paragraph: X28‌ and ‌X38‌ stops on Surf Ave at W 21st St are closed in both directions
+- paragraph:
+  - paragraph:
+    - text: For northbound service, use the temporary stop on
+    - strong: Surf Ave
+    - text: at
+    - strong: W 22nd St
+    - text: .
+  - paragraph:
+    - text: For southbound service, use the stop on
+    - strong: W 17th St
+    - text: at
+    - strong: Mermaid Ave.
+  - paragraph
+  - paragraph:
+    - strong: What's happening?
+  - paragraph: Construction
+  - paragraph
+  - paragraph:
+    - strong: "Note:"
+    - text: Bus arrival information may not be available/accurate while buses are detoured
+- list:
+  - listitem:
+    - button "view full Full Route":
+      - img
+      - text: View Full Route
+- button /Toggle X38 to BENSONHURST CROPSEY AV via \d+ ST via FDR/ [expanded]:
+  - strong: X38
+  - text: ""
+- list:
+  - listitem:
+    - text: /\d+ minutes, 1\.5 miles away/
+    - link /\d+/:
+      - /url: "#"
+  - listitem:
+    - text: /\d+ minutes, 2\.2 miles away/
+    - img "vehicle is ~2% full"
+    - text: ~1 passengers
+    - link /\d+/:
+      - /url: "#"
+  - listitem:
+    - text: /7\.3 miles away \(\+layover, scheduled to depart terminal at 6:\d+ PM\)/
+    - link /\d+/:
+      - /url: "#"
+- button "Toggle Service Alert Open/Closed": Service Alert for X38
+- paragraph: X28‌ and ‌X38‌ stops on Surf Ave at W 21st St are closed in both directions
+- paragraph:
+  - paragraph:
+    - text: For northbound service, use the temporary stop on
+    - strong: Surf Ave
+    - text: at
+    - strong: W 22nd St
+    - text: .
+  - paragraph:
+    - text: For southbound service, use the stop on
+    - strong: W 17th St
+    - text: at
+    - strong: Mermaid Ave.
+  - paragraph
+  - paragraph:
+    - strong: What's happening?
+  - paragraph: Construction
+  - paragraph
+  - paragraph:
+    - strong: "Note:"
+    - text: Bus arrival information may not be available/accurate while buses are detoured
+- list:
+  - listitem:
+    - button "view full Full Route":
+      - img
+      - text: View Full Route
 - paragraph:
   - text: Text stopcode
   - strong: /\d+/
@@ -708,7 +854,16 @@
 - button "Toggle favorites status for this Stop":
   - img "add icon"
   - text: Add Stop to Favorites
-- list
+- list:
+  - listitem:
+    - strong: X37
+    - text: /BAY RIDGE SHORE RD via \d+ ST via FDR DR/
+  - listitem:
+    - strong: X38
+    - text: /CONEY ISL SEA GTE via \d+ ST-FDR via CROP/
+  - listitem:
+    - strong: X38
+    - text: /BENSONHURST CROPSEY AV via \d+ ST via FDR/
 - button /Toggle \d+ 1 AV\/E \d+ ST open\/close/ [expanded]:
   - img
   - text: ""
@@ -720,15 +875,15 @@
   - text: ""
 - list:
   - listitem:
-    - text: 4 minutes, 3 stops away
+    - text: 1 minute, < 1 stop away
     - link /\d+/:
       - /url: "#"
   - listitem:
-    - text: /\d+ minutes, 1\.9 miles away/
+    - text: 8 minutes, 0.8 miles away
     - link /\d+/:
       - /url: "#"
   - listitem:
-    - text: /\d+ minutes, 2\.4 miles away \(\+layover, scheduled to depart terminal at \d+:\d+ AM\)/
+    - text: /\d+ minutes, 1\.3 miles away/
     - link /\d+/:
       - /url: "#"
 - button "Toggle Service Alert Open/Closed": Service Alert for M15
@@ -778,18 +933,6 @@
     - text: ":"
     - strong: M15-SBS
     - text: customers must pay fare before boarding by using the machine at regular bus stop located on Water St at Pine St or bus door with OMNY.
-- separator
-- paragraph: Northbound M15 and M22 buses will bypass stops at Madison St/Market St
-- paragraph:
-  - paragraph: Use the stop at Madison St/Oliver St instead.
-  - paragraph
-  - paragraph:
-    - strong: What?s happening?
-  - paragraph: Gas Main Repair
-  - paragraph
-  - paragraph:
-    - strong: Note
-    - text: ": Bus arrival information may be unavailable or inaccurate while buses are detoured."
 - list:
   - listitem:
     - button "view full Full Route":
@@ -822,15 +965,15 @@
   - text: ""
 - list:
   - listitem:
-    - text: 5 minutes, 0.5 miles away
+    - text: 2 minutes, 1 stop away
     - link /\d+/:
       - /url: "#"
   - listitem:
-    - text: /\d+ minutes, 1\.9 miles away/
+    - text: 9 minutes, 0.9 miles away
     - link /\d+/:
       - /url: "#"
   - listitem:
-    - text: /\d+ minutes, 2\.4 miles away \(\+layover, scheduled to depart terminal at \d+:\d+ AM\)/
+    - text: /\d+ minutes, 1\.3 miles away/
     - link /\d+/:
       - /url: "#"
 - button "Toggle Service Alert Open/Closed": Service Alert for M15
@@ -880,18 +1023,6 @@
     - text: ":"
     - strong: M15-SBS
     - text: customers must pay fare before boarding by using the machine at regular bus stop located on Water St at Pine St or bus door with OMNY.
-- separator
-- paragraph: Northbound M15 and M22 buses will bypass stops at Madison St/Market St
-- paragraph:
-  - paragraph: Use the stop at Madison St/Oliver St instead.
-  - paragraph
-  - paragraph:
-    - strong: What?s happening?
-  - paragraph: Gas Main Repair
-  - paragraph
-  - paragraph:
-    - strong: Note
-    - text: ": Bus arrival information may be unavailable or inaccurate while buses are detoured."
 - list:
   - listitem:
     - button "view full Full Route":
@@ -902,17 +1033,17 @@
   - text: ""
 - list:
   - listitem:
-    - text: /\d+ minutes, 1\.8 miles away/
+    - text: 9 minutes, 1.3 miles away
     - img /vehicle is ~\d+% full/
-    - text: ~8 passengers
+    - text: /~\d+ passengers/
     - link /\d+/:
       - /url: "#"
   - listitem:
-    - text: /\d+ minutes, 1\.8 miles away/
+    - text: /\d+ minutes, 1\.5 miles away/
     - link /\d+/:
       - /url: "#"
   - listitem:
-    - text: /\d+ minutes, 2\.5 miles away/
+    - text: /\d+ minutes, 2\.7 miles away/
     - link /\d+/:
       - /url: "#"
 - button "Toggle Service Alert Open/Closed": Service Alert for M15-SBS
@@ -953,7 +1084,7 @@
     - text: /SELECT BUS SERVICE \d+ ST via 1 AV/
 - menu:
   - listitem:
-    - button "Refresh the data": /Refresh \(updated \d+:\d+ AM\)/
+    - button "Refresh the data": /Refresh \(updated 5:\d+ PM\)/
 - button "Toggle Google Translate Menu": TRANSLATE
 - link "Bus Time Classic":
   - /url: https://bustime-classic.mta.info

@@ -73,9 +73,7 @@ test('what the user does', async ({ page, checkpoint }) => {
 - Keep the recorded steps and their order. Only remove clicks that just focus an element.
 - Key presses: codegen writes them as `locator.press`, which focuses the locator first and so
   skips the real tab order. Convert each to `expect(locator).toBeFocused()` followed by
-  `page.keyboard.press`, as `key` in `stop-400723.spec.ts` does. The route-b63 and location
-  specs still use `locator.press`, so they don't test tab order yet. A follow-up will re-record
-  them, with codegen and the API capture in the same session, so the buses match.
+  `page.keyboard.press`, as `key` in `stop-400723.spec.ts` does.
 - Record mode skips checkpoints, so nothing waits for the page there. Before the first key
   press, wait for the element it should reach (`await expect(locator).toBeVisible()`);
   otherwise Tab can run past content that hasn't rendered yet.
