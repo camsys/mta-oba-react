@@ -28,16 +28,17 @@ export default defineConfig({
   // CI retries twice, so a bug that fails half the time would otherwise pass as "flaky".
   failOnFlakyTests: isCI,
   workers: isCI ? 1 : undefined,
-  // No {platform} in the path: one set of snapshots serves macOS and CI (see e2e/support/screenshotStyles.ts).
+  // No {platform} in the path: there is one set of references, made in CI's Linux Docker image
+  // (`npm run test:e2e:docker`). Native macOS runs check only the ARIA snapshots.
   snapshotPathTemplate: '{testDir}/__snapshots__/{testFilePath}/{testName}/{arg}{ext}',
   expect: {
     toHaveScreenshot: {
       animations: 'disabled',
       caret: 'hide',
-      // Room for anti-aliasing differences between macOS and Linux (fonts are already pinned,
-      // see e2e/support/screenshotStyles.ts); tune once CI has run. Keep it well below what a
-      // real change costs: swapping two favorites changes 5,891 pixels (0.64%) of the 1280x720
-      // page, which the previous 1% let through. 0.001 is about 920 pixels.
+      // Keep it well below what a real change costs: swapping two favorites changes 5,891 pixels
+      // (0.64%) of the 1280x720 page, which a 1% tolerance let through. 0.001 is about 920 pixels.
+      // Leave the per-pixel `threshold` at its default: it absorbs the tiny shading differences
+      // between arm64 Docker (a Mac) and x64 CI, at most 4/255 per channel.
       maxDiffPixelRatio: 0.001,
     },
   },

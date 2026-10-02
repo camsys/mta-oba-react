@@ -16,6 +16,8 @@ Var Name | Var Use | Default Value
 ALLOWED_HOST_ADDRESS | where this is being hosted |app-react.qa.obanyc.com
 ENV_ADDRESS | what OBA env the app gets data from |app.qa.obanyc.com
 
+Browser tests (Playwright): "npm run test:e2e". How they work, and how to write, record and snapshot a new one: e2e/README.md
+
 
 Theoretically this should work!
 
