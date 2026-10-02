@@ -25,6 +25,8 @@ export default defineConfig({
   timeout: isRecording ? 5 * 60_000 : 60_000,
   forbidOnly: isCI,
   retries: isCI ? 2 : 0,
+  // CI retries twice, so a bug that fails half the time would otherwise pass as "flaky".
+  failOnFlakyTests: isCI,
   workers: isCI ? 1 : undefined,
   // No {platform} in the path: one set of snapshots serves macOS and CI (see e2e/support/screenshotStyles.ts).
   snapshotPathTemplate: '{testDir}/__snapshots__/{testFilePath}/{testName}/{arg}{ext}',

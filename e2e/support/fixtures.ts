@@ -29,13 +29,25 @@ type Options = {
 
 type Fixtures = {
   // Compares the page against its committed snapshots: an ARIA snapshot of the sidebar
-  // (text, structure and order) and a screenshot of the whole page. Regenerate with
-  // `npm run test:e2e -- --update-snapshots`.
+  // (text, structure and order) and, on Linux only, a screenshot of the whole page. Regenerate
+  // with `npm run test:e2e:docker -- --update-snapshots`.
   checkpoint: (name: string) => Promise<void>;
   // Moves time forward. Replay fast-forwards the fake clock, firing the SIRI poll
   // as if that time had passed; record mode really waits, so the poll hits the backend.
   advance: (ms: number) => Promise<void>;
 };
+
+let screenshotsSkippedNoted = false;
+// Printed by the first worker slot only, so a run shows it once (again only if that worker
+// is replaced after a failure).
+function noteScreenshotsSkipped() {
+  if (screenshotsSkippedNoted || process.env.TEST_PARALLEL_INDEX !== '0') return;
+  screenshotsSkippedNoted = true;
+  console.log(
+    `Screenshots skipped: references are made on Linux, this is ${process.platform}. ` +
+      'ARIA snapshots were still checked. Run `npm run test:e2e:docker` to compare screenshots.',
+  );
+}
 
 export const test = base.extend<Options & Fixtures>({
   recording: [undefined, { option: true }],
@@ -111,6 +123,9 @@ export const test = base.extend<Options & Fixtures>({
       if (isRecording) return;
       // Waits (and retries) until the sidebar matches, so the screenshot below sees a settled page.
       await expect(page.locator('#sidebar')).toMatchAriaSnapshot({ name: `${name}.aria.yml` });
+      // References are made on Linux; text renders differently on macOS, so a Mac screenshot
+      // would never match (or, with --update-snapshots, would overwrite a Linux reference).
+      if (process.platform !== 'linux') return noteScreenshotsSkipped();
       await useScreenshotStyles(page);
       await expect(page).toHaveScreenshot(`${name}.png`, {
         // Shows the browser's own clock, which keeps running during replay.

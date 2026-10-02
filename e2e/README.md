@@ -9,7 +9,8 @@ backend and replayed, so tests are fast, repeatable and never call a backend in 
 |---|---|
 | `npm run test:e2e` | Builds `src/` into `dist-e2e/`, serves it on 8083 and runs every spec with recorded responses. |
 | `npm run test:e2e -- e2e/<spec>.spec.ts` | One spec. Any Playwright flag works after `--`. |
-| `npm run test:e2e -- --update-snapshots` | Rewrites the reference snapshots (see [Snapshots](#snapshots)). |
+| `npm run test:e2e:docker` | Same, inside Playwright's Linux Docker image, as CI runs it. The only way to compare or write screenshots (see [Snapshots](#snapshots)). Takes the same arguments. |
+| `npm run test:e2e:docker -- --update-snapshots` | Rewrites the reference snapshots. |
 | `npm run test:e2e:record -- e2e/<spec>.spec.ts` | Runs the spec against the live QA backend and saves its responses to `e2e/recordings/`. |
 | `npx playwright show-report` | Opens the report of the last run (diff images for failed screenshots). |
 
@@ -139,7 +140,19 @@ Without it, everything uses the defaults above. Open a lane's report with
 
 `checkpoint(name)` compares the page against two committed snapshots in `__snapshots__/`:
 an ARIA snapshot of the sidebar (text, structure, order) and a screenshot of the whole page.
-Regenerate them with `npm run test:e2e -- --update-snapshots`.
+Regenerate them with `npm run test:e2e:docker -- --update-snapshots`, never natively.
+
+Reference screenshots are made on Linux, in `mcr.microsoft.com/playwright:v<version>-noble`
+(the tag follows the installed `@playwright/test`). CI runs the same image. Text renders
+differently on macOS (glyphs about 1px wider, other line breaks), changing 0.4–1.3% of every
+screenshot, more than a real regression such as two swapped favorites (0.64%). So native macOS
+runs skip screenshots and print a notice once; they still check ARIA snapshots, page errors and
+the flows, which keeps a fast loop on the Mac. A native `--update-snapshots` only rewrites ARIA
+snapshots.
+
+`npm run test:e2e:docker` keeps Linux `node_modules` in a Docker volume per checkout, so it
+doesn't touch the host's. Its first run installs them (`npm ci` runs every time, but is quick
+once the volume exists). It passes `E2E_PORT` and `CI` through, so lanes work the same.
 
 ### Setting up snapshots for a spec
 
@@ -151,7 +164,7 @@ Snapshots are only as correct as the source they're generated from: check
 1. **Generate the reference snapshots** from code you know is correct:
 
    ```sh
-   npm run test:e2e -- e2e/<spec>.spec.ts --update-snapshots
+   npm run test:e2e:docker -- e2e/<spec>.spec.ts --update-snapshots
    ```
 
    This writes `<checkpoint>.png` and `<checkpoint>.aria.yml` to
@@ -161,7 +174,7 @@ Snapshots are only as correct as the source they're generated from: check
 2. **Check they're stable.** Replay several times; every run should pass with no differences:
 
    ```sh
-   npm run test:e2e -- e2e/<spec>.spec.ts --repeat-each=5
+   npm run test:e2e:docker -- e2e/<spec>.spec.ts --repeat-each=5
    ```
 
    A checkpoint that fails intermittently means something on the page is still changing
@@ -172,7 +185,7 @@ Snapshots are only as correct as the source they're generated from: check
    reverse the order the favorites list renders in), then run the spec:
 
    ```sh
-   npm run test:e2e -- e2e/<spec>.spec.ts
+   npm run test:e2e:docker -- e2e/<spec>.spec.ts
    npx playwright show-report
    ```
 
@@ -184,6 +197,10 @@ Snapshots are compared with a 0.1% pixel tolerance (`maxDiffPixelRatio` in
 `playwright.config.ts`, about 920 pixels of the 1280x720 page). 1% was too loose: swapping two
 favorites changes only 0.64% of the page. The clock in the Refresh button is masked, since the browser
 clock keeps running during replay.
+
+Don't lower Playwright's per-pixel `threshold` (and never to 0): references made in Docker on a
+Mac (arm64) differ from CI's x64 runs by up to 4/255 per channel in many pixels, and the
+default threshold is what ignores that.
 
 ### Known issue: references made in a slow run
 
@@ -198,11 +215,10 @@ confirmed. If a spec's step 2 fails the same way on every run, suspect this firs
 Screenshots do **not** test the app's real fonts. Before each screenshot, every element is
 switched to Arimo (`e2e/support/screenshotStyles.ts`), a font with Arial's metrics.
 
-Why: the app asks for Helvetica/Arial. macOS has them and CI's Linux doesn't, so CI falls
-back to a font with different glyph widths, text wraps differently, and every screenshot
-would differ between a Mac and CI. Forcing one font lets the same snapshots work on both.
+Why: the app asks for Helvetica/Arial, which Playwright's Linux image doesn't have. Without the
+swap, screenshots would show whatever fallback font the image picks, which can change when the
+image is bumped, and every reference would need regenerating. Arimo is bundled with the tests
+(`@fontsource/arimo`), so it's the same in every image version.
 
 What this means: a change to the app's fonts (family, a missing web font, fallback order)
-won't fail any test. Size, weight, color, wrapping and layout are still compared. If fonts
-start to matter, the alternative is taking and comparing screenshots inside Playwright's
-Docker image instead.
+won't fail any test. Size, weight, color, wrapping and layout are still compared.
