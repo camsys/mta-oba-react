@@ -155,8 +155,10 @@ the flows, which keeps a fast loop on the Mac. A native `--update-snapshots` onl
 snapshots.
 
 `npm run test:e2e:docker` keeps Linux `node_modules` in a Docker volume per checkout, so it
-doesn't touch the host's. Its first run installs them (`npm ci` runs every time, but is quick
-once the volume exists). It passes `E2E_PORT` and `CI` through, so lanes work the same.
+doesn't touch the host's. It runs `npm ci` only when `package-lock.json` has changed since the
+last install (the hash is kept in `node_modules/.e2e-lock-hash` inside the volume). If that
+install ever looks broken, delete the volume (`docker volume ls | grep mta-oba-react-e2e`) and
+the next run reinstalls. It passes `E2E_PORT` and `CI` through, so lanes work the same.
 
 ### Setting up snapshots for a spec
 

@@ -34,4 +34,11 @@ exec docker run --rm $TTY --ipc=host \
   -w /work \
   -e E2E_PORT -e CI \
   "$IMAGE" \
-  bash -c 'npm ci --no-audit --no-fund && exec npx playwright test "$@"' bash "$@"
+  bash -c '
+    # npm ci only when package-lock.json changed since the volume was last installed.
+    lock="$(sha1sum package-lock.json | cut -d" " -f1)"
+    if [ "$(cat node_modules/.e2e-lock-hash 2>/dev/null)" != "$lock" ]; then
+      npm ci --no-audit --no-fund || exit 1
+      echo "$lock" > node_modules/.e2e-lock-hash
+    fi
+    exec npx playwright test "$@"' bash "$@"
