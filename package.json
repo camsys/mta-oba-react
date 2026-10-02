@@ -13,7 +13,8 @@
     "acceptTracking": "node logger.js",
     "preversion": "npm audit --audit-level=high || (echo 'npm audit required to proceed' && exit 1)",
     "version": "node scripts/sync-version.mjs && git add public/version.json",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "test:e2e:record": "SIRI_MODE=record ENV_ADDRESS=app.qa.obanyc.com playwright test"
   },
   "keywords": [],
   "author": "",
@@ -26,7 +27,8 @@
     "@babel/plugin-proposal-class-properties": "^7.18.6",
     "@babel/preset-react": "^7.23.3",
     "@babel/preset-typescript": "^7.24.7",
-    "@playwright/test": "~1.62.1",
+    "@fontsource/arimo": "~5.3.0",
+    "@playwright/test": "~1.63.0",
     "@tailwindcss/postcss": "^4.2.1",
     "@types/node": "^20.19.43",
     "@types/react-dom": "^18.3.0",
