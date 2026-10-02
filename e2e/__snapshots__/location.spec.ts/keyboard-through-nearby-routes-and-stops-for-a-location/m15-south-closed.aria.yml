@@ -1,0 +1,3073 @@
+- banner:
+  - link "MTA Bus Time Home":
+    - /url: "#"
+    - img "MTA Bus Time"
+  - link "MTA Home":
+    - /url: https://www.mta.info/
+    - img "MTA"
+- combobox:
+  - textbox "Route, intersection, or stop code": /\d+\.\d+,-\d+\.\d+/
+  - listbox
+- button "clear search button"
+- button "Favorites":
+  - img
+  - text: ""
+- button "Nearby Buses":
+  - img
+  - text: ""
+- heading "Nearby:" [level=2]
+- button "Show nearby routes (currently visible)" [expanded] [pressed]: Routes
+- button "Show nearby stops (currently hidden)": Stops
+- button "Toggle M15 M15 East Harlem - South Ferry open/close":
+  - img
+  - text: ""
+- list:
+  - listitem: via 1st Av / 2nd Av
+- button "Toggle Service Alert Open/Closed": Service Alert for M15
+- paragraph: M15 stops on South St at Whitehall St will be bypassed, the first and last stops will be made on Whitehall St at Water St
+- paragraph:
+  - paragraph:
+    - strong: What's happening?
+  - paragraph: DOT Construction - Battery Park
+  - paragraph
+  - paragraph:
+    - strong: "Note:"
+    - text: Bus arrival information may not be available/accurate while buses are detoured
+- separator
+- paragraph: Northbound M15 stop on 1st Ave at E 77th St is being bypassed
+- paragraph:
+  - paragraph:
+    - text: Please use the stops on
+    - strong: 1st Ave
+    - text: at
+    - strong: E 75th St
+    - text: or
+    - strong: E 81st St
+    - text: instead.
+  - paragraph
+  - paragraph:
+    - strong: What's happening?
+  - paragraph: Construction
+- separator
+- paragraph: Southbound M15 stop on E 106th St is closed; buses are making a temporary stop on 2nd Ave between E 107th St and E 106th St.
+- paragraph:
+  - paragraph:
+    - strong: What's happening?
+  - paragraph: Construction
+  - paragraph
+  - paragraph:
+    - strong: "Note:"
+    - text: Bus arrival information may not be available/accurate while buses are detoured
+- separator
+- paragraph: The northbound M15 and M15-SBS bus stops on Water St at Wall St and Pine St has been temporarily moved to the far side of Pine St
+- paragraph:
+  - paragraph:
+    - strong: What's happening?
+  - paragraph: Construction - Water St
+  - paragraph
+  - paragraph:
+    - strong: NOTE
+    - text: ":"
+    - strong: M15-SBS
+    - text: customers must pay fare before boarding by using the machine at regular bus stop located on Water St at Pine St or bus door with OMNY.
+- separator
+- paragraph: Northbound M15 and M22 buses will bypass stops at Madison St/Market St
+- paragraph:
+  - paragraph: Use the stop at Madison St/Oliver St instead.
+  - paragraph
+  - paragraph:
+    - strong: What?s happening?
+  - paragraph: Gas Main Repair
+  - paragraph
+  - paragraph:
+    - strong: Note
+    - text: ": Bus arrival information may be unavailable or inaccurate while buses are detoured."
+- button /Toggle MTA NYCT_M15 to EAST HARLEM \d+ ST via 1 AV Open \/ Closed/:
+  - text: ""
+  - strong: /EAST HARLEM \d+ ST via 1 AV/
+- list:
+  - listitem:
+    - link "SOUTH ST/WHITEHALL ST":
+      - /url: "#"
+  - listitem:
+    - link "WATER ST/BROAD ST":
+      - /url: "#"
+    - list:
+      - listitem:
+        - text: /\d+ minutes, < 1 stop away/
+        - link /\d+/:
+          - /url: "#"
+  - listitem:
+    - link "WATER ST/OLD SLIP":
+      - /url: "#"
+    - list:
+      - listitem:
+        - text: 0 minutes, approaching
+        - img "vehicle is ~2% full"
+        - text: ~1 passengers
+        - link /\d+/:
+          - /url: "#"
+  - listitem:
+    - link "WATER ST/WALL ST":
+      - /url: "#"
+  - listitem:
+    - link "PEARL ST/FULTON ST":
+      - /url: "#"
+  - listitem:
+    - link "PEARL ST/PECK SLIP":
+      - /url: "#"
+  - listitem:
+    - link "SAINT JAMES PL/ROBERT F WAGNER SR PL":
+      - /url: "#"
+  - listitem:
+    - link "MADISON ST/OLIVER ST":
+      - /url: "#"
+  - listitem:
+    - link "PIKE ST/SOUTH ST":
+      - /url: "#"
+  - listitem:
+    - link "MADISON ST/MARKET ST":
+      - /url: "#"
+  - listitem:
+    - link "PIKE ST/MADISON ST":
+      - /url: "#"
+    - list:
+      - listitem:
+        - text: 0 minutes, at stop
+        - link /\d+/:
+          - /url: "#"
+  - listitem:
+    - link "PIKE ST/DIVISION ST":
+      - /url: "#"
+  - listitem:
+    - link "ALLEN ST/GRAND ST":
+      - /url: "#"
+  - listitem:
+    - link "ALLEN ST/DELANCEY ST":
+      - /url: "#"
+  - listitem:
+    - link "ALLEN ST/STANTON ST":
+      - /url: "#"
+  - listitem:
+    - link "1 AV/E 3 ST":
+      - /url: "#"
+  - listitem:
+    - link "1 AV /E 4 ST":
+      - /url: "#"
+  - listitem:
+    - link "1 AV/SAINT MARKS PL":
+      - /url: "#"
+  - listitem:
+    - link /1 AV\/E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /1 AV\/E \d+ ST/:
+      - /url: "#"
+    - list:
+      - listitem:
+        - text: 0 minutes, approaching
+        - link /\d+/:
+          - /url: "#"
+  - listitem:
+    - link /1 AV\/E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /1 AV\/E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /1 AV\/E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /1 AV\/\d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /1 AV\/E \d+ ST/:
+      - /url: "#"
+    - list:
+      - listitem:
+        - text: 0 minutes, at stop
+        - link /\d+/:
+          - /url: "#"
+  - listitem:
+    - link /1 AV\/E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /1 AV\/E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /1 AV\/E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /1 AV\/E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /1 AV\/E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /1 AV\/E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /1 AV\/E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link "1 AV/MITCHELL PL":
+      - /url: "#"
+  - listitem:
+    - link /1 AV\/E \d+ ST/:
+      - /url: "#"
+    - list:
+      - listitem:
+        - text: 1 minute, < 1 stop away
+        - link /\d+/:
+          - /url: "#"
+  - listitem:
+    - link /1 AV\/E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /1 AV\/E \d+ ST/:
+      - /url: "#"
+    - list:
+      - listitem:
+        - text: 1 minute, < 1 stop away
+        - link /\d+/:
+          - /url: "#"
+  - listitem:
+    - link /1 AV\/E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /1 AV\/E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /1 AV\/E \d+ ST/:
+      - /url: "#"
+    - list:
+      - listitem:
+        - text: 0 minutes, approaching
+        - link /\d+/:
+          - /url: "#"
+  - listitem:
+    - link /1 AV\/E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /1 AV\/E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /1 AV\/E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /1 AV\/E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /1 AV\/E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /1 AV\/E \d+ ST/:
+      - /url: "#"
+    - list:
+      - listitem:
+        - text: 0 minutes, approaching
+        - link /\d+/:
+          - /url: "#"
+  - listitem:
+    - link /1 AV\/E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /1 AV\/E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /1 AV\/E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /1 AV\/E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /1 AV\/E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /1 AV\/E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /1 AV\/E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /1 AV\/E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /1 AV\/E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /1 AV\/E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /1 AV\/E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /1 AV\/E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link "1 AV/PALADINO AV":
+      - /url: "#"
+  - listitem:
+    - link /1 AV\/E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /E \d+ ST\/2 AV/:
+      - /url: "#"
+    - list:
+      - listitem:
+        - text: /0 minutes, at stop \(at terminal, scheduled to depart at \d+:\d+ AM\)/
+        - link /\d+/:
+          - /url: "#"
+      - listitem:
+        - text: /0 minutes, approaching \(at terminal, scheduled to depart at \d+:\d+ AM\)/
+        - link /\d+/:
+          - /url: "#"
+- button "Toggle MTA NYCT_M15 to SOUTH FERRY via 2 AV Open / Closed" [expanded]:
+  - text: ""
+  - strong: SOUTH FERRY via 2 AV
+- list:
+  - listitem:
+    - link /E \d+ ST\/2 AV/:
+      - /url: "#"
+  - listitem:
+    - link /2 AV\/E \d+ ST/:
+      - /url: "#"
+    - list:
+      - listitem:
+        - text: 0 minutes, approaching (at terminal)
+        - link /\d+/:
+          - /url: "#"
+  - listitem:
+    - link /2 AV\/E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /2 AV\/E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /2 AV\/E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /2 AV\/E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /2 AV\/E \d+ ST/:
+      - /url: "#"
+    - list:
+      - listitem:
+        - text: 0 minutes, approaching
+        - link /\d+/:
+          - /url: "#"
+  - listitem:
+    - link /2 AV\/E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /2 AV\/E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /2 AV\/E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /2 AV\/E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /2 AV\/E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /2 AV\/E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /2 AV\/E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /2 AV\/E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /2 AV\/E \d+ ST/:
+      - /url: "#"
+    - list:
+      - listitem:
+        - text: 0 minutes, approaching
+        - link /\d+/:
+          - /url: "#"
+  - listitem:
+    - link /2 AV\/E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /2 AV\/E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /2 AV\/E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /2 AV\/E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /2 AV\/E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /2 AV\/E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /2 AV\/E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /2 AV\/E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /2 AV\/E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /2 AV\/E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /2 AV\/E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /2 AV\/E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /2 AV\/E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /2 AV\/E \d+ ST/:
+      - /url: "#"
+    - list:
+      - listitem:
+        - text: 1 minute, < 1 stop away
+        - link /\d+/:
+          - /url: "#"
+  - listitem:
+    - link /2 AV\/E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /2 AV\/E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /2 AV\/E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /2 AV\/E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /2 AV\/E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /2 AV\/E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /2 AV\/E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /2 AV\/E \d+ ST/:
+      - /url: "#"
+    - list:
+      - listitem:
+        - text: 0 minutes, < 1 stop away
+        - link /\d+/:
+          - /url: "#"
+  - listitem:
+    - link /2 AV\/E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /2 AV\/E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /2 AV\/E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /2 AV\/E \d+ ST/:
+      - /url: "#"
+    - list:
+      - listitem:
+        - text: 0 minutes, approaching
+        - link /\d+/:
+          - /url: "#"
+  - listitem:
+    - link "2 AV/E 9 ST":
+      - /url: "#"
+    - list:
+      - listitem:
+        - text: 0 minutes, < 1 stop away
+        - link /\d+/:
+          - /url: "#"
+  - listitem:
+    - link "2 AV/E 6 ST":
+      - /url: "#"
+  - listitem:
+    - link "2 AV/E 3 ST":
+      - /url: "#"
+  - listitem:
+    - link "EAST HOUSTON ST/FORSYTH ST":
+      - /url: "#"
+  - listitem:
+    - link "ALLEN ST/E HOUSTON ST":
+      - /url: "#"
+  - listitem:
+    - link "ALLEN ST/DELANCEY ST":
+      - /url: "#"
+  - listitem:
+    - link "ALLEN ST/GRAND ST":
+      - /url: "#"
+  - listitem:
+    - link "ALLEN ST/CANAL ST":
+      - /url: "#"
+  - listitem:
+    - link "PIKE ST/MADISON ST":
+      - /url: "#"
+    - list:
+      - listitem:
+        - text: 0 minutes, < 1 stop away
+        - link /\d+/:
+          - /url: "#"
+  - listitem:
+    - link "MADISON ST/MARKET ST":
+      - /url: "#"
+  - listitem:
+    - link "MADISON ST/OLIVER ST":
+      - /url: "#"
+  - listitem:
+    - link "MADISON ST/SAINT JAMES PL":
+      - /url: "#"
+  - listitem:
+    - link "PEARL ST / PEARL ST":
+      - /url: "#"
+  - listitem:
+    - link "PEARL ST/FRANKFORT ST":
+      - /url: "#"
+    - list:
+      - listitem:
+        - text: 0 minutes, approaching
+        - link /\d+/:
+          - /url: "#"
+  - listitem:
+    - link "PEARL ST/FULTON ST":
+      - /url: "#"
+  - listitem:
+    - link "WATER ST/JOHN ST":
+      - /url: "#"
+  - listitem:
+    - link "WATER ST/GOUVERNEUR LN":
+      - /url: "#"
+  - listitem:
+    - link "WATER ST/HANOVER SQ":
+      - /url: "#"
+  - listitem:
+    - link "BROAD ST/WATER ST":
+      - /url: "#"
+  - listitem:
+    - link "SOUTH ST/WHITEHALL ST":
+      - /url: "#"
+- list:
+  - listitem:
+    - button "view full Route":
+      - img
+      - text: View Route
+- button "Toggle favorites status for this Route":
+  - img "add icon"
+  - text: Add Route to Favorites
+- button "Toggle SIM10 SIM10 Eltingville - Midtown Manhattan Express open/close" [expanded]:
+  - img
+  - text: ""
+- list:
+  - listitem: via Hylan Bl
+- button "Toggle MTA NYCT_SIM10 to ELTINGVILLE TRANS CTR via HYLAN via RICH Open / Closed":
+  - text: ""
+  - strong: ELTINGVILLE TRANS CTR via HYLAN via RICH
+  - emphasis: No scheduled service at this time.
+- list:
+  - listitem:
+    - link "CENTRAL PARK SOUTH/6 AV":
+      - /url: "#"
+  - listitem:
+    - link /W \d+ ST\/6 AV/:
+      - /url: "#"
+  - listitem:
+    - link /5 AV\/W \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /5 AV\/W \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /5 AV\/W \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /E \d+ ST\/BROADWAY/:
+      - /url: "#"
+  - listitem:
+    - link /E \d+ ST\/PARK AV SOUTH/:
+      - /url: "#"
+  - listitem:
+    - link /E \d+ ST\/3 AV/:
+      - /url: "#"
+  - listitem:
+    - link /E \d+ ST\/2 AV/:
+      - /url: "#"
+  - listitem:
+    - link /E \d+ ST\/1 AV/:
+      - /url: "#"
+  - listitem:
+    - link "NARROWS RD NORTH/FINGERBOARD RD":
+      - /url: "#"
+  - listitem:
+    - link "NARROWS RD NORTH/SAINT JOHNS AV":
+      - /url: "#"
+  - listitem:
+    - link "STEUBEN ST/WEST FINGERBOARD RD":
+      - /url: "#"
+  - listitem:
+    - link "HYLAN BLVD/CLOVE RD":
+      - /url: "#"
+  - listitem:
+    - link "HYLAN BLVD/OLD TOWN RD":
+      - /url: "#"
+  - listitem:
+    - link "HYLAN BLVD/BURGHER AV":
+      - /url: "#"
+  - listitem:
+    - link "HYLAN BLVD/CROMWELL AV":
+      - /url: "#"
+  - listitem:
+    - link "HYLAN BLVD/BUEL AV":
+      - /url: "#"
+  - listitem:
+    - link "HYLAN BLVD/JEFFERSON AV":
+      - /url: "#"
+  - listitem:
+    - link "HYLAN BLVD/LINCOLN AV":
+      - /url: "#"
+  - listitem:
+    - link "HYLAN BLVD/CODDINGTON AV":
+      - /url: "#"
+  - listitem:
+    - link "HYLAN BLVD/LINDBERGH AV":
+      - /url: "#"
+  - listitem:
+    - link "HYLAN BLVD/TYSENS LN":
+      - /url: "#"
+  - listitem:
+    - link "HYLAN BLVD/GUYON AV":
+      - /url: "#"
+  - listitem:
+    - link "HYLAN BLVD/MONTREAL AV":
+      - /url: "#"
+  - listitem:
+    - link "HYLAN BLVD/BUFFALO ST":
+      - /url: "#"
+  - listitem:
+    - link "HYLAN BLVD/BAY TERR":
+      - /url: "#"
+  - listitem:
+    - link "HYLAN BLVD/KEEGANS LN":
+      - /url: "#"
+  - listitem:
+    - link "HYLAN BLVD/HILLSIDE TERR":
+      - /url: "#"
+  - listitem:
+    - link "HYLAN BLVD/NELSON AV":
+      - /url: "#"
+  - listitem:
+    - link "HYLAN BLVD/ARMSTRONG AV":
+      - /url: "#"
+  - listitem:
+    - link "RICHMOND AV/HYLAN BLVD":
+      - /url: "#"
+  - listitem:
+    - link "RICHMOND AV/KOCH BLVD":
+      - /url: "#"
+  - listitem:
+    - link "RICHMOND AV/ELTINGVILLE BLVD":
+      - /url: "#"
+  - listitem:
+    - link "RICHMOND AV/KATAN AV":
+      - /url: "#"
+  - listitem:
+    - link "RICHMOND AV/BARLOW AV":
+      - /url: "#"
+  - listitem:
+    - link "ELTINGVILLE/TRANSIT CENTER":
+      - /url: "#"
+- button /Toggle MTA NYCT_SIM10 to MIDTOWN via \d+ ST via 6 AV Open \/ Closed/:
+  - text: ""
+  - strong: /MIDTOWN via \d+ ST via 6 AV/
+  - emphasis: No scheduled service at this time.
+- list:
+  - listitem:
+    - link "ELTINGVILLE/TRANSIT CENTER":
+      - /url: "#"
+  - listitem:
+    - link "RICHMOND AV/BARLOW AV":
+      - /url: "#"
+  - listitem:
+    - link "RICHMOND AV/KATAN AV":
+      - /url: "#"
+  - listitem:
+    - link "RICHMOND AV/ELTINGVILLE BLVD":
+      - /url: "#"
+  - listitem:
+    - link "RICHMOND AV/KOCH BLVD":
+      - /url: "#"
+  - listitem:
+    - link "RICHMOND AV/KING ST":
+      - /url: "#"
+  - listitem:
+    - link "HYLAN BLVD/ARMSTRONG AV":
+      - /url: "#"
+  - listitem:
+    - link "HYLAN BLVD/NELSON AV":
+      - /url: "#"
+  - listitem:
+    - link "HYLAN BLVD/HILLSIDE TERR":
+      - /url: "#"
+  - listitem:
+    - link "HYLAN BLVD/KEEGANS LN":
+      - /url: "#"
+  - listitem:
+    - link "HYLAN BLVD/BAY TERR":
+      - /url: "#"
+  - listitem:
+    - link "HYLAN BLVD/BUFFALO ST":
+      - /url: "#"
+  - listitem:
+    - link "HYLAN BLVD/MONTREAL AV":
+      - /url: "#"
+  - listitem:
+    - link "HYLAN BLVD/GUYON AV":
+      - /url: "#"
+  - listitem:
+    - link "HYLAN BLVD/CANNON BLVD":
+      - /url: "#"
+  - listitem:
+    - link "HYLAN BLVD/EBBITTS ST":
+      - /url: "#"
+  - listitem:
+    - link "HYLAN BLVD/NEW DORP LN":
+      - /url: "#"
+  - listitem:
+    - link "HYLAN BLVD/LINCOLN AV":
+      - /url: "#"
+  - listitem:
+    - link "HYLAN BLVD/JEFFERSON AV":
+      - /url: "#"
+  - listitem:
+    - link "HYLAN BLVD/BUEL AV":
+      - /url: "#"
+  - listitem:
+    - link "HYLAN BLVD/CROMWELL AV":
+      - /url: "#"
+  - listitem:
+    - link "HYLAN BLVD/EVERGREEN AV":
+      - /url: "#"
+  - listitem:
+    - link "HYLAN BLVD/QUINTARD ST":
+      - /url: "#"
+  - listitem:
+    - link "HYLAN BLVD/MALLORY AV":
+      - /url: "#"
+  - listitem:
+    - link "STEUBEN ST/WEST FINGERBOARD RD":
+      - /url: "#"
+  - listitem:
+    - link "HYLAN BLVD/NARROWS RD SOUTH":
+      - /url: "#"
+  - listitem:
+    - link "NARROWS RD SOUTH/FINGERBOARD RD":
+      - /url: "#"
+  - listitem:
+    - link /E \d+ ST\/1 AV/:
+      - /url: "#"
+  - listitem:
+    - link /E \d+ ST\/2 AV/:
+      - /url: "#"
+  - listitem:
+    - link /E \d+ ST\/3 AV/:
+      - /url: "#"
+  - listitem:
+    - link /E \d+ ST\/PARK AV SOUTH/:
+      - /url: "#"
+  - listitem:
+    - link /6 AV\/W \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /6 AV\/W \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /AVENUE OF THE AMERICAS\/W \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /6 AV\/W \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /6 AV\/W \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link "CENTRAL PARK SOUTH/6 AV":
+      - /url: "#"
+- list:
+  - listitem:
+    - button "view full Route":
+      - img
+      - text: View Route
+- button "Toggle favorites status for this Route":
+  - img "add icon"
+  - text: Add Route to Favorites
+- button "Toggle SIM11 SIM11 New Dorp - Midtown Manhattan Express open/close" [expanded]:
+  - img
+  - text: ""
+- list:
+  - listitem: via Hylan Bl / Madison Av / Lexington Av
+- button "Toggle Service Alert Open/Closed": Service Alert for SIM11
+- paragraph: Southbound SIM6 and SIM11 buses are skipping the stop on Lexington Ave at E 45th St - use the temporary stop on Lexington Ave at E 43rd St instead
+- paragraph:
+  - paragraph
+  - paragraph
+  - paragraph:
+    - strong: What's happening?
+  - paragraph: Water main construction
+- button /Toggle MTA NYCT_SIM11 to MIDTOWN via \d+ ST via MADISON AV Open \/ Closed/:
+  - text: ""
+  - strong: /MIDTOWN via \d+ ST via MADISON AV/
+  - emphasis: No scheduled service at this time.
+- list:
+  - listitem:
+    - link "MILL RD/EBBITTS ST":
+      - /url: "#"
+  - listitem:
+    - link "MILL RD/TYSENS LN":
+      - /url: "#"
+  - listitem:
+    - link "HYLAN BLVD/CANNON BLVD":
+      - /url: "#"
+  - listitem:
+    - link "HYLAN BLVD/EBBITTS ST":
+      - /url: "#"
+  - listitem:
+    - link "HYLAN BLVD/NEW DORP LN":
+      - /url: "#"
+  - listitem:
+    - link "HYLAN BLVD/LINCOLN AV":
+      - /url: "#"
+  - listitem:
+    - link "HYLAN BLVD/JEFFERSON AV":
+      - /url: "#"
+  - listitem:
+    - link "HYLAN BLVD/BUEL AV":
+      - /url: "#"
+  - listitem:
+    - link "HYLAN BLVD/CROMWELL AV":
+      - /url: "#"
+  - listitem:
+    - link "HYLAN BLVD/EVERGREEN AV":
+      - /url: "#"
+  - listitem:
+    - link "HYLAN BLVD/QUINTARD ST":
+      - /url: "#"
+  - listitem:
+    - link "HYLAN BLVD/MALLORY AV":
+      - /url: "#"
+  - listitem:
+    - link "STEUBEN ST/WEST FINGERBOARD RD":
+      - /url: "#"
+  - listitem:
+    - link "HYLAN BLVD/NARROWS RD SOUTH":
+      - /url: "#"
+  - listitem:
+    - link "NARROWS RD SOUTH/FINGERBOARD RD":
+      - /url: "#"
+  - listitem:
+    - link /E \d+ ST\/1 AV/:
+      - /url: "#"
+  - listitem:
+    - link /E \d+ ST\/2 AV/:
+      - /url: "#"
+  - listitem:
+    - link /E \d+ ST\/3 AV/:
+      - /url: "#"
+  - listitem:
+    - link /E \d+ ST\/PARK AV SOUTH/:
+      - /url: "#"
+  - listitem:
+    - link /MADISON AV\/E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /MADISON AV\/E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /MADISON AV\/E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /MADISON AV\/E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /E \d+ ST\/MADISON AV/:
+      - /url: "#"
+  - listitem:
+    - link /E \d+ ST\/LEXINGTON AV/:
+      - /url: "#"
+- button "Toggle MTA NYCT_SIM11 to NEW DORP via HYLAN BL Open / Closed":
+  - text: ""
+  - strong: NEW DORP via HYLAN BL
+  - emphasis: No scheduled service at this time.
+- list:
+  - listitem:
+    - link /LEXINGTON AV\/E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /LEXINGTON AV\/E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /LEXINGTON AV\/E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /LEXINGTON AV\/E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /LEXINGTON AV\/E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /LEXINGTON AV\/E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /E \d+ ST\/LEXINGTON AV/:
+      - /url: "#"
+  - listitem:
+    - link /E \d+ ST\/3 AV/:
+      - /url: "#"
+  - listitem:
+    - link /E \d+ ST\/2 AV/:
+      - /url: "#"
+  - listitem:
+    - link /E \d+ ST\/1 AV/:
+      - /url: "#"
+  - listitem:
+    - link "NARROWS RD NORTH/FINGERBOARD RD":
+      - /url: "#"
+  - listitem:
+    - link "NARROWS RD NORTH/SAINT JOHNS AV":
+      - /url: "#"
+  - listitem:
+    - link "STEUBEN ST/WEST FINGERBOARD RD":
+      - /url: "#"
+  - listitem:
+    - link "HYLAN BLVD/CLOVE RD":
+      - /url: "#"
+  - listitem:
+    - link "HYLAN BLVD/OLD TOWN RD":
+      - /url: "#"
+  - listitem:
+    - link "HYLAN BLVD/BURGHER AV":
+      - /url: "#"
+  - listitem:
+    - link "HYLAN BLVD/CROMWELL AV":
+      - /url: "#"
+  - listitem:
+    - link "HYLAN BLVD/BUEL AV":
+      - /url: "#"
+  - listitem:
+    - link "HYLAN BLVD/JEFFERSON AV":
+      - /url: "#"
+  - listitem:
+    - link "HYLAN BLVD/LINCOLN AV":
+      - /url: "#"
+  - listitem:
+    - link "HYLAN BLVD/CODDINGTON AV":
+      - /url: "#"
+  - listitem:
+    - link "HYLAN BLVD/LINDBERGH AV":
+      - /url: "#"
+  - listitem:
+    - link "EBBITTS ST/HYLAN BLVD":
+      - /url: "#"
+  - listitem:
+    - link "MILL RD/EBBITTS ST":
+      - /url: "#"
+- list:
+  - listitem:
+    - button "view full Route":
+      - img
+      - text: View Route
+- button "Toggle favorites status for this Route":
+  - img "add icon"
+  - text: Add Route to Favorites
+- button "Toggle SIM3 SIM3 Pt. Richmond - Midtown Manhattan Express open/close" [expanded]:
+  - img
+  - text: ""
+- list:
+  - listitem: via Watchogue Rd
+- button /Toggle MTA NYCT_SIM3 to MIDTOWN via \d+ ST via 6 AV Open \/ Closed/:
+  - text: ""
+  - strong: /MIDTOWN via \d+ ST via 6 AV/
+- list:
+  - listitem:
+    - link "CASTLETON AV/JEWETT AV":
+      - /url: "#"
+  - listitem:
+    - link "PORT RICHMOND AV/CHARLES AV":
+      - /url: "#"
+  - listitem:
+    - link "PORT RICHMOND AV/WALKER ST":
+      - /url: "#"
+  - listitem:
+    - link "FOREST AV/WILLOWBROOK RD":
+      - /url: "#"
+  - listitem:
+    - link "RICHMOND AV/MONSEY PL":
+      - /url: "#"
+  - listitem:
+    - link "RICHMOND AV/JULES DR":
+      - /url: "#"
+  - listitem:
+    - link "WATCHOGUE RD/WILLOW RD EAST":
+      - /url: "#"
+  - listitem:
+    - link "WATCHOGUE RD/CAMBRIDGE AV":
+      - /url: "#"
+  - listitem:
+    - link "WATCHOGUE RD/CRYSTAL AV":
+      - /url: "#"
+  - listitem:
+    - link "WATCHOGUE RD/LIVERMORE AV":
+      - /url: "#"
+  - listitem:
+    - link "WATCHOGUE RD/FREDERICK ST":
+      - /url: "#"
+  - listitem:
+    - link "VICTORY BLVD/PERRY AV":
+      - /url: "#"
+  - listitem:
+    - link "VICTORY BLVD/MOUNTAINVIEW AV":
+      - /url: "#"
+  - listitem:
+    - link "VICTORY BLVD/MANOR RD":
+      - /url: "#"
+  - listitem:
+    - link "SLOSSON AV/VICTORY BLVD":
+      - /url: "#"
+  - listitem:
+    - link /E \d+ ST\/1 AV/:
+      - /url: "#"
+  - listitem:
+    - link /E \d+ ST\/2 AV/:
+      - /url: "#"
+  - listitem:
+    - link /E \d+ ST\/3 AV/:
+      - /url: "#"
+  - listitem:
+    - link /E \d+ ST\/PARK AV SOUTH/:
+      - /url: "#"
+  - listitem:
+    - link /6 AV\/W \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /6 AV\/W \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /AVENUE OF THE AMERICAS\/W \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /6 AV\/W \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /6 AV\/W \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link "CENTRAL PARK SOUTH/6 AV":
+      - /url: "#"
+- button "Toggle MTA NYCT_SIM3 to PORT RICHMOND via WATCHOGUE RD Open / Closed":
+  - text: ""
+  - strong: PORT RICHMOND via WATCHOGUE RD
+  - emphasis: No scheduled service at this time.
+- list:
+  - listitem:
+    - link "CENTRAL PARK SOUTH/6 AV":
+      - /url: "#"
+  - listitem:
+    - link /W \d+ ST\/6 AV/:
+      - /url: "#"
+  - listitem:
+    - link /5 AV\/E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /5 AV\/W \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /5 AV\/W \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /5 AV\/W \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /E \d+ ST\/BROADWAY/:
+      - /url: "#"
+  - listitem:
+    - link /E \d+ ST\/PARK AV SOUTH/:
+      - /url: "#"
+  - listitem:
+    - link /E \d+ ST\/3 AV/:
+      - /url: "#"
+  - listitem:
+    - link /E \d+ ST\/2 AV/:
+      - /url: "#"
+  - listitem:
+    - link /E \d+ ST\/1 AV/:
+      - /url: "#"
+  - listitem:
+    - link "VICTORY BLVD/SLOSSON AV":
+      - /url: "#"
+  - listitem:
+    - link "VICTORY BLVD/MANOR RD":
+      - /url: "#"
+  - listitem:
+    - link "VICTORY BLVD/WESTCOTT BLVD":
+      - /url: "#"
+  - listitem:
+    - link "VICTORY BLVD/JEWETT AV":
+      - /url: "#"
+  - listitem:
+    - link "WATCHOGUE RD/SMITH CT":
+      - /url: "#"
+  - listitem:
+    - link "WATCHOGUE RD/LIVERMORE AV":
+      - /url: "#"
+  - listitem:
+    - link "WATCHOGUE RD/CRYSTAL AV":
+      - /url: "#"
+  - listitem:
+    - link "WATCHOGUE RD/LEVIT AV":
+      - /url: "#"
+  - listitem:
+    - link "WATCHOGUE RD/WILLOW RD EAST":
+      - /url: "#"
+  - listitem:
+    - link "RICHMOND AV/ARMAND ST":
+      - /url: "#"
+  - listitem:
+    - link "FOREST AV/RICHMOND AV":
+      - /url: "#"
+  - listitem:
+    - link "FOREST AV/WILLOW RD EAST":
+      - /url: "#"
+  - listitem:
+    - link "PORT RICHMOND AV/BEEKMAN ST":
+      - /url: "#"
+  - listitem:
+    - link "PORT RICHMOND AV/ALBION PL":
+      - /url: "#"
+  - listitem:
+    - link "CASTLETON AV/JEWETT AV":
+      - /url: "#"
+- list:
+  - listitem:
+    - button "view full Route":
+      - img
+      - text: View Route
+- button "Toggle favorites status for this Route":
+  - img "add icon"
+  - text: Add Route to Favorites
+- button "Toggle SIM31 SIM31 Eltingville - Midtown Manhattan Express open/close" [expanded]:
+  - img
+  - text: ""
+- list:
+  - listitem: via Forest Hill Rd
+- button "Toggle MTA NYCT_SIM31 to ELTINGVILLE TRANS CTR via FOREST HILL RD Open / Closed":
+  - text: ""
+  - strong: ELTINGVILLE TRANS CTR via FOREST HILL RD
+  - emphasis: No scheduled service at this time.
+- list:
+  - listitem:
+    - link /E \d+ ST\/LEXINGTON AV/:
+      - /url: "#"
+  - listitem:
+    - link /E \d+ ST\/MADISON AV/:
+      - /url: "#"
+  - listitem:
+    - link /5 AV\/W \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /5 AV\/W \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /5 AV\/W \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /E \d+ ST\/BROADWAY/:
+      - /url: "#"
+  - listitem:
+    - link /E \d+ ST\/PARK AV SOUTH/:
+      - /url: "#"
+  - listitem:
+    - link /E \d+ ST\/3 AV/:
+      - /url: "#"
+  - listitem:
+    - link /E \d+ ST\/2 AV/:
+      - /url: "#"
+  - listitem:
+    - link /E \d+ ST\/1 AV/:
+      - /url: "#"
+  - listitem:
+    - link "REON AV/HENNING ST":
+      - /url: "#"
+  - listitem:
+    - link "NORTH GANNON AV/MANOR RD":
+      - /url: "#"
+  - listitem:
+    - link "NORTH GANNON AV/GANSEVOORT BLVD":
+      - /url: "#"
+  - listitem:
+    - link "NORTH GANNON AV/BRADLEY AV":
+      - /url: "#"
+  - listitem:
+    - link "BRADLEY AV/NORTH GANNON AV":
+      - /url: "#"
+  - listitem:
+    - link "BRADLEY AV/WILLOWBROOK RD":
+      - /url: "#"
+  - listitem:
+    - link "BRADLEY AV/HAROLD ST":
+      - /url: "#"
+  - listitem:
+    - link "HAROLD ST/SUNSET AV":
+      - /url: "#"
+  - listitem:
+    - link "HAROLD ST/FOREST HILL RD":
+      - /url: "#"
+  - listitem:
+    - link "FOREST HILL RD/STEERS ST":
+      - /url: "#"
+  - listitem:
+    - link "FOREST HILL RD/ROCKLAND AV":
+      - /url: "#"
+  - listitem:
+    - link "TRAVIS AV/BOGOTA ST":
+      - /url: "#"
+  - listitem:
+    - link "TRAVIS AV/DENKER PL":
+      - /url: "#"
+  - listitem:
+    - link "MERRYMOUNT ST/SHILOH ST":
+      - /url: "#"
+  - listitem:
+    - link "MARSH AV/RING RD":
+      - /url: "#"
+  - listitem:
+    - link "MARSH AV/ELMWOOD PARK DR":
+      - /url: "#"
+  - listitem:
+    - link "MARSH AV/WINDHAM LOOP":
+      - /url: "#"
+  - listitem:
+    - link "RICHMOND AV/YUKON AV":
+      - /url: "#"
+  - listitem:
+    - link "RICHMOND AV/FOREST HILL RD":
+      - /url: "#"
+  - listitem:
+    - link "ELTINGVILLE/TRANSIT CENTER":
+      - /url: "#"
+- button /Toggle MTA NYCT_SIM31 to MIDTOWN via \d+ ST via MADISON AV Open \/ Closed/:
+  - text: ""
+  - strong: /MIDTOWN via \d+ ST via MADISON AV/
+  - emphasis: No scheduled service at this time.
+- list:
+  - listitem:
+    - link "ELTINGVILLE/TRANSIT CENTER":
+      - /url: "#"
+  - listitem:
+    - link "RICHMOND AV/FOREST HILL RD":
+      - /url: "#"
+  - listitem:
+    - link "RICHMOND AV/YUKON AV":
+      - /url: "#"
+  - listitem:
+    - link "MARSH AV/WINDHAM LOOP":
+      - /url: "#"
+  - listitem:
+    - link "MARSH AV/ELMWOOD PK DR":
+      - /url: "#"
+  - listitem:
+    - link "MARSH AV/WESTPORT ST":
+      - /url: "#"
+  - listitem:
+    - link "MERRYMOUNT ST/SHILOH ST":
+      - /url: "#"
+  - listitem:
+    - link "TRAVIS AV/DENKER PL":
+      - /url: "#"
+  - listitem:
+    - link "TRAVIS AV/LEWISTON ST":
+      - /url: "#"
+  - listitem:
+    - link "FOREST HILL RD/ROCKLAND AV":
+      - /url: "#"
+  - listitem:
+    - link "FOREST HILL RD/STEERS ST":
+      - /url: "#"
+  - listitem:
+    - link "HAROLD ST/FOREST HILL RD":
+      - /url: "#"
+  - listitem:
+    - link "HAROLD ST/SUNSET AV":
+      - /url: "#"
+  - listitem:
+    - link "BRADLEY AV/HOLDEN BLVD":
+      - /url: "#"
+  - listitem:
+    - link "SOUTH GANNON AV/BRADLEY AV":
+      - /url: "#"
+  - listitem:
+    - link "SOUTH GANNON AV/GANSEVOORT BLVD":
+      - /url: "#"
+  - listitem:
+    - link "SCHMIDTS LN/MANOR RD":
+      - /url: "#"
+  - listitem:
+    - link "SCHMIDTS LN/SLOSSON AV":
+      - /url: "#"
+  - listitem:
+    - link /E \d+ ST\/1 AV/:
+      - /url: "#"
+  - listitem:
+    - link /E \d+ ST\/2 AV/:
+      - /url: "#"
+  - listitem:
+    - link /E \d+ ST\/3 AV/:
+      - /url: "#"
+  - listitem:
+    - link /E \d+ ST\/PARK AV SOUTH/:
+      - /url: "#"
+  - listitem:
+    - link /MADISON AV\/E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /MADISON AV\/E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /MADISON AV\/E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /MADISON AV\/E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /E \d+ ST\/MADISON AV/:
+      - /url: "#"
+  - listitem:
+    - link /E \d+ ST\/LEXINGTON AV/:
+      - /url: "#"
+- list:
+  - listitem:
+    - button "view full Route":
+      - img
+      - text: View Route
+- button "Toggle favorites status for this Route":
+  - img "add icon"
+  - text: Add Route to Favorites
+- button "Toggle SIM6 SIM6 Eltingville - Midtown Manhattan Express open/close" [expanded]:
+  - img
+  - text: ""
+- list:
+  - listitem: via F Capodanno / Giffords La
+- button "Toggle Service Alert Open/Closed": Service Alert for SIM6
+- paragraph: Southbound SIM6 and SIM11 buses are skipping the stop on Lexington Ave at E 45th St - use the temporary stop on Lexington Ave at E 43rd St instead
+- paragraph:
+  - paragraph
+  - paragraph
+  - paragraph:
+    - strong: What's happening?
+  - paragraph: Water main construction
+- button "Toggle MTA NYCT_SIM6 to ELTVLLE TRANS CTR via F CAP BL via GFRDS Open / Closed":
+  - text: ""
+  - strong: ELTVLLE TRANS CTR via F CAP BL via GFRDS
+  - emphasis: No scheduled service at this time.
+- list:
+  - listitem:
+    - link /LEXINGTON AV\/E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /LEXINGTON AV\/E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /LEXINGTON AV\/E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /LEXINGTON AV\/E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /LEXINGTON AV\/E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /LEXINGTON AV\/E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /E \d+ ST\/LEXINGTON AV/:
+      - /url: "#"
+  - listitem:
+    - link /E \d+ ST\/3 AV/:
+      - /url: "#"
+  - listitem:
+    - link /E \d+ ST\/2 AV/:
+      - /url: "#"
+  - listitem:
+    - link /E \d+ ST\/1 AV/:
+      - /url: "#"
+  - listitem:
+    - link "LILY POND AV/McCLEAN AV":
+      - /url: "#"
+  - listitem:
+    - link "FATHER CAPODANNO BLVD/ROBIN RD":
+      - /url: "#"
+  - listitem:
+    - link "FATHER CAPODANNO BLVD/SAND LN":
+      - /url: "#"
+  - listitem:
+    - link "FATHER CAPODANNO BLVD/WINFIELD ST":
+      - /url: "#"
+  - listitem:
+    - link "FATHER CAPODANNO BLVD/SEAVIEW AV":
+      - /url: "#"
+  - listitem:
+    - link "FATHER CAPODANNO BLVD/GRAHAM BLVD":
+      - /url: "#"
+  - listitem:
+    - link "MIDLAND AV/PATTERSON AV":
+      - /url: "#"
+  - listitem:
+    - link "MIDLAND AV/MORELAND ST":
+      - /url: "#"
+  - listitem:
+    - link "HYLAN BLVD/LINCOLN AV":
+      - /url: "#"
+  - listitem:
+    - link "HYLAN BLVD/CODDINGTON AV":
+      - /url: "#"
+  - listitem:
+    - link "HYLAN BLVD/LINDBERGH AV":
+      - /url: "#"
+  - listitem:
+    - link "HYLAN BLVD/TYSENS LN":
+      - /url: "#"
+  - listitem:
+    - link "HYLAN BLVD/GUYON AV":
+      - /url: "#"
+  - listitem:
+    - link "HYLAN BLVD/MONTREAL AV":
+      - /url: "#"
+  - listitem:
+    - link "HYLAN BLVD/BUFFALO ST":
+      - /url: "#"
+  - listitem:
+    - link "HYLAN BLVD/BAY TERR":
+      - /url: "#"
+  - listitem:
+    - link "HYLAN BLVD/KEEGANS LN":
+      - /url: "#"
+  - listitem:
+    - link "HYLAN BLVD/HILLSIDE TERR":
+      - /url: "#"
+  - listitem:
+    - link "NELSON AV/HYLAN BLVD":
+      - /url: "#"
+  - listitem:
+    - link "NELSON AV/MONTICELLO TERR":
+      - /url: "#"
+  - listitem:
+    - link "NELSON AV/AMBOY RD":
+      - /url: "#"
+  - listitem:
+    - link "GIFFORDS LN/GIBSON AV":
+      - /url: "#"
+  - listitem:
+    - link "LEVERETT AV/COLON AV":
+      - /url: "#"
+  - listitem:
+    - link "ARMSTRONG AV/EAST BRANDIS AV":
+      - /url: "#"
+  - listitem:
+    - link "ELTINGVILLE/TRANSIT CENTER":
+      - /url: "#"
+- button /Toggle MTA NYCT_SIM6 to MIDTOWN via \d+ ST via MADISON AV Open \/ Closed/:
+  - text: ""
+  - strong: /MIDTOWN via \d+ ST via MADISON AV/
+  - emphasis: No scheduled service at this time.
+- list:
+  - listitem:
+    - link "ELTINGVILLE/TRANSIT CENTER":
+      - /url: "#"
+  - listitem:
+    - link "ARMSTRONG AV/EAST BRANDIS AV":
+      - /url: "#"
+  - listitem:
+    - link "LEVERETT AV/DOANE AV":
+      - /url: "#"
+  - listitem:
+    - link "GIFFORDS LN/WOODLAND AV":
+      - /url: "#"
+  - listitem:
+    - link "NELSON AV/AMBOY RD":
+      - /url: "#"
+  - listitem:
+    - link "NELSON AV/HILLCREST ST":
+      - /url: "#"
+  - listitem:
+    - link "HYLAN BLVD/NELSON AV":
+      - /url: "#"
+  - listitem:
+    - link "HYLAN BLVD/HILLSIDE TERR":
+      - /url: "#"
+  - listitem:
+    - link "HYLAN BLVD/KEEGANS LN":
+      - /url: "#"
+  - listitem:
+    - link "HYLAN BLVD/BAY TERR":
+      - /url: "#"
+  - listitem:
+    - link "HYLAN BLVD/BUFFALO ST":
+      - /url: "#"
+  - listitem:
+    - link "HYLAN BLVD/MONTREAL AV":
+      - /url: "#"
+  - listitem:
+    - link "HYLAN BLVD/GUYON AV":
+      - /url: "#"
+  - listitem:
+    - link "HYLAN BLVD/CANNON BLVD":
+      - /url: "#"
+  - listitem:
+    - link "HYLAN BLVD/EBBITTS ST":
+      - /url: "#"
+  - listitem:
+    - link "HYLAN BLVD/NEW DORP LN":
+      - /url: "#"
+  - listitem:
+    - link "HYLAN BLVD/LINCOLN AV":
+      - /url: "#"
+  - listitem:
+    - link "MIDLAND AV/KISWICK ST":
+      - /url: "#"
+  - listitem:
+    - link "MIDLAND AV/FATHER CAPODANNO BLVD":
+      - /url: "#"
+  - listitem:
+    - link "FATHER CAPODANNO BLVD/HUNTER AV":
+      - /url: "#"
+  - listitem:
+    - link "FATHER CAPODANNO BLVD/SIOUX ST":
+      - /url: "#"
+  - listitem:
+    - link "FATHER CAPODANNO BLVD/SEAVIEW AV":
+      - /url: "#"
+  - listitem:
+    - link "FATHER CAPODANNO BLVD/ATLANTIC AV":
+      - /url: "#"
+  - listitem:
+    - link "FATHER CAPODANNO BLVD/SAND LN":
+      - /url: "#"
+  - listitem:
+    - link "FATHER CAPODANNO BLVD/OCEAN AV":
+      - /url: "#"
+  - listitem:
+    - link "LILY POND AV/McCLEAN AV":
+      - /url: "#"
+  - listitem:
+    - link /E \d+ ST\/1 AV/:
+      - /url: "#"
+  - listitem:
+    - link /E \d+ ST\/2 AV/:
+      - /url: "#"
+  - listitem:
+    - link /E \d+ ST\/3 AV/:
+      - /url: "#"
+  - listitem:
+    - link /E \d+ ST\/PARK AV SOUTH/:
+      - /url: "#"
+  - listitem:
+    - link /MADISON AV\/E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /MADISON AV\/E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /MADISON AV\/E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /MADISON AV\/E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /E \d+ ST\/MADISON AV/:
+      - /url: "#"
+  - listitem:
+    - link /E \d+ ST\/LEXINGTON AV/:
+      - /url: "#"
+- list:
+  - listitem:
+    - button "view full Route":
+      - img
+      - text: View Route
+- button "Toggle favorites status for this Route":
+  - img "add icon"
+  - text: Add Route to Favorites
+- button "Toggle BM1 BM1 Mill Basin - Downtown/Midtown open/close" [expanded]:
+  - img
+  - text: ""
+- button "Toggle Service Alert Open/Closed": Service Alert for BM1
+- paragraph: Manhattan-bound ‌BM1, BM2 and BM3 buses are detoured due to roadwork on Cortelyou Rd from Ocean Ave to Coney Island Ave.
+- paragraph:
+  - paragraph: "Stops from Cortelyou Rd/East 19th St to Coney Island Ave/Beverley Rd will not be made.Board buses along Beverley Rd instead.Note: Bus arrival information may not be accurate while buses are detoured."
+- button /Toggle MTABC_BM1 to MIDTOWN - \d+ ST via CHURCH ST - via MADISON AV Open \/ Closed/:
+  - text: ""
+  - strong: /MIDTOWN - \d+ ST via CHURCH ST - via MADISON AV/
+- list:
+  - listitem:
+    - link /\d+ DR \/ STRICKLAND AV/:
+      - /url: "#"
+  - listitem:
+    - link /\d+ DR \/ E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /\d+ DR \/ E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /E \d+ ST \/ DAKOTA PL/:
+      - /url: "#"
+  - listitem:
+    - link /E \d+ ST \/ BASSETT AV/:
+      - /url: "#"
+  - listitem:
+    - link /E \d+ ST \/ MAYFAIR DR N/:
+      - /url: "#"
+  - listitem:
+    - link /E \d+ ST \/ OHIO WALK/:
+      - /url: "#"
+  - listitem:
+    - link /E \d+ ST \/ STRICKLAND AV/:
+      - /url: "#"
+  - listitem:
+    - link /E \d+ ST \/AVENUE U/:
+      - /url: "#"
+  - listitem:
+    - link /AVENUE U\/E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /VETERANS AV \/E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /VETERANS AV\/E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link "RALPH AV/AVENUE N":
+      - /url: "#"
+  - listitem:
+    - link "RALPH AV/AVENUE L":
+      - /url: "#"
+  - listitem:
+    - link /AVENUE K \/E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link "AVENUE K /UTICA AV":
+      - /url: "#"
+  - listitem:
+    - link "AVENUE K /SCHENECTADY AV":
+      - /url: "#"
+  - listitem:
+    - link /AVENUE K \/E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /AVENUE K \/E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link "AVENUE K /NEW YORK AV":
+      - /url: "#"
+  - listitem:
+    - link /AVENUE K \/ E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link "AVENUE K / BEDFORD AV":
+      - /url: "#"
+  - listitem:
+    - link "OCEAN AV/AVENUE K":
+      - /url: "#"
+  - listitem:
+    - link "OCEAN AV/AVENUE J":
+      - /url: "#"
+  - listitem:
+    - link "OCEAN AV/AVENUE I":
+      - /url: "#"
+  - listitem:
+    - link "OCEAN AV/GLENWOOD RD":
+      - /url: "#"
+  - listitem:
+    - link "OCEAN AV / DITMAS AV":
+      - /url: "#"
+  - listitem:
+    - link /CORTELYOU RD \/ E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link "CORTELYOU RD/STRATFORD RD":
+      - /url: "#"
+  - listitem:
+    - link "BATTERY PL /WEST ST":
+      - /url: "#"
+  - listitem:
+    - link "TRINITY PL/RECTOR ST":
+      - /url: "#"
+  - listitem:
+    - link "CHURCH ST/LIBERTY ST":
+      - /url: "#"
+  - listitem:
+    - link "CHURCH ST / BARCLAY ST":
+      - /url: "#"
+  - listitem:
+    - link "PARK ROW/SPRUCE ST":
+      - /url: "#"
+  - listitem:
+    - link "FRANKFORT ST / PEARL ST":
+      - /url: "#"
+  - listitem:
+    - link /E \d+ ST\/1 AV/:
+      - /url: "#"
+  - listitem:
+    - link /E \d+ ST\/3 AV/:
+      - /url: "#"
+  - listitem:
+    - link /E \d+ ST\/PARK AV SOUTH/:
+      - /url: "#"
+  - listitem:
+    - link /MADISON AV\/E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /MADISON AV\/E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /MADISON AV\/E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link "PEARL ST / PECK SLIP":
+      - /url: "#"
+  - listitem:
+    - link /MADISON AV\/E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link "WATER ST / PINE ST":
+      - /url: "#"
+  - listitem:
+    - link /MADISON AV\/E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link "WATER ST / COENTIES SLIP EAST":
+      - /url: "#"
+  - listitem:
+    - link "STATE ST / BATTERY PL":
+      - /url: "#"
+  - listitem:
+    - link /E \d+ ST\/3 AV/:
+      - /url: "#"
+- button /Toggle MTABC_BM1 to MILL BASIN - E\. \d+ ST via AVENUE K Open \/ Closed/:
+  - text: ""
+  - strong: /MILL BASIN - E\. \d+ ST via AVENUE K/
+- list:
+  - listitem:
+    - link /E \d+ ST \/ 2 AV/:
+      - /url: "#"
+  - listitem:
+    - link /E \d+ ST\/LEXINGTON AV/:
+      - /url: "#"
+  - listitem:
+    - link /5 AV\/W \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /5 AV\/W \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /5 AV\/W \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /5 AV\/W \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /5 AV\/W \d+ ST/:
+      - /url: "#"
+    - list:
+      - listitem:
+        - text: 0 minutes, < 1 stop away
+        - link /\d+/:
+          - /url: "#"
+  - listitem:
+    - link /E \d+ ST\/PARK AV SOUTH/:
+      - /url: "#"
+  - listitem:
+    - link /E \d+ ST\/3 AV/:
+      - /url: "#"
+  - listitem:
+    - link /E \d+ ST\/2 AV/:
+      - /url: "#"
+  - listitem:
+    - link "CHURCH ST/PARK PL":
+      - /url: "#"
+  - listitem:
+    - link "PARK ROW/SPRUCE ST":
+      - /url: "#"
+  - listitem:
+    - link "PEARL ST / PECK SLIP":
+      - /url: "#"
+  - listitem:
+    - link "WATER ST / PINE ST":
+      - /url: "#"
+  - listitem:
+    - link "WATER ST / COENTIES SLIP EAST":
+      - /url: "#"
+  - listitem:
+    - link "STATE ST / BATTERY PL":
+      - /url: "#"
+  - listitem:
+    - link "CORTELYOU RD / WESTMINSTER RD":
+      - /url: "#"
+  - listitem:
+    - link /CORTELYOU RD \/ E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link "OCEAN AV / DITMAS AV":
+      - /url: "#"
+  - listitem:
+    - link "OCEAN AV/GLENWOOD RD":
+      - /url: "#"
+  - listitem:
+    - link "OCEAN AV/AVENUE I":
+      - /url: "#"
+  - listitem:
+    - link "OCEAN AV/AVENUE J":
+      - /url: "#"
+  - listitem:
+    - link "AVENUE K / OCEAN AV":
+      - /url: "#"
+  - listitem:
+    - link "AVENUE K / BEDFORD AV":
+      - /url: "#"
+  - listitem:
+    - link /AVENUE K \/ E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link "AVENUE K /NEW YORK AV":
+      - /url: "#"
+  - listitem:
+    - link /AVENUE K \/E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /AVENUE K \/E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link "AVENUE K /SCHENECTADY AV":
+      - /url: "#"
+  - listitem:
+    - link /AVENUE K \/E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /AVENUE K \/E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link "RALPH AV/AVENUE L":
+      - /url: "#"
+  - listitem:
+    - link /VETERANS AV\/E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /VETERANS AV\/E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /AVENUE U\/E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /AVENUE U\/E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /E \d+ ST \/AVENUE U/:
+      - /url: "#"
+  - listitem:
+    - link /E \d+ ST \/ STRICKLAND AV/:
+      - /url: "#"
+  - listitem:
+    - link /E \d+ ST \/ OHIO WALK/:
+      - /url: "#"
+  - listitem:
+    - link /E \d+ ST \/ MAYFAIR DR NORTH/:
+      - /url: "#"
+  - listitem:
+    - link /E \d+ ST \/ BASSETT AV/:
+      - /url: "#"
+  - listitem:
+    - link /E \d+ ST \/ MAYFAIR DR SOUTH/:
+      - /url: "#"
+  - listitem:
+    - link /E \d+ ST \/ \d+ DR/:
+      - /url: "#"
+  - listitem:
+    - link /NATIONAL DR \/ E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link "NATIONAL DR / MILL AV":
+      - /url: "#"
+  - listitem:
+    - link /\d+ DR \/ STRICKLAND AV/:
+      - /url: "#"
+- list:
+  - listitem:
+    - button "view full Route":
+      - img
+      - text: View Route
+- button "Toggle favorites status for this Route":
+  - img "add icon"
+  - text: Add Route to Favorites
+- button "Toggle BM2 BM2 Canarsie/Spring Creek - Downtown/Midtown open/close" [expanded]:
+  - img
+  - text: ""
+- button "Toggle Service Alert Open/Closed": Service Alert for BM2
+- paragraph: BM2 and B103 buses are detoured in both directions due to roadwork at Cortelyou Rd/Ocean Ave.
+- paragraph:
+  - paragraph: You will experience some extra turns, but no stops will be missed.
+  - paragraph: "Note: Bus arrival information may not be accurate while buses are detoured."
+- button "Toggle MTABC_BM2 to CANARSIE WILLIAMS AV via AVENUE H via AVENUE M Open / Closed":
+  - text: ""
+  - strong: CANARSIE WILLIAMS AV via AVENUE H via AVENUE M
+- list:
+  - listitem:
+    - link /E \d+ ST \/ 2 AV/:
+      - /url: "#"
+  - listitem:
+    - link /E \d+ ST\/LEXINGTON AV/:
+      - /url: "#"
+  - listitem:
+    - link /5 AV\/W \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /5 AV\/W \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /5 AV\/W \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /5 AV\/W \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /5 AV\/W \d+ ST/:
+      - /url: "#"
+    - list:
+      - listitem:
+        - text: 0 minutes, approaching
+        - img "vehicle is ~5% full"
+        - text: ~3 passengers
+        - link /\d+/:
+          - /url: "#"
+  - listitem:
+    - link /E \d+ ST\/PARK AV SOUTH/:
+      - /url: "#"
+  - listitem:
+    - link /E \d+ ST\/3 AV/:
+      - /url: "#"
+  - listitem:
+    - link /E \d+ ST\/2 AV/:
+      - /url: "#"
+  - listitem:
+    - link "CHURCH ST/PARK PL":
+      - /url: "#"
+  - listitem:
+    - link "PARK ROW/SPRUCE ST":
+      - /url: "#"
+  - listitem:
+    - link "PEARL ST / PECK SLIP":
+      - /url: "#"
+  - listitem:
+    - link "WATER ST / PINE ST":
+      - /url: "#"
+  - listitem:
+    - link "WATER ST / COENTIES SLIP EAST":
+      - /url: "#"
+  - listitem:
+    - link "STATE ST / BATTERY PL":
+      - /url: "#"
+  - listitem:
+    - link "CORTELYOU RD / WESTMINSTER RD":
+      - /url: "#"
+  - listitem:
+    - link /CORTELYOU RD \/ E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link "FLATBUSH AV/FOSTER AV":
+      - /url: "#"
+  - listitem:
+    - link "AVENUE H / NEW YORK AV":
+      - /url: "#"
+  - listitem:
+    - link /AVENUE H \/ E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /AVENUE H\/E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link "AVENUE H/UTICA AV":
+      - /url: "#"
+  - listitem:
+    - link /AVENUE H\/E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /GLENWOOD RD \/ E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /E \d+ ST \/ FLATLANDS AV/:
+      - /url: "#"
+  - listitem:
+    - link /E \d+ ST \/ PAERDEGAT 4 ST/:
+      - /url: "#"
+  - listitem:
+    - link /E \d+ ST\/PAERDEGAT 7 ST/:
+      - /url: "#"
+  - listitem:
+    - link /AVENUE M \/ E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /AVENUE M \/ E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link "AVENUE M / REMSEN AV":
+      - /url: "#"
+  - listitem:
+    - link "AVENUE M / CANARSIE RD":
+      - /url: "#"
+  - listitem:
+    - link /AVENUE M \/ E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /AVENUE M \/ E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /AVENUE M \/ E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /E \d+ ST \/ AVENUE L/:
+      - /url: "#"
+  - listitem:
+    - link /E \d+ ST \/ AVENUE K/:
+      - /url: "#"
+  - listitem:
+    - link /E \d+ ST \/ AVENUE J/:
+      - /url: "#"
+  - listitem:
+    - link /FLATLANDS AV\/E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link "FLATLANDS AV / WILLIAMS AV":
+      - /url: "#"
+  - listitem:
+    - link "PENNSYLVANIA AV/VANDALIA AV":
+      - /url: "#"
+  - listitem:
+    - link "PENNSYLVANIA AV/SCHROEDERS AV":
+      - /url: "#"
+  - listitem:
+    - link "PENNSYLVANIA AV/GENEVA LOOP":
+      - /url: "#"
+  - listitem:
+    - link "PENNSYLVANIA AV/SEAVIEW AV":
+      - /url: "#"
+  - listitem:
+    - link "SEAVIEW AV / PENNSYLVANIA AV":
+      - /url: "#"
+  - listitem:
+    - link "WILLIAMS AV / FLATLANDS AV":
+      - /url: "#"
+- button /Toggle MTABC_BM2 to MIDTOWN \d+ ST via CHURCH ST via MADISON AV Open \/ Closed/:
+  - text: ""
+  - strong: /MIDTOWN \d+ ST via CHURCH ST via MADISON AV/
+- list:
+  - listitem:
+    - link "SEAVIEW AV/PENNSYLVANIA AV":
+      - /url: "#"
+  - listitem:
+    - link "PENNSYLVANIA AV/HORNELL LOOP":
+      - /url: "#"
+  - listitem:
+    - link "PENNSYLVANIA AV/GENEVA LOOP":
+      - /url: "#"
+  - listitem:
+    - link "PENNSYLVANIA AV/SCHROEDERS AV":
+      - /url: "#"
+  - listitem:
+    - link "PENNSYLVANIA AV/DELMAR LOOP NORTH":
+      - /url: "#"
+  - listitem:
+    - link "FLATLANDS AV/WILLIAMS AV":
+      - /url: "#"
+  - listitem:
+    - link /E \d+ ST \/ FLATLANDS AV/:
+      - /url: "#"
+  - listitem:
+    - link /E \d+ ST \/ AVENUE J/:
+      - /url: "#"
+  - listitem:
+    - link /E \d+ ST \/ AVENUE K/:
+      - /url: "#"
+  - listitem:
+    - link /E \d+ ST \/ AVENUE L/:
+      - /url: "#"
+  - listitem:
+    - link /E \d+ ST \/ AVENUE M/:
+      - /url: "#"
+  - listitem:
+    - link /AVENUE M \/ E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link "AVENUE M / ROCKAWAY PKY":
+      - /url: "#"
+    - list:
+      - listitem:
+        - text: 1 minute, < 1 stop away
+        - link /\d+/:
+          - /url: "#"
+  - listitem:
+    - link /AVENUE M \/ E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link "AVENUE M / REMSEN AV":
+      - /url: "#"
+  - listitem:
+    - link /AVENUE M \/ E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /AVENUE M \/ E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /E \d+ ST \/ AVENUE L/:
+      - /url: "#"
+  - listitem:
+    - link /E \d+ ST \/ AVENUE K/:
+      - /url: "#"
+  - listitem:
+    - link /E \d+ ST \/ FLATLANDS AV/:
+      - /url: "#"
+  - listitem:
+    - link /GLENWOOD RD \/ E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link "GLENWOOD RD/RALPH AV":
+      - /url: "#"
+  - listitem:
+    - link /AVENUE H\/E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link "AVENUE H/UTICA AV":
+      - /url: "#"
+  - listitem:
+    - link "AVENUE H/SCHENECTADY AV":
+      - /url: "#"
+  - listitem:
+    - link /AVENUE H\/E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /AVENUE H \/ E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /AVENUE H \/ E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link "FLATBUSH AV/FOSTER AV":
+      - /url: "#"
+  - listitem:
+    - link /CORTELYOU RD \/ E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link "CORTELYOU RD/STRATFORD RD":
+      - /url: "#"
+  - listitem:
+    - link "BATTERY PL /WEST ST":
+      - /url: "#"
+  - listitem:
+    - link "TRINITY PL/RECTOR ST":
+      - /url: "#"
+  - listitem:
+    - link "CHURCH ST/LIBERTY ST":
+      - /url: "#"
+  - listitem:
+    - link "CHURCH ST / BARCLAY ST":
+      - /url: "#"
+  - listitem:
+    - link "PARK ROW/SPRUCE ST":
+      - /url: "#"
+  - listitem:
+    - link "FRANKFORT ST / PEARL ST":
+      - /url: "#"
+  - listitem:
+    - link /E \d+ ST\/1 AV/:
+      - /url: "#"
+    - list:
+      - listitem:
+        - text: 1 minute, 0.6 miles away
+        - img "vehicle is ~4% full"
+        - text: ~2 passengers
+        - link /\d+/:
+          - /url: "#"
+  - listitem:
+    - link /E \d+ ST\/3 AV/:
+      - /url: "#"
+  - listitem:
+    - link /E \d+ ST\/PARK AV SOUTH/:
+      - /url: "#"
+  - listitem:
+    - link /MADISON AV\/E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /MADISON AV\/E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /MADISON AV\/E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link "PEARL ST / PECK SLIP":
+      - /url: "#"
+  - listitem:
+    - link /MADISON AV\/E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link "WATER ST / PINE ST":
+      - /url: "#"
+  - listitem:
+    - link /MADISON AV\/E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link "WATER ST / COENTIES SLIP EAST":
+      - /url: "#"
+  - listitem:
+    - link "STATE ST / BATTERY PL":
+      - /url: "#"
+  - listitem:
+    - link /E \d+ ST\/3 AV/:
+      - /url: "#"
+- list:
+  - listitem:
+    - button "view full Route":
+      - img
+      - text: View Route
+- button "Toggle favorites status for this Route":
+  - img "add icon"
+  - text: Add Route to Favorites
+- button "Toggle BM3 BM3 Sheepshead Bay - Downtown/Midtown open/close" [expanded]:
+  - img
+  - text: ""
+- button "Toggle Service Alert Open/Closed": Service Alert for BM3
+- paragraph: Manhattan-bound ‌BM1, BM2 and BM3 buses are detoured due to roadwork on Cortelyou Rd from Ocean Ave to Coney Island Ave.
+- paragraph:
+  - paragraph: "Stops from Cortelyou Rd/East 19th St to Coney Island Ave/Beverley Rd will not be made.Board buses along Beverley Rd instead.Note: Bus arrival information may not be accurate while buses are detoured."
+- button /Toggle MTABC_BM3 to MIDTOWN \d+ ST via CHURCH ST via MADISON AV Open \/ Closed/:
+  - text: ""
+  - strong: /MIDTOWN \d+ ST via CHURCH ST via MADISON AV/
+- list:
+  - listitem:
+    - link "EMMONS AV/SHORE BLVD":
+      - /url: "#"
+  - listitem:
+    - link "EMMONS AV / OCEAN AV":
+      - /url: "#"
+    - list:
+      - listitem:
+        - text: 0 minutes, < 1 stop away
+        - link /\d+/:
+          - /url: "#"
+  - listitem:
+    - link "EMMONS AV / BEDFORD AV":
+      - /url: "#"
+  - listitem:
+    - link "EMMONS AV / NOSTRAND AV":
+      - /url: "#"
+  - listitem:
+    - link "EMMONS AV / COYLE ST":
+      - /url: "#"
+  - listitem:
+    - link "EMMONS AV / BRAGG ST":
+      - /url: "#"
+  - listitem:
+    - link "SHORE PKWY/BRAGG ST":
+      - /url: "#"
+  - listitem:
+    - link "SHORE PKWY/BATCHELDER ST":
+      - /url: "#"
+  - listitem:
+    - link "BATCHELDER ST/AVENUE Z":
+      - /url: "#"
+  - listitem:
+    - link "AVENUE X / BATCHELDER ST":
+      - /url: "#"
+  - listitem:
+    - link /AVENUE X \/ E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link "AVENUE X / BEDFORD AV":
+      - /url: "#"
+  - listitem:
+    - link "OCEAN AV/AVENUE X":
+      - /url: "#"
+  - listitem:
+    - link "OCEAN AV/AVENUE W":
+      - /url: "#"
+  - listitem:
+    - link "OCEAN AV/AVENUE U":
+      - /url: "#"
+  - listitem:
+    - link "OCEAN AV/AVENUE S":
+      - /url: "#"
+  - listitem:
+    - link "OCEAN AV/AVENUE R":
+      - /url: "#"
+  - listitem:
+    - link "OCEAN AV/KINGS HWY":
+      - /url: "#"
+  - listitem:
+    - link "OCEAN AV/AVENUE N":
+      - /url: "#"
+  - listitem:
+    - link "OCEAN AV/AVENUE L":
+      - /url: "#"
+  - listitem:
+    - link "OCEAN AV/AVENUE K":
+      - /url: "#"
+  - listitem:
+    - link "OCEAN AV/AVENUE J":
+      - /url: "#"
+  - listitem:
+    - link "OCEAN AV/AVENUE I":
+      - /url: "#"
+  - listitem:
+    - link "OCEAN AV/GLENWOOD RD":
+      - /url: "#"
+  - listitem:
+    - link "OCEAN AV / DITMAS AV":
+      - /url: "#"
+  - listitem:
+    - link /CORTELYOU RD \/ E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link "CORTELYOU RD/STRATFORD RD":
+      - /url: "#"
+  - listitem:
+    - link "CONEY ISLAND AV/TURNER PL":
+      - /url: "#"
+  - listitem:
+    - link "CHURCH AV/E 7 ST":
+      - /url: "#"
+  - listitem:
+    - link "BATTERY PL /WEST ST":
+      - /url: "#"
+  - listitem:
+    - link "TRINITY PL/RECTOR ST":
+      - /url: "#"
+  - listitem:
+    - link "CHURCH ST/LIBERTY ST":
+      - /url: "#"
+  - listitem:
+    - link "CHURCH ST / BARCLAY ST":
+      - /url: "#"
+  - listitem:
+    - link "PARK ROW/SPRUCE ST":
+      - /url: "#"
+    - list:
+      - listitem:
+        - text: 3 minutes, < 1 stop away
+        - img /vehicle is ~\d+% full/
+        - text: ~8 passengers
+        - link /\d+/:
+          - /url: "#"
+  - listitem:
+    - link "FRANKFORT ST / PEARL ST":
+      - /url: "#"
+  - listitem:
+    - link /E \d+ ST\/1 AV/:
+      - /url: "#"
+  - listitem:
+    - link /E \d+ ST\/3 AV/:
+      - /url: "#"
+  - listitem:
+    - link /E \d+ ST\/PARK AV SOUTH/:
+      - /url: "#"
+  - listitem:
+    - link /MADISON AV\/E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /MADISON AV\/E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /MADISON AV\/E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link "PEARL ST / PECK SLIP":
+      - /url: "#"
+  - listitem:
+    - link /MADISON AV\/E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link "WATER ST / PINE ST":
+      - /url: "#"
+  - listitem:
+    - link /MADISON AV\/E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link "WATER ST / COENTIES SLIP EAST":
+      - /url: "#"
+  - listitem:
+    - link "STATE ST / BATTERY PL":
+      - /url: "#"
+  - listitem:
+    - link /E \d+ ST\/3 AV/:
+      - /url: "#"
+    - list:
+      - listitem:
+        - text: 0 minutes, approaching
+        - img "vehicle is ~5% full"
+        - text: ~3 passengers
+        - link /\d+/:
+          - /url: "#"
+- button "Toggle MTABC_BM3 to SHEEPSHEAD BAY EMMONS AV via OCEAN AV Open / Closed":
+  - text: ""
+  - strong: SHEEPSHEAD BAY EMMONS AV via OCEAN AV
+- list:
+  - listitem:
+    - link /E \d+ ST \/ 2 AV/:
+      - /url: "#"
+  - listitem:
+    - link /E \d+ ST\/LEXINGTON AV/:
+      - /url: "#"
+  - listitem:
+    - link /5 AV\/W \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /5 AV\/W \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /5 AV\/W \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /5 AV\/W \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /5 AV\/W \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /E \d+ ST\/PARK AV SOUTH/:
+      - /url: "#"
+  - listitem:
+    - link /E \d+ ST\/3 AV/:
+      - /url: "#"
+  - listitem:
+    - link /E \d+ ST\/2 AV/:
+      - /url: "#"
+  - listitem:
+    - link "CHURCH ST/PARK PL":
+      - /url: "#"
+  - listitem:
+    - link "PARK ROW/SPRUCE ST":
+      - /url: "#"
+    - list:
+      - listitem:
+        - text: 3 minutes, < 1 stop away
+        - img /vehicle is ~\d+% full/
+        - text: ~8 passengers
+        - link /\d+/:
+          - /url: "#"
+  - listitem:
+    - link "PEARL ST / PECK SLIP":
+      - /url: "#"
+  - listitem:
+    - link "WATER ST / PINE ST":
+      - /url: "#"
+  - listitem:
+    - link "WATER ST / COENTIES SLIP EAST":
+      - /url: "#"
+  - listitem:
+    - link "STATE ST / BATTERY PL":
+      - /url: "#"
+  - listitem:
+    - link "MCDONALD AV/CATON AV":
+      - /url: "#"
+  - listitem:
+    - link "CHURCH AV/E 3 ST":
+      - /url: "#"
+  - listitem:
+    - link "CHURCH AV/OCEAN PKWY":
+      - /url: "#"
+  - listitem:
+    - link "CONEY ISLAND AV/BEVERLEY RD":
+      - /url: "#"
+  - listitem:
+    - link "CORTELYOU RD / WESTMINSTER RD":
+      - /url: "#"
+  - listitem:
+    - link /CORTELYOU RD \/ E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link "OCEAN AV / DITMAS AV":
+      - /url: "#"
+  - listitem:
+    - link "OCEAN AV/GLENWOOD RD":
+      - /url: "#"
+  - listitem:
+    - link "OCEAN AV/AVENUE I":
+      - /url: "#"
+  - listitem:
+    - link "OCEAN AV/AVENUE J":
+      - /url: "#"
+  - listitem:
+    - link "OCEAN AV/AVENUE K":
+      - /url: "#"
+  - listitem:
+    - link "OCEAN AV/AVENUE L":
+      - /url: "#"
+  - listitem:
+    - link "OCEAN AV/AVENUE N":
+      - /url: "#"
+  - listitem:
+    - link "OCEAN AV/AVENUE P":
+      - /url: "#"
+  - listitem:
+    - link "OCEAN AV/AVENUE R":
+      - /url: "#"
+  - listitem:
+    - link "OCEAN AV/AVENUE S":
+      - /url: "#"
+  - listitem:
+    - link "OCEAN AV/AVENUE U":
+      - /url: "#"
+  - listitem:
+    - link "OCEAN AV/AVENUE W":
+      - /url: "#"
+  - listitem:
+    - link "AVENUE X / OCEAN AV":
+      - /url: "#"
+  - listitem:
+    - link "AVENUE X / BEDFORD AV":
+      - /url: "#"
+  - listitem:
+    - link /AVENUE X \/ E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link "AVENUE X / BROWN ST":
+      - /url: "#"
+  - listitem:
+    - link "BATCHELDER ST/AVENUE Z":
+      - /url: "#"
+  - listitem:
+    - link "BATCHELDER ST / VOORHIES AV":
+      - /url: "#"
+  - listitem:
+    - link "VOORHIES AV / BRAGG ST":
+      - /url: "#"
+  - listitem:
+    - link "EMMONS AV/BRIGHAM ST":
+      - /url: "#"
+  - listitem:
+    - link "EMMONS AV/FORD ST":
+      - /url: "#"
+  - listitem:
+    - link "EMMONS AV/NOSTRAND AV":
+      - /url: "#"
+  - listitem:
+    - link /EMMONS AV\/E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /EMMONS AV \/ E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /EMMONS AV\/E \d+ ST/:
+      - /url: "#"
+- list:
+  - listitem:
+    - button "view full Route":
+      - img
+      - text: View Route
+- button "Toggle favorites status for this Route":
+  - img "add icon"
+  - text: Add Route to Favorites
+- button "Toggle BM4 BM4 Gerritsen Beach - Downtown/Midtown open/close" [expanded]:
+  - img
+  - text: ""
+- button "Toggle Service Alert Open/Closed": Service Alert for BM4
+- paragraph: Manhattan-bound ‌BM1, BM2 and BM3 buses are detoured due to roadwork on Cortelyou Rd from Ocean Ave to Coney Island Ave.
+- paragraph:
+  - paragraph: "Stops from Cortelyou Rd/East 19th St to Coney Island Ave/Beverley Rd will not be made.Board buses along Beverley Rd instead.Note: Bus arrival information may not be accurate while buses are detoured."
+- button "Toggle MTABC_BM4 to GERRITSEN BCH GERRITSEN AV Open / Closed":
+  - text: ""
+  - strong: GERRITSEN BCH GERRITSEN AV
+- list:
+  - listitem:
+    - link /E \d+ ST \/ 2 AV/:
+      - /url: "#"
+  - listitem:
+    - link /E \d+ ST\/LEXINGTON AV/:
+      - /url: "#"
+  - listitem:
+    - link /5 AV\/W \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /5 AV\/W \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /5 AV\/W \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /5 AV\/W \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /5 AV\/W \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /E \d+ ST\/PARK AV SOUTH/:
+      - /url: "#"
+  - listitem:
+    - link /E \d+ ST\/3 AV/:
+      - /url: "#"
+  - listitem:
+    - link /E \d+ ST\/2 AV/:
+      - /url: "#"
+  - listitem:
+    - link "CHURCH ST/PARK PL":
+      - /url: "#"
+  - listitem:
+    - link "PARK ROW/SPRUCE ST":
+      - /url: "#"
+  - listitem:
+    - link "PEARL ST / PECK SLIP":
+      - /url: "#"
+  - listitem:
+    - link "WATER ST / PINE ST":
+      - /url: "#"
+  - listitem:
+    - link "WATER ST / COENTIES SLIP EAST":
+      - /url: "#"
+  - listitem:
+    - link "STATE ST / BATTERY PL":
+      - /url: "#"
+  - listitem:
+    - link "MCDONALD AV/CATON AV":
+      - /url: "#"
+  - listitem:
+    - link "CHURCH AV/E 3 ST":
+      - /url: "#"
+  - listitem:
+    - link "CHURCH AV/OCEAN PKWY":
+      - /url: "#"
+  - listitem:
+    - link "CONEY ISLAND AV/BEVERLEY RD":
+      - /url: "#"
+  - listitem:
+    - link "CORTELYOU RD / WESTMINSTER RD":
+      - /url: "#"
+  - listitem:
+    - link /CORTELYOU RD \/ E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link "OCEAN AV / DITMAS AV":
+      - /url: "#"
+  - listitem:
+    - link "OCEAN AV/GLENWOOD RD":
+      - /url: "#"
+  - listitem:
+    - link "OCEAN AV/AVENUE I":
+      - /url: "#"
+  - listitem:
+    - link "OCEAN AV/AVENUE J":
+      - /url: "#"
+  - listitem:
+    - link "AVENUE K / OCEAN AV":
+      - /url: "#"
+  - listitem:
+    - link "AVENUE K / BEDFORD AV":
+      - /url: "#"
+  - listitem:
+    - link /AVENUE K \/ E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link "NOSTRAND AV/AVENUE L":
+      - /url: "#"
+  - listitem:
+    - link "NOSTRAND AV/AVENUE M":
+      - /url: "#"
+  - listitem:
+    - link "NOSTRAND AV/KINGS HWY":
+      - /url: "#"
+  - listitem:
+    - link "NOSTRAND AV/AVENUE P":
+      - /url: "#"
+  - listitem:
+    - link "GERRITSEN AV / NOSTRAND AV":
+      - /url: "#"
+  - listitem:
+    - link "GERRITSEN AV / HARING ST":
+      - /url: "#"
+  - listitem:
+    - link "GERRITSEN AV/BATCHELDER ST":
+      - /url: "#"
+  - listitem:
+    - link "GERRITSEN AV/COYLE ST":
+      - /url: "#"
+  - listitem:
+    - link "GERRITSEN AV/AVENUE U":
+      - /url: "#"
+  - listitem:
+    - link "GERRITSEN AV/AV V":
+      - /url: "#"
+  - listitem:
+    - link "GERRITSEN AV/WHITNEY AV":
+      - /url: "#"
+  - listitem:
+    - link "GERRITSEN AV/BIJOU AV":
+      - /url: "#"
+  - listitem:
+    - link "GERRITSEN AV/GOTHAM AV":
+      - /url: "#"
+  - listitem:
+    - link "GERRITSEN AV/CYRUS AV":
+      - /url: "#"
+  - listitem:
+    - link "GERRITSEN AV/LOIS AV":
+      - /url: "#"
+- button /Toggle MTABC_BM4 to MIDTOWN \d+ ST via CHURCH ST via MADISON AV Open \/ Closed/:
+  - text: ""
+  - strong: /MIDTOWN \d+ ST via CHURCH ST via MADISON AV/
+- list:
+  - listitem:
+    - link "GERRITSEN AV/LOIS AV":
+      - /url: "#"
+  - listitem:
+    - link "GERRITSEN AV/CYRUS AV":
+      - /url: "#"
+  - listitem:
+    - link "GERRITSEN AV/GOTHAM AV":
+      - /url: "#"
+  - listitem:
+    - link "GERRITSEN AV/AVENUE X":
+      - /url: "#"
+  - listitem:
+    - link "GERRITSEN AV/WHITNEY AV":
+      - /url: "#"
+  - listitem:
+    - link "GERRITSEN AV/AVENUE V":
+      - /url: "#"
+  - listitem:
+    - link "GERRITSEN AV/AVENUE U":
+      - /url: "#"
+  - listitem:
+    - link "GERRITSEN AV/AVENUE S":
+      - /url: "#"
+  - listitem:
+    - link "GERRITSEN AV/FILLMORE AV":
+      - /url: "#"
+  - listitem:
+    - link "NOSTRAND AV/QUENTIN RD":
+      - /url: "#"
+  - listitem:
+    - link "NOSTRAND AV/AVENUE P":
+      - /url: "#"
+  - listitem:
+    - link "NOSTRAND AV/KINGS HWY":
+      - /url: "#"
+  - listitem:
+    - link "NOSTRAND AV/AVENUE M":
+      - /url: "#"
+  - listitem:
+    - link "NOSTRAND AV/AVENUE L":
+      - /url: "#"
+  - listitem:
+    - link /AVENUE K \/ E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link "AVENUE K / BEDFORD AV":
+      - /url: "#"
+  - listitem:
+    - link "OCEAN AV/AVENUE K":
+      - /url: "#"
+  - listitem:
+    - link "OCEAN AV/AVENUE J":
+      - /url: "#"
+  - listitem:
+    - link "OCEAN AV/AVENUE I":
+      - /url: "#"
+  - listitem:
+    - link "OCEAN AV/GLENWOOD RD":
+      - /url: "#"
+  - listitem:
+    - link "OCEAN AV / DITMAS AV":
+      - /url: "#"
+  - listitem:
+    - link /CORTELYOU RD \/ E \d+ ST/:
+      - /url: "#"
+    - list:
+      - listitem:
+        - text: 0 minutes, < 1 stop away
+        - img "vehicle is ~4% full"
+        - text: ~2 passengers
+        - link /\d+/:
+          - /url: "#"
+  - listitem:
+    - link "CORTELYOU RD/STRATFORD RD":
+      - /url: "#"
+  - listitem:
+    - link "CONEY ISLAND AV/TURNER PL":
+      - /url: "#"
+  - listitem:
+    - link "CHURCH AV/E 7 ST":
+      - /url: "#"
+  - listitem:
+    - link "BATTERY PL /WEST ST":
+      - /url: "#"
+  - listitem:
+    - link "TRINITY PL/RECTOR ST":
+      - /url: "#"
+  - listitem:
+    - link "CHURCH ST/LIBERTY ST":
+      - /url: "#"
+  - listitem:
+    - link "CHURCH ST / BARCLAY ST":
+      - /url: "#"
+  - listitem:
+    - link "PARK ROW/SPRUCE ST":
+      - /url: "#"
+  - listitem:
+    - link "FRANKFORT ST / PEARL ST":
+      - /url: "#"
+  - listitem:
+    - link /E \d+ ST\/1 AV/:
+      - /url: "#"
+  - listitem:
+    - link /E \d+ ST\/3 AV/:
+      - /url: "#"
+  - listitem:
+    - link /E \d+ ST\/PARK AV SOUTH/:
+      - /url: "#"
+  - listitem:
+    - link /MADISON AV\/E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /MADISON AV\/E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /MADISON AV\/E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link "PEARL ST / PECK SLIP":
+      - /url: "#"
+  - listitem:
+    - link /MADISON AV\/E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link "WATER ST / PINE ST":
+      - /url: "#"
+  - listitem:
+    - link /MADISON AV\/E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link "WATER ST / COENTIES SLIP EAST":
+      - /url: "#"
+  - listitem:
+    - link "STATE ST / BATTERY PL":
+      - /url: "#"
+  - listitem:
+    - link /E \d+ ST\/3 AV/:
+      - /url: "#"
+- list:
+  - listitem:
+    - button "view full Route":
+      - img
+      - text: View Route
+- button "Toggle favorites status for this Route":
+  - img "add icon"
+  - text: Add Route to Favorites
+- button "Toggle M23-SBS M23-SBS Chelsea Piers - East Side open/close" [expanded]:
+  - img
+  - text: ""
+- list:
+  - listitem: Select Bus Service via 23rd St Crosstown
+- button "Toggle Service Alert Open/Closed": Service Alert for M23-SBS
+- paragraph: Westbound M9 and Eastbound M23-SBS, M34-SBS, M34A-SBS buses will skip the E 23rd St/2nd Ave stop due to utility work on E 23rd St between 1st Ave and 2nd Ave.
+- paragraph:
+  - paragraph: Use the E 23rd St/1st Ave stop instead.
+- button "Toggle MTA NYCT_M23-SBS to SELECT BUS CHELSEA PIERS 12AV CROSSTOWN Open / Closed":
+  - text: ""
+  - strong: SELECT BUS CHELSEA PIERS 12AV CROSSTOWN
+- list:
+  - listitem:
+    - link /AVENUE C\/E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /E \d+ ST\/E \d+ ST Loop/:
+      - /url: "#"
+    - list:
+      - listitem:
+        - text: 2 minutes, < 1 stop away
+        - link /\d+/:
+          - /url: "#"
+  - listitem:
+    - link /E \d+ ST\/1 AV/:
+      - /url: "#"
+  - listitem:
+    - link /E \d+ ST\/1 AV/:
+      - /url: "#"
+  - listitem:
+    - link /E \d+ ST\/2 AV/:
+      - /url: "#"
+    - list:
+      - listitem:
+        - text: 0 minutes, approaching
+        - link /\d+/:
+          - /url: "#"
+  - listitem:
+    - link /E \d+ ST\/3 AV/:
+      - /url: "#"
+  - listitem:
+    - link /E \d+ ST\/PARK AV SOUTH/:
+      - /url: "#"
+  - listitem:
+    - link /E \d+ ST\/BROADWAY/:
+      - /url: "#"
+  - listitem:
+    - link /W \d+ ST\/6 AV/:
+      - /url: "#"
+  - listitem:
+    - link /W \d+ ST\/7 AV/:
+      - /url: "#"
+  - listitem:
+    - link /W \d+ ST\/8 AV/:
+      - /url: "#"
+    - list:
+      - listitem:
+        - text: 0 minutes, approaching
+        - link /\d+/:
+          - /url: "#"
+  - listitem:
+    - link /W \d+ ST\/9 AV/:
+      - /url: "#"
+  - listitem:
+    - link /W \d+ ST\/\d+ AV/:
+      - /url: "#"
+  - listitem:
+    - link /W \d+ ST\/\d+ AV/:
+      - /url: "#"
+  - listitem:
+    - link /W \d+ St\/\d+ AV/:
+      - /url: "#"
+    - list:
+      - listitem:
+        - text: 0 minutes, approaching
+        - img /vehicle is ~\d+% full/
+        - text: /~\d+ passengers/
+        - link /\d+/:
+          - /url: "#"
+  - listitem:
+    - link /\d+ AV\/W \d+ ST/:
+      - /url: "#"
+    - list:
+      - listitem:
+        - text: /0 minutes, at stop \(at terminal, scheduled to depart at \d+:\d+ AM\)/
+        - img "vehicle is ~1% full"
+        - text: ~1 passengers
+        - link /\d+/:
+          - /url: "#"
+- button "Toggle MTA NYCT_M23-SBS to SELECT BUS EAST SIDE AVENUE C CROSSTOWN Open / Closed":
+  - text: ""
+  - strong: SELECT BUS EAST SIDE AVENUE C CROSSTOWN
+- list:
+  - listitem:
+    - link /\d+ AV\/W \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /W \d+ ST\/\d+ AV/:
+      - /url: "#"
+  - listitem:
+    - link /W \d+ ST\/\d+ AV/:
+      - /url: "#"
+    - list:
+      - listitem:
+        - text: 0 minutes, approaching
+        - link /\d+/:
+          - /url: "#"
+  - listitem:
+    - link /W \d+ ST\/\d+ AV/:
+      - /url: "#"
+  - listitem:
+    - link /W \d+ ST\/9 AV/:
+      - /url: "#"
+  - listitem:
+    - link /W \d+ ST\/8 AV/:
+      - /url: "#"
+  - listitem:
+    - link /W \d+ ST\/7 AV/:
+      - /url: "#"
+  - listitem:
+    - link /W \d+ ST\/6 AV/:
+      - /url: "#"
+  - listitem:
+    - link /E \d+ ST\/BROADWAY/:
+      - /url: "#"
+  - listitem:
+    - link /E \d+ ST\/PARK AV SOUTH/:
+      - /url: "#"
+    - list:
+      - listitem:
+        - text: 0 minutes, at stop
+        - img /vehicle is ~\d+% full/
+        - text: /~\d+ passengers/
+        - link /\d+/:
+          - /url: "#"
+  - listitem:
+    - link /E \d+ ST\/3 AV/:
+      - /url: "#"
+  - listitem:
+    - link /E \d+ ST\/2 AV/:
+      - /url: "#"
+  - listitem:
+    - link /E \d+ ST\/1 AV/:
+      - /url: "#"
+  - listitem:
+    - link /AVENUE C\/E \d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /AVENUE C\/E \d+ ST/:
+      - /url: "#"
+    - list:
+      - listitem:
+        - text: 0 minutes, approaching
+        - img /vehicle is ~\d+% full/
+        - text: /~\d+ passengers/
+        - link /\d+/:
+          - /url: "#"
+- list:
+  - listitem:
+    - button "view full Route":
+      - img
+      - text: View Route
+- button "Toggle favorites status for this Route":
+  - img "add icon"
+  - text: Add Route to Favorites
+- menu:
+  - listitem:
+    - button "Refresh the data": /Refresh \(updated \d+:\d+ AM\)/
+- button "Toggle Google Translate Menu": TRANSLATE
+- link "Bus Time Classic":
+  - /url: https://bustime-classic.mta.info
+- navigation:
+  - list:
+    - listitem:
+      - link "MTA Website":
+        - /url: //mta.info
+    - listitem:
+      - link "Mobile Text Messages":
+        - /url: /help/text
+    - listitem:
+      - link "Sign Up For Service Alerts":
+        - /url: //cloud.info.mta.org/create-mta-service-alerts?utm_source=MTA_Bus_Time&utm_medium=referral&utm_campaign=MTA_Service_Alerts
+    - listitem:
+      - link "About Bus Time":
+        - /url: /about
+    - listitem:
+      - link "Contact Us":
+        - /url: /contact
+    - listitem:
+      - link "Help":
+        - /url: /help
+    - listitem:
+      - link "Privacy Policy":
+        - /url: //www.mta.info/privacy-policy
+    - listitem:
+      - link "Terms & Conditions":
+        - /url: //www.mta.info/terms-and-conditions

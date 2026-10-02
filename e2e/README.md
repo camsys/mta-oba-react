@@ -123,10 +123,17 @@ E2E_PORT=8091 npm run test:e2e -- e2e/<spec>.spec.ts
 Without it, everything uses the defaults above. Open a lane's report with
 `npx playwright show-report playwright-report-<port>`.
 
+- The port must be digits only (an empty `E2E_PORT` means no lane). Avoid 8082
+  (`npm run serve`), 8083 (the default lane) and 8084 (the QA codegen server); a port that's
+  already in use fails the run straight away.
 - One run per lane at a time: two runs on the same port collide.
 - Lanes share `e2e/recordings/`. A record run rewrites its spec's recording, which changes what
   every other lane replays for that spec. Don't replay a spec while it's being recorded, and
-  regenerate its snapshots after recording.
+  regenerate its snapshots after recording. If a spec that passed suddenly fails its ARIA
+  checkpoints with a large sidebar diff, check `git diff --stat -- e2e/recordings/`: a
+  recording probably changed. `git checkout -- e2e/recordings/<name>.json` restores the
+  committed one, which also throws away a re-record you meant to keep.
+- `DEBUG=pw:webserver` prints the build folder and port a run actually used.
 
 ## Snapshots
 

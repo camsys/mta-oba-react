@@ -1,0 +1,985 @@
+- banner:
+  - link "MTA Bus Time Home":
+    - /url: "#"
+    - img "MTA Bus Time"
+  - link "MTA Home":
+    - /url: https://www.mta.info/
+    - img "MTA"
+- combobox:
+  - textbox "Route, intersection, or stop code": /\d+\.\d+,-\d+\.\d+/
+  - listbox
+- button "clear search button"
+- button "Favorites":
+  - img
+  - text: ""
+- button "Nearby Buses":
+  - img
+  - text: ""
+- heading "Nearby:" [level=2]
+- button "Show nearby routes (currently hidden)": Routes
+- button "Show nearby stops (currently visible)" [expanded] [pressed]: Stops
+- button /Toggle \d+ 2 AV\/E \d+ ST open\/close/:
+  - img
+  - text: ""
+- list:
+  - listitem: /Stopcode \d+/
+- heading "Buses en-route:" [level=4]
+- button "Toggle M15 to SOUTH FERRY via 2 AV" [expanded]:
+  - strong: M15
+  - text: ""
+- list:
+  - listitem:
+    - text: /\d+ minutes, 1\.2 miles away/
+    - link /\d+/:
+      - /url: "#"
+  - listitem:
+    - text: /\d+ minutes, 4\.4 miles away/
+    - link /\d+/:
+      - /url: "#"
+  - listitem:
+    - text: /5\.2 miles away \(at terminal, scheduled to depart at \d+:\d+ AM\)/
+    - link /\d+/:
+      - /url: "#"
+- button "Toggle Service Alert Open/Closed" [expanded]: Service Alert for M15
+- paragraph: M15 stops on South St at Whitehall St will be bypassed, the first and last stops will be made on Whitehall St at Water St
+- paragraph:
+  - paragraph:
+    - strong: What's happening?
+  - paragraph: DOT Construction - Battery Park
+  - paragraph
+  - paragraph:
+    - strong: "Note:"
+    - text: Bus arrival information may not be available/accurate while buses are detoured
+- separator
+- paragraph: Northbound M15 stop on 1st Ave at E 77th St is being bypassed
+- paragraph:
+  - paragraph:
+    - text: Please use the stops on
+    - strong: 1st Ave
+    - text: at
+    - strong: E 75th St
+    - text: or
+    - strong: E 81st St
+    - text: instead.
+  - paragraph
+  - paragraph:
+    - strong: What's happening?
+  - paragraph: Construction
+- separator
+- paragraph: Southbound M15 stop on E 106th St is closed; buses are making a temporary stop on 2nd Ave between E 107th St and E 106th St.
+- paragraph:
+  - paragraph:
+    - strong: What's happening?
+  - paragraph: Construction
+  - paragraph
+  - paragraph:
+    - strong: "Note:"
+    - text: Bus arrival information may not be available/accurate while buses are detoured
+- separator
+- paragraph: The northbound M15 and M15-SBS bus stops on Water St at Wall St and Pine St has been temporarily moved to the far side of Pine St
+- paragraph:
+  - paragraph:
+    - strong: What's happening?
+  - paragraph: Construction - Water St
+  - paragraph
+  - paragraph:
+    - strong: NOTE
+    - text: ":"
+    - strong: M15-SBS
+    - text: customers must pay fare before boarding by using the machine at regular bus stop located on Water St at Pine St or bus door with OMNY.
+- separator
+- paragraph: Northbound M15 and M22 buses will bypass stops at Madison St/Market St
+- paragraph:
+  - paragraph: Use the stop at Madison St/Oliver St instead.
+  - paragraph
+  - paragraph:
+    - strong: What?s happening?
+  - paragraph: Gas Main Repair
+  - paragraph
+  - paragraph:
+    - strong: Note
+    - text: ": Bus arrival information may be unavailable or inaccurate while buses are detoured."
+- list:
+  - listitem:
+    - button "view full Full Route":
+      - img
+      - text: View Full Route
+- button "Toggle M15 to PIKE ST -via 2 AV" [expanded]:
+  - strong: M15
+  - text: ""
+- list:
+  - listitem:
+    - text: /\d+ minutes, 3\.2 miles away/
+    - link /\d+/:
+      - /url: "#"
+  - listitem:
+    - text: /\d+ minutes, 5\.1 miles away \(at terminal\)/
+    - link /\d+/:
+      - /url: "#"
+  - listitem:
+    - text: /5\.1 miles away \(at terminal, scheduled to depart at \d+:\d+ AM\)/
+    - link /\d+/:
+      - /url: "#"
+- button "Toggle Service Alert Open/Closed": Service Alert for M15
+- paragraph: M15 stops on South St at Whitehall St will be bypassed, the first and last stops will be made on Whitehall St at Water St
+- paragraph:
+  - paragraph:
+    - strong: What's happening?
+  - paragraph: DOT Construction - Battery Park
+  - paragraph
+  - paragraph:
+    - strong: "Note:"
+    - text: Bus arrival information may not be available/accurate while buses are detoured
+- separator
+- paragraph: Northbound M15 stop on 1st Ave at E 77th St is being bypassed
+- paragraph:
+  - paragraph:
+    - text: Please use the stops on
+    - strong: 1st Ave
+    - text: at
+    - strong: E 75th St
+    - text: or
+    - strong: E 81st St
+    - text: instead.
+  - paragraph
+  - paragraph:
+    - strong: What's happening?
+  - paragraph: Construction
+- separator
+- paragraph: Southbound M15 stop on E 106th St is closed; buses are making a temporary stop on 2nd Ave between E 107th St and E 106th St.
+- paragraph:
+  - paragraph:
+    - strong: What's happening?
+  - paragraph: Construction
+  - paragraph
+  - paragraph:
+    - strong: "Note:"
+    - text: Bus arrival information may not be available/accurate while buses are detoured
+- separator
+- paragraph: The northbound M15 and M15-SBS bus stops on Water St at Wall St and Pine St has been temporarily moved to the far side of Pine St
+- paragraph:
+  - paragraph:
+    - strong: What's happening?
+  - paragraph: Construction - Water St
+  - paragraph
+  - paragraph:
+    - strong: NOTE
+    - text: ":"
+    - strong: M15-SBS
+    - text: customers must pay fare before boarding by using the machine at regular bus stop located on Water St at Pine St or bus door with OMNY.
+- separator
+- paragraph: Northbound M15 and M22 buses will bypass stops at Madison St/Market St
+- paragraph:
+  - paragraph: Use the stop at Madison St/Oliver St instead.
+  - paragraph
+  - paragraph:
+    - strong: What?s happening?
+  - paragraph: Gas Main Repair
+  - paragraph
+  - paragraph:
+    - strong: Note
+    - text: ": Bus arrival information may be unavailable or inaccurate while buses are detoured."
+- list:
+  - listitem:
+    - button "view full Full Route":
+      - img
+      - text: View Full Route
+- paragraph:
+  - text: Text stopcode
+  - strong: /\d+/
+  - text: /to \d+ to receive an up-to-date list of buses en-route on your phone\./
+- list:
+  - listitem:
+    - button "view full Stop":
+      - img
+      - text: View Stop
+- button "Toggle favorites status for this Stop":
+  - img "remove icon"
+  - text: Remove Stop from Favorites
+- list:
+  - listitem:
+    - strong: M15
+    - text: SOUTH FERRY via 2 AV
+  - listitem:
+    - strong: M15
+    - text: PIKE ST -via 2 AV
+- button /Toggle \d+ E \d+ ST\/2 AV open\/close/ [expanded]:
+  - img
+  - text: ""
+- list:
+  - listitem: /Stopcode \d+/
+- heading "Buses en-route:" [level=4]
+- button /Toggle BM1 to MILL BASIN - E\. \d+ ST via AVENUE K/ [expanded]:
+  - strong: BM1
+  - text: ""
+- list:
+  - listitem:
+    - text: 7 minutes, 0.9 miles away
+    - link /\d+/:
+      - /url: "#"
+- button "Toggle Service Alert Open/Closed": Service Alert for BM1
+- paragraph: Manhattan-bound ‌BM1, BM2 and BM3 buses are detoured due to roadwork on Cortelyou Rd from Ocean Ave to Coney Island Ave.
+- paragraph:
+  - paragraph: "Stops from Cortelyou Rd/East 19th St to Coney Island Ave/Beverley Rd will not be made.Board buses along Beverley Rd instead.Note: Bus arrival information may not be accurate while buses are detoured."
+- list:
+  - listitem:
+    - button "view full Full Route":
+      - img
+      - text: View Full Route
+- button "Toggle BM2 to CANARSIE WILLIAMS AV via AVENUE H via AVENUE M" [expanded]:
+  - strong: BM2
+  - text: ""
+- list:
+  - listitem:
+    - text: 6 minutes, 0.8 miles away
+    - img "vehicle is ~5% full"
+    - text: ~3 passengers
+    - link /\d+/:
+      - /url: "#"
+  - listitem:
+    - text: /5\.9 miles away \(\+layover, scheduled to depart terminal at 2:\d+ PM\)/
+    - link /\d+/:
+      - /url: "#"
+- button "Toggle Service Alert Open/Closed": Service Alert for BM2
+- paragraph: BM2 and B103 buses are detoured in both directions due to roadwork at Cortelyou Rd/Ocean Ave.
+- paragraph:
+  - paragraph: You will experience some extra turns, but no stops will be missed.
+  - paragraph: "Note: Bus arrival information may not be accurate while buses are detoured."
+- list:
+  - listitem:
+    - button "view full Full Route":
+      - img
+      - text: View Full Route
+- button "Toggle BM3 to SHEEPSHEAD BAY EMMONS AV via OCEAN AV" [expanded]:
+  - strong: BM3
+  - text: ""
+- list:
+  - listitem:
+    - text: /2\.8 miles away \(\+layover, scheduled to depart terminal at 2:\d+ PM\)/
+    - link /\d+/:
+      - /url: "#"
+- button "Toggle Service Alert Open/Closed": Service Alert for BM3
+- paragraph: Manhattan-bound ‌BM1, BM2 and BM3 buses are detoured due to roadwork on Cortelyou Rd from Ocean Ave to Coney Island Ave.
+- paragraph:
+  - paragraph: "Stops from Cortelyou Rd/East 19th St to Coney Island Ave/Beverley Rd will not be made.Board buses along Beverley Rd instead.Note: Bus arrival information may not be accurate while buses are detoured."
+- list:
+  - listitem:
+    - button "view full Full Route":
+      - img
+      - text: View Full Route
+- paragraph:
+  - text: Text stopcode
+  - strong: /\d+/
+  - text: /to \d+ to receive an up-to-date list of buses en-route on your phone\./
+- list:
+  - listitem:
+    - button "view full Stop":
+      - img
+      - text: View Stop
+- button "Toggle favorites status for this Stop":
+  - img "add icon"
+  - text: Add Stop to Favorites
+- list:
+  - listitem:
+    - strong: BM1
+    - text: /MILL BASIN - E\. \d+ ST via AVENUE K/
+  - listitem:
+    - strong: BM2
+    - text: CANARSIE WILLIAMS AV via AVENUE H via AVENUE M
+  - listitem:
+    - strong: BM3
+    - text: SHEEPSHEAD BAY EMMONS AV via OCEAN AV
+- button /Toggle \d+ E \d+ ST\/2 AV open\/close/ [expanded]:
+  - img
+  - text: ""
+- list:
+  - listitem: /Stopcode \d+/
+- heading "Buses en-route:" [level=4]
+- button "Toggle M9 to BATTERY PK CITY via AVENUE C via PK ROW" [expanded]:
+  - strong: M9
+  - text: ""
+- list:
+  - listitem:
+    - text: 2 minutes, 1 stop away
+    - img /vehicle is ~\d+% full/
+    - text: ~8 passengers
+    - link /\d+/:
+      - /url: "#"
+  - listitem:
+    - text: /\d+ minutes, 0\.6 miles away \(at terminal, scheduled to depart at \d+:\d+ AM\)/
+    - link /\d+/:
+      - /url: "#"
+  - listitem:
+    - text: /\d+ minutes, 1\.7 miles away \(\+layover, scheduled to depart terminal at \d+:\d+ AM\)/
+    - link /\d+/:
+      - /url: "#"
+- button "Toggle Service Alert Open/Closed": Service Alert for M9
+- paragraph: Westbound M9 and Eastbound M23-SBS, M34-SBS, M34A-SBS buses will skip the E 23rd St/2nd Ave stop due to utility work on E 23rd St between 1st Ave and 2nd Ave.
+- paragraph:
+  - paragraph: Use the E 23rd St/1st Ave stop instead.
+- list:
+  - listitem:
+    - button "view full Full Route":
+      - img
+      - text: View Full Route
+- button "Toggle M23-SBS to SELECT BUS EAST SIDE AVENUE C CROSSTOWN" [expanded]:
+  - strong: M23-SBS
+  - text: ""
+- list:
+  - listitem:
+    - text: 3 minutes, 2 stops away
+    - img /vehicle is ~\d+% full/
+    - text: /~\d+ passengers/
+    - link /\d+/:
+      - /url: "#"
+  - listitem:
+    - text: /\d+ minutes, 1\.6 miles away/
+    - link /\d+/:
+      - /url: "#"
+  - listitem:
+    - text: /\d+ minutes, 1\.9 miles away \(at terminal, scheduled to depart at \d+:\d+ AM\)/
+    - link /\d+/:
+      - /url: "#"
+- button "Toggle Service Alert Open/Closed": Service Alert for M23-SBS
+- paragraph: Westbound M9 and Eastbound M23-SBS, M34-SBS, M34A-SBS buses will skip the E 23rd St/2nd Ave stop due to utility work on E 23rd St between 1st Ave and 2nd Ave.
+- paragraph:
+  - paragraph: Use the E 23rd St/1st Ave stop instead.
+- list:
+  - listitem:
+    - button "view full Full Route":
+      - img
+      - text: View Full Route
+- button /Toggle M34A-SBS to SELECT BUS WATERSIDE via \d+ ST via 2 AV/ [expanded]:
+  - strong: M34A-SBS
+  - text: ""
+- list:
+  - listitem:
+    - text: /\d+ minutes, 1\.9 miles away/
+    - link /\d+/:
+      - /url: "#"
+  - listitem:
+    - text: /\d+ minutes, 3\.1 miles away \(\+layover, scheduled to depart terminal at \d+:\d+ AM\)/
+    - link /\d+/:
+      - /url: "#"
+  - listitem:
+    - text: /\d+ minutes, 3\.7 miles away \(\+layover, scheduled to depart terminal at \d+:\d+ PM\)/
+    - link /\d+/:
+      - /url: "#"
+- button "Toggle Service Alert Open/Closed": Service Alert for M34A-SBS
+- paragraph: Westbound M9 and Eastbound M23-SBS, M34-SBS, M34A-SBS buses will skip the E 23rd St/2nd Ave stop due to utility work on E 23rd St between 1st Ave and 2nd Ave.
+- paragraph:
+  - paragraph: Use the E 23rd St/1st Ave stop instead.
+- separator
+- paragraph: Southbound M11 and eastbound M34A-SBS stop at 9th Ave/W 40th St is closed
+- paragraph:
+  - paragraph:
+    - text: Please use the temporary stop at
+    - strong: 9th Ave/W 38th St
+    - text: instead.
+  - paragraph
+  - paragraph:
+    - strong: What's happening?
+  - paragraph: Construction
+  - paragraph
+  - paragraph:
+    - strong: "Note:"
+    - text: Bus arrival information may not be accurate or available in the service change area.
+- list:
+  - listitem:
+    - button "view full Full Route":
+      - img
+      - text: View Full Route
+- paragraph:
+  - text: Text stopcode
+  - strong: /\d+/
+  - text: /to \d+ to receive an up-to-date list of buses en-route on your phone\./
+- list:
+  - listitem:
+    - button "view full Stop":
+      - img
+      - text: View Stop
+- button "Toggle favorites status for this Stop":
+  - img "add icon"
+  - text: Add Stop to Favorites
+- list:
+  - listitem:
+    - strong: M9
+    - text: BATTERY PK CITY via AVENUE C via PK ROW
+  - listitem:
+    - strong: M23-SBS
+    - text: SELECT BUS EAST SIDE AVENUE C CROSSTOWN
+  - listitem:
+    - strong: M34A-SBS
+    - text: /SELECT BUS WATERSIDE via \d+ ST via 2 AV/
+- button /Toggle \d+ E \d+ ST\/1 AV open\/close/ [expanded]:
+  - img
+  - text: ""
+- list:
+  - listitem: /Stopcode \d+/
+- heading "Buses en-route:" [level=4]
+- button /Toggle BM2 to MIDTOWN \d+ ST via CHURCH ST via MADISON AV/ [expanded]:
+  - strong: BM2
+  - text: ""
+- list:
+  - listitem:
+    - text: 1 minute, 0.6 miles away
+    - img "vehicle is ~4% full"
+    - text: ~2 passengers
+    - link /\d+/:
+      - /url: "#"
+  - listitem:
+    - text: /\d+ minutes, \d+\.\d+ miles away/
+    - link /\d+/:
+      - /url: "#"
+- button "Toggle Service Alert Open/Closed": Service Alert for BM2
+- paragraph: BM2 and B103 buses are detoured in both directions due to roadwork at Cortelyou Rd/Ocean Ave.
+- paragraph:
+  - paragraph: You will experience some extra turns, but no stops will be missed.
+  - paragraph: "Note: Bus arrival information may not be accurate while buses are detoured."
+- list:
+  - listitem:
+    - button "view full Full Route":
+      - img
+      - text: View Full Route
+- button /Toggle BM3 to MIDTOWN \d+ ST via CHURCH ST via MADISON AV/ [expanded]:
+  - strong: BM3
+  - text: ""
+- list:
+  - listitem:
+    - text: /\d+ minutes, 3\.9 miles away/
+    - img /vehicle is ~\d+% full/
+    - text: ~8 passengers
+    - link /\d+/:
+      - /url: "#"
+  - listitem:
+    - text: /\d+ minutes, \d+\.\d+ miles away/
+    - link /\d+/:
+      - /url: "#"
+- button "Toggle Service Alert Open/Closed": Service Alert for BM3
+- paragraph: Manhattan-bound ‌BM1, BM2 and BM3 buses are detoured due to roadwork on Cortelyou Rd from Ocean Ave to Coney Island Ave.
+- paragraph:
+  - paragraph: "Stops from Cortelyou Rd/East 19th St to Coney Island Ave/Beverley Rd will not be made.Board buses along Beverley Rd instead.Note: Bus arrival information may not be accurate while buses are detoured."
+- list:
+  - listitem:
+    - button "view full Full Route":
+      - img
+      - text: View Full Route
+- button /Toggle BM4 to MIDTOWN \d+ ST via CHURCH ST via MADISON AV/ [expanded]:
+  - strong: BM4
+  - text: ""
+- list:
+  - listitem:
+    - text: /\d+ minutes, \d+\.\d+ miles away/
+    - img "vehicle is ~4% full"
+    - text: ~2 passengers
+    - link /\d+/:
+      - /url: "#"
+- button "Toggle Service Alert Open/Closed": Service Alert for BM4
+- paragraph: Manhattan-bound ‌BM1, BM2 and BM3 buses are detoured due to roadwork on Cortelyou Rd from Ocean Ave to Coney Island Ave.
+- paragraph:
+  - paragraph: "Stops from Cortelyou Rd/East 19th St to Coney Island Ave/Beverley Rd will not be made.Board buses along Beverley Rd instead.Note: Bus arrival information may not be accurate while buses are detoured."
+- list:
+  - listitem:
+    - button "view full Full Route":
+      - img
+      - text: View Full Route
+- button "Toggle M23-SBS to SELECT BUS CHELSEA PIERS 12AV CROSSTOWN" [expanded]:
+  - strong: M23-SBS
+  - text: ""
+- list:
+  - listitem:
+    - text: 6 minutes, 0.5 miles away
+    - link /\d+/:
+      - /url: "#"
+  - listitem:
+    - text: /\d+ minutes, 0\.6 miles away \(\+layover, scheduled to depart terminal at \d+:\d+ AM\)/
+    - link /\d+/:
+      - /url: "#"
+  - listitem:
+    - text: /\d+ minutes, 1\.4 miles away \(\+layover, scheduled to depart terminal at \d+:\d+ AM\)/
+    - link /\d+/:
+      - /url: "#"
+- button "Toggle Service Alert Open/Closed": Service Alert for M23-SBS
+- paragraph: Westbound M9 and Eastbound M23-SBS, M34-SBS, M34A-SBS buses will skip the E 23rd St/2nd Ave stop due to utility work on E 23rd St between 1st Ave and 2nd Ave.
+- paragraph:
+  - paragraph: Use the E 23rd St/1st Ave stop instead.
+- list:
+  - listitem:
+    - button "view full Full Route":
+      - img
+      - text: View Full Route
+- paragraph:
+  - text: Text stopcode
+  - strong: /\d+/
+  - text: /to \d+ to receive an up-to-date list of buses en-route on your phone\./
+- list:
+  - listitem:
+    - button "view full Stop":
+      - img
+      - text: View Stop
+- button "Toggle favorites status for this Stop":
+  - img "add icon"
+  - text: Add Stop to Favorites
+- list:
+  - listitem:
+    - strong: BM2
+    - text: /MIDTOWN \d+ ST via CHURCH ST via MADISON AV/
+  - listitem:
+    - strong: BM3
+    - text: /MIDTOWN \d+ ST via CHURCH ST via MADISON AV/
+  - listitem:
+    - strong: BM4
+    - text: /MIDTOWN \d+ ST via CHURCH ST via MADISON AV/
+  - listitem:
+    - strong: M23-SBS
+    - text: SELECT BUS CHELSEA PIERS 12AV CROSSTOWN
+- button /Toggle \d+ E \d+ ST\/2 AV open\/close/ [expanded]:
+  - img
+  - text: ""
+- list:
+  - listitem: /Stopcode \d+/
+- heading "Buses en-route:" [level=4]
+- button "Toggle M23-SBS to SELECT BUS CHELSEA PIERS 12AV CROSSTOWN" [expanded]:
+  - strong: M23-SBS
+  - text: ""
+- list:
+  - listitem:
+    - text: 0 minutes, approaching
+    - link /\d+/:
+      - /url: "#"
+  - listitem:
+    - text: 7 minutes, 0.7 miles away
+    - link /\d+/:
+      - /url: "#"
+  - listitem:
+    - text: /\d+ minutes, 0\.7 miles away \(\+layover, scheduled to depart terminal at \d+:\d+ AM\)/
+    - link /\d+/:
+      - /url: "#"
+- button "Toggle Service Alert Open/Closed": Service Alert for M23-SBS
+- paragraph: Westbound M9 and Eastbound M23-SBS, M34-SBS, M34A-SBS buses will skip the E 23rd St/2nd Ave stop due to utility work on E 23rd St between 1st Ave and 2nd Ave.
+- paragraph:
+  - paragraph: Use the E 23rd St/1st Ave stop instead.
+- list:
+  - listitem:
+    - button "view full Full Route":
+      - img
+      - text: View Full Route
+- paragraph:
+  - text: Text stopcode
+  - strong: /\d+/
+  - text: /to \d+ to receive an up-to-date list of buses en-route on your phone\./
+- list:
+  - listitem:
+    - button "view full Stop":
+      - img
+      - text: View Stop
+- button "Toggle favorites status for this Stop":
+  - img "add icon"
+  - text: Add Stop to Favorites
+- list:
+  - listitem:
+    - strong: M23-SBS
+    - text: SELECT BUS CHELSEA PIERS 12AV CROSSTOWN
+- button /Toggle \d+ 2 AV\/E \d+ ST open\/close/ [expanded]:
+  - img
+  - text: ""
+- list:
+  - listitem: /Stopcode \d+/
+- heading "Buses en-route:" [level=4]
+- button "Toggle M15-SBS to SELECT BUS SERVICE SOUTH FERRY via 2 AV" [expanded]:
+  - strong: M15-SBS
+  - text: ""
+- list:
+  - listitem:
+    - text: /\d+ minutes, 1\.1 miles away/
+    - img /vehicle is ~\d+% full/
+    - text: /~\d+ passengers/
+    - link /\d+/:
+      - /url: "#"
+  - listitem:
+    - text: /\d+ minutes, 2\.2 miles away/
+    - img /vehicle is ~\d+% full/
+    - text: /~\d+ passengers/
+    - link /\d+/:
+      - /url: "#"
+  - listitem:
+    - text: /\d+ minutes, 2\.4 miles away/
+    - link /\d+/:
+      - /url: "#"
+- button "Toggle Service Alert Open/Closed": Service Alert for M15-SBS
+- paragraph: The northbound M15 and M15-SBS bus stops on Water St at Wall St and Pine St has been temporarily moved to the far side of Pine St
+- paragraph:
+  - paragraph:
+    - strong: What's happening?
+  - paragraph: Construction - Water St
+  - paragraph
+  - paragraph:
+    - strong: NOTE
+    - text: ":"
+    - strong: M15-SBS
+    - text: customers must pay fare before boarding by using the machine at regular bus stop located on Water St at Pine St or bus door with OMNY.
+- list:
+  - listitem:
+    - button "view full Full Route":
+      - img
+      - text: View Full Route
+- paragraph:
+  - text: Text stopcode
+  - strong: /\d+/
+  - text: /to \d+ to receive an up-to-date list of buses en-route on your phone\./
+- list:
+  - listitem:
+    - button "view full Stop":
+      - img
+      - text: View Stop
+- button "Toggle favorites status for this Stop":
+  - img "add icon"
+  - text: Add Stop to Favorites
+- list:
+  - listitem:
+    - strong: M15-SBS
+    - text: SELECT BUS SERVICE SOUTH FERRY via 2 AV
+- button /Toggle \d+ 1 AV\/\d+ ST open\/close/ [expanded]:
+  - img
+  - text: ""
+- list:
+  - listitem: /Stopcode \d+/
+- heading "Buses en-route:" [level=4]
+- button /Toggle M9 to KIPS BAY 1 AV - \d+ ST via AVENUE C/ [expanded]:
+  - strong: M9
+  - text: ""
+- list:
+  - listitem:
+    - text: 0 minutes, at stop
+    - img "vehicle is ~5% full"
+    - text: ~4 passengers
+    - link /\d+/:
+      - /url: "#"
+  - listitem:
+    - text: 8 minutes, 1.0 miles away
+    - link /\d+/:
+      - /url: "#"
+  - listitem:
+    - text: /\d+ minutes, 2\.6 miles away/
+    - img /vehicle is ~\d+% full/
+    - text: ~9 passengers
+    - link /\d+/:
+      - /url: "#"
+- button "Toggle Service Alert Open/Closed": Service Alert for M9
+- paragraph: Westbound M9 and Eastbound M23-SBS, M34-SBS, M34A-SBS buses will skip the E 23rd St/2nd Ave stop due to utility work on E 23rd St between 1st Ave and 2nd Ave.
+- paragraph:
+  - paragraph: Use the E 23rd St/1st Ave stop instead.
+- list:
+  - listitem:
+    - button "view full Full Route":
+      - img
+      - text: View Full Route
+- paragraph:
+  - text: Text stopcode
+  - strong: /\d+/
+  - text: /to \d+ to receive an up-to-date list of buses en-route on your phone\./
+- list:
+  - listitem:
+    - button "view full Stop":
+      - img
+      - text: View Stop
+- button "Toggle favorites status for this Stop":
+  - img "add icon"
+  - text: Add Stop to Favorites
+- list:
+  - listitem:
+    - strong: M9
+    - text: /KIPS BAY 1 AV - \d+ ST via AVENUE C/
+- button /Toggle \d+ E \d+ ST\/1 AV open\/close/ [expanded]:
+  - img
+  - text: ""
+- list:
+  - listitem: /Stopcode \d+/
+- heading "Buses en-route:" [level=4]
+- paragraph:
+  - text: Text stopcode
+  - strong: /\d+/
+  - text: /to \d+ to receive an up-to-date list of buses en-route on your phone\./
+- list:
+  - listitem:
+    - button "view full Stop":
+      - img
+      - text: View Stop
+- button "Toggle favorites status for this Stop":
+  - img "add icon"
+  - text: Add Stop to Favorites
+- list
+- button /Toggle \d+ 1 AV\/E \d+ ST open\/close/ [expanded]:
+  - img
+  - text: ""
+- list:
+  - listitem: /Stopcode \d+/
+- heading "Buses en-route:" [level=4]
+- button /Toggle M15 to EAST HARLEM \d+ ST via 1 AV/ [expanded]:
+  - strong: M15
+  - text: ""
+- list:
+  - listitem:
+    - text: 4 minutes, 3 stops away
+    - link /\d+/:
+      - /url: "#"
+  - listitem:
+    - text: /\d+ minutes, 1\.9 miles away/
+    - link /\d+/:
+      - /url: "#"
+  - listitem:
+    - text: /\d+ minutes, 2\.4 miles away \(\+layover, scheduled to depart terminal at \d+:\d+ AM\)/
+    - link /\d+/:
+      - /url: "#"
+- button "Toggle Service Alert Open/Closed": Service Alert for M15
+- paragraph: M15 stops on South St at Whitehall St will be bypassed, the first and last stops will be made on Whitehall St at Water St
+- paragraph:
+  - paragraph:
+    - strong: What's happening?
+  - paragraph: DOT Construction - Battery Park
+  - paragraph
+  - paragraph:
+    - strong: "Note:"
+    - text: Bus arrival information may not be available/accurate while buses are detoured
+- separator
+- paragraph: Northbound M15 stop on 1st Ave at E 77th St is being bypassed
+- paragraph:
+  - paragraph:
+    - text: Please use the stops on
+    - strong: 1st Ave
+    - text: at
+    - strong: E 75th St
+    - text: or
+    - strong: E 81st St
+    - text: instead.
+  - paragraph
+  - paragraph:
+    - strong: What's happening?
+  - paragraph: Construction
+- separator
+- paragraph: Southbound M15 stop on E 106th St is closed; buses are making a temporary stop on 2nd Ave between E 107th St and E 106th St.
+- paragraph:
+  - paragraph:
+    - strong: What's happening?
+  - paragraph: Construction
+  - paragraph
+  - paragraph:
+    - strong: "Note:"
+    - text: Bus arrival information may not be available/accurate while buses are detoured
+- separator
+- paragraph: The northbound M15 and M15-SBS bus stops on Water St at Wall St and Pine St has been temporarily moved to the far side of Pine St
+- paragraph:
+  - paragraph:
+    - strong: What's happening?
+  - paragraph: Construction - Water St
+  - paragraph
+  - paragraph:
+    - strong: NOTE
+    - text: ":"
+    - strong: M15-SBS
+    - text: customers must pay fare before boarding by using the machine at regular bus stop located on Water St at Pine St or bus door with OMNY.
+- separator
+- paragraph: Northbound M15 and M22 buses will bypass stops at Madison St/Market St
+- paragraph:
+  - paragraph: Use the stop at Madison St/Oliver St instead.
+  - paragraph
+  - paragraph:
+    - strong: What?s happening?
+  - paragraph: Gas Main Repair
+  - paragraph
+  - paragraph:
+    - strong: Note
+    - text: ": Bus arrival information may be unavailable or inaccurate while buses are detoured."
+- list:
+  - listitem:
+    - button "view full Full Route":
+      - img
+      - text: View Full Route
+- paragraph:
+  - text: Text stopcode
+  - strong: /\d+/
+  - text: /to \d+ to receive an up-to-date list of buses en-route on your phone\./
+- list:
+  - listitem:
+    - button "view full Stop":
+      - img
+      - text: View Stop
+- button "Toggle favorites status for this Stop":
+  - img "add icon"
+  - text: Add Stop to Favorites
+- list:
+  - listitem:
+    - strong: M15
+    - text: /EAST HARLEM \d+ ST via 1 AV/
+- button /Toggle \d+ 1 AV\/\d+ ST open\/close/ [expanded]:
+  - img
+  - text: ""
+- list:
+  - listitem: /Stopcode \d+/
+- heading "Buses en-route:" [level=4]
+- button /Toggle M15 to EAST HARLEM \d+ ST via 1 AV/ [expanded]:
+  - strong: M15
+  - text: ""
+- list:
+  - listitem:
+    - text: 5 minutes, 0.5 miles away
+    - link /\d+/:
+      - /url: "#"
+  - listitem:
+    - text: /\d+ minutes, 1\.9 miles away/
+    - link /\d+/:
+      - /url: "#"
+  - listitem:
+    - text: /\d+ minutes, 2\.4 miles away \(\+layover, scheduled to depart terminal at \d+:\d+ AM\)/
+    - link /\d+/:
+      - /url: "#"
+- button "Toggle Service Alert Open/Closed": Service Alert for M15
+- paragraph: M15 stops on South St at Whitehall St will be bypassed, the first and last stops will be made on Whitehall St at Water St
+- paragraph:
+  - paragraph:
+    - strong: What's happening?
+  - paragraph: DOT Construction - Battery Park
+  - paragraph
+  - paragraph:
+    - strong: "Note:"
+    - text: Bus arrival information may not be available/accurate while buses are detoured
+- separator
+- paragraph: Northbound M15 stop on 1st Ave at E 77th St is being bypassed
+- paragraph:
+  - paragraph:
+    - text: Please use the stops on
+    - strong: 1st Ave
+    - text: at
+    - strong: E 75th St
+    - text: or
+    - strong: E 81st St
+    - text: instead.
+  - paragraph
+  - paragraph:
+    - strong: What's happening?
+  - paragraph: Construction
+- separator
+- paragraph: Southbound M15 stop on E 106th St is closed; buses are making a temporary stop on 2nd Ave between E 107th St and E 106th St.
+- paragraph:
+  - paragraph:
+    - strong: What's happening?
+  - paragraph: Construction
+  - paragraph
+  - paragraph:
+    - strong: "Note:"
+    - text: Bus arrival information may not be available/accurate while buses are detoured
+- separator
+- paragraph: The northbound M15 and M15-SBS bus stops on Water St at Wall St and Pine St has been temporarily moved to the far side of Pine St
+- paragraph:
+  - paragraph:
+    - strong: What's happening?
+  - paragraph: Construction - Water St
+  - paragraph
+  - paragraph:
+    - strong: NOTE
+    - text: ":"
+    - strong: M15-SBS
+    - text: customers must pay fare before boarding by using the machine at regular bus stop located on Water St at Pine St or bus door with OMNY.
+- separator
+- paragraph: Northbound M15 and M22 buses will bypass stops at Madison St/Market St
+- paragraph:
+  - paragraph: Use the stop at Madison St/Oliver St instead.
+  - paragraph
+  - paragraph:
+    - strong: What?s happening?
+  - paragraph: Gas Main Repair
+  - paragraph
+  - paragraph:
+    - strong: Note
+    - text: ": Bus arrival information may be unavailable or inaccurate while buses are detoured."
+- list:
+  - listitem:
+    - button "view full Full Route":
+      - img
+      - text: View Full Route
+- button /Toggle M15-SBS to SELECT BUS SERVICE \d+ ST via 1 AV/ [expanded]:
+  - strong: M15-SBS
+  - text: ""
+- list:
+  - listitem:
+    - text: /\d+ minutes, 1\.8 miles away/
+    - img /vehicle is ~\d+% full/
+    - text: ~8 passengers
+    - link /\d+/:
+      - /url: "#"
+  - listitem:
+    - text: /\d+ minutes, 1\.8 miles away/
+    - link /\d+/:
+      - /url: "#"
+  - listitem:
+    - text: /\d+ minutes, 2\.5 miles away/
+    - link /\d+/:
+      - /url: "#"
+- button "Toggle Service Alert Open/Closed": Service Alert for M15-SBS
+- paragraph: The northbound M15 and M15-SBS bus stops on Water St at Wall St and Pine St has been temporarily moved to the far side of Pine St
+- paragraph:
+  - paragraph:
+    - strong: What's happening?
+  - paragraph: Construction - Water St
+  - paragraph
+  - paragraph:
+    - strong: NOTE
+    - text: ":"
+    - strong: M15-SBS
+    - text: customers must pay fare before boarding by using the machine at regular bus stop located on Water St at Pine St or bus door with OMNY.
+- list:
+  - listitem:
+    - button "view full Full Route":
+      - img
+      - text: View Full Route
+- paragraph:
+  - text: Text stopcode
+  - strong: /\d+/
+  - text: /to \d+ to receive an up-to-date list of buses en-route on your phone\./
+- list:
+  - listitem:
+    - button "view full Stop":
+      - img
+      - text: View Stop
+- button "Toggle favorites status for this Stop":
+  - img "add icon"
+  - text: Add Stop to Favorites
+- list:
+  - listitem:
+    - strong: M15
+    - text: /EAST HARLEM \d+ ST via 1 AV/
+  - listitem:
+    - strong: M15-SBS
+    - text: /SELECT BUS SERVICE \d+ ST via 1 AV/
+- menu:
+  - listitem:
+    - button "Refresh the data": /Refresh \(updated \d+:\d+ AM\)/
+- button "Toggle Google Translate Menu": TRANSLATE
+- link "Bus Time Classic":
+  - /url: https://bustime-classic.mta.info
+- navigation:
+  - list:
+    - listitem:
+      - link "MTA Website":
+        - /url: //mta.info
+    - listitem:
+      - link "Mobile Text Messages":
+        - /url: /help/text
+    - listitem:
+      - link "Sign Up For Service Alerts":
+        - /url: //cloud.info.mta.org/create-mta-service-alerts?utm_source=MTA_Bus_Time&utm_medium=referral&utm_campaign=MTA_Service_Alerts
+    - listitem:
+      - link "About Bus Time":
+        - /url: /about
+    - listitem:
+      - link "Contact Us":
+        - /url: /contact
+    - listitem:
+      - link "Help":
+        - /url: /help
+    - listitem:
+      - link "Privacy Policy":
+        - /url: //www.mta.info/privacy-policy
+    - listitem:
+      - link "Terms & Conditions":
+        - /url: //www.mta.info/terms-and-conditions

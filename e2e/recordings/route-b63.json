@@ -1,0 +1,1747 @@
+{
+  "recordedAt": "2026-10-02T15:26:45.705Z",
+  "source": "app.qa.obanyc.com",
+  "responses": {
+    "GET /api/search-v2?newUI=true&q=B63": [
+      {
+        "status": 200,
+        "contentType": "application/json;charset=UTF-8",
+        "body": {
+          "searchResults": {
+            "empty": false,
+            "firstSuggestion": null,
+            "matches": [
+              {
+                "color": "006CB7",
+                "description": "via 5th Av / Atlantic Av",
+                "directions": [
+                  {
+                    "destination": "BAY RIDGE SHORE RD via 5 AV",
+                    "directionId": "1",
+                    "hasUpcomingScheduledService": true,
+                    "polylines": [
+                      "ozjwFfhtbMMj@LCJ?LDJDJCDGHY^uBvAh@\\JPu@Ha@Ns@VsADSDUF_@DWRcAF_@XaBJi@jAyGDWhB{JJk@ToAh@_D\\kBNi@p@yCR{@ZwAH]\\uA|@wDZeADK`D}KfDkL~CaLxB}HFWBKbCkIRq@Ro@Pm@|@h@~@h@V\\`BfAHYx@qCjCcJl@^lAt@~BrAjBhARLn@\\DBr@f@PJt@f@t@`@jAn@t@b@LHz@d@jAn@n@`@lAp@~@h@z@f@v@h@fAr@xBxAjBxAp@h@fAx@zBfBrB`Bp@j@@?fAx@tB`Br@j@t@l@JHvB`Br@h@fAz@pAbA`@Z~@t@z@n@vBdBxB`Br@l@bAx@vBbBvBdBp@h@dAz@~C~BFFPPRRdAhAPP|AbBlBpBRT|A`BxAzATXp@r@f@h@VVlBpBnBvBd@f@hAjApBpBn@r@|@`ApBtBnBrBnBrBn@r@|@`ApBtBlBnBp@p@|@|@v@z@fAjA`BdBHHdBhBXXDDdAfAHJJJlApARRn@r@~@bAb@d@hAjAJJjAjAVVp@v@`AdAjBlBpBtBp@t@|@`AnBtBjBjBp@t@`AfA^\\nApAJJ`@b@r@t@LLpBvBlBpBl@n@`AbArBtBlBtBj@j@dAhAlBtBZXpApAnArAb@j@n@p@^\\XVJJlBtB\\\\pArAtBzB^b@VTRRFFJLZZbBfBl@l@DFRRXRxBj@r@TFBbBf@jCx@x@VxBl@pDhAv@VtAb@`Ct@fDdAx@V`Bd@nC|@rCx@v@V|Ad@hBj@`@LtCz@t@TxAb@pC|@pCx@x@VxAd@|BnBRPnB~AdBtApB`BbBtANLxAlAVTlA`A~@v@t@j@ZV~D`Dg@jAz@VnA\\z@TRH|@j@bBxAPNn@f@l@d@r@j@aE~Jx@^d@Tf@VzBpAnBfAhAn@@@`@Vb@e@"
+                    ],
+                    "stops": [
+                      {
+                        "id": "MTA_308616",
+                        "latitude": 40.69307,
+                        "longitude": -74.000829,
+                        "name": "BROOKLYN BRIDGE PARK/PIER 6",
+                        "stopDirection": "W"
+                      },
+                      {
+                        "id": "MTA_305110",
+                        "latitude": 40.690701,
+                        "longitude": -73.996401,
+                        "name": "ATLANTIC AV/HENRY ST",
+                        "stopDirection": "E"
+                      },
+                      {
+                        "id": "MTA_305111",
+                        "latitude": 40.690095,
+                        "longitude": -73.994155,
+                        "name": "ATLANTIC AV/CLINTON ST",
+                        "stopDirection": "E"
+                      },
+                      {
+                        "id": "MTA_305112",
+                        "latitude": 40.689565,
+                        "longitude": -73.992204,
+                        "name": "ATLANTIC AV/COURT ST",
+                        "stopDirection": "E"
+                      },
+                      {
+                        "id": "MTA_305407",
+                        "latitude": 40.688371,
+                        "longitude": -73.988811,
+                        "name": "ATLANTIC AV/SMITH ST",
+                        "stopDirection": "E"
+                      },
+                      {
+                        "id": "MTA_305408",
+                        "latitude": 40.687563,
+                        "longitude": -73.986727,
+                        "name": "ATLANTIC AV/HOYT ST",
+                        "stopDirection": "E"
+                      },
+                      {
+                        "id": "MTA_305409",
+                        "latitude": 40.686734,
+                        "longitude": -73.984586,
+                        "name": "ATLANTIC AV/BOND ST",
+                        "stopDirection": "E"
+                      },
+                      {
+                        "id": "MTA_305410",
+                        "latitude": 40.68592,
+                        "longitude": -73.982507,
+                        "name": "ATLANTIC AV/NEVINS ST",
+                        "stopDirection": "E"
+                      },
+                      {
+                        "id": "MTA_305411",
+                        "latitude": 40.685314,
+                        "longitude": -73.980912,
+                        "name": "ATLANTIC AV/3 AV",
+                        "stopDirection": "E"
+                      },
+                      {
+                        "id": "MTA_305412",
+                        "latitude": 40.684422,
+                        "longitude": -73.978557,
+                        "name": "ATLANTIC AV/4 AV",
+                        "stopDirection": "E"
+                      },
+                      {
+                        "id": "MTA_305413",
+                        "latitude": 40.681882,
+                        "longitude": -73.976787,
+                        "name": "5 AV/DEAN ST",
+                        "stopDirection": "SW"
+                      },
+                      {
+                        "id": "MTA_308212",
+                        "latitude": 40.679965,
+                        "longitude": -73.978144,
+                        "name": "5 AV/WARREN ST",
+                        "stopDirection": "SW"
+                      },
+                      {
+                        "id": "MTA_308213",
+                        "latitude": 40.678052,
+                        "longitude": -73.979439,
+                        "name": "5 AV/DOUGLASS ST",
+                        "stopDirection": "SW"
+                      },
+                      {
+                        "id": "MTA_308214",
+                        "latitude": 40.67615,
+                        "longitude": -73.980723,
+                        "name": "5 AV/UNION ST",
+                        "stopDirection": "SW"
+                      },
+                      {
+                        "id": "MTA_308215",
+                        "latitude": 40.674382,
+                        "longitude": -73.982072,
+                        "name": "5 AV/GARFIELD PL",
+                        "stopDirection": "SW"
+                      },
+                      {
+                        "id": "MTA_308216",
+                        "latitude": 40.672566,
+                        "longitude": -73.983583,
+                        "name": "5 AV/3 ST",
+                        "stopDirection": "SW"
+                      },
+                      {
+                        "id": "MTA_307833",
+                        "latitude": 40.671355,
+                        "longitude": -73.984596,
+                        "name": "5 AV/5 ST",
+                        "stopDirection": "SW"
+                      },
+                      {
+                        "id": "MTA_308217",
+                        "latitude": 40.67017,
+                        "longitude": -73.985584,
+                        "name": "5 AV/7 ST",
+                        "stopDirection": "SW"
+                      },
+                      {
+                        "id": "MTA_305423",
+                        "latitude": 40.66891,
+                        "longitude": -73.986637,
+                        "name": "5 AV/9 ST",
+                        "stopDirection": "SW"
+                      },
+                      {
+                        "id": "MTA_308334",
+                        "latitude": 40.667143,
+                        "longitude": -73.988108,
+                        "name": "5 AV/12 ST",
+                        "stopDirection": "SW"
+                      },
+                      {
+                        "id": "MTA_305426",
+                        "latitude": 40.665348,
+                        "longitude": -73.989615,
+                        "name": "5 AV/15 ST",
+                        "stopDirection": "SW"
+                      },
+                      {
+                        "id": "MTA_305427",
+                        "latitude": 40.664173,
+                        "longitude": -73.990499,
+                        "name": "5 AV/PROSPECT AV",
+                        "stopDirection": "SW"
+                      },
+                      {
+                        "id": "MTA_305428",
+                        "latitude": 40.662385,
+                        "longitude": -73.992373,
+                        "name": "5 AV/18 ST",
+                        "stopDirection": "SW"
+                      },
+                      {
+                        "id": "MTA_308335",
+                        "latitude": 40.661137,
+                        "longitude": -73.993761,
+                        "name": "5 AV/21 ST",
+                        "stopDirection": "SW"
+                      },
+                      {
+                        "id": "MTA_305431",
+                        "latitude": 40.659502,
+                        "longitude": -73.995444,
+                        "name": "5 AV/24 ST",
+                        "stopDirection": "SW"
+                      },
+                      {
+                        "id": "MTA_305432",
+                        "latitude": 40.658332,
+                        "longitude": -73.996663,
+                        "name": "5 AV/26 ST",
+                        "stopDirection": "SW"
+                      },
+                      {
+                        "id": "MTA_305434",
+                        "latitude": 40.656093,
+                        "longitude": -73.998994,
+                        "name": "5 AV/30 ST",
+                        "stopDirection": "SW"
+                      },
+                      {
+                        "id": "MTA_308336",
+                        "latitude": 40.654416,
+                        "longitude": -74.000735,
+                        "name": "5 AV/33 ST",
+                        "stopDirection": "SW"
+                      },
+                      {
+                        "id": "MTA_308878",
+                        "latitude": 40.652269,
+                        "longitude": -74.002921,
+                        "name": "5 AV/37 ST",
+                        "stopDirection": "SW"
+                      },
+                      {
+                        "id": "MTA_305438",
+                        "latitude": 40.651061,
+                        "longitude": -74.004227,
+                        "name": "5 AV/39 ST",
+                        "stopDirection": "SW"
+                      },
+                      {
+                        "id": "MTA_305439",
+                        "latitude": 40.649382,
+                        "longitude": -74.005971,
+                        "name": "5 AV/42 ST",
+                        "stopDirection": "SW"
+                      },
+                      {
+                        "id": "MTA_308337",
+                        "latitude": 40.647691,
+                        "longitude": -74.007733,
+                        "name": "5 AV/45 ST",
+                        "stopDirection": "SW"
+                      },
+                      {
+                        "id": "MTA_305442",
+                        "latitude": 40.646033,
+                        "longitude": -74.009466,
+                        "name": "5 AV/48 ST",
+                        "stopDirection": "SW"
+                      },
+                      {
+                        "id": "MTA_305443",
+                        "latitude": 40.644913,
+                        "longitude": -74.010623,
+                        "name": "5 AV/50 ST",
+                        "stopDirection": "SW"
+                      },
+                      {
+                        "id": "MTA_305445",
+                        "latitude": 40.643233,
+                        "longitude": -74.012374,
+                        "name": "5 AV/53 ST",
+                        "stopDirection": "SW"
+                      },
+                      {
+                        "id": "MTA_305446",
+                        "latitude": 40.641555,
+                        "longitude": -74.014114,
+                        "name": "5 AV/56 ST",
+                        "stopDirection": "SW"
+                      },
+                      {
+                        "id": "MTA_305447",
+                        "latitude": 40.64049,
+                        "longitude": -74.015167,
+                        "name": "5 AV/58 ST",
+                        "stopDirection": "SW"
+                      },
+                      {
+                        "id": "MTA_308338",
+                        "latitude": 40.639269,
+                        "longitude": -74.016488,
+                        "name": "5 AV/60 ST",
+                        "stopDirection": "SW"
+                      },
+                      {
+                        "id": "MTA_305449",
+                        "latitude": 40.638226,
+                        "longitude": -74.01757,
+                        "name": "5 AV/62 ST",
+                        "stopDirection": "SW"
+                      },
+                      {
+                        "id": "MTA_305451",
+                        "latitude": 40.635854,
+                        "longitude": -74.020047,
+                        "name": "5 AV/66 ST",
+                        "stopDirection": "SW"
+                      },
+                      {
+                        "id": "MTA_305452",
+                        "latitude": 40.634687,
+                        "longitude": -74.020598,
+                        "name": "5 AV/SENATOR ST",
+                        "stopDirection": "S"
+                      },
+                      {
+                        "id": "MTA_305453",
+                        "latitude": 40.633191,
+                        "longitude": -74.021217,
+                        "name": "5 AV/BAY RIDGE AV",
+                        "stopDirection": "S"
+                      },
+                      {
+                        "id": "MTA_308340",
+                        "latitude": 40.631418,
+                        "longitude": -74.021937,
+                        "name": "5 AV/72 ST",
+                        "stopDirection": "SW"
+                      },
+                      {
+                        "id": "MTA_305455",
+                        "latitude": 40.6292,
+                        "longitude": -74.022848,
+                        "name": "5 AV/BAY RIDGE PKWY",
+                        "stopDirection": "S"
+                      },
+                      {
+                        "id": "MTA_308421",
+                        "latitude": 40.626979,
+                        "longitude": -74.023755,
+                        "name": "5 AV/78 ST",
+                        "stopDirection": "SW"
+                      },
+                      {
+                        "id": "MTA_305458",
+                        "latitude": 40.624786,
+                        "longitude": -74.024647,
+                        "name": "5 AV/81 ST",
+                        "stopDirection": "S"
+                      },
+                      {
+                        "id": "MTA_308422",
+                        "latitude": 40.622587,
+                        "longitude": -74.025544,
+                        "name": "5 AV/84 ST",
+                        "stopDirection": "SW"
+                      },
+                      {
+                        "id": "MTA_305460",
+                        "latitude": 40.621449,
+                        "longitude": -74.026438,
+                        "name": "5 AV/86 ST",
+                        "stopDirection": "SW"
+                      },
+                      {
+                        "id": "MTA_308423",
+                        "latitude": 40.619282,
+                        "longitude": -74.028204,
+                        "name": "5 AV/89 ST",
+                        "stopDirection": "SW"
+                      },
+                      {
+                        "id": "MTA_306783",
+                        "latitude": 40.617651,
+                        "longitude": -74.029605,
+                        "name": "5 AV/92 ST",
+                        "stopDirection": "SW"
+                      },
+                      {
+                        "id": "MTA_307784",
+                        "latitude": 40.616435,
+                        "longitude": -74.03107,
+                        "name": "4 AV/94 ST",
+                        "stopDirection": "S"
+                      },
+                      {
+                        "id": "MTA_306945",
+                        "latitude": 40.614527,
+                        "longitude": -74.03233,
+                        "name": "4 AV/97 ST",
+                        "stopDirection": "SW"
+                      },
+                      {
+                        "id": "MTA_306940",
+                        "latitude": 40.614688,
+                        "longitude": -74.034783,
+                        "name": "3 AV/99 ST",
+                        "stopDirection": "SW"
+                      },
+                      {
+                        "id": "MTA_306680",
+                        "latitude": 40.612763,
+                        "longitude": -74.036053,
+                        "name": "3 AV/SHORE RD",
+                        "stopDirection": "SW"
+                      },
+                      {
+                        "id": "MTA_801042",
+                        "latitude": 40.612311,
+                        "longitude": -74.035981,
+                        "name": "SHORE RD/3 AV",
+                        "stopDirection": "SE"
+                      }
+                    ]
+                  },
+                  {
+                    "destination": "PIER 6 BKLYN BRIDGE PARK via 5 AV",
+                    "directionId": "0",
+                    "hasUpcomingScheduledService": true,
+                    "polylines": [
+                      "_vfwFn_qbM_Au@gAy@s@k@s@k@_Au@{BgByBcBu@m@u@k@yByA_C}A{@g@A?}@i@mAq@o@a@gCuAMIu@c@CAgAm@u@a@u@g@QKy@k@o@]SMw@e@s@c@_CsAIXyDxM}BsAgB_A[K_Ai@}@i@]lAGNSp@cCjICJW|@[dAK`@s@jC]jA_@xAY`AmBvG[fA{AjFo@xBa@xAmBrG[dA}@vD]tAI\\UhAELSz@aAbEIb@SfAi@~Ca@zBUrAkAnGGVqApHKh@Y`BG^SbAEVG^ETERWrAOr@I`@Qt@]KwAi@}@YSdA",
+                      "oc~vFz|{bMOIrAwIdBkLZoBdCv@dCv@jDdAdBmLVeBdBcLZwBTeBXoBd@iDPcA^wA~@iB`EaI{@s@aA{@sC}@qCy@aA[oAa@oCy@uC{@a@MWIqAa@uC}@sCy@aA[mAa@{C}@gA]_Bg@aCu@mC{@cA[mBm@sDeA}@WmAa@kBk@s@UICoBg@YSY[m@m@o@q@s@u@[[KMGGSSWU_@c@uB{Bi@k@eAeAmBuBKKYWoAoAc@k@KMcAeAmBkBmBuBo@o@aAeAmBuBsBuBq@s@}@_AmBqBq@s@_AcAMMuAyAKKm@o@a@a@_@]sB}BkBkBm@q@aAcAoBwBqBuBk@k@_AaAsB}BWWkAkAKKm@o@[[c@e@oBwBSS_@_@m@q@KKIKeAgA_@_@_BcBEEIIaBeBgAkAw@{@u@u@y@y@mBoBqBuBmBuBy@{@u@w@oBsBqBuBmBuBy@y@w@w@oBsBk@o@cAgAmBqBWWyA}AUYWYaAaAqBwBmBqBo@s@m@o@QQeAiASSQQEEaDaCwBeBwBeB[U{AmAwBgByBaBs@k@cAy@{BeBa@[UQ{@q@{BeBk@c@kA}@KIiByAu@k@",
+                      "ya{vF|b{bM\\_@fAmAdAcAHIQOy@s@o@i@q@m@qByAYWuAkAwBgBs@k@ECwAiAQOcByA}@k@SI]m@QOMMaBkA_EaDqAcAs@m@KImAaAWUyAmAsBcBs@k@}@u@eBuAcCqB"
+                    ],
+                    "stops": [
+                      {
+                        "id": "MTA_306619",
+                        "latitude": 40.612256,
+                        "longitude": -74.035884,
+                        "name": "SHORE RD/3 AV",
+                        "stopDirection": "SE"
+                      },
+                      {
+                        "id": "MTA_307780",
+                        "latitude": 40.627897,
+                        "longitude": -74.039898,
+                        "name": "SHORE RD/83 ST",
+                        "stopDirection": "NE"
+                      },
+                      {
+                        "id": "MTA_305334",
+                        "latitude": 40.612914,
+                        "longitude": -74.033455,
+                        "name": "4 AV/100 ST",
+                        "stopDirection": "NE"
+                      },
+                      {
+                        "id": "MTA_305335",
+                        "latitude": 40.614236,
+                        "longitude": -74.032305,
+                        "name": "4 AV/MARINE AV",
+                        "stopDirection": "NE"
+                      },
+                      {
+                        "id": "MTA_308130",
+                        "latitude": 40.615941,
+                        "longitude": -74.030883,
+                        "name": "5 AV/95 ST",
+                        "stopDirection": "NE"
+                      },
+                      {
+                        "id": "MTA_305338",
+                        "latitude": 40.618115,
+                        "longitude": -74.029021,
+                        "name": "5 AV/92 ST",
+                        "stopDirection": "NE"
+                      },
+                      {
+                        "id": "MTA_308418",
+                        "latitude": 40.619974,
+                        "longitude": -74.02743,
+                        "name": "5 AV/89 ST",
+                        "stopDirection": "NE"
+                      },
+                      {
+                        "id": "MTA_305341",
+                        "latitude": 40.621753,
+                        "longitude": -74.0259,
+                        "name": "5 AV/86 ST",
+                        "stopDirection": "NE"
+                      },
+                      {
+                        "id": "MTA_308419",
+                        "latitude": 40.623896,
+                        "longitude": -74.024834,
+                        "name": "5 AV/83 ST",
+                        "stopDirection": "NE"
+                      },
+                      {
+                        "id": "MTA_305344",
+                        "latitude": 40.626054,
+                        "longitude": -74.023956,
+                        "name": "5 AV/80 ST",
+                        "stopDirection": "NE"
+                      },
+                      {
+                        "id": "MTA_308420",
+                        "latitude": 40.628283,
+                        "longitude": -74.023049,
+                        "name": "5 AV/77 ST",
+                        "stopDirection": "NE"
+                      },
+                      {
+                        "id": "MTA_305346",
+                        "latitude": 40.629815,
+                        "longitude": -74.022412,
+                        "name": "5 AV/BAY RIDGE PKWY",
+                        "stopDirection": "NE"
+                      },
+                      {
+                        "id": "MTA_308324",
+                        "latitude": 40.632002,
+                        "longitude": -74.021519,
+                        "name": "5 AV/72 ST",
+                        "stopDirection": "NE"
+                      },
+                      {
+                        "id": "MTA_305348",
+                        "latitude": 40.633754,
+                        "longitude": -74.020803,
+                        "name": "5 AV/BAY RIDGE AV",
+                        "stopDirection": "N"
+                      },
+                      {
+                        "id": "MTA_305349",
+                        "latitude": 40.635003,
+                        "longitude": -74.020295,
+                        "name": "5 AV/SENATOR ST",
+                        "stopDirection": "N"
+                      },
+                      {
+                        "id": "MTA_305350",
+                        "latitude": 40.636271,
+                        "longitude": -74.019391,
+                        "name": "5 AV/66 ST",
+                        "stopDirection": "NE"
+                      },
+                      {
+                        "id": "MTA_308325",
+                        "latitude": 40.637957,
+                        "longitude": -74.017644,
+                        "name": "5 AV/63 ST",
+                        "stopDirection": "NE"
+                      },
+                      {
+                        "id": "MTA_305353",
+                        "latitude": 40.639689,
+                        "longitude": -74.015843,
+                        "name": "5 AV/60 ST",
+                        "stopDirection": "NE"
+                      },
+                      {
+                        "id": "MTA_308326",
+                        "latitude": 40.641361,
+                        "longitude": -74.01411,
+                        "name": "5 AV/57 ST",
+                        "stopDirection": "NE"
+                      },
+                      {
+                        "id": "MTA_308327",
+                        "latitude": 40.643074,
+                        "longitude": -74.01232,
+                        "name": "5 AV/54 ST",
+                        "stopDirection": "NE"
+                      },
+                      {
+                        "id": "MTA_305357",
+                        "latitude": 40.644183,
+                        "longitude": -74.011174,
+                        "name": "5 AV/52 ST",
+                        "stopDirection": "NE"
+                      },
+                      {
+                        "id": "MTA_305358",
+                        "latitude": 40.645297,
+                        "longitude": -74.010014,
+                        "name": "5 AV/50 ST",
+                        "stopDirection": "NE"
+                      },
+                      {
+                        "id": "MTA_308328",
+                        "latitude": 40.646969,
+                        "longitude": -74.008263,
+                        "name": "5 AV/47 ST",
+                        "stopDirection": "NE"
+                      },
+                      {
+                        "id": "MTA_305361",
+                        "latitude": 40.648651,
+                        "longitude": -74.006515,
+                        "name": "5 AV/44 ST",
+                        "stopDirection": "NE"
+                      },
+                      {
+                        "id": "MTA_305362",
+                        "latitude": 40.650345,
+                        "longitude": -74.004764,
+                        "name": "5 AV/41 ST",
+                        "stopDirection": "NE"
+                      },
+                      {
+                        "id": "MTA_305363",
+                        "latitude": 40.651479,
+                        "longitude": -74.003571,
+                        "name": "5 AV/39 ST",
+                        "stopDirection": "NE"
+                      },
+                      {
+                        "id": "MTA_305364",
+                        "latitude": 40.65281,
+                        "longitude": -74.00217,
+                        "name": "5 AV/36 ST",
+                        "stopDirection": "NE"
+                      },
+                      {
+                        "id": "MTA_305365",
+                        "latitude": 40.654298,
+                        "longitude": -74.000645,
+                        "name": "5 AV/34 ST",
+                        "stopDirection": "NE"
+                      },
+                      {
+                        "id": "MTA_305367",
+                        "latitude": 40.656546,
+                        "longitude": -73.998313,
+                        "name": "5 AV/30 ST",
+                        "stopDirection": "NE"
+                      },
+                      {
+                        "id": "MTA_305369",
+                        "latitude": 40.65878,
+                        "longitude": -73.995981,
+                        "name": "5 AV/26 ST",
+                        "stopDirection": "NE"
+                      },
+                      {
+                        "id": "MTA_305370",
+                        "latitude": 40.659836,
+                        "longitude": -73.994871,
+                        "name": "5 AV/24 ST",
+                        "stopDirection": "NE"
+                      },
+                      {
+                        "id": "MTA_308331",
+                        "latitude": 40.661533,
+                        "longitude": -73.993101,
+                        "name": "5 AV/21 ST",
+                        "stopDirection": "NE"
+                      },
+                      {
+                        "id": "MTA_305373",
+                        "latitude": 40.663243,
+                        "longitude": -73.991377,
+                        "name": "5 AV/18 ST",
+                        "stopDirection": "NE"
+                      },
+                      {
+                        "id": "MTA_308332",
+                        "latitude": 40.664135,
+                        "longitude": -73.990452,
+                        "name": "5 AV/PROSPECT AV",
+                        "stopDirection": "NE"
+                      },
+                      {
+                        "id": "MTA_308333",
+                        "latitude": 40.666231,
+                        "longitude": -73.988559,
+                        "name": "5 AV/14 ST",
+                        "stopDirection": "NE"
+                      },
+                      {
+                        "id": "MTA_305377",
+                        "latitude": 40.668191,
+                        "longitude": -73.987012,
+                        "name": "5 AV/11 ST",
+                        "stopDirection": "NE"
+                      },
+                      {
+                        "id": "MTA_308204",
+                        "latitude": 40.669431,
+                        "longitude": -73.98597,
+                        "name": "5 AV/9 ST",
+                        "stopDirection": "NE"
+                      },
+                      {
+                        "id": "MTA_308206",
+                        "latitude": 40.67057,
+                        "longitude": -73.985025,
+                        "name": "5 AV/7 ST",
+                        "stopDirection": "NE"
+                      },
+                      {
+                        "id": "MTA_305380",
+                        "latitude": 40.671805,
+                        "longitude": -73.983994,
+                        "name": "5 AV/5 ST",
+                        "stopDirection": "NE"
+                      },
+                      {
+                        "id": "MTA_308207",
+                        "latitude": 40.673007,
+                        "longitude": -73.982988,
+                        "name": "5 AV/3 ST",
+                        "stopDirection": "NE"
+                      },
+                      {
+                        "id": "MTA_308208",
+                        "latitude": 40.674824,
+                        "longitude": -73.981473,
+                        "name": "5 AV/GARFIELD PL",
+                        "stopDirection": "NE"
+                      },
+                      {
+                        "id": "MTA_308209",
+                        "latitude": 40.676682,
+                        "longitude": -73.98019,
+                        "name": "5 AV/UNION ST",
+                        "stopDirection": "NE"
+                      },
+                      {
+                        "id": "MTA_308210",
+                        "latitude": 40.678656,
+                        "longitude": -73.978851,
+                        "name": "5 AV/SAINT JOHNS PL",
+                        "stopDirection": "NE"
+                      },
+                      {
+                        "id": "MTA_308211",
+                        "latitude": 40.680557,
+                        "longitude": -73.977567,
+                        "name": "5 AV/PROSPECT PL",
+                        "stopDirection": "NE"
+                      },
+                      {
+                        "id": "MTA_901834",
+                        "latitude": 40.681572,
+                        "longitude": -73.977125,
+                        "name": "BERGEN ST/5 AV",
+                        "stopDirection": "W"
+                      },
+                      {
+                        "id": "MTA_307540",
+                        "latitude": 40.684576,
+                        "longitude": -73.978665,
+                        "name": "ATLANTIC AV/4 AV",
+                        "stopDirection": "W"
+                      },
+                      {
+                        "id": "MTA_308323",
+                        "latitude": 40.68554,
+                        "longitude": -73.981005,
+                        "name": "ATLANTIC AV/3 AV",
+                        "stopDirection": "W"
+                      },
+                      {
+                        "id": "MTA_305392",
+                        "latitude": 40.686331,
+                        "longitude": -73.983042,
+                        "name": "ATLANTIC AV/NEVINS ST",
+                        "stopDirection": "W"
+                      },
+                      {
+                        "id": "MTA_305393",
+                        "latitude": 40.687143,
+                        "longitude": -73.985137,
+                        "name": "ATLANTIC AV/BOND ST",
+                        "stopDirection": "W"
+                      },
+                      {
+                        "id": "MTA_305394",
+                        "latitude": 40.688014,
+                        "longitude": -73.987376,
+                        "name": "ATLANTIC AV/HOYT ST",
+                        "stopDirection": "W"
+                      },
+                      {
+                        "id": "MTA_305396",
+                        "latitude": 40.689271,
+                        "longitude": -73.991016,
+                        "name": "ATLANTIC AV/BOERUM PL",
+                        "stopDirection": "W"
+                      },
+                      {
+                        "id": "MTA_305397",
+                        "latitude": 40.689806,
+                        "longitude": -73.992532,
+                        "name": "ATLANTIC AV/COURT ST",
+                        "stopDirection": "W"
+                      },
+                      {
+                        "id": "MTA_305216",
+                        "latitude": 40.690391,
+                        "longitude": -73.994744,
+                        "name": "ATLANTIC AV/CLINTON ST",
+                        "stopDirection": "W"
+                      },
+                      {
+                        "id": "MTA_305217",
+                        "latitude": 40.690747,
+                        "longitude": -73.996107,
+                        "name": "ATLANTIC AV/HENRY ST",
+                        "stopDirection": "W"
+                      },
+                      {
+                        "id": "MTA_801007",
+                        "latitude": 40.693001,
+                        "longitude": -74.000512,
+                        "name": "BROOKLYN BRIDGE PARK RD/JORALEMON ST",
+                        "stopDirection": "W"
+                      }
+                    ]
+                  }
+                ],
+                "id": "MTA NYCT_B63",
+                "longName": "Bay Ridge - Cobble Hill",
+                "shortName": "B63",
+                "type": 3
+              }
+            ],
+            "queryLat": null,
+            "queryLon": null,
+            "resultType": "RouteResult",
+            "routeFilter": [],
+            "suggestions": []
+          }
+        }
+      }
+    ],
+    "GET /api/autocomplete?term=B63": [
+      {
+        "status": 200,
+        "contentType": "application/json;charset=UTF-8",
+        "body": [
+          {
+            "label": "B63",
+            "value": "B63"
+          }
+        ]
+      }
+    ],
+    "GET /api/siri/vehicle-monitoring.json?LineRef=MTA+NYCT_B63&newUI=true&OperatorRef=MTA+NYCT": [
+      {
+        "status": 200,
+        "contentType": "application/json;charset=ISO-8859-1",
+        "body": {
+          "Siri": {
+            "ServiceDelivery": {
+              "ResponseTimestamp": "2026-10-02T11:26:46.612-04:00",
+              "VehicleMonitoringDelivery": [
+                {
+                  "VehicleActivity": [
+                    {
+                      "MonitoredVehicleJourney": {
+                        "LineRef": "MTA NYCT_B63",
+                        "DirectionRef": "1",
+                        "FramedVehicleJourneyRef": {
+                          "DataFrameRef": "2026-10-02",
+                          "DatedVehicleJourneyRef": "MTA NYCT_JG_D6-Weekday-SDon-059800_B63_655"
+                        },
+                        "JourneyPatternRef": "MTA_B630077",
+                        "PublishedLineName": "B63",
+                        "OperatorRef": "MTA NYCT",
+                        "OriginRef": "MTA_308616",
+                        "DestinationName": "BAY RIDGE SHORE RD via 5 AV",
+                        "SituationRef": [
+                          {
+                            "SituationSimpleRef": "MTA NYCT_lmm:planned_work:29537"
+                          }
+                        ],
+                        "Monitored": true,
+                        "VehicleLocation": {
+                          "Longitude": -74.035899,
+                          "Latitude": 40.612361
+                        },
+                        "Bearing": 316.38965,
+                        "ProgressRate": "noProgress",
+                        "ProgressStatus": "layover",
+                        "VehicleRef": "MTA NYCT_747",
+                        "MonitoredCall": {
+                          "AimedArrivalTime": "2026-10-02T11:24:00.000-04:00",
+                          "ExpectedArrivalTime": "2026-10-02T11:26:47.612-04:00",
+                          "AimedDepartureTime": "2026-10-02T11:24:00.000-04:00",
+                          "ExpectedDepartureTime": "2026-10-02T11:26:47.612-04:00",
+                          "Extensions": {
+                            "Distances": {
+                              "PresentableDistance": "at stop",
+                              "DistanceFromCall": 0,
+                              "StopsFromCall": 0,
+                              "CallDistanceAlongRoute": 12240.99
+                            },
+                            "VehicleFeatures": {
+                              "StrollerVehicle": true
+                            }
+                          },
+                          "StopPointRef": "MTA_801042",
+                          "VisitNumber": 1,
+                          "StopPointName": "SHORE RD/3 AV"
+                        },
+                        "OnwardCalls": {}
+                      },
+                      "RecordedAtTime": "2026-10-02T11:26:42.582-04:00"
+                    },
+                    {
+                      "MonitoredVehicleJourney": {
+                        "LineRef": "MTA NYCT_B63",
+                        "DirectionRef": "1",
+                        "FramedVehicleJourneyRef": {
+                          "DataFrameRef": "2026-10-02",
+                          "DatedVehicleJourneyRef": "MTA NYCT_JG_D6-Weekday-SDon-068800_B37_602"
+                        },
+                        "JourneyPatternRef": "MTA_B630077",
+                        "PublishedLineName": "B63",
+                        "OperatorRef": "MTA NYCT",
+                        "OriginRef": "MTA_308616",
+                        "DestinationName": "BAY RIDGE SHORE RD via 5 AV",
+                        "OriginAimedDepartureTime": "2026-10-02T11:28:00.000-04:00",
+                        "SituationRef": [
+                          {
+                            "SituationSimpleRef": "MTA NYCT_lmm:planned_work:29537"
+                          }
+                        ],
+                        "Monitored": true,
+                        "VehicleLocation": {
+                          "Longitude": -74.00084,
+                          "Latitude": 40.693049
+                        },
+                        "Bearing": 163.95099,
+                        "ProgressRate": "noProgress",
+                        "ProgressStatus": "layover",
+                        "BlockRef": "MTA NYCT_JG_D6-Weekday-SDon_E_JG_22800_B63-660",
+                        "VehicleRef": "MTA NYCT_354",
+                        "MonitoredCall": {
+                          "AimedArrivalTime": "2026-10-02T11:28:00.000-04:00",
+                          "ExpectedArrivalTime": "2026-10-02T11:28:00.000-04:00",
+                          "AimedDepartureTime": "2026-10-02T11:28:00.000-04:00",
+                          "ExpectedDepartureTime": "2026-10-02T11:28:00.000-04:00",
+                          "Extensions": {
+                            "Distances": {
+                              "PresentableDistance": "at stop",
+                              "DistanceFromCall": 0,
+                              "StopsFromCall": 0,
+                              "CallDistanceAlongRoute": 0
+                            },
+                            "VehicleFeatures": {
+                              "StrollerVehicle": true
+                            }
+                          },
+                          "StopPointRef": "MTA_308616",
+                          "VisitNumber": 1,
+                          "StopPointName": "BROOKLYN BRIDGE PARK/PIER 6"
+                        },
+                        "OnwardCalls": {}
+                      },
+                      "RecordedAtTime": "2026-10-02T11:26:14.000-04:00"
+                    },
+                    {
+                      "MonitoredVehicleJourney": {
+                        "LineRef": "MTA NYCT_B63",
+                        "DirectionRef": "1",
+                        "FramedVehicleJourneyRef": {
+                          "DataFrameRef": "2026-10-02",
+                          "DatedVehicleJourneyRef": "MTA NYCT_JG_D6-Weekday-SDon-062800_B63_657"
+                        },
+                        "JourneyPatternRef": "MTA_B630077",
+                        "PublishedLineName": "B63",
+                        "OperatorRef": "MTA NYCT",
+                        "OriginRef": "MTA_308616",
+                        "DestinationName": "BAY RIDGE SHORE RD via 5 AV",
+                        "SituationRef": [
+                          {
+                            "SituationSimpleRef": "MTA NYCT_lmm:planned_work:29537"
+                          }
+                        ],
+                        "Monitored": true,
+                        "VehicleLocation": {
+                          "Longitude": -74.016348,
+                          "Latitude": 40.639303
+                        },
+                        "Bearing": 225,
+                        "ProgressRate": "normalProgress",
+                        "BlockRef": "MTA NYCT_JG_D6-Weekday-SDon_E_JG_19800_B63-657",
+                        "VehicleRef": "MTA NYCT_433",
+                        "MonitoredCall": {
+                          "AimedArrivalTime": "2026-10-02T11:27:31.000-04:00",
+                          "ExpectedArrivalTime": "2026-10-02T11:26:47.612-04:00",
+                          "AimedDepartureTime": "2026-10-02T11:27:31.000-04:00",
+                          "ExpectedDepartureTime": "2026-10-02T11:26:47.612-04:00",
+                          "Extensions": {
+                            "Distances": {
+                              "PresentableDistance": "at stop",
+                              "DistanceFromCall": 10.22,
+                              "StopsFromCall": 0,
+                              "CallDistanceAlongRoute": 8515.91
+                            },
+                            "VehicleFeatures": {
+                              "StrollerVehicle": true
+                            }
+                          },
+                          "StopPointRef": "MTA_308338",
+                          "VisitNumber": 1,
+                          "StopPointName": "5 AV/60 ST"
+                        },
+                        "OnwardCalls": {}
+                      },
+                      "RecordedAtTime": "2026-10-02T11:26:23.000-04:00"
+                    },
+                    {
+                      "MonitoredVehicleJourney": {
+                        "LineRef": "MTA NYCT_B63",
+                        "DirectionRef": "0",
+                        "FramedVehicleJourneyRef": {
+                          "DataFrameRef": "2026-10-02",
+                          "DatedVehicleJourneyRef": "MTA NYCT_JG_D6-Weekday-SDon-062300_B63_663"
+                        },
+                        "JourneyPatternRef": "MTA_B630081",
+                        "PublishedLineName": "B63",
+                        "OperatorRef": "MTA NYCT",
+                        "OriginRef": "MTA_306619",
+                        "DestinationName": "PIER 6 BKLYN BRIDGE PARK via 5 AV",
+                        "SituationRef": [
+                          {
+                            "SituationSimpleRef": "MTA NYCT_lmm:planned_work:29537"
+                          }
+                        ],
+                        "Monitored": true,
+                        "VehicleLocation": {
+                          "Longitude": -73.980286,
+                          "Latitude": 40.676581
+                        },
+                        "Bearing": 56.309933,
+                        "ProgressRate": "normalProgress",
+                        "Occupancy": "seatsAvailable",
+                        "BlockRef": "MTA NYCT_JG_D6-Weekday-SDon_E_JG_24360_B63-663",
+                        "VehicleRef": "MTA NYCT_757",
+                        "MonitoredCall": {
+                          "AimedArrivalTime": "2026-10-02T11:27:54.000-04:00",
+                          "ExpectedArrivalTime": "2026-10-02T11:26:47.612-04:00",
+                          "AimedDepartureTime": "2026-10-02T11:27:54.000-04:00",
+                          "ExpectedDepartureTime": "2026-10-02T11:26:47.612-04:00",
+                          "Extensions": {
+                            "Distances": {
+                              "PresentableDistance": "at stop",
+                              "DistanceFromCall": 13.69,
+                              "StopsFromCall": 0,
+                              "CallDistanceAlongRoute": 8810.59
+                            },
+                            "Capacities": {
+                              "EstimatedPassengerCount": 23,
+                              "EstimatedPassengerCapacity": 80,
+                              "EstimatedPassengerLoadFactor": "manySeatsAvailable"
+                            },
+                            "VehicleFeatures": {
+                              "StrollerVehicle": true
+                            }
+                          },
+                          "StopPointRef": "MTA_308209",
+                          "VisitNumber": 1,
+                          "StopPointName": "5 AV/UNION ST"
+                        },
+                        "OnwardCalls": {}
+                      },
+                      "RecordedAtTime": "2026-10-02T11:26:24.000-04:00"
+                    },
+                    {
+                      "MonitoredVehicleJourney": {
+                        "LineRef": "MTA NYCT_B63",
+                        "DirectionRef": "0",
+                        "FramedVehicleJourneyRef": {
+                          "DataFrameRef": "2026-10-02",
+                          "DatedVehicleJourneyRef": "MTA NYCT_JG_D6-Weekday-SDon-065900_B63_672"
+                        },
+                        "JourneyPatternRef": "MTA_B630081",
+                        "PublishedLineName": "B63",
+                        "OperatorRef": "MTA NYCT",
+                        "OriginRef": "MTA_306619",
+                        "DestinationName": "PIER 6 BKLYN BRIDGE PARK via 5 AV",
+                        "SituationRef": [
+                          {
+                            "SituationSimpleRef": "MTA NYCT_lmm:planned_work:29537"
+                          }
+                        ],
+                        "Monitored": true,
+                        "VehicleLocation": {
+                          "Longitude": -74.022563,
+                          "Latitude": 40.629676
+                        },
+                        "Bearing": 67.27934,
+                        "ProgressRate": "normalProgress",
+                        "BlockRef": "MTA NYCT_JG_D6-Weekday-SDon_E_JG_38340_B63-672",
+                        "VehicleRef": "MTA NYCT_660",
+                        "MonitoredCall": {
+                          "AimedArrivalTime": "2026-10-02T11:16:44.000-04:00",
+                          "ExpectedArrivalTime": "2026-10-02T11:26:47.612-04:00",
+                          "AimedDepartureTime": "2026-10-02T11:16:44.000-04:00",
+                          "ExpectedDepartureTime": "2026-10-02T11:26:47.612-04:00",
+                          "Extensions": {
+                            "Distances": {
+                              "PresentableDistance": "at stop",
+                              "DistanceFromCall": 18.55,
+                              "StopsFromCall": 0,
+                              "CallDistanceAlongRoute": 2454.3
+                            },
+                            "VehicleFeatures": {
+                              "StrollerVehicle": true
+                            }
+                          },
+                          "StopPointRef": "MTA_305346",
+                          "VisitNumber": 1,
+                          "StopPointName": "5 AV/BAY RIDGE PKWY"
+                        },
+                        "OnwardCalls": {}
+                      },
+                      "RecordedAtTime": "2026-10-02T11:26:19.000-04:00"
+                    },
+                    {
+                      "MonitoredVehicleJourney": {
+                        "LineRef": "MTA NYCT_B63",
+                        "DirectionRef": "0",
+                        "FramedVehicleJourneyRef": {
+                          "DataFrameRef": "2026-10-02",
+                          "DatedVehicleJourneyRef": "MTA NYCT_JG_D6-Weekday-SDon-059300_B63_661"
+                        },
+                        "JourneyPatternRef": "MTA_B630081",
+                        "PublishedLineName": "B63",
+                        "OperatorRef": "MTA NYCT",
+                        "OriginRef": "MTA_306619",
+                        "DestinationName": "PIER 6 BKLYN BRIDGE PARK via 5 AV",
+                        "SituationRef": [
+                          {
+                            "SituationSimpleRef": "MTA NYCT_lmm:planned_work:29537"
+                          }
+                        ],
+                        "Monitored": true,
+                        "VehicleLocation": {
+                          "Longitude": -73.992333,
+                          "Latitude": 40.689673
+                        },
+                        "Bearing": 161.38983,
+                        "ProgressRate": "normalProgress",
+                        "Occupancy": "seatsAvailable",
+                        "BlockRef": "MTA NYCT_JG_D6-Weekday-SDon_E_JG_23220_B63-661",
+                        "VehicleRef": "MTA NYCT_428",
+                        "MonitoredCall": {
+                          "AimedArrivalTime": "2026-10-02T11:14:27.000-04:00",
+                          "ExpectedArrivalTime": "2026-10-02T11:26:47.612-04:00",
+                          "AimedDepartureTime": "2026-10-02T11:14:27.000-04:00",
+                          "ExpectedDepartureTime": "2026-10-02T11:26:47.612-04:00",
+                          "Extensions": {
+                            "Distances": {
+                              "PresentableDistance": "at stop",
+                              "DistanceFromCall": 20.82,
+                              "StopsFromCall": 0,
+                              "CallDistanceAlongRoute": 11223.36
+                            },
+                            "Capacities": {
+                              "EstimatedPassengerCount": 2,
+                              "EstimatedPassengerCapacity": 80,
+                              "EstimatedPassengerLoadFactor": "manySeatsAvailable"
+                            },
+                            "VehicleFeatures": {
+                              "StrollerVehicle": true
+                            }
+                          },
+                          "StopPointRef": "MTA_305397",
+                          "VisitNumber": 1,
+                          "StopPointName": "ATLANTIC AV/COURT ST"
+                        },
+                        "OnwardCalls": {}
+                      },
+                      "RecordedAtTime": "2026-10-02T11:26:19.000-04:00"
+                    },
+                    {
+                      "MonitoredVehicleJourney": {
+                        "LineRef": "MTA NYCT_B63",
+                        "DirectionRef": "1",
+                        "FramedVehicleJourneyRef": {
+                          "DataFrameRef": "2026-10-02",
+                          "DatedVehicleJourneyRef": "MTA NYCT_JG_D6-Weekday-SDon-065800_B63_669"
+                        },
+                        "JourneyPatternRef": "MTA_B630077",
+                        "PublishedLineName": "B63",
+                        "OperatorRef": "MTA NYCT",
+                        "OriginRef": "MTA_308616",
+                        "DestinationName": "BAY RIDGE SHORE RD via 5 AV",
+                        "SituationRef": [
+                          {
+                            "SituationSimpleRef": "MTA NYCT_lmm:planned_work:29537"
+                          }
+                        ],
+                        "Monitored": true,
+                        "VehicleLocation": {
+                          "Longitude": -73.986198,
+                          "Latitude": 40.66928
+                        },
+                        "Bearing": 230.52754,
+                        "ProgressRate": "normalProgress",
+                        "Occupancy": "seatsAvailable",
+                        "BlockRef": "MTA NYCT_JG_D6-Weekday-SDon_E_JG_21000_B63-659",
+                        "VehicleRef": "MTA NYCT_409",
+                        "MonitoredCall": {
+                          "AimedArrivalTime": "2026-10-02T11:27:00.000-04:00",
+                          "ExpectedArrivalTime": "2026-10-02T11:26:54.811-04:00",
+                          "AimedDepartureTime": "2026-10-02T11:27:00.000-04:00",
+                          "ExpectedDepartureTime": "2026-10-02T11:26:54.811-04:00",
+                          "Extensions": {
+                            "Distances": {
+                              "PresentableDistance": "approaching",
+                              "DistanceFromCall": 54.52,
+                              "StopsFromCall": 0,
+                              "CallDistanceAlongRoute": 4363.88
+                            },
+                            "Capacities": {
+                              "EstimatedPassengerCount": 16,
+                              "EstimatedPassengerCapacity": 80,
+                              "EstimatedPassengerLoadFactor": "manySeatsAvailable"
+                            },
+                            "VehicleFeatures": {
+                              "StrollerVehicle": true
+                            }
+                          },
+                          "StopPointRef": "MTA_305423",
+                          "VisitNumber": 1,
+                          "StopPointName": "5 AV/9 ST"
+                        },
+                        "OnwardCalls": {}
+                      },
+                      "RecordedAtTime": "2026-10-02T11:26:28.000-04:00"
+                    },
+                    {
+                      "MonitoredVehicleJourney": {
+                        "LineRef": "MTA NYCT_B63",
+                        "DirectionRef": "1",
+                        "FramedVehicleJourneyRef": {
+                          "DataFrameRef": "2026-10-02",
+                          "DatedVehicleJourneyRef": "MTA NYCT_JG_D6-Weekday-SDon-067300_B63_668"
+                        },
+                        "JourneyPatternRef": "MTA_B630077",
+                        "PublishedLineName": "B63",
+                        "OperatorRef": "MTA NYCT",
+                        "OriginRef": "MTA_308616",
+                        "DestinationName": "BAY RIDGE SHORE RD via 5 AV",
+                        "SituationRef": [
+                          {
+                            "SituationSimpleRef": "MTA NYCT_lmm:planned_work:29537"
+                          }
+                        ],
+                        "Monitored": true,
+                        "VehicleLocation": {
+                          "Longitude": -73.977664,
+                          "Latitude": 40.680518
+                        },
+                        "Bearing": 235.58163,
+                        "ProgressRate": "normalProgress",
+                        "BlockRef": "MTA NYCT_JG_D6-Weekday-SDon_E_JG_17640_B63-651",
+                        "VehicleRef": "MTA NYCT_403",
+                        "MonitoredCall": {
+                          "AimedArrivalTime": "2026-10-02T11:31:57.000-04:00",
+                          "ExpectedArrivalTime": "2026-10-02T11:27:25.325-04:00",
+                          "AimedDepartureTime": "2026-10-02T11:31:57.000-04:00",
+                          "ExpectedDepartureTime": "2026-10-02T11:27:25.325-04:00",
+                          "Extensions": {
+                            "Distances": {
+                              "PresentableDistance": "approaching",
+                              "DistanceFromCall": 73.65,
+                              "StopsFromCall": 0,
+                              "CallDistanceAlongRoute": 2939.37
+                            },
+                            "VehicleFeatures": {
+                              "StrollerVehicle": true
+                            }
+                          },
+                          "StopPointRef": "MTA_308212",
+                          "VisitNumber": 1,
+                          "StopPointName": "5 AV/WARREN ST"
+                        },
+                        "OnwardCalls": {}
+                      },
+                      "RecordedAtTime": "2026-10-02T11:26:42.000-04:00"
+                    },
+                    {
+                      "MonitoredVehicleJourney": {
+                        "LineRef": "MTA NYCT_B63",
+                        "DirectionRef": "1",
+                        "FramedVehicleJourneyRef": {
+                          "DataFrameRef": "2026-10-02",
+                          "DatedVehicleJourneyRef": "MTA NYCT_JG_D6-Weekday-SDon-061300_B63_667"
+                        },
+                        "JourneyPatternRef": "MTA_B630077",
+                        "PublishedLineName": "B63",
+                        "OperatorRef": "MTA NYCT",
+                        "OriginRef": "MTA_308616",
+                        "DestinationName": "BAY RIDGE SHORE RD via 5 AV",
+                        "SituationRef": [
+                          {
+                            "SituationSimpleRef": "MTA NYCT_lmm:planned_work:29537"
+                          }
+                        ],
+                        "Monitored": true,
+                        "VehicleLocation": {
+                          "Longitude": -74.020831,
+                          "Latitude": 40.633893
+                        },
+                        "Bearing": 247.49648,
+                        "ProgressRate": "normalProgress",
+                        "BlockRef": "MTA NYCT_JG_D6-Weekday-SDon_E_JG_28980_B63-667",
+                        "VehicleRef": "MTA NYCT_764",
+                        "MonitoredCall": {
+                          "AimedArrivalTime": "2026-10-02T11:19:00.000-04:00",
+                          "ExpectedArrivalTime": "2026-10-02T11:27:04.682-04:00",
+                          "AimedDepartureTime": "2026-10-02T11:19:00.000-04:00",
+                          "ExpectedDepartureTime": "2026-10-02T11:27:04.682-04:00",
+                          "Extensions": {
+                            "Distances": {
+                              "PresentableDistance": "approaching",
+                              "DistanceFromCall": 84.07,
+                              "StopsFromCall": 0,
+                              "CallDistanceAlongRoute": 9310.46
+                            },
+                            "VehicleFeatures": {
+                              "StrollerVehicle": true
+                            }
+                          },
+                          "StopPointRef": "MTA_305453",
+                          "VisitNumber": 1,
+                          "StopPointName": "5 AV/BAY RIDGE AV"
+                        },
+                        "OnwardCalls": {}
+                      },
+                      "RecordedAtTime": "2026-10-02T11:26:26.000-04:00"
+                    },
+                    {
+                      "MonitoredVehicleJourney": {
+                        "LineRef": "MTA NYCT_B63",
+                        "DirectionRef": "0",
+                        "FramedVehicleJourneyRef": {
+                          "DataFrameRef": "2026-10-02",
+                          "DatedVehicleJourneyRef": "MTA NYCT_JG_D6-Weekday-SDon-064700_B63_658"
+                        },
+                        "JourneyPatternRef": "MTA_B630081",
+                        "PublishedLineName": "B63",
+                        "OperatorRef": "MTA NYCT",
+                        "OriginRef": "MTA_306619",
+                        "DestinationName": "PIER 6 BKLYN BRIDGE PARK via 5 AV",
+                        "SituationRef": [
+                          {
+                            "SituationSimpleRef": "MTA NYCT_lmm:planned_work:29537"
+                          }
+                        ],
+                        "Monitored": true,
+                        "VehicleLocation": {
+                          "Longitude": -73.999165,
+                          "Latitude": 40.65582
+                        },
+                        "Bearing": 42.990448,
+                        "ProgressRate": "normalProgress",
+                        "Occupancy": "seatsAvailable",
+                        "BlockRef": "MTA NYCT_JG_D6-Weekday-SDon_E_JG_16800_B63-654",
+                        "VehicleRef": "MTA NYCT_478",
+                        "MonitoredCall": {
+                          "AimedArrivalTime": "2026-10-02T11:34:19.000-04:00",
+                          "ExpectedArrivalTime": "2026-10-02T11:27:11.979-04:00",
+                          "AimedDepartureTime": "2026-10-02T11:34:19.000-04:00",
+                          "ExpectedDepartureTime": "2026-10-02T11:27:11.979-04:00",
+                          "Extensions": {
+                            "Distances": {
+                              "PresentableDistance": "approaching",
+                              "DistanceFromCall": 107.91,
+                              "StopsFromCall": 0,
+                              "CallDistanceAlongRoute": 6095.53
+                            },
+                            "Capacities": {
+                              "EstimatedPassengerCount": 6,
+                              "EstimatedPassengerCapacity": 80,
+                              "EstimatedPassengerLoadFactor": "manySeatsAvailable"
+                            },
+                            "VehicleFeatures": {
+                              "StrollerVehicle": true
+                            }
+                          },
+                          "StopPointRef": "MTA_305367",
+                          "VisitNumber": 1,
+                          "StopPointName": "5 AV/30 ST"
+                        },
+                        "OnwardCalls": {}
+                      },
+                      "RecordedAtTime": "2026-10-02T11:26:42.000-04:00"
+                    },
+                    {
+                      "MonitoredVehicleJourney": {
+                        "LineRef": "MTA NYCT_B63",
+                        "DirectionRef": "0",
+                        "FramedVehicleJourneyRef": {
+                          "DataFrameRef": "2026-10-02",
+                          "DatedVehicleJourneyRef": "MTA NYCT_JG_D6-Weekday-SDon-060800_B63_670"
+                        },
+                        "JourneyPatternRef": "MTA_B630081",
+                        "PublishedLineName": "B63",
+                        "OperatorRef": "MTA NYCT",
+                        "OriginRef": "MTA_306619",
+                        "DestinationName": "PIER 6 BKLYN BRIDGE PARK via 5 AV",
+                        "SituationRef": [
+                          {
+                            "SituationSimpleRef": "MTA NYCT_lmm:planned_work:29537"
+                          }
+                        ],
+                        "Monitored": true,
+                        "VehicleLocation": {
+                          "Longitude": -73.978782,
+                          "Latitude": 40.683619
+                        },
+                        "Bearing": 66.80141,
+                        "ProgressRate": "normalProgress",
+                        "BlockRef": "MTA NYCT_JG_D6-Weekday-SDon_E_JG_35280_B63-670",
+                        "VehicleRef": "MTA NYCT_459",
+                        "MonitoredCall": {
+                          "AimedArrivalTime": "2026-10-02T11:21:00.000-04:00",
+                          "ExpectedArrivalTime": "2026-10-02T11:27:18.791-04:00",
+                          "AimedDepartureTime": "2026-10-02T11:21:00.000-04:00",
+                          "ExpectedDepartureTime": "2026-10-02T11:27:18.791-04:00",
+                          "Extensions": {
+                            "Distances": {
+                              "PresentableDistance": "approaching",
+                              "DistanceFromCall": 129.96,
+                              "StopsFromCall": 0,
+                              "CallDistanceAlongRoute": 9917.95
+                            },
+                            "VehicleFeatures": {
+                              "StrollerVehicle": true
+                            }
+                          },
+                          "StopPointRef": "MTA_307540",
+                          "VisitNumber": 1,
+                          "StopPointName": "ATLANTIC AV/4 AV"
+                        },
+                        "OnwardCalls": {}
+                      },
+                      "RecordedAtTime": "2026-10-02T11:26:22.000-04:00"
+                    },
+                    {
+                      "MonitoredVehicleJourney": {
+                        "LineRef": "MTA NYCT_B63",
+                        "DirectionRef": "0",
+                        "FramedVehicleJourneyRef": {
+                          "DataFrameRef": "2026-10-02",
+                          "DatedVehicleJourneyRef": "MTA NYCT_JG_D6-Weekday-SDon-068300_B70_703"
+                        },
+                        "JourneyPatternRef": "MTA_B630081",
+                        "PublishedLineName": "B63",
+                        "OperatorRef": "MTA NYCT",
+                        "OriginRef": "MTA_306619",
+                        "DestinationName": "PIER 6 BKLYN BRIDGE PARK via 5 AV",
+                        "SituationRef": [
+                          {
+                            "SituationSimpleRef": "MTA NYCT_lmm:planned_work:29537"
+                          }
+                        ],
+                        "Monitored": true,
+                        "VehicleLocation": {
+                          "Longitude": -74.033292,
+                          "Latitude": 40.613233
+                        },
+                        "Bearing": 48.274548,
+                        "ProgressRate": "normalProgress",
+                        "BlockRef": "MTA NYCT_JG_D6-Weekday-SDon_E_JG_21660_B63-652",
+                        "VehicleRef": "MTA NYCT_402",
+                        "MonitoredCall": {
+                          "AimedArrivalTime": "2026-10-02T11:26:44.000-04:00",
+                          "ExpectedArrivalTime": "2026-10-02T11:27:07.605-04:00",
+                          "AimedDepartureTime": "2026-10-02T11:26:44.000-04:00",
+                          "ExpectedDepartureTime": "2026-10-02T11:27:07.605-04:00",
+                          "Extensions": {
+                            "Distances": {
+                              "PresentableDistance": "approaching",
+                              "DistanceFromCall": 138.86,
+                              "StopsFromCall": 0,
+                              "CallDistanceAlongRoute": 513.28
+                            },
+                            "VehicleFeatures": {
+                              "StrollerVehicle": true
+                            }
+                          },
+                          "StopPointRef": "MTA_305335",
+                          "VisitNumber": 1,
+                          "StopPointName": "4 AV/MARINE AV"
+                        },
+                        "OnwardCalls": {}
+                      },
+                      "RecordedAtTime": "2026-10-02T11:26:24.000-04:00"
+                    },
+                    {
+                      "MonitoredVehicleJourney": {
+                        "LineRef": "MTA NYCT_B63",
+                        "DirectionRef": "1",
+                        "FramedVehicleJourneyRef": {
+                          "DataFrameRef": "2026-10-02",
+                          "DatedVehicleJourneyRef": "MTA NYCT_JG_D6-Weekday-SDon-064300_B63_664"
+                        },
+                        "JourneyPatternRef": "MTA_B630077",
+                        "PublishedLineName": "B63",
+                        "OperatorRef": "MTA NYCT",
+                        "OriginRef": "MTA_308616",
+                        "DestinationName": "BAY RIDGE SHORE RD via 5 AV",
+                        "SituationRef": [
+                          {
+                            "SituationSimpleRef": "MTA NYCT_lmm:planned_work:29537"
+                          }
+                        ],
+                        "Monitored": true,
+                        "VehicleLocation": {
+                          "Longitude": -73.992507,
+                          "Latitude": 40.662198
+                        },
+                        "Bearing": 223.51291,
+                        "ProgressRate": "normalProgress",
+                        "BlockRef": "MTA NYCT_JG_D6-Weekday-SDon_E_JG_24720_B63-664",
+                        "VehicleRef": "MTA NYCT_253",
+                        "MonitoredCall": {
+                          "AimedArrivalTime": "2026-10-02T11:18:48.000-04:00",
+                          "ExpectedArrivalTime": "2026-10-02T11:27:21.414-04:00",
+                          "AimedDepartureTime": "2026-10-02T11:18:48.000-04:00",
+                          "ExpectedDepartureTime": "2026-10-02T11:27:21.414-04:00",
+                          "Extensions": {
+                            "Distances": {
+                              "PresentableDistance": "< 1 stop away",
+                              "DistanceFromCall": 158.18,
+                              "StopsFromCall": 0,
+                              "CallDistanceAlongRoute": 5419.11
+                            },
+                            "VehicleFeatures": {
+                              "StrollerVehicle": true
+                            }
+                          },
+                          "StopPointRef": "MTA_308335",
+                          "VisitNumber": 1,
+                          "StopPointName": "5 AV/21 ST"
+                        },
+                        "OnwardCalls": {}
+                      },
+                      "RecordedAtTime": "2026-10-02T11:26:30.000-04:00"
+                    },
+                    {
+                      "MonitoredVehicleJourney": {
+                        "LineRef": "MTA NYCT_B63",
+                        "DirectionRef": "0",
+                        "FramedVehicleJourneyRef": {
+                          "DataFrameRef": "2026-10-02",
+                          "DatedVehicleJourneyRef": "MTA NYCT_JG_D6-Weekday-SDon-067100_B63_666"
+                        },
+                        "JourneyPatternRef": "MTA_B630081",
+                        "PublishedLineName": "B63",
+                        "OperatorRef": "MTA NYCT",
+                        "OriginRef": "MTA_306619",
+                        "DestinationName": "PIER 6 BKLYN BRIDGE PARK via 5 AV",
+                        "SituationRef": [
+                          {
+                            "SituationSimpleRef": "MTA NYCT_lmm:planned_work:29537"
+                          }
+                        ],
+                        "Monitored": true,
+                        "VehicleLocation": {
+                          "Longitude": -74.024841,
+                          "Latitude": 40.624097
+                        },
+                        "Bearing": 66.95915,
+                        "ProgressRate": "normalProgress",
+                        "BlockRef": "MTA NYCT_JG_D6-Weekday-SDon_E_JG_26520_B63-666",
+                        "VehicleRef": "MTA NYCT_434",
+                        "MonitoredCall": {
+                          "AimedArrivalTime": "2026-10-02T11:25:36.000-04:00",
+                          "ExpectedArrivalTime": "2026-10-02T11:27:46.940-04:00",
+                          "AimedDepartureTime": "2026-10-02T11:25:36.000-04:00",
+                          "ExpectedDepartureTime": "2026-10-02T11:27:46.940-04:00",
+                          "Extensions": {
+                            "Distances": {
+                              "PresentableDistance": "< 1 stop away",
+                              "DistanceFromCall": 230.02,
+                              "StopsFromCall": 0,
+                              "CallDistanceAlongRoute": 2016.24
+                            },
+                            "VehicleFeatures": {
+                              "StrollerVehicle": true
+                            }
+                          },
+                          "StopPointRef": "MTA_305344",
+                          "VisitNumber": 1,
+                          "StopPointName": "5 AV/80 ST"
+                        },
+                        "OnwardCalls": {}
+                      },
+                      "RecordedAtTime": "2026-10-02T11:26:17.000-04:00"
+                    },
+                    {
+                      "MonitoredVehicleJourney": {
+                        "LineRef": "MTA NYCT_B63",
+                        "DirectionRef": "0",
+                        "FramedVehicleJourneyRef": {
+                          "DataFrameRef": "2026-10-02",
+                          "DatedVehicleJourneyRef": "MTA NYCT_JG_D6-Weekday-SDon-063500_B63_656"
+                        },
+                        "JourneyPatternRef": "MTA_B630081",
+                        "PublishedLineName": "B63",
+                        "OperatorRef": "MTA NYCT",
+                        "OriginRef": "MTA_306619",
+                        "DestinationName": "PIER 6 BKLYN BRIDGE PARK via 5 AV",
+                        "SituationRef": [
+                          {
+                            "SituationSimpleRef": "MTA NYCT_lmm:planned_work:29537"
+                          }
+                        ],
+                        "Monitored": true,
+                        "VehicleLocation": {
+                          "Longitude": -73.994916,
+                          "Latitude": 40.659896
+                        },
+                        "Bearing": 43.099106,
+                        "ProgressRate": "normalProgress",
+                        "Occupancy": "seatsAvailable",
+                        "BlockRef": "MTA NYCT_JG_D6-Weekday-SDon_E_JG_25200_B63-665",
+                        "VehicleRef": "MTA NYCT_792",
+                        "MonitoredCall": {
+                          "AimedArrivalTime": "2026-10-02T11:26:35.000-04:00",
+                          "ExpectedArrivalTime": "2026-10-02T11:27:57.710-04:00",
+                          "AimedDepartureTime": "2026-10-02T11:26:35.000-04:00",
+                          "ExpectedDepartureTime": "2026-10-02T11:27:57.710-04:00",
+                          "Extensions": {
+                            "Distances": {
+                              "PresentableDistance": "< 1 stop away",
+                              "DistanceFromCall": 237.74,
+                              "StopsFromCall": 0,
+                              "CallDistanceAlongRoute": 6803.23
+                            },
+                            "Capacities": {
+                              "EstimatedPassengerCount": 31,
+                              "EstimatedPassengerCapacity": 80,
+                              "EstimatedPassengerLoadFactor": "fewSeatsAvailable"
+                            },
+                            "VehicleFeatures": {
+                              "StrollerVehicle": true
+                            }
+                          },
+                          "StopPointRef": "MTA_308331",
+                          "VisitNumber": 1,
+                          "StopPointName": "5 AV/21 ST"
+                        },
+                        "OnwardCalls": {}
+                      },
+                      "RecordedAtTime": "2026-10-02T11:26:24.000-04:00"
+                    },
+                    {
+                      "MonitoredVehicleJourney": {
+                        "LineRef": "MTA NYCT_B63",
+                        "DirectionRef": "1",
+                        "FramedVehicleJourneyRef": {
+                          "DataFrameRef": "2026-10-02",
+                          "DatedVehicleJourneyRef": "MTA NYCT_JG_D6-Weekday-SDon-059800_B63_655"
+                        },
+                        "JourneyPatternRef": "MTA_B630077",
+                        "PublishedLineName": "B63",
+                        "OperatorRef": "MTA NYCT",
+                        "OriginRef": "MTA_308616",
+                        "DestinationName": "BAY RIDGE SHORE RD via 5 AV",
+                        "SituationRef": [
+                          {
+                            "SituationSimpleRef": "MTA NYCT_lmm:planned_work:29537"
+                          }
+                        ],
+                        "Monitored": true,
+                        "VehicleLocation": {
+                          "Longitude": -74.026422,
+                          "Latitude": 40.621247
+                        },
+                        "Bearing": 229.16362,
+                        "ProgressRate": "normalProgress",
+                        "Occupancy": "seatsAvailable",
+                        "BlockRef": "MTA NYCT_JG_D6-Weekday-SDon_E_JG_18600_B63-655",
+                        "VehicleRef": "MTA NYCT_803",
+                        "MonitoredCall": {
+                          "AimedArrivalTime": "2026-10-02T11:15:50.000-04:00",
+                          "ExpectedArrivalTime": "2026-10-02T11:28:16.623-04:00",
+                          "AimedDepartureTime": "2026-10-02T11:15:50.000-04:00",
+                          "ExpectedDepartureTime": "2026-10-02T11:28:16.623-04:00",
+                          "Extensions": {
+                            "Distances": {
+                              "PresentableDistance": "< 1 stop away",
+                              "DistanceFromCall": 265.19,
+                              "StopsFromCall": 0,
+                              "CallDistanceAlongRoute": 10979.22
+                            },
+                            "Capacities": {
+                              "EstimatedPassengerCount": 38,
+                              "EstimatedPassengerCapacity": 80,
+                              "EstimatedPassengerLoadFactor": "fewSeatsAvailable"
+                            },
+                            "VehicleFeatures": {
+                              "StrollerVehicle": true
+                            }
+                          },
+                          "StopPointRef": "MTA_308423",
+                          "VisitNumber": 1,
+                          "StopPointName": "5 AV/89 ST"
+                        },
+                        "OnwardCalls": {}
+                      },
+                      "RecordedAtTime": "2026-10-02T11:26:28.000-04:00"
+                    }
+                  ],
+                  "ResponseTimestamp": "2026-10-02T11:26:46.612-04:00",
+                  "ValidUntil": "2026-10-02T11:27:46.612-04:00"
+                }
+              ],
+              "SituationExchangeDelivery": [
+                {
+                  "Situations": {
+                    "PtSituationElement": [
+                      {
+                        "PublicationWindow": {
+                          "StartTime": "2026-01-06T00:00:00.000-05:00",
+                          "EndTime": "2027-03-31T11:25:19.000-04:00"
+                        },
+                        "Severity": "undefined",
+                        "Summary": "B63 buses may experience delays on 5th Ave between 64th St and 65th St and will wait out any temporary closures",
+                        "Description": "B63 buses may experience delays on 5th Ave between 64th St and 65th St and will wait out any temporary closures\n<p>Please allow additional travel time.</p><p></p><p><strong>What's happening?</strong></p><p>DOT - Lane Shift/5th Avenue Bridge/65th Street</p>",
+                        "Affects": {
+                          "VehicleJourneys": {
+                            "AffectedVehicleJourney": [
+                              {
+                                "LineRef": "MTA NYCT_B63",
+                                "DirectionRef": "0"
+                              },
+                              {
+                                "LineRef": "MTA NYCT_B63",
+                                "DirectionRef": "1"
+                              }
+                            ]
+                          }
+                        },
+                        "CreationTime": "2025-12-30T15:32:55.000-05:00",
+                        "SituationNumber": "MTA NYCT_lmm:planned_work:29537"
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        }
+      }
+    ]
+  }
+}

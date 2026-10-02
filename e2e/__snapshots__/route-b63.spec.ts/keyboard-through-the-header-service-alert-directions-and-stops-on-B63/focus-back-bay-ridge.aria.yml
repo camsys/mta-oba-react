@@ -1,0 +1,498 @@
+- banner:
+  - link "MTA Bus Time Home":
+    - /url: "#"
+    - img "MTA Bus Time"
+  - link "MTA Home":
+    - /url: https://www.mta.info/
+    - img "MTA"
+- combobox:
+  - textbox "Route, intersection, or stop code": B63
+  - listbox
+- button "clear search button"
+- button "Favorites":
+  - img
+  - text: ""
+- button "Nearby Buses":
+  - img
+  - text: ""
+- heading "Routes:" [level=2]
+- heading "B63 Bay Ridge - Cobble Hill" [level=3]:
+  - img
+  - text: ""
+- list:
+  - listitem: via 5th Av / Atlantic Av
+- button "Toggle Service Alert Open/Closed": Service Alert for B63
+- paragraph: B63 buses may experience delays on 5th Ave between 64th St and 65th St and will wait out any temporary closures
+- paragraph:
+  - paragraph: Please allow additional travel time.
+  - paragraph
+  - paragraph:
+    - strong: What's happening?
+  - paragraph: DOT - Lane Shift/5th Avenue Bridge/65th Street
+- button "Toggle MTA NYCT_B63 to BAY RIDGE SHORE RD via 5 AV Open / Closed":
+  - text: ""
+  - strong: BAY RIDGE SHORE RD via 5 AV
+- list:
+  - listitem:
+    - link "BROOKLYN BRIDGE PARK/PIER 6":
+      - /url: "#"
+    - list:
+      - listitem:
+        - text: /1 minute, at stop \(at terminal, scheduled to depart at \d+:\d+ AM\)/
+        - link /\d+/:
+          - /url: "#"
+  - listitem:
+    - link "ATLANTIC AV/HENRY ST":
+      - /url: "#"
+  - listitem:
+    - link "ATLANTIC AV/CLINTON ST":
+      - /url: "#"
+  - listitem:
+    - link "ATLANTIC AV/COURT ST":
+      - /url: "#"
+  - listitem:
+    - link "ATLANTIC AV/SMITH ST":
+      - /url: "#"
+  - listitem:
+    - link "ATLANTIC AV/HOYT ST":
+      - /url: "#"
+  - listitem:
+    - link "ATLANTIC AV/BOND ST":
+      - /url: "#"
+  - listitem:
+    - link "ATLANTIC AV/NEVINS ST":
+      - /url: "#"
+  - listitem:
+    - link "ATLANTIC AV/3 AV":
+      - /url: "#"
+  - listitem:
+    - link "ATLANTIC AV/4 AV":
+      - /url: "#"
+  - listitem:
+    - link "5 AV/DEAN ST":
+      - /url: "#"
+  - listitem:
+    - link "5 AV/WARREN ST":
+      - /url: "#"
+    - list:
+      - listitem:
+        - text: 0 minutes, approaching
+        - link /\d+/:
+          - /url: "#"
+  - listitem:
+    - link "5 AV/DOUGLASS ST":
+      - /url: "#"
+  - listitem:
+    - link "5 AV/UNION ST":
+      - /url: "#"
+  - listitem:
+    - link "5 AV/GARFIELD PL":
+      - /url: "#"
+  - listitem:
+    - link "5 AV/3 ST":
+      - /url: "#"
+  - listitem:
+    - link "5 AV/5 ST":
+      - /url: "#"
+  - listitem:
+    - link "5 AV/7 ST":
+      - /url: "#"
+  - listitem:
+    - link "5 AV/9 ST":
+      - /url: "#"
+    - list:
+      - listitem:
+        - text: 0 minutes, approaching
+        - img /vehicle is ~\d+% full/
+        - text: /~\d+ passengers/
+        - link /\d+/:
+          - /url: "#"
+  - listitem:
+    - link /5 AV\/\d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /5 AV\/\d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link "5 AV/PROSPECT AV":
+      - /url: "#"
+  - listitem:
+    - link /5 AV\/\d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /5 AV\/\d+ ST/:
+      - /url: "#"
+    - list:
+      - listitem:
+        - text: 0 minutes, < 1 stop away
+        - link /\d+/:
+          - /url: "#"
+  - listitem:
+    - link /5 AV\/\d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /5 AV\/\d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /5 AV\/\d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /5 AV\/\d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /5 AV\/\d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /5 AV\/\d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /5 AV\/\d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /5 AV\/\d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /5 AV\/\d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /5 AV\/\d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /5 AV\/\d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /5 AV\/\d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /5 AV\/\d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /5 AV\/\d+ ST/:
+      - /url: "#"
+    - list:
+      - listitem:
+        - text: 0 minutes, at stop
+        - link /\d+/:
+          - /url: "#"
+  - listitem:
+    - link /5 AV\/\d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /5 AV\/\d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link "5 AV/SENATOR ST":
+      - /url: "#"
+  - listitem:
+    - link "5 AV/BAY RIDGE AV":
+      - /url: "#"
+    - list:
+      - listitem:
+        - text: 0 minutes, approaching
+        - link /\d+/:
+          - /url: "#"
+  - listitem:
+    - link /5 AV\/\d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link "5 AV/BAY RIDGE PKWY":
+      - /url: "#"
+  - listitem:
+    - link /5 AV\/\d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /5 AV\/\d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /5 AV\/\d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /5 AV\/\d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /5 AV\/\d+ ST/:
+      - /url: "#"
+    - list:
+      - listitem:
+        - text: 1 minute, < 1 stop away
+        - img /vehicle is ~\d+% full/
+        - text: /~\d+ passengers/
+        - link /\d+/:
+          - /url: "#"
+  - listitem:
+    - link /5 AV\/\d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /4 AV\/\d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /4 AV\/\d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /3 AV\/\d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link "3 AV/SHORE RD":
+      - /url: "#"
+  - listitem:
+    - link "SHORE RD/3 AV":
+      - /url: "#"
+    - list:
+      - listitem:
+        - text: 0 minutes, at stop (at terminal)
+        - link /\d+/:
+          - /url: "#"
+- button "Toggle MTA NYCT_B63 to PIER 6 BKLYN BRIDGE PARK via 5 AV Open / Closed":
+  - text: ""
+  - strong: PIER 6 BKLYN BRIDGE PARK via 5 AV
+- list:
+  - listitem:
+    - link "SHORE RD/3 AV":
+      - /url: "#"
+  - listitem:
+    - link /SHORE RD\/\d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /4 AV\/\d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link "4 AV/MARINE AV":
+      - /url: "#"
+    - list:
+      - listitem:
+        - text: 0 minutes, approaching
+        - link /\d+/:
+          - /url: "#"
+  - listitem:
+    - link /5 AV\/\d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /5 AV\/\d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /5 AV\/\d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /5 AV\/\d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /5 AV\/\d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /5 AV\/\d+ ST/:
+      - /url: "#"
+    - list:
+      - listitem:
+        - text: 1 minute, < 1 stop away
+        - link /\d+/:
+          - /url: "#"
+  - listitem:
+    - link /5 AV\/\d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link "5 AV/BAY RIDGE PKWY":
+      - /url: "#"
+    - list:
+      - listitem:
+        - text: 0 minutes, at stop
+        - link /\d+/:
+          - /url: "#"
+  - listitem:
+    - link /5 AV\/\d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link "5 AV/BAY RIDGE AV":
+      - /url: "#"
+  - listitem:
+    - link "5 AV/SENATOR ST":
+      - /url: "#"
+  - listitem:
+    - link /5 AV\/\d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /5 AV\/\d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /5 AV\/\d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /5 AV\/\d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /5 AV\/\d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /5 AV\/\d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /5 AV\/\d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /5 AV\/\d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /5 AV\/\d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /5 AV\/\d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /5 AV\/\d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /5 AV\/\d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /5 AV\/\d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /5 AV\/\d+ ST/:
+      - /url: "#"
+    - list:
+      - listitem:
+        - text: 0 minutes, approaching
+        - img "vehicle is ~8% full"
+        - text: ~6 passengers
+        - link /\d+/:
+          - /url: "#"
+  - listitem:
+    - link /5 AV\/\d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /5 AV\/\d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /5 AV\/\d+ ST/:
+      - /url: "#"
+    - list:
+      - listitem:
+        - text: 1 minute, < 1 stop away
+        - img /vehicle is ~\d+% full/
+        - text: /~\d+ passengers/
+        - link /\d+/:
+          - /url: "#"
+  - listitem:
+    - link /5 AV\/\d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link "5 AV/PROSPECT AV":
+      - /url: "#"
+  - listitem:
+    - link /5 AV\/\d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link /5 AV\/\d+ ST/:
+      - /url: "#"
+  - listitem:
+    - link "5 AV/9 ST":
+      - /url: "#"
+  - listitem:
+    - link "5 AV/7 ST":
+      - /url: "#"
+  - listitem:
+    - link "5 AV/5 ST":
+      - /url: "#"
+  - listitem:
+    - link "5 AV/3 ST":
+      - /url: "#"
+  - listitem:
+    - link "5 AV/GARFIELD PL":
+      - /url: "#"
+  - listitem:
+    - link "5 AV/UNION ST":
+      - /url: "#"
+    - list:
+      - listitem:
+        - text: 0 minutes, at stop
+        - img /vehicle is ~\d+% full/
+        - text: /~\d+ passengers/
+        - link /\d+/:
+          - /url: "#"
+  - listitem:
+    - link "5 AV/SAINT JOHNS PL":
+      - /url: "#"
+  - listitem:
+    - link "5 AV/PROSPECT PL":
+      - /url: "#"
+  - listitem:
+    - link "BERGEN ST/5 AV":
+      - /url: "#"
+  - listitem:
+    - link "ATLANTIC AV/4 AV":
+      - /url: "#"
+    - list:
+      - listitem:
+        - text: 0 minutes, approaching
+        - link /\d+/:
+          - /url: "#"
+  - listitem:
+    - link "ATLANTIC AV/3 AV":
+      - /url: "#"
+  - listitem:
+    - link "ATLANTIC AV/NEVINS ST":
+      - /url: "#"
+  - listitem:
+    - link "ATLANTIC AV/BOND ST":
+      - /url: "#"
+  - listitem:
+    - link "ATLANTIC AV/HOYT ST":
+      - /url: "#"
+  - listitem:
+    - link "ATLANTIC AV/BOERUM PL":
+      - /url: "#"
+  - listitem:
+    - link "ATLANTIC AV/COURT ST":
+      - /url: "#"
+    - list:
+      - listitem:
+        - text: 0 minutes, at stop
+        - img "vehicle is ~3% full"
+        - text: ~2 passengers
+        - link /\d+/:
+          - /url: "#"
+  - listitem:
+    - link "ATLANTIC AV/CLINTON ST":
+      - /url: "#"
+  - listitem:
+    - link "ATLANTIC AV/HENRY ST":
+      - /url: "#"
+  - listitem:
+    - link "BROOKLYN BRIDGE PARK RD/JORALEMON ST":
+      - /url: "#"
+- list:
+  - listitem:
+    - button "Toggle favorites status for this Route":
+      - img "add icon"
+      - text: Add Route to Favorites
+- menu:
+  - listitem:
+    - button "Refresh the data": /Refresh \(updated \d+:\d+ AM\)/
+- button "Toggle Google Translate Menu": TRANSLATE
+- link "Bus Time Classic":
+  - /url: https://bustime-classic.mta.info
+- navigation:
+  - list:
+    - listitem:
+      - link "MTA Website":
+        - /url: //mta.info
+    - listitem:
+      - link "Mobile Text Messages":
+        - /url: /help/text
+    - listitem:
+      - link "Sign Up For Service Alerts":
+        - /url: //cloud.info.mta.org/create-mta-service-alerts?utm_source=MTA_Bus_Time&utm_medium=referral&utm_campaign=MTA_Service_Alerts
+    - listitem:
+      - link "About Bus Time":
+        - /url: /about
+    - listitem:
+      - link "Contact Us":
+        - /url: /contact
+    - listitem:
+      - link "Help":
+        - /url: /help
+    - listitem:
+      - link "Privacy Policy":
+        - /url: //www.mta.info/privacy-policy
+    - listitem:
+      - link "Terms & Conditions":
+        - /url: //www.mta.info/terms-and-conditions

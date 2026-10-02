@@ -1,0 +1,366 @@
+- banner:
+  - link "MTA Bus Time Home":
+    - /url: "#"
+    - img "MTA Bus Time"
+  - link "MTA Home":
+    - /url: https://www.mta.info/
+    - img "MTA"
+- combobox:
+  - textbox "Route, intersection, or stop code": /\d+/
+  - listbox
+- button "clear search button"
+- button "Favorites":
+  - img
+  - text: ""
+- button "Nearby Buses":
+  - img
+  - text: ""
+- heading "Stops:" [level=2]
+- heading /LEXINGTON AV\/E \d+ ST/ [level=3]:
+  - img
+  - text: ""
+- list:
+  - listitem: /Stopcode \d+/
+- heading "Buses en-route:" [level=4]
+- button /Toggle BXM1 to EAST MIDTOWN \d+ ST via LEX AV/ [expanded]:
+  - strong: BXM1
+  - text: ""
+- list:
+  - listitem:
+    - text: /\d+ minutes, \d+\.\d+ miles away/
+    - link /\d+/:
+      - /url: "#"
+- button "Toggle Service Alert Open/Closed" [expanded]: Service Alert for BXM1
+- paragraph: Northbound BxM1 stop on W 230th St at Broadway will be closed
+- paragraph:
+  - paragraph:
+    - text: For service, use the stops on
+    - strong: Broadway
+    - text: at
+    - strong: W 219th St
+    - text: to
+    - strong: W 230th St
+    - text: at
+    - strong: Corlear Ave.
+  - paragraph:
+    - text: Buses operate via
+    - strong: W 228th St
+    - text: and
+    - strong: Marble Hill Ave.
+  - paragraph:
+    - text: Here is a
+    - link "map":
+      - /url: https://files.mta.info/s3fs-public/2026-06/BxM1%20Long%20Term%20Construction%20Broadway%20at%20W%20230th%20St.png?VersionId=KCN9IWnYr9V3UJvDLaOi8l1SI6Hh7xgu
+    - text: of the detoured route.
+  - paragraph
+  - paragraph:
+    - strong: What's happening?
+  - paragraph: Construction
+  - paragraph
+  - paragraph:
+    - strong: NOTE
+    - text: ": Bus arrival information may not be accurate/available while buses are detoured."
+- list:
+  - listitem:
+    - button "view full Full Route":
+      - img
+      - text: View Full Route
+- button /Toggle BXM1 to EAST MIDTOWN \d+ ST via INWOOD via LEX AV/ [expanded]:
+  - strong: BXM1
+  - text: ""
+- list:
+  - listitem:
+    - text: /\d+ minutes, \d+\.\d+ miles away/
+    - link /\d+/:
+      - /url: "#"
+- button "Toggle Service Alert Open/Closed": Service Alert for BXM1
+- paragraph: Northbound BxM1 stop on W 230th St at Broadway will be closed
+- paragraph:
+  - paragraph:
+    - text: For service, use the stops on
+    - strong: Broadway
+    - text: at
+    - strong: W 219th St
+    - text: to
+    - strong: W 230th St
+    - text: at
+    - strong: Corlear Ave.
+  - paragraph:
+    - text: Buses operate via
+    - strong: W 228th St
+    - text: and
+    - strong: Marble Hill Ave.
+  - paragraph:
+    - text: Here is a
+    - link "map":
+      - /url: https://files.mta.info/s3fs-public/2026-06/BxM1%20Long%20Term%20Construction%20Broadway%20at%20W%20230th%20St.png?VersionId=KCN9IWnYr9V3UJvDLaOi8l1SI6Hh7xgu
+    - text: of the detoured route.
+  - paragraph
+  - paragraph:
+    - strong: What's happening?
+  - paragraph: Construction
+  - paragraph
+  - paragraph:
+    - strong: NOTE
+    - text: ": Bus arrival information may not be accurate/available while buses are detoured."
+- list:
+  - listitem:
+    - button "view full Full Route":
+      - img
+      - text: View Full Route
+- button "Toggle M101 to LIMITED EAST VILLAGE 3 AV-6 ST via LEX" [expanded]:
+  - strong: M101
+  - text: ""
+- list:
+  - listitem:
+    - text: 6 minutes, 0.7 miles away
+    - link /\d+/:
+      - /url: "#"
+  - listitem:
+    - text: /\d+ minutes, 1\.4 miles away/
+    - link /\d+/:
+      - /url: "#"
+  - listitem:
+    - text: /\d+ minutes, 2\.3 miles away/
+    - link /\d+/:
+      - /url: "#"
+- button "Toggle Service Alert Open/Closed": Service Alert for M101
+- paragraph: Northbound M101, M102, and M103 stop on 3rd Ave at E 42nd St has been moved
+- paragraph:
+  - paragraph:
+    - text: Buses will make a temporary stop before the intersection on
+    - strong: 3rd Ave
+    - text: at
+    - strong: E 42nd St
+    - text: .
+  - paragraph:
+    - text: See a
+    - link "map":
+      - /url: https://files.mta.info/s3fs-public/2026-04/M101%20M102%20M103%20Construction%203rd%20Ave%20at%2042nd%20St.png?VersionId=2eeTWVP9INX.wa0d5DCV6iC.ohUzbqr7
+    - text: of this stop change.
+  - paragraph
+  - paragraph:
+    - strong: What's happening?
+  - paragraph: Construction
+  - paragraph
+  - paragraph:
+    - strong: "Note:"
+    - text: Bus arrival information may not be available/accurate while buses are detoured
+- paragraph: Southbound M101, M102 and M103 buses are skipping the stop on Lexington Ave at E 46th St; use the temporary stop on Lexington Ave at E 45th St instead
+- paragraph:
+  - paragraph:
+    - link "See a map":
+      - /url: https://files.mta.info/s3fs-public/2024-12/Southbound%20%E2%80%8CM101%E2%80%8C%20%E2%80%8CM102%E2%80%8C%20and%20%E2%80%8CM103%E2%80%8C%20buses%20are%20skipping%20the%20stop%20on%20Lexington%20Ave%20at%20E%2046th%20St.png
+    - text: of the boarding change.
+  - paragraph
+  - paragraph:
+    - strong: What's happening?
+  - paragraph: Water main construction
+- paragraph: Southbound M101 local/limited stop on E 125th St at Park Ave will be bypassed, buses will make a temporary stop on E 125th St between Madison Ave and Park Ave
+- paragraph:
+  - paragraph:
+    - strong: What's happening?
+  - paragraph: Construction
+  - paragraph
+  - paragraph:
+    - strong: "Note:"
+    - text: Bus arrival information may not be accurate or available while buses are detoured.
+- separator
+- paragraph: Northbound M101 stop at Amsterdam Ave/W 179th St has been removedSouthbound M101 stops at Amsterdam Ave/W 185th St Amsterdam Ave/W 170th St have been removed
+- paragraph:
+  - paragraph: For the northbound stop at Amsterdam Ave/W 179th St, use nearby stops at Amsterdam Ave/W 176th St and Amsterdam Ave/W 181st St instead.
+  - paragraph
+  - paragraph: For the southbound stop at Amsterdam Ave/W 185th St, use nearby stops at Amsterdam Ave/W 188th St or Amsterdam Ave/W 184th St instead.
+  - paragraph
+  - paragraph: For the southbound stop at Amsterdam Ave/W 170th St, use nearby stops at Amsterdam Ave/W 172nd St or Amsterdam Ave/W 168th St instead.
+  - paragraph
+  - paragraph:
+    - link "See a map of the northbound stop change.":
+      - /url: https://www.mta.info/image/214946
+  - paragraph
+  - paragraph:
+    - link "See a map of the southbound stop changes.":
+      - /url: https://www.mta.info/image/214951
+  - paragraph
+  - paragraph:
+    - strong: What's happening?
+  - paragraph: Stop removal
+  - paragraph
+  - paragraph:
+    - strong: "Note:"
+    - text: Bus arrival information may not be accurate or available in the service change area.
+- paragraph: Northbound M101 limited stop on 3rd Ave at 9th St has been removed, customers are advised to use the stop on Astor Pl at Cooper Sq East
+- paragraph:
+  - paragraph:
+    - text: See a
+    - link "map":
+      - /url: https://files.mta.info/s3fs-public/2026-03/Northbound%20M101%20and%20Limited%20stop%20change%203%20Av%20and%209th%20St.png?VersionId=OSv57DXzdWATYkxw_NwWZ_utGQznlHuU
+    - text: of the stop change.
+  - paragraph
+  - paragraph:
+    - strong: What's happening?
+  - paragraph: Northbound stop change
+  - paragraph
+  - paragraph:
+    - strong: "Note:"
+    - text: Bus arrival information may not be available/accurate while buses are detoured
+- list:
+  - listitem:
+    - button "view full Full Route":
+      - img
+      - text: View Full Route
+- button "Toggle M102 to EAST VILLAGE 6 ST via LEX AV" [expanded]:
+  - strong: M102
+  - text: ""
+- list:
+  - listitem:
+    - text: /\d+ minutes, 2\.3 miles away/
+    - link /\d+/:
+      - /url: "#"
+  - listitem:
+    - text: /\d+ minutes, 2\.8 miles away/
+    - link /\d+/:
+      - /url: "#"
+  - listitem:
+    - text: /\d+ minutes, 4\.2 miles away/
+    - link /\d+/:
+      - /url: "#"
+- button "Toggle Service Alert Open/Closed": Service Alert for M102
+- paragraph: Northbound M102 stop at 116th St/Park Ave is discontinued
+- paragraph:
+  - paragraph:
+    - strong: What's happening?
+  - paragraph: Stop permanently discontinued
+- separator
+- paragraph: Northbound M101, M102, and M103 stop on 3rd Ave at E 42nd St has been moved
+- paragraph:
+  - paragraph:
+    - text: Buses will make a temporary stop before the intersection on
+    - strong: 3rd Ave
+    - text: at
+    - strong: E 42nd St
+    - text: .
+  - paragraph:
+    - text: See a
+    - link "map":
+      - /url: https://files.mta.info/s3fs-public/2026-04/M101%20M102%20M103%20Construction%203rd%20Ave%20at%2042nd%20St.png?VersionId=2eeTWVP9INX.wa0d5DCV6iC.ohUzbqr7
+    - text: of this stop change.
+  - paragraph
+  - paragraph:
+    - strong: What's happening?
+  - paragraph: Construction
+  - paragraph
+  - paragraph:
+    - strong: "Note:"
+    - text: Bus arrival information may not be available/accurate while buses are detoured
+- paragraph: Southbound M101, M102 and M103 buses are skipping the stop on Lexington Ave at E 46th St; use the temporary stop on Lexington Ave at E 45th St instead
+- paragraph:
+  - paragraph:
+    - link "See a map":
+      - /url: https://files.mta.info/s3fs-public/2024-12/Southbound%20%E2%80%8CM101%E2%80%8C%20%E2%80%8CM102%E2%80%8C%20and%20%E2%80%8CM103%E2%80%8C%20buses%20are%20skipping%20the%20stop%20on%20Lexington%20Ave%20at%20E%2046th%20St.png
+    - text: of the boarding change.
+  - paragraph
+  - paragraph:
+    - strong: What's happening?
+  - paragraph: Water main construction
+- list:
+  - listitem:
+    - button "view full Full Route":
+      - img
+      - text: View Full Route
+- button "Toggle M103 to CITY HALL via LEX AV" [expanded]:
+  - strong: M103
+  - text: ""
+- list:
+  - listitem:
+    - text: /\d+ minutes, 0\.9 miles away/
+    - img /vehicle is ~\d+% full/
+    - text: /~\d+ passengers/
+    - link /\d+/:
+      - /url: "#"
+  - listitem:
+    - text: /\d+ minutes, 3\.6 miles away/
+    - link /\d+/:
+      - /url: "#"
+  - listitem:
+    - text: /\d+ minutes, 3\.9 miles away/
+    - link /\d+/:
+      - /url: "#"
+- button "Toggle Service Alert Open/Closed": Service Alert for M103
+- paragraph: Northbound M101, M102, and M103 stop on 3rd Ave at E 42nd St has been moved
+- paragraph:
+  - paragraph:
+    - text: Buses will make a temporary stop before the intersection on
+    - strong: 3rd Ave
+    - text: at
+    - strong: E 42nd St
+    - text: .
+  - paragraph:
+    - text: See a
+    - link "map":
+      - /url: https://files.mta.info/s3fs-public/2026-04/M101%20M102%20M103%20Construction%203rd%20Ave%20at%2042nd%20St.png?VersionId=2eeTWVP9INX.wa0d5DCV6iC.ohUzbqr7
+    - text: of this stop change.
+  - paragraph
+  - paragraph:
+    - strong: What's happening?
+  - paragraph: Construction
+  - paragraph
+  - paragraph:
+    - strong: "Note:"
+    - text: Bus arrival information may not be available/accurate while buses are detoured
+- paragraph: Southbound M101, M102 and M103 buses are skipping the stop on Lexington Ave at E 46th St; use the temporary stop on Lexington Ave at E 45th St instead
+- paragraph:
+  - paragraph:
+    - link "See a map":
+      - /url: https://files.mta.info/s3fs-public/2024-12/Southbound%20%E2%80%8CM101%E2%80%8C%20%E2%80%8CM102%E2%80%8C%20and%20%E2%80%8CM103%E2%80%8C%20buses%20are%20skipping%20the%20stop%20on%20Lexington%20Ave%20at%20E%2046th%20St.png
+    - text: of the boarding change.
+  - paragraph
+  - paragraph:
+    - strong: What's happening?
+  - paragraph: Water main construction
+- list:
+  - listitem:
+    - button "view full Full Route":
+      - img
+      - text: View Full Route
+- paragraph:
+  - text: Text stopcode
+  - strong: /\d+/
+  - text: /to \d+ to receive an up-to-date list of buses en-route on your phone\./
+- list:
+  - listitem:
+    - button "Toggle favorites status for this Stop":
+      - img "add icon"
+      - text: Add Stop to Favorites
+- menu:
+  - listitem:
+    - button "Refresh the data": /Refresh \(updated \d+:\d+ AM\)/
+- button "Toggle Google Translate Menu": TRANSLATE
+- link "Bus Time Classic":
+  - /url: https://bustime-classic.mta.info
+- navigation:
+  - list:
+    - listitem:
+      - link "MTA Website":
+        - /url: //mta.info
+    - listitem:
+      - link "Mobile Text Messages":
+        - /url: /help/text
+    - listitem:
+      - link "Sign Up For Service Alerts":
+        - /url: //cloud.info.mta.org/create-mta-service-alerts?utm_source=MTA_Bus_Time&utm_medium=referral&utm_campaign=MTA_Service_Alerts
+    - listitem:
+      - link "About Bus Time":
+        - /url: /about
+    - listitem:
+      - link "Contact Us":
+        - /url: /contact
+    - listitem:
+      - link "Help":
+        - /url: /help
+    - listitem:
+      - link "Privacy Policy":
+        - /url: //www.mta.info/privacy-policy
+    - listitem:
+      - link "Terms & Conditions":
+        - /url: //www.mta.info/terms-and-conditions
