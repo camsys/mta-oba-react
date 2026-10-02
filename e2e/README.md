@@ -104,9 +104,13 @@ the spec, its recording and its snapshots together.
   the last one repeats. That's how polling replays.
 - **Strict:** a request with no recorded match fails the test and names the request. Fix it
   by re-recording; never by loosening the match.
-- **Time:** the browser clock starts at the recording's `recordedAt` and keeps running.
-  Arrival times ("X minutes") are computed from the server's timestamp, so they match the
-  recording. Timezone and locale are pinned to `America/New_York` / `en-US`.
+- **Time:** the browser clock starts at the recording's `recordedAt` and runs in real time, so
+  the app's own short timers (collapsible toggles, retries, debounces) work without help;
+  `advance(ms)` jumps it forward. A run's speed must not decide what a checkpoint sees, so
+  `checkpoint` first waits for collapsible toggles to finish (see
+  [references made in a slow run](#known-issue-references-made-in-a-slow-run)). Arrival times
+  ("X minutes") are computed from the server's timestamp, so they match the recording.
+  Timezone and locale are pinned to `America/New_York` / `en-US`.
 - **Expected noise:** blocking Google Maps produces two page errors ("Google Maps JavaScript
   API could not load", "window.google not found after 10 seconds"). `advance` ignores the
   second one; anything else it throws fails the test.
@@ -204,11 +208,27 @@ default threshold is what ignores that.
 
 ### Known issue: references made in a slow run
 
-The browser clock runs in real time from `recordedAt`. `--update-snapshots` can take much
-longer than a normal run (about 50s against 5s for `route-b63`), long enough to reach 30s of
-page time and fire a SIRI poll that a normal replay never reaches. This is the suspected cause
-of `route-b63`'s `alert-open` reference sitting 1 pixel off from every replay; not yet
-confirmed. If a spec's step 2 fails the same way on every run, suspect this first.
+`--update-snapshots` runs are much slower than replays (about 5s a checkpoint against 0.1s),
+so anything on the page that depends on real time can differ between a reference and a replay.
+Two such things were found; a third could appear:
+
+- **Stale toggle timers (fixed in the app, NYCUI-601).** Opening or closing a collapsible
+  twice within 500ms used to let the first toggle's timer re-expand a closed section. A fast
+  replay of `stop-403424` did that to the second BXM1 alert, which a slow reference run never
+  did. `public/js/bustime.js` now cancels a section's pending timers on every toggle.
+- **Mid-animation captures (handled by `checkpoint`).** A toggle finishes on timers: the
+  `open` class changes 10ms after the click, and an opening section's `max-height` stays pinned
+  in px until it becomes `none` 500ms later. A checkpoint taken in between shows a section half
+  open (or content 1px short, as in `route-b63`'s old `alert-open` reference). `checkpoint`
+  waits for every `.collapse-content` to settle before comparing, so a spec doesn't need its own
+  wait for this.
+- **Latent: SIRI polls.** The app polls every 30s of page time, which a slow run can reach and
+  a fast one doesn't. Today every recording holds one vehicle-monitoring response per route, so
+  the extra poll repeats the same data and changes nothing on screen. A recording with several
+  would hand out its later responses early in a slow run.
+
+If a checkpoint fails the same way on every replay but passes in the run that wrote it, look
+for another timer like these.
 
 ### Fonts are currently ignored
 
