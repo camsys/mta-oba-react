@@ -73,9 +73,12 @@ test('what the user does', async ({ page, checkpoint }) => {
 - Keep the recorded steps and their order. Only remove clicks that just focus an element.
 - Key presses: codegen writes them as `locator.press`, which focuses the locator first and so
   skips the real tab order. Convert each to `expect(locator).toBeFocused()` followed by
-  `page.keyboard.press`, as `press` in `favorites.spec.ts` does. The route-b63, location and
-  stop-403424 specs still use `locator.press`, so they don't test tab order yet. A follow-up will
-  re-record them, with codegen and the API capture in the same session, so the buses match.
+  `page.keyboard.press`, as `key` in `stop-400723.spec.ts` does. The route-b63 and location
+  specs still use `locator.press`, so they don't test tab order yet. A follow-up will re-record
+  them, with codegen and the API capture in the same session, so the buses match.
+- Record mode skips checkpoints, so nothing waits for the page there. Before the first key
+  press, wait for the element it should reach (`await expect(locator).toBeVisible()`);
+  otherwise Tab can run past content that hasn't rendered yet.
 - Anything that should survive a reload needs a `page.reload()` added by hand; codegen doesn't
   record reloads.
 - Put a `checkpoint('<name>')` after the page loads and after each step that changes the
@@ -228,7 +231,7 @@ Two such things were found; a third could appear:
 
 - **Stale toggle timers (fixed in the app, NYCUI-601).** Opening or closing a collapsible
   twice within 500ms used to let the first toggle's timer re-expand a closed section. A fast
-  replay of `stop-403424` did that to the second BXM1 alert, which a slow reference run never
+  replay of the old `stop-403424` spec did that to the second BXM1 alert, which a slow reference run never
   did. `public/js/bustime.js` now cancels a section's pending timers on every toggle.
 - **Mid-animation captures (handled by `checkpoint`).** A toggle finishes on timers: the
   `open` class changes 10ms after the click, and an opening section's `max-height` stays pinned
