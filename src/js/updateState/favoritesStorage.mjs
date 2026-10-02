@@ -8,7 +8,7 @@
 
 // Namespaced and versioned so a later format change can migrate from this key rather than guess.
 export const favoritesStorageKey = "mta-oba.favorites.v1"
-// Cookie formats being migrated away from: the classic site's single JSON cookie, and the
+// Cookie formats being migrated away from: an older version of this site's single JSON cookie, and the
 // per-favorite cookies (named by the part of the id after "_") ordered by a "favoritesIds" list.
 export const oldFavoritesCookieIdentifier = "favorites"
 export const favoritesIdsCookieIdentifier = "favoritesIds"
