@@ -19,10 +19,13 @@ async function press(page: Page, on: Locator, key: string) {
   await page.keyboard.press(key);
 }
 
-// Picks a suggestion with the keyboard; `keys` are pressed before Enter.
-async function searchFromSuggestions(page: Page, term: string, keys = ['ArrowDown']) {
+// Picks `expected` from the suggestions with the keyboard; `keys` are pressed before Enter.
+async function searchFromSuggestions(page: Page, term: string, expected: string, keys = ['ArrowDown']) {
   await page.getByRole('button', { name: 'clear search button' }).click();
   await searchBox(page).fill(term);
+  // Arrow keys pressed before the suggestions arrive pick a different one, or none.
+  await expect(page.getByRole('listbox')).toBeVisible();
+  await expect(page.getByRole('option', { name: expected, exact: true })).toBeVisible();
   for (const key of keys) await press(page, searchBox(page), key);
   await press(page, searchBox(page), 'Enter');
 }
@@ -32,7 +35,7 @@ test('add and remove a route and a stop as favorites', async ({ page, checkpoint
   await checkpoint('empty');
 
   // Favorite the route
-  await searchFromSuggestions(page, 'b44', ['ArrowDown', 'ArrowDown', 'ArrowUp']);
+  await searchFromSuggestions(page, 'b44', 'B44', ['ArrowDown', 'ArrowDown', 'ArrowUp']);
   await checkpoint('route-card');
   await toggleFavorite(page).click();
   await checkpoint('route-toggle-favorited');
@@ -62,7 +65,7 @@ test('add and remove a route and a stop as favorites', async ({ page, checkpoint
   await checkpoint('all-removed');
 
   // Favorite the route again from a fresh search
-  await searchFromSuggestions(page, 'b44');
+  await searchFromSuggestions(page, 'b44', 'B44');
   await toggleFavorite(page).click();
   await openFavorites(page);
   await checkpoint('route-favorited-again');
