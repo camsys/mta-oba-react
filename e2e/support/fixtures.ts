@@ -1,4 +1,4 @@
-import { test as base, expect } from '@playwright/test';
+import { type Page, test as base, expect } from '@playwright/test';
 import {
   type RecordedResponse,
   type Recording,
@@ -36,6 +36,38 @@ type Fixtures = {
   // as if that time had passed; record mode really waits, so the poll hits the backend.
   advance: (ms: number) => Promise<void>;
 };
+
+// A collapsible toggle (public/js/bustime.js) finishes on timers: the `open` class changes
+// 10ms after the click (data-collapse-state is set until then), and an opening section's
+// max-height stays pinned in px until 500ms, when it becomes `none`. Snapshotting before then
+// catches it half open or up to 1px short, depending on how fast the run is; pressing a key
+// before then can leave different elements tabbable than the draft saw.
+export async function waitForTogglesToSettle(page: Page) {
+  await page.waitForFunction(
+    () =>
+      !document.querySelector('[data-collapse-state]') &&
+      [...document.querySelectorAll<HTMLElement>('.collapse-content')].every((el) =>
+        ['', 'none', '0px'].includes(el.style.maxHeight),
+      ),
+  );
+}
+
+// Set by scripts/e2e-mutate.sh; the spec is then expected to fail.
+const MUTATION_CSS = process.env.E2E_MUTATION_CSS || undefined;
+const MUTATION_STYLE_ID = 'e2e-mutation';
+
+async function injectStyle(page: Page, id: string, content: string) {
+  await page.evaluate(
+    ({ id, content }) => {
+      if (document.getElementById(id)) return;
+      const style = document.createElement('style');
+      style.id = id;
+      style.textContent = content;
+      document.head.appendChild(style);
+    },
+    { id, content },
+  );
+}
 
 let screenshotsSkippedNoted = false;
 // Printed by the first worker slot only, so a run shows it once (again only if that worker
@@ -121,17 +153,10 @@ export const test = base.extend<Options & Fixtures>({
     await use(async (name) => {
       // Recording sees live data, which no snapshot would match; snapshots come from replay.
       if (isRecording) return;
-      // A collapsible toggle (public/js/bustime.js) finishes on timers: the `open` class
-      // changes 10ms after the click (data-collapse-state is set until then), and an opening
-      // section's max-height stays pinned in px until 500ms, when it becomes `none`. Snapshotting
-      // before then catches it half open or up to 1px short, depending on how fast the run is.
-      await page.waitForFunction(
-        () =>
-          !document.querySelector('[data-collapse-state]') &&
-          [...document.querySelectorAll<HTMLElement>('.collapse-content')].every((el) =>
-            ['', 'none', '0px'].includes(el.style.maxHeight),
-          ),
-      );
+      await waitForTogglesToSettle(page);
+      // Mutation checks (scripts/e2e-mutate.sh): a deliberate visible change, made without
+      // touching src/. Added on every checkpoint, since a full page load drops it.
+      if (MUTATION_CSS) await injectStyle(page, MUTATION_STYLE_ID, MUTATION_CSS);
       // Waits (and retries) until the sidebar matches, so the screenshot below sees a settled page.
       await expect(page.locator('#sidebar')).toMatchAriaSnapshot({ name: `${name}.aria.yml` });
       // References are made on Linux; text renders differently on macOS, so a Mac screenshot

@@ -27,12 +27,13 @@ TTY=
 if [ -t 1 ]; then TTY=-t; fi
 
 # --ipc=host: Chromium runs out of shared memory without it.
-# E2E_PORT and CI are passed only if set, so lanes and CI settings behave as they do natively.
+# E2E_PORT, CI, E2E_MUTATION_CSS and PLAYWRIGHT_JSON_OUTPUT_NAME are passed only if set, so lanes,
+# CI settings, mutation checks and JSON reports (scripts/e2e-cycle.sh) behave as they do natively.
 exec docker run --rm $TTY --ipc=host \
   -v "$ROOT":/work \
   -v "$VOLUME":/work/node_modules \
   -w /work \
-  -e E2E_PORT -e CI \
+  -e E2E_PORT -e CI -e E2E_MUTATION_CSS -e PLAYWRIGHT_JSON_OUTPUT_NAME \
   "$IMAGE" \
   bash -c '
     # npm ci only when package-lock.json changed since the volume was last installed.
