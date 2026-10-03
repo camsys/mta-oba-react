@@ -1,0 +1,40 @@
+name: Repo size
+on:
+  # Every push and PR, on any branch. Whether a failure blocks a merge is up to branch
+  # protection (required checks), not this workflow.
+  push:
+  pull_request:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+# e2e recordings and reference screenshots are committed, and every re-record adds a new copy to
+# history. This measures everything the branch holds (all of its history, compressed; for a PR,
+# the branch merged into its target), not just the current files, and not other branches. Past
+# 75 MB it warns; past 100 MB it fails. The failure is a tripwire for someone with admin rights:
+# decide on Git LFS for e2e/recordings and e2e/__snapshots__ (older copies stay in history unless
+# it's rewritten with `git lfs migrate`), then raise the limit or bypass it.
+# https://docs.github.com/en/repositories/working-with-files/managing-large-files
+jobs:
+  repo-size:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Check size
+        run: |
+          # HEAD is the pushed commit, or for a PR, the PR merged into its target. Compressed size
+          # of every object it reaches.
+          pack_kib=$(( $(git rev-list --objects --disk-usage HEAD) / 1024 ))
+          files_kib=$(git ls-tree -r -l HEAD | awk '{s += $4} END {printf "%d", s / 1024}')
+          mb() { awk -v k="$1" 'BEGIN {printf "%.1f", k / 1024}'; }
+          echo "Branch (all history, compressed): $(mb "$pack_kib") MB. Current files: $(mb "$files_kib") MB." | tee -a "$GITHUB_STEP_SUMMARY"
+          if [ "$pack_kib" -gt $((100 * 1024)) ]; then
+            echo "::error title=Repo over 100 MB::Branch is $(mb "$pack_kib") MB. Move e2e/recordings and e2e/__snapshots__ to Git LFS, or raise the limit."
+            exit 1
+          elif [ "$pack_kib" -gt $((75 * 1024)) ]; then
+            echo "::warning title=Repo over 75 MB::Branch is $(mb "$pack_kib") MB; this check fails at 100 MB. Plan the move of e2e/recordings and e2e/__snapshots__ to Git LFS."
+          fi
