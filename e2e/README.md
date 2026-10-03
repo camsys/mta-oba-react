@@ -26,6 +26,7 @@ e2e/
   __snapshots__/<spec>/     reference ARIA snapshots and screenshots (committed)
   drafts/                   raw codegen output; ignored by git and by the test run
   support/fixtures.ts       record/replay, checkpoint(), advance()
+  support/steps.ts          key(), and bus()/vehicle()/routeBus() for live data
   support/recording.ts      request matching, recording file format
   support/screenshotStyles.ts  font swap and tile hiding for screenshots
 ```
@@ -53,7 +54,9 @@ things people do there; a short spec fails clearly and is cheap to re-record.
 
 ### 2. Turn the draft into a spec
 
-Write `e2e/<name>.spec.ts` (see `favorites.spec.ts` and `route-b63.spec.ts`):
+`node scripts/e2e-convert-draft.mjs e2e/drafts/<draft>.spec.ts <name>` does the mechanical part
+and lists what needs judgment; see [Converting a draft (agents)](#converting-a-draft-agents). By
+hand, write `e2e/<name>.spec.ts` (see `favorites.spec.ts` and `route-b63.spec.ts`):
 
 ```ts
 import { test } from './support/fixtures';
@@ -73,7 +76,9 @@ test('what the user does', async ({ page, checkpoint }) => {
 - Keep the recorded steps and their order. Only remove clicks that just focus an element.
 - Key presses: codegen writes them as `locator.press`, which focuses the locator first and so
   skips the real tab order. Convert each to `expect(locator).toBeFocused()` followed by
-  `page.keyboard.press`, as `key` in `stop-400723.spec.ts` does.
+  `page.keyboard.press`, as `key` in `support/steps.ts` does; a failed check names what has
+  focus instead. Name buses by position (`bus`, `vehicle`, `routeBus` in `support/steps.ts`),
+  never by vehicle ID, which changes with every recording.
 - Record mode skips checkpoints, so nothing waits for the page there. Before the first key
   press, wait for the element it should reach (`await expect(locator).toBeVisible()`);
   otherwise Tab can run past content that hasn't rendered yet.
@@ -101,6 +106,58 @@ steps change or the API's responses change shape.
 
 Follow [Setting up snapshots for a spec](#setting-up-snapshots-for-a-spec) below, then commit
 the spec, its recording and its snapshots together.
+
+## Converting a draft (agents)
+
+The whole conversion as commands. Each tool prints a few lines; read those, not the logs or
+every reference file. Set your own lane first (`export E2E_PORT=<port>`, see
+[Running several at once](#running-several-at-once)).
+
+1. **Convert.** `node scripts/e2e-convert-draft.mjs e2e/drafts/<draft>.spec.ts <name>` writes
+   `e2e/<name>.spec.ts` and prints `L<line>: <kind>: ...` for each line to check:
+   - `live data`: vehicle IDs are already replaced by a positional helper; check the position
+     (a bus's place in the tab order is live data too). Replace times, counts and `Loading...`
+     with something stable (the `Nearby:` heading, not `Loading...`).
+   - `ambiguous`: `.first()`/`.nth()` are fine if the order can't change; replace CSS paths and
+     generated ids (`[id="..._undefined"]`) with a role and name, scoped to their direction.
+   - `focus`: a press from a container has nothing to check and stays `page.keyboard.press`; a
+     press on `<body>` means the step before dropped focus (keep it if that's the behaviour).
+   - `wait`: wait for whatever the first Tab needs. A section that renders after it's opened
+     can mount untabbable (tabIndex -1), so wait for it before opening (see `location.spec.ts`).
+   - `map click`: prefer a marker or a button to coordinates.
+   - Turn each `// TODO checkpoint('...')` into a checkpoint named for what the screen shows
+     (`m15-open`, not `m15-enter`), or delete it. Name the test, rename consts if it helps,
+     delete the `Converted from` line. (`--checkpoints` writes the suggestions as real calls.)
+2. **Record** (manual): `npm run test:e2e:record -- e2e/<name>.spec.ts`, only when nothing else
+   replays that spec (see `AGENTS.md`). A wrong step fails here with the focus diagnostic.
+3. **Cycle.** `scripts/e2e-cycle.sh <name>`: recordings diff, references regenerated in Docker,
+   5 Docker repeats, 5 native repeats; one line each, stopping at the first failure. Resume with
+   `--from regenerate|repeat|native`.
+   - `Focus check failed`: `focused` is where the keys went, `expected ... N Tabs after` how far
+     off. Usually something rendered later than in the draft (add a wait) or the data has more
+     or fewer buses than the draft (re-record, or change the steps).
+   - A checkpoint that fails in some repeats only: something on the page still moves; see
+     [Known issue](#known-issue-references-made-in-a-slow-run).
+4. **Review references.** `node scripts/e2e-refs-report.mjs <name>`:
+   - `orphaned` and `missing` should both be `none`; `--delete-orphans` prints the `git rm`.
+   - `steps`: each checkpoint's change from the one before. It should match the name: `-open`
+     gains `[expanded]`, `favorited` swaps the add icon for the remove icon. `= no ARIA change`
+     is right only for focus-only steps; on any other step, find out why.
+   - `since HEAD` (re-recordings): `steps whose effect changed` lists the steps that now do
+     something different; data changes alone don't appear there.
+5. **Look at the screenshots.** `node scripts/e2e-contact-sheet.mjs <name>` prints one or two
+   grid images of the sidebar in checkpoint order; view them, not the PNGs. Check focus rings
+   and open sections match each name. `--since HEAD` outlines changes; `--full` shows the map.
+6. **Prove they catch changes.** `scripts/e2e-mutate.sh <name> '<css>'` must print `caught`.
+   Use a change one checkpoint shows, e.g. `#sidebar a:focus, #sidebar a:focus * {
+   text-decoration: none !important; }` for a focused link, or `.cards-toggle.active {
+   font-weight: normal !important; }` on a location page.
+7. **Commit** the spec, its recording and its references together, after asking.
+
+Stop and ask when: a focus check still fails after a re-record (the app's tab order may have
+changed, which is a finding, not a test to fix); a step's ARIA change doesn't match its name;
+`regenerate` wants `--allow-src-changes`; the recordings diff touches another spec; or a fix
+would need `src/`, `playwright.config.ts`, a looser match or a higher tolerance.
 
 ## How replay works
 

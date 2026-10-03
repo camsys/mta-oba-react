@@ -8,6 +8,7 @@ Give the *why* with each rule, so it can be applied to cases it doesn't name.
 - `npm run build`: production build into `dist/` (CI runs this plus `npm audit --audit-level=high`)
 - `npm test`: Node built-in test runner over `test/*.test.js`; no test framework dependency
 - `npm run test:e2e`: Playwright browser tests in `e2e/`, replaying recorded API responses. How to write, record and snapshot a test: `e2e/README.md`
+- Converting a codegen draft into a spec: follow "Converting a draft (agents)" in `e2e/README.md` (`scripts/e2e-*`); it keeps each conversion to short tool summaries.
 
 The README and Dockerfile mention `npm run start` / `build-css`, which no longer exist. Use the scripts in `package.json`.
 
