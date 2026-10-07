@@ -17,6 +17,19 @@ const gaMeasurementId = process.env.GA_MEASUREMENT_ID ?? '';
 if (gaMeasurementId && !/^G-[A-Z0-9]+$/.test(gaMeasurementId)) {
   throw new Error(`Invalid GA_MEASUREMENT_ID: ${gaMeasurementId}`);
 }
+// How long dismissing the survey banner lasts, in days. Accepts numbers joined by * and /
+// so short durations stay readable (e.g. 5/24/60 for 5 minutes in QA). Blank means 2.
+const betaBannerDismissExpr = (process.env.BETA_BANNER_DISMISS_DAYS || '2').trim();
+if (!/^\d+(\.\d+)?(\s*[*/]\s*\d+(\.\d+)?)*$/.test(betaBannerDismissExpr)) {
+  throw new Error(`Invalid BETA_BANNER_DISMISS_DAYS: ${betaBannerDismissExpr} (use a number, or numbers joined by * and / like 5/24/60)`);
+}
+const betaBannerDismissDays = betaBannerDismissExpr.match(/[*/]?\s*[\d.]+/g).reduce((result, term) => {
+  const n = Number(term.replace(/[*/\s]/g, ''));
+  return term.startsWith('/') ? result / n : result * n;
+}, 1);
+if (!(betaBannerDismissDays > 0 && Number.isFinite(betaBannerDismissDays))) {
+  throw new Error(`BETA_BANNER_DISMISS_DAYS must be a positive number: ${betaBannerDismissExpr}`);
+}
 const gaTag = gaMeasurementId ? `<!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=${gaMeasurementId}"></script>
     <script>
@@ -42,7 +55,8 @@ const envPlugin = new webpack.DefinePlugin({
   'process.env.CLASSIC_SITE_ADDRESS': JSON.stringify(process.env.CLASSIC_SITE_ADDRESS || 'https://bustime-classic.mta.info'),
   'process.env.BETA_BANNER_CHIP': JSON.stringify(process.env.BETA_BANNER_CHIP ?? ''),
   'process.env.BETA_BANNER_TEXT': JSON.stringify(process.env.BETA_BANNER_TEXT ?? ''),
-  'process.env.BETA_BANNER_LINK': JSON.stringify(process.env.BETA_BANNER_LINK ?? '')
+  'process.env.BETA_BANNER_LINK': JSON.stringify(process.env.BETA_BANNER_LINK ?? ''),
+  'process.env.BETA_BANNER_DISMISS_DAYS': JSON.stringify(betaBannerDismissDays)
 });
 
 function cleanUpHostAddress(hostAddress) {
