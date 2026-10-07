@@ -1,14 +1,18 @@
-Install node.js if not already done so https://nodejs.org/en/download
+Install node.js if not already done so https://nodejs.org/en/download (CI uses Node 20)
 
 Pull repo down from git
 
-Open cmd and navigate to mta-oba-react wherever your local git repo is
+Open a terminal and navigate to mta-oba-react wherever your local git repo is
 
-Install react via cmd running "npm install react react-dom" (no quotes)
+Install dependencies: `npm install`
 
-Execute "npm run start"
+Start the dev server: `npm run dev-start`
 
 Navigate to http://localhost:8080/?LineRef=B63 in your browser
+
+Other scripts:
+- `npm run build`: production build into `dist/`
+- `npm test`: run the tests in `test/`
 
 Configurable env variables:
 Var Name | Var Use | Default Value
@@ -52,12 +56,12 @@ state handling:
 --------
 
 How to deploy:
-- bump version to a release version (no snapshot)
-  - ensure package.json, package-lock.json, and public/version.json match your version
-- commit
-- tag that commit with the version
-- bump the version to snapshot
-- commit
-- push commits and tags
+- start from an up-to-date main: `git checkout main && git pull`
+- release: `npm version 1.0.15` (use the real version)
+  - this syncs package.json, package-lock.json and public/version.json, commits, and tags (tags have no "v" prefix; see `.npmrc`)
+  - it runs `npm audit --audit-level=high` first and stops if anything high-severity is found; fix that before releasing
+- next snapshot: `npm version 1.0.16-SNAPSHOT --no-git-tag-version` (the *next* patch number, not the one just released)
+  - `--no-git-tag-version` skips the tag, and the commit with it, so commit by hand: `git commit -m "bump to 1.0.16-SNAPSHOT" package.json package-lock.json public/version.json`
+- push commits and tags: `git push && git push --tags`
 - bump version in devops repo for the environment you want to change
 - kick off a jenkins build for the appropriate env

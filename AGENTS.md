@@ -11,7 +11,7 @@ Give the *why* with each rule, so it can be applied to cases it doesn't name.
   This will change when CI moves past Node 20 (end of life April 2026). To check, look at `node-version` in `.github/workflows/tag_and_pr_validation.yml` and `FROM node:` in `Dockerfile`; Node 22.18+ runs `.ts` tests without flags.
   If you change that version, or find it already changed, check in with the user before relying on it, then update this note (`src/js/updateState/favoritesStorage.mjs` could then become `.ts`).
 
-The README and Dockerfile mention `npm run start` / `build-css`, which no longer exist. Use the scripts in `package.json`.
+The Dockerfile mentions `npm run start` / `build-css`, which no longer exist. Use the scripts in `package.json`.
 
 ## Layout
 - `src/components/`: React components (`views/` = cards, `map/` = Leaflet map, `pageStructure/` = header, sidebar, search, `util/` = state components)
